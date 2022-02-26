@@ -1,0 +1,19 @@
+@model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteCityViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>City</h4>
+    <hr />
+    <dl class="row">
+        <partial name="_DetailsDeleteCity" model="Model"/>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

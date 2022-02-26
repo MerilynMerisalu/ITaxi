@@ -8,7 +8,7 @@ public abstract class DomainEntityMetaId : DomainEntityId<Guid>, IDomainEntityId
     public string? CreatedBy { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public string? UpdatedBy { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }
 
 public abstract class DomainEntityMetaId<TKey> : DomainEntityId<TKey>, 
@@ -19,5 +19,5 @@ public abstract class DomainEntityMetaId<TKey> : DomainEntityId<TKey>,
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     [MaxLength(32)]
     public string? UpdatedBy { get; set; } 
-    public DateTime UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }

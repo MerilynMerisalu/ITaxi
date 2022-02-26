@@ -8,7 +8,7 @@ public class Schedule: DomainEntityMetaId
 {
     [DisplayName("Creation Date and Time")]
 
-    public DateTime DateTime { get; set; }
+    public DateTime ScheduleCreationDateAndTime { get; set; }
 
     [DisplayName("Driver")] public Guid DriverId { get; set; }
 

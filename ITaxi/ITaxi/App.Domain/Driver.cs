@@ -14,7 +14,7 @@ public class Driver: DomainEntityMetaId
     [MaxLength(25)]
     [StringLength(25)]
     [DisplayName("Personal Identifier")]
-    public string PersonalIdentifier { get; set; } = default!;
+    public string? PersonalIdentifier { get; set; } = default!;
 
     [DisplayName("Driver License Categories")]
     public ICollection<DriverAndDriverLicenseCategory>? DriverLicenseCategories { get; set; }

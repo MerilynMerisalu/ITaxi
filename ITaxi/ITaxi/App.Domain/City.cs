@@ -14,7 +14,6 @@ namespace App.Domain
 
         [Required]
         [MaxLength(50)]
-        [StringLength(50, MinimumLength = 1)]
         [DisplayName("City")]
         public string CityName { get; set; } = default!;
     }

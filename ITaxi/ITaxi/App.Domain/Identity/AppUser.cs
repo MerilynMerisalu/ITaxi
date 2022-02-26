@@ -20,8 +20,10 @@ public class AppUser : BaseUser
     public string LastName { get; set; } = default!;
 
     public string FirstAndLastName => $"{FirstName} {LastName}";
+    [DisplayName("Last And First Name")]
     public string LastAndFirstName => $"{LastName} {FirstName}";
 
+    [DisplayName(nameof(Gender))]
     [EnumDataType(typeof(Gender))] public Gender Gender { get; set; }
 
     [Required]

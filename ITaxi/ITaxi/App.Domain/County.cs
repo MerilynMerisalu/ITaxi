@@ -9,7 +9,6 @@ public class County: DomainEntityMetaId
     
     [Required]
     [MaxLength(50)]
-    [StringLength(50, MinimumLength = 1)]
     [DisplayName("County Name")]
     public string CountyName { get; set; } = default!;
 

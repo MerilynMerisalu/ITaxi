@@ -632,13 +632,13 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid>("DriverId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("EndDateAndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ScheduleCreationDateAndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartDateAndTime")
