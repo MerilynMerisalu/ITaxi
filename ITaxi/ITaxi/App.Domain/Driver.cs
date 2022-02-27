@@ -14,7 +14,7 @@ public class Driver: DomainEntityMetaId
     [MaxLength(25)]
     [StringLength(25)]
     [DisplayName("Personal Identifier")]
-    public string? PersonalIdentifier { get; set; } = default!;
+    public string? PersonalIdentifier { get; set; } 
 
     [DisplayName("Driver License Categories")]
     public ICollection<DriverAndDriverLicenseCategory>? DriverLicenseCategories { get; set; }
@@ -28,7 +28,8 @@ public class Driver: DomainEntityMetaId
 
     [DataType(DataType.DateTime)]
     [DisplayName("Driver License Expiry Date")]
-    public DateTime DriverLicenseExpiryDate { get; set; } = default!;
+    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+    public DateTime DriverLicenseExpiryDate { get; set; }
 
     [DisplayName("City")] public Guid CityId { get; set; }
 

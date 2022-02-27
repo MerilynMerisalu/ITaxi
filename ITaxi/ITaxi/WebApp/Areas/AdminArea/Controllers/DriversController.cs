@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
@@ -49,7 +50,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         }
 
         // GET: AdminArea/Drivers/Create
-        public IActionResult Create()
+        /*public IActionResult Create()
         {
             ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email");
             ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName");
@@ -73,24 +74,44 @@ namespace WebApp.Areas.AdminArea.Controllers
             ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", driver.AppUserId);
             ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName", driver.CityId);
             return View(driver);
-        }
+        }*/
 
         // GET: AdminArea/Drivers/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            
             if (id == null)
             {
                 return NotFound();
             }
 
-            var driver = await _context.Drivers.FindAsync(id);
+            var driver = await _context.Drivers
+                .Include(c => c.City)
+                .SingleAsync(c => c.Id.Equals(id));
             if (driver == null)
             {
                 return NotFound();
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", driver.AppUserId);
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName", driver.CityId);
-            return View(driver);
+
+            var vm = new CreateEditDriverViewModel();
+            vm.SelectedDriverLicenseCategories = new SelectList(
+                await _context
+                    .DriverLicenseCategories.Include(d => d.Drivers)
+                    .Select(d => new {d.Id, d.DriverLicenseCategoryName}).ToListAsync(),
+                nameof(DriverLicenseCategory.Id), 
+                nameof(DriverLicenseCategory.DriverLicenseCategoryName));
+            vm.Cities = new SelectList(await _context.Cities.OrderBy(c => c.CityName)
+                    .Select(c => new {c.Id, c.CityName}).ToListAsync(),
+                nameof(City.Id), nameof(City.CityName));
+            vm.Address = driver.Address;
+            vm.CityId = driver.CityId;
+            vm.PersonalIdentifier = driver.PersonalIdentifier;
+            vm.DriverLicenseNumber = driver.DriverLicenseNumber;
+            vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
+            
+
+            
+            return View(vm);
         }
 
         // POST: AdminArea/Drivers/Edit/5
@@ -98,8 +119,10 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AppUserId,PersonalIdentifier,DriverLicenseNumber,DriverLicenseExpiryDate,CityId,Address,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Driver driver)
+        public async Task<IActionResult> Edit(Guid id, CreateEditDriverViewModel vm)
         {
+            var driver = await _context.Drivers.SingleAsync(d => d.Equals(id));
+            
             if (id != driver.Id)
             {
                 return NotFound();
@@ -125,9 +148,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", driver.AppUserId);
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName", driver.CityId);
-            return View(driver);
+           
+            return View(vm);
         }
 
         // GET: AdminArea/Drivers/Delete/5
