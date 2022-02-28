@@ -135,11 +135,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                     driver.PersonalIdentifier = vm.PersonalIdentifier;
                     if (vm.DriverAndDriverLicenseCategories != null)
                     {
-                        var driverAndDriverLicenseCategories =
-                            await _context.DriverAndDriverLicenseCategories
-                                .Where(dl => dl.DriverId.Equals(driver.Id))
-                                .Select(dl => dl).ToListAsync();
-                        _context.DriverAndDriverLicenseCategories.RemoveRange(driverAndDriverLicenseCategories);
+                        await RemovingDriverAndDriverLicenseCategoriesAsync(id);
 
                         foreach (var selectedDriverLicenseCategory in vm.DriverAndDriverLicenseCategories)
                         {
@@ -213,5 +209,19 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             return _context.Drivers.Any(e => e.Id == id);
         }
+        /// <summary>
+        /// Deleting entries from an in-between table driverAndDriverLicenseCategory table
+        /// </summary>
+        /// <param name="id">Driver entity id</param>
+        private async Task RemovingDriverAndDriverLicenseCategoriesAsync(Guid id)
+        {
+            var driverAndDriverLicenseCategories =
+                await _context.DriverAndDriverLicenseCategories
+                    .Where(dl => dl.DriverId.Equals(id))
+                    .Select(dl => dl).ToListAsync();
+            _context.DriverAndDriverLicenseCategories.RemoveRange(driverAndDriverLicenseCategories);
+
+        }
     }
+    
 }
