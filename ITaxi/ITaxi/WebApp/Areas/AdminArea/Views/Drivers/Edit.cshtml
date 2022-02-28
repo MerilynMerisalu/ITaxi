@@ -18,9 +18,10 @@
                 <span asp-validation-for="PersonalIdentifier" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SelectedDriverLicenseCategories" class="control-label"></label>
-                <select asp-for="SelectedDriverLicenseCategories" class="form-control" asp-items="Model.SelectedDriverLicenseCategories"></select>
-                <span asp-validation-for="SelectedDriverLicenseCategories" class="text-danger"></span>
+                <label asp-for="DriverLicenseCategories" class="control-label"></label>
+                <select asp-for="DriverAndDriverLicenseCategories" class="form-control" 
+                        asp-items="Model.DriverLicenseCategories"></select>
+                <span asp-validation-for="DriverAndDriverLicenseCategories" class="text-danger"></span>
             </div>
             
             <div class="form-group">
@@ -43,8 +44,6 @@
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            
-            
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

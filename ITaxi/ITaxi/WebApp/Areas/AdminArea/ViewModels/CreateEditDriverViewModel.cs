@@ -16,16 +16,23 @@ public class CreateEditDriverViewModel
     [StringLength(15, MinimumLength = 2)]
     [DisplayName("Driver License Number")]
     public string DriverLicenseNumber { get; set; } = default!;
-    public SelectList? SelectedDriverLicenseCategories { get; set; }
+    
+    
+    [DisplayName("Driver License Categories")]
+
+    public SelectList? DriverLicenseCategories { get; set; }
+
+    
+    public ICollection<Guid>? DriverAndDriverLicenseCategories { get; set; }
 
     [DataType(DataType.Date)]
     [DisplayName("Driver License Expiry Date")]
     [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd/MM/yyyy}")]
-   // public DateOnly DriverLicenseExpiryDate { get; set; } 
-   public DateTime DriverLicenseExpiryDate { get; set; }
+    public DateTime DriverLicenseExpiryDate { get; set; }
 
     public SelectList? Cities { get; set; }
 
+    [DisplayName(nameof(City))]
     public Guid CityId { get; set; }
 
     [Required]

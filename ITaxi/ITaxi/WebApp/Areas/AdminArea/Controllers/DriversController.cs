@@ -94,9 +94,10 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var vm = new CreateEditDriverViewModel();
-            vm.SelectedDriverLicenseCategories = new SelectList(
+            vm.DriverLicenseCategories= new SelectList(
                 await _context
                     .DriverLicenseCategories.Include(d => d.Drivers)
+                    .OrderBy(dl=> dl.DriverLicenseCategoryName)
                     .Select(d => new {d.Id, d.DriverLicenseCategoryName}).ToListAsync(),
                 nameof(DriverLicenseCategory.Id), 
                 nameof(DriverLicenseCategory.DriverLicenseCategoryName));
@@ -109,8 +110,6 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.DriverLicenseNumber = driver.DriverLicenseNumber;
             vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
             
-
-            
             return View(vm);
         }
 
@@ -121,7 +120,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditDriverViewModel vm)
         {
-            var driver = await _context.Drivers.SingleAsync(d => d.Equals(id));
+            var driver = await _context.Drivers.SingleAsync(d => d.Id.Equals(id));
             
             if (id != driver.Id)
             {
@@ -132,6 +131,33 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
+                    driver.Id = id;
+                    driver.PersonalIdentifier = vm.PersonalIdentifier;
+                    if (vm.DriverAndDriverLicenseCategories != null)
+                    {
+                        var driverAndDriverLicenseCategories =
+                            await _context.DriverAndDriverLicenseCategories
+                                .Where(dl => dl.DriverId.Equals(driver.Id))
+                                .Select(dl => dl).ToListAsync();
+                        _context.DriverAndDriverLicenseCategories.RemoveRange(driverAndDriverLicenseCategories);
+
+                        foreach (var selectedDriverLicenseCategory in vm.DriverAndDriverLicenseCategories)
+                        {
+                            var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory()
+                            {
+                                DriverId = driver.Id,
+                                DriverLicenseCategoryId = selectedDriverLicenseCategory
+                            };
+                            await _context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategory);
+                            
+                        }
+
+                        
+                    }
+                    driver.DriverLicenseNumber = vm.DriverLicenseNumber;
+                    driver.DriverLicenseExpiryDate = vm.DriverLicenseExpiryDate;
+                    driver.CityId = vm.CityId;
+                    driver.Address = vm.Address;
                     _context.Update(driver);
                     await _context.SaveChangesAsync();
                 }
