@@ -1,8 +1,4 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +28,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Drivers/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            var vm = new DetailsDeleteDriverViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -40,13 +37,18 @@ namespace WebApp.Areas.AdminArea.Controllers
             var driver = await _context.Drivers
                 .Include(d => d.AppUser)
                 .Include(d => d.City)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (driver == null)
-            {
-                return NotFound();
-            }
+                .SingleAsync(m => m.Id == id);
 
-            return View(driver);
+            var driverLicenseCategoryNames = await GettingDriverLicenseCategoryNamesAsync(driver.Id);
+            vm.DriverLicenseCategoryNames = String.Join(", ", driverLicenseCategoryNames);
+            vm.Id = driver.Id;
+            vm.PersonalIdentifier = driver.PersonalIdentifier;
+            vm.CityName = driver.City!.CityName;
+            vm.DriverLicenseNumber = driver.DriverLicenseNumber;
+            vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
+            vm.Address = driver.Address;
+
+            return View(vm);
         }
 
         // GET: AdminArea/Drivers/Create
@@ -86,12 +88,10 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var driver = await _context.Drivers
+                .Include(c => c.DriverLicenseCategories)
+                .ThenInclude(c => c.DriverLicenseCategory)
                 .Include(c => c.City)
                 .SingleAsync(c => c.Id.Equals(id));
-            if (driver == null)
-            {
-                return NotFound();
-            }
 
             var vm = new CreateEditDriverViewModel();
             vm.DriverLicenseCategories= new SelectList(
@@ -200,7 +200,11 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var driver = await _context.Drivers.FindAsync(id);
+            await RemovingDriverAndDriverLicenseCategoriesAsync(id);
             _context.Drivers.Remove(driver);
+            var appUser = await _context.Users
+                .SingleOrDefaultAsync(d => d.Id.Equals(driver.AppUserId));
+            _context.Users.Remove(appUser);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -221,6 +225,17 @@ namespace WebApp.Areas.AdminArea.Controllers
                     .Select(dl => dl).ToListAsync();
             _context.DriverAndDriverLicenseCategories.RemoveRange(driverAndDriverLicenseCategories);
 
+        }
+
+        private async Task<ICollection<string>> GettingDriverLicenseCategoryNamesAsync(Guid id)
+        {
+           var driverLicenseCategoryNames = await _context.DriverAndDriverLicenseCategories
+               .Include(c => c.DriverLicenseCategory)
+               .Include(c => c.Driver)
+                   .Where(i => i.DriverId.Equals(id))
+               .Select(dl => dl.DriverLicenseCategory.DriverLicenseCategoryName)
+               .ToListAsync();
+           return driverLicenseCategoryNames;
         }
     }
     

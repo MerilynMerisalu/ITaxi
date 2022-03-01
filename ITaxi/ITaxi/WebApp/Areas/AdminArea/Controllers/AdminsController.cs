@@ -181,6 +181,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             var admin = await _context.Admins.FindAsync(id);
             _context.Admins.Remove(admin);
+            var appUser = await _context.Users.SingleAsync(a => a.Id.Equals(admin.AppUserId));
+            _context.Users.Remove(appUser);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
