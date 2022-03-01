@@ -14,13 +14,12 @@ public class DetailsDeleteDriverViewModel
     public string DriverLicenseNumber { get; set; } = default!;
 
     [DisplayName("Driver License Category Names")]
-    public string? DriverLicenseCategoryNames { get; set; }
+    public string DriverLicenseCategoryNames { get; set; } = default!;
     
     [DisplayName("Driver License Expiry Date")]
     [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
     public DateTime DriverLicenseExpiryDate { get; set; }
     
-    public Guid CityId { get; set; }
     
     [DisplayName("City")] 
     public string CityName { get; set; } = default!;

@@ -177,6 +177,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Drivers/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
+            var vm = new DetailsDeleteDriverViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -185,13 +186,21 @@ namespace WebApp.Areas.AdminArea.Controllers
             var driver = await _context.Drivers
                 .Include(d => d.AppUser)
                 .Include(d => d.City)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (driver == null)
             {
                 return NotFound();
             }
 
-            return View(driver);
+            vm.PersonalIdentifier = driver.PersonalIdentifier;
+            var driverLicenseCategoryNames = await GettingDriverLicenseCategoryNamesAsync(id);
+            vm.DriverLicenseCategoryNames = String.Join(", ", driverLicenseCategoryNames);
+            vm.CityName = driver.City!.CityName;
+            vm.Address = driver.Address;
+            vm.DriverLicenseNumber = driver.DriverLicenseNumber;
+            vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
+            
+            return View(vm);
         }
 
         // POST: AdminArea/Drivers/Delete/5
@@ -201,10 +210,14 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             var driver = await _context.Drivers.FindAsync(id);
             await RemovingDriverAndDriverLicenseCategoriesAsync(id);
-            _context.Drivers.Remove(driver);
-            var appUser = await _context.Users
-                .SingleOrDefaultAsync(d => d.Id.Equals(driver.AppUserId));
-            _context.Users.Remove(appUser);
+            if (driver != null)
+            {
+                _context.Drivers.Remove(driver);
+                var appUser = await _context.Users
+                    .SingleOrDefaultAsync(d => d.Id.Equals(driver.AppUserId));
+                if (appUser != null) _context.Users.Remove(appUser);
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -226,17 +239,23 @@ namespace WebApp.Areas.AdminArea.Controllers
             _context.DriverAndDriverLicenseCategories.RemoveRange(driverAndDriverLicenseCategories);
 
         }
-
-        private async Task<ICollection<string>> GettingDriverLicenseCategoryNamesAsync(Guid id)
-        {
-           var driverLicenseCategoryNames = await _context.DriverAndDriverLicenseCategories
-               .Include(c => c.DriverLicenseCategory)
-               .Include(c => c.Driver)
-                   .Where(i => i.DriverId.Equals(id))
-               .Select(dl => dl.DriverLicenseCategory.DriverLicenseCategoryName)
-               .ToListAsync();
-           return driverLicenseCategoryNames;
-        }
+    
+            /// <summary>
+            /// Selecting a driver license category names according to driver id
+            /// </summary>
+            /// <param name="id">Driver id</param>
+            /// <returns>List of category names</returns>
+            private async Task<ICollection<string>> GettingDriverLicenseCategoryNamesAsync(Guid? id)
+            {
+                var driverLicenseCategoryNames = await _context.DriverAndDriverLicenseCategories
+                   .Include(c => c.DriverLicenseCategory)
+                    .Include(c => c.Driver)
+                        .Where(i => i.DriverId.Equals(id))
+                        .OrderBy(c => c.DriverLicenseCategory.DriverLicenseCategoryName)
+                        .Select(dl => dl.DriverLicenseCategory.DriverLicenseCategoryName)
+                        .ToListAsync();
+                        return driverLicenseCategoryNames;
+            }
     }
     
 }
