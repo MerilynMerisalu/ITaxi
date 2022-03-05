@@ -21,7 +21,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Drivers
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Drivers.Include(d => d.AppUser).Include(d => d.City);
+            var appDbContext = _context
+                .Drivers.Include(d => d.AppUser)
+                .Include(d => d.City);
             return View(await appDbContext.ToListAsync());
         }
 

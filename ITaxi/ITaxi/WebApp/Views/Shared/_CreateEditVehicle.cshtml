@@ -1,0 +1,48 @@
+﻿@using WebApp.Models.Enum
+@model WebApp.Areas.AdminArea.ViewModels.CreateEditVehicleViewModel
+
+
+<div class="form-group">
+    <label asp-for="VehicleTypeId" class="control-label"></label>
+    <select asp-for="VehicleTypeId" class="form-control" asp-items="Model.VehicleTypes">
+        <option>Please Select</option>
+    </select>
+</div>
+<div class="form-group">
+    <label asp-for="VehicleMarkId" class="control-label"></label>
+    <select asp-for="VehicleMarkId" class="form-control" asp-items="Model.VehicleMarks">
+        <option>Please Select</option>
+    </select>
+</div>
+<div class="form-group">
+    <label asp-for="VehicleModelId" class="control-label"></label>
+    <select asp-for="VehicleModelId" class="form-control" asp-items="Model.VehicleModels">
+        <option>Please Select</option>
+    </select>
+</div>
+<div class="form-group">
+    <label asp-for="VehiclePlateNumber" class="control-label"></label>
+    <input asp-for="VehiclePlateNumber" class="form-control" />
+    <span asp-validation-for="VehiclePlateNumber" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="ManufactureYear" class="control-label"></label>
+    <select asp-for="ManufactureYear" class="form-control" asp-items="Model.ManufactureYears">
+        <option>Please Select</option>
+    </select>
+    <span asp-validation-for="ManufactureYear" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="NumberOfSeats" class="control-label"></label>
+    <input asp-for="NumberOfSeats" class="form-control" min="2" max="6" />
+    <span asp-validation-for="NumberOfSeats" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="VehicleAvailability" class="control-label"></label>
+    <select asp-for="VehicleAvailability" class="form-control"
+            asp-items="Html.GetEnumSelectList<VehicleAvailability>()">
+        <option>Please Select</option>
+    </select>
+    <span asp-validation-for="VehicleAvailability" class="text-danger"></span>
+</div>
