@@ -52,9 +52,9 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Schedules = new SelectList(await _context.Schedules.OrderBy(s => s.StartDateAndTime)
                     .Select(s => s).ToListAsync()
                 , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
-            var scheduleStartDateAndTime = GettingScheduleStartDateAndTimeAsync();
-            var scheduleEndDateAndTime = GettingScheduleEndDateAndTimeAsync();
-            var rideTimes = GettingRideTimes(await scheduleStartDateAndTime, await scheduleEndDateAndTime);
+            var scheduleStartDateAndTime = await GettingScheduleStartDateAndTimeAsync();
+            var scheduleEndDateAndTime = await GettingScheduleEndDateAndTimeAsync();
+            var rideTimes = GettingRideTimes( scheduleStartDateAndTime, scheduleEndDateAndTime);
             vm.RideTimes = GettingRideTimeSelectList(rideTimes);
             return View(vm);
         }
@@ -64,16 +64,29 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditRideTimeViewModel vm, RideTime rideTime)
+        public async Task<IActionResult> Create(CreateEditRideTimeViewModel vm, ICollection<RideTime> rideTimes)
         {
             if (ModelState.IsValid)
             {
-                rideTime.Id = Guid.NewGuid();
-                rideTime.ScheduleId = vm.ScheduleId;
-                rideTime.IsTaken = vm.IsTaken;
-                rideTime.RideDateTime = vm.RideDateTime;
-                _context.Add(rideTime);
-                await _context.SaveChangesAsync();
+                if (vm.SelectedRideTimes != null)
+                {
+                    
+                    foreach (var selectedRideTime in vm.SelectedRideTimes)
+                    {
+                        var rideTime = new RideTime()
+                        {
+                            Id = new Guid(),
+                            ScheduleId = vm.ScheduleId,
+                            RideDateTime = selectedRideTime,
+                            IsTaken = vm.IsTaken
+                        };
+                        
+                         rideTimes.Add(rideTime);
+                    }
+
+                    await _context.RideTimes.AddRangeAsync(rideTimes);
+                    await _context.SaveChangesAsync();
+                }
                 return RedirectToAction(nameof(Index));
             }
             

@@ -7,11 +7,10 @@
     </select>
 </div>
 <div class="form-group">
-    <label asp-for="RideDateTime" class="control-label"></label>
-    <select asp-for="RideDateTime" class="form-control" asp-items="Model.RideTimes">
-        <option>Please Select</option>
+    <label asp-for="RideTimes" class="control-label"></label>
+    <select asp-for="SelectedRideTimes" multiple="multiple" class="form-control" asp-items="Model.RideTimes">
     </select>
-    <span asp-validation-for="RideDateTime" class="text-danger"></span>
+    <span asp-validation-for="SelectedRideTimes" class="text-danger"></span>
 </div>
 <div class="form-group form-check">
     <label class="form-check-label">
