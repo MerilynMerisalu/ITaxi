@@ -15,7 +15,7 @@ public class EditRideTimeViewModel
     [DataType(DataType.Time)]
     [DisplayName("Ride Time")]
     [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
-    public DateTime RideTime { get; set; }
+    public TimeSpan RideTime { get; set; }
     
     public SelectList? RideTimes { get; set; }
 
