@@ -113,7 +113,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                 await _context.Schedules.Select(s => new {s.Id, s.ShiftDurationTime}).ToListAsync(),
                 nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
             vm.IsTaken = rideTime.IsTaken;
-            vm.RideTimes = new SelectList(await _context.RideTimes.Select(r => r.RideDateTime.ToString("t"))
+            vm.RideTimes = new SelectList(await _context.RideTimes
+                .Where(r => r.ScheduleId.Equals(rideTime.ScheduleId))
+                .Select(r => r.RideDateTime.ToString("t"))
                 .ToListAsync());
             vm.ScheduleId = rideTime.ScheduleId;
             vm.RideTime = rideTime.RideDateTime.ToString("t");
@@ -138,6 +140,10 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
+                    rideTime.Id = id;
+                    rideTime.ScheduleId = vm.ScheduleId;
+                    rideTime.RideDateTime = DateTime.Parse(vm.RideTime);
+                    rideTime.IsTaken = vm.IsTaken;
                     _context.Update(rideTime);
                     await _context.SaveChangesAsync();
                 }
