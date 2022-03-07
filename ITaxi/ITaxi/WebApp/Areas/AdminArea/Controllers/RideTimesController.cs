@@ -48,7 +48,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/RideTimes/Create
         public async Task<IActionResult> Create()
         {
-            var vm = new CreateEditRideTimeViewModel();
+            var vm = new CreateRideTimeViewModel();
             vm.Schedules = new SelectList(await _context.Schedules.OrderBy(s => s.StartDateAndTime)
                     .Select(s => s).ToListAsync()
                 , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
@@ -64,7 +64,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditRideTimeViewModel vm, ICollection<RideTime> rideTimes)
+        public async Task<IActionResult> Create(CreateRideTimeViewModel vm, ICollection<RideTime> rideTimes)
         {
             if (ModelState.IsValid)
             {
@@ -96,18 +96,28 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/RideTimes/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            var vm = new EditRideTimeViewModel();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var rideTime = await _context.RideTimes.FindAsync(id);
+            var rideTime = await _context.RideTimes.SingleOrDefaultAsync( r => r.Id.Equals(id));
             if (rideTime == null)
             {
                 return NotFound();
             }
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", rideTime.ScheduleId);
-            return View(rideTime);
+
+            vm.Id = rideTime.Id;
+            vm.Schedules = new SelectList(
+                await _context.Schedules.Select(s => new {s.Id, s.ShiftDurationTime}).ToListAsync(),
+                nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
+            vm.IsTaken = rideTime.IsTaken;
+            vm.RideTimes = new SelectList(await _context.RideTimes.Select(r => r.RideDateTime.ToString("t"))
+                .ToListAsync());
+            vm.ScheduleId = rideTime.ScheduleId;
+            
+            return View(vm);
         }
 
         // POST: AdminArea/RideTimes/Edit/5
@@ -115,9 +125,10 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ScheduleId,RideDateTime,IsTaken,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] RideTime rideTime)
+        public async Task<IActionResult> Edit(Guid id, EditRideTimeViewModel vm)
         {
-            if (id != rideTime.Id)
+            var rideTime = await _context.RideTimes.SingleOrDefaultAsync(r => r.Id.Equals(id));
+            if (id != rideTime!.Id)
             {
                 return NotFound();
             }
@@ -142,8 +153,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", rideTime.ScheduleId);
-            return View(rideTime);
+           
+            return View(vm);
         }
 
         // GET: AdminArea/RideTimes/Delete/5
