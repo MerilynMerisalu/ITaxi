@@ -113,10 +113,10 @@ namespace WebApp.Areas.AdminArea.Controllers
                 await _context.Schedules.Select(s => new {s.Id, s.ShiftDurationTime}).ToListAsync(),
                 nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
             vm.IsTaken = rideTime.IsTaken;
-            vm.RideTimes = new SelectList(await _context.RideTimes.Select(r => r.RideDateTime.TimeOfDay)
+            vm.RideTimes = new SelectList(await _context.RideTimes.Select(r => r.RideDateTime.ToString("t"))
                 .ToListAsync());
             vm.ScheduleId = rideTime.ScheduleId;
-            vm.RideTime = rideTime.RideDateTime.TimeOfDay;
+            vm.RideTime = rideTime.RideDateTime.ToString("t");
             return View(vm);
         }
 
