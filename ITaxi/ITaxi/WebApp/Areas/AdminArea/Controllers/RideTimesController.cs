@@ -127,7 +127,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, EditRideTimeViewModel vm)
         {
-            var rideTime = await _context.RideTimes.SingleOrDefaultAsync(r => r.Id.Equals(id));
+            var rideTime = await _context.RideTimes
+                .SingleOrDefaultAsync(r => r.Id.Equals(id));
             if (id != rideTime!.Id)
             {
                 return NotFound();
