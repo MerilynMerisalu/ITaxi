@@ -1,4 +1,4 @@
-#nullable disable
+#nullable enable
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +29,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/RideTimes/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            var vm = new DetailsDeleteRideTimeViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -36,13 +37,18 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             var rideTime = await _context.RideTimes
                 .Include(r => r.Schedule)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (rideTime == null)
             {
                 return NotFound();
             }
 
-            return View(rideTime);
+            vm.Id = rideTime.Id;
+            vm.ShiftDurationTime = rideTime.Schedule!.ShiftDurationTime;
+            vm.RideTime = rideTime.RideDateTime.ToString("t");
+            vm.IsTaken = rideTime.IsTaken;
+
+            return View(vm);
         }
 
         // GET: AdminArea/RideTimes/Create
@@ -113,6 +119,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 await _context.Schedules.Select(s => new {s.Id, s.ShiftDurationTime}).ToListAsync(),
                 nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
             vm.IsTaken = rideTime.IsTaken;
+            #warning Ridetimes should be hidden and reappearing based on whether IsTaken is true or not
             vm.RideTimes = new SelectList(await _context.RideTimes
                 .Where(r => r.ScheduleId.Equals(rideTime.ScheduleId))
                 .Select(r => r.RideDateTime.ToString("t"))
@@ -167,6 +174,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/RideTimes/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
+            var vm = new DetailsDeleteRideTimeViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -174,13 +182,17 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             var rideTime = await _context.RideTimes
                 .Include(r => r.Schedule)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (rideTime == null)
             {
                 return NotFound();
             }
 
-            return View(rideTime);
+            vm.ShiftDurationTime = rideTime.Schedule!.ShiftDurationTime;
+            vm.RideTime = rideTime.RideDateTime.ToString("t");
+            vm.IsTaken = rideTime.IsTaken;
+
+            return View(vm);
         }
 
         // POST: AdminArea/RideTimes/Delete/5
@@ -188,7 +200,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var rideTime = await _context.RideTimes.FindAsync(id);
+            var rideTime = await _context.RideTimes.SingleOrDefaultAsync(r => r.Id.Equals(id));
             if (rideTime != null) _context.RideTimes.Remove(rideTime);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

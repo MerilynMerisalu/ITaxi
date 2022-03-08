@@ -13,6 +13,7 @@ public class RideTime: DomainEntityMetaId
 
     [DataType(DataType.DateTime)]
     [DisplayName("Ride Time")]
+    [DisplayFormat(DataFormatString = "{0:HH:mm}")]
     public DateTime RideDateTime { get; set; }
 
     [DisplayName("Is Taken")] public bool IsTaken { get; set; }
