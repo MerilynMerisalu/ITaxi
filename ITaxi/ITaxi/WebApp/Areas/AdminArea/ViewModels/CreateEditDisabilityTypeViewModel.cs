@@ -1,15 +1,14 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Base.Domain;
 
-namespace App.Domain;
+namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class DisabilityType: DomainEntityMetaId
+public class CreateEditDisabilityTypeViewModel
 {
-    
+    public Guid Id { get; set; }
 
     [Required]
-    [MaxLength(80)]
+    [StringLength(80)]
     [DisplayName("Disability Type")]
     public string DisabilityTypeName { get; set; } = default!;
 }
