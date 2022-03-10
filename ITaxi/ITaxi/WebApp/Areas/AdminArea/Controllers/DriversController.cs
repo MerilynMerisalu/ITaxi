@@ -95,7 +95,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 .Include(c => c.City)
                 .SingleAsync(c => c.Id.Equals(id));
 
-            var vm = new CreateEditDriverViewModel();
+            var vm = new EditDriverViewModel();
             vm.DriverLicenseCategories= new SelectList(
                 await _context
                     .DriverLicenseCategories.Include(d => d.Drivers)
@@ -120,7 +120,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CreateEditDriverViewModel vm)
+        public async Task<IActionResult> Edit(Guid id, EditDriverViewModel vm)
         {
             var driver = await _context.Drivers.SingleAsync(d => d.Id.Equals(id));
             
@@ -210,7 +210,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var driver = await _context.Drivers.FindAsync(id);
+            var driver = await _context.Drivers.SingleOrDefaultAsync(d => d.Id.Equals(id));
             await RemovingDriverAndDriverLicenseCategoriesAsync(id);
             if (driver != null)
             {

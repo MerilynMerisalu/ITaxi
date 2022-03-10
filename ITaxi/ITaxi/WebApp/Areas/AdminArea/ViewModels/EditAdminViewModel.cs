@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class CreateEditAdminViewModel
+public class EditAdminViewModel
 {
     public Guid Id { get; set; }
     

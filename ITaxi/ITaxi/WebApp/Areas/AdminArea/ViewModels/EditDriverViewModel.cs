@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class CreateEditDriverViewModel
+public class EditDriverViewModel
 {
     public Guid Id { get; set; }
     

@@ -89,7 +89,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Admins/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            var vm = new CreateEditAdminViewModel();
+            var vm = new EditAdminViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -115,7 +115,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CreateEditAdminViewModel vm)
+        public async Task<IActionResult> Edit(Guid id, EditAdminViewModel vm)
         {
             var admin = await _context.Admins.SingleAsync(a => a.Id.Equals(id));
             if (id != admin.Id)
@@ -179,10 +179,14 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var admin = await _context.Admins.FindAsync(id);
-            _context.Admins.Remove(admin);
-            var appUser = await _context.Users.SingleAsync(a => a.Id.Equals(admin.AppUserId));
-            _context.Users.Remove(appUser);
+            var admin = await _context.Admins.SingleOrDefaultAsync(a => a.Id.Equals(id));
+            if (admin != null)
+            {
+                _context.Admins.Remove(admin);
+                var appUser = await _context.Users.SingleAsync(a => a.Id.Equals(admin.AppUserId));
+                _context.Users.Remove(appUser);
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
