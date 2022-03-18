@@ -32,6 +32,7 @@ public class Booking : DomainEntityMetaId
 
     [DataType(DataType.DateTime)]
     [DisplayName("Pickup Date and Time")]
+    [DisplayFormat(DataFormatString = "{0:dd.mm.yyyy HH:mm}")]
     public DateTime PickUpDateAndTime { get; set; }
 
     [Required]
