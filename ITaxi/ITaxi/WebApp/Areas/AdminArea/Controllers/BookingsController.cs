@@ -244,6 +244,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Bookings/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
+            var vm = new DetailsDeleteBookingViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -251,17 +252,32 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             var booking = await _context.Bookings
                 .Include(b => b.City)
-                .Include(b => b.Customer)
-                .Include(b => b.Drive)
                 .Include(b => b.Driver)
+                .ThenInclude(d => d.AppUser)
                 .Include(b => b.Schedule)
                 .Include(b => b.Vehicle)
+                .ThenInclude(v => v.VehicleMark)
+                .Include(v => v.Vehicle)
+                .ThenInclude(v => v.VehicleModel)
                 .Include(b => b.VehicleType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(b => b.Id.Equals(id));
+            
             if (booking == null)
             {
                 return NotFound();
             }
+            vm.Id = booking.Id;
+            vm.City = booking.City!.CityName;
+            vm.LastAndFirstName = booking.Driver!.AppUser!.LastAndFirstName;
+            vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
+            vm.AdditionalInfo = booking.AdditionalInfo;
+            vm.DestinationAddress = booking.DestinationAddress;
+            vm.PickupAddress = booking.PickupAddress;
+            vm.VehicleType = booking.VehicleType!.VehicleTypeName;
+            vm.HasAnAssistant = booking.HasAnAssistant;
+            vm.NumberOfPassengers = booking.NumberOfPassengers;
+            vm.StatusOfBooking = booking.StatusOfBooking;
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime;
 
             return View(booking);
         }
@@ -271,7 +287,12 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var booking = await _context.Bookings.FindAsync(id);
+            var booking = await _context.Bookings.SingleOrDefaultAsync(b => b.Id.Equals(id));
+            var drive = await _context.Drives.SingleOrDefaultAsync(d => d.Booking.Id.Equals(id));
+            if (drive != null)
+            {
+                _context.Drives.Remove(drive);
+            }
             if (booking != null) _context.Bookings.Remove(booking);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
