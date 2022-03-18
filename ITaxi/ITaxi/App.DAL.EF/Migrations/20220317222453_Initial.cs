@@ -44,7 +44,6 @@ namespace App.DAL.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DisabilityTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DisabilityTypeName = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -329,7 +328,7 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AppUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PersonalIdentifier = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    PersonalIdentifier = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
                     DriverLicenseNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     DriverLicenseExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -500,7 +499,6 @@ namespace App.DAL.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ScheduleCreationDateAndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     VehicleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StartDateAndTime = table.Column<DateTime>(type: "datetime2", nullable: false),

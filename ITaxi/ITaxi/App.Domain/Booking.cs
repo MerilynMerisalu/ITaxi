@@ -46,7 +46,7 @@ public class Booking : DomainEntityMetaId
     public string DestinationAddress { get; set; } = default!;
 
     [Required]
-    [Range(1, 6)]
+    [Range(1, 5)]
     [DisplayName("Number Of Passengers")]
     public int NumberOfPassengers { get; set; }
 
