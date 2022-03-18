@@ -121,24 +121,34 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Bookings/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            var vm = new CreateEditBookingViewModel();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var booking = await _context.Bookings.FindAsync(id);
+            var booking = await _context.Bookings.SingleOrDefaultAsync(b => b.Id.Equals(id));
             if (booking == null)
             {
                 return NotFound();
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName", booking.CityId);
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", booking.CustomerId);
-            ViewData["DriveId"] = new SelectList(_context.Drives, "Id", "Id", booking.DriveId);
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address", booking.DriverId);
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", booking.ScheduleId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "Id", "VehiclePlateNumber", booking.VehicleId);
-            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "Id", "VehicleTypeName", booking.VehicleTypeId);
-            return View(booking);
+
+            
+            vm.Cities = new SelectList(await _context.Cities.Select(c => new {c.Id, c.CityName}).ToListAsync()
+                , nameof(City.Id), nameof(City.CityName));
+            vm.AdditionalInfo = booking.AdditionalInfo;
+            vm.CityId = booking.CityId;
+            vm.DestinationAddress = booking.DestinationAddress;
+            vm.PickupAddress = booking.PickupAddress;
+            vm.VehicleTypes = new SelectList(
+                await _context.VehicleTypes.Select(v => new {v.Id, v.VehicleTypeName}).ToListAsync(),
+                nameof(VehicleType.Id)
+                , nameof(VehicleType.VehicleTypeName));
+            vm.HasAnAssistant = booking.HasAnAssistant;
+            vm.NumberOfPassengers = booking.NumberOfPassengers;
+            vm.VehicleTypeId = booking.VehicleTypeId;
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime;
+            return View(vm);
         }
 
         // POST: AdminArea/Bookings/Edit/5
@@ -146,9 +156,10 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ScheduleId,DriverId,CustomerId,VehicleTypeId,VehicleId,CityId,PickUpDateAndTime,PickupAddress,DestinationAddress,NumberOfPassengers,HasAnAssistant,AdditionalInfo,StatusOfBooking,DriveId,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Booking booking)
+        public async Task<IActionResult> Edit(Guid id, CreateEditBookingViewModel vm)
         {
-            if (id != booking.Id)
+            var booking = await _context.Bookings.SingleOrDefaultAsync(b => b.Id.Equals(id));
+            if (booking != null && id != booking.Id)
             {
                 return NotFound();
             }
@@ -157,12 +168,49 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
-                    _context.Update(booking);
+                    if (booking != null)
+                    {
+                        booking.Id = id;
+                        booking.CityId = vm.CityId;
+                        booking.CustomerId = await _context.Customers.Select(c => c.Id).FirstOrDefaultAsync();
+                        booking.DriverId = await _context.Drivers.Select(d => d.Id).FirstOrDefaultAsync();
+                        booking.ScheduleId = await _context.Schedules
+                            .Where(s => s.DriverId.Equals(booking.DriverId))
+                            .Select(s => s.Id).FirstOrDefaultAsync();
+                        booking.VehicleId = await _context.Vehicles
+                            .Where(v => v.DriverId.Equals(booking.DriverId))
+                            .Select(v => v.Id).FirstOrDefaultAsync();
+                        booking.AdditionalInfo = vm.AdditionalInfo;
+                        booking.DestinationAddress = vm.DestinationAddress;
+                        booking.PickupAddress = vm.PickupAddress;
+                        booking.VehicleTypeId = vm.VehicleTypeId;
+                        booking.HasAnAssistant = vm.HasAnAssistant;
+                        booking.NumberOfPassengers = vm.NumberOfPassengers;
+                        booking.StatusOfBooking = StatusOfBooking.Awaiting;
+                        booking.PickUpDateAndTime = vm.PickUpDateAndTime;
+
+                        
+                            _context.Bookings.Update(booking);
+
+                    }
+                    var drive = await _context.Drives
+                        .SingleOrDefaultAsync(d => d.Booking.Id.Equals(booking.Id));
+                    if (drive != null)
+                    {
+                        if (booking != null)
+                        {
+                            drive.DriverId = booking.DriverId;
+                            drive.Booking = booking;
+                        }
+
+                        _context.Drives.Update(drive);
+                    }
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookingExists(booking.Id))
+                    if (booking != null && !BookingExists(booking.Id))
                     {
                         return NotFound();
                     }
@@ -173,14 +221,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName", booking.CityId);
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", booking.CustomerId);
-            ViewData["DriveId"] = new SelectList(_context.Drives, "Id", "Id", booking.DriveId);
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address", booking.DriverId);
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", booking.ScheduleId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "Id", "VehiclePlateNumber", booking.VehicleId);
-            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "Id", "VehicleTypeName", booking.VehicleTypeId);
-            return View(booking);
+            
+            return View(vm);
         }
 
         // GET: AdminArea/Bookings/Delete/5
