@@ -1,4 +1,4 @@
-@model WebApp.Areas.AdminArea.ViewModels.EditAdminViewModel
+@model WebApp.Areas.AdminArea.ViewModels.CreateEditBookingViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,14 +6,13 @@
 
 <h1>Edit</h1>
 
-<h4>Admin</h4>
+<h4>Booking</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="All" class="text-danger"></div>
-            
-            <partial name="_EditAdmin" model="Model"/>
+            <partial name="_CreateEditBooking" model="Model"/>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

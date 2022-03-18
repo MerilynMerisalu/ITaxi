@@ -1,0 +1,281 @@
+#nullable disable
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using App.DAL.EF;
+using App.Domain;
+using WebApp.Areas.AdminArea.ViewModels;
+using WebApp.Models.Enum;
+
+namespace WebApp.Areas.AdminArea.Controllers
+{
+    [Area("AdminArea")]
+    public class BookingsController : Controller
+    {
+        private readonly AppDbContext _context;
+
+        public BookingsController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        // GET: AdminArea/Bookings
+        public async Task<IActionResult> Index()
+        {
+            var appDbContext = _context.Bookings
+                .Include(b => b.City)
+                .Include(b => b.Driver)
+                .ThenInclude(d => d.AppUser)
+                .Include(b => b.Schedule)
+                .Include(b => b.Vehicle)
+                .ThenInclude(v => v.VehicleMark)
+                .Include(v => v.Vehicle)
+                .ThenInclude(v => v.VehicleModel)
+                .Include(b => b.VehicleType);
+            return View(await appDbContext.ToListAsync());
+        }
+
+        // GET: AdminArea/Bookings/Details/5
+        public async Task<IActionResult> Details(Guid? id)
+        {
+            var vm = new DetailsDeleteBookingViewModel();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var booking = await _context.Bookings
+                .Include(b => b.City)
+                .Include(b => b.Drive)
+                .Include(b => b.Driver)
+                .ThenInclude(d => d.AppUser )
+                .Include(b => b.Schedule)
+                .Include(b => b.Vehicle)
+                .ThenInclude(v => v.VehicleMark)
+                .Include(v => v.Vehicle)
+                .ThenInclude(v => v.VehicleModel)
+                .Include(b => b.VehicleType)
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (booking == null)
+            {
+                return NotFound();
+            }
+
+            vm.Id = booking.Id;
+            vm.LastAndFirstName = booking.Driver!.AppUser!.LastAndFirstName;
+            vm.City = booking.City!.CityName;
+            vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
+            vm.AdditionalInfo = booking.AdditionalInfo;
+            vm.DestinationAddress = booking.DestinationAddress;
+            vm.PickupAddress = booking.PickupAddress;
+            vm.VehicleType = booking.VehicleType!.VehicleTypeName;
+            vm.HasAnAssistant = booking.HasAnAssistant;
+            vm.NumberOfPassengers = booking.NumberOfPassengers;
+            vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
+            vm.StatusOfBooking = booking.StatusOfBooking;
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime;
+
+            return View(vm);
+        }
+
+        // GET: AdminArea/Bookings/Create
+        public async Task<IActionResult> Create()
+        {
+            var vm = new CreateEditBookingViewModel();
+            vm.Cities = new SelectList(await _context.Cities
+                    .Select(c => new {c.Id, c.CityName}).ToListAsync(),
+                nameof(City.Id), nameof(City.CityName));
+            vm.VehicleTypes = new SelectList(await _context.VehicleTypes
+                    .Select(v => new {v.Id, v.VehicleTypeName}).ToListAsync(),
+                nameof(VehicleType.Id), nameof(VehicleType.VehicleTypeName));
+            vm.PickUpDateAndTime = Convert.ToDateTime(DateTime.Now.ToString("g"));
+            return View(vm);
+        }
+
+        // POST: AdminArea/Bookings/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateEditBookingViewModel vm)
+        {
+            var booking = new Booking();
+            if (ModelState.IsValid)
+            {
+                booking.Id = Guid.NewGuid();
+                booking.CityId = vm.CityId;
+                booking.CustomerId = await _context.Customers.Select(c => c.Id).FirstOrDefaultAsync();
+                booking.DriverId = await _context.Drivers.Select(d => d.Id).FirstOrDefaultAsync();
+                booking.ScheduleId = await _context.Schedules.Select(s => s.Id).FirstOrDefaultAsync();
+                booking.VehicleId = await _context.Vehicles
+                    .Where(v => v.DriverId.Equals(booking.DriverId))
+                    .Select(v => v.Id).FirstOrDefaultAsync();
+                booking.AdditionalInfo = vm.AdditionalInfo;
+                booking.DestinationAddress = vm.DestinationAddress;
+                booking.PickupAddress = vm.PickupAddress;
+                booking.VehicleTypeId = vm.VehicleTypeId;
+                booking.HasAnAssistant = vm.HasAnAssistant;
+                booking.NumberOfPassengers = vm.NumberOfPassengers;
+                booking.PickUpDateAndTime = vm.PickUpDateAndTime;
+                booking.StatusOfBooking = StatusOfBooking.Awaiting;
+                
+                _context.Add(booking);
+                var drive = new Drive()
+                {
+                    Id = new Guid(),
+                    Booking = booking,
+                    DriverId = booking.DriverId
+                };
+                await _context.Drives.AddAsync(drive);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            
+            return View(vm);
+        }
+
+        // GET: AdminArea/Bookings/Edit/5
+        public async Task<IActionResult> Edit(Guid? id)
+        {
+            var vm = new CreateEditBookingViewModel();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var booking = await _context.Bookings.SingleOrDefaultAsync(b => b.Id.Equals(id));
+            if (booking == null)
+            {
+                return NotFound();
+            }
+
+            vm.Cities = new SelectList(await _context.Cities.Select(c => new {c.Id, c.CityName}).ToListAsync(),
+                nameof(City.Id), nameof(City.CityName));
+            vm.Id = booking.Id;
+            vm.AdditionalInfo = booking.AdditionalInfo;
+            vm.CityId = booking.CityId;
+            vm.DestinationAddress = booking.DestinationAddress;
+            vm.PickupAddress = booking.PickupAddress;
+            vm.VehicleTypes = new SelectList(
+                await _context.VehicleTypes.Select(b => new {b.Id, b.VehicleTypeName}).ToListAsync(),
+                nameof(VehicleType.Id), nameof(VehicleType.VehicleTypeName));
+            vm.HasAnAssistant = booking.HasAnAssistant;
+            vm.NumberOfPassengers = booking.NumberOfPassengers;
+            vm.VehicleTypeId = booking.VehicleTypeId;
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime;
+            return View(vm);
+        }
+
+        // POST: AdminArea/Bookings/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, CreateEditBookingViewModel vm)
+        {
+            var booking = await _context.Bookings.SingleOrDefaultAsync(b => b.Id.Equals(id));
+            if (booking != null && id != booking.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (booking != null)
+                    {
+                        booking.Id = id;
+                        booking.CityId = vm.CityId;
+                        booking.AdditionalInfo = vm.AdditionalInfo;
+                        booking.DestinationAddress = vm.DestinationAddress;
+                        booking.PickupAddress = vm.PickupAddress;
+                        booking.VehicleTypeId = vm.VehicleTypeId;
+                        booking.HasAnAssistant = vm.HasAnAssistant;
+                        booking.NumberOfPassengers = vm.NumberOfPassengers;
+                        booking.PickUpDateAndTime = vm.PickUpDateAndTime;
+                        _context.Update(booking);
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (booking != null && !BookingExists(booking.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            
+            return View(vm);
+        }
+
+        // GET: AdminArea/Bookings/Delete/5
+        public async Task<IActionResult> Delete(Guid? id)
+        {
+            var vm = new DetailsDeleteBookingViewModel();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var booking = await _context.Bookings
+                .Include(b => b.City)
+                .Include(b => b.Customer)
+                .Include(b => b.Drive)
+                .Include(b => b.Driver)
+                .ThenInclude(d => d.AppUser)
+                .Include(b => b.Schedule)
+                .Include(b => b.Vehicle)
+                .ThenInclude(v => v.VehicleMark)
+                .Include(v => v.Vehicle)
+                .ThenInclude(v => v.VehicleModel)
+                .Include(b => b.VehicleType)
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (booking == null)
+            {
+                return NotFound();
+            }
+            vm.Id = booking.Id;
+            vm.LastAndFirstName = booking.Driver!.AppUser!.LastAndFirstName;
+            vm.City = booking.City!.CityName;
+            vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
+            vm.AdditionalInfo = booking.AdditionalInfo;
+            vm.DestinationAddress = booking.DestinationAddress;
+            vm.PickupAddress = booking.PickupAddress;
+            vm.VehicleType = booking.VehicleType!.VehicleTypeName;
+            vm.HasAnAssistant = booking.HasAnAssistant;
+            vm.NumberOfPassengers = booking.NumberOfPassengers;
+            vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
+            vm.StatusOfBooking = booking.StatusOfBooking;
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime;
+
+            return View(vm);
+        }
+
+        // POST: AdminArea/Bookings/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            
+            var booking = await _context.Bookings.FindAsync(id);
+            var drive = await _context.Drives.SingleOrDefaultAsync(d => d.Booking.Id.Equals(id));
+            if (drive != null) _context.Remove(drive);
+            if (booking != null) _context.Bookings.Remove(booking);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool BookingExists(Guid id)
+        {
+            return _context.Bookings.Any(e => e.Id == id);
+        }
+    }
+}
