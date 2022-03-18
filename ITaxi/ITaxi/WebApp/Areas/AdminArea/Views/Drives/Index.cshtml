@@ -1,0 +1,105 @@
+@model IEnumerable<App.Domain.Drive>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    @*<a asp-action="Create">Create New</a>*@
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Schedule!.ShiftDurationTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Customer!.AppUser!.LastAndFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.PickUpDateAndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.City!.CityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.PickupAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.DestinationAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.VehicleType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Vehicle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.NumberOfPassengers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.HasAnAssistant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.StatusOfBooking)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Drive!.Comment)
+            </th>
+            
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.Schedule!.ShiftDurationTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.LastAndFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.PickUpDateAndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.City!.CityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.PickupAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.DestinationAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.VehicleType!.VehicleTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.Vehicle!.VehicleIdentifier)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.NumberOfPassengers)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.HasAnAssistant)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.StatusOfBooking)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.Drive!.Comment!.CommentText)
+            </td>
+            
+            
+            <td>
+                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

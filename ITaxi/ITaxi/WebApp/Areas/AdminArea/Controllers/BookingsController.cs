@@ -31,7 +31,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                 .ThenInclude(v => v.VehicleMark)
                 .Include(v => v.Vehicle)
                 .ThenInclude(v => v.VehicleModel)
-                .Include(b => b.VehicleType);
+                .Include(b => b.VehicleType)
+                .Include(c => c.Drive)
+                .ThenInclude(c => c.Comment);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -107,7 +109,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                     .Where(s => s.DriverId.Equals(booking.DriverId))
                     .Select(s => s.Id).FirstOrDefaultAsync();
                 booking.VehicleId = await _context.Vehicles
-                    .Where(v => v.DriverId.Equals(booking.DriverId))
+                    .Where(v => v.DriverId.Equals(booking.DriverId)
+                                && v.VehicleAvailability == VehicleAvailability.Available)
                     .Select(v => v.Id).FirstOrDefaultAsync();
                 booking.AdditionalInfo = vm.AdditionalInfo;
                 booking.DestinationAddress = vm.DestinationAddress;
@@ -194,7 +197,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                             .Where(s => s.DriverId.Equals(booking.DriverId))
                             .Select(s => s.Id).FirstOrDefaultAsync();
                         booking.VehicleId = await _context.Vehicles
-                            .Where(v => v.DriverId.Equals(booking.DriverId))
+                            .Where(v => v.DriverId.Equals(booking.DriverId) 
+                            && v.VehicleAvailability == VehicleAvailability.Available)
                             .Select(v => v.Id).FirstOrDefaultAsync();
                         booking.AdditionalInfo = vm.AdditionalInfo;
                         booking.DestinationAddress = vm.DestinationAddress;
