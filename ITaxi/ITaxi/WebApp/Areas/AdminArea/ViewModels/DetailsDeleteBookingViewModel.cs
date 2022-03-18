@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using WebApp.Models.Enum;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
@@ -24,6 +25,7 @@ public class DetailsDeleteBookingViewModel
     public string City { get; set; } = default!;
 
     [DisplayName("Pickup Date and Time")]
+    [DisplayFormat(DataFormatString = "{0:dd.mm.yyyy HH:mm}")]
     public DateTime PickUpDateAndTime { get; set; }
     
     [DisplayName("Pickup Address")]

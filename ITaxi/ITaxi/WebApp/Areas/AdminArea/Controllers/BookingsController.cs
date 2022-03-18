@@ -38,6 +38,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Bookings/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            var vm = new DetailsDeleteBookingViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -45,19 +46,34 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             var booking = await _context.Bookings
                 .Include(b => b.City)
-                .Include(b => b.Customer)
-                .Include(b => b.Drive)
                 .Include(b => b.Driver)
+                .ThenInclude(d => d.AppUser)
                 .Include(b => b.Schedule)
                 .Include(b => b.Vehicle)
+                .ThenInclude(v => v.VehicleMark)
+                .Include(v => v.Vehicle)
+                .ThenInclude(v => v.VehicleModel)
                 .Include(b => b.VehicleType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (booking == null)
             {
                 return NotFound();
             }
 
-            return View(booking);
+            vm.Id = booking.Id;
+            vm.City = booking.City!.CityName;
+            vm.LastAndFirstName = booking.Driver!.AppUser!.LastAndFirstName;
+            vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
+            vm.AdditionalInfo = booking.AdditionalInfo;
+            vm.DestinationAddress = booking.DestinationAddress;
+            vm.PickupAddress = booking.PickupAddress;
+            vm.VehicleType = booking.VehicleType!.VehicleTypeName;
+            vm.HasAnAssistant = booking.HasAnAssistant;
+            vm.NumberOfPassengers = booking.NumberOfPassengers;
+            vm.StatusOfBooking = booking.StatusOfBooking;
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime;
+
+            return View(vm);
         }
 
         // GET: AdminArea/Bookings/Create
