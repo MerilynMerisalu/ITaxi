@@ -307,6 +307,11 @@ namespace WebApp.Areas.AdminArea.Controllers
             return _context.Bookings.Any(e => e.Id == id);
         }
 
+        /// <summary>
+        /// Search records by city name
+        /// </summary>
+        /// <param name="search">A Search records</param>
+        /// <returns>An index view with search results</returns>
         [HttpPost]
         public async Task<IActionResult> Filter([FromForm] string search)
         {
