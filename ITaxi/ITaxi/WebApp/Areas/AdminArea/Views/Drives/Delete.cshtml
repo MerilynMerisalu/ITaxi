@@ -1,3 +1,4 @@
+@*
 @model App.Domain.Drive
 
 @{
@@ -43,9 +44,10 @@
         </dd>
     </dl>
     
-    @*<form asp-action="Delete">
+    $1$<form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |*@
+        <input type="submit" value="Delete" class="btn btn-danger" /> |#1#
         <a asp-action="Index">Back to List</a>
-    @* </form> *@
+    $1$ </form> #1#
 </div>
+*@
