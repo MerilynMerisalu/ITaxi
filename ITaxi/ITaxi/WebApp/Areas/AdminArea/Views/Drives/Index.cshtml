@@ -1,3 +1,4 @@
+@using Microsoft.AspNetCore.Mvc.Routing
 @model IEnumerable<App.Domain.Drive>
 
 @{
@@ -9,6 +10,10 @@
 <p>
     @*<a asp-action="Create">Create New</a>*@
 </p>
+<form action="@Url.Action("SearchByDate")" method="post">
+    <input type="datetime" name="search" />
+    <input type="submit" value="Search" />
+</form>
 <table class="table">
     <thead>
         <tr>

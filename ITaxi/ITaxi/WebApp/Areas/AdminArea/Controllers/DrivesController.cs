@@ -178,5 +178,39 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             return _context.Drives.Any(e => e.Id == id);
         }
+
+        /// <summary>
+        /// Search drives by inserted date 
+        /// </summary>
+        /// <param name="search">date</param>
+        /// <returns>An index view with search results</returns>
+        [HttpPost]
+        public async Task<IActionResult> SearchByDateAsync([FromForm] DateTime search)
+        {
+
+            var drives = await _context.Drives.Include(b => b.Booking)
+                .ThenInclude(b => b.Driver)
+                .ThenInclude(d => d.AppUser)
+                .Include(b => b.Booking)
+                .ThenInclude(d => d.Schedule)
+                .Include(b => b.Booking)
+                .ThenInclude(v => v.Vehicle)
+                .Include(v => v.Booking)
+                .ThenInclude(v => v.Vehicle)
+                .ThenInclude(v => v.VehicleMark)
+                .Include(v => v.Booking)
+                .ThenInclude(v => v.Vehicle)
+                .ThenInclude(v => v.VehicleModel)
+                .Include(v => v.Booking)
+                .ThenInclude(v => v.VehicleType)
+                .Include(d => d.Booking)
+                .ThenInclude(c => c.Customer)
+                .ThenInclude(c => c.AppUser)
+                .Include(c => c.Booking)
+                .ThenInclude(c => c.City)
+                .Include(c => c.Comment)
+                .Where(d => d.Booking!.PickUpDateAndTime.Date.Equals(search.Date)).ToListAsync();
+            return View(nameof(Index), drives);
+        }
     }
 }

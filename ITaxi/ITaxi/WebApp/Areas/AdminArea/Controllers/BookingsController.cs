@@ -310,10 +310,10 @@ namespace WebApp.Areas.AdminArea.Controllers
         /// <summary>
         /// Search records by city name
         /// </summary>
-        /// <param name="search">A Search records</param>
+        /// <param name="search">City name</param>
         /// <returns>An index view with search results</returns>
         [HttpPost]
-        public async Task<IActionResult> Filter([FromForm] string search)
+        public async Task<IActionResult> SearchByCityAsync([FromForm] string search)
         {
             var results =
                  await _context.Bookings.Include(b => b.City)

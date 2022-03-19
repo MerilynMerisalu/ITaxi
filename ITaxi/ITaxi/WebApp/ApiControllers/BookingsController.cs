@@ -105,5 +105,7 @@ namespace WebApp.ApiControllers
         {
             return _context.Bookings.Any(e => e.Id == id);
         }
+
+       
     }
 }
