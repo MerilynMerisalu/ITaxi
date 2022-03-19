@@ -306,5 +306,22 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             return _context.Bookings.Any(e => e.Id == id);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Filter([FromForm] string search)
+        {
+            var results =
+                 await _context.Bookings.Include(b => b.City)
+                     .Include(b => b.Driver)
+                     .ThenInclude(d => d.AppUser)
+                     .Include(b => b.Schedule)
+                     .Include(b => b.Vehicle)
+                     .ThenInclude(v => v.VehicleMark)
+                     .Include(v => v.Vehicle)
+                     .ThenInclude(v => v.VehicleModel)
+                     .Include(b => b.VehicleType)
+                     .Where(b => b.City.CityName.Contains(search)).ToListAsync();
+            return View(nameof(Index), results);
+        }
     }
 }

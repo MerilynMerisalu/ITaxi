@@ -9,6 +9,10 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form action="@Url.Action("Filter")" method="post">
+    <input type="text" name="search" />
+    <input type="submit" value="Search" />
+</form>
 <table class="table">
     <thead>
         <tr>
