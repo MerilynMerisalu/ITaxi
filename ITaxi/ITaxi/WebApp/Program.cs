@@ -2,6 +2,7 @@ using App.DAL.EF;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+RotativaConfiguration.Setup(builder.Environment.WebRootPath);
 
 app.UseRouting();
 

@@ -1,0 +1,91 @@
+﻿@model IEnumerable<App.Domain.Drive>
+
+
+@{
+    Layout = "_PrintLayout";
+}
+
+
+<h1>@ViewData["DriverName"]</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Schedule)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.PickUpDateAndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.VehicleType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.PickupAddress)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Customer!.AppUser!.PhoneNumber)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.NumberOfPassengers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.HasAnAssistant)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.AdditionalInfo)
+            </th>
+            
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.Schedule!.ShiftDurationTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.PickUpDateAndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.VehicleType!.VehicleTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.LastAndFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.City!.CityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.PickupAddress)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.NumberOfPassengers)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.HasAnAssistant)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.AdditionalInfo)
+            </td>
+            
+        </tr>
+}
+    </tbody>
+</table>

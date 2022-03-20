@@ -1,13 +1,9 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Rotativa.AspNetCore;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
@@ -211,6 +207,28 @@ namespace WebApp.Areas.AdminArea.Controllers
                 .Include(c => c.Comment)
                 .Where(d => d.Booking!.PickUpDateAndTime.Date.Equals(search.Date)).ToListAsync();
             return View(nameof(Index), drives);
+        }
+
+        public async Task<IActionResult> Print()
+        {
+            var driver = await _context.Drivers.Select(d => d).FirstOrDefaultAsync();
+           var drives = await _context.Drives.Include(d => d.Booking).ThenInclude(d => d.Driver)
+                .ThenInclude(d => d.AppUser)
+                .Include(d => d.Booking).ThenInclude(d => d.Schedule)
+                .Include(d => d.Booking)
+                .ThenInclude(d => d.VehicleType)
+                .Include(c => c.Booking)
+                .ThenInclude(c => c.Customer)
+                .ThenInclude(c => c.AppUser)
+                .Include(c => c.Booking)
+                .ThenInclude(c => c.City)
+                .Include(d => d.Booking)
+                .ThenInclude(d => d.Driver)
+                .ThenInclude(d => d.AppUser)
+                .Where(d => d.DriverId.Equals(driver.Id)).ToListAsync();
+            ViewData["DriverName"] = driver!.AppUser!.LastAndFirstName;
+
+            return new ViewAsPdf("PrintDrives", drives);
         }
     }
 }
