@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
-using App.Domain;
 using Rotativa.AspNetCore;
 using WebApp.Areas.AdminArea.ViewModels;
 
@@ -45,6 +44,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Drives/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            var vm = new DetailsDriveViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -52,13 +52,44 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             var drive = await _context.Drives
                 .Include(d => d.Driver)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(d => d.Booking)
+                .ThenInclude(d => d.City)
+                .Include(d => d.Booking)
+                .ThenInclude(d => d.Schedule)
+                .Include(d => d.Comment)
+                .Include(d => d.Booking)
+                .ThenInclude(d => d.Vehicle)
+                .ThenInclude(v => v.VehicleMark)
+                .Include(v => v.Booking)
+                .ThenInclude(v => v.Vehicle)
+                .ThenInclude(v => v.VehicleModel)
+                .Include(v => v.Booking)
+                .ThenInclude(v => v.VehicleType)
+                .Include(c => c.Booking)
+                .ThenInclude(c => c.Customer)
+                .ThenInclude(c => c.AppUser)
+                
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (drive == null)
             {
                 return NotFound();
             }
 
-            return View(drive);
+            vm.City = drive.Booking!.City!.CityName;
+            vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
+            if (drive.Comment?.CommentText != null) vm.CommentText = drive.Comment.CommentText;
+            
+            vm.DestinationAddress = drive.Booking.DestinationAddress;
+            vm.PickupAddress = drive.Booking.PickupAddress;
+            vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
+            vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
+            vm.HasAnAssistant = drive.Booking.HasAnAssistant.ToString();
+            vm.NumberOfPassengers = drive.Booking.NumberOfPassengers.ToString();
+            vm.LastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
+            vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
+            vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+            
+            return View(vm);
         }
 
         /*
@@ -170,11 +201,6 @@ namespace WebApp.Areas.AdminArea.Controllers
             return RedirectToAction(nameof(Index));
         }
         */
-
-        private bool DriveExists(Guid id)
-        {
-            return _context.Drives.Any(e => e.Id == id);
-        }
 
         /// <summary>
         /// Search drives by inserted date 

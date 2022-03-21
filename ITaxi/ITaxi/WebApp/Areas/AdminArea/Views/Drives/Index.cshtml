@@ -18,8 +18,6 @@
     <a asp-action="Print">Create PDF</a>
 </p>
 
-
-
 <table class="table">
     <thead>
         <tr>
@@ -56,10 +54,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.StatusOfBooking)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.Drive!.Comment)
-            </th>
             
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
             
             <th></th>
         </tr>
@@ -103,12 +101,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.Drive!.Comment!.CommentText)
             </td>
-            
-            
             <td>
-                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
-                @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
             </td>
         </tr>
 }
