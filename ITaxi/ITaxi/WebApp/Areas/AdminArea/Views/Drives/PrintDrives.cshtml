@@ -1,12 +1,19 @@
-﻿@model IEnumerable<App.Domain.Drive>
+﻿@using WebApp.Areas.AdminArea.ViewModels
+@model IEnumerable<App.Domain.Drive>
 
 
 @{
     Layout = "_PrintLayout";
 }
 
+@{
+    #warning needs fixing
+    var name = Model.Select(d => d.Driver!.AppUser!.LastAndFirstName).FirstOrDefault();
+    <h1>Driver: @name</h1>
+    
+    
+}
 
-<h1>@ViewData["DriverName"]</h1>
 <table class="table">
     <thead>
         <tr>

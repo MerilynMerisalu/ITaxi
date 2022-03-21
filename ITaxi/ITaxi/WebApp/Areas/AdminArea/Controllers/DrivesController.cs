@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 using Rotativa.AspNetCore;
+using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
@@ -209,12 +210,16 @@ namespace WebApp.Areas.AdminArea.Controllers
             return View(nameof(Index), drives);
         }
 
+        /// <summary>
+        /// Generates a pdf view of drives
+        /// </summary>
+        /// <returns>A pdf of drives</returns>
         public async Task<IActionResult> Print()
         {
+            
             var driver = await _context.Drivers.Select(d => d).FirstOrDefaultAsync();
-           var drives = await _context.Drives.Include(d => d.Booking).ThenInclude(d => d.Driver)
-                .ThenInclude(d => d.AppUser)
-                .Include(d => d.Booking).ThenInclude(d => d.Schedule)
+           var drives = await _context.Drives.Include(d => d.Booking)
+               .ThenInclude(d => d.Schedule)
                 .Include(d => d.Booking)
                 .ThenInclude(d => d.VehicleType)
                 .Include(c => c.Booking)
@@ -226,9 +231,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 .ThenInclude(d => d.Driver)
                 .ThenInclude(d => d.AppUser)
                 .Where(d => d.DriverId.Equals(driver.Id)).ToListAsync();
-            ViewData["DriverName"] = driver!.AppUser!.LastAndFirstName;
 
-            return new ViewAsPdf("PrintDrives", drives);
+           return new ViewAsPdf("PrintDrives", drives);
         }
     }
 }
