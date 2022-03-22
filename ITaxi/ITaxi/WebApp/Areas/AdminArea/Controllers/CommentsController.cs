@@ -162,6 +162,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Comments/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
+            var vm = new DetailsDeleteCommentViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -169,13 +170,19 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             var comment = await _context.Comments
                 .Include(c => c.Drive)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(c => c.Drive)
+                .ThenInclude(c => c.Booking)
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (comment == null)
             {
                 return NotFound();
             }
 
-            return View(comment);
+            vm.Id = comment.Id;
+            vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
+            if (comment.CommentText != null) vm.CommentText = comment.CommentText;
+
+            return View(vm);
         }
 
         // POST: AdminArea/Comments/Delete/5
@@ -183,7 +190,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var comment = await _context.Comments.FindAsync(id);
+            var comment = await _context.Comments.SingleOrDefaultAsync(c => c.Id.Equals(id));
             if (comment != null) _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
