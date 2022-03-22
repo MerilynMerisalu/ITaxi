@@ -30,6 +30,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Comments/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            var vm = new DetailsDeleteCommentViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -37,13 +38,19 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             var comment = await _context.Comments
                 .Include(c => c.Drive)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(c => c.Drive)
+                .ThenInclude(d => d.Booking)
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (comment == null)
             {
                 return NotFound();
             }
 
-            return View(comment);
+            vm.Id = comment.Id;
+            vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
+            if (comment.CommentText != null) vm.CommentText = comment.CommentText;
+
+            return View(vm);
         }
 
         // GET: AdminArea/Comments/Create
