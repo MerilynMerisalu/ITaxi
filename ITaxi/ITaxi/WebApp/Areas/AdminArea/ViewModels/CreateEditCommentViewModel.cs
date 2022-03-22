@@ -10,7 +10,7 @@ public class CreateEditCommentViewModel
     public Guid Id { get; set; }
 
     [DisplayName(nameof(Drive))]
-    public Guid DriveId { get; set; }
+    public Guid? DriveId { get; set; }
 
     [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
     public List<SelectListItem>? Drives { get; set; }

@@ -1,8 +1,4 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -68,6 +64,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateEditCommentViewModel vm)
         {
+            
             if (ModelState.IsValid)
             {
                 var comment = new Comment()
@@ -87,18 +84,27 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Comments/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            var vm = new CreateEditCommentViewModel();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var comment = await _context.Comments.FindAsync(id);
+            var comment = await _context.Comments.Include(c => c.Drive)
+                .ThenInclude(c => c.Booking)
+                .SingleOrDefaultAsync(c => c.Id.Equals(id));
             if (comment == null)
             {
                 return NotFound();
             }
-            ViewData["DriveId"] = new SelectList(_context.Drives, "Id", "Id", comment.DriveId);
-            return View(comment);
+
+            vm.Drives = await _context.Drives.Include(d => d.Booking)
+                .Select(d => new SelectListItem(d.Booking.PickUpDateAndTime.ToString("g"), d.Id.ToString()))
+                .ToListAsync();
+            if (comment.CommentText != null) vm.CommentText = comment.CommentText;
+            vm.DriveId = comment.DriveId;
+
+            return View(vm);
         }
 
         // POST: AdminArea/Comments/Edit/5
@@ -106,9 +112,11 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("DriveId,CommentText,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Comment comment)
+        public async Task<IActionResult> Edit(Guid id, CreateEditCommentViewModel vm)
         {
-            if (id != comment.Id)
+            var comment = await _context.Comments.Include(c => c.Drive)
+                .ThenInclude(c => c.Booking).SingleOrDefaultAsync(c => c.Id.Equals(id));
+            if (comment != null && id != comment.Id)
             {
                 return NotFound();
             }
@@ -117,12 +125,19 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
-                    _context.Update(comment);
+                    if (comment != null)
+                    {
+                        comment.Id = id;
+                        comment.DriveId = vm.DriveId;
+                        comment.CommentText = vm.CommentText;
+                        _context.Update(comment);
+                    }
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CommentExists(comment.Id))
+                    if (comment != null && !CommentExists(comment.Id))
                     {
                         return NotFound();
                     }
@@ -133,8 +148,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DriveId"] = new SelectList(_context.Drives, "Id", "Id", comment.DriveId);
-            return View(comment);
+            
+            return View(vm);
         }
 
         // GET: AdminArea/Comments/Delete/5
@@ -162,7 +177,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var comment = await _context.Comments.FindAsync(id);
-            _context.Comments.Remove(comment);
+            if (comment != null) _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
