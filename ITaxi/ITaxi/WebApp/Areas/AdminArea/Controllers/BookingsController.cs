@@ -293,6 +293,11 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             var booking = await _context.Bookings.SingleOrDefaultAsync(b => b.Id.Equals(id));
             var drive = await _context.Drives.SingleOrDefaultAsync(d => d.Booking.Id.Equals(id));
+            var comment = await _context.Comments.SingleOrDefaultAsync(c => c.DriveId.Equals(drive.Id));
+            if (comment != null)
+            {
+                _context.Comments.Remove(comment);
+            }
             if (drive != null)
             {
                 _context.Drives.Remove(drive);
