@@ -177,6 +177,10 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var customer = await _context.Customers.SingleOrDefaultAsync(c => c.Id.Equals(id));
+            if (await _context.Bookings.AnyAsync(c => c.CustomerId.Equals(customer.Id)))
+            {
+                return Content("Entity cannot be deleted because it has dependent entities!");
+            }
             var appUser = await _context.Users.SingleAsync(a => a.Id.Equals(customer.AppUserId));
             if (customer != null) _context.Customers.Remove(customer);
             _context.Users.Remove(appUser);

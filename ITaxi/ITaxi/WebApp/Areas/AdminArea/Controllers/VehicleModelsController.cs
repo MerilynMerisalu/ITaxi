@@ -178,6 +178,10 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             var vehicleModel = await _context.VehicleModels
                 .SingleOrDefaultAsync(v => v.Id.Equals(id));
+            if (await _context.Vehicles.AnyAsync(v => v.VehicleModelId.Equals(vehicleModel.Id)))
+            {
+                return Content("Entity cannot be deleted because it has dependent entities!");
+            }
             if (vehicleModel != null) _context.VehicleModels.Remove(vehicleModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

@@ -1,10 +1,5 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
@@ -156,8 +151,14 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var driverLicenseCategory = await _context.DriverLicenseCategories.FindAsync(id);
-            _context.DriverLicenseCategories.Remove(driverLicenseCategory);
+            var driverLicenseCategory = await _context.DriverLicenseCategories.SingleOrDefaultAsync(
+                d => d.Id.Equals(id));
+            if (await _context.DriverAndDriverLicenseCategories
+                    .AnyAsync(d => d.DriverLicenseCategoryId.Equals(id)))
+            {
+                return Content("Entity cannot be deleted because it has dependent entities!");
+            }
+            if (driverLicenseCategory != null) _context.DriverLicenseCategories.Remove(driverLicenseCategory);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

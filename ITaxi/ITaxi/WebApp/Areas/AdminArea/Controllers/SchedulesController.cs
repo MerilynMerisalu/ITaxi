@@ -212,7 +212,12 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var schedule = await _context.Schedules.FindAsync(id);
+            var schedule = await _context.Schedules.SingleOrDefaultAsync(s =>s.Id.Equals(id));
+            if (await _context.RideTimes.AnyAsync(s => s.ScheduleId.Equals(schedule.Id))
+                || await _context.Bookings.AnyAsync(s => s.ScheduleId.Equals(schedule.Id)))
+            {
+                return Content("Entity cannot be deleted because it has dependent entities!");
+            }
             if (schedule != null) _context.Schedules.Remove(schedule);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

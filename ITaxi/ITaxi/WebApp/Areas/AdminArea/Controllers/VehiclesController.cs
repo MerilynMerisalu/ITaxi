@@ -212,7 +212,12 @@ public class VehiclesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var vehicle = await _context.Vehicles.FindAsync(id);
+        var vehicle = await _context.Vehicles.SingleOrDefaultAsync(v => v.Id.Equals(id));
+        if (await _context.Schedules.AnyAsync(s => s.VehicleId.Equals(vehicle.Id)) 
+            || await _context.Bookings.AnyAsync(v => v.VehicleId.Equals(vehicle.Id)))
+        {
+            return Content("Entity cannot be deleted because it has dependent entities!");
+        }
         if (vehicle != null) _context.Vehicles.Remove(vehicle);
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));

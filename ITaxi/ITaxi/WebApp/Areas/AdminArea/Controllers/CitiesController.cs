@@ -1,8 +1,4 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -180,8 +176,14 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var city = await _context.Cities.FindAsync(id);
-            _context.Cities.Remove(city);
+            var city = await _context.Cities.SingleOrDefaultAsync(c => c.Id.Equals(id));
+            if (await _context.Admins.AnyAsync(c => c.CityId.Equals(id)) || 
+                await _context.Bookings.AnyAsync(c => c.CityId.Equals(id)) ||
+                await _context.Drivers.AnyAsync(c => c.CityId.Equals(id)))
+            {
+                return Content("Entity cannot be deleted because it has dependent entities!");
+            }
+            if (city != null) _context.Cities.Remove(city);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

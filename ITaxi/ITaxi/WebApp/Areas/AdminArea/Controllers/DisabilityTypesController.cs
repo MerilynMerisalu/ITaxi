@@ -155,7 +155,12 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var disabilityType = await _context.DisabilityTypes.SingleOrDefaultAsync(d => d.Id.Equals(id));
+            var disabilityType = await _context.DisabilityTypes
+                .SingleOrDefaultAsync(d => d.Id.Equals(id));
+            if (await _context.Customers.AnyAsync(d => disabilityType != null && d.DisabilityTypeId.Equals(disabilityType.Id)))
+            {
+                return Content("Entity cannot be deleted because it has dependent entities!");
+            }
             if (disabilityType != null) _context.DisabilityTypes.Remove(disabilityType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

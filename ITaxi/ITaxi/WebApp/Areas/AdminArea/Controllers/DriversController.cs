@@ -211,7 +211,13 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var driver = await _context.Drivers.SingleOrDefaultAsync(d => d.Id.Equals(id));
+            if (await _context.Schedules.AnyAsync(d => d.DriverId.Equals(driver.Id))
+                || await _context.Bookings.AnyAsync(d => d.DriverId.Equals(driver.Id)))
+            {
+                return Content("Entity cannot be deleted because it has dependent entities!");
+            }
             await RemovingDriverAndDriverLicenseCategoriesAsync(id);
+           
             if (driver != null)
             {
                 _context.Drivers.Remove(driver);

@@ -1,10 +1,5 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
@@ -157,6 +152,11 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var vehicleType = await _context.VehicleTypes.SingleAsync(v => v.Id.Equals(id));
+            if (await _context.Vehicles.AnyAsync(v => v.VehicleType.Id.Equals(vehicleType.Id)) 
+                || await _context.Bookings.AnyAsync(b => b.VehicleTypeId.Equals(vehicleType.Id)))
+            {
+                return Content("Entity cannot be deleted because it has dependent entities!");
+            }
             _context.VehicleTypes.Remove(vehicleType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
