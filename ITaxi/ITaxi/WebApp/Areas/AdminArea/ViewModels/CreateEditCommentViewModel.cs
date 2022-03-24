@@ -19,4 +19,6 @@ public class CreateEditCommentViewModel
     [DataType(DataType.MultilineText)]
     [DisplayName(nameof(Comment))]
     public string CommentText { get; set; } = default!;
+    
+    #warning check if using any database method is optimal 
 }
