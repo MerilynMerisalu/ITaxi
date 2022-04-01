@@ -12,7 +12,7 @@ using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
-    [Area("AdminArea")]
+    [Area(nameof(AdminArea))]
     public class AdminsController : Controller
     {
         private readonly AppDbContext _context;

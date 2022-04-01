@@ -9,7 +9,7 @@ using WebApp.Models.Enum;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
-    [Area("AdminArea")]
+    [Area(nameof(AdminArea))]
     public class BookingsController : Controller
     {
         private readonly AppDbContext _context;
