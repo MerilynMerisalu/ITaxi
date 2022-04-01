@@ -26,126 +26,90 @@
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Admin Area
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Counties
-                            </a>
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Counties"
-                                   asp-action="Index">
-                                    Index
-                                </a>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Counties"
-                                   asp-action="Create">
-                                    Create
-                                </a>
-                                
-                            
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Cities" asp-action="Index">
-                                    Cities
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="DriverLicenseCategories"
-                                   asp-action="Index">
-                                    Driver License Categories
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Drivers"
-                                   asp-action="Index">
-                                    Drivers
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Drives"
-                                   asp-action="Index">
-                                    Drives
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="VehicleTypes"
-                                   asp-action="Index">
-                                    Vehicle Types
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="VehicleMarks"
-                                   asp-action="Index">
-                                    Vehicle Marks
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="VehicleModels"
-                                   asp-action="Index">
-                                    Vehicle Models
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Vehicles"
-                                   asp-action="Index">
-                                    Vehicles
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Schedules"
-                                   asp-action="Index">
-                                    Schedules
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="RideTimes"
-                                   asp-action="Index">
-                                    Ride Times
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <nav class="navbar navbar-light bg-light">
+                            <div class="container-fluid">
+                                <span class="navbar-brand mb-0 h1">Admin's Section</span>
+                            </div>
+                        </nav>
+                        
+                        <a class="dropdown-item" asp-area="AdminArea"
+                           asp-controller="Counties"
+                           asp-action="Index">
+                            Counties
+                        </a>
+                        <li>
                             <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="DisabilityTypes"
+                               asp-controller="Cities" asp-action="Index">Cities</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea" 
+                               asp-controller="DriverLicenseCategories"
                                asp-action="Index">
-                                Disability Types
+                                Driver License Categories
                             </a>
+                        </li>
+                        <li>
+                            <nav class="navbar navbar-light bg-light">
+                                <div class="container-fluid">
+                                    <span class="navbar-brand mb-0 h1">Driver's Section</span>
+                                </div>
+                            </nav>
+                        </li>
+                        <li>
                             <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Bookings"
-                               asp-action="Index">
-                                Bookings
-                            </a>
+                               asp-controller="Drivers" asp-action="Index">Drivers</a>
+                        </li>
+                        <li>
                             <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Comments"
-                               asp-action="Index">
-                                Comments
-                            </a>
-
-
-
-                        </ul>
-                    </li>
+                               asp-controller="VehicleTypes" asp-action="Index">Vehicle Types</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="VehicleMarks" asp-action="Index">Vehicle Marks</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="VehicleModels" asp-action="Index">Vehicle Models</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="Vehicles" asp-action="Index">Vehicles</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="Schedules" asp-action="Index">Schedules</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="RideTimes" asp-action="Index">Ride Times</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="Drives" asp-action="Index">Drives</a>
+                        </li>
+                        <li>
+                            <nav class="navbar navbar-light bg-light">
+                                <div class="container-fluid">
+                                    <span class="navbar-brand mb-0 h1">Customer's Section</span>
+                                </div>
+                            </nav>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="DisabilityTypes" asp-action="Index">Disability Types</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="Bookings" asp-action="Index">Bookings</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="Comments" asp-action="Index">Comments</a>
+                        </li>
+                        
+                        
+                    </ul>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Driver Area
@@ -157,7 +121,22 @@
                                 Driver License Categories
                             </a>
                             <li>
-                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" asp-area="AdminArea"
+                                   asp-controller="Vehicles" asp-action="Index">Vehicles</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-area="AdminArea"
+                                   asp-controller="Schedules" asp-action="Index">Schedules</a>
+                            </li>
+                            
+                            <li>
+                                <a class="dropdown-item" asp-area="AdminArea"
+                                   asp-controller="RideTimes" asp-action="Index">Ride Times</a>
+                            </li>
+                            
+                            <li>
+                                <a class="dropdown-item" asp-area="AdminArea"
+                                   asp-controller="Drives" asp-action="Index">Drives</a>
                             </li>
                             
                         </ul>
@@ -168,17 +147,14 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" asp-area="AdminArea"
+                                   asp-controller="Bookings" asp-action="Index">Bookings</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" asp-area="AdminArea"
+                                   asp-controller="Comments" asp-action="Index">Comments</a>
                             </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </li>
+                            
                         </ul>
                     </li>
 
