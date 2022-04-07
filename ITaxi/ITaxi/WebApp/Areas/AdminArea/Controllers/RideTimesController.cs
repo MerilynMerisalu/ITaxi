@@ -83,7 +83,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                         {
                             Id = new Guid(),
                             ScheduleId = vm.ScheduleId,
-                            RideDateTime = selectedRideTime,
+                            RideDateTime = selectedRideTime.ToUniversalTime(),
                             IsTaken = vm.IsTaken
                         };
                         
@@ -220,7 +220,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         private async Task<DateTime> GettingScheduleStartDateAndTimeAsync()
         {
             var start = await _context.Schedules
-                .Select(s => s.StartDateAndTime)
+                .Select(s => s.StartDateAndTime.ToUniversalTime())
                 .OrderBy(s => s.Hour)
                 .ThenBy(s => s.Minute).FirstOrDefaultAsync();
 
@@ -235,7 +235,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         private async Task<DateTime> GettingScheduleEndDateAndTimeAsync()
         {
             var end = await _context.Schedules
-                .Select(s => s.EndDateAndTime).OrderBy(s => s.Hour)
+                .Select(s => s.EndDateAndTime.ToUniversalTime()).OrderBy(s => s.Hour)
                 .ThenBy(s => s.Minute).LastOrDefaultAsync();
             return end;
         }

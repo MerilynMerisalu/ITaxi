@@ -119,7 +119,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 booking.HasAnAssistant = vm.HasAnAssistant;
                 booking.NumberOfPassengers = vm.NumberOfPassengers;
                 booking.StatusOfBooking = StatusOfBooking.Awaiting;
-                booking.PickUpDateAndTime = vm.PickUpDateAndTime;
+                booking.PickUpDateAndTime = vm.PickUpDateAndTime.ToUniversalTime();
                 _context.Add(booking);
 
                 var drive = new Drive()
