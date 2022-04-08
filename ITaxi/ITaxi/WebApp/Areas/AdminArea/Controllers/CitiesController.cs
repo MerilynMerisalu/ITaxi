@@ -77,6 +77,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            vm.Counties = new SelectList(_context.Counties, nameof(County.Id),
+                nameof(County.CountyName), nameof(city.CountyId));
             
             return View(vm);
         }

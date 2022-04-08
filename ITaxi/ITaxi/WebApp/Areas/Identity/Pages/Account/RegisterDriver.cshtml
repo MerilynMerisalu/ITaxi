@@ -60,7 +60,9 @@
             
             <div class="form-group">
                 <label asp-for="Input.DriverAndDriverLicenseCategories"></label>
-                <select multiple="multiple" asp-for="Input.DriverAndDriverLicenseCategories" class="form-control" asp-items="Model.DriverLicenseCategories">
+                <select multiple="multiple" asp-for="Input.DriverAndDriverLicenseCategories" class="form-control"
+                        asp-items="Model.DriverLicenseCategories">
+                    <option value="">Please Select</option>
                 </select>
                 <span asp-validation-for="Input.DriverAndDriverLicenseCategories" class="text-danger"></span>
             </div>

@@ -228,6 +228,11 @@ namespace WebApp.Areas.Identity.Pages.Account
                     await _context.Drivers.AddAsync(driver);
                     if (Input.DriverAndDriverLicenseCategories != null)
                     {
+                        #warning  Adding driver and driver license categories needs a custom validation rule
+                        /*if (Input.DriverAndDriverLicenseCategories.Count <= 0)
+                        {
+                            
+                        }*/
                         foreach (var driverLicenseCategoryId in Input.DriverAndDriverLicenseCategories)
                         {
                             var driverAndDriverLicenseCategories = new DriverAndDriverLicenseCategory()
