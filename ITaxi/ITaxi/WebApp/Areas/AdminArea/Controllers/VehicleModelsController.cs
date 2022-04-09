@@ -76,7 +76,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+            vm.VehicleMarks = new SelectList(_context.VehicleMarks, nameof(VehicleMark.Id),
+                nameof(VehicleMark.VehicleMarkName), nameof(vehicleModel.VehicleMarkId));
+
             return View(vm);
         }
 

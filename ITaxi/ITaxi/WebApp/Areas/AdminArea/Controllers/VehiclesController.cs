@@ -97,6 +97,16 @@ public class VehiclesController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        
+        #warning ManufactureYears needs checking 
+
+        vm.ManufactureYears = new SelectList(GettingManufactureYearsSelectList(GettingManufactureYears()),
+            nameof(Vehicle.ManufactureYear), nameof(Vehicle.ManufactureYear),
+            nameof(vehicle.ManufactureYear));
+        vm.VehicleTypes = new SelectList(_context.VehicleTypes, nameof(VehicleType.Id),
+            nameof(VehicleType.VehicleTypeName), nameof(vehicle.VehicleTypeId));
+        vm.VehicleMarks = new SelectList(_context.VehicleMarks, nameof(VehicleMark.Id),
+            nameof(VehicleMark.VehicleMarkName), nameof(vehicle.VehicleMarkId));
 
         return View(vm);
     }

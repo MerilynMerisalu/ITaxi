@@ -119,6 +119,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 booking.HasAnAssistant = vm.HasAnAssistant;
                 booking.NumberOfPassengers = vm.NumberOfPassengers;
                 booking.StatusOfBooking = StatusOfBooking.Awaiting;
+#warning Booking PickUpDateAndTime needs a custom validation
                 booking.PickUpDateAndTime = vm.PickUpDateAndTime.ToUniversalTime();
                 _context.Add(booking);
 
@@ -133,6 +134,12 @@ namespace WebApp.Areas.AdminArea.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            vm.Cities = new SelectList(_context.Cities, nameof(City.Id),
+                nameof(City.CityName), nameof(booking.CityId));
+            vm.VehicleTypes = new SelectList(_context.VehicleTypes,
+                nameof(VehicleType.Id), nameof(VehicleType.VehicleTypeName),
+                nameof(booking.VehicleTypeId));
             
             return View(vm);
         }

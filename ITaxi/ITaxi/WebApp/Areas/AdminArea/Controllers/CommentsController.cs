@@ -57,10 +57,10 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Create()
         {
             var vm = new CreateEditCommentViewModel();
-            vm.Drives = await _context.Drives.Include(d => d.Booking)
-                .Where(d => d.Comment.DriveId == null)
-                .Select(d => new SelectListItem(d.Booking.PickUpDateAndTime.ToString("g"),
-                    d.Id.ToString())).ToListAsync();
+            vm.Drives = new SelectList(await _context.Drives.Include(d => d.Booking)
+                    .Where(d => d.Comment.DriveId == null)
+                    .Select(d => new {d.Booking.PickUpDateAndTime, d.Id}).ToListAsync(),
+                nameof(Drive.Id), nameof(Drive.Booking.PickUpDateAndTime));
             return View(vm);
         }
 
@@ -71,19 +71,26 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateEditCommentViewModel vm)
         {
-            
+            var comment = new Comment();
             if (ModelState.IsValid)
             {
-                var comment = new Comment()
-                {
-                    Id = Guid.NewGuid(),
-                    DriveId = vm.DriveId,
-                    CommentText = vm.CommentText
-                };
+
+
+                comment.Id = Guid.NewGuid();
+                comment.DriveId = vm.DriveId;
+                comment.CommentText = vm.CommentText;
+                
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+                
             }
+
+            vm.Drives = new SelectList(_context.Drives.Include(d => d.Booking),
+                nameof(Drive.Id),
+                nameof(Booking.DriveTime), nameof(comment.DriveId));
+            
+            
             
             return View(vm);
         }
@@ -105,9 +112,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            vm.Drives = await _context.Drives.Include(d => d.Booking)
-                .Select(d => new SelectListItem(d.Booking.PickUpDateAndTime.ToString("g"), d.Id.ToString()))
-                .ToListAsync();
+            vm.Drives = new SelectList(await _context.Drives.Include(d => d.Booking)
+                    .Select(d => new {d.Id, d.Booking.PickUpDateAndTime }).ToListAsync(), nameof(Drive.Id),
+                nameof(Drive.Booking.PickUpDateAndTime));
             if (comment.CommentText != null) vm.CommentText = comment.CommentText;
             vm.DriveId = comment.DriveId;
 

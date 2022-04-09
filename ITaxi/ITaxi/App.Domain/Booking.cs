@@ -62,4 +62,6 @@ public class Booking : DomainEntityMetaId
 
     public Guid? DriveId { get; set; }
     public Drive? Drive { get; set; }
+
+    public  string DriveTime => $"{PickUpDateAndTime:g}";
 }

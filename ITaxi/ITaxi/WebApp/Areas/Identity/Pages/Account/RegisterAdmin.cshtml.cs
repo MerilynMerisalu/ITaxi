@@ -170,6 +170,7 @@ namespace WebApp.Areas.Identity.Pages.Account
             {
                 var user = new AppUser()
                 {
+    #warning  admin's dateOfBirth needs a custom validation rule
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     Gender = Input.Gender,

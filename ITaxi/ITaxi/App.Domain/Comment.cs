@@ -10,7 +10,10 @@ public class Comment: DomainEntityMetaId
 
     public Drive? Drive { get; set; }
 
-    [MaxLength(1000)]
+    
+    
+
+        [MaxLength(1000)]
     [DataType(DataType.MultilineText)]
     [DisplayName("Comment")]
     public string? CommentText { get; set; }

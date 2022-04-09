@@ -107,9 +107,9 @@ namespace WebApp.Areas.Identity.Pages.Account
             public Gender Gender { get; set; }
             
             [Required]
-            [DataType(DataType.Date)]
+            [DataType(DataType.Date)] 
             [DisplayName("Date of Birth")]
-            public DateTime DateOfBirth { get; set; }
+            public DateTime DateOfBirth { get; set; } 
 
             [StringLength(50)]
             [DisplayName("Personal Identifier")]
@@ -188,10 +188,11 @@ namespace WebApp.Areas.Identity.Pages.Account
             {
                 var user = new AppUser()
                 {
+#warning  driver's dateOfBirth needs a custom validation rule
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     Gender = Input.Gender,
-                    DateOfBirth = Input.DateOfBirth,
+                    DateOfBirth = Input.DateOfBirth, 
                     PhoneNumber = Input.PhoneNumber,
                     Email = Input.Email,
                     EmailConfirmed = true
@@ -219,6 +220,7 @@ namespace WebApp.Areas.Identity.Pages.Account
 
                     var driver = new Driver()
                     {
+#warning  driver's driver license expiry date needs a custom validation rule
                         AppUserId = user.Id, PersonalIdentifier = Input.PersonalIdentifier,
                         Address = Input.Address, CityId = Input.CityId, 
                         DriverLicenseNumber = Input.DriverLicenseNumber,

@@ -62,7 +62,7 @@ namespace WebApp.Areas.Identity.Pages.Account
 
         public SelectList? DisabilityTypes { get; set; }
 
-        public SelectList? Cities { get; set; }
+       
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -164,6 +164,7 @@ namespace WebApp.Areas.Identity.Pages.Account
             {
                 var user = new AppUser()
                 {
+#warning  customer's dateOfBirth needs a custom validation rule
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     Gender = Input.Gender,

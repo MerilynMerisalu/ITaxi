@@ -94,8 +94,14 @@ namespace WebApp.Areas.AdminArea.Controllers
                     await _context.SaveChangesAsync();
                 }
                 return RedirectToAction(nameof(Index));
+                
             }
+
             
+            #warning needs checking
+            vm.Schedules = new SelectList(_context.Schedules, nameof(Schedule.Id),
+                nameof(Schedule.ShiftDurationTime));
+           
             return View(vm);
         }
 

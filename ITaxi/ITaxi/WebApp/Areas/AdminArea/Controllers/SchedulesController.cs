@@ -77,7 +77,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                     .OrderBy(c => c.VehicleMark.VehicleMarkName)
                 .Select(c => new {c.Id, c.VehicleIdentifier}).ToListAsync(),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
+            #warning Schedule StartDateAndTime needs a custom validation
             vm.StartDateAndTime = Convert.ToDateTime(DateTime.Now.ToUniversalTime().ToString("g"));
+            #warning Schedule EndDateAndTime needs a custom validation
             vm.EndDateAndTime = Convert.ToDateTime(DateTime.Now.AddHours(8).ToUniversalTime().ToString("g"));
 
             return View(vm);
