@@ -244,7 +244,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         /// Calculates ride times based on schedule start and end time 
         /// </summary>
         /// <param name="scheduleStartAndEndTime">An array which contains schedule start and end time.</param>
-        /// <returns>A list of  times</returns>
+        /// <returns>A list of ride times</returns>
         private List<string> GettingRideTimes(DateTime[] scheduleStartAndEndTime)
         {
             List<string> times = new List<string>();
