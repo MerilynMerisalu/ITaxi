@@ -17,7 +17,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-
+        
         public IndexModel(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager)
@@ -66,6 +66,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var appUser = 
 
             Username = userName;
 

@@ -100,10 +100,11 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             
-            #warning needs checking
+            #warning Selectlist of schedules must be recreated when something goes wrong with creating the record
             vm.Schedules = new SelectList(_context.Schedules, nameof(Schedule.Id),
                 nameof(Schedule.ShiftDurationTime));
-           
+           #warning Selectable ride times must be recreated when something goes wrong with creating the record
+            #warning Selected ride times remain so when something goes wrong with creating the record
             return View(vm);
         }
 
