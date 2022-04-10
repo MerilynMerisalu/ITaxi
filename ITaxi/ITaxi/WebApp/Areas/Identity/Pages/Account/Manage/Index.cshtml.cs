@@ -59,6 +59,10 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+            
+            [DataType(DataType.Text)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
         }
 
         private async Task LoadAsync(AppUser user)
@@ -66,13 +70,14 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            var appUser = 
+            var firstname = user.FirstName;
 
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                FirstName = firstname
             };
         }
 
