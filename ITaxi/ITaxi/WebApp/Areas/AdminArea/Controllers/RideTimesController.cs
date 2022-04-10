@@ -59,7 +59,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                     .Select(s => s).ToListAsync()
                 , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
             DateTime[] scheduleStartAndEndTime = await GettingScheduleStartAndEndDateAndTimeAsync();
-            var rideTimes = GettingRideTimes(scheduleStartAndEndTime);
+            var rideTimes = CalculatingRideTimes(scheduleStartAndEndTime);
             vm.RideTimes = GettingRideTimeSelectList(rideTimes);
             return View(vm);
         }
@@ -246,7 +246,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         /// <param name="scheduleStartAndEndTime">
         /// An array which contains schedule start and end time.</param>
         /// <returns>A list of ride times</returns>
-        private List<string> GettingRideTimes(DateTime[] scheduleStartAndEndTime)
+        private List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime)
         {
             List<string> times = new List<string>();
             var start = scheduleStartAndEndTime[0];
