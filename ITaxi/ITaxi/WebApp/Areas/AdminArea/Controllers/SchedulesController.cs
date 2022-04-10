@@ -97,8 +97,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 var driverId = await _context.Drivers.Select(d => d.Id).FirstOrDefaultAsync();
                 schedule.Id = Guid.NewGuid();
                 schedule.DriverId = driverId;
-                schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
-                schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
+                schedule.StartDateAndTime = vm.StartDateAndTime;
+                schedule.EndDateAndTime = vm.EndDateAndTime;
                 _context.Add(schedule);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

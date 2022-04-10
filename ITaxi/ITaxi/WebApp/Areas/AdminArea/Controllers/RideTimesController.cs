@@ -58,9 +58,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Schedules = new SelectList(await _context.Schedules.OrderBy(s => s.StartDateAndTime)
                     .Select(s => s).ToListAsync()
                 , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
-            var scheduleStartDateAndTime = await GettingScheduleStartDateAndTimeAsync();
-            var scheduleEndDateAndTime = await GettingScheduleEndDateAndTimeAsync();
-            var rideTimes = GettingRideTimes( scheduleStartDateAndTime, scheduleEndDateAndTime);
+            DateTime[] scheduleStartAndEndTime = await GettingScheduleStartAndEndDateAndTimeAsync();
+            var rideTimes = GettingRideTimes(scheduleStartAndEndTime);
             vm.RideTimes = GettingRideTimeSelectList(rideTimes);
             return View(vm);
         }
@@ -83,7 +82,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                         {
                             Id = new Guid(),
                             ScheduleId = vm.ScheduleId,
-                            RideDateTime = selectedRideTime.ToUniversalTime(),
+                            RideDateTime = selectedRideTime,
                             IsTaken = vm.IsTaken
                         };
                         
@@ -92,9 +91,12 @@ namespace WebApp.Areas.AdminArea.Controllers
 
                     await _context.RideTimes.AddRangeAsync(rideTimes);
                     await _context.SaveChangesAsync();
-                }
+                } 
+                #warning Needs custom validation to check that at least one ride time is chosen
+                
                 return RedirectToAction(nameof(Index));
                 
+               
             }
 
             
@@ -216,45 +218,39 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             return _context.RideTimes.Any(e => e.Id == id);
         }
-        
-#warning GettingScheduleStartDateAndTimeAsync needs fixing
-        
-        /// <summary>
-        /// This will return the schedule start date and time
+        ///<summary>
+        /// This will return the schedule start and end date and time
         /// </summary>
-        /// <returns>Datetime start</returns>
-        private async Task<DateTime> GettingScheduleStartDateAndTimeAsync()
+        /// <returns>An array with schedule start and end time</returns>
+        private async Task<DateTime[]> GettingScheduleStartAndEndDateAndTimeAsync()
         {
-            var start = await _context.Schedules
-                .Select(s => s.StartDateAndTime.ToUniversalTime())
-                .OrderBy(s => s.Hour)
-                .ThenBy(s => s.Minute).FirstOrDefaultAsync();
-
-            return start;
+            DateTime[] scheduleStartAndEndTime = new DateTime[2]; 
+            var schedule = await _context.Schedules
+                .OrderBy(s => s.StartDateAndTime.Hour)
+                .ThenBy(s => s.StartDateAndTime.Minute).FirstOrDefaultAsync();
+            if (schedule != null)
+            {
+                scheduleStartAndEndTime[0] = schedule.StartDateAndTime;
+                
+                scheduleStartAndEndTime[1] = schedule.EndDateAndTime;
+            }
+                
+            
+            return scheduleStartAndEndTime;
         }
 
-        #warning GettingScheduleEndDateAndTimeAsync needs fixing
+       
         /// <summary>
-        /// This will return the schedule end date and time
+        /// Calculates ride times based on schedule start and end time 
         /// </summary>
-        /// <returns>Datetime end</returns>
-        private async Task<DateTime> GettingScheduleEndDateAndTimeAsync()
-        {
-            var end = await _context.Schedules
-                .Select(s => s.EndDateAndTime.ToUniversalTime()).OrderBy(s => s.Hour)
-                .ThenBy(s => s.Minute).LastOrDefaultAsync();
-            return end;
-        }
-        /// <summary>
-        /// Getting a list of times as strings
-        /// </summary>
-        /// <param name="start">The start time of a schedule</param>
-        /// <param name="end">The end time of a schedule</param>
-        /// <returns>list of times as strings</returns>
-        private List<string> GettingRideTimes(DateTime start, DateTime end)
+        /// <param name="scheduleStartAndEndTime">An array which contains schedule start and end time.</param>
+        /// <returns></returns>
+        private List<string> GettingRideTimes(DateTime[] scheduleStartAndEndTime)
         {
             List<string> times = new List<string>();
+            var start = scheduleStartAndEndTime[0];
             var time = start;
+            var end = scheduleStartAndEndTime[1];
 
             while (time < end)
             {
@@ -264,6 +260,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             return times;
         }
+
         /// <summary>
         /// Returning times as a select list
         /// </summary>
