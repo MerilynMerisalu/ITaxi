@@ -3,6 +3,7 @@ using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Rotativa.AspNetCore;
+using WebApp.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,7 @@ builder.Services.AddIdentity<AppUser, AppRole>(
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+await DataHelper.SetupAppData(app, app.Environment, app.Configuration);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
