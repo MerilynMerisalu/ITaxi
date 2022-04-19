@@ -1,7 +1,12 @@
+using System.Collections.Immutable;
+using System.Globalization;
 using App.DAL.EF;
 using App.Domain.Identity;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Rotativa.AspNetCore;
 using WebApp.Helpers;
 
@@ -20,7 +25,35 @@ builder.Services.AddIdentity<AppUser, AppRole>(
     .AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddControllersWithViews();
 
+/* Setting up the language support system */
+var culture = new CultureInfo("et-EE");
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+
+    // TODO: Should be in appsettings json
+    var appSupportedCultures = new[]
+    {
+        new CultureInfo("et-EE"),
+        new CultureInfo("en-US")
+        
+    };
+   
+    options.SupportedCultures = appSupportedCultures;
+    options.SupportedUICultures = appSupportedCultures;
+    
+    options.DefaultRequestCulture = new RequestCulture(culture, culture) ;
+    options.SetDefaultCulture("et-EE");
+    options.RequestCultureProviders = new List<IRequestCultureProvider>()
+    {
+        new QueryStringRequestCultureProvider(),
+        new CookieRequestCultureProvider()
+    };
+});
 var app = builder.Build();
+
+
+
+
 await DataHelper.SetupAppData(app, app.Environment, app.Configuration);
 
 // Configure the HTTP request pipeline.
@@ -40,6 +73,12 @@ app.UseStaticFiles();
 RotativaConfiguration.Setup(builder.Environment.WebRootPath);
 
 app.UseRouting();
+
+
+var requestLocalizationOptions = ((IApplicationBuilder) app).ApplicationServices
+    .GetService<IOptions<RequestLocalizationOptions>>()?.Value;
+if (requestLocalizationOptions != null)
+    app.UseRequestLocalization(requestLocalizationOptions);
 
 app.UseAuthentication();
 app.UseAuthorization();
