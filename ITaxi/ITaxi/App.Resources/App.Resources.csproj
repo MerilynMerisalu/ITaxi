@@ -7,21 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Views\Shared\_Layout.resx">
+      <EmbeddedResource Update="Areas\Identity\Pages\Account\Login.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Views\Shared\_Layout.et.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>_Layout.et.Designer.cs</LastGenOutput>
+        <LastGenOutput>Login.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Views\Shared\_Layout.Designer.cs">
+      <Compile Update="Areas\Identity\Pages\Account\Login.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>_Layout.resx</DependentUpon>
+        <DependentUpon>Login.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
