@@ -34,15 +34,15 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     var appSupportedCultures = new[]
     {
         new CultureInfo("et-EE"),
-        new CultureInfo("en-US")
+        new CultureInfo("en-GB")
         
     };
    
     options.SupportedCultures = appSupportedCultures;
     options.SupportedUICultures = appSupportedCultures;
     
-    options.DefaultRequestCulture = new RequestCulture(culture, culture) ;
-    options.SetDefaultCulture("et-EE");
+    options.DefaultRequestCulture = new RequestCulture("en-GB", "en-GB") ;
+    options.SetDefaultCulture("en-GB");
     options.RequestCultureProviders = new List<IRequestCultureProvider>()
     {
         new QueryStringRequestCultureProvider(),

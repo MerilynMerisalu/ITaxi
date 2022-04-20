@@ -24,9 +24,24 @@
                         <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Admin Area
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Languages
+                    </a>
+                    
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <nav class="nav-item">
+                        <a class="dropdown-item">
+                            <partial name="_LanguageSelection"/>
                         </a>
+                        
+                    </nav>
+
+                    </ul>
+                    
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Admin Area
+                    </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <nav class="navbar navbar-light bg-light">
                             <div class="container-fluid">
@@ -158,12 +173,14 @@
                             
                         </ul>
                     </li>
-
+                    
+                    
+                    
                 </ul>
-
             </div>
             <partial name="_LoginPartial"/>
         </div>
+        
     </nav>
 </header>
 <div class="container">
@@ -178,6 +195,7 @@
         | UI Culture: @Thread.CurrentThread.CurrentUICulture.Name 
         (@CultureInfo.CurrentUICulture.Name); 
         | Culture: @Thread.CurrentThread.CurrentCulture.Name (@CultureInfo.CurrentCulture.Name);
+        | Date: @DateTime.Now.ToString(); | Number in double format: @((123.45).ToString())
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
