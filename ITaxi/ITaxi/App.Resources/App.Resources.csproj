@@ -11,6 +11,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Login.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Areas\App.Domain\AdminArea\County.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>County.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -19,6 +23,12 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Login.resx</DependentUpon>
       </Compile>
+      <Compile Update="Areas\App.Domain\AdminArea\County.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>County.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
+    
 </Project>

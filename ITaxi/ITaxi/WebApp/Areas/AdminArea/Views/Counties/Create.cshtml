@@ -1,12 +1,12 @@
 @model WebApp.Areas.AdminArea.ViewModels.CreateEditCountyViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = nameof(Base.Resources.Common.Create);
 }
 
-<h1>Create</h1>
+<h1>@Base.Resources.Common.Create</h1>
 
-<h4>County</h4>
+<h4>@App.Resources.Areas.App.Domain.AdminArea.County.CountyName</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,14 +14,14 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <partial name="_CreateEditCounty" model="Model"/>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="@Base.Resources.Common.Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Base.Resources.Common.BackToList</a>
 </div>
 
 @section Scripts {
