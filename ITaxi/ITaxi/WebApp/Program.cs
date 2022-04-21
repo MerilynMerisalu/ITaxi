@@ -5,6 +5,7 @@ using App.Domain.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Rotativa.AspNetCore;
@@ -48,6 +49,9 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         new QueryStringRequestCultureProvider(),
         new CookieRequestCultureProvider()
     };
+    builder.Services.AddSingleton<IConfigureOptions<MvcOptions>,
+        ConfigureModelBindingLocalization>();
+
 });
 var app = builder.Build();
 
