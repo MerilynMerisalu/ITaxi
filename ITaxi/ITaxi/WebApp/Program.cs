@@ -25,6 +25,8 @@ builder.Services.AddIdentity<AppUser, AppRole>(
     .AddDefaultUI()
     .AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IConfigureOptions<MvcOptions>,
+    ConfigureModelBindingLocalization>();
 
 /* Setting up the language support system */
 var culture = new CultureInfo("et-EE");
@@ -49,11 +51,10 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         new QueryStringRequestCultureProvider(),
         new CookieRequestCultureProvider()
     };
-    builder.Services.AddSingleton<IConfigureOptions<MvcOptions>,
-        ConfigureModelBindingLocalization>();
-
+    
 });
 var app = builder.Build();
+
 
 
 
