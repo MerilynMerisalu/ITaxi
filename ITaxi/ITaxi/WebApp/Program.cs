@@ -1,8 +1,6 @@
-using System.Collections.Immutable;
 using System.Globalization;
 using App.DAL.EF;
 using App.Domain.Identity;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,26 +27,30 @@ builder.Services.AddSingleton<IConfigureOptions<MvcOptions>,
     ConfigureModelBindingLocalization>();
 
 /* Setting up the language support system */
+var supportedCultures = builder.Configuration
+    .GetSection("SupportedCultures")
+    .GetChildren()
+    .Select(x => new CultureInfo(x.Value))
+    .ToArray();
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
+    // datetime and currency support
+    options.SupportedCultures = supportedCultures;
+    // UI translated strings
+    options.SupportedUICultures = supportedCultures;
+    // if nothing is found, use this
+    options.DefaultRequestCulture =
+        new RequestCulture(builder.Configuration["DefaultCulture"], builder.Configuration["DefaultCulture"]);
+    options.SetDefaultCulture(builder.Configuration["DefaultCulture"]);
 
-    var appSupportedCultures = builder.Configuration.GetSection("SupportedCultures").GetChildren()
-        .Select(l => new CultureInfo(l.Value))
-        .ToArray();
-    
-   
-    options.SupportedCultures = appSupportedCultures;
-    options.SupportedUICultures = appSupportedCultures;
-    
-    options.DefaultRequestCulture = new RequestCulture("en-GB", "en-GB") ;
-    options.SetDefaultCulture("en-GB");
-    options.RequestCultureProviders = new List<IRequestCultureProvider>()
+    options.RequestCultureProviders = new List<IRequestCultureProvider>
     {
+        // Order is important, its in which order they will be evaluated
+        // add support for ?culture=ru-RU
         new QueryStringRequestCultureProvider(),
         new CookieRequestCultureProvider()
     };
-    
 });
 var app = builder.Build();
 
