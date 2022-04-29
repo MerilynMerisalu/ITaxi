@@ -29,17 +29,14 @@ builder.Services.AddSingleton<IConfigureOptions<MvcOptions>,
     ConfigureModelBindingLocalization>();
 
 /* Setting up the language support system */
-var culture = new CultureInfo("et-EE");
+
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
 
-    // TODO: Should be in appsettings json
-    var appSupportedCultures = new[]
-    {
-        new CultureInfo("et-EE"),
-        new CultureInfo("en-GB")
-        
-    };
+    var appSupportedCultures = builder.Configuration.GetSection("SupportedCultures").GetChildren()
+        .Select(l => new CultureInfo(l.Value))
+        .ToArray();
+    
    
     options.SupportedCultures = appSupportedCultures;
     options.SupportedUICultures = appSupportedCultures;
@@ -54,10 +51,6 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     
 });
 var app = builder.Build();
-
-
-
-
 
 await DataHelper.SetupAppData(app, app.Environment, app.Configuration);
 
