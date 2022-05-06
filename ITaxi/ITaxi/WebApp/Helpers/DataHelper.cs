@@ -58,15 +58,49 @@ public static class DataHelper
                 CityName = "Tallinn",
                 CountyId =  context.Counties
                     .SingleOrDefaultAsync(c => c.CountyName.Equals("Harjumaa")).Result!.Id, 
-                
+                CreatedAt = DateTime.Now.ToUniversalTime()
                 
             };
             await context.Cities.AddAsync(city);
             await context.SaveChangesAsync();
 
-            
-            
-            
+            var driverLicenseCategory = new DriverLicenseCategory()
+            {
+                Id = new Guid(),
+                DriverLicenseCategoryName = "B2",
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+
+            await context.DriverLicenseCategories.AddAsync(driverLicenseCategory);
+            await context.SaveChangesAsync();
+
+            var disabilityType = new DisabilityType()
+            {
+                Id = new Guid(),
+                DisabilityTypeName = "None",
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            await context.DisabilityTypes.AddAsync(disabilityType);
+            await context.SaveChangesAsync();
+
+            var vehicleType = new VehicleType()
+            {
+                Id = new Guid(),
+                VehicleTypeName = "Regular",
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            await context.VehicleTypes.AddAsync(vehicleType);
+            await context.SaveChangesAsync();
+
+            var vehicleMark = new VehicleMark()
+            {
+                Id = new Guid(),
+                VehicleMarkName = "Toyota",
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            await context.VehicleMarks.AddAsync(vehicleMark);
+            await context.SaveChangesAsync();
+
         }
     }
     
