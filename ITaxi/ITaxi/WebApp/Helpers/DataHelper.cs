@@ -1,5 +1,7 @@
 ﻿using App.DAL.EF;
 using App.Domain;
+using App.Domain.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.Helpers;
@@ -47,9 +49,24 @@ public static class DataHelper
                 CountyName = "Harjumaa",
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
-            await context.Counties.AddAsync(county);
-            
+             await context.Counties.AddAsync(county);
+             await context.SaveChangesAsync();
+
+            var city = new City()
+            {
+                Id = new Guid(),
+                CityName = "Tallinn",
+                CountyId =  context.Counties
+                    .SingleOrDefaultAsync(c => c.CountyName.Equals("Harjumaa")).Result!.Id, 
+                
+                
+            };
+            await context.Cities.AddAsync(city);
             await context.SaveChangesAsync();
+
+            
+            
+            
         }
     }
     
