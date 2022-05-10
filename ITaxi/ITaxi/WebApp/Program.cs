@@ -22,7 +22,7 @@ builder.Services.AddIdentity<AppUser, AppRole>(
     .AddDefaultTokenProviders()
     .AddDefaultUI()
     .AddEntityFrameworkStores<AppDbContext>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options => { options.ModelBinderProviders.Insert(0, new CustomLangStrBinderProvider()); });
 builder.Services.AddSingleton<IConfigureOptions<MvcOptions>,
     ConfigureModelBindingLocalization>();
 
