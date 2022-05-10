@@ -1,10 +1,11 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
+#nullable enable
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using App.DAL.EF;
+using App.Domain;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly AppDbContext _context;
+
         public IndexModel(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager, AppDbContext context)
@@ -59,19 +61,19 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             /// </summary>
             [Phone]
             [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
-            
+            public string PhoneNumber { get; set; } = default!;
+
             [StringLength(50, MinimumLength = 1)]
             [DataType(DataType.Text)]
             [Display(Name = "First Name")]
-            public string FirstName { get; set; }
-            
+            public string FirstName { get; set; } = default!;
+
             [StringLength(50, MinimumLength = 1)]
             [DataType(DataType.Text)]
             [Display(Name = "Last Name")]
-            public string LastName { get; set; }
-            
-            
+            public string LastName { get; set; } = default!;
+
+
             [EnumDataType(typeof(Gender))]
             [DisplayName(nameof(Models.Enum.Gender))]
             public Gender Gender { get; set; }
@@ -80,19 +82,25 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             [DisplayName("Date of Birth")]
             public DateTime DateOfBirth { get; set; }
 
+
+            public Photo? Photo { get; set; }
+
         }
 
         private async Task LoadAsync(AppUser user)
         {
-            
+
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             var firstname = user.FirstName;
             var lastName = user.LastName;
             var gender = user.Gender;
             var dateOfBirth = user.DateOfBirth.Date;
+            var profilePhoto = user.ProfilePhoto;
 
-            #warning Improve the profile accordingly to every type of user
+
+
+#warning Improve the profile accordingly to every type of user
             /*if (User.IsInRole(nameof(Admin)) || User.IsInRole(nameof(Driver)))
             {
                 
@@ -101,14 +109,14 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
                     
                 }
             }*/
-            
+
             /*if (User.IsInRole(nameof(Customer)))
             {
                 
             }*/
-            
-            #warning Add a profile picture uploading feature
-                
+
+#warning Add a profile picture uploading feature
+
             Username = userName;
 
             Input = new InputModel
@@ -118,8 +126,8 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
                 LastName = lastName,
                 Gender = gender,
                 DateOfBirth = dateOfBirth
-                
-                
+
+
             };
         }
 
@@ -130,7 +138,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-           
+
 
             await LoadAsync(user);
             return Page();
@@ -160,6 +168,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
+
             phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
@@ -175,6 +184,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             {
                 user.FirstName = Input.FirstName;
             }
+
             if (Input.LastName != user.LastName)
             {
                 user.LastName = Input.LastName;
@@ -183,14 +193,42 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             if (Input.Gender != user.Gender)
             {
                 user.Gender = Input.Gender;
+            } 
+            if (Input.Photo!.ProfilePhoto != user.ProfilePhoto)
+            {
+                user.ProfilePhoto = Input.Photo.ProfilePhoto;
             }
-
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
-
-            await _signInManager.RefreshSignInAsync(user);
+            if (Request.Form.Files.Count > 0)
+            {
+                IFormFile? file = Request.Form.Files.FirstOrDefault();
+                using (var dataStream = new MemoryStream())
+                {
+                    await file!.CopyToAsync(dataStream);
+                    user.ProfilePhoto = dataStream.ToArray();
+                }
             
-            StatusMessage = "Your profile has been updated";
+
+            var photo = new Photo()
+            {
+                Id = new Guid(),
+                AppUserId = user.Id,
+                ProfilePhoto = user.ProfilePhoto
+            };
+            await _context.Photos.AddAsync(photo);
+
+            
+             //_context.Users.Update(user);
+            
+
+            
+
+                await _context.SaveChangesAsync();
+                _context.Users.Update(user);
+
+                await _signInManager.RefreshSignInAsync(user);
+
+                StatusMessage = "Your profile has been updated";
+            }
             return RedirectToPage();
         }
     }

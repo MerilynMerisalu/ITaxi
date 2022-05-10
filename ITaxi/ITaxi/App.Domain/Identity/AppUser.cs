@@ -31,9 +31,11 @@ public class AppUser : BaseUser
     [DisplayName("Date of Birth")]
     public DateTime DateOfBirth { get; set; }
 
-   // [DisplayName("Photo")] public Guid? PhotoId { get; set; }
+   
 
-    [DataType(DataType.Upload)] public Photo? Photo { get; set; }
+    [Display(Name = "Profile Photo")]
+    public byte[]? ProfilePhoto { get; set; }
+
 
     [Required]
     [DataType(DataType.PhoneNumber)]
