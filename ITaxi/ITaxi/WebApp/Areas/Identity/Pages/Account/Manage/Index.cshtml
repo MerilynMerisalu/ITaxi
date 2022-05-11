@@ -11,57 +11,45 @@
 <partial name="_StatusMessage" for="StatusMessage"/>
 <div class="row">
     <div class="col-md-6">
-        <form id="profile-form" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-floating">
-                <input asp-for="Username" class="form-control" disabled/>
-                <label asp-for="Username" class="form-label"></label>
-            </div>
-            <div class="form-floating">
-                <input asp-for="Input.FirstName" class="form-control"/>
-                <label asp-for="Input.FirstName" class="form-label"></label>
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-floating">
-                <input asp-for="Input.LastName" class="form-control"/>
-                <label asp-for="Input.LastName" class="form-label"></label>
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
-            </div>
-            <div class="form-floating">
-                <select asp-for="Input.Gender" class="form-control" asp-items="Html.GetEnumSelectList<Gender>()">
-                    <option value="">Please Select</option>
-                </select>
-                <label asp-for="Input.Gender" class="form-label"></label>
-                <span asp-validation-for="Input.Gender" class="text-danger"></span>
-            </div>
-            <div class="form-floating">
-                <input asp-for="Input.DateOfBirth" class="form-control" disabled/>
-                <label asp-for="Input.DateOfBirth" class="form-label"></label>
-            </div>
-            <div class="form-floating">
-                <input asp-for="Input.PhoneNumber" class="form-control"/>
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Photo" style="width: 100%;"></label>
-                @if (Model.Input.Photo != null)
-                {
-                    <img id="photo" style="width:350px;height:350px; object-fit:cover" 
-                         src="data:image/*;base64,@Convert.ToBase64String(Model.Input.Photo.ProfilePhoto!)">
-                }
-                else
-                {
-                    <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="">
-                }
-                <input type="file"
-                       accept=".png,.jpg,.jpeg,.gif,.tif"
-                       asp-for="Input.Photo!"
-                       class="form-control"
-                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
-                       onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])"/>
-                <span asp-validation-for="Input.Photo" class="text-danger"></span>
-            </div>
+        <form id="profile-form" enctype="multipart/form-data" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-floating">
+            <input asp-for="Username" class="form-control" disabled/>
+            <label asp-for="Username" class="form-label"></label>
+        </div>
+        <div class="form-floating">
+            <input asp-for="Input.FirstName" class="form-control"/>
+            <label asp-for="Input.FirstName" class="form-label"></label>
+            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-floating">
+            <input asp-for="Input.LastName" class="form-control"/>
+            <label asp-for="Input.LastName" class="form-label"></label>
+            <span asp-validation-for="Input.LastName" class="text-danger"></span>
+        </div>
+        <div class="form-floating">
+            <select asp-for="Input.Gender" class="form-control" asp-items="Html.GetEnumSelectList<Gender>()">
+                <option value="">Please Select</option>
+            </select>
+            <label asp-for="Input.Gender" class="form-label"></label>
+            <span asp-validation-for="Input.Gender" class="text-danger"></span>
+        </div>
+        <div class="form-floating">
+            <input asp-for="Input.DateOfBirth" class="form-control" disabled/>
+            <label asp-for="Input.DateOfBirth" class="form-label"></label>
+        </div>
+        <div class="form-floating">
+            <input asp-for="Input.PhoneNumber" class="form-control"/>
+            <label asp-for="Input.PhoneNumber" class="form-label"></label>
+            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="form-floating">
+        <input asp-for="Input.ImageFile" class="form-control"/>
+        <label asp-for="Input.ImageFile" accept="image\png, image\jpeg" class="form-label"></label>
+        <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
+    </div>
+    
+            
             @if (User.IsInRole(nameof(Admin)) || User.IsInRole(nameof(Driver)))
             {
                 @*<div class="form-floating">

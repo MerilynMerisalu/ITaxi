@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Base.Domain.Identity;
+using Microsoft.AspNetCore.Http;
 using WebApp.Models.Enum;
 
 namespace App.Domain.Identity;
@@ -33,8 +35,9 @@ public class AppUser : BaseUser
 
    
 
+    [NotMapped]
     [Display(Name = "Profile Photo")]
-    public byte[]? ProfilePhoto { get; set; }
+    public IFormFile? ProfileImage{ get; set; }
 
 
     [Required]

@@ -4,6 +4,7 @@
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
@@ -83,7 +84,8 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             public DateTime DateOfBirth { get; set; }
 
 
-            public Photo? Photo { get; set; }
+            [Display(Name = "Upload Image")] public IFormFile? ImageFile { get; set; }
+
 
         }
 
@@ -96,7 +98,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             var lastName = user.LastName;
             var gender = user.Gender;
             var dateOfBirth = user.DateOfBirth.Date;
-            var profilePhoto = user.ProfilePhoto;
+            
 
 
 
@@ -125,7 +127,8 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
                 FirstName = firstname,
                 LastName = lastName,
                 Gender = gender,
-                DateOfBirth = dateOfBirth
+                DateOfBirth = dateOfBirth,
+                ImageFile = user.ProfileImage
 
 
             };
@@ -193,43 +196,28 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             if (Input.Gender != user.Gender)
             {
                 user.Gender = Input.Gender;
-            } 
-            if (Input.Photo!.ProfilePhoto != user.ProfilePhoto)
-            {
-                user.ProfilePhoto = Input.Photo.ProfilePhoto;
             }
-            if (Request.Form.Files.Count > 0)
-            {
-                IFormFile? file = Request.Form.Files.FirstOrDefault();
-                using (var dataStream = new MemoryStream())
-                {
-                    await file!.CopyToAsync(dataStream);
-                    user.ProfilePhoto = dataStream.ToArray();
-                }
             
 
-            var photo = new Photo()
-            {
-                Id = new Guid(),
-                AppUserId = user.Id,
-                ProfilePhoto = user.ProfilePhoto
-            };
-            await _context.Photos.AddAsync(photo);
 
-            
-             //_context.Users.Update(user);
-            
 
-            
 
-                await _context.SaveChangesAsync();
-                _context.Users.Update(user);
 
-                await _signInManager.RefreshSignInAsync(user);
 
-                StatusMessage = "Your profile has been updated";
-            }
+            //_context.Users.Update(user);
+
+
+
+
+            await _context.SaveChangesAsync();
+            _context.Users.Update(user);
+
+            await _signInManager.RefreshSignInAsync(user);
+
+            StatusMessage = "Your profile has been updated";
+
             return RedirectToPage();
         }
     }
 }
+
