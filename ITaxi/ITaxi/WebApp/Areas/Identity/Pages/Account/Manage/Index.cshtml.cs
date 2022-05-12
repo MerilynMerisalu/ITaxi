@@ -225,44 +225,23 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             return RedirectToPage();
         }
 
+        /// <summary>
+        /// Setting a profile image for an user
+        /// </summary>
+        /// <returns>IActionResult</returns>
         private async Task<IActionResult> SavingImage()
         {
             var user = await _userManager.GetUserAsync(User);
-            //var photo = _context.Photos.FirstOrDefault(x => x.AppUserId == user.Id);
-            //if (photo == null)
-            //    photo = new Photo();
-            string wwwRootPath = _webHostEnvironment.WebRootPath;
-            string fileName = Path.GetFileNameWithoutExtension(Input.ImageFile!.FileName);
-            string extension = Path.GetExtension(Input.ImageFile.FileName);
-            //string oldPath = Path.Combine(wwwRootPath + "/Images/" + photo.PhotoName);
-            //photo.PhotoName= fileName + DateTime.Now.ToString("yymmssfff") + extension;
-            //string path = Path.Combine(wwwRootPath + "/Images/" + photo.PhotoName);
-            //using (var fileStream = new FileStream(path,FileMode.Create))
-            //{
-            //    await Input.ImageFile.CopyToAsync(fileStream);
-            //}
-            
             using (var memoryStream = new MemoryStream())
             {
-                await Input.ImageFile.CopyToAsync(memoryStream);
+                await Input.ImageFile!.CopyToAsync(memoryStream);
                 user.ProfilePhoto = memoryStream.ToArray();
                 user.ProfilePhotoName = Path.GetFileName(Input.ImageFile.FileName);
             }
         
             _context.Users.Update(user);
             
-            //// remove the old file, if it exists
-            //if(System.IO.File.Exists(oldPath))
-            //    System.IO.File.Delete(oldPath);
-            //// Update the current UI
-            //Input.PhotoPath = photo.PhotoName;
-            //photo.Title = fileName;
-            //photo.AppUserId = user.Id;
-            //if (photo.Id == Guid.Empty)
-            //{
-            //    //Insert record
-            //    _context.Photos.Add(photo);
-            //}
+            
             
             Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
             
