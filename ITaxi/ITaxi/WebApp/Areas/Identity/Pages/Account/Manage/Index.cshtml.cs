@@ -88,7 +88,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             public DateTime DateOfBirth { get; set; }
 
 
-            [Display(Name = "Upload Image")] public IFormFile? ImageFile { get; set; }
+             public IFormFile? ImageFile { get; set; }
 
             public string PhotoPath { get; set; } = "icons8-selfies-50.png";
         }
@@ -109,7 +109,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
 
 
 
-#warning Improve the profile accordingly to every type of user
+
             /*if (User.IsInRole(nameof(Admin)) || User.IsInRole(nameof(Driver)))
             {
                 
@@ -124,7 +124,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
                 
             }*/
 
-#warning Add a profile picture uploading feature
+
 
             Username = userName;
 
@@ -232,7 +232,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             //if (photo == null)
             //    photo = new Photo();
             string wwwRootPath = _webHostEnvironment.WebRootPath;
-            string fileName = Path.GetFileNameWithoutExtension(Input.ImageFile.FileName);
+            string fileName = Path.GetFileNameWithoutExtension(Input.ImageFile!.FileName);
             string extension = Path.GetExtension(Input.ImageFile.FileName);
             //string oldPath = Path.Combine(wwwRootPath + "/Images/" + photo.PhotoName);
             //photo.PhotoName= fileName + DateTime.Now.ToString("yymmssfff") + extension;
