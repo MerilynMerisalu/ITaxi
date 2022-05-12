@@ -164,6 +164,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
+            await SavingImage();
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
@@ -201,19 +202,6 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
                 user.Gender = Input.Gender;
             }
 
-            
-
-            await CreatingAnImageToADisk(user.ProfileImage!);
-
-
-
-
-
-            
-
-
-
-
             await _context.SaveChangesAsync();
             _context.Users.Update(user);
 
@@ -223,34 +211,28 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
 
             return RedirectToPage();
         }
-        
-        #warning continue when you have implementing the profile  the userId
 
-        public async Task<IActionResult> CreatingAnImageToADisk(IFormFile imageFile)
+        private async Task<IActionResult> SavingImage()
         {
-            var photo = new Photo();
             var user = await _userManager.GetUserAsync(User);
-            
-            var wwwRootPath = _webHostEnvironment.WebRootPath;
-            if (Input.ImageFile!.Length > 0)
+            var photo = new Photo();
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+            string fileName = Path.GetFileNameWithoutExtension(Input.ImageFile.FileName);
+            string extension = Path.GetExtension(Input.ImageFile.FileName);
+            photo.PhotoName= fileName + DateTime.Now.ToString("yymmssfff") + extension;
+            string path = Path.Combine(wwwRootPath + "/Image/");
+            using (var fileStream = new FileStream(path,FileMode.Create))
             {
-                var fileName = Path.GetFileNameWithoutExtension(Input.ImageFile.FileName);
-                var fileExtension = Path.GetExtension(Input.ImageFile.FileName);
-                photo.PhotoName = $"{fileName}{DateTime.Now:g}{fileExtension}";
-                photo.Title = fileName;
-                var path = Path.Combine(wwwRootPath + "/Images/", fileName);
-
-                  using (var fileStream = new FileStream(path, FileMode.Create))
-                  {
-                      await photo.ImageFile!.CopyToAsync(fileStream);
-                  }
-
-                  photo.AppUserId = user.Id;
-                  await _context.Photos.AddAsync(photo);
-                  await _context.SaveChangesAsync();
+                await Input.ImageFile.CopyToAsync(fileStream);
             }
 
-            return RedirectToPage(nameof(Manage));
+            photo.Title = fileName;
+            photo.AppUserId = user.Id;
+            //Insert record
+            _context.Photos.Add(photo);
+            await _context.SaveChangesAsync();
+            return RedirectToPage();
+
         }
     }
 }
