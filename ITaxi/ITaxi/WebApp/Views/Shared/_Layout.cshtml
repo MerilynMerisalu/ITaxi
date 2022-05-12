@@ -21,8 +21,16 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">
+                            @Base.Resources.Views.Shared._Layout.Home
+                        </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Privacy">
+                            @Base.Resources.Views.Shared._Layout.Privacy
+                        </a>
+                    </li>
+                    
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         @Base.Resources.Views.Shared._Layout.Languages
@@ -40,7 +48,7 @@
                     
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Admin Area
+                        @Base.Resources.Views.Shared._Layout.AdminArea
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <nav class="navbar navbar-light bg-light">
@@ -128,7 +136,7 @@
                     </ul>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Driver Area
+                            @Base.Resources.Views.Shared._Layout.DriverArea
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" asp-area="AdminArea" 
@@ -159,7 +167,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Customer Area
+                            @Base.Resources.Views.Shared._Layout.CustomerArea
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
@@ -191,11 +199,11 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2022 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        &copy; 2022 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">@Base.Resources.Views.Shared._Layout.Privacy</a>
         | UI Culture: @Thread.CurrentThread.CurrentUICulture.Name 
         (@CultureInfo.CurrentUICulture.Name); 
         | Culture: @Thread.CurrentThread.CurrentCulture.Name (@CultureInfo.CurrentCulture.Name);
-        | Date: @DateTime.Now.ToString(); | Number in double format: @((123.45).ToString())
+        
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

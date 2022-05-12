@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Base.Resources.Views.Shared {
+namespace Base.Resources.Views.Home {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Base.Resources.Views.Shared {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class _Layout {
+    public class Index {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal _Layout() {
+        internal Index() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Base.Resources.Views.Shared {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Base.Resources.Views.Shared._Layout", typeof(_Layout).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Base.Resources.Views.Home.Index", typeof(Index).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,11 @@ namespace Base.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Area.
+        ///   Looks up a localized string similar to Welcome.
         /// </summary>
-        public static string AdminArea {
+        public static string Welcome {
             get {
-                return ResourceManager.GetString("AdminArea", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Customer Area.
-        /// </summary>
-        public static string CustomerArea {
-            get {
-                return ResourceManager.GetString("CustomerArea", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Driver Area.
-        /// </summary>
-        public static string DriverArea {
-            get {
-                return ResourceManager.GetString("DriverArea", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Home.
-        /// </summary>
-        public static string Home {
-            get {
-                return ResourceManager.GetString("Home", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Languages.
-        /// </summary>
-        public static string Languages {
-            get {
-                return ResourceManager.GetString("Languages", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Privacy.
-        /// </summary>
-        public static string Privacy {
-            get {
-                return ResourceManager.GetString("Privacy", resourceCulture);
+                return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
     }

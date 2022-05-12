@@ -21,4 +21,19 @@
     <data name="Languages" xml:space="preserve">
         <value>Languages</value>
     </data>
+    <data name="Home" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="AdminArea" xml:space="preserve">
+        <value>Admin Area</value>
+    </data>
+    <data name="Privacy" xml:space="preserve">
+        <value>Privacy</value>
+    </data>
+    <data name="DriverArea" xml:space="preserve">
+        <value>Driver Area</value>
+    </data>
+    <data name="CustomerArea" xml:space="preserve">
+        <value>Customer Area</value>
+    </data>
 </root>

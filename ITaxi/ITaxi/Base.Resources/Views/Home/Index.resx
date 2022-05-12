@@ -18,22 +18,7 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Languages" xml:space="preserve">
-        <value>Keele Valik</value>
-    </data>
-    <data name="Home" xml:space="preserve">
-        <value>Avaleht</value>
-    </data>
-    <data name="AdminArea" xml:space="preserve">
-        <value>Administraatori Ala</value>
-    </data>
-    <data name="Privacy" xml:space="preserve">
-        <value>Privaatsus</value>
-    </data>
-    <data name="DriverArea" xml:space="preserve">
-        <value>Autojuhi Ala</value>
-    </data>
-    <data name="CustomerArea" xml:space="preserve">
-        <value> Kliendi Ala</value>
+    <data name="Welcome" xml:space="preserve">
+        <value>Welcome</value>
     </data>
 </root>
