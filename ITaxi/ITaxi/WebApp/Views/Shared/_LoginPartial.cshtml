@@ -1,5 +1,7 @@
 @using Microsoft.AspNetCore.Identity
 @using App.Domain.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using App.DAL.EF
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 
@@ -7,8 +9,18 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-            @* <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @_userManager.GetUserAsync(User).Result.LastAndFirstName!</a> *@
+        @if (UserManager.GetUserAsync(User).Result.ProfilePhoto != null)
+        {
+            <img alt="User Profile Photo" style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="data:image/*;base64,@(Convert.ToBase64String(UserManager.GetUserAsync(User).Result.ProfilePhoto!))">
+        }
+        else
+        {
+            <img alt="Default Profile Photo" style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="~/Images/icons8-selfies-50.png">  
+        }
+        </li>
+        <li class="nav-item">
+            @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>*@
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @UserManager.GetUserAsync(User).Result.LastAndFirstName!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">

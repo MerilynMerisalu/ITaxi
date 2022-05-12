@@ -11,6 +11,7 @@ using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using WebApp.Models.Enum;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage
@@ -89,7 +90,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "Upload Image")] public IFormFile? ImageFile { get; set; }
 
-
+            public string PhotoPath { get; set; } = "icons8-selfies-50.png";
         }
 
         private async Task LoadAsync(AppUser user)
@@ -97,6 +98,9 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
 
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            //var photoPath = _context.Photos.Where(x => x.AppUserId == user.Id)
+            //    .Select(x => x.PhotoName)
+            //    .FirstOrDefault();
             var firstname = user.FirstName;
             var lastName = user.LastName;
             var gender = user.Gender;
@@ -132,9 +136,18 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
                 Gender = gender,
                 DateOfBirth = dateOfBirth,
                 ImageFile = user.ProfileImage
-
-
             };
+
+
+            if (user.ProfilePhoto != null)
+            {
+                Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
+            }
+            else
+            {
+                Input.PhotoPath = Path.Combine(_webHostEnvironment.WebRootPath + "/Images/icons8-selfies-50.png");
+            }
+            
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -215,21 +228,44 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
         private async Task<IActionResult> SavingImage()
         {
             var user = await _userManager.GetUserAsync(User);
-            var photo = new Photo();
+            //var photo = _context.Photos.FirstOrDefault(x => x.AppUserId == user.Id);
+            //if (photo == null)
+            //    photo = new Photo();
             string wwwRootPath = _webHostEnvironment.WebRootPath;
             string fileName = Path.GetFileNameWithoutExtension(Input.ImageFile.FileName);
             string extension = Path.GetExtension(Input.ImageFile.FileName);
-            photo.PhotoName= fileName + DateTime.Now.ToString("yymmssfff") + extension;
-            string path = Path.Combine(wwwRootPath + "/Image/" + fileName);
-            using (var fileStream = new FileStream(path,FileMode.Create))
+            //string oldPath = Path.Combine(wwwRootPath + "/Images/" + photo.PhotoName);
+            //photo.PhotoName= fileName + DateTime.Now.ToString("yymmssfff") + extension;
+            //string path = Path.Combine(wwwRootPath + "/Images/" + photo.PhotoName);
+            //using (var fileStream = new FileStream(path,FileMode.Create))
+            //{
+            //    await Input.ImageFile.CopyToAsync(fileStream);
+            //}
+            
+            using (var memoryStream = new MemoryStream())
             {
-                await Input.ImageFile.CopyToAsync(fileStream);
+                await Input.ImageFile.CopyToAsync(memoryStream);
+                user.ProfilePhoto = memoryStream.ToArray();
+                user.ProfilePhotoName = Path.GetFileName(Input.ImageFile.FileName);
             }
-
-            photo.Title = fileName;
-            photo.AppUserId = user.Id;
-            //Insert record
-            _context.Photos.Add(photo);
+        
+            _context.Users.Update(user);
+            
+            //// remove the old file, if it exists
+            //if(System.IO.File.Exists(oldPath))
+            //    System.IO.File.Delete(oldPath);
+            //// Update the current UI
+            //Input.PhotoPath = photo.PhotoName;
+            //photo.Title = fileName;
+            //photo.AppUserId = user.Id;
+            //if (photo.Id == Guid.Empty)
+            //{
+            //    //Insert record
+            //    _context.Photos.Add(photo);
+            //}
+            
+            Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
+            
             await _context.SaveChangesAsync();
             return RedirectToPage();
 

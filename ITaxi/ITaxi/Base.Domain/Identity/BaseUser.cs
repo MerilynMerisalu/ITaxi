@@ -29,4 +29,7 @@ public class BaseUser<TKey> : IdentityUser<TKey>
     {
         
     }
+    
+    public string ProfilePhotoName { get; set; }
+    public byte[]? ProfilePhoto { get;set; }
 }

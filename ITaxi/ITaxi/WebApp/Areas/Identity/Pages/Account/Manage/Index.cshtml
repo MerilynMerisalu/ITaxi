@@ -43,13 +43,13 @@
             <label asp-for="Input.PhoneNumber" class="form-label"></label>
             <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
         </div>
-        <div class="form-floating">
-        <input asp-for="Input.ImageFile" class="form-control"/>
-        <label asp-for="Input.ImageFile" accept="image\png, image\jpeg" class="form-label"></label>
-        <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
-    </div>
-    
-            
+            <div class="form-floating">
+                <input asp-for="Input.ImageFile" class="form-control"/>
+                <label asp-for="Input.ImageFile" accept="image\png, image\jpeg" class="form-label"></label>
+                <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
+        
+            </div>
+ 
             @if (User.IsInRole(nameof(Admin)) || User.IsInRole(nameof(Driver)))
             {
                 @*<div class="form-floating">
@@ -60,6 +60,9 @@
             }
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
         </form>
+    </div>
+    <div class="col-md-6">
+        <img alt="profile image" src="@Model.Input.PhotoPath" height="300" width="300"/>
     </div>
 </div>
 
