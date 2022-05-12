@@ -220,7 +220,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             string fileName = Path.GetFileNameWithoutExtension(Input.ImageFile.FileName);
             string extension = Path.GetExtension(Input.ImageFile.FileName);
             photo.PhotoName= fileName + DateTime.Now.ToString("yymmssfff") + extension;
-            string path = Path.Combine(wwwRootPath + "/Image/");
+            string path = Path.Combine(wwwRootPath + "/Image/" + fileName);
             using (var fileStream = new FileStream(path,FileMode.Create))
             {
                 await Input.ImageFile.CopyToAsync(fileStream);
