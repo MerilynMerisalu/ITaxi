@@ -12,6 +12,22 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser!.LastAndFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser!.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser!.Gender)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser!.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser!.Email)
+            </th>
             
             <th>
                 @Html.DisplayNameFor(model => model.DisabilityType)
@@ -23,6 +39,21 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.LastAndFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.DateOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.Email)
+            </td>
             
             <td>
                 @Html.DisplayFor(modelItem => item.DisabilityType!.DisabilityTypeName)

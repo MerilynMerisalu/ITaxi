@@ -56,6 +56,10 @@
                                 <span class="navbar-brand mb-0 h1">Admin's Section</span>
                             </div>
                         </nav>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="Admins" asp-action="Index">Admins</a>
+                        </li>
                         
                         <a class="dropdown-item" asp-area="AdminArea"
                            asp-controller="Counties"
@@ -74,16 +78,21 @@
                             </a>
                         </li>
                         <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="Drivers" asp-action="Index">Drivers</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="Customers" asp-action="Index">Customers</a>
+                        </li>
+                        <li>
                             <nav class="navbar navbar-light bg-light">
                                 <div class="container-fluid">
                                     <span class="navbar-brand mb-0 h1">Driver's Section</span>
                                 </div>
                             </nav>
                         </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Drivers" asp-action="Index">Drivers</a>
-                        </li>
+                        
                         <li>
                             <a class="dropdown-item" asp-area="AdminArea"
                                asp-controller="VehicleTypes" asp-action="Index">Vehicle Types</a>

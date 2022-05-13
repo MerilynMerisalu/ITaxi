@@ -197,7 +197,7 @@ public static class DataHelper
             };
             appUser.UserName = appUser.Email;
 
-             result = userManager!.CreateAsync(appUser, "Toomaskass123$").Result;
+             result = userManager!.CreateAsync(appUser, "Toomaskoer123$").Result;
             
             if (!result.Succeeded)
             {
@@ -333,7 +333,53 @@ public static class DataHelper
             };
             await context.RideTimes.AddAsync(rideTime);
             await context.SaveChangesAsync();
+            
+             appUser = new AppUser()
+            {
+                Id = new Guid(),
+                FirstName = "Maarika",
+                LastName = "Mätas",
+                DateOfBirth = DateTime.Parse("14.02.2001"),
+                Gender = Gender.Female,
+                Email = "maarika.matas@gmail.com",
+                EmailConfirmed = true,
+                PhoneNumber = "66357754"
 
+            };
+            appUser.UserName = appUser.Email;
+
+             result = userManager!.CreateAsync(appUser, "Maarikakass123$").Result;
+            
+            if (!result.Succeeded)
+            {
+                foreach (var identityError in result.Errors)
+                {
+                    Console.WriteLine("Cant create user! Error: " + identityError.Description);
+                }
+            }
+            result = userManager.AddToRoleAsync(appUser, "Customer").Result;
+            if (!result.Succeeded)
+            {
+                foreach (var identityError in result.Errors)
+                {
+                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
+                }
+            }
+            
+            var customer = new Customer()
+            {
+                Id = new Guid(),
+                AppUserId = context.Users.OrderBy(u => u.LastName).First(a => 
+                    a.FirstName.Equals("Maarika") && a.LastName.Equals("Mätas")).Id,
+                DisabilityTypeId = disabilityType.Id,
+                CreatedBy = "System", 
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            await context.Customers.AddAsync(customer);
+            await context.SaveChangesAsync();
+            
+
+            
         }
         
         
