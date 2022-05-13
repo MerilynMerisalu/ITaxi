@@ -378,8 +378,48 @@ public static class DataHelper
             await context.Customers.AddAsync(customer);
             await context.SaveChangesAsync();
             
+            var booking = new Booking()
+            {
+                Id = new Guid(),
+                DriverId = driver.Id,
+                VehicleId = vehicle.Id,
+                CustomerId = customer.Id,
+                CityId = city.Id,
+                ScheduleId = schedule.Id,
+                VehicleTypeId = vehicleType.Id,
+                PickupAddress = "Kalamaja 5-12",
+                DestinationAddress = "Suursõjamäe 10",
+                PickUpDateAndTime = DateTime.Now.ToUniversalTime(),
+                NumberOfPassengers = 2,
+                HasAnAssistant = true,
+                StatusOfBooking = StatusOfBooking.Awaiting,
+                CreatedBy = "System",
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            await context.Bookings.AddAsync(booking);
+            await context.SaveChangesAsync();
 
+            var drive = new Drive()
+            {
+                Id = new Guid(),
+                DriverId = driver.Id,
+                Booking = booking,
+                CreatedBy = "System",
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            await context.Drives.AddAsync(drive);
+            await context.SaveChangesAsync();
             
+            var comment = new Comment()
+            {
+                Id = new Guid(),
+                CommentText = "Jäin teenusega rahule!",
+                Drive = drive,
+                CreatedBy = "System",
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            await context.Comments.AddAsync(comment);
+            await context.SaveChangesAsync();
         }
         
         

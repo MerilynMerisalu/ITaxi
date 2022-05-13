@@ -37,7 +37,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 .ThenInclude(v => v.VehicleMark)
                 .Include(v => v.Booking)
                 .ThenInclude(v => v.Vehicle)
-                .ThenInclude(v => v.VehicleModel);
+                .ThenInclude(v => v.VehicleModel)
+                .Include(c => c.Comment);
             return View(await appDbContext.ToListAsync());
         }
 
