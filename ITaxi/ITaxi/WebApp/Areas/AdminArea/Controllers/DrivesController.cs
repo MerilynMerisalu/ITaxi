@@ -87,7 +87,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.HasAnAssistant = drive.Booking.HasAnAssistant.ToString();
             vm.NumberOfPassengers = drive.Booking.NumberOfPassengers.ToString();
             vm.LastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
-            vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
+            vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLongDateString() + " "
+                + drive.Booking.PickUpDateAndTime.ToShortTimeString();
             vm.StatusOfBooking = drive.Booking.StatusOfBooking;
             
             return View(vm);

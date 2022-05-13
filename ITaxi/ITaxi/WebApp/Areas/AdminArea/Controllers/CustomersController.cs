@@ -45,7 +45,13 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
+            
             vm.Id = customer.Id;
+            vm.LastAndFirstName = customer.AppUser!.LastAndFirstName;
+            vm.DateOfBirth = customer.AppUser.DateOfBirth.Date.ToString("d");
+            vm.Gender = customer.AppUser.Gender;
+            vm.PhoneNumber = customer.AppUser.PhoneNumber;
+            vm.Email = customer.AppUser.Email;
             vm.DisabilityTypeName = customer.DisabilityType!.DisabilityTypeName;
 
             return View(vm);

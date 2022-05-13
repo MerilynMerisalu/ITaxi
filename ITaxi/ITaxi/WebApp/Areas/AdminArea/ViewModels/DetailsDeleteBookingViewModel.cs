@@ -26,7 +26,7 @@ public class DetailsDeleteBookingViewModel
 
     [DisplayName("Pickup Date and Time")]
     [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
-    public DateTime PickUpDateAndTime { get; set; }
+    public string PickUpDateAndTime { get; set; }
     
     [DisplayName("Pickup Address")]
     public string PickupAddress { get; set; } = default!;
