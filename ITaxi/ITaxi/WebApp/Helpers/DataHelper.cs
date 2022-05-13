@@ -183,8 +183,62 @@ public static class DataHelper
             await context.SaveChangesAsync();
 
 
+             appUser = new AppUser()
+            {
+                Id = new Guid(),
+                FirstName = "Toomas",
+                LastName = "Paju",
+                DateOfBirth = DateTime.Parse("23.06.1988"),
+                Gender = Gender.Male,
+                Email = "toomas.paju@gmail.com",
+                EmailConfirmed = true,
+                PhoneNumber = "55358834"
 
+            };
+            appUser.UserName = appUser.Email;
 
+             result = userManager!.CreateAsync(appUser, "Toomaskass123$").Result;
+            
+            if (!result.Succeeded)
+            {
+                foreach (var identityError in result.Errors)
+                {
+                    Console.WriteLine("Cant create user! Error: " + identityError.Description);
+                }
+            }
+            result = userManager.AddToRoleAsync(appUser, "Driver").Result;
+            if (!result.Succeeded)
+            {
+                foreach (var identityError in result.Errors)
+                {
+                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
+                }
+            }
+            
+            result = userManager.AddToRoleAsync(appUser, "Driver").Result;
+            if (!result.Succeeded)
+            {
+                foreach (var identityError in result.Errors)
+                {
+                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
+                }
+            }
+            var driver = new Driver()
+            {
+                Id = new Guid(),
+                AppUserId = context.Users.OrderBy(u => u.LastName).First(a => 
+                    a.FirstName.Equals("Toomas") && a.LastName.Equals("Paju")).Id,
+                CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
+                PersonalIdentifier = "38806237921",
+                DriverLicenseNumber = "AAC 123",
+                DriverLicenseExpiryDate = DateTime.Parse("22.09.2026"),
+                Address = "Veerenni 13", 
+                CreatedBy = "System", 
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            await context.Drivers.AddAsync(driver);
+            await context.SaveChangesAsync();
+            
             var driverLicenseCategory = new DriverLicenseCategory()
             {
                 Id = new Guid(),
@@ -193,6 +247,14 @@ public static class DataHelper
             };
 
             await context.DriverLicenseCategories.AddAsync(driverLicenseCategory);
+            await context.SaveChangesAsync();
+
+            var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory()
+            {
+                DriverId = driver.Id,
+                DriverLicenseCategoryId = driverLicenseCategory.Id
+            };
+            await context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategory);
             await context.SaveChangesAsync();
 
             var disabilityType = new DisabilityType()
