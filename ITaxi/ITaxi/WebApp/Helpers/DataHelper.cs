@@ -109,7 +109,8 @@ public static class DataHelper
             {
                 Id = new Guid(),
                 CountyName = "Harjumaa",
-                CreatedAt = DateTime.Now.ToUniversalTime()
+                CreatedAt = DateTime.Now.ToUniversalTime(),
+                CreatedBy = "System"
             };
              await context.Counties.AddAsync(county);
              await context.SaveChangesAsync();
@@ -118,10 +119,9 @@ public static class DataHelper
             {
                 Id = new Guid(),
                 CityName = "Tallinn",
-                CountyId =  context.Counties
-                    .SingleOrDefaultAsync(c => c.CountyName.Equals("Harjumaa")).Result!.Id, 
-                CreatedAt = DateTime.Now.ToUniversalTime()
-                
+                CountyId =  county.Id,
+                CreatedAt = DateTime.Now.ToUniversalTime(),
+                CreatedBy = "System"
             };
             await context.Cities.AddAsync(city);
             await context.SaveChangesAsync();
@@ -283,8 +283,37 @@ public static class DataHelper
             };
             await context.VehicleMarks.AddAsync(vehicleMark);
             await context.SaveChangesAsync();
+            var vehicleModel = new VehicleModel()
+            {
+                Id = new Guid(),
+                VehicleModelName = "Avensis",
+                VehicleMarkId = vehicleMark.Id,
+                CreatedAt = DateTime.Now.ToUniversalTime(),
+                CreatedBy = "System"
+            };
+            await context.VehicleModels.AddAsync(vehicleModel);
+            await context.SaveChangesAsync();
+
+            var vehicle = new Vehicle()
+            {
+                Id = new Guid(),
+                DriverId = driver.Id,
+                VehicleMarkId = vehicleMark.Id,
+                VehicleTypeId = vehicleType.Id,
+                VehicleModelId = vehicleModel.Id,
+                ManufactureYear = 2020,
+                NumberOfSeats = 4,
+                VehiclePlateNumber = "139 AAC",
+                VehicleAvailability = VehicleAvailability.Available,
+                CreatedAt = DateTime.Now.ToUniversalTime(),
+                CreatedBy = "System"
+            };
+            await context.Vehicles.AddAsync(vehicle);
+            await context.SaveChangesAsync();
 
         }
+        
+        
     }
     
 }
