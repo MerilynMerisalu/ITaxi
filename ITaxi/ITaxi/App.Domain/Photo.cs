@@ -17,7 +17,7 @@ public class Photo: DomainEntityMetaId
     [Required]
     [MaxLength(255)]
     [StringLength(255)]
-    public string PhotoName { get; set; } = default!;
+    public string? PhotoName { get; set; } 
     
     public Guid? AppUserId { get; set; }
     public AppUser? AppUser { get; set; }

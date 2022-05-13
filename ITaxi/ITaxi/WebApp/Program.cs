@@ -53,8 +53,9 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     };
 });
 var app = builder.Build();
-
 await DataHelper.SetupAppData(app, app.Environment, app.Configuration);
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
