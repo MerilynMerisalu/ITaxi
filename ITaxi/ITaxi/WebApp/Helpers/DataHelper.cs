@@ -311,6 +311,29 @@ public static class DataHelper
             await context.Vehicles.AddAsync(vehicle);
             await context.SaveChangesAsync();
 
+            var schedule = new Schedule()
+            {
+                Id = new Guid(),
+                DriverId = driver.Id,
+                VehicleId = vehicle.Id,
+                StartDateAndTime = DateTime.Now.AddHours(10),
+                EndDateAndTime = DateTime.Now.AddHours(18),
+                CreatedBy = "System",
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            await context.Schedules.AddAsync(schedule);
+            await context.SaveChangesAsync();
+
+            var rideTime = new RideTime()
+            {
+                ScheduleId = schedule.Id,
+                RideDateTime = schedule.StartDateAndTime.AddMinutes(45),
+                CreatedBy = "System",
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            await context.RideTimes.AddAsync(rideTime);
+            await context.SaveChangesAsync();
+
         }
         
         
