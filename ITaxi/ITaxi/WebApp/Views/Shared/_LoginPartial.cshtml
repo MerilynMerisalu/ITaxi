@@ -11,6 +11,7 @@
         <li class="nav-item">
         @if (UserManager.GetUserAsync(User).Result.ProfilePhoto != null)
         {
+            
             <img alt="User Profile Photo" style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="data:image/*;base64,@(Convert.ToBase64String(UserManager.GetUserAsync(User).Result.ProfilePhoto!))">
         }
         else
@@ -20,27 +21,31 @@
         </li>
         <li class="nav-item">
             @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>*@
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @UserManager.GetUserAsync(User).Result.LastAndFirstName!</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                
+                @String.Format(@Base.Resources.Views.Shared._LoginPartial.GreetingLoggedInUser,
+                       @UserManager.GetUserAsync(User).Result.LastAndFirstName + "!") 
+            </a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                <button type="submit" class="nav-link btn btn-link text-dark">@Base.Resources.Views.Shared._LoginPartial.Logout</button>
             </form>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterAdmin">Register Admin</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterAdmin">@Base.Resources.Views.Shared._LoginPartial.RegisterAdmin</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterDriver">Register Driver</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterDriver">@Base.Resources.Views.Shared._LoginPartial.RegisterDriver</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterCustomer">Register Customer</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterCustomer">@Base.Resources.Views.Shared._LoginPartial.RegisterCustomer</a>
         </li>
              <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">@Base.Resources.Views.Shared._LoginPartial.Login</a>
         </li>
     }
 </ul>
