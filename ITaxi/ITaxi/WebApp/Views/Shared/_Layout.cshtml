@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using App.Domain
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,235 +12,249 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebApp</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">
-                            @Base.Resources.Views.Shared._Layout.Home
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Privacy">
-                            @Base.Resources.Views.Shared._Layout.Privacy
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        @Base.Resources.Views.Shared._Layout.Languages
-                    </a>
-                    
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <nav class="nav-item">
-                        <a class="dropdown-item">
-                            <partial name="_LanguageSelection"/>
-                        </a>
-                        
-                    </nav>
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+<div class="container-fluid">
+<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebApp</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<li class="nav-item">
+    <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">
+        @Base.Resources.Views.Shared._Layout.Home
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Privacy">
+        @Base.Resources.Views.Shared._Layout.Privacy
+    </a>
+</li>
 
-                    </ul>
-                    
-                    <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        @App.Resources.Areas.WebApp.Views.Shared._Layout.AdminArea
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <nav class="navbar navbar-light bg-light">
-                            <div class="container-fluid">
-                                <span class="navbar-brand mb-0 h1">@App.Resources.Areas.WebApp.Views.Shared._Layout.AdminSection</span>
-                            </div>
-                        </nav>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Admins" asp-action="Index">@App.Resources.Areas.WebApp.Views.Shared._Layout.Admins</a>
-                        </li>
-                        
-                        <a class="dropdown-item" asp-area="AdminArea"
-                           asp-controller="Counties"
-                           asp-action="Index">
-                            @App.Resources.Areas.WebApp.Views.Shared._Layout.Counties
-                        </a>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Cities" asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Cities
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea" 
-                               asp-controller="DriverLicenseCategories"
-                               asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.DriverLicenseCategories
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Drivers" asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Drivers
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Customers" asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Customers
-                            </a>
-                        </li>
-                        <li>
-                            <nav class="navbar navbar-light bg-light">
-                                <div class="container-fluid">
-                                    <span class="navbar-brand mb-0 h1">
-                                        @App.Resources.Areas.WebApp.Views.Shared._Layout.DriverSection
-                                    </span>
-                                </div>
-                            </nav>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="VehicleTypes" asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.VehicleTypes
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="VehicleMarks" asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.VehicleMarks
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="VehicleModels" asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.VehicleModels
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Vehicles" asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Vehicles
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Schedules" asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Schedules
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="RideTimes" asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.RideTimes
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Drives" asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Drives
-                            </a>
-                        </li>
-                        <li>
-                            <nav class="navbar navbar-light bg-light">
-                                <div class="container-fluid">
-                                    <span class="navbar-brand mb-0 h1">
-                                        @App.Resources.Areas.WebApp.Views.Shared._Layout.CustomerSection
-                                    </span>
-                                </div>
-                            </nav>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="DisabilityTypes" asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.DisabilityTypes
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Bookings" asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Bookings
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Comments" asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Comments
-                            </a>
-                        </li>
-                        
-                        
-                    </ul>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            @App.Resources.Areas.WebApp.Views.Shared._Layout.DriverArea
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" asp-area="AdminArea" 
-                               asp-controller="DriverLicenseCategories"
-                               asp-action="Index">
-                                @App.Resources.Areas.WebApp.Views.Shared._Layout.DriverLicenseCategories
-                            </a>
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Vehicles" asp-action="Index">
-                                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Vehicles
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Schedules" asp-action="Index">
-                                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Schedules
-                                </a>
-                            </li>
-                            
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="RideTimes" asp-action="Index">
-                                    @App.Resources.Areas.WebApp.Views.Shared._Layout.RideTimes
-                                </a>
-                            </li>
-                            
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Drives" asp-action="Index">
-                                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Drives
-                                </a>
-                            </li>
-                            
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            @App.Resources.Areas.WebApp.Views.Shared._Layout.CustomerArea
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Bookings" asp-action="Index">
-                                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Bookings
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Comments" asp-action="Index">
-                                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Comments
-                                </a>
-                            </li>
-                            
-                        </ul>
-                    </li>
-                    
-                    
-                    
-                </ul>
-            </div>
-            <partial name="_LoginPartial"/>
-        </div>
-        
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    @Base.Resources.Views.Shared._Layout.Languages
+</a>
+
+<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <nav class="nav-item">
+        <a class="dropdown-item">
+            <partial name="_LanguageSelection"/>
+        </a>
+
     </nav>
+
+</ul>
+@if (User.Identity!.IsAuthenticated && User.IsInRole(nameof(Admin)))
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            @App.Resources.Areas.WebApp.Views.Shared._Layout.AdminArea
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            @if (User.Identity!.IsAuthenticated && User.IsInRole(nameof(Admin)))
+            {
+                <nav class="navbar navbar-light bg-light">
+                    <div class="container-fluid">
+                        <span class="navbar-brand mb-0 h1">@App.Resources.Areas.WebApp.Views.Shared._Layout.AdminSection</span>
+                    </div>
+                </nav>
+                <li>
+                    <a class="dropdown-item" asp-area="AdminArea"
+                       asp-controller="Admins" asp-action="Index">
+                        @App.Resources.Areas.WebApp.Views.Shared._Layout.Admins
+                    </a>
+                </li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="Counties"
+                   asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Counties
+                </a>
+                <li>
+                    <a class="dropdown-item" asp-area="AdminArea"
+                       asp-controller="Cities" asp-action="Index">
+                        @App.Resources.Areas.WebApp.Views.Shared._Layout.Cities
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-area="AdminArea"
+                       asp-controller="DriverLicenseCategories"
+                       asp-action="Index">
+                        @App.Resources.Areas.WebApp.Views.Shared._Layout.DriverLicenseCategories
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-area="AdminArea"
+                       asp-controller="Drivers" asp-action="Index">
+                        @App.Resources.Areas.WebApp.Views.Shared._Layout.Drivers
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-area="AdminArea"
+                       asp-controller="Customers" asp-action="Index">
+                        @App.Resources.Areas.WebApp.Views.Shared._Layout.Customers
+                    </a>
+                </li>
+            }
+            <li>
+                <nav class="navbar navbar-light bg-light">
+                    <div class="container-fluid">
+                        <span class="navbar-brand mb-0 h1">
+                            @App.Resources.Areas.WebApp.Views.Shared._Layout.DriverSection
+                        </span>
+                    </div>
+                </nav>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="VehicleTypes" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.VehicleTypes
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="VehicleMarks" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.VehicleMarks
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="VehicleModels" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.VehicleModels
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="Vehicles" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Vehicles
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="Schedules" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Schedules
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="RideTimes" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.RideTimes
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="Drives" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Drives
+                </a>
+            </li>
+            <li>
+                <nav class="navbar navbar-light bg-light">
+                    <div class="container-fluid">
+                        <span class="navbar-brand mb-0 h1">
+                            @App.Resources.Areas.WebApp.Views.Shared._Layout.CustomerSection
+                        </span>
+                    </div>
+                </nav>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="DisabilityTypes" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.DisabilityTypes
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="Bookings" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Bookings
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="Comments" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Comments
+                </a>
+            </li>
+
+
+        </ul>
+    </li>
+}
+
+@if (User.Identity!.IsAuthenticated && User.IsInRole(nameof(Driver)))
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            @App.Resources.Areas.WebApp.Views.Shared._Layout.DriverArea
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" asp-area="AdminArea"
+               asp-controller="DriverLicenseCategories"
+               asp-action="Index">
+                @App.Resources.Areas.WebApp.Views.Shared._Layout.DriverLicenseCategories
+            </a>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="Vehicles" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Vehicles
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="Schedules" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Schedules
+                </a>
+            </li>
+
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="RideTimes" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.RideTimes
+                </a>
+            </li>
+
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="Drives" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Drives
+                </a>
+            </li>
+
+        </ul>
+    </li>
+}
+
+@if (User.Identity!.IsAuthenticated && User.IsInRole(nameof(Customer)))
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            @App.Resources.Areas.WebApp.Views.Shared._Layout.CustomerArea
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="Bookings" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Bookings
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="Comments" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Comments
+                </a>
+            </li>
+
+        </ul>
+    </li>
+}
+
+
+</ul>
+</div>
+<partial name="_LoginPartial"/>
+</div>
+
+</nav>
 </header>
 <div class="container">
     <main role="main" class="pb-3">
@@ -250,10 +265,10 @@
 <footer class="border-top footer text-muted">
     <div class="container">
         &copy; 2022 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">@Base.Resources.Views.Shared._Layout.Privacy</a>
-        | UI Culture: @Thread.CurrentThread.CurrentUICulture.Name 
-        (@CultureInfo.CurrentUICulture.Name); 
+        | UI Culture: @Thread.CurrentThread.CurrentUICulture.Name
+        (@CultureInfo.CurrentUICulture.Name);
         | Culture: @Thread.CurrentThread.CurrentCulture.Name (@CultureInfo.CurrentCulture.Name);
-        
+
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
