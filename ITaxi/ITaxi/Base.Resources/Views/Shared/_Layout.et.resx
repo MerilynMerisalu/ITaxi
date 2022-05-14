@@ -24,16 +24,7 @@
     <data name="Home" xml:space="preserve">
         <value>Avaleht</value>
     </data>
-    <data name="AdminArea" xml:space="preserve">
-        <value>Administraatori Ala</value>
-    </data>
     <data name="Privacy" xml:space="preserve">
         <value>Privaatsus</value>
-    </data>
-    <data name="DriverArea" xml:space="preserve">
-        <value>Autojuhi Ala</value>
-    </data>
-    <data name="CustomerArea" xml:space="preserve">
-        <value> Kliendi Ala</value>
     </data>
 </root>

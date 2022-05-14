@@ -61,33 +61,6 @@ namespace Base.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Area.
-        /// </summary>
-        public static string AdminArea {
-            get {
-                return ResourceManager.GetString("AdminArea", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Customer Area.
-        /// </summary>
-        public static string CustomerArea {
-            get {
-                return ResourceManager.GetString("CustomerArea", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Driver Area.
-        /// </summary>
-        public static string DriverArea {
-            get {
-                return ResourceManager.GetString("DriverArea", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string Home {

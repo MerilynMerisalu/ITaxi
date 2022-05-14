@@ -15,6 +15,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>County.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Areas\WebApp\Views\Shared\_Layout.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -27,6 +31,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>County.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Areas\WebApp\Views\Shared\_Layout.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>_Layout.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

@@ -48,144 +48,185 @@
                     
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        @Base.Resources.Views.Shared._Layout.AdminArea
+                        @App.Resources.Areas.WebApp.Views.Shared._Layout.AdminArea
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <nav class="navbar navbar-light bg-light">
                             <div class="container-fluid">
-                                <span class="navbar-brand mb-0 h1">Admin's Section</span>
+                                <span class="navbar-brand mb-0 h1">@App.Resources.Areas.WebApp.Views.Shared._Layout.AdminSection</span>
                             </div>
                         </nav>
                         <li>
                             <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Admins" asp-action="Index">Admins</a>
+                               asp-controller="Admins" asp-action="Index">@App.Resources.Areas.WebApp.Views.Shared._Layout.Admins</a>
                         </li>
                         
                         <a class="dropdown-item" asp-area="AdminArea"
                            asp-controller="Counties"
                            asp-action="Index">
-                            Counties
+                            @App.Resources.Areas.WebApp.Views.Shared._Layout.Counties
                         </a>
                         <li>
                             <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Cities" asp-action="Index">Cities</a>
+                               asp-controller="Cities" asp-action="Index">
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Cities
+                            </a>
                         </li>
                         <li>
                             <a class="dropdown-item" asp-area="AdminArea" 
                                asp-controller="DriverLicenseCategories"
                                asp-action="Index">
-                                Driver License Categories
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.DriverLicenseCategories
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Drivers" asp-action="Index">Drivers</a>
+                               asp-controller="Drivers" asp-action="Index">
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Drivers
+                            </a>
                         </li>
                         <li>
                             <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Customers" asp-action="Index">Customers</a>
+                               asp-controller="Customers" asp-action="Index">
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Customers
+                            </a>
                         </li>
                         <li>
                             <nav class="navbar navbar-light bg-light">
                                 <div class="container-fluid">
-                                    <span class="navbar-brand mb-0 h1">Driver's Section</span>
-                                </div>
-                            </nav>
-                        </li>
-                        
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="VehicleTypes" asp-action="Index">Vehicle Types</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="VehicleMarks" asp-action="Index">Vehicle Marks</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="VehicleModels" asp-action="Index">Vehicle Models</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Vehicles" asp-action="Index">Vehicles</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Schedules" asp-action="Index">Schedules</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="RideTimes" asp-action="Index">Ride Times</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Drives" asp-action="Index">Drives</a>
-                        </li>
-                        <li>
-                            <nav class="navbar navbar-light bg-light">
-                                <div class="container-fluid">
-                                    <span class="navbar-brand mb-0 h1">Customer's Section</span>
+                                    <span class="navbar-brand mb-0 h1">
+                                        @App.Resources.Areas.WebApp.Views.Shared._Layout.DriverSection
+                                    </span>
                                 </div>
                             </nav>
                         </li>
                         <li>
                             <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="DisabilityTypes" asp-action="Index">Disability Types</a>
+                               asp-controller="VehicleTypes" asp-action="Index">
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.VehicleTypes
+                            </a>
                         </li>
                         <li>
                             <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Bookings" asp-action="Index">Bookings</a>
+                               asp-controller="VehicleMarks" asp-action="Index">
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.VehicleMarks
+                            </a>
                         </li>
                         <li>
                             <a class="dropdown-item" asp-area="AdminArea"
-                               asp-controller="Comments" asp-action="Index">Comments</a>
+                               asp-controller="VehicleModels" asp-action="Index">
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.VehicleModels
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="Vehicles" asp-action="Index">
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Vehicles
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="Schedules" asp-action="Index">
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Schedules
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="RideTimes" asp-action="Index">
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.RideTimes
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="Drives" asp-action="Index">
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Drives
+                            </a>
+                        </li>
+                        <li>
+                            <nav class="navbar navbar-light bg-light">
+                                <div class="container-fluid">
+                                    <span class="navbar-brand mb-0 h1">
+                                        @App.Resources.Areas.WebApp.Views.Shared._Layout.CustomerSection
+                                    </span>
+                                </div>
+                            </nav>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="DisabilityTypes" asp-action="Index">
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.DisabilityTypes
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="Bookings" asp-action="Index">
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Bookings
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" asp-area="AdminArea"
+                               asp-controller="Comments" asp-action="Index">
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.Comments
+                            </a>
                         </li>
                         
                         
                     </ul>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            @Base.Resources.Views.Shared._Layout.DriverArea
+                            @App.Resources.Areas.WebApp.Views.Shared._Layout.DriverArea
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" asp-area="AdminArea" 
                                asp-controller="DriverLicenseCategories"
                                asp-action="Index">
-                                Driver License Categories
+                                @App.Resources.Areas.WebApp.Views.Shared._Layout.DriverLicenseCategories
                             </a>
                             <li>
                                 <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Vehicles" asp-action="Index">Vehicles</a>
+                                   asp-controller="Vehicles" asp-action="Index">
+                                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Vehicles
+                                </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Schedules" asp-action="Index">Schedules</a>
+                                   asp-controller="Schedules" asp-action="Index">
+                                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Schedules
+                                </a>
                             </li>
                             
                             <li>
                                 <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="RideTimes" asp-action="Index">Ride Times</a>
+                                   asp-controller="RideTimes" asp-action="Index">
+                                    @App.Resources.Areas.WebApp.Views.Shared._Layout.RideTimes
+                                </a>
                             </li>
                             
                             <li>
                                 <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Drives" asp-action="Index">Drives</a>
+                                   asp-controller="Drives" asp-action="Index">
+                                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Drives
+                                </a>
                             </li>
                             
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            @Base.Resources.Views.Shared._Layout.CustomerArea
+                            @App.Resources.Areas.WebApp.Views.Shared._Layout.CustomerArea
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
                                 <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Bookings" asp-action="Index">Bookings</a>
+                                   asp-controller="Bookings" asp-action="Index">
+                                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Bookings
+                                </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" asp-area="AdminArea"
-                                   asp-controller="Comments" asp-action="Index">Comments</a>
+                                   asp-controller="Comments" asp-action="Index">
+                                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Comments
+                                </a>
                             </li>
                             
                         </ul>
