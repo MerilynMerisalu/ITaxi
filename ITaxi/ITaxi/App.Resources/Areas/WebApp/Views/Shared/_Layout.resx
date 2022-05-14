@@ -19,13 +19,13 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="DriverArea" xml:space="preserve">
-        <value>Driver Area</value>
+        <value>Activities</value>
     </data>
     <data name="CustomerArea" xml:space="preserve">
-        <value>Customer Area</value>
+        <value>Activities</value>
     </data>
     <data name="AdminArea" xml:space="preserve">
-        <value>Admin Area</value>
+        <value>Activities</value>
     </data>
     <data name="Admins" xml:space="preserve">
         <value>Admins</value>
