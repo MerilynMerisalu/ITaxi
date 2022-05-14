@@ -40,13 +40,19 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterAdmin">@Base.Resources.Views.Shared._LoginPartial.RegisterAdmin</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterAdmin">
+                @App.Resources.Areas.WebApp.Views.Shared._LoginPartial.RegisterAdmin
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterDriver">@Base.Resources.Views.Shared._LoginPartial.RegisterDriver</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterDriver">
+                @App.Resources.Areas.WebApp.Views.Shared._LoginPartial.RegisterDriver
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterCustomer">@Base.Resources.Views.Shared._LoginPartial.RegisterCustomer</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterCustomer">
+                @App.Resources.Areas.WebApp.Views.Shared._LoginPartial.RegisterCustomer
+            </a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">@Base.Resources.Views.Shared._LoginPartial.Login</a>

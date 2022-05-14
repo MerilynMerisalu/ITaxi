@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Base.Resources.Views.Shared {
+namespace App.Resources.Areas.WebApp.Views.Shared {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Base.Resources.Views.Shared {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Base.Resources.Views.Shared._LoginPartial", typeof(_LoginPartial).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("App.Resources.Areas.WebApp.Views.Shared._LoginPartial", typeof(_LoginPartial).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,29 @@ namespace Base.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hello, {0}.
+        ///   Looks up a localized string similar to Register Admin.
         /// </summary>
-        public static string GreetingLoggedInUser {
+        public static string RegisterAdmin {
             get {
-                return ResourceManager.GetString("GreetingLoggedInUser", resourceCulture);
+                return ResourceManager.GetString("RegisterAdmin", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Login.
+        ///   Looks up a localized string similar to Register Customer.
         /// </summary>
-        public static string Login {
+        public static string RegisterCustomer {
             get {
-                return ResourceManager.GetString("Login", resourceCulture);
+                return ResourceManager.GetString("RegisterCustomer", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logout.
+        ///   Looks up a localized string similar to Register Driver.
         /// </summary>
-        public static string Logout {
+        public static string RegisterDriver {
             get {
-                return ResourceManager.GetString("Logout", resourceCulture);
+                return ResourceManager.GetString("RegisterDriver", resourceCulture);
             }
         }
     }

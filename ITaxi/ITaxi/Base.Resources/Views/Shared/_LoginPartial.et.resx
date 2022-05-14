@@ -17,16 +17,7 @@
     <data name="Logout" xml:space="preserve">
         <value>Logi Välja</value>
     </data>
-    <data name="RegisterAdmin" xml:space="preserve">
-        <value>Administraatori Registeerimine</value>
-    </data>
-    <data name="RegisterDriver" xml:space="preserve">
-        <value>Autojuhi Registreerimine</value>
-    </data>
     <data name="Login" xml:space="preserve">
         <value>Logi Sisse</value>
-    </data>
-    <data name="RegisterCustomer" xml:space="preserve">
-        <value>Kasutaja Registreerimine</value>
     </data>
 </root>
