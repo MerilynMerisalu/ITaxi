@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Areas\Identity\Pages\Account\Login.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Login.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Update="Areas\App.Domain\AdminArea\County.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>County.Designer.cs</LastGenOutput>
@@ -26,11 +22,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Areas\Identity\Pages\Account\Login.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Login.resx</DependentUpon>
-      </Compile>
       <Compile Update="Areas\App.Domain\AdminArea\County.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
@@ -46,6 +37,10 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>_LoginPartial.resx</DependentUpon>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Areas\Identity\Pages\Account" />
     </ItemGroup>
 
     

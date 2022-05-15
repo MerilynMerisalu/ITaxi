@@ -18,7 +18,28 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="LogIn" xml:space="preserve">
+        <value>Log In</value>
+    </data>
     <data name="UseALocalAccountToLogIn" xml:space="preserve">
-        <value>Use a local account to log in.</value>
+        <value>Use a Local Account to Log In</value>
+    </data>
+    <data name="Email" xml:space="preserve">
+        <value>Email</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="RememberMe" xml:space="preserve">
+        <value>Remember me?</value>
+    </data>
+    <data name="ForgotYourPassword" xml:space="preserve">
+        <value>Forgot your Password?</value>
+    </data>
+    <data name="ResendEmailConfirmation" xml:space="preserve">
+        <value>Resend email confirmation</value>
+    </data>
+    <data name="UseAnotherServiceToLogIn" xml:space="preserve">
+        <value>Use another service to log in</value>
     </data>
 </root>

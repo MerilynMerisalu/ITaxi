@@ -27,6 +27,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>_LoginPartial.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Identity\Pages\Login.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Login.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
       
       
     </ItemGroup>
@@ -51,6 +55,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>_LoginPartial.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Identity\Pages\Login.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Login.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
