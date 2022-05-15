@@ -19,13 +19,22 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="LogIn" xml:space="preserve">
-        <value>Log In</value>
-    </data>
-    <data name="UseALocalAccountToLogIn" xml:space="preserve">
-        <value>Use a Local Account to Log In</value>
+        <value>Log in</value>
     </data>
     <data name="Email" xml:space="preserve">
         <value>Email</value>
+    </data>
+    <data name="ForgotPassword" xml:space="preserve">
+        <value>Forgot your password?</value>
+    </data>
+    <data name="InvalidLoginAttempt" xml:space="preserve">
+        <value>Invalid login attempt.</value>
+    </data>
+    <data name="LogInThirdParty" xml:space="preserve">
+        <value>Use another service to log in.</value>
+    </data>
+    <data name="NoThirdParty" xml:space="preserve">
+        <value>There are no external authentication services configured.</value>
     </data>
     <data name="Password" xml:space="preserve">
         <value>Password</value>
@@ -33,13 +42,13 @@
     <data name="RememberMe" xml:space="preserve">
         <value>Remember me?</value>
     </data>
-    <data name="ForgotYourPassword" xml:space="preserve">
-        <value>Forgot your Password?</value>
-    </data>
-    <data name="ResendEmailConfirmation" xml:space="preserve">
+    <data name="ResendEmail" xml:space="preserve">
         <value>Resend email confirmation</value>
     </data>
-    <data name="UseAnotherServiceToLogIn" xml:space="preserve">
-        <value>Use another service to log in</value>
+    <data name="RegisterNewUser" xml:space="preserve">
+        <value>Register as a new user</value>
+    </data>
+    <data name="UseLocalAccount" xml:space="preserve">
+        <value>Use a local account to log in.</value>
     </data>
 </root>

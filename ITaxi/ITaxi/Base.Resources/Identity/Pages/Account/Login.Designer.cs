@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Base.Resources.Identity.Pages {
+namespace Base.Resources.Identity.Pages.Account {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Base.Resources.Identity.Pages {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Base.Resources.Identity.Pages.Login", typeof(Login).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Base.Resources.Identity.Pages.Account.Login", typeof(Login).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -70,20 +70,47 @@ namespace Base.Resources.Identity.Pages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forgot your Password?.
+        ///   Looks up a localized string similar to Forgot your password?.
         /// </summary>
-        public static string ForgotYourPassword {
+        public static string ForgotPassword {
             get {
-                return ResourceManager.GetString("ForgotYourPassword", resourceCulture);
+                return ResourceManager.GetString("ForgotPassword", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Log In.
+        ///   Looks up a localized string similar to Invalid login attempt..
+        /// </summary>
+        public static string InvalidLoginAttempt {
+            get {
+                return ResourceManager.GetString("InvalidLoginAttempt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log in.
         /// </summary>
         public static string LogIn {
             get {
                 return ResourceManager.GetString("LogIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use another service to log in..
+        /// </summary>
+        public static string LogInThirdParty {
+            get {
+                return ResourceManager.GetString("LogInThirdParty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no external authentication services configured..
+        /// </summary>
+        public static string NoThirdParty {
+            get {
+                return ResourceManager.GetString("NoThirdParty", resourceCulture);
             }
         }
         
@@ -93,6 +120,15 @@ namespace Base.Resources.Identity.Pages {
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register as a new user.
+        /// </summary>
+        public static string RegisterNewUser {
+            get {
+                return ResourceManager.GetString("RegisterNewUser", resourceCulture);
             }
         }
         
@@ -108,27 +144,18 @@ namespace Base.Resources.Identity.Pages {
         /// <summary>
         ///   Looks up a localized string similar to Resend email confirmation.
         /// </summary>
-        public static string ResendEmailConfirmation {
+        public static string ResendEmail {
             get {
-                return ResourceManager.GetString("ResendEmailConfirmation", resourceCulture);
+                return ResourceManager.GetString("ResendEmail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use a Local Account to Log In.
+        ///   Looks up a localized string similar to Use a local account to log in..
         /// </summary>
-        public static string UseALocalAccountToLogIn {
+        public static string UseLocalAccount {
             get {
-                return ResourceManager.GetString("UseALocalAccountToLogIn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use another service to log in.
-        /// </summary>
-        public static string UseAnotherServiceToLogIn {
-            get {
-                return ResourceManager.GetString("UseAnotherServiceToLogIn", resourceCulture);
+                return ResourceManager.GetString("UseLocalAccount", resourceCulture);
             }
         }
     }
