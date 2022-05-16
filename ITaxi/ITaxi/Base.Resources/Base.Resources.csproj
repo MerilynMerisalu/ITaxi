@@ -35,6 +35,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Login.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Identity\Pages\Account\ForgotPassword.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>ForgotPassword.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
       
       
     </ItemGroup>
@@ -69,6 +73,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Login.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Identity\Pages\Account\ForgotPassword.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ForgotYourPassword.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
