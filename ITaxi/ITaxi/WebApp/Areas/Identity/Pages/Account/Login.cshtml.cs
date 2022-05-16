@@ -65,16 +65,20 @@ namespace WebApp.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessageResourceType = typeof(Base.Resources.Common), 
+                ErrorMessageResourceName = "RequiredAttributeErrorMessage" )]
+            [EmailAddress(ErrorMessageResourceType = typeof(Base.Resources.Common)
+            , ErrorMessageResourceName = "ErrorMessageEmail")]
             [Display(ResourceType = typeof(Base.Resources.Identity.Pages.Account.Login), Name = nameof(Email))]
+
             public string Email { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessageResourceType = typeof(Base.Resources.Common)
+            , ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
             [DataType(DataType.Password)]
             [Display(ResourceType = typeof(Base.Resources.Identity.Pages.Account.Login), Name = nameof(Password))]
             public string Password { get; set; }
