@@ -79,6 +79,195 @@ namespace Base.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Details.
+        /// </summary>
+        public static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value &apos;{0}&apos; is not valid for {1}..
+        /// </summary>
+        public static string ErrorMessageAttemptedValueIsInvalid {
+            get {
+                return ResourceManager.GetString("ErrorMessageAttemptedValueIsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} field is not a valid e-mail address..
+        /// </summary>
+        public static string ErrorMessageEmail {
+            get {
+                return ResourceManager.GetString("ErrorMessageEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field {0} must be a string or array type with a maximum length of &apos;{1}&apos;..
+        /// </summary>
+        public static string ErrorMessageMaxLength {
+            get {
+                return ResourceManager.GetString("ErrorMessageMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field {0} must be a string or array type with a minimum length of &apos;{1}&apos;..
+        /// </summary>
+        public static string ErrorMessageMinLength {
+            get {
+                return ResourceManager.GetString("ErrorMessageMinLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A value for the &apos;{0}&apos; parameter or property was not provided..
+        /// </summary>
+        public static string ErrorMessageMissingBindRequiredValue {
+            get {
+                return ResourceManager.GetString("ErrorMessageMissingBindRequiredValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A value is required..
+        /// </summary>
+        public static string ErrorMessageMissingKeyOrValue {
+            get {
+                return ResourceManager.GetString("ErrorMessageMissingKeyOrValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A non-empty request body is required..
+        /// </summary>
+        public static string ErrorMessageMissingRequestBodyRequiredValue {
+            get {
+                return ResourceManager.GetString("ErrorMessageMissingRequestBodyRequiredValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value &apos;{0}&apos; is not valid..
+        /// </summary>
+        public static string ErrorMessageNonPropertyAttemptedValueIsInvalid {
+            get {
+                return ResourceManager.GetString("ErrorMessageNonPropertyAttemptedValueIsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The supplied value is invalid..
+        /// </summary>
+        public static string ErrorMessageNonPropertyUnknownValueIsInvalid {
+            get {
+                return ResourceManager.GetString("ErrorMessageNonPropertyUnknownValueIsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field must be a number..
+        /// </summary>
+        public static string ErrorMessageNonPropertyValueMustBeANumber {
+            get {
+                return ResourceManager.GetString("ErrorMessageNonPropertyValueMustBeANumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The {0} field is not a valid phone number..
+        /// </summary>
+        public static string ErrorMessageNotValidPhone {
+            get {
+                return ResourceManager.GetString("ErrorMessageNotValidPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field {0} must be between {1} and {2}..
+        /// </summary>
+        public static string ErrorMessageRange {
+            get {
+                return ResourceManager.GetString("ErrorMessageRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field {0} must be a string with a maximum length of {1}..
+        /// </summary>
+        public static string ErrorMessageStringLengthMax {
+            get {
+                return ResourceManager.GetString("ErrorMessageStringLengthMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field {0} must be a string with a minimum length of {2} and a maximum length of {1}..
+        /// </summary>
+        public static string ErrorMessageStringLengthMinMax {
+            get {
+                return ResourceManager.GetString("ErrorMessageStringLengthMinMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The supplied value is invalid for {0}..
+        /// </summary>
+        public static string ErrorMessageUnknownValueIsInvalid {
+            get {
+                return ResourceManager.GetString("ErrorMessageUnknownValueIsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value &apos;{0}&apos; is invalid..
+        /// </summary>
+        public static string ErrorMessageValueIsInvalid {
+            get {
+                return ResourceManager.GetString("ErrorMessageValueIsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field {0} must be a number..
+        /// </summary>
+        public static string ErrorMessageValueMustBeANumber {
+            get {
+                return ResourceManager.GetString("ErrorMessageValueMustBeANumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value &apos;{0}&apos; is invalid..
+        /// </summary>
+        public static string ErrorMessageValueMustNotBeNull {
+            get {
+                return ResourceManager.GetString("ErrorMessageValueMustNotBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} field is required..
         /// </summary>
         public static string RequiredAttributeErrorMessage {
