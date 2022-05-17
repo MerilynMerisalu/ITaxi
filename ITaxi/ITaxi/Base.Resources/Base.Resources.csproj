@@ -39,6 +39,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>ForgotPassword.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Identity\Pages\Account\ResendEmailConfirmation.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>ResendEmailConfirmation.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
       
       
     </ItemGroup>
@@ -78,6 +82,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>ForgotYourPassword.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Identity\Pages\Account\ResendEmailConfirmation.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ResendEmailConfirmation.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
