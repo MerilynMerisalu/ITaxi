@@ -93,4 +93,7 @@
     <data name="Delete" xml:space="preserve">
         <value>Delete</value>
     </data>
+    <data name="Email" xml:space="preserve">
+        <value>Email</value>
+    </data>
 </root>

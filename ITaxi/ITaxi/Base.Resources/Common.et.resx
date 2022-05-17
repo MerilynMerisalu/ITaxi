@@ -93,4 +93,7 @@
     <data name="Delete" xml:space="preserve">
         <value>Kustuta</value>
     </data>
+    <data name="Email" xml:space="preserve">
+        <value>E-post</value>
+    </data>
 </root>

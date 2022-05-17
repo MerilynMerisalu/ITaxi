@@ -85,10 +85,12 @@ namespace WebApp.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            [Required]
-            [MaxLength(50)]
+            [Required(ErrorMessageResourceType = typeof(Base.Resources.Common), 
+                ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+            [MaxLength(50, ErrorMessageResourceType = typeof(Base.Resources.Common), 
+                ErrorMessageResourceName = "ErrorMessageMaxLength" )]
             [StringLength(50, MinimumLength = 1)]
-            [DisplayName("First Name")]
+            [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Register), Name = "FirstName")]
             public string FirstName { get; set; } = default!;
             
             [Required]
@@ -129,9 +131,10 @@ namespace WebApp.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
+            [Required(ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "ErrorMessageEmail")]
+            [EmailAddress(ErrorMessageResourceType = 
+                typeof(Base.Resources.Common), ErrorMessageResourceName = "ErrorMessageEmail")]
+            [Display(ResourceType = typeof(Base.Resources.Common), Name = "Email") ]
             public string Email { get; set; } = default!;
 
             /// <summary>

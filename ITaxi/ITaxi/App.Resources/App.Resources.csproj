@@ -19,6 +19,14 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>_LoginPartial.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Areas\Identity\Pages\Account\Register.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Register.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Areas\Identity\Pages\Account\AdminRegister.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>AdminRegister.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -37,10 +45,16 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>_LoginPartial.resx</DependentUpon>
       </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Areas\Identity\Pages\Account" />
+      <Compile Update="Areas\Identity\Pages\Account\Register.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Register.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Areas\Identity\Pages\Account\AdminRegister.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AdminRegister.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     

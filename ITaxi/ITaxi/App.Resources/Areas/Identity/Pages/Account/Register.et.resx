@@ -1,0 +1,38 @@
+﻿<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="FirstName" xml:space="preserve">
+        <value>Eesnimi</value>
+    </data>
+    <data name="LastName" xml:space="preserve">
+        <value>Perekonnanimi</value>
+    </data>
+    <data name="Gender" xml:space="preserve">
+        <value>Sugu</value>
+    </data>
+    <data name="DateOfBirth" xml:space="preserve">
+        <value>Sünniaeg</value>
+    </data>
+    <data name="PhoneNumber" xml:space="preserve">
+        <value>Telefoninumber</value>
+    </data>
+    <data name="ConfirmPassword" xml:space="preserve">
+        <value>Sisesta parool uuesti</value>
+    </data>
+    <data name="CreateNewUser" xml:space="preserve">
+        <value>Loo uus kasutaja</value>
+    </data>
+    <data name="EnterYourEmailHere" xml:space="preserve">
+        <value>Sisesta siia oma e-post</value>
+    </data>
+</root>
