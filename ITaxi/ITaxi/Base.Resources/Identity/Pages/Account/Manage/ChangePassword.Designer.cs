@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace App.Resources.Areas.Identity.Pages.Account {
+namespace Base.Resources.Identity.Pages.Account.Manage {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace App.Resources.Areas.Identity.Pages.Account {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Register {
+    public class ChangePassword {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Register() {
+        internal ChangePassword() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("App.Resources.Areas.Identity.Pages.Account.Register", typeof(Register).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Base.Resources.Identity.Pages.Account.Manage.ChangePassword", typeof(ChangePassword).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,101 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date of Birth.
+        ///   Looks up a localized string similar to Email.
         /// </summary>
-        public static string DateOfBirth {
+        public static string Email {
             get {
-                return ResourceManager.GetString("DateOfBirth", resourceCulture);
+                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter Your Email Here.
+        ///   Looks up a localized string similar to Enter Your Email.
         /// </summary>
-        public static string EnterYourEmailHere {
+        public static string EnterYourEmail {
             get {
-                return ResourceManager.GetString("EnterYourEmailHere", resourceCulture);
+                return ResourceManager.GetString("EnterYourEmail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to First Name.
+        ///   Looks up a localized string similar to External Logins.
         /// </summary>
-        public static string FirstName {
+        public static string ExternalLogins {
             get {
-                return ResourceManager.GetString("FirstName", resourceCulture);
+                return ResourceManager.GetString("ExternalLogins", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gender.
+        ///   Looks up a localized string similar to Forgot your password?.
         /// </summary>
-        public static string Gender {
+        public static string ForgotYourPassword {
             get {
-                return ResourceManager.GetString("Gender", resourceCulture);
+                return ResourceManager.GetString("ForgotYourPassword", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last Name.
+        ///   Looks up a localized string similar to Password.
         /// </summary>
-        public static string LastName {
+        public static string Password {
             get {
-                return ResourceManager.GetString("LastName", resourceCulture);
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Phone Number.
+        ///   Looks up a localized string similar to Personal Data.
         /// </summary>
-        public static string PhoneNumber {
+        public static string PersonalData {
             get {
-                return ResourceManager.GetString("PhoneNumber", resourceCulture);
+                return ResourceManager.GetString("PersonalData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        public static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resend.
+        /// </summary>
+        public static string Resend {
+            get {
+                return ResourceManager.GetString("Resend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resend Email Confirmation.
+        /// </summary>
+        public static string ResendEmailConfirmation {
+            get {
+                return ResourceManager.GetString("ResendEmailConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submit.
+        /// </summary>
+        public static string Submit {
+            get {
+                return ResourceManager.GetString("Submit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Two-Factor Authentication.
+        /// </summary>
+        public static string Two_FactorAuthentication {
+            get {
+                return ResourceManager.GetString("Two-FactorAuthentication", resourceCulture);
             }
         }
     }

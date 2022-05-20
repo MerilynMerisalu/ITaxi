@@ -1,4 +1,4 @@
-﻿<root>
+<root>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -11,22 +11,10 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="FirstName" xml:space="preserve">
-        <value>Eesnimi</value>
+    <data name="ChangeYourAccountSettings" xml:space="preserve">
+        <value>Muuda oma konto seadeid</value>
     </data>
-    <data name="LastName" xml:space="preserve">
-        <value>Perekonnanimi</value>
-    </data>
-    <data name="Gender" xml:space="preserve">
-        <value>Sugu</value>
-    </data>
-    <data name="DateOfBirth" xml:space="preserve">
-        <value>Sünniaeg</value>
-    </data>
-    <data name="PhoneNumber" xml:space="preserve">
-        <value>Telefoninumber</value>
-    </data>
-    <data name="EnterYourEmailHere" xml:space="preserve">
-        <value>Sisesta siia oma e-post</value>
+    <data name="ManageYourAccount" xml:space="preserve">
+        <value>Halda oma kontot</value>
     </data>
 </root>
