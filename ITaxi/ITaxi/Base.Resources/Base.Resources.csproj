@@ -59,6 +59,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>ChangePassword.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Identity\Pages\Account\Manage\DeletePersonalData.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>DeletePersonalData.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
       
       
     </ItemGroup>
@@ -123,6 +127,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>ChangePassword.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Identity\Pages\Account\Manage\DeletePersonalData.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>DeletePersonalData.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
