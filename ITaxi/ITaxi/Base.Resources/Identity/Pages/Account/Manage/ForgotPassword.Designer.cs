@@ -61,15 +61,6 @@ namespace Base.Resources.Identity.Pages.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email.
-        /// </summary>
-        public static string Email {
-            get {
-                return ResourceManager.GetString("Email", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Enter your email.
         /// </summary>
         public static string EnterYourEmail {
