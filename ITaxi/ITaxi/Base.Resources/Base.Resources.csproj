@@ -43,13 +43,13 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>ResendEmailConfirmation.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Identity\Pages\Account\_Layout.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Update="Identity\Pages\Account\_ManageNav.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>_ManageNav.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Identity\Pages\Account\Manage\_Layout.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       
       
@@ -96,15 +96,15 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>ResendEmailConfirmation.resx</DependentUpon>
       </Compile>
-      <Compile Update="Identity\Pages\Account\_Layout.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>_Layout.resx</DependentUpon>
-      </Compile>
       <Compile Update="Identity\Pages\Account\_ManageNav.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>_ManageNav.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Identity\Pages\Account\Manage\_Layout.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>_Layout.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
