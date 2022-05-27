@@ -1,6 +1,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
+#nullable enable
 
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-
+using Base.Resources.Identity.Pages.Account;
+using Base.Resources;
 namespace WebApp.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
@@ -34,26 +35,26 @@ namespace WebApp.Areas.Identity.Pages.Account
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel Input { get; set; } = default!;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        public IList<AuthenticationScheme>? ExternalLogins { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public string ReturnUrl { get; set; }
+        public string? ReturnUrl { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [TempData]
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage { get; set; } = default!;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -65,33 +66,33 @@ namespace WebApp.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required(ErrorMessageResourceType = typeof(Base.Resources.Common), 
-                ErrorMessageResourceName = "RequiredAttributeErrorMessage" )]
-            [EmailAddress(ErrorMessageResourceType = typeof(Base.Resources.Common)
-            , ErrorMessageResourceName = "ErrorMessageEmail")]
-            [Display(ResourceType = typeof(Base.Resources.Identity.Pages.Account.Login), Name = nameof(Email))]
+            [Required(ErrorMessageResourceType = typeof(Common),
+                ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+            [EmailAddress(ErrorMessageResourceType = typeof(Common)
+                , ErrorMessageResourceName = "ErrorMessageEmail")]
+            [Display(ResourceType = typeof(Login), Name = nameof(Email))]
 
-            public string Email { get; set; }
+            public string Email { get; set; } = default!;
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required(ErrorMessageResourceType = typeof(Base.Resources.Common)
-            , ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+            [Required(ErrorMessageResourceType = typeof(Common)
+                , ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
             [DataType(DataType.Password)]
-            [Display(ResourceType = typeof(Base.Resources.Identity.Pages.Account.Login), Name = nameof(Password))]
-            public string Password { get; set; }
+            [Display(ResourceType = typeof(Login), Name = nameof(Password))]
+            public string Password { get; set; } = default!;
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Display(ResourceType = typeof(Base.Resources.Identity.Pages.Account.Login), Name = nameof(RememberMe))]
+            [Display(ResourceType = typeof(Login), Name = nameof(RememberMe))]
             public bool RememberMe { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string? returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
@@ -108,7 +109,7 @@ namespace WebApp.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
 
@@ -135,7 +136,7 @@ namespace WebApp.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, Base.Resources.Identity.Pages.Account.Login.InvalidLoginAttempt);
+                    ModelState.AddModelError(string.Empty, Login.InvalidLoginAttempt);
                     return Page();
                 }
             }

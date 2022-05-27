@@ -1,4 +1,11 @@
-﻿<root>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -11,37 +18,37 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="LogIn" xml:space="preserve">
-        <value>Logi sisse</value>
-    </data>
     <data name="Email" xml:space="preserve">
-        <value>E-post</value>
+        <value>Email</value>
     </data>
     <data name="ForgotPassword" xml:space="preserve">
-        <value>Parool ununes?</value>
+        <value>Forgot Password</value>
     </data>
     <data name="InvalidLoginAttempt" xml:space="preserve">
-        <value>Kasutajanimi/parool ei ole korrektsed.</value>
+        <value>Invalid login attempt.</value>
     </data>
-    <data name="LogInThirdParty" xml:space="preserve">
-        <value>Logi sisse kasutades</value>
+    <data name="LogIn" xml:space="preserve">
+        <value>Log in</value>
+    </data>
+    <data name="LoginThirdParty" xml:space="preserve">
+        <value>Use another service to log in.</value>
     </data>
     <data name="NoThirdParty" xml:space="preserve">
-        <value>Väliseid autentijaid pole lisatud.</value>
+        <value>There are no external authentication services configured.</value>
     </data>
     <data name="Password" xml:space="preserve">
-        <value>Parool</value>
+        <value>Password</value>
     </data>
     <data name="RememberMe" xml:space="preserve">
-        <value>Jäta mind meelde?</value>
+        <value>Remember me?</value>
     </data>
     <data name="ResendEmail" xml:space="preserve">
-        <value>Saada kinnitus</value>
+        <value>Resend email confirmation</value>
     </data>
     <data name="RegisterNewUser" xml:space="preserve">
-        <value>Uus kasutaja</value>
+        <value>Register as a new user</value>
     </data>
     <data name="UseLocalAccount" xml:space="preserve">
-        <value>Sisene lokaalse kontoga.</value>
+        <value>Use a local account to log in.</value>
     </data>
 </root>

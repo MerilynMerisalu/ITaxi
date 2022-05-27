@@ -70,7 +70,7 @@ namespace Base.Resources.Identity.Pages.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forgot your password?.
+        ///   Looks up a localized string similar to Forgot Password.
         /// </summary>
         public static string ForgotPassword {
             get {
@@ -99,9 +99,9 @@ namespace Base.Resources.Identity.Pages.Account {
         /// <summary>
         ///   Looks up a localized string similar to Use another service to log in..
         /// </summary>
-        public static string LogInThirdParty {
+        public static string LoginThirdParty {
             get {
-                return ResourceManager.GetString("LogInThirdParty", resourceCulture);
+                return ResourceManager.GetString("LoginThirdParty", resourceCulture);
             }
         }
         

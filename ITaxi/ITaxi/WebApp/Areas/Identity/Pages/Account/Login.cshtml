@@ -1,8 +1,9 @@
 ﻿@page
 @model LoginModel
+@using Base.Resources.Identity.Pages.Account
 
 @{
-    ViewData["Title"] = Base.Resources.Identity.Pages.Account.Login.LogIn;
+    ViewData["Title"] = Login.LogIn;
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -12,7 +13,7 @@
             <form id="account" method="post">
                 <hr/>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <h2>@Base.Resources.Identity.Pages.Account.Login.UseLocalAccount</h2>
+                <h2>@Login.UseLocalAccount</h2>
                 <div class="form-floating">
                     <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true"/>
                     <label asp-for="Input.Email" class="form-label"></label>
@@ -33,19 +34,19 @@
                 </div>
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">
-                        @Base.Resources.Identity.Pages.Account.Login.LogIn
+                        @Login.LogIn
                     </button>
                 </div>
                 <div>
                     <p>
                         <a id="forgot-password" asp-page="./ForgotPassword">
-                            @Base.Resources.Identity.Pages.Account.Login.ForgotPassword
+                            @Login.ForgotPassword
                         </a>
                     </p>
 
                     <p>
                         <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">
-                            @Base.Resources.Identity.Pages.Account.Login.ResendEmail
+                            @Login.ResendEmail
                         </a>
                     </p>
                 </div>
@@ -54,14 +55,14 @@
     </div>
     <div class="col-md-6 col-md-offset-2">
         <section>
-            <h3>@Base.Resources.Identity.Pages.Account.Login.LogInThirdParty</h3>
+            <h3></h3>
             <hr />
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
                     <div>
                         <p>
-                            @Base.Resources.Identity.Pages.Account.Login.NoThirdParty
+                            @Login.NoThirdParty
                         </p>
                     </div>
                 }
