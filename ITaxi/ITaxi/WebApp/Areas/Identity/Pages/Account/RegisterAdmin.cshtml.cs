@@ -131,10 +131,9 @@ namespace WebApp.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required(ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "ErrorMessageEmail")]
-            [EmailAddress(ErrorMessageResourceType = 
-                typeof(Base.Resources.Common), ErrorMessageResourceName = "ErrorMessageEmail")]
-            [Display(ResourceType = typeof(Base.Resources.Common), Name = "Email") ]
+            [Required()]
+            [EmailAddress()]
+            [Display]
             public string Email { get; set; } = default!;
 
             /// <summary>

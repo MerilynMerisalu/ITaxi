@@ -18,22 +18,22 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="FirstName" xml:space="preserve">
-        <value>First Name</value>
+    <data name="Email" xml:space="preserve">
+        <value>Email</value>
     </data>
-    <data name="LastName" xml:space="preserve">
-        <value>Last Name</value>
+    <data name="ExternalLogins" xml:space="preserve">
+        <value>External logins</value>
     </data>
-    <data name="Gender" xml:space="preserve">
-        <value>Gender</value>
+    <data name="Password" xml:space="preserve">
+        <value>Password</value>
     </data>
-    <data name="DateOfBirth" xml:space="preserve">
-        <value>Date of Birth</value>
+    <data name="PersonalData" xml:space="preserve">
+        <value>Personal data</value>
     </data>
-    <data name="PhoneNumber" xml:space="preserve">
-        <value>Phone Number</value>
+    <data name="Profile" xml:space="preserve">
+        <value>Profile</value>
     </data>
-    <data name="EnterYourEmailHere" xml:space="preserve">
-        <value>Enter Your Email Here</value>
+    <data name="Two-factorAuthentication" xml:space="preserve">
+        <value>Two-factor authentication</value>
     </data>
 </root>
