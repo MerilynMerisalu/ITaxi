@@ -1,6 +1,8 @@
 using System.Globalization;
+using App.Contracts.DAL;
 using App.DAL.EF;
 using App.Domain.Identity;
+using Base.Contracts.DAL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
+builder.Services.AddScoped<IAppUnitOfWork, AppUOW>();
 /*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<AppDbContext>();*/
 builder.Services.AddIdentity<AppUser, AppRole>(
