@@ -35,7 +35,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var county = await _uow.Counties
-                .FirstOrDefaultAsync(id.Value);
+                .SingleOrDefaultAsync(c => c!.Id.Equals(id));
             if (county == null)
             {
                 return NotFound();
@@ -101,7 +101,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditCountyViewModel vm)
         {
-            var county = await _uow.Counties.FirstOrDefaultAsync(id);
+            var county = await _uow.Counties.SingleOrDefaultAsync(c => c!.Id.Equals(id));
             if (ModelState.IsValid)
             {
                 if (county != null && county.Id.Equals(id))
@@ -143,7 +143,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 }
 
                 var county = await _uow.Counties
-                    .FirstOrDefaultAsync(id.Value);
+                    .SingleOrDefaultAsync(c => c.Id.Equals(id));
                 if (county == null)
                 {
                     return NotFound();
@@ -159,8 +159,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             [ValidateAntiForgeryToken]
             public async Task<IActionResult> DeleteConfirmed(Guid id )
             {
-                var county = await _uow.Counties.FirstOrDefaultAsync(id);
-                if (await _uow.Cities.AnyAsync(c => c.CountyId.Equals(id)))
+                var county = await _uow.Counties.SingleOrDefaultAsync(c => c!.Id.Equals(id));
+                if (await _uow.Cities.AnyAsync(c => c!.CountyId.Equals(id)))
                 {
                     return Content("Entity cannot be deleted because it has dependent entities!");
                 }

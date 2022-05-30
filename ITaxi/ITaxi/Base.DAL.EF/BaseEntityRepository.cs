@@ -95,6 +95,22 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
         return res;
     }
 
+    public TEntity? SingleOrDefault(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
+    {
+        var query =  CreateQuery(noTracking);
+        var result = query.Select(d => d).SingleOrDefault(filter);
+        return result;
+
+    }
+
+    public TEntity? First(bool noTracking = true)
+    {
+        var query =  CreateQuery( noTracking);
+        var result = query.First();
+        return result;
+
+    }
+
 
     public async Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true)
     {
@@ -127,5 +143,20 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
         var query = CreateQuery(noTracking);
         var res = await query.AsQueryable().AnyAsync(filter);
         return res;
+    }
+
+    public async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
+    {
+        var query = CreateQuery(noTracking);
+        var result = await query.Select(d => d).SingleOrDefaultAsync(filter);
+        return result;
+    }
+
+    public async Task<TEntity?> FirstAsync(bool noTracking = true)
+    {
+        var query =  CreateQuery( noTracking);
+        var result = await query.FirstAsync();
+        return result;
+
     }
 }
