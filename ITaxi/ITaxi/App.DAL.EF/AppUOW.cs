@@ -12,6 +12,8 @@ public class AppUOW: BaseUOW<AppDbContext>, IAppUnitOfWork
     }
 
     private ICountyRepository? _counties;
+    private ICityRepository? _cities;
 
     public ICountyRepository Counties => _counties ?? new CountyRepository(UOWDbContext);
+    public ICityRepository Cities => _cities ?? new CityRepository(UOWDbContext);
 }

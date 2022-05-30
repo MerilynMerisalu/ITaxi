@@ -1,4 +1,5 @@
-#nullable disable
+#nullable enable
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
@@ -11,17 +12,17 @@ namespace WebApp.Areas.AdminArea.Controllers
     
     public class CountiesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public CountiesController(AppDbContext context)
+        public CountiesController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: AdminArea/Counties
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Counties.ToListAsync());
+            return View(await _uow.Counties.GetAllAsync());
         }
 
         // GET: AdminArea/Counties/Details/5
@@ -33,8 +34,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var county = await _context.Counties
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var county = await _uow.Counties
+                .FirstOrDefaultAsync(id.Value);
             if (county == null)
             {
                 return NotFound();
@@ -65,8 +66,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 county.Id = Guid.NewGuid();
                 county.CountyName = vm.CountyName;
-                _context.Add(county);
-                await _context.SaveChangesAsync();
+                _uow.Counties.Add(county);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(vm);
@@ -81,7 +82,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var county = await _context.Counties.FindAsync(id);
+            var county = await _uow.Counties.FirstOrDefaultAsync(id.Value);
             
             if (county == null)
             {
@@ -100,15 +101,15 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditCountyViewModel vm)
         {
-            var county = await _context.Counties.SingleAsync(c => c.Id.Equals(id));
+            var county = await _uow.Counties.FirstOrDefaultAsync(id);
             if (ModelState.IsValid)
             {
-                if (county.Id.Equals(id))
+                if (county != null && county.Id.Equals(id))
                 { try
                     {
                         county.CountyName = vm.CountyName;
-                        _context.Update(county);
-                        await _context.SaveChangesAsync();
+                        _uow.Counties.Update(county);
+                        await _uow.SaveChangesAsync();
                     }
                     catch (DbUpdateConcurrencyException)
                     {
@@ -141,8 +142,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                     return NotFound();
                 }
 
-                var county = await _context.Counties
-                    .FirstOrDefaultAsync(m => m.Id == id);
+                var county = await _uow.Counties
+                    .FirstOrDefaultAsync(id.Value);
                 if (county == null)
                 {
                     return NotFound();
@@ -156,22 +157,22 @@ namespace WebApp.Areas.AdminArea.Controllers
             // POST: AdminArea/Counties/Delete/5
             [HttpPost, ActionName("Delete")]
             [ValidateAntiForgeryToken]
-            public async Task<IActionResult> DeleteConfirmed(Guid id)
+            public async Task<IActionResult> DeleteConfirmed(Guid id )
             {
-                var county = await _context.Counties.SingleOrDefaultAsync(c => c.Id.Equals(id));
-                if (await _context.Cities.AnyAsync(c => c.CountyId.Equals(county.Id)))
+                var county = await _uow.Counties.FirstOrDefaultAsync(id);
+                if (await _uow.Cities.AnyAsync(c => c.CountyId.Equals(id)))
                 {
                     return Content("Entity cannot be deleted because it has dependent entities!");
                 }
 
-                if (county != null) _context.Counties.Remove(county);
-                await _context.SaveChangesAsync();
+                if (county != null) _uow.Counties.Remove(county);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
             private bool CountyExists(Guid id)
             {
-                return _context.Counties.Any(e => e.Id == id);
+                return _uow.Counties.Exists(id);
             }
     }
 }

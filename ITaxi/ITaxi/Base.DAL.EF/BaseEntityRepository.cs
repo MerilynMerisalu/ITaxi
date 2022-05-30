@@ -1,4 +1,5 @@
-﻿using Base.Contracts.DAL;
+﻿using System.Linq.Expressions;
+using Base.Contracts.DAL;
 using Base.Contracts.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -87,6 +88,14 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
         return RepoDbSet.Any(a => a.Id.Equals(id));
     }
 
+    public bool Any(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
+    {
+        var query = CreateQuery(noTracking);
+        var res = query.AsQueryable().Any(filter);
+        return res;
+    }
+
+
     public async Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true)
     {
         return await CreateQuery(noTracking).FirstOrDefaultAsync(e => e.Id.Equals(id));
@@ -111,5 +120,12 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
             throw new NullReferenceException($"Entity {typeof(TEntity).Name} with id {id} was not found");
         }
         return Remove(entity);
+    }
+
+    public async Task<bool> AnyAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
+    {
+        var query = CreateQuery(noTracking);
+        var res = await query.AsQueryable().AnyAsync(filter);
+        return res;
     }
 }
