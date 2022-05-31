@@ -28,9 +28,10 @@ public interface IEntityRepository<TEntity, TKey>
     TEntity? SingleOrDefault(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
 
     TEntity? First(bool noTracking = true);
-
+    
 
     // async
+    
     Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true);
     Task<IEnumerable<TEntity>> GetAllAsync(bool noTracking = true);
     Task<bool> ExistsAsync(TKey id);

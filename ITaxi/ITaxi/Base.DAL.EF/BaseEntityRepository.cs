@@ -39,23 +39,25 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
 
         return query;
     }
+    
+    
 
-    public TEntity Add(TEntity entity)
+    public virtual TEntity Add(TEntity entity)
     {
         return RepoDbSet.Add(entity).Entity;
     }
 
-    public TEntity Update(TEntity entity)
+    public virtual TEntity Update(TEntity entity)
     {
         return RepoDbSet.Update(entity).Entity;
     }
 
-    public TEntity Remove(TEntity entity)
+    public virtual TEntity Remove(TEntity entity)
     {
         return RepoDbSet.Remove(entity).Entity;
     }
 
-    public TEntity Remove(TKey id)
+    public virtual TEntity Remove(TKey id)
     {
         var entity = FirstOrDefault(id);
         if (entity == null)
@@ -66,36 +68,36 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
         return Remove(entity);
     }
 
-    public List<TEntity> RemoveAll()
+    public virtual List<TEntity> RemoveAll()
     {
         var entities = CreateQuery();
         RepoDbSet.RemoveRange(entities);
         return entities.ToList();
     }
 
-    public TEntity? FirstOrDefault(TKey id, bool noTracking = true)
+    public virtual TEntity? FirstOrDefault(TKey id, bool noTracking = true)
     {
         return CreateQuery(noTracking).FirstOrDefault(e => e.Id.Equals(id));
     }
 
-    public IEnumerable<TEntity> GetAll(bool noTracking = true)
+    public virtual IEnumerable<TEntity> GetAll(bool noTracking = true)
     {
         return CreateQuery(noTracking).ToList();
     }
 
-    public bool Exists(TKey id)
+    public virtual bool Exists(TKey id)
     {
         return RepoDbSet.Any(a => a.Id.Equals(id));
     }
 
-    public bool Any(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
+    public virtual bool Any(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
     {
         var query = CreateQuery(noTracking);
         var res = query.AsQueryable().Any(filter);
         return res;
     }
 
-    public TEntity? SingleOrDefault(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
+    public virtual TEntity? SingleOrDefault(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
     {
         var query =  CreateQuery(noTracking);
         var result = query.Select(d => d).SingleOrDefault(filter);
@@ -111,23 +113,27 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
 
     }
 
+    
 
-    public async Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true)
+    
+
+
+    public virtual async Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true)
     {
         return await CreateQuery(noTracking).FirstOrDefaultAsync(e => e.Id.Equals(id));
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllAsync(bool noTracking = true)
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync(bool noTracking = true)
     {
         return await CreateQuery(noTracking).ToListAsync();
     }
 
-    public async Task<bool> ExistsAsync(TKey id)
+    public virtual async Task<bool> ExistsAsync(TKey id)
     {
         return await RepoDbSet.AnyAsync(a => a.Id.Equals(id));
     }
 
-    public async Task<TEntity> RemoveAsync(TKey id)
+    public virtual async Task<TEntity> RemoveAsync(TKey id)
     {
         var entity = await FirstOrDefaultAsync(id);
         if (entity == null)
@@ -138,21 +144,21 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
         return Remove(entity);
     }
 
-    public async Task<bool> AnyAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
+    public virtual async Task<bool> AnyAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
     {
         var query = CreateQuery(noTracking);
         var res = await query.AsQueryable().AnyAsync(filter);
         return res;
     }
 
-    public async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
+    public virtual async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
     {
         var query = CreateQuery(noTracking);
         var result = await query.Select(d => d).SingleOrDefaultAsync(filter);
         return result;
     }
 
-    public async Task<TEntity?> FirstAsync(bool noTracking = true)
+    public virtual async Task<TEntity?> FirstAsync(bool noTracking = true)
     {
         var query =  CreateQuery( noTracking);
         var result = await query.FirstAsync();

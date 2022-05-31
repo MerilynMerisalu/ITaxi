@@ -1,4 +1,6 @@
-#nullable disable
+#nullable enable
+using System.Diagnostics;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,19 +13,18 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Area(nameof(AdminArea))]
     public class CitiesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public CitiesController(AppDbContext context)
+        public CitiesController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: AdminArea/Cities
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Cities
-                .Include(c => c.County);
-            return View(await appDbContext.ToListAsync());
+            var cities = await _uow.Cities.GetAllAsync();
+            return View(cities);
         }
 
         // GET: AdminArea/Cities/Details/5
@@ -35,9 +36,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var vm = new DetailsDeleteCityViewModel();
-            var city = await _context.Cities
-                .Include(c => c.County)
-                .SingleOrDefaultAsync(c => c.Id.Equals(id));
+            var city = await _uow.Cities.FirstOrDefaultAsync(id.Value);
             if (city == null)
             {
                 return NotFound();
@@ -54,9 +53,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Create()
         {
             var vm = new CreateEditCityViewModel();
-            vm.Counties = new SelectList(
-                await _context.Counties.OrderBy(c => c.CountyName)
-                    .Select(c => new {c.Id, c.CountyName}).ToListAsync(),
+            vm.Counties = new SelectList(await _uow.Counties.GetAllAsync(),
                 nameof(County.Id), nameof(County.CountyName));
             return View(vm);
         }
@@ -73,13 +70,12 @@ namespace WebApp.Areas.AdminArea.Controllers
                 city.Id = Guid.NewGuid();
                 city.CountyId = vm.CountyId;
                 city.CityName = vm.CityName;
-                _context.Add(city);
-                await _context.SaveChangesAsync();
+                _uow.Cities.Add(city);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            vm.Counties = new SelectList(_context.Counties, nameof(County.Id),
-                nameof(County.CountyName), nameof(city.CountyId));
+            
             
             return View(vm);
         }
@@ -93,15 +89,13 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var city = await _context.Cities.FindAsync(id);
+            var city = await _uow.Cities.FirstOrDefaultAsync(id.Value);
             if (city == null)
             {
                 return NotFound();
             }
 
-            vm.Counties = new SelectList(await _context.Counties
-                    .OrderBy(c => c.CountyName)
-                    .Select(c => new {c.Id, c.CountyName}).ToListAsync(),
+            vm.Counties = new SelectList(await _uow.Counties.GetAllAsync(),
                 nameof(County.Id), nameof(County.CountyName));
             vm.CityName = city.CityName;
             vm.CountyId = city.CountyId;
@@ -117,8 +111,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Edit(Guid id, CreateEditCityViewModel vm)
         {
             
-            var city = await _context.Cities.SingleAsync(c => c.Id.Equals(id));
-            if (id != city.Id)
+            var city = await _uow.Cities.FirstOrDefaultAsync(id);
+            
+            if (id != city!.Id)
             {
                 return NotFound();
             }
@@ -131,8 +126,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                     city.CountyId = vm.CountyId;
                     city.CityName = vm.CityName;
                     city.UpdatedAt = DateTime.UtcNow;
-                    _context.Update(city);
-                    await _context.SaveChangesAsync();
+                    _uow.Cities.Update(city);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -160,9 +155,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var city = await _context.Cities
-                .Include(c => c.County)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var city = await _uow.Cities.FirstOrDefaultAsync(id.Value);
             if (city == null)
             {
                 return NotFound();
@@ -179,21 +172,21 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var city = await _context.Cities.SingleOrDefaultAsync(c => c.Id.Equals(id));
-            if (await _context.Admins.AnyAsync(c => c.CityId.Equals(id)) || 
-                await _context.Bookings.AnyAsync(c => c.CityId.Equals(id)) ||
-                await _context.Drivers.AnyAsync(c => c.CityId.Equals(id)))
+            var city = await _uow.Cities.FirstOrDefaultAsync(id);
+            if (await _uow.Admins.AnyAsync(c => c != null && c.CityId.Equals(id)) || 
+                await _uow.Bookings.AnyAsync(c => c != null && c.CityId.Equals(id)) ||
+                await _uow.Drivers.AnyAsync(c => c!.CityId.Equals(id)))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
-            if (city != null) _context.Cities.Remove(city);
-            await _context.SaveChangesAsync();
+            if (city != null) _uow.Cities.Remove(city);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CityExists(Guid id)
         {
-            return _context.Cities.Any(e => e.Id == id);
+            return _uow.Cities.Any(c => c != null && c.Id.Equals(id));
         }
     }
 }

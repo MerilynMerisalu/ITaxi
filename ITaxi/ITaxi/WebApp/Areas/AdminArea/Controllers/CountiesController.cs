@@ -34,8 +34,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var county = await _uow.Counties
-                .SingleOrDefaultAsync(c => c!.Id.Equals(id));
+            var county = await _uow.Counties.FirstOrDefaultAsync(id.Value);
             if (county == null)
             {
                 return NotFound();
@@ -142,8 +141,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                     return NotFound();
                 }
 
-                var county = await _uow.Counties
-                    .SingleOrDefaultAsync(c => c.Id.Equals(id));
+                var county = await _uow.Counties.FirstOrDefaultAsync(id.Value);
                 if (county == null)
                 {
                     return NotFound();
