@@ -1,8 +1,9 @@
-#nullable disable
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,25 +16,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class AdminsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public AdminsController(AppDbContext context)
+        public AdminsController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/Admins
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
         {
-            return await _context.Admins.ToListAsync();
+            return Ok(await _uow.Admins.GetAllAsync());
         }
 
         // GET: api/Admins/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Admin>> GetAdmin(Guid id)
         {
-            var admin = await _context.Admins.FindAsync(id);
+            var admin = await _uow.Admins.FirstOrDefaultAsync(id);
 
             if (admin == null)
             {
@@ -53,11 +54,12 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(admin).State = EntityState.Modified;
+            
 
             try
             {
-                await _context.SaveChangesAsync();
+                _uow.Admins.Update(admin);
+                await _uow.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,8 +81,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
         {
-            _context.Admins.Add(admin);
-            await _context.SaveChangesAsync();
+            _uow.Admins.Add(admin);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetAdmin", new { id = admin.Id }, admin);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAdmin(Guid id)
         {
-            var admin = await _context.Admins.FindAsync(id);
+            var admin = await _uow.Admins.FirstOrDefaultAsync(id);
             if (admin == null)
             {
                 return NotFound();
             }
 
-            _context.Admins.Remove(admin);
-            await _context.SaveChangesAsync();
+            _uow.Admins.Remove(admin);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool AdminExists(Guid id)
         {
-            return _context.Admins.Any(e => e.Id == id);
+            return _uow.Admins.Any(e => e != null && e.Id == id);
         }
     }
 }

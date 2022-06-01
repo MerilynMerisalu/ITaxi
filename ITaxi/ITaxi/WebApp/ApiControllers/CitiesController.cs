@@ -27,7 +27,8 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<City>>> GetCities()
         {
-            var cities = await _uow.Cities.GetAllAsync();
+            
+            var cities = await _uow.Cities.GetAllCitiesWithoutCountyAsync();
             return Ok(cities);
         }
 
@@ -35,7 +36,7 @@ namespace WebApp.ApiControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<City>> GetCity(Guid id)
         {
-            var city = await _uow.Cities.FirstOrDefaultAsync(id);
+            var city = await _uow.Cities.FirstOrDefaultCityWithoutCountyAsync(id);
 
             if (city == null)
             {

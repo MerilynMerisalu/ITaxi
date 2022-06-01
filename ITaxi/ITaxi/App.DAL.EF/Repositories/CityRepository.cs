@@ -11,6 +11,8 @@ public class CityRepository: BaseEntityRepository<City, AppDbContext>, ICityRepo
     public CityRepository(AppDbContext dbContext) : base(dbContext)
     {
     }
+    
+    
 
     protected override IQueryable<City> CreateQuery(bool noTracking = true)
     {
@@ -25,19 +27,26 @@ public class CityRepository: BaseEntityRepository<City, AppDbContext>, ICityRepo
     }
     
     
-    protected IQueryable<City> CreateOrderedByCityNameQuery(bool noTracking = true)
+    public virtual IQueryable<City> CreateOrderedByCityNameQuery(bool noTracking = true)
     {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-
-        query = query.Include(c => c.County).OrderBy(c => c.CityName);
-        return query;
+        return CreateQuery(noTracking).OrderBy(c => c.CityName);
     }
 
-    #warning Ask if this code should be rewritten because it doesn't seem to follow DRY code principle
+    #warning Rewrite later to use DTO for API request
+    public virtual async Task<IEnumerable<City>> GetAllCitiesWithoutCountyAsync()
+    {
+        var res = await base.CreateQuery().ToListAsync();
+        return res;
+
+    }
+
+    #warning Rewrite later to use DTO for API request
+    public async Task<City?> FirstOrDefaultCityWithoutCountyAsync(Guid id)
+    {
+        return await base.CreateQuery().FirstOrDefaultAsync(c => c.Id.Equals(id));
+    }
+
+#warning Ask if this code should be rewritten because it doesn't seem to follow DRY code principle
     public override async Task<City?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
@@ -69,6 +78,6 @@ public class CityRepository: BaseEntityRepository<City, AppDbContext>, ICityRepo
     {
         return CreateQuery().SingleOrDefault(e => e.Id.Equals(filter));
     }
-    
-    
+
+   
 }

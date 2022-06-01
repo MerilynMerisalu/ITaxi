@@ -5,5 +5,6 @@ namespace App.Contracts.DAL.IAppRepositories;
 
 public interface ICityRepository: IEntityRepository<City>
 {
-    // Write your custom methods here
+    Task<IEnumerable<City>> GetAllCitiesWithoutCountyAsync();
+    Task<City?> FirstOrDefaultCityWithoutCountyAsync(Guid id);
 }

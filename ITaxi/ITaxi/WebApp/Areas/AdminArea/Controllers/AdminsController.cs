@@ -3,11 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using App.Domain.Identity;
+using Microsoft.AspNetCore.Identity;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
@@ -15,20 +18,19 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Area(nameof(AdminArea))]
     public class AdminsController : Controller
     {
-        private readonly AppDbContext _context;
-
-        public AdminsController(AppDbContext context)
+        private readonly IAppUnitOfWork _uow;
+        
+        
+        public AdminsController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
+            
         }
 
         // GET: AdminArea/Admins
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Admins
-                .Include(a => a.AppUser)
-                .Include(a => a.City);
-            return View(await appDbContext.ToListAsync());
+            return View(await _uow.Admins.GetAllAsync());
         }
 
         // GET: AdminArea/Admins/Details/5
@@ -40,10 +42,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var admin = await _context.Admins
-                .Include(a => a.AppUser)
-                .Include(a => a.City)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var admin = await _uow.Admins.FirstOrDefaultAsync(id.Value);
             if (admin == null)
             {
                 return NotFound();
@@ -95,7 +94,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var admin = await _context.Admins.FindAsync(id);
+            var admin = await _uow.Admins.FirstOrDefaultAsync(id.Value);
             if (admin == null)
             {
                 return NotFound();
@@ -103,10 +102,8 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.PersonalIdentifier = admin.PersonalIdentifier;
             vm.Address = admin.Address;
-            vm.Cities = new SelectList(await _context.Cities
-                    .OrderBy(c => c.CityName)
-                    .Select(c => new {c.Id, c.CityName}).ToListAsync(),
-                nameof(City.Id), nameof(City.CityName));
+            vm.Cities = new SelectList(await _uow.Cities.GetAllAsync(),
+            nameof(City.Id), nameof(City.CityName));
             return View(vm);
         }
 
@@ -117,8 +114,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, EditAdminViewModel vm)
         {
-            var admin = await _context.Admins.SingleAsync(a => a.Id.Equals(id));
-            if (id != admin.Id)
+            var admin = await _uow.Admins.SingleOrDefaultAsync(a => a.Id.Equals(id));
+            if (admin != null && id != admin.Id)
             {
                 return NotFound();
             }
@@ -127,16 +124,20 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
-                    admin.Address = vm.Address;
-                    admin.CityId = vm.CityId;
-                    admin.PersonalIdentifier = vm.PersonalIdentifier;
-                    admin.UpdatedAt = DateTime.UtcNow;
-                    _context.Update(admin);
-                    await _context.SaveChangesAsync();
+                    if (admin != null)
+                    {
+                        admin.Address = vm.Address;
+                        admin.CityId = vm.CityId;
+                        admin.PersonalIdentifier = vm.PersonalIdentifier;
+                        admin.UpdatedAt = DateTime.UtcNow;
+                        _uow.Admins.Update(admin);
+                    }
+
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AdminExists(admin.Id))
+                    if (admin != null && !AdminExists(admin.Id))
                     {
                         return NotFound();
                     }
@@ -159,9 +160,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var admin = await _context.Admins
-                .Include(a => a.City)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var admin = await _uow.Admins.FirstOrDefaultAsync(id.Value);
             if (admin == null)
             {
                 return NotFound();
@@ -179,21 +178,24 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var admin = await _context.Admins.SingleOrDefaultAsync(a => a.Id.Equals(id));
+            #warning Try to figure out how to combine UOW pattern with users 
+            var admin = await _uow.Admins.FirstOrDefaultAsync(id);
+
             if (admin != null)
             {
-                _context.Admins.Remove(admin);
-                var appUser = await _context.Users.SingleAsync(a => a.Id.Equals(admin.AppUserId));
-                _context.Users.Remove(appUser);
+               
+                _uow.Admins.Remove(admin);
+                await _uow.SaveChangesAsync();
+                
             }
 
-            await _context.SaveChangesAsync();
+            
             return RedirectToAction(nameof(Index));
         }
 
         private bool AdminExists(Guid id)
         {
-            return _context.Admins.Any(e => e.Id == id);
+            return _uow.Admins.Any(e => e.Id == id);
         }
     }
 }
