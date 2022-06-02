@@ -195,7 +195,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
         private bool AdminExists(Guid id)
         {
-            return _uow.Admins.Any(e => e.Id == id);
+            return _uow.Admins.Exists(id);
         }
     }
 }

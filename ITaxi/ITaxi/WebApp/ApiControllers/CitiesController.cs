@@ -105,7 +105,7 @@ namespace WebApp.ApiControllers
 
         private bool CityExists(Guid id)
         {
-            return _uow.Cities.Any(e => e != null && e.Id == id);
+            return _uow.Cities.Exists(id);
         }
     }
 }

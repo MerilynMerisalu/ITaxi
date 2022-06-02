@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,25 +16,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class DriverLicenseCategoriesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public DriverLicenseCategoriesController(AppDbContext context)
+        public DriverLicenseCategoriesController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/DriverLicenseCategories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DriverLicenseCategory>>> GetDriverLicenseCategories()
         {
-            return await _context.DriverLicenseCategories.ToListAsync();
+            return Ok(await _uow.DriverLicenseCategories.GetAllAsync());
         }
 
         // GET: api/DriverLicenseCategories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DriverLicenseCategory>> GetDriverLicenseCategory(Guid id)
         {
-            var driverLicenseCategory = await _context.DriverLicenseCategories.FindAsync(id);
+            var driverLicenseCategory = await _uow.DriverLicenseCategories.FirstOrDefaultAsync(id);
 
             if (driverLicenseCategory == null)
             {
@@ -53,11 +54,12 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(driverLicenseCategory).State = EntityState.Modified;
+            
 
             try
             {
-                await _context.SaveChangesAsync();
+                _uow.DriverLicenseCategories.Update(driverLicenseCategory);
+                await _uow.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,8 +81,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<DriverLicenseCategory>> PostDriverLicenseCategory(DriverLicenseCategory driverLicenseCategory)
         {
-            _context.DriverLicenseCategories.Add(driverLicenseCategory);
-            await _context.SaveChangesAsync();
+            _uow.DriverLicenseCategories.Add(driverLicenseCategory);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetDriverLicenseCategory", new { id = driverLicenseCategory.Id }, driverLicenseCategory);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDriverLicenseCategory(Guid id)
         {
-            var driverLicenseCategory = await _context.DriverLicenseCategories.FindAsync(id);
+            var driverLicenseCategory = await _uow.DriverLicenseCategories.FirstOrDefaultAsync(id);
             if (driverLicenseCategory == null)
             {
                 return NotFound();
             }
 
-            _context.DriverLicenseCategories.Remove(driverLicenseCategory);
-            await _context.SaveChangesAsync();
+            _uow.DriverLicenseCategories.Remove(driverLicenseCategory);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool DriverLicenseCategoryExists(Guid id)
         {
-            return _context.DriverLicenseCategories.Any(e => e.Id == id);
+            return _uow.DriverLicenseCategories.Exists(id);
         }
     }
 }

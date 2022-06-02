@@ -24,7 +24,7 @@ public interface IEntityRepository<TEntity, TKey>
     TEntity? FirstOrDefault(TKey id, bool noTracking = true);
     IEnumerable<TEntity> GetAll(bool noTracking = true);
     bool Exists(TKey id);
-    bool Any(Expression<Func<TEntity?, bool>> filter,  bool noTracking = true );
+    bool Any(Expression<Func<TEntity?, bool>> filter, bool noTracking = true );
     TEntity? SingleOrDefault(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
 
     TEntity? First(bool noTracking = true);
@@ -36,7 +36,7 @@ public interface IEntityRepository<TEntity, TKey>
     Task<IEnumerable<TEntity>> GetAllAsync(bool noTracking = true);
     Task<bool> ExistsAsync(TKey id);
     Task<TEntity> RemoveAsync(TKey id);
-    Task<bool> AnyAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
+    Task<bool> AnyAsync(Expression<Func<TEntity?, bool>> filter,  bool noTracking = true);
     Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
     Task<TEntity?> FirstAsync(bool noTracking = true);
 

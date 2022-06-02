@@ -157,7 +157,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             [ValidateAntiForgeryToken]
             public async Task<IActionResult> DeleteConfirmed(Guid id )
             {
-                var county = await _uow.Counties.SingleOrDefaultAsync(c => c!.Id.Equals(id));
+                var county = await _uow.Counties.FirstOrDefaultAsync(id);
                 if (await _uow.Cities.AnyAsync(c => c!.CountyId.Equals(id)))
                 {
                     return Content("Entity cannot be deleted because it has dependent entities!");

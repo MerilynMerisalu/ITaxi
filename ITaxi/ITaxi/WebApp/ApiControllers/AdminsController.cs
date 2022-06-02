@@ -105,7 +105,7 @@ namespace WebApp.ApiControllers
 
         private bool AdminExists(Guid id)
         {
-            return _uow.Admins.Any(e => e != null && e.Id == id);
+            return _uow.Admins.Exists(id);
         }
     }
 }

@@ -172,10 +172,11 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
+            #warning Ask if that can be improved
             var city = await _uow.Cities.FirstOrDefaultAsync(id);
             if (await _uow.Admins.AnyAsync(c => c != null && c.CityId.Equals(id)) || 
                 await _uow.Bookings.AnyAsync(c => c != null && c.CityId.Equals(id)) ||
-                await _uow.Drivers.AnyAsync(c => c!.CityId.Equals(id)))
+                await _uow.Drivers.AnyAsync(c => c != null && c.CityId.Equals(id)))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
@@ -186,7 +187,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
         private bool CityExists(Guid id)
         {
-            return _uow.Cities.Any(c => c != null && c.Id.Equals(id));
+            return _uow.Cities.Exists(id);
         }
     }
 }
