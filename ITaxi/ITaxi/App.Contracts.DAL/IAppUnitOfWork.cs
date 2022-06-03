@@ -15,5 +15,6 @@ public interface IAppUnitOfWork: IUnitOfWork
      IVehicleTypeRepository VehicleTypes { get; }
      IVehicleMarkRepository VehicleMarks{ get; }
      IVehicleModelRepository VehicleModels{ get; }
+     IVehicleRepository Vehicles { get; }
 
 }

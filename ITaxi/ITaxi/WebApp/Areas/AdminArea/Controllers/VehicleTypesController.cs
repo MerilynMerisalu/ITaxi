@@ -1,4 +1,5 @@
 #nullable disable
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
@@ -10,17 +11,17 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Area(nameof(AdminArea))]
     public class VehicleTypesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public VehicleTypesController(AppDbContext context)
+        public VehicleTypesController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: AdminArea/VehicleTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.VehicleTypes.ToListAsync());
+            return View(await _uow.VehicleTypes.GetAllAsync());
         }
 
         // GET: AdminArea/VehicleTypes/Details/5
@@ -32,8 +33,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var vehicleType = await _context.VehicleTypes
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var vehicleType = await _uow.VehicleTypes.FirstOrDefaultAsync(id.Value);
             if (vehicleType == null)
             {
                 return NotFound();
@@ -62,8 +62,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 vehicleType.Id = Guid.NewGuid();
                 vehicleType.VehicleTypeName = vm.VehicleTypeName;
-                _context.Add(vehicleType);
-                await _context.SaveChangesAsync();
+                _uow.VehicleTypes.Add(vehicleType);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(vm);
@@ -79,9 +79,13 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var vehicleType = await _context.VehicleTypes.SingleAsync(v => v.Id.Equals(id));
-            vm.VehicleTypeName = vehicleType.VehicleTypeName;
-            vm.Id = vehicleType.Id;
+            var vehicleType = await _uow.VehicleTypes.FirstOrDefaultAsync(id.Value);
+            if (vehicleType != null)
+            {
+                vm.VehicleTypeName = vehicleType.VehicleTypeName;
+                vm.Id = vehicleType.Id;
+            }
+
             return View(vm);
         }
 
@@ -92,9 +96,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditVehicleTypeViewModel vm)
         {
-            var vehicleType = await _context.VehicleTypes.SingleAsync(v => v.Id.Equals(id));
+            var vehicleType = await _uow.VehicleTypes.FirstOrDefaultAsync(id);
             
-            if (id != vehicleType.Id)
+            if (vehicleType != null && id != vehicleType.Id)
             {
                 return NotFound();
             }
@@ -103,10 +107,15 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
-                    vehicleType.Id = vm.Id;
-                    vehicleType.VehicleTypeName = vm.VehicleTypeName;
-                    _context.Update(vehicleType);
-                    await _context.SaveChangesAsync();
+                    if (vehicleType != null)
+                    {
+                        vehicleType.Id = vm.Id;
+                        vehicleType.VehicleTypeName = vm.VehicleTypeName;
+                        _uow.VehicleTypes.Update(vehicleType);
+                        await _uow.SaveChangesAsync();
+                    }
+
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -133,7 +142,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var vehicleType = await _context.VehicleTypes
+            var vehicleType = await _uow.VehicleTypes
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (vehicleType == null)
             {
@@ -151,20 +160,25 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var vehicleType = await _context.VehicleTypes.SingleAsync(v => v.Id.Equals(id));
-            if (await _context.Vehicles.AnyAsync(v => v.VehicleType.Id.Equals(vehicleType.Id)) 
-                || await _context.Bookings.AnyAsync(b => b.VehicleTypeId.Equals(vehicleType.Id)))
+            var vehicleType = await _uow.VehicleTypes.FirstOrDefaultAsync(id);
+            if (await _uow.Vehicles.AnyAsync(v => v.VehicleType.Id.Equals(vehicleType.Id)) 
+                || await _uow.Bookings.AnyAsync(b => b.VehicleTypeId.Equals(vehicleType.Id)))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
-            _context.VehicleTypes.Remove(vehicleType);
-            await _context.SaveChangesAsync();
+
+            if (vehicleType != null)
+            {
+                _uow.VehicleTypes.Remove(vehicleType);
+                await _uow.SaveChangesAsync();
+            }
+            
             return RedirectToAction(nameof(Index));
         }
 
         private bool VehicleTypeExists(Guid id)
         {
-            return _context.VehicleTypes.Any(e => e.Id == id);
+            return _uow.VehicleTypes.Exists(id);
         }
     }
 }
