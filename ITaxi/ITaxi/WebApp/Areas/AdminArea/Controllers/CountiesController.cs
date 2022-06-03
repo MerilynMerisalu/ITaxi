@@ -100,7 +100,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditCountyViewModel vm)
         {
-            var county = await _uow.Counties.SingleOrDefaultAsync(c => c!.Id.Equals(id));
+            var county = await _uow.Counties.FirstOrDefaultAsync(id);
             if (ModelState.IsValid)
             {
                 if (county != null && county.Id.Equals(id))
@@ -163,8 +163,13 @@ namespace WebApp.Areas.AdminArea.Controllers
                     return Content("Entity cannot be deleted because it has dependent entities!");
                 }
 
-                if (county != null) _uow.Counties.Remove(county);
-                await _uow.SaveChangesAsync();
+                if (county != null)
+                {
+                    _uow.Counties.Remove(county);
+                    await _uow.SaveChangesAsync();
+                                    
+                } 
+                    
                 return RedirectToAction(nameof(Index));
             }
 
