@@ -27,7 +27,7 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<County>>> GetCounties()
         {
-            return Ok(await _uow.Counties.GetAllAsync());
+            return Ok(await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync());
         }
 
         // GET: api/Counties/5

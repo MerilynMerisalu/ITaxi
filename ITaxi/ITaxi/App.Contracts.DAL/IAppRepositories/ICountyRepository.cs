@@ -5,5 +5,6 @@ namespace App.Contracts.DAL.IAppRepositories;
 
 public interface ICountyRepository: IEntityRepository<County>
 {
-    // Write your custom methods here
+    Task<IEnumerable<County>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true);
+   IEnumerable<County> GetAllCountiesOrderedByCountyName(bool noTracking = true);
 }

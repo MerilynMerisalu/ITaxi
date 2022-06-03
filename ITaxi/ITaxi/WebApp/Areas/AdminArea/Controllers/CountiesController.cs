@@ -22,7 +22,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Counties
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.Counties.GetAllAsync());
+            return View(await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync());
         }
 
         // GET: AdminArea/Counties/Details/5

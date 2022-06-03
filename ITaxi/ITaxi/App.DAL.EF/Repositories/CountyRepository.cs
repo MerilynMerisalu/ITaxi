@@ -32,4 +32,14 @@ public class CountyRepository: BaseEntityRepository<County, AppDbContext>, ICoun
     {
         return CreateQuery(noTracking).ToList();
     }
+
+    public async Task<IEnumerable<County>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true)
+    {
+        return await CreateQuery(noTracking).OrderBy(c => c.CountyName).ToListAsync();
+    }
+
+    public IEnumerable<County> GetAllCountiesOrderedByCountyName(bool noTracking = true)
+    {
+       return CreateQuery(noTracking).OrderBy(c => c.CountyName).ToList();
+    }
 }
