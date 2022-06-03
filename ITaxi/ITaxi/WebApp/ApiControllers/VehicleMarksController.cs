@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,25 +16,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class VehicleMarksController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public VehicleMarksController(AppDbContext context)
+        public VehicleMarksController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/VehicleMarks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VehicleMark>>> GetVehicleMarks()
         {
-            return await _context.VehicleMarks.ToListAsync();
+            return Ok(await _uow.VehicleMarks.GetAllAsync());
         }
 
         // GET: api/VehicleMarks/5
         [HttpGet("{id}")]
         public async Task<ActionResult<VehicleMark>> GetVehicleMark(Guid id)
         {
-            var vehicleMark = await _context.VehicleMarks.FindAsync(id);
+            var vehicleMark = await _uow.VehicleMarks.FirstOrDefaultAsync(id);
 
             if (vehicleMark == null)
             {
@@ -53,11 +54,12 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(vehicleMark).State = EntityState.Modified;
+            
 
             try
             {
-                await _context.SaveChangesAsync();
+                _uow.VehicleMarks.Update(vehicleMark);
+                await _uow.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,8 +81,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<VehicleMark>> PostVehicleMark(VehicleMark vehicleMark)
         {
-            _context.VehicleMarks.Add(vehicleMark);
-            await _context.SaveChangesAsync();
+            _uow.VehicleMarks.Add(vehicleMark);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetVehicleMark", new { id = vehicleMark.Id }, vehicleMark);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicleMark(Guid id)
         {
-            var vehicleMark = await _context.VehicleMarks.FindAsync(id);
+            var vehicleMark = await _uow.VehicleMarks.FirstOrDefaultAsync(id);
             if (vehicleMark == null)
             {
                 return NotFound();
             }
 
-            _context.VehicleMarks.Remove(vehicleMark);
-            await _context.SaveChangesAsync();
+            _uow.VehicleMarks.Remove(vehicleMark);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool VehicleMarkExists(Guid id)
         {
-            return _context.VehicleMarks.Any(e => e.Id == id);
+            return _uow.VehicleMarks.Any(e => e.Id == id);
         }
     }
 }

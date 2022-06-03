@@ -1,4 +1,5 @@
-#nullable disable
+#nullable enable
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
@@ -10,17 +11,17 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Area(nameof(AdminArea))]
     public class VehicleMarksController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public VehicleMarksController(AppDbContext context)
+        public VehicleMarksController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: AdminArea/VehicleMarks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.VehicleMarks.ToListAsync());
+            return View(await _uow.VehicleMarks.GetAllAsync());
         }
 
         // GET: AdminArea/VehicleMarks/Details/5
@@ -32,8 +33,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var vehicleMark = await _context.VehicleMarks
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var vehicleMark = await _uow.VehicleMarks
+                .FirstOrDefaultAsync(id.Value);
             if (vehicleMark == null)
             {
                 return NotFound();
@@ -63,8 +64,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 vehicleMark.Id = Guid.NewGuid();
                 vehicleMark.VehicleMarkName = vm.VehicleMarkName;
-                _context.Add(vehicleMark);
-                await _context.SaveChangesAsync();
+                _uow.VehicleMarks.Add(vehicleMark);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(vm);
@@ -79,9 +80,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var vehicleMark = await _context.VehicleMarks.SingleAsync(v => v.Id.Equals(id));
-            vm.VehicleMarkName = vehicleMark.VehicleMarkName;
-            
+            var vehicleMark = await _uow.VehicleMarks.FirstOrDefaultAsync(id.Value);
+            if (vehicleMark?.VehicleMarkName != null) vm.VehicleMarkName = vehicleMark.VehicleMarkName;
+
             return View(vm);
         }
 
@@ -93,9 +94,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Edit(Guid id, CreateEditVehicleMarkViewModel vm)
         {
             
-            var vehicleMark = await _context.VehicleMarks
-                .SingleAsync(v => v.Id.Equals(id));
-            if (id != vehicleMark.Id)
+            var vehicleMark = await _uow.VehicleMarks
+                .FirstOrDefaultAsync(id);
+            if (vehicleMark != null && id != vehicleMark.Id)
             {
                 return NotFound();
             }
@@ -104,14 +105,19 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
-                    vehicleMark.Id = id;
-                    vehicleMark.VehicleMarkName = vm.VehicleMarkName;
-                    _context.Update(vehicleMark);
-                    await _context.SaveChangesAsync();
+                    if (vehicleMark != null)
+                    {
+                        vehicleMark.Id = id;
+                        vehicleMark.VehicleMarkName = vm.VehicleMarkName;
+                        _uow.VehicleMarks.Update(vehicleMark);
+                        await _uow.SaveChangesAsync();
+                    }
+
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleMarkExists(vehicleMark.Id))
+                    if (vehicleMark != null && !VehicleMarkExists(vehicleMark.Id))
                     {
                         return NotFound();
                     }
@@ -134,8 +140,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var vehicleMark = await _context.VehicleMarks
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var vehicleMark = await _uow.VehicleMarks
+                .FirstOrDefaultAsync(id.Value);
             if (vehicleMark == null)
             {
                 return NotFound();
@@ -152,20 +158,25 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var vehicleMark = await _context.VehicleMarks
-                .SingleOrDefaultAsync(v => v.Id.Equals(id));
-            if (await _context.VehicleModels.AnyAsync(v => v.VehicleMarkId.Equals(vehicleMark.Id)))
+            var vehicleMark = await _uow.VehicleMarks
+                .FirstOrDefaultAsync(id);
+            if (await _uow.VehicleModels.AnyAsync(v => vehicleMark != null && v != null && v.VehicleMarkId.Equals(vehicleMark.Id)))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
-            if (vehicleMark != null) _context.VehicleMarks.Remove(vehicleMark);
-            await _context.SaveChangesAsync();
+
+            if (vehicleMark != null)
+            {
+                _uow.VehicleMarks.Remove(vehicleMark);
+                await _uow.SaveChangesAsync();
+            }
+            
             return RedirectToAction(nameof(Index));
         }
 
         private bool VehicleMarkExists(Guid id)
         {
-            return _context.VehicleMarks.Any(e => e.Id == id);
+            return _uow.VehicleMarks.Exists(id);
         }
     }
 }
