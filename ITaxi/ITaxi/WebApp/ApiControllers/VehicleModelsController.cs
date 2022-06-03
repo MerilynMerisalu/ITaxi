@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,25 +16,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class VehicleModelsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public VehicleModelsController(AppDbContext context)
+        public VehicleModelsController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/VehicleModels
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VehicleModel>>> GetVehicleModels()
         {
-            return await _context.VehicleModels.ToListAsync();
+            return Ok(await _uow.VehicleModels.GetAllVehicleModelsWithoutVehicleMarksAsync());
         }
 
         // GET: api/VehicleModels/5
         [HttpGet("{id}")]
         public async Task<ActionResult<VehicleModel>> GetVehicleModel(Guid id)
         {
-            var vehicleModel = await _context.VehicleModels.FindAsync(id);
+            var vehicleModel = await _uow.VehicleModels.FirstOrDefaultVehicleModelWithoutVehicleMarkAsync(id);
 
             if (vehicleModel == null)
             {
@@ -53,11 +54,12 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(vehicleModel).State = EntityState.Modified;
+            
 
             try
             {
-                await _context.SaveChangesAsync();
+                _uow.VehicleModels.Update(vehicleModel);
+                await _uow.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,8 +81,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<VehicleModel>> PostVehicleModel(VehicleModel vehicleModel)
         {
-            _context.VehicleModels.Add(vehicleModel);
-            await _context.SaveChangesAsync();
+            _uow.VehicleModels.Add(vehicleModel);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetVehicleModel", new { id = vehicleModel.Id }, vehicleModel);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicleModel(Guid id)
         {
-            var vehicleModel = await _context.VehicleModels.FindAsync(id);
+            var vehicleModel = await _uow.VehicleModels.FirstOrDefaultAsync(id);
             if (vehicleModel == null)
             {
                 return NotFound();
             }
 
-            _context.VehicleModels.Remove(vehicleModel);
-            await _context.SaveChangesAsync();
+            _uow.VehicleModels.Remove(vehicleModel);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool VehicleModelExists(Guid id)
         {
-            return _context.VehicleModels.Any(e => e.Id == id);
+            return _uow.VehicleModels.Any(e => e.Id == id);
         }
     }
 }

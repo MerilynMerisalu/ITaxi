@@ -1,4 +1,5 @@
 #nullable disable
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,19 +12,17 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Area(nameof(AdminArea))]
     public class VehicleModelsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public VehicleModelsController(AppDbContext context)
+        public VehicleModelsController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: AdminArea/VehicleModels
         public async Task<IActionResult> Index()
-        {
-            var appDbContext = _context.VehicleModels
-                .Include(v => v.VehicleMark);
-            return View(await appDbContext.ToListAsync());
+        { 
+            return View(await _uow.VehicleModels.GetAllAsync() );
         }
 
         // GET: AdminArea/VehicleModels/Details/5
@@ -35,9 +34,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _context.VehicleModels
-                .Include(v => v.VehicleMark)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var vehicleModel = await _uow.VehicleModels.FirstOrDefaultAsync(id.Value);
             if (vehicleModel == null)
             {
                 return NotFound();
@@ -54,8 +51,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             var vm = new CreateEditVehicleModelViewModel();
             vm.VehicleMarks = new SelectList(
-                await _context.VehicleMarks.OrderBy(v => v.VehicleMarkName)
-                    .Select(v => new {v.Id, v.VehicleMarkName}).ToListAsync(),
+                await _uow.VehicleMarks.GetAllAsync(),
                 nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
             return View(vm);
         }
@@ -72,13 +68,11 @@ namespace WebApp.Areas.AdminArea.Controllers
                 vehicleModel.Id = Guid.NewGuid();
                 vehicleModel.VehicleModelName = vm.VehicleModelName;
                 vehicleModel.VehicleMarkId = vm.VehicleMarkId;
-                _context.Add(vehicleModel);
-                await _context.SaveChangesAsync();
+                _uow.VehicleModels.Add(vehicleModel);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            vm.VehicleMarks = new SelectList(_context.VehicleMarks, nameof(VehicleMark.Id),
-                nameof(VehicleMark.VehicleMarkName), nameof(vehicleModel.VehicleMarkId));
-
+            
             return View(vm);
         }
 
@@ -91,9 +85,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _context.VehicleModels
-                .Include(v => v.VehicleMark).
-                SingleOrDefaultAsync(v => v.Id.Equals(id));
+            var vehicleModel = await _uow.VehicleModels.FirstOrDefaultAsync(id.Value);
             if (vehicleModel == null)
             {
                 return NotFound();
@@ -102,9 +94,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.VehicleMarkId = vehicleModel.VehicleMark!.Id;
             vm.Id = vehicleModel.Id;
             vm.VehicleModelName = vehicleModel.VehicleModelName;
-            vm.VehicleMarks = new SelectList(
-                await _context.VehicleMarks.OrderBy(v => v.VehicleMarkName)
-                    .Select(v => new {v.Id, v.VehicleMarkName}).ToListAsync(),
+            vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllAsync(),
                 nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
             return View(vm);
         }
@@ -117,9 +107,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             var vm = new CreateEditVehicleModelViewModel();
-            var vehicleModel = await _context.VehicleModels.Include(v => v.VehicleMark)
-                .SingleAsync(v => v.Id.Equals(id));
-            if (id != vehicleModel.Id)
+            var vehicleModel = await _uow.VehicleModels.FirstOrDefaultAsync(id);
+            if (vehicleModel != null && id != vehicleModel.Id)
             {
                 return NotFound();
             }
@@ -128,15 +117,20 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
-                    vehicleModel.Id = id;
-                    vehicleModel.VehicleMarkId = vm.VehicleMarkId;
-                    vehicleModel.VehicleModelName = vm.VehicleModelName;
-                    _context.Update(vehicleModel);
-                    await _context.SaveChangesAsync();
+                    if (vehicleModel != null)
+                    {
+                        vehicleModel.Id = id;
+                        vehicleModel.VehicleMarkId = vm.VehicleMarkId;
+                        vehicleModel.VehicleModelName = vm.VehicleModelName;
+                        _uow.VehicleModels.Update(vehicleModel);
+                        await _uow.SaveChangesAsync();
+                    }
+
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleModelExists(vehicleModel.Id))
+                    if (vehicleModel != null && !VehicleModelExists(vehicleModel.Id))
                     {
                         return NotFound();
                     }
@@ -159,9 +153,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var vehicleModel = await _context.VehicleModels
-                .Include(v => v.VehicleMark)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var vehicleModel = await _uow.VehicleModels.FirstOrDefaultAsync(id.Value);
             if (vehicleModel == null)
             {
                 return NotFound();
@@ -178,20 +170,25 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var vehicleModel = await _context.VehicleModels
-                .SingleOrDefaultAsync(v => v.Id.Equals(id));
-            if (await _context.Vehicles.AnyAsync(v => v.VehicleModelId.Equals(vehicleModel.Id)))
+            var vehicleModel = await _uow.VehicleModels
+                .FirstOrDefaultAsync(id);
+            if (await _uow.Vehicles.AnyAsync(v => v.VehicleModelId.Equals(vehicleModel.Id)))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
-            if (vehicleModel != null) _context.VehicleModels.Remove(vehicleModel);
-            await _context.SaveChangesAsync();
+
+            if (vehicleModel != null)
+            {
+                _uow.VehicleModels.Remove(vehicleModel);
+                await _uow.SaveChangesAsync();
+            }
+            
             return RedirectToAction(nameof(Index));
         }
 
         private bool VehicleModelExists(Guid id)
         {
-            return _context.VehicleModels.Any(e => e.Id == id);
+            return _uow.VehicleModels.Exists(id);
         }
     }
 }
