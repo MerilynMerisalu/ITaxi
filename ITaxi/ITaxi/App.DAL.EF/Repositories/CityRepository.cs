@@ -12,7 +12,6 @@ public class CityRepository: BaseEntityRepository<City, AppDbContext>, ICityRepo
     {
     }
     
-    
 
     protected override IQueryable<City> CreateQuery(bool noTracking = true)
     {
@@ -27,10 +26,7 @@ public class CityRepository: BaseEntityRepository<City, AppDbContext>, ICityRepo
     }
     
     
-    public virtual IQueryable<City> CreateOrderedByCityNameQuery(bool noTracking = true)
-    {
-        return CreateQuery(noTracking).OrderBy(c => c.CityName);
-    }
+    
 
     #warning Rewrite later to use DTO for API request
     public virtual async Task<IEnumerable<City>> GetAllCitiesWithoutCountyAsync()
@@ -40,10 +36,27 @@ public class CityRepository: BaseEntityRepository<City, AppDbContext>, ICityRepo
 
     }
 
-    #warning Rewrite later to use DTO for API request
+    public async Task<IEnumerable<City>> GetAllOrderedCitiesWithoutCountyAsync()
+    {
+        var res = await base.CreateQuery().OrderBy(c => c.CityName).ToListAsync();
+        return res;
+    }
+
+    public async Task<IEnumerable<City>> GetAllOrderedCitiesAsync()
+    {
+        return await CreateQuery().OrderBy(c => c.County!.CountyName)
+            .ThenBy(c => c.CityName).ToListAsync();
+    }
+
+#warning Rewrite later to use DTO for API request
     public async Task<City?> FirstOrDefaultCityWithoutCountyAsync(Guid id)
     {
         return await base.CreateQuery().FirstOrDefaultAsync(c => c.Id.Equals(id));
+    }
+
+    public IEnumerable<City> GetAllOrderedCitiesWithoutCounty()
+    {
+        return base.CreateQuery().OrderBy(c => c.CityName).ToList();
     }
 
 #warning Ask if this code should be rewritten because it doesn't seem to follow DRY code principle

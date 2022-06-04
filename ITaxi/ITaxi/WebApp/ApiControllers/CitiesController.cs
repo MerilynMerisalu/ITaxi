@@ -28,7 +28,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<IEnumerable<City>>> GetCities()
         {
             
-            var cities = await _uow.Cities.GetAllCitiesWithoutCountyAsync();
+            var cities = await _uow.Cities.GetAllOrderedCitiesWithoutCountyAsync();
             return Ok(cities);
         }
 

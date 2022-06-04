@@ -23,7 +23,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Cities
         public async Task<IActionResult> Index()
         {
-            var cities = await _uow.Cities.GetAllAsync();
+            var cities = await _uow.Cities.GetAllOrderedCitiesAsync();
             return View(cities);
         }
 
@@ -53,7 +53,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Create()
         {
             var vm = new CreateEditCityViewModel();
-            vm.Counties = new SelectList(await _uow.Counties.GetAllAsync(),
+            vm.Counties = new SelectList(await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync(),
                 nameof(County.Id), nameof(County.CountyName));
             return View(vm);
         }
@@ -95,7 +95,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            vm.Counties = new SelectList(await _uow.Counties.GetAllAsync(),
+            vm.Counties = new SelectList(await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync(),
                 nameof(County.Id), nameof(County.CountyName));
             vm.CityName = city.CityName;
             vm.CountyId = city.CountyId;
@@ -180,8 +180,13 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
-            if (city != null) _uow.Cities.Remove(city);
-            await _uow.SaveChangesAsync();
+
+            if (city != null)
+            {
+                _uow.Cities.Remove(city);
+                await _uow.SaveChangesAsync();
+            }
+            
             return RedirectToAction(nameof(Index));
         }
 
