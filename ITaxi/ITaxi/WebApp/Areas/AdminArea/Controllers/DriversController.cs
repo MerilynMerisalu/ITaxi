@@ -1,4 +1,5 @@
-#nullable disable
+#nullable enable
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,20 +12,18 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Area(nameof(AdminArea))]
     public class DriversController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public DriversController(AppDbContext context)
+        public DriversController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: AdminArea/Drivers
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context
-                .Drivers.Include(d => d.AppUser)
-                .Include(d => d.City);
-            return View(await appDbContext.ToListAsync());
+            
+            return View(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync());
         }
 
         // GET: AdminArea/Drivers/Details/5
@@ -36,13 +35,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var driver = await _context.Drivers
-                .Include(d => d.AppUser)
-                .Include(d => d.City)
-                .SingleAsync(m => m.Id == id);
-
-            var driverLicenseCategoryNames = await GettingDriverLicenseCategoryNamesAsync(driver.Id);
-            vm.DriverLicenseCategoryNames = String.Join(", ", driverLicenseCategoryNames);
+            var driver = await _uow.Drivers.FirstOrDefaultAsync(id.Value);
+            vm.DriverLicenseCategoryNames = await _uow.DriverAndDriverLicenseCategories
+                .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
             vm.Id = driver.Id;
             vm.PersonalIdentifier = driver.PersonalIdentifier;
             vm.CityName = driver.City!.CityName;
@@ -56,8 +51,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Drivers/Create
         /*public IActionResult Create()
         {
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email");
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName");
+            ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email");
+            ViewData["CityId"] = new SelectList(_uow.Cities, "Id", "CityName");
             return View();
         }
 
@@ -71,12 +66,12 @@ namespace WebApp.Areas.AdminArea.Controllers
             if (ModelState.IsValid)
             {
                 driver.Id = Guid.NewGuid();
-                _context.Add(driver);
-                await _context.SaveChangesAsync();
+                _uow.Add(driver);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", driver.AppUserId);
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName", driver.CityId);
+            ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email", driver.AppUserId);
+            ViewData["CityId"] = new SelectList(_uow.Cities, "Id", "CityName", driver.CityId);
             return View(driver);
         }*/
 
@@ -89,29 +84,26 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var driver = await _context.Drivers
-                .Include(c => c.DriverLicenseCategories)
-                .ThenInclude(c => c.DriverLicenseCategory)
-                .Include(c => c.City)
-                .SingleAsync(c => c.Id.Equals(id));
+            var driver = await _uow.Drivers
+                .FirstOrDefaultAsync(id.Value);
 
             var vm = new EditDriverViewModel();
             vm.DriverLicenseCategories= new SelectList(
-                await _context
-                    .DriverLicenseCategories.Include(d => d.Drivers)
-                    .OrderBy(dl=> dl.DriverLicenseCategoryName)
-                    .Select(d => new {d.Id, d.DriverLicenseCategoryName}).ToListAsync(),
+                await _uow
+                    .DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
                 nameof(DriverLicenseCategory.Id), 
                 nameof(DriverLicenseCategory.DriverLicenseCategoryName));
-            vm.Cities = new SelectList(await _context.Cities.OrderBy(c => c.CityName)
-                    .Select(c => new {c.Id, c.CityName}).ToListAsync(),
+            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
                 nameof(City.Id), nameof(City.CityName));
-            vm.Address = driver.Address;
-            vm.CityId = driver.CityId;
-            vm.PersonalIdentifier = driver.PersonalIdentifier;
-            vm.DriverLicenseNumber = driver.DriverLicenseNumber;
-            vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
-            
+            if (driver != null)
+            {
+                vm.Address = driver.Address;
+                vm.CityId = driver.CityId;
+                vm.PersonalIdentifier = driver.PersonalIdentifier;
+                vm.DriverLicenseNumber = driver.DriverLicenseNumber;
+                vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
+            }
+
             return View(vm);
         }
 
@@ -122,9 +114,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, EditDriverViewModel vm)
         {
-            var driver = await _context.Drivers.SingleAsync(d => d.Id.Equals(id));
+            var driver = await _uow.Drivers.FirstOrDefaultAsync(id);
             
-            if (id != driver.Id)
+            if (driver != null && id != driver.Id)
             {
                 return NotFound();
             }
@@ -133,35 +125,37 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
-                    driver.Id = id;
-                    driver.PersonalIdentifier = vm.PersonalIdentifier;
-                    if (vm.DriverAndDriverLicenseCategories != null)
+                    if (driver != null)
                     {
-                        await RemovingDriverAndDriverLicenseCategoriesAsync(id);
-
-                        foreach (var selectedDriverLicenseCategory in vm.DriverAndDriverLicenseCategories)
+                        driver.Id = id;
+                        driver.PersonalIdentifier = vm.PersonalIdentifier;
+                        if (vm.DriverAndDriverLicenseCategories != null)
                         {
-                            var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory()
+                            await _uow.DriverAndDriverLicenseCategories.RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(driver.Id);
+
+                            foreach (var selectedDriverLicenseCategory in vm.DriverAndDriverLicenseCategories)
                             {
-                                DriverId = driver.Id,
-                                DriverLicenseCategoryId = selectedDriverLicenseCategory
-                            };
-                            await _context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategory);
-                            
+                                var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory()
+                                {
+                                    DriverId = driver.Id,
+                                    DriverLicenseCategoryId = selectedDriverLicenseCategory
+                                };
+                                 _uow.DriverAndDriverLicenseCategories.Add(driverAndDriverLicenseCategory);
+                            }
                         }
 
-                        
+                        driver.DriverLicenseNumber = vm.DriverLicenseNumber;
+                        driver.DriverLicenseExpiryDate = vm.DriverLicenseExpiryDate;
+                        driver.CityId = vm.CityId;
+                        driver.Address = vm.Address;
+                        _uow.Drivers.Update(driver);
                     }
-                    driver.DriverLicenseNumber = vm.DriverLicenseNumber;
-                    driver.DriverLicenseExpiryDate = vm.DriverLicenseExpiryDate;
-                    driver.CityId = vm.CityId;
-                    driver.Address = vm.Address;
-                    _context.Update(driver);
-                    await _context.SaveChangesAsync();
+
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DriverExists(driver.Id))
+                    if (!DriverExists(driver!.Id))
                     {
                         return NotFound();
                     }
@@ -185,18 +179,16 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var driver = await _context.Drivers
-                .Include(d => d.AppUser)
-                .Include(d => d.City)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var driver = await _uow.Drivers.FirstOrDefaultAsync(id.Value);
             if (driver == null)
             {
                 return NotFound();
             }
 
             vm.PersonalIdentifier = driver.PersonalIdentifier;
-            var driverLicenseCategoryNames = await GettingDriverLicenseCategoryNamesAsync(id);
-            vm.DriverLicenseCategoryNames = String.Join(", ", driverLicenseCategoryNames);
+            var driverLicenseCategoryNames =  
+                await _uow.DriverAndDriverLicenseCategories.GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver.Id);
+            vm.DriverLicenseCategoryNames = driverLicenseCategoryNames;
             vm.CityName = driver.City!.CityName;
             vm.Address = driver.Address;
             vm.DriverLicenseNumber = driver.DriverLicenseNumber;
@@ -210,60 +202,33 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var driver = await _context.Drivers.SingleOrDefaultAsync(d => d.Id.Equals(id));
-            if (await _context.Schedules.AnyAsync(d => d.DriverId.Equals(driver.Id))
-                || await _context.Bookings.AnyAsync(d => d.DriverId.Equals(driver.Id)))
+            var driver = await _uow.Drivers.SingleOrDefaultAsync(d => d != null && d.Id.Equals(id));
+            if (await _uow.Schedules.AnyAsync(d => driver != null && d != null && d.DriverId.Equals(driver.Id))
+                || await _uow.Bookings.AnyAsync(d => driver != null && d != null && d.DriverId.Equals(driver.Id)))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
-            await RemovingDriverAndDriverLicenseCategoriesAsync(id);
+
+            await _uow.DriverAndDriverLicenseCategories.RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(id);
            
             if (driver != null)
             {
-                _context.Drivers.Remove(driver);
-                var appUser = await _context.Users
+                _uow.Drivers.Remove(driver);
+                #warning ask how to remove appuser using uow
+                /*var appUser = await _uow.Users
                     .SingleOrDefaultAsync(d => d.Id.Equals(driver.AppUserId));
-                if (appUser != null) _context.Users.Remove(appUser);
+                if (appUser != null) _uow.Users.Remove(appUser);*/
             }
 
-            await _context.SaveChangesAsync();
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DriverExists(Guid id)
         {
-            return _context.Drivers.Any(e => e.Id == id);
+            return _uow.Drivers.Exists(id);
         }
-        /// <summary>
-        /// Deleting entries from an in-between table driverAndDriverLicenseCategory table
-        /// </summary>
-        /// <param name="id">Driver entity id</param>
-        private async Task RemovingDriverAndDriverLicenseCategoriesAsync(Guid id)
-        {
-            var driverAndDriverLicenseCategories =
-                await _context.DriverAndDriverLicenseCategories
-                    .Where(dl => dl.DriverId.Equals(id))
-                    .Select(dl => dl).ToListAsync();
-            _context.DriverAndDriverLicenseCategories.RemoveRange(driverAndDriverLicenseCategories);
-
-        }
-    
-            /// <summary>
-            /// Selecting a driver license category names according to driver id
-            /// </summary>
-            /// <param name="id">Driver id</param>
-            /// <returns>List of category names</returns>
-            private async Task<ICollection<string>> GettingDriverLicenseCategoryNamesAsync(Guid? id)
-            {
-                var driverLicenseCategoryNames = await _context.DriverAndDriverLicenseCategories
-                   .Include(c => c.DriverLicenseCategory)
-                    .Include(c => c.Driver)
-                        .Where(i => i.DriverId.Equals(id))
-                        .OrderBy(c => c.DriverLicenseCategory.DriverLicenseCategoryName)
-                        .Select(dl => dl.DriverLicenseCategory.DriverLicenseCategoryName)
-                        .ToListAsync();
-                        return driverLicenseCategoryNames;
-            }
+        
     }
     
 }

@@ -1,8 +1,9 @@
-#nullable disable
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,25 +16,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class DriversController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public DriversController(AppDbContext context)
+        public DriversController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/Drivers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Driver>>> GetDrivers()
         {
-            return await _context.Drivers.ToListAsync();
+            return Ok(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync());
         }
 
         // GET: api/Drivers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Driver>> GetDriver(Guid id)
         {
-            var driver = await _context.Drivers.FindAsync(id);
+            var driver = await _uow.Drivers.FirstOrDefaultAsync(id);
 
             if (driver == null)
             {
@@ -52,12 +53,11 @@ namespace WebApp.ApiControllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(driver).State = EntityState.Modified;
-
+            
             try
             {
-                await _context.SaveChangesAsync();
+                _uow.Drivers.Update(driver);
+                await _uow.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,8 +79,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Driver>> PostDriver(Driver driver)
         {
-            _context.Drivers.Add(driver);
-            await _context.SaveChangesAsync();
+            _uow.Drivers.Add(driver);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetDriver", new { id = driver.Id }, driver);
         }
@@ -89,21 +89,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDriver(Guid id)
         {
-            var driver = await _context.Drivers.FindAsync(id);
+            var driver = await _uow.Drivers.FirstOrDefaultAsync(id);
             if (driver == null)
             {
                 return NotFound();
             }
 
-            _context.Drivers.Remove(driver);
-            await _context.SaveChangesAsync();
+            _uow.Drivers.Remove(driver);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool DriverExists(Guid id)
         {
-            return _context.Drivers.Any(e => e.Id == id);
+            return _uow.Drivers.Exists(id);
         }
     }
 }

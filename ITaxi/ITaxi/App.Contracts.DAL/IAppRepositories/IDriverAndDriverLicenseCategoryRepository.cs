@@ -5,5 +5,10 @@ namespace App.Contracts.DAL.IAppRepositories;
 
 public interface IDriverAndDriverLicenseCategoryRepository: IEntityRepository<DriverAndDriverLicenseCategory>
 {
-    // Write your custom methods here
+    Task<IEnumerable<string>> GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(Guid id);
+    string GetAllDriverLicenseCategoriesBelongingToTheDriver(Guid id, string separator);
+
+    Task<List<DriverAndDriverLicenseCategory?>> RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(Guid id);
+
+
 }

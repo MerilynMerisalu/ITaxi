@@ -68,9 +68,9 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
         return Remove(entity);
     }
 
-    public virtual List<TEntity> RemoveAll()
+    public virtual List<TEntity> RemoveAll(List<TEntity> entities)
     {
-        var entities = CreateQuery();
+        
         RepoDbSet.RemoveRange(entities);
         return entities.ToList();
     }

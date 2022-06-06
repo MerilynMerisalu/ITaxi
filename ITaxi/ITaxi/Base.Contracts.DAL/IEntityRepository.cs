@@ -20,7 +20,7 @@ public interface IEntityRepository<TEntity, TKey>
     TEntity Remove(TKey id);
 
 
-    List<TEntity> RemoveAll();
+    List<TEntity> RemoveAll(List<TEntity> entities);
     TEntity? FirstOrDefault(TKey id, bool noTracking = true);
     IEnumerable<TEntity> GetAll(bool noTracking = true);
     bool Exists(TKey id);
