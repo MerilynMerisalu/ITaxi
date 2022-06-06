@@ -27,7 +27,7 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
         {
-            return Ok(await _uow.Admins.GetAllAsync());
+            return Ok(await _uow.Admins.GetAllAdminsOrderedByLastNameAsync());
         }
 
         // GET: api/Admins/5

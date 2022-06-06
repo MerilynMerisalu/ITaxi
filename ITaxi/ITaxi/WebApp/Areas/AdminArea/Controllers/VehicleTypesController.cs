@@ -119,7 +119,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleTypeExists(vehicleType.Id))
+                    if (vehicleType != null && !VehicleTypeExists(vehicleType.Id))
                     {
                         return NotFound();
                     }
@@ -143,7 +143,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var vehicleType = await _uow.VehicleTypes
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m != null && m.Id == id);
             if (vehicleType == null)
             {
                 return NotFound();
@@ -161,8 +161,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var vehicleType = await _uow.VehicleTypes.FirstOrDefaultAsync(id);
-            if (await _uow.Vehicles.AnyAsync(v => v.VehicleType.Id.Equals(vehicleType.Id)) 
-                || await _uow.Bookings.AnyAsync(b => b.VehicleTypeId.Equals(vehicleType.Id)))
+            if (await _uow.Vehicles.AnyAsync(v => vehicleType != null && v != null && v.VehicleType != null && v.VehicleType.Id.Equals(vehicleType.Id)) 
+                || await _uow.Bookings.AnyAsync(b => vehicleType != null && b != null && b.VehicleTypeId.Equals(vehicleType.Id)))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }

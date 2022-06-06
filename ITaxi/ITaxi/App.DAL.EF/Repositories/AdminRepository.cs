@@ -46,4 +46,16 @@ public class AdminRepository: BaseEntityRepository<Admin, AppDbContext>, IAdminR
     {
         return CreateQuery(noTracking).FirstOrDefault(a => a.Id.Equals(id));
     }
+
+    public async Task<IEnumerable<Admin>> GetAllAdminsOrderedByLastNameAsync(bool noTracking = true)
+    {
+        return await CreateQuery(noTracking).OrderBy(a => a.AppUser!.LastName)
+            .ThenBy(a => a.AppUser!.FirstName).ToListAsync();
+    }
+
+    public IEnumerable<Admin> GetAllAdminsOrderedByLastName(bool noTracking = true)
+    {
+        return CreateQuery(noTracking).OrderBy(a => a.AppUser!.LastName)
+            .ThenBy(a => a.AppUser!.FirstName).ToList();
+    }
 }

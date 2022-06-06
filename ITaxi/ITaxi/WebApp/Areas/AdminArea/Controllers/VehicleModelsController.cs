@@ -1,4 +1,4 @@
-#nullable disable
+#nullable enable
 using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

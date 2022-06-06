@@ -5,5 +5,6 @@ namespace App.Contracts.DAL.IAppRepositories;
 
 public interface IAdminRepository: IEntityRepository<Admin>
 {
-    // Write your custom methods here
+    Task<IEnumerable<Admin>> GetAllAdminsOrderedByLastNameAsync(bool noTracking = true);
+    IEnumerable<Admin> GetAllAdminsOrderedByLastName(bool noTracking = true);
 }

@@ -1,4 +1,4 @@
-#nullable disable
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +30,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Admins
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.Admins.GetAllAsync());
+            return View(await _uow.Admins.GetAllAdminsOrderedByLastNameAsync());
         }
 
         // GET: AdminArea/Admins/Details/5
@@ -102,7 +102,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.PersonalIdentifier = admin.PersonalIdentifier;
             vm.Address = admin.Address;
-            vm.Cities = new SelectList(await _uow.Cities.GetAllAsync(),
+            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
             nameof(City.Id), nameof(City.CityName));
             return View(vm);
         }
@@ -114,7 +114,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, EditAdminViewModel vm)
         {
-            var admin = await _uow.Admins.SingleOrDefaultAsync(a => a.Id.Equals(id));
+            var admin = await _uow.Admins.FirstOrDefaultAsync(id);
             if (admin != null && id != admin.Id)
             {
                 return NotFound();
