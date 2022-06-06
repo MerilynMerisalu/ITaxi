@@ -36,7 +36,7 @@ public class DriverAndDriverLicenseCategoryRepository: BaseEntityRepository<Driv
         return driverLicenseCategoryNames;
     }
 
-    public string GetAllDriverLicenseCategoriesBelongingToTheDriver(Guid id, string separator)
+    public string GetAllDriverLicenseCategoriesBelongingToTheDriver(Guid id, string separator = " ")
     {
         var driverLicenseCategoryNamesAsList =  CreateQuery()
             .Where(i => i.DriverId.Equals(id))
