@@ -27,7 +27,7 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DriverLicenseCategory>>> GetDriverLicenseCategories()
         {
-            return Ok(await _uow.DriverLicenseCategories.GetAllAsync());
+            return Ok(await _uow.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync());
         }
 
         // GET: api/DriverLicenseCategories/5

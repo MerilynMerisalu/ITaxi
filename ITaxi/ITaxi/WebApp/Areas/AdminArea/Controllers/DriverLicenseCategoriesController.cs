@@ -21,7 +21,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/DriverLicenseCategories
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.DriverLicenseCategories.GetAllAsync());
+            return View(await _uow.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync());
         }
 
         // GET: AdminArea/DriverLicenseCategories/Details/5
@@ -157,7 +157,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             var driverLicenseCategory = await _uow.DriverLicenseCategories.FirstOrDefaultAsync(id);
             #warning Ask if this could be improved
             if ( await _uow.DriverAndDriverLicenseCategories
-                    .AnyAsync(c => c.DriverLicenseCategoryId.Equals(id)))
+                    .AnyAsync(c => c != null && c.DriverLicenseCategoryId.Equals(id)))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }

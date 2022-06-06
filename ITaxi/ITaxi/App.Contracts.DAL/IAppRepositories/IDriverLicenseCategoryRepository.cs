@@ -5,5 +5,6 @@ namespace App.Contracts.DAL.IAppRepositories;
 
 public interface IDriverLicenseCategoryRepository: IEntityRepository<DriverLicenseCategory>
 {
-    // Write your custom methods here
+    Task<IEnumerable<DriverLicenseCategory>> GetAllDriverLicenseCategoriesOrderedAsync(bool noTracking = true);
+    IEnumerable<DriverLicenseCategory> GetAllDriverLicenseCategoriesOrdered(bool noTracking = true);
 }
