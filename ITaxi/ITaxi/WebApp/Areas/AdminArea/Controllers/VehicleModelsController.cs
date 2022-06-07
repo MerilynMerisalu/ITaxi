@@ -51,7 +51,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             var vm = new CreateEditVehicleModelViewModel();
             vm.VehicleMarks = new SelectList(
-                await _uow.VehicleMarks.GetAllAsync(),
+                await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
                 nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
             return View(vm);
         }
@@ -94,7 +94,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.VehicleMarkId = vehicleModel.VehicleMark!.Id;
             vm.Id = vehicleModel.Id;
             vm.VehicleModelName = vehicleModel.VehicleModelName;
-            vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllAsync(),
+            vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
                 nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
             return View(vm);
         }
@@ -172,7 +172,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             var vehicleModel = await _uow.VehicleModels
                 .FirstOrDefaultAsync(id);
-            if (await _uow.Vehicles.AnyAsync(v => v.VehicleModelId.Equals(vehicleModel.Id)))
+            if (await _uow.Vehicles.AnyAsync(v => vehicleModel != null && v!.VehicleModelId.Equals(vehicleModel.Id)))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }

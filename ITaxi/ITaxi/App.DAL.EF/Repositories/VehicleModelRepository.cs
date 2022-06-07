@@ -47,11 +47,13 @@ public class VehicleModelRepository: BaseEntityRepository<VehicleModel, AppDbCon
 
     public async Task<IEnumerable<VehicleModel>> GetAllVehicleModelsOrderedByVehicleMarkNameAsync(bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking).ToListAsync();
+        return await CreateQuery(noTracking).OrderBy(v => v.VehicleMark!.VehicleMarkName)
+            .ThenBy(v => v.VehicleModelName).ToListAsync();
     }
 
     public IEnumerable<VehicleModel> GetAllVehicleModelsOrderedByVehicleMarkName(bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).ToList();
+        return CreateQuery(noTracking).OrderBy(v => v.VehicleMark!.VehicleMarkName)
+            .ThenBy(v => v.VehicleModelName).ToList();
     }
 }
