@@ -25,26 +25,25 @@ public class DriverAndDriverLicenseCategoryRepository: BaseEntityRepository<Driv
             .Include(c => c.Driver);
         return query;
     }
-
-    public async Task<IEnumerable<string>> GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(Guid id)
+    
+    public async Task<string?> GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(Guid id, string separator = ", ")
     {
         var driverLicenseCategoryNames = await CreateQuery()
             .Where(i => i.DriverId.Equals(id))
             .OrderBy(c => c.DriverLicenseCategory!.DriverLicenseCategoryName)
             .Select(dl => dl.DriverLicenseCategory!.DriverLicenseCategoryName)
             .ToListAsync();
-        return driverLicenseCategoryNames;
+        return string.Join(separator, driverLicenseCategoryNames);
     }
 
-    public string GetAllDriverLicenseCategoriesBelongingToTheDriver(Guid id, string separator = " ")
+    public string GetAllDriverLicenseCategoriesBelongingToTheDriver(Guid id, string separator = ", ")
     {
         var driverLicenseCategoryNamesAsList =  CreateQuery()
             .Where(i => i.DriverId.Equals(id))
             .OrderBy(c => c.DriverLicenseCategory!.DriverLicenseCategoryName)
             .Select(dl => dl.DriverLicenseCategory!.DriverLicenseCategoryName)
             .ToList();
-
-        return string.Join(separator, driverLicenseCategoryNamesAsList);
+        return string.Join(separator, driverLicenseCategoryNamesAsList );
     }
 
     public async Task<List<DriverAndDriverLicenseCategory?>> RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(Guid id)
@@ -56,4 +55,8 @@ public class DriverAndDriverLicenseCategoryRepository: BaseEntityRepository<Driv
 
         return RemoveAll(driverAndDriverLicenseCategories)!;
     }
+
+    
+
+   
 }
