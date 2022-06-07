@@ -5,5 +5,6 @@ namespace App.Contracts.DAL.IAppRepositories;
 
 public interface IVehicleMarkRepository: IEntityRepository<VehicleMark>
 {
-    // Write your custom methods here
+    Task<IEnumerable<VehicleMark>>GetAllVehicleMarkOrderedAsync(bool noTracking = true);
+    IEnumerable<VehicleMark>GetAllVehicleMarkOrdered(bool noTracking = true);
 }

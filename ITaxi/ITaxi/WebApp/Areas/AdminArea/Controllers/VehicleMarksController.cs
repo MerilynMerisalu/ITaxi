@@ -21,7 +21,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/VehicleMarks
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.VehicleMarks.GetAllAsync());
+            return View(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync());
         }
 
         // GET: AdminArea/VehicleMarks/Details/5
@@ -81,7 +81,11 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var vehicleMark = await _uow.VehicleMarks.FirstOrDefaultAsync(id.Value);
-            if (vehicleMark?.VehicleMarkName != null) vm.VehicleMarkName = vehicleMark.VehicleMarkName;
+            if (vehicleMark?.VehicleMarkName != null)
+            {
+                vm.VehicleMarkName = vehicleMark.VehicleMarkName;
+            } 
+                
 
             return View(vm);
         }

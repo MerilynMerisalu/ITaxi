@@ -27,7 +27,7 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VehicleType>>> GetVehicleTypes()
         {
-            return Ok(await _uow.VehicleTypes.GetAllAsync());
+            return Ok(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync());
         }
 
         // GET: api/VehicleTypes/5

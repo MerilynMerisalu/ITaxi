@@ -1,4 +1,4 @@
-#nullable disable
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VehicleMark>>> GetVehicleMarks()
         {
-            return Ok(await _uow.VehicleMarks.GetAllAsync());
+            return Ok(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync());
         }
 
         // GET: api/VehicleMarks/5
@@ -53,9 +53,7 @@ namespace WebApp.ApiControllers
             {
                 return BadRequest();
             }
-
             
-
             try
             {
                 _uow.VehicleMarks.Update(vehicleMark);
@@ -105,7 +103,7 @@ namespace WebApp.ApiControllers
 
         private bool VehicleMarkExists(Guid id)
         {
-            return _uow.VehicleMarks.Any(e => e.Id == id);
+            return _uow.VehicleMarks.Exists(id);
         }
     }
 }

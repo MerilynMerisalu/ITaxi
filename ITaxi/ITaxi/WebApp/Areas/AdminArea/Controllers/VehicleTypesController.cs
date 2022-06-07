@@ -21,7 +21,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/VehicleTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.VehicleTypes.GetAllAsync());
+            return View(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync());
         }
 
         // GET: AdminArea/VehicleTypes/Details/5

@@ -5,5 +5,6 @@ namespace App.Contracts.DAL.IAppRepositories;
 
 public interface IVehicleTypeRepository: IEntityRepository<VehicleType>
 {
-    // Write your custom methods here
+    Task<IEnumerable<VehicleType>> GetAllVehicleTypesOrderedAsync(bool noTracking = true);
+    IEnumerable<VehicleType> GetAllVehicleTypesOrdered(bool noTracking = true);
 }
