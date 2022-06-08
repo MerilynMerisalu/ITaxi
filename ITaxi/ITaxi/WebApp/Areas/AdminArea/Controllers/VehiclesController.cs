@@ -23,7 +23,7 @@ public class VehiclesController : Controller
     public async Task<IActionResult> Index()
     {
 
-        return View(await _uow.Vehicles.GetAllAsync());
+        return View(await _uow.Vehicles.GettingVehicleOrderedAsync());
     }
 
     // GET: AdminArea/Vehicles/Details/5

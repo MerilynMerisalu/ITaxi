@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,25 +16,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class VehiclesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public VehiclesController(AppDbContext context)
+        public VehiclesController(IAppUnitOfWork context)
         {
-            _context = context;
+            _uow = context;
         }
 
         // GET: api/Vehicles
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
         {
-            return await _context.Vehicles.ToListAsync();
+            return Ok(await _uow.Vehicles.GettingVehicleOrderedAsync());
         }
 
         // GET: api/Vehicles/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Vehicle>> GetVehicle(Guid id)
         {
-            var vehicle = await _context.Vehicles.FindAsync(id);
+            var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id);
 
             if (vehicle == null)
             {
@@ -52,12 +53,11 @@ namespace WebApp.ApiControllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(vehicle).State = EntityState.Modified;
-
+            
             try
             {
-                await _context.SaveChangesAsync();
+                _uow.Vehicles.Update(vehicle);
+                await _uow.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,8 +79,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Vehicle>> PostVehicle(Vehicle vehicle)
         {
-            _context.Vehicles.Add(vehicle);
-            await _context.SaveChangesAsync();
+            _uow.Vehicles.Add(vehicle);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetVehicle", new { id = vehicle.Id }, vehicle);
         }
@@ -89,21 +89,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicle(Guid id)
         {
-            var vehicle = await _context.Vehicles.FindAsync(id);
+            var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id);
             if (vehicle == null)
             {
                 return NotFound();
             }
 
-            _context.Vehicles.Remove(vehicle);
-            await _context.SaveChangesAsync();
+            _uow.Vehicles.Remove(vehicle);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool VehicleExists(Guid id)
         {
-            return _context.Vehicles.Any(e => e.Id == id);
+            return _uow.Vehicles.Exists(id);
         }
     }
 }

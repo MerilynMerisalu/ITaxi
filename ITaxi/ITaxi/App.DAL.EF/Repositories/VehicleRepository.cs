@@ -47,6 +47,24 @@ public class VehicleRepository: BaseEntityRepository<Vehicle, AppDbContext>, IVe
         return CreateQuery(noTracking).FirstOrDefault(v => v.Id.Equals(id));
     }
 
+    public async Task<IEnumerable<Vehicle>> GettingVehicleOrderedAsync(bool noTracking = true)
+    {
+        return await CreateQuery(noTracking)
+            .OrderBy(v => v.VehicleType!.VehicleTypeName)
+            .ThenBy(v => v.VehicleMark!.VehicleMarkName)
+            .ThenBy(v => v.VehicleModel!.VehicleModelName)
+            .ThenBy(v => v.ManufactureYear).ToListAsync();
+    }
+
+    public IEnumerable<Vehicle> GettingVehicleOrdered(bool noTracking = true)
+    {
+        return CreateQuery(noTracking)
+            .OrderBy(v => v.VehicleType!.VehicleTypeName)
+            .ThenBy(v => v.VehicleMark!.VehicleMarkName)
+            .ThenBy(v => v.VehicleModel!.VehicleModelName)
+            .ThenBy(v => v.ManufactureYear).ToList();
+    }
+
     public List<int> GettingManufactureYears()
     {
         var years = new List<int>();
