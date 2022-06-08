@@ -1,4 +1,5 @@
-#nullable disable
+#nullable enable
+using App.Contracts.DAL;
 using App.DAL.EF;
 using App.Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -11,23 +12,18 @@ namespace WebApp.Areas.AdminArea.Controllers;
 [Area(nameof(AdminArea))]
 public class VehiclesController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IAppUnitOfWork _uow;
 
-    public VehiclesController(AppDbContext context)
+    public VehiclesController(IAppUnitOfWork uow)
     {
-        _context = context;
+        _uow = uow;
     }
 
     // GET: AdminArea/Vehicles
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.Vehicles
-            .Include(v => v.Driver)
-            .Include(v => v.Driver.AppUser)
-            .Include(v => v.VehicleMark)
-            .Include(v => v.VehicleModel)
-            .Include(v => v.VehicleType);
-        return View(await appDbContext.ToListAsync());
+
+        return View(await _uow.Vehicles.GetAllAsync());
     }
 
     // GET: AdminArea/Vehicles/Details/5
@@ -35,13 +31,7 @@ public class VehiclesController : Controller
     {
         if (id == null) return NotFound();
         var vm = new DetailsDeleteVehicleViewModel();
-        var vehicle = await _context.Vehicles
-            .Include(v => v.Driver)
-            .ThenInclude(d => d.AppUser)
-            .Include(v => v.VehicleMark)
-            .Include(v => v.VehicleModel)
-            .Include(v => v.VehicleType)
-            .SingleOrDefaultAsync(m => m.Id == id);
+        var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id.Value);
         if (vehicle == null) return NotFound();
         vm.DriverFullName = vehicle.Driver!.AppUser!.FirstAndLastName;
         vm.Id = id;
@@ -52,7 +42,7 @@ public class VehiclesController : Controller
         vm.VehicleAvailability = vehicle.VehicleAvailability;
         vm.NumberOfSeats = vehicle.NumberOfSeats;
         vm.VehiclePlateNumber = vehicle.VehiclePlateNumber;
-        
+
         return View(vm);
     }
 
@@ -60,15 +50,13 @@ public class VehiclesController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditVehicleViewModel();
-        var manufactureYears = GettingManufactureYears();
-        vm.ManufactureYears = GettingManufactureYearsSelectList(manufactureYears);
-        vm.VehicleMarks = new SelectList(await _context.VehicleMarks.OrderBy(v => v.VehicleMarkName)
-            .Select(v => new {v.Id, v.VehicleMarkName}).ToListAsync(), nameof(VehicleMark
-            .Id), nameof(VehicleMark.VehicleMarkName));
-        vm.VehicleModels = new SelectList(await _context.VehicleModels
-                .Select(v => new {v.Id, v.VehicleModelName}).ToListAsync(),
+
+        vm.ManufactureYears = new SelectList(_uow.Vehicles.GettingManufactureYears());
+            vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync()
+            , nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
+        vm.VehicleModels = new SelectList(await _uow.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
             nameof(VehicleModel.Id), nameof(VehicleModel.VehicleModelName));
-        vm.VehicleTypes = new SelectList(_context.VehicleTypes.Select(v => new {v.Id, v.VehicleTypeName}),
+        vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleType.Id),
             nameof(VehicleType.VehicleTypeName));
         return View(vm);
@@ -85,7 +73,8 @@ public class VehiclesController : Controller
         {
             vehicle.Id = Guid.NewGuid();
 
-            vehicle.DriverId = await _context.Drivers.Select(d => d.Id).FirstOrDefaultAsync();
+            vehicle.Driver = await _uow.Drivers.FirstAsync();
+            if (vehicle.Driver != null) vehicle.DriverId = vehicle.Driver.Id;
             vehicle.ManufactureYear = vm.ManufactureYear;
             vehicle.VehicleAvailability = vm.VehicleAvailability;
             vehicle.VehicleMarkId = vm.VehicleMarkId;
@@ -93,20 +82,22 @@ public class VehiclesController : Controller
             vehicle.VehicleTypeId = vm.VehicleTypeId;
             vehicle.NumberOfSeats = vm.NumberOfSeats;
             vehicle.VehiclePlateNumber = vm.VehiclePlateNumber;
-            _context.Add(vehicle);
-            await _context.SaveChangesAsync();
+            _uow.Vehicles.Add(vehicle);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        
-        #warning ManufactureYears needs checking 
 
-        vm.ManufactureYears = new SelectList(GettingManufactureYearsSelectList(GettingManufactureYears()),
-            nameof(Vehicle.ManufactureYear), nameof(Vehicle.ManufactureYear),
-            nameof(vehicle.ManufactureYear));
-        vm.VehicleTypes = new SelectList(_context.VehicleTypes, nameof(VehicleType.Id),
+#warning ManufactureYears needs checking
+
+        vm.ManufactureYears = new SelectList(_uow.Vehicles.GettingManufactureYears(), nameof(Vehicle.ManufactureYear));
+        vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+            nameof(VehicleType.Id),
             nameof(VehicleType.VehicleTypeName), nameof(vehicle.VehicleTypeId));
-        vm.VehicleMarks = new SelectList(_context.VehicleMarks, nameof(VehicleMark.Id),
+        vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
+            nameof(VehicleMark.Id),
             nameof(VehicleMark.VehicleMarkName), nameof(vehicle.VehicleMarkId));
+        vm.VehicleModels = new SelectList(await _uow.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
+            nameof(VehicleModel.VehicleModelName), nameof(VehicleModel.Id));
 
         return View(vm);
     }
@@ -117,29 +108,26 @@ public class VehiclesController : Controller
         var vm = new CreateEditVehicleViewModel();
         if (id == null) return NotFound();
 
-        var vehicle = await _context.Vehicles.
-            Include(v => v.VehicleMark)
-            .Include(v => v.VehicleModel)
-            .Include(v => v.VehicleType)
-            .SingleOrDefaultAsync(v => v.Id.Equals(id));
-        if (vehicle == null) return NotFound();
-        var manufactureYears = GettingManufactureYears();
-        vm.ManufactureYears = GettingManufactureYearsSelectList(manufactureYears);
-        vm.VehicleTypes = new SelectList(await _context.VehicleTypes
-                .Select(v => new {v.Id, v.VehicleTypeName}).ToListAsync(),
+        var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id.Value);
+        if (vehicle == null)
+        {
+            return NotFound();
+        }
+
+        vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleType.Id),
             nameof(VehicleType.VehicleTypeName));
-        vm.VehicleMarks = new SelectList(await _context.VehicleMarks
-                .Select(v => new {v.Id, v.VehicleMarkName}).ToListAsync(),
+        vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
             nameof(VehicleMark.Id),
             nameof(VehicleMark.VehicleMarkName));
 
-        vm.VehicleModels = new SelectList(await _context.VehicleModels
-                .Select(v => new {v.Id, v.VehicleModelName}).ToListAsync(),
+        vm.VehicleModels = new SelectList(await _uow.VehicleModels
+                .GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
             nameof(VehicleModel.Id),
             nameof(VehicleModel.VehicleModelName));
-        
+
         vm.Id = vehicle.Id;
+        vm.ManufactureYears = new SelectList(_uow.Vehicles.GettingManufactureYears());
         vm.ManufactureYear = vehicle.ManufactureYear;
         vm.VehicleAvailability = vehicle.VehicleAvailability;
         vm.NumberOfSeats = vehicle.NumberOfSeats;
@@ -157,36 +145,41 @@ public class VehiclesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleViewModel vm)
     {
-        var vehicle = await _context.Vehicles.SingleAsync(v => v.Id.Equals(id));
-        if (id != vehicle.Id) return NotFound();
+        var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id);
+        if (vehicle != null && id != vehicle.Id) return NotFound();
 
         if (ModelState.IsValid)
         {
             try
             {
-                vehicle.Id = id;
-                vehicle.DriverId = _context.Drivers.SingleAsync(d => d.Id.Equals(vehicle.DriverId))
-                    .Result.Id;
-                vehicle.ManufactureYear = vm.ManufactureYear;
-                vehicle.VehicleAvailability = vm.VehicleAvailability;
-                vehicle.VehicleMarkId = vm.VehicleMarkId;
-                vehicle.VehicleModelId = vm.VehicleModelId;
-                vehicle.VehicleTypeId = vm.VehicleTypeId;
-                vehicle.NumberOfSeats = vm.NumberOfSeats;
-                _context.Update(vehicle);
-                await _context.SaveChangesAsync();
+                if (vehicle != null)
+                {
+                    vehicle.Id = id;
+                    vehicle.Driver = await _uow.Drivers.SingleOrDefaultAsync(d => d.Id.Equals(vehicle.DriverId));
+                    vehicle.DriverId = vehicle.DriverId;
+                    vehicle.ManufactureYear = vm.ManufactureYear;
+                    vehicle.VehicleAvailability = vm.VehicleAvailability;
+                    vehicle.VehicleMarkId = vm.VehicleMarkId;
+                    vehicle.VehicleModelId = vm.VehicleModelId;
+                    vehicle.VehicleTypeId = vm.VehicleTypeId;
+                    vehicle.NumberOfSeats = vm.NumberOfSeats;
+                    _uow.Vehicles.Update(vehicle);
+                    await _uow.SaveChangesAsync();
+                }
+
+                
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!VehicleExists(vehicle.Id))
+                if (vehicle != null && !VehicleExists(vehicle.Id))
                     return NotFound();
                 throw;
             }
 
             return RedirectToAction(nameof(Index));
         }
-        
-        
+
+
         return View(vm);
     }
 
@@ -195,13 +188,7 @@ public class VehiclesController : Controller
     {
         if (id == null) return NotFound();
         var vm = new DetailsDeleteVehicleViewModel();
-        var vehicle = await _context.Vehicles.
-            Include(v => v.Driver)
-            .ThenInclude(d => d.AppUser).
-            Include(v => v.VehicleMark)
-            .Include(v => v.VehicleModel)
-            .Include(v => v.VehicleType)
-            .SingleOrDefaultAsync(v => v.Id.Equals(id));
+        var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id.Value);
         if (vehicle == null) return NotFound();
         vm.DriverFullName = vehicle.Driver!.AppUser!.FirstAndLastName;
         vm.Id = id;
@@ -222,48 +209,26 @@ public class VehiclesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var vehicle = await _context.Vehicles.SingleOrDefaultAsync(v => v.Id.Equals(id));
-        if (await _context.Schedules.AnyAsync(s => s.VehicleId.Equals(vehicle.Id)) 
-            || await _context.Bookings.AnyAsync(v => v.VehicleId.Equals(vehicle.Id)))
+        var vehicle = await _uow.Vehicles.SingleOrDefaultAsync(v => v.Id.Equals(id));
+        if (await _uow.Schedules.AnyAsync(s => s.VehicleId.Equals(vehicle.Id))
+            || await _uow.Bookings.AnyAsync(v => v.VehicleId.Equals(vehicle.Id)))
         {
             return Content("Entity cannot be deleted because it has dependent entities!");
         }
-        if (vehicle != null) _context.Vehicles.Remove(vehicle);
-        await _context.SaveChangesAsync();
+
+        if (vehicle != null)
+        {
+            _uow.Vehicles.Remove(vehicle);
+            await _uow.SaveChangesAsync();
+        }
+        
         return RedirectToAction(nameof(Index));
     }
 
     private bool VehicleExists(Guid id)
     {
-        return _context.Vehicles.Any(e => e.Id == id);
+        return _uow.Vehicles.Exists(id);
     }
 
-    /// <summary>
-    ///     Creates a list of manufacture years.
-    /// </summary>
-    /// <returns>Select list years</returns>
-    private List<int> GettingManufactureYears()
-    {
-        var years = new List<int>();
-
-        for (var i = 6; i > 0; i--)
-        {
-            var year = DateTime.Today.AddYears(-i).Year;
-            years.Add(year);
-        }
-
-        years.Reverse();
-
-        return years;
-    }
-    /// <summary>
-    /// Converting years to a selectList
-    /// </summary>
-    /// <param name="years">List of years</param>
-    /// <returns></returns>
-    private SelectList GettingManufactureYearsSelectList(ICollection<int> years)
-    {
-        var manufactureYears = new SelectList(years);
-        return manufactureYears;
-    }
+    
 }
