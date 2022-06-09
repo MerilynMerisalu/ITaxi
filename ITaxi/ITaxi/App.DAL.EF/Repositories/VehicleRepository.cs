@@ -77,20 +77,13 @@ public class VehicleRepository: BaseEntityRepository<Vehicle, AppDbContext>, IVe
 
     public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesWithoutIncludesAsync(bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking)
-            .OrderBy(v => v.VehicleType!.VehicleTypeName)
-            .ThenBy(v => v.VehicleMark!.VehicleMarkName)
-            .ThenBy(v => v.VehicleModel!.VehicleModelName)
-            .ThenBy(v => v.ManufactureYear).ToListAsync();
+        return await base.CreateQuery(noTracking).OrderBy(v => v.ManufactureYear).ToListAsync();
     }
 
     public IEnumerable<Vehicle> GettingOrderedVehiclesWithoutIncludes(bool noTracking = true)
     {
         return base.CreateQuery(noTracking)
-            .OrderBy(v => v.VehicleType!.VehicleTypeName)
-            .ThenBy(v => v.VehicleMark!.VehicleMarkName)
-            .ThenBy(v => v.VehicleModel!.VehicleModelName)
-            .ThenBy(v => v.ManufactureYear).ToList();
+            .OrderBy(v => v.ManufactureYear).ToList();
     }
 
     public async Task<Vehicle?> GettingVehicleByIdAsync(Guid id, bool noTracking = true)
