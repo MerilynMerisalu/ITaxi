@@ -27,14 +27,14 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
         {
-            return Ok(await _uow.Vehicles.GettingVehicleOrderedAsync());
+            return Ok( await _uow.Vehicles.GettingOrderedVehiclesWithoutIncludesAsync());
         }
 
         // GET: api/Vehicles/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Vehicle>> GetVehicle(Guid id)
         {
-            var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id);
+            var vehicle = await _uow.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id);
 
             if (vehicle == null)
             {
@@ -89,7 +89,7 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicle(Guid id)
         {
-            var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id);
+            var vehicle = await _uow.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id);
             if (vehicle == null)
             {
                 return NotFound();

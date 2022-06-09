@@ -23,7 +23,7 @@ public class VehiclesController : Controller
     public async Task<IActionResult> Index()
     {
 
-        return View(await _uow.Vehicles.GettingVehicleOrderedAsync());
+        return View( await _uow.Vehicles.GettingOrderedVehiclesAsync());
     }
 
     // GET: AdminArea/Vehicles/Details/5
@@ -209,9 +209,9 @@ public class VehiclesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var vehicle = await _uow.Vehicles.SingleOrDefaultAsync(v => v.Id.Equals(id));
-        if (await _uow.Schedules.AnyAsync(s => s.VehicleId.Equals(vehicle.Id))
-            || await _uow.Bookings.AnyAsync(v => v.VehicleId.Equals(vehicle.Id)))
+        var vehicle = await _uow.Vehicles.SingleOrDefaultAsync(v => v != null && v.Id.Equals(id));
+        if (await _uow.Schedules.AnyAsync(s => vehicle != null && s != null && s.VehicleId.Equals(vehicle.Id))
+            || await _uow.Bookings.AnyAsync(v => vehicle != null && v != null && v.VehicleId.Equals(vehicle.Id)))
         {
             return Content("Entity cannot be deleted because it has dependent entities!");
         }

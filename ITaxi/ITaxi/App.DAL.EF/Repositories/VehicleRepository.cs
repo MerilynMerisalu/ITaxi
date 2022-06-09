@@ -47,7 +47,7 @@ public class VehicleRepository: BaseEntityRepository<Vehicle, AppDbContext>, IVe
         return CreateQuery(noTracking).FirstOrDefault(v => v.Id.Equals(id));
     }
 
-    public async Task<IEnumerable<Vehicle>> GettingVehicleOrderedAsync(bool noTracking = true)
+    public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesAsync(bool noTracking = true)
     {
         return await CreateQuery(noTracking)
             .OrderBy(v => v.VehicleType!.VehicleTypeName)
@@ -56,13 +56,62 @@ public class VehicleRepository: BaseEntityRepository<Vehicle, AppDbContext>, IVe
             .ThenBy(v => v.ManufactureYear).ToListAsync();
     }
 
-    public IEnumerable<Vehicle> GettingVehicleOrdered(bool noTracking = true)
+    public IEnumerable<Vehicle> GettingOrderedVehicles(bool noTracking = true)
     {
         return CreateQuery(noTracking)
             .OrderBy(v => v.VehicleType!.VehicleTypeName)
             .ThenBy(v => v.VehicleMark!.VehicleMarkName)
             .ThenBy(v => v.VehicleModel!.VehicleModelName)
             .ThenBy(v => v.ManufactureYear).ToList();
+    }
+
+    public async Task<IEnumerable<Vehicle>> GettingVehiclesWithoutIncludesAsync(bool noTracking = true)
+    {
+        return await base.CreateQuery(noTracking).ToListAsync();
+    }
+
+    public IEnumerable<Vehicle> GettingVehiclesWithoutIncludes(bool noTracking = true)
+    {
+        return base.CreateQuery(noTracking).ToList();
+    }
+
+    public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesWithoutIncludesAsync(bool noTracking = true)
+    {
+        return await base.CreateQuery(noTracking)
+            .OrderBy(v => v.VehicleType!.VehicleTypeName)
+            .ThenBy(v => v.VehicleMark!.VehicleMarkName)
+            .ThenBy(v => v.VehicleModel!.VehicleModelName)
+            .ThenBy(v => v.ManufactureYear).ToListAsync();
+    }
+
+    public IEnumerable<Vehicle> GettingOrderedVehiclesWithoutIncludes(bool noTracking = true)
+    {
+        return base.CreateQuery(noTracking)
+            .OrderBy(v => v.VehicleType!.VehicleTypeName)
+            .ThenBy(v => v.VehicleMark!.VehicleMarkName)
+            .ThenBy(v => v.VehicleModel!.VehicleModelName)
+            .ThenBy(v => v.ManufactureYear).ToList();
+    }
+
+    public async Task<Vehicle?> GettingVehicleByIdAsync(Guid id, bool noTracking = true)
+    {
+        return await CreateQuery(noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
+    }
+
+    public Vehicle? GettingVehicleById(Guid id, bool noTracking = true)
+    {
+        return CreateQuery(noTracking).FirstOrDefault(v => v.Id.Equals(id));
+    }
+
+    public async Task<Vehicle?> GettingVehicleWithoutIncludesByIdAsync(Guid id, bool noTracking = true)
+    {
+        return await base.CreateQuery(noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
+    }
+
+    public Vehicle? GettingVehicleWithoutIncludesById(Guid id, bool noTracking = true)
+    {
+        return base.CreateQuery(noTracking).FirstOrDefault(v => v.Id.Equals(id));
+
     }
 
     public List<int> GettingManufactureYears()
