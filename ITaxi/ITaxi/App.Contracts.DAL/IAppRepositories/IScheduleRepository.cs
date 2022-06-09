@@ -5,5 +5,5 @@ namespace App.Contracts.DAL.IAppRepositories;
 
 public interface IScheduleRepository: IEntityRepository<Schedule>
 {
-    
+   
 }

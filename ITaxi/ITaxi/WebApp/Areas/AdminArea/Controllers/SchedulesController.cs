@@ -1,4 +1,5 @@
 #nullable disable
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,26 +12,18 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Area(nameof(AdminArea))]
     public class SchedulesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public SchedulesController(AppDbContext context)
+        public SchedulesController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
+            
         }
 
         // GET: AdminArea/Schedules
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Schedules
-                .Include(s => s.Driver)
-                .ThenInclude(d => d.AppUser)
-                .Include(s => s.Vehicle)
-                .ThenInclude(v => v.VehicleMark)
-                .Include(v => v.Vehicle)
-                .ThenInclude(v => v.VehicleModel)
-                .Include(v => v.Vehicle)
-                .ThenInclude(v => v.VehicleType);
-            return View(await appDbContext.ToListAsync());
+            return View(await _uow.Schedules.GetAllAsync());
         }
 
         // GET: AdminArea/Schedules/Details/5
