@@ -3,7 +3,7 @@ using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface IScheduleRepository: IEntityRepository<Schedule>
+public interface IRideTimeRepository: IEntityRepository<RideTime>
 {
-    
+    // Add custom methods here
 }
