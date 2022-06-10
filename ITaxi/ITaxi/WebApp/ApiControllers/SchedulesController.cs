@@ -1,8 +1,9 @@
-#nullable disable
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,25 +16,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class SchedulesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public SchedulesController(AppDbContext context)
+        public SchedulesController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/Schedules
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules()
         {
-            return await _context.Schedules.ToListAsync();
+            return Ok(await _uow.Schedules.GettingAllOrderedSchedulesWithoutIncludesAsync());
         }
 
         // GET: api/Schedules/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Schedule>> GetSchedule(Guid id)
         {
-            var schedule = await _context.Schedules.FindAsync(id);
+            var schedule = await _uow.Schedules.GettingScheduleWithoutIncludesAsync(id);
 
             if (schedule == null)
             {
@@ -53,11 +54,12 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(schedule).State = EntityState.Modified;
+            
 
             try
             {
-                await _context.SaveChangesAsync();
+                _uow.Schedules.Update(schedule);
+                await _uow.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,8 +81,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Schedule>> PostSchedule(Schedule schedule)
         {
-            _context.Schedules.Add(schedule);
-            await _context.SaveChangesAsync();
+            _uow.Schedules.Add(schedule);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetSchedule", new { id = schedule.Id }, schedule);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSchedule(Guid id)
         {
-            var schedule = await _context.Schedules.FindAsync(id);
+            var schedule = await _uow.Schedules.GettingScheduleWithoutIncludesAsync(id);
             if (schedule == null)
             {
                 return NotFound();
             }
 
-            _context.Schedules.Remove(schedule);
-            await _context.SaveChangesAsync();
+            _uow.Schedules.Remove(schedule);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool ScheduleExists(Guid id)
         {
-            return _context.Schedules.Any(e => e.Id == id);
+            return _uow.Schedules.Exists(id);
         }
     }
 }

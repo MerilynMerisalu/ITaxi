@@ -40,5 +40,115 @@ public class ScheduleRepository: BaseEntityRepository<Schedule, AppDbContext>, I
         return CreateQuery(noTracking).ToList();
     }
     
+
+    public override async Task<Schedule?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
+    {
+        return await CreateQuery(noTracking).FirstOrDefaultAsync(s => s.Id.Equals(id));
+    }
+
+    public async Task<IEnumerable<Schedule>> GetAllSchedulesWithoutIncludesAsync(bool noTracking = true)
+    {
+        return await base.CreateQuery(noTracking).ToListAsync();
+    }
+
+    public IEnumerable<Schedule> GetAllSchedulesWithoutIncludes(bool noTracking = true)
+    {
+        return base.CreateQuery(noTracking).ToList();
+    }
+
+    public async Task<IEnumerable<Schedule>> GettingAllOrderedSchedulesWithIncludesAsync(bool noTracking = true)
+    {
+        return await CreateQuery(noTracking)
+            .OrderBy(s => s.StartDateAndTime.Date)
+            .ThenBy(s => s.StartDateAndTime.Year)
+            .ThenBy(s => s.StartDateAndTime.Month)
+            .ThenBy(s => s.StartDateAndTime.Day)
+            .ThenBy(s => s.StartDateAndTime.Hour)
+            .ThenBy(s => s.StartDateAndTime.Minute)
+            .ThenBy(s => s.StartDateAndTime.Date)
+            .ThenBy(s => s.EndDateAndTime.Year)
+            .ThenBy(s => s.EndDateAndTime.Month)
+            .ThenBy(s => s.EndDateAndTime.Day)
+            .ThenBy(s => s.EndDateAndTime.Hour)
+            .ThenBy(s => s.EndDateAndTime.Minute)
+            .ToListAsync();
+
+    }
+
+    public IEnumerable<Schedule> GettingAllOrderedSchedulesWithIncludes(bool noTracking = true)
+    {
+        return RepoDbSet
+            .OrderBy(s => s.StartDateAndTime.Date)
+            .ThenBy(s => s.StartDateAndTime.Year)
+            .ThenBy(s => s.StartDateAndTime.Month)
+            .ThenBy(s => s.StartDateAndTime.Day)
+            .ThenBy(s => s.StartDateAndTime.Hour)
+            .ThenBy(s => s.StartDateAndTime.Minute)
+            .ThenBy(s => s.StartDateAndTime.Date)
+            .ThenBy(s => s.EndDateAndTime.Year)
+            .ThenBy(s => s.EndDateAndTime.Month)
+            .ThenBy(s => s.EndDateAndTime.Day)
+            .ThenBy(s => s.EndDateAndTime.Hour)
+            .ThenBy(s => s.EndDateAndTime.Minute)
+            .ToList();
+    }
+
+    public async Task<IEnumerable<Schedule>> GettingAllOrderedSchedulesWithoutIncludesAsync(bool noTracking = true)
+    {
+        return await base.CreateQuery(noTracking)
+            .OrderBy(s => s.StartDateAndTime.Date)
+            .ThenBy(s => s.StartDateAndTime.Year)
+            .ThenBy(s => s.StartDateAndTime.Month)
+            .ThenBy(s => s.StartDateAndTime.Day)
+            .ThenBy(s => s.StartDateAndTime.Hour)
+            .ThenBy(s => s.StartDateAndTime.Minute)
+            .ThenBy(s => s.StartDateAndTime.Date)
+            .ThenBy(s => s.EndDateAndTime.Year)
+            .ThenBy(s => s.EndDateAndTime.Month)
+            .ThenBy(s => s.EndDateAndTime.Day)
+            .ThenBy(s => s.EndDateAndTime.Hour)
+            .ThenBy(s => s.EndDateAndTime.Minute)
+            .ToListAsync();
+    }
+
+    public IEnumerable<Schedule> GettingAllOrderedSchedulesWithoutIncludes(bool noTracking = true)
+    {
+        return  base.CreateQuery(noTracking).OrderBy(s => s.StartDateAndTime.Date)
+            .ThenBy(s => s.StartDateAndTime.Year)
+            .ThenBy(s => s.StartDateAndTime.Month)
+            .ThenBy(s => s.StartDateAndTime.Day)
+            .ThenBy(s => s.StartDateAndTime.Hour)
+            .ThenBy(s => s.StartDateAndTime.Minute)
+            .ThenBy(s => s.StartDateAndTime.Date)
+            .ThenBy(s => s.EndDateAndTime.Year)
+            .ThenBy(s => s.EndDateAndTime.Month)
+            .ThenBy(s => s.EndDateAndTime.Day)
+            .ThenBy(s => s.EndDateAndTime.Hour)
+            .ThenBy(s => s.EndDateAndTime.Minute)
+            .ToList();
+    }
+
     
+
+    public async Task<Schedule?>GettingScheduleWithoutIncludesAsync(Guid id, bool noTracking = true)
+    {
+        return await base.CreateQuery(noTracking)
+            .FirstOrDefaultAsync(s => s.Id.Equals(id));
+
+    }
+
+    public Schedule? GetScheduleWithoutIncludes(Guid id, bool noTracking = true)
+    {
+        return CreateQuery(noTracking).FirstOrDefault(s => s.Id.Equals(id));
+    }
+
+    public DateTime SettingScheduleStartDateAndTime()
+    {
+        return Convert.ToDateTime(DateTime.Now.ToUniversalTime().ToString("g"));
+    }
+
+    public DateTime SettingScheduleEndDateAndTime()
+    {
+       return Convert.ToDateTime(DateTime.Now.AddHours(8).ToUniversalTime().ToString("g"));
+    }
 }

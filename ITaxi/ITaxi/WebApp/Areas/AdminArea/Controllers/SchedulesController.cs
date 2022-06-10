@@ -1,4 +1,4 @@
-#nullable disable
+#nullable enable
 using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,7 +23,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Schedules
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.Schedules.GetAllAsync());
+            return View(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync());
         }
 
         // GET: AdminArea/Schedules/Details/5
@@ -35,16 +35,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var schedule = await _context.Schedules
-                .Include(s => s.Driver)
-                .ThenInclude(d=>d.AppUser)
-                .Include(s => s.Vehicle)
-                .ThenInclude(v=>v.VehicleMark)
-                .Include(s=>s.Vehicle)
-                .ThenInclude(v=>v.VehicleModel)
-                .Include(s=>s.Vehicle)
-                .ThenInclude(v=>v.VehicleType)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
+                
             if (schedule == null)
             {
                 return NotFound();
@@ -63,17 +55,12 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Create()
         {
             var vm = new CreateEditScheduleViewModel();
-            vm.Vehicles = new SelectList( await _context.Vehicles
-                    .Include(v => v.VehicleMark)
-                    .Include(v => v.VehicleModel)
-                    .Include(v => v.VehicleType)
-                    .OrderBy(c => c.VehicleMark.VehicleMarkName)
-                .Select(c => new {c.Id, c.VehicleIdentifier}).ToListAsync(),
+            vm.Vehicles = new SelectList( await _uow.Vehicles.GettingOrderedVehiclesAsync(),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
             #warning Schedule StartDateAndTime needs a custom validation
-            vm.StartDateAndTime = Convert.ToDateTime(DateTime.Now.ToUniversalTime().ToString("g"));
+            vm.StartDateAndTime = _uow.Schedules.SettingScheduleStartDateAndTime();
             #warning Schedule EndDateAndTime needs a custom validation
-            vm.EndDateAndTime = Convert.ToDateTime(DateTime.Now.AddHours(8).ToUniversalTime().ToString("g"));
+            vm.EndDateAndTime = _uow.Schedules.SettingScheduleEndDateAndTime();
 
             return View(vm);
         }
@@ -87,13 +74,13 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             if (ModelState.IsValid)
             {
-                var driverId = await _context.Drivers.Select(d => d.Id).FirstOrDefaultAsync();
+                var driver = await _uow.Drivers.FirstAsync();
                 schedule.Id = Guid.NewGuid();
-                schedule.DriverId = driverId;
+                if (driver != null) schedule.DriverId = driver.Id;
                 schedule.StartDateAndTime = vm.StartDateAndTime;
                 schedule.EndDateAndTime = vm.EndDateAndTime;
-                _context.Add(schedule);
-                await _context.SaveChangesAsync();
+                _uow.Schedules.Add(schedule);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
@@ -109,7 +96,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var schedule = await _context.Schedules.SingleOrDefaultAsync(s => s.Id.Equals(id));
+            var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
             if (schedule == null)
             {
                 return NotFound();
@@ -118,10 +105,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.VehicleId = schedule.VehicleId;
             vm.StartDateAndTime = schedule.StartDateAndTime;
             vm.EndDateAndTime = schedule.EndDateAndTime;
-            vm.Vehicles = new SelectList(await _context.Vehicles.Include(v =>
-                        v.VehicleMark).Include(v => v.VehicleModel)
-                    .Include(v => v.VehicleType).OrderBy(v => v.VehicleMark)
-                    .Select(v => new {v.Id, v.VehicleIdentifier}).ToListAsync(),
+            vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
                 nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier)); 
            
             return View(vm);
@@ -134,9 +118,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditScheduleViewModel vm )
         {
-            var schedule = await _context.Schedules.SingleAsync(s => s.Id.Equals(id));
+            var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
             
-            if (id != schedule.Id)
+            if (schedule != null && id != schedule.Id)
             {
                 return NotFound();
             }
@@ -145,17 +129,25 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
-                    schedule.Id = id;
-                    schedule.DriverId = _context.Schedules.SingleAsync(s => s.Id.Equals(id))
-                        .Result.DriverId;
-                    schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
-                    schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
-                    _context.Update(schedule);
-                    await _context.SaveChangesAsync();
+                    if (schedule != null)
+                    {
+                        schedule.Id = id;
+                        if (schedule.Driver != null)
+                        {
+                            schedule.Driver = await _uow.Drivers.FirstAsync();
+                            schedule.DriverId = schedule.DriverId;
+                        }
+                       
+                        schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
+                        schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
+                        _uow.Schedules.Update(schedule);
+                    }
+
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ScheduleExists(schedule.Id))
+                    if (schedule != null && !ScheduleExists(schedule.Id))
                     {
                         return NotFound();
                     }
@@ -179,16 +171,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var schedule = await _context.Schedules
-                .Include(s => s.Driver)
-                .ThenInclude(d=> d.AppUser)
-                .Include(s => s.Vehicle)
-                .ThenInclude(v=>v.VehicleMark)
-                .Include(s=>s.Vehicle)
-                .ThenInclude(v=>v.VehicleModel)
-                .Include(s=>s.Vehicle)
-                .ThenInclude(v=>v.VehicleType)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
             if (schedule == null)
             {
                 return NotFound();
@@ -207,20 +190,20 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var schedule = await _context.Schedules.SingleOrDefaultAsync(s =>s.Id.Equals(id));
-            if (await _context.RideTimes.AnyAsync(s => s.ScheduleId.Equals(schedule.Id))
-                || await _context.Bookings.AnyAsync(s => s.ScheduleId.Equals(schedule.Id)))
+            var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
+            if (await _uow.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
+                || await _uow.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
-            if (schedule != null) _context.Schedules.Remove(schedule);
-            await _context.SaveChangesAsync();
+            if (schedule != null) _uow.Schedules.Remove(schedule);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ScheduleExists(Guid id)
         {
-            return _context.Schedules.Any(e => e.Id == id);
+            return _uow.Schedules.Exists(id);
         }
     }
 }
