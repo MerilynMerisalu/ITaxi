@@ -1,8 +1,9 @@
-#nullable disable
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,25 +16,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class RideTimesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public RideTimesController(AppDbContext context)
+        public RideTimesController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/RideTimes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RideTime>>> GetRideTimes()
         {
-            return await _context.RideTimes.ToListAsync();
+            return Ok(await _uow.RideTimes.GettingAllRideTimesWithoutIncludesAsync());
         }
 
         // GET: api/RideTimes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<RideTime>> GetRideTime(Guid id)
         {
-            var rideTime = await _context.RideTimes.FindAsync(id);
+            var rideTime = await _uow.RideTimes.GettingRideTimeWithoutIncludesByIdAsync(id);
 
             if (rideTime == null)
             {
@@ -53,11 +54,12 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(rideTime).State = EntityState.Modified;
+            
 
             try
             {
-                await _context.SaveChangesAsync();
+                _uow.RideTimes.Update(rideTime);
+                await _uow.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,8 +81,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<RideTime>> PostRideTime(RideTime rideTime)
         {
-            _context.RideTimes.Add(rideTime);
-            await _context.SaveChangesAsync();
+            _uow.RideTimes.Add(rideTime);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetRideTime", new { id = rideTime.Id }, rideTime);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRideTime(Guid id)
         {
-            var rideTime = await _context.RideTimes.FindAsync(id);
+            var rideTime = await _uow.RideTimes.GettingRideTimeWithoutIncludesByIdAsync(id);
             if (rideTime == null)
             {
                 return NotFound();
             }
 
-            _context.RideTimes.Remove(rideTime);
-            await _context.SaveChangesAsync();
+            _uow.RideTimes.Remove(rideTime);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool RideTimeExists(Guid id)
         {
-            return _context.RideTimes.Any(e => e.Id == id);
+            return _uow.RideTimes.Exists(id);
         }
     }
 }
