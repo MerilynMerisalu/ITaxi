@@ -1,4 +1,5 @@
 #nullable enable
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
@@ -10,17 +11,17 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Area(nameof(AdminArea))]
     public class DisabilityTypesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public DisabilityTypesController(AppDbContext context)
+        public DisabilityTypesController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: AdminArea/DisabilityTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DisabilityTypes.ToListAsync());
+            return View(await _uow.DisabilityTypes.GetAllOrderedDisabilityTypesAsync());
         }
 
         // GET: AdminArea/DisabilityTypes/Details/5
@@ -32,8 +33,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var disabilityType = await _context.DisabilityTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var disabilityType = await _uow.DisabilityTypes
+                .FirstOrDefaultAsync(id.Value);
             if (disabilityType == null)
             {
                 return NotFound();
@@ -64,8 +65,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 disabilityType.Id = Guid.NewGuid();
                 disabilityType.DisabilityTypeName = vm.DisabilityTypeName;
-                _context.Add(disabilityType);
-                await _context.SaveChangesAsync();
+                _uow.DisabilityTypes.Add(disabilityType);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(vm);
@@ -80,7 +81,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var disabilityType = await _context.DisabilityTypes
+            var disabilityType = await _uow.DisabilityTypes
                 .SingleOrDefaultAsync(d => d.Id.Equals(id));
             if (disabilityType == null)
             {
@@ -98,8 +99,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditDisabilityTypeViewModel vm)
         {
-            var disabilityType = await _context.DisabilityTypes.SingleAsync(d => d.Id.Equals(id));
-            if (id != disabilityType.Id)
+            var disabilityType = await _uow.DisabilityTypes.FirstOrDefaultAsync(id);
+            if (disabilityType != null && id != disabilityType.Id)
             {
                 return NotFound();
             }
@@ -108,14 +109,18 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
-                    disabilityType.Id = id;
-                    disabilityType.DisabilityTypeName = vm.DisabilityTypeName;
-                    _context.Update(disabilityType);
-                    await _context.SaveChangesAsync();
+                    if (disabilityType != null)
+                    {
+                        disabilityType.Id = id;
+                        disabilityType.DisabilityTypeName = vm.DisabilityTypeName;
+                        _uow.DisabilityTypes.Update(disabilityType);
+                    }
+
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DisabilityTypeExists(disabilityType.Id))
+                    if (disabilityType != null && !DisabilityTypeExists(disabilityType.Id))
                     {
                         return NotFound();
                     }
@@ -138,8 +143,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var disabilityType = await _context.DisabilityTypes
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var disabilityType = await _uow.DisabilityTypes
+                .FirstOrDefaultAsync(id.Value);
             if (disabilityType == null)
             {
                 return NotFound();
@@ -155,20 +160,20 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var disabilityType = await _context.DisabilityTypes
-                .SingleOrDefaultAsync(d => d.Id.Equals(id));
-            if (await _context.Customers.AnyAsync(d => disabilityType != null && d.DisabilityTypeId.Equals(disabilityType.Id)))
+            var disabilityType = await _uow.DisabilityTypes
+                .FirstOrDefaultAsync(id);
+            if (await _uow.Customers.AnyAsync(d => disabilityType != null && d.DisabilityTypeId.Equals(disabilityType.Id)))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
-            if (disabilityType != null) _context.DisabilityTypes.Remove(disabilityType);
-            await _context.SaveChangesAsync();
+            if (disabilityType != null) _uow.DisabilityTypes.Remove(disabilityType);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DisabilityTypeExists(Guid id)
         {
-            return _context.DisabilityTypes.Any(e => e.Id == id);
+            return _uow.DisabilityTypes.Exists(id);
         }
     }
 }

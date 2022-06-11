@@ -1,8 +1,9 @@
-#nullable disable
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,25 +16,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class DisabilityTypesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public DisabilityTypesController(AppDbContext context)
+        public DisabilityTypesController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/DisabilityTypes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DisabilityType>>> GetDisabilityTypes()
         {
-            return await _context.DisabilityTypes.ToListAsync();
+            return Ok(await _uow.DisabilityTypes.GetAllOrderedDisabilityTypesAsync());
         }
 
         // GET: api/DisabilityTypes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DisabilityType>> GetDisabilityType(Guid id)
         {
-            var disabilityType = await _context.DisabilityTypes.FindAsync(id);
+            var disabilityType = await _uow.DisabilityTypes.FirstOrDefaultAsync(id);
 
             if (disabilityType == null)
             {
@@ -53,11 +54,12 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(disabilityType).State = EntityState.Modified;
+            
 
             try
             {
-                await _context.SaveChangesAsync();
+                _uow.DisabilityTypes.Update(disabilityType);
+                await _uow.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,8 +81,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<DisabilityType>> PostDisabilityType(DisabilityType disabilityType)
         {
-            _context.DisabilityTypes.Add(disabilityType);
-            await _context.SaveChangesAsync();
+            _uow.DisabilityTypes.Add(disabilityType);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetDisabilityType", new { id = disabilityType.Id }, disabilityType);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDisabilityType(Guid id)
         {
-            var disabilityType = await _context.DisabilityTypes.FindAsync(id);
+            var disabilityType = await _uow.DisabilityTypes.FirstOrDefaultAsync(id);
             if (disabilityType == null)
             {
                 return NotFound();
             }
 
-            _context.DisabilityTypes.Remove(disabilityType);
-            await _context.SaveChangesAsync();
+            _uow.DisabilityTypes.Remove(disabilityType);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool DisabilityTypeExists(Guid id)
         {
-            return _context.DisabilityTypes.Any(e => e.Id == id);
+            return _uow.DisabilityTypes.Exists(id);
         }
     }
 }

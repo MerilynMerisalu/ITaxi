@@ -25,6 +25,8 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     private IVehicleRepository _vehicles;
     private IScheduleRepository _schedules;
     private IRideTimeRepository _rideTimes;
+    private IDisabilityTypeRepository _disabilityTypes;
+    private ICustomerRepository _customers;
 
     public ICountyRepository Counties => _counties ?? new CountyRepository(UOWDbContext);
     public ICityRepository Cities => _cities ?? new CityRepository(UOWDbContext);
@@ -47,6 +49,9 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     public IVehicleRepository Vehicles => _vehicles ?? new VehicleRepository(UOWDbContext);
     public IScheduleRepository Schedules => _schedules ?? new ScheduleRepository(UOWDbContext);
     public IRideTimeRepository RideTimes => _rideTimes ?? new RideTimeRepository(UOWDbContext);
+    public IDisabilityTypeRepository DisabilityTypes => _disabilityTypes ?? new DisabilityTypeRepository(UOWDbContext);
+    public ICustomerRepository Customers => _customers ?? new CustomerRepository(UOWDbContext);
+    
 }
 
     
