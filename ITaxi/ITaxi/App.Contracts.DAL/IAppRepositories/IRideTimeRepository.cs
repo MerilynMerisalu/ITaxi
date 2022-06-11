@@ -10,4 +10,8 @@ public interface IRideTimeRepository: IEntityRepository<RideTime>
     Task<RideTime?> GettingRideTimeWithoutIncludesByIdAsync(Guid id, bool noTracking = true);
     RideTime? GettingRideTimeWithoutIncludesById(Guid id, bool noTracking = true);
     
+   
+    List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime);
+    string DriveTimeFormatting(RideTime rideTime);
+
 }

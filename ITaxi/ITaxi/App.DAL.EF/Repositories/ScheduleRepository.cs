@@ -151,4 +151,36 @@ public class ScheduleRepository: BaseEntityRepository<Schedule, AppDbContext>, I
     {
        return Convert.ToDateTime(DateTime.Now.AddHours(8).ToUniversalTime().ToString("g"));
     }
+
+    public async Task<Schedule?> GettingTheFirstScheduleAsync(bool noTracking = true)
+    {
+        return await CreateQuery()
+        .OrderBy(s => s.StartDateAndTime.Hour)
+        .ThenBy(s => s.StartDateAndTime.Minute)
+        .FirstOrDefaultAsync();
+        
+    }
+
+    public Schedule? GettingTheFirstSchedule(bool noTracking = true)
+    {
+        return CreateQuery()
+            .OrderBy(s => s.StartDateAndTime.Hour)
+            .ThenBy(s => s.StartDateAndTime.Minute)
+            .FirstOrDefault();
+    }
+
+    public DateTime[] GettingStartAndEndTime()
+    {
+        var scheduleStartAndEndTime = new DateTime[2];
+        var schedule = GettingTheFirstSchedule();
+        if (schedule != null)
+        {
+            scheduleStartAndEndTime[0] = schedule.StartDateAndTime;
+                
+            scheduleStartAndEndTime[1] = schedule.EndDateAndTime;
+        }
+                
+            
+        return scheduleStartAndEndTime;
+    }
 }

@@ -1,4 +1,5 @@
 #nullable enable
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,19 +12,19 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Area(nameof(AdminArea))]
     public class RideTimesController : Controller
     {
+        private readonly IAppUnitOfWork _uow;
         private readonly AppDbContext _context;
 
-        public RideTimesController(AppDbContext context)
+        public RideTimesController(AppDbContext context, IAppUnitOfWork uow)
         {
             _context = context;
+            _uow = uow;
         }
 
         // GET: AdminArea/RideTimes
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.RideTimes.
-                Include(r => r.Schedule);
-            return View(await appDbContext.ToListAsync());
+            return View(await _uow.RideTimes.GetAllAsync());
         }
 
         // GET: AdminArea/RideTimes/Details/5
@@ -35,9 +36,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var rideTime = await _context.RideTimes
-                .Include(r => r.Schedule)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id.Value);
             if (rideTime == null)
             {
                 return NotFound();
@@ -45,7 +44,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.Id = rideTime.Id;
             vm.ShiftDurationTime = rideTime.Schedule!.ShiftDurationTime;
-            vm.RideTime = rideTime.RideDateTime.ToString("t");
+            vm.RideTime = _uow.RideTimes.DriveTimeFormatting(rideTime);
             vm.IsTaken = rideTime.IsTaken;
 
             return View(vm);
@@ -55,12 +54,13 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Create()
         {
             var vm = new CreateRideTimeViewModel();
-            vm.Schedules = new SelectList(await _context.Schedules.OrderBy(s => s.StartDateAndTime)
-                    .Select(s => s).ToListAsync()
+            vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync()
                 , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
-            DateTime[] scheduleStartAndEndTime = await GettingScheduleStartAndEndDateAndTimeAsync();
-            var rideTimes = CalculatingRideTimes(scheduleStartAndEndTime);
-            vm.RideTimes = GettingRideTimeSelectList(rideTimes);
+            DateTime[] scheduleStartAndEndTime = _uow.Schedules.GettingStartAndEndTime();
+                var rideTimes = _uow.RideTimes.CalculatingRideTimes(scheduleStartAndEndTime);
+                vm.RideTimes = new SelectList(rideTimes);
+            
+
             return View(vm);
         }
 
@@ -225,10 +225,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         /// <returns>An array with schedule start and end time</returns>
         private async Task<DateTime[]> GettingScheduleStartAndEndDateAndTimeAsync()
         {
-            DateTime[] scheduleStartAndEndTime = new DateTime[2]; 
-            var schedule = await _context.Schedules
-                .OrderBy(s => s.StartDateAndTime.Hour)
-                .ThenBy(s => s.StartDateAndTime.Minute).FirstOrDefaultAsync();
+            var scheduleStartAndEndTime = new DateTime[2];
+            var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync();
             if (schedule != null)
             {
                 scheduleStartAndEndTime[0] = schedule.StartDateAndTime;

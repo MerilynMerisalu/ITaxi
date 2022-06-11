@@ -63,4 +63,29 @@ public class RideTimeRepository: BaseEntityRepository<RideTime, AppDbContext>, I
     {
         return base.CreateQuery(noTracking).FirstOrDefault(r => r.ScheduleId.Equals(id));
     }
+
+   
+
+    
+    
+    public List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime)
+    {
+        List<string> times = new List<string>();
+        var start = scheduleStartAndEndTime[0];
+        var time = start;
+        var end = scheduleStartAndEndTime[1];
+
+        while (time < end)
+        {
+            times.Add(time.ToString("t"));
+            time = time.AddMinutes(45);
+        }
+
+        return times;
+    }
+
+    public string DriveTimeFormatting(RideTime rideTime)
+    {
+        return rideTime.RideDateTime.ToString("t");
+    }
 }
