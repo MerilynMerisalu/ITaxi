@@ -90,7 +90,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                     }
 
                     await _context.RideTimes.AddRangeAsync(rideTimes);
-                    await _context.SaveChangesAsync();
+                    await _uow.SaveChangesAsync();
                 } 
                 #warning Needs custom validation to check that at least one ride time is chosen
                 
@@ -117,7 +117,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var rideTime = await _context.RideTimes.SingleOrDefaultAsync( r => r.Id.Equals(id));
+            var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id.Value);
             if (rideTime == null)
             {
                 return NotFound();
@@ -145,8 +145,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, EditRideTimeViewModel vm)
         {
-            var rideTime = await _context.RideTimes
-                .SingleOrDefaultAsync(r => r.Id.Equals(id));
+            var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id);
+                
             if (id != rideTime!.Id)
             {
                 return NotFound();
@@ -160,8 +160,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                     rideTime.ScheduleId = vm.ScheduleId;
                     rideTime.RideDateTime = DateTime.Parse(vm.RideTime);
                     rideTime.IsTaken = vm.IsTaken;
-                    _context.Update(rideTime);
-                    await _context.SaveChangesAsync();
+                    _uow.RideTimes.Update(rideTime);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -189,9 +189,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var rideTime = await _context.RideTimes
-                .Include(r => r.Schedule)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id.Value);
             if (rideTime == null)
             {
                 return NotFound();
@@ -209,15 +207,15 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var rideTime = await _context.RideTimes.SingleOrDefaultAsync(r => r.Id.Equals(id));
-            if (rideTime != null) _context.RideTimes.Remove(rideTime);
-            await _context.SaveChangesAsync();
+            var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id);
+            if (rideTime != null) _uow.RideTimes.Remove(rideTime);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool RideTimeExists(Guid id)
         {
-            return _context.RideTimes.Any(e => e.Id == id);
+            return _uow.RideTimes.Exists(id);
         }
         ///<summary>
         /// This will return the schedule start and end date and time

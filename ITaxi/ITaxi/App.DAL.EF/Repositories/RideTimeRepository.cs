@@ -63,10 +63,6 @@ public class RideTimeRepository: BaseEntityRepository<RideTime, AppDbContext>, I
     {
         return base.CreateQuery(noTracking).FirstOrDefault(r => r.ScheduleId.Equals(id));
     }
-
-   
-
-    
     
     public List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime)
     {
