@@ -15,10 +15,12 @@ public class DetailsDeleteCustomerViewModel
 
     public string LastAndFirstName { get; set; } = default!;
 
+    [DisplayName("Date of Birth")]
     public string DateOfBirth { get; set; } = default!;
 
     public Gender Gender { get; set; }
 
+    [DisplayName("Phone Number")]
     public string PhoneNumber { get; set; } = default!;
 
     public string Email { get; set; } = default!;
