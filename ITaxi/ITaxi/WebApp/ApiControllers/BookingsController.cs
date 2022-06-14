@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,25 +16,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class BookingsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public BookingsController(AppDbContext context)
+        public BookingsController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/Bookings
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
         {
-            return await _context.Bookings.ToListAsync();
+            return Ok(await _uow.Bookings.GettingAllOrderedBookingsWithoutIncludesAsync()) ;
         }
 
         // GET: api/Bookings/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Booking>> GetBooking(Guid id)
         {
-            var booking = await _context.Bookings.FindAsync(id);
+            var booking = await _uow.Bookings.GettingBookingWithoutIncludesByIdAsync(id);
 
             if (booking == null)
             {
@@ -53,11 +54,12 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(booking).State = EntityState.Modified;
+           
 
             try
             {
-                await _context.SaveChangesAsync();
+                _uow.Bookings.Update(booking);
+                await _uow.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,8 +81,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Booking>> PostBooking(Booking booking)
         {
-            _context.Bookings.Add(booking);
-            await _context.SaveChangesAsync();
+            _uow.Bookings.Add(booking);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetBooking", new { id = booking.Id }, booking);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBooking(Guid id)
         {
-            var booking = await _context.Bookings.FindAsync(id);
+            var booking = await _uow.Bookings.GettingBookingWithoutIncludesByIdAsync(id);
             if (booking == null)
             {
                 return NotFound();
             }
 
-            _context.Bookings.Remove(booking);
-            await _context.SaveChangesAsync();
+            _uow.Bookings.Remove(booking);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool BookingExists(Guid id)
         {
-            return _context.Bookings.Any(e => e.Id == id);
+            return _uow.Bookings.Exists(id);
         }
 
        

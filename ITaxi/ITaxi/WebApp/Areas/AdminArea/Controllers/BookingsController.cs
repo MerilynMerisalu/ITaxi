@@ -1,4 +1,5 @@
-#nullable disable
+#nullable enable
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace WebApp.Areas.AdminArea.Controllers
     public class BookingsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public BookingsController(AppDbContext context)
+        public BookingsController(AppDbContext context, IAppUnitOfWork uow)
         {
             _context = context;
+            _uow = uow;
         }
 
         // GET: AdminArea/Bookings
@@ -329,17 +332,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [HttpPost]
         public async Task<IActionResult> SearchByCityAsync([FromForm] string search)
         {
-            var results =
-                 await _context.Bookings.Include(b => b.City)
-                     .Include(b => b.Driver)
-                     .ThenInclude(d => d.AppUser)
-                     .Include(b => b.Schedule)
-                     .Include(b => b.Vehicle)
-                     .ThenInclude(v => v.VehicleMark)
-                     .Include(v => v.Vehicle)
-                     .ThenInclude(v => v.VehicleModel)
-                     .Include(b => b.VehicleType)
-                     .Where(b => b.City.CityName.Contains(search)).ToListAsync();
+            var results = await _uow.Bookings.SearchByCityAsync(search);
             return View(nameof(Index), results);
         }
     }
