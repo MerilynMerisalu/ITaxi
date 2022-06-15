@@ -16,7 +16,7 @@ public static class DataHelper
             GetRequiredService<IServiceScopeFactory>().
             CreateScope();
 
-        using var context = serviceScope
+        await using var context = serviceScope
             .ServiceProvider.GetService<AppDbContext>();
 
         if (context == null)

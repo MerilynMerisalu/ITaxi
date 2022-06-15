@@ -20,5 +20,6 @@ public interface IAppUnitOfWork: IUnitOfWork
      IRideTimeRepository RideTimes { get; }
      IDisabilityTypeRepository DisabilityTypes { get; }
      ICustomerRepository Customers { get; }
+     IDriveRepository Drives { get; }
 
 }
