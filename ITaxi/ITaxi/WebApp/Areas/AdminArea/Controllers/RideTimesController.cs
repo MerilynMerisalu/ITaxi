@@ -24,7 +24,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/RideTimes
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.RideTimes.GetAllAsync());
+            return View(await _uow.RideTimes.GettingAllOrderedRideTimesAsync());
         }
 
         // GET: AdminArea/RideTimes/Details/5

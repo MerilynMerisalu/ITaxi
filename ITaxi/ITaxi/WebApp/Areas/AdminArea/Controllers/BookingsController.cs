@@ -244,18 +244,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var booking = await _context.Bookings
-                .Include(b => b.City)
-                .Include(b => b.Driver)
-                .ThenInclude(d => d.AppUser)
-                .Include(b => b.Schedule)
-                .Include(b => b.Vehicle)
-                .ThenInclude(v => v.VehicleMark)
-                .Include(v => v.Vehicle)
-                .ThenInclude(v => v.VehicleModel)
-                .Include(b => b.VehicleType)
-                .SingleOrDefaultAsync(b => b.Id.Equals(id));
-            
+            var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value);
             if (booking == null)
             {
                 return NotFound();
@@ -263,6 +252,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Id = booking.Id;
             vm.City = booking.City!.CityName;
             vm.LastAndFirstName = booking.Driver!.AppUser!.LastAndFirstName;
+            
             vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
             vm.AdditionalInfo = booking.AdditionalInfo;
             vm.DestinationAddress = booking.DestinationAddress;

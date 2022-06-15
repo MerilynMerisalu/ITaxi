@@ -25,7 +25,7 @@ public class DetailsDeleteBookingViewModel
     public string City { get; set; } = default!;
 
     [DisplayName("Pickup Date and Time")]
-    [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
+    /*[DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]*/
     public string PickUpDateAndTime { get; set; } = default!;
     
     [DisplayName("Pickup Address")]

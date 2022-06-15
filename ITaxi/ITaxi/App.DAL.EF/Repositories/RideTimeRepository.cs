@@ -44,12 +44,12 @@ public class RideTimeRepository: BaseEntityRepository<RideTime, AppDbContext>, I
         return CreateQuery(noTracking).FirstOrDefault(r => r.Id.Equals(id));
     }
 
-    public async Task<IEnumerable<RideTime>> GettingAllRideTimesWithoutIncludesAsync(bool noTracking = true)
+    public async Task<IEnumerable<RideTime?>> GettingAllRideTimesWithoutIncludesAsync(bool noTracking = true)
     {
         return await base.CreateQuery(noTracking).ToListAsync();
     }
 
-    public IEnumerable<RideTime> GettingAllRideTimesWithoutIncludes(bool noTracking = true)
+    public IEnumerable<RideTime?> GettingAllRideTimesWithoutIncludes(bool noTracking = true)
     {
         return base.CreateQuery(noTracking).ToList();
     }
@@ -63,7 +63,78 @@ public class RideTimeRepository: BaseEntityRepository<RideTime, AppDbContext>, I
     {
         return base.CreateQuery(noTracking).FirstOrDefault(r => r.ScheduleId.Equals(id));
     }
-    
+
+    public async Task<IEnumerable<RideTime?>> GettingAllOrderedRideTimesAsync(bool noTracking = true)
+    {
+        return await CreateQuery(noTracking)
+            .OrderBy(r => r.Schedule!.StartDateAndTime.Date)
+            .ThenBy(r => r.Schedule!.StartDateAndTime.Day)
+            .ThenBy(r => r.Schedule!.StartDateAndTime.Month)
+            .ThenBy(r => r.Schedule!.StartDateAndTime.Year)
+            .ThenBy(r => r.Schedule!.StartDateAndTime.Hour)
+            .ThenBy(r => r.Schedule!.StartDateAndTime.Minute)
+            .ThenBy(r => r.Schedule!.EndDateAndTime.Date)
+            .ThenBy(r => r.Schedule!.EndDateAndTime.Month)
+            .ThenBy(r => r.Schedule!.EndDateAndTime.Year)
+            .ThenBy(r => r.Schedule!.EndDateAndTime.Hour)
+            .ThenBy(r => r.Schedule!.EndDateAndTime.Minute)
+            .ThenBy(r => r.RideDateTime.Date)
+            .ThenBy(r => r.RideDateTime.Day)
+            .ThenBy(r => r.RideDateTime.Month)
+            .ThenBy(r => r.RideDateTime.Year)
+            .ThenBy(r => r.RideDateTime.Hour)
+            .ThenBy(r => r.RideDateTime.Minute)
+            .ToListAsync();
+
+    }
+
+    public IEnumerable<RideTime?> GettingAllOrderedRideTimes(bool noTracking = true)
+    {
+        return CreateQuery(noTracking)
+            .OrderBy(r => r.Schedule!.StartDateAndTime.Date)
+            .ThenBy(r => r.Schedule!.StartDateAndTime.Day)
+            .ThenBy(r => r.Schedule!.StartDateAndTime.Month)
+            .ThenBy(r => r.Schedule!.StartDateAndTime.Year)
+            .ThenBy(r => r.Schedule!.StartDateAndTime.Hour)
+            .ThenBy(r => r.Schedule!.StartDateAndTime.Minute)
+            .ThenBy(r => r.Schedule!.EndDateAndTime.Date)
+            .ThenBy(r => r.Schedule!.EndDateAndTime.Month)
+            .ThenBy(r => r.Schedule!.EndDateAndTime.Year)
+            .ThenBy(r => r.Schedule!.EndDateAndTime.Hour)
+            .ThenBy(r => r.Schedule!.EndDateAndTime.Minute)
+            .ThenBy(r => r.RideDateTime.Date)
+            .ThenBy(r => r.RideDateTime.Day)
+            .ThenBy(r => r.RideDateTime.Month)
+            .ThenBy(r => r.RideDateTime.Year)
+            .ThenBy(r => r.RideDateTime.Hour)
+            .ThenBy(r => r.RideDateTime.Minute)
+            .ToList();
+    }
+
+    public async Task<IEnumerable<RideTime?>> GettingAllOrderedRideTimesWithoutIncludesAsync(bool noTracking = true)
+    {
+        return await CreateQuery(noTracking)
+            .OrderBy(r => r.RideDateTime.Date)
+            .ThenBy(r => r.RideDateTime.Day)
+            .ThenBy(r => r.RideDateTime.Month)
+            .ThenBy(r => r.RideDateTime.Year)
+            .ThenBy(r => r.RideDateTime.Hour)
+            .ThenBy(r => r.RideDateTime.Minute)
+            .ToListAsync();
+    }
+
+    public IEnumerable<RideTime?> GettingAllOrderedRideTimesWithoutIncludes(bool noTracking = true)
+    {
+        return CreateQuery(noTracking)
+            .OrderBy(r => r.RideDateTime.Date)
+            .ThenBy(r => r.RideDateTime.Day)
+            .ThenBy(r => r.RideDateTime.Month)
+            .ThenBy(r => r.RideDateTime.Year)
+            .ThenBy(r => r.RideDateTime.Hour)
+            .ThenBy(r => r.RideDateTime.Minute)
+            .ToList();
+    }
+
     public List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime)
     {
         List<string> times = new List<string>();
