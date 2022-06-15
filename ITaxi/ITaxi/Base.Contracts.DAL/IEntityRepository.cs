@@ -15,6 +15,7 @@ public interface IEntityRepository<TEntity, TKey>
     where TKey : IEquatable<TKey>
 {
     TEntity Add(TEntity entity);
+    Task<List<TEntity>> AddRangeAsync(List<TEntity> entities);
     TEntity Update(TEntity entity);
     TEntity Remove(TEntity entity);
     TEntity Remove(TKey id);
@@ -31,7 +32,7 @@ public interface IEntityRepository<TEntity, TKey>
     
 
     // async
-    
+    List<TEntity> AddRange(List<TEntity> entities);
     Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true);
     Task<IEnumerable<TEntity>> GetAllAsync(bool noTracking = true);
     Task<bool> ExistsAsync(TKey id);

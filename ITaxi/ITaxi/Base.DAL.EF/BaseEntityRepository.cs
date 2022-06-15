@@ -47,6 +47,12 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
         return RepoDbSet.Add(entity).Entity;
     }
 
+    public async Task<List<TEntity>> AddRangeAsync(List<TEntity> entities)
+    {
+        await RepoDbSet.AddRangeAsync(entities);
+        return entities;
+    }
+
     public virtual TEntity Update(TEntity entity)
     {
         return RepoDbSet.Update(entity).Entity;
@@ -113,9 +119,11 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
 
     }
 
-    
-
-    
+    public List<TEntity> AddRange(List<TEntity> entities)
+    {
+        RepoDbSet.AddRange(entities);
+        return entities;
+    }
 
 
     public virtual async Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true)

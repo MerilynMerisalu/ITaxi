@@ -69,7 +69,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateRideTimeViewModel vm, ICollection<RideTime> rideTimes)
+        public async Task<IActionResult> Create(CreateRideTimeViewModel vm, List<RideTime> rideTimes)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                          rideTimes.Add(rideTime);
                     }
 
-                    await _context.RideTimes.AddRangeAsync(rideTimes);
+                    await _uow.RideTimes.AddRangeAsync(rideTimes);
                     await _uow.SaveChangesAsync();
                 } 
                 #warning Needs custom validation to check that at least one ride time is chosen
