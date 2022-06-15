@@ -140,6 +140,12 @@ public class BookingRepository: BaseEntityRepository<Booking, AppDbContext>, IBo
          return results;
     }
 
+    public string PickUpDateAndTimeStrFormat(Booking booking)
+    {
+        return booking.PickUpDateAndTime.ToLongDateString()
+               + " " + booking.PickUpDateAndTime.ToShortTimeString();
+    }
+
     public override async Task<Booking?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
     {
         return await CreateQuery(noTracking).FirstOrDefaultAsync(b => b.Id.Equals(id));

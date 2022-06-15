@@ -56,8 +56,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.HasAnAssistant = booking.HasAnAssistant;
             vm.NumberOfPassengers = booking.NumberOfPassengers;
             vm.StatusOfBooking = booking.StatusOfBooking;
-            vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLongDateString()
-                                  + " " + booking.PickUpDateAndTime.ToShortTimeString();
+            vm.PickUpDateAndTime = _uow.Bookings.PickUpDateAndTimeStrFormat(booking);
 
             return View(vm);
         }
@@ -272,9 +271,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.HasAnAssistant = booking.HasAnAssistant;
             vm.NumberOfPassengers = booking.NumberOfPassengers;
             vm.StatusOfBooking = booking.StatusOfBooking;
-            vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLongDateString() + " " +
-                                   booking.PickUpDateAndTime.ToShortTimeString();
-
+            vm.PickUpDateAndTime = _uow.Bookings.PickUpDateAndTimeStrFormat(booking);
             return View(booking);
         }
 
