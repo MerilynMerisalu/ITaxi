@@ -22,22 +22,12 @@ namespace WebApp.Areas.AdminArea.Controllers
             _uow = uow;
         }
 
+        
         // GET: AdminArea/Bookings
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Bookings.
-                Include(b => b.City)
-                .Include(b => b.Driver)
-                .ThenInclude(d => d.AppUser)
-                .Include(b => b.Schedule)
-                .Include(b => b.Vehicle)
-                .ThenInclude(v => v.VehicleMark)
-                .Include(v => v.Vehicle)
-                .ThenInclude(v => v.VehicleModel)
-                .Include(b => b.VehicleType)
-                .Include(c => c.Drive)
-                .ThenInclude(c => c.Comment);
-            return View(await appDbContext.ToListAsync());
+            
+            return View(await _uow.Bookings.GettingAllOrderedBookingsAsync());
         }
 
         // GET: AdminArea/Bookings/Details/5
@@ -49,17 +39,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var booking = await _context.Bookings
-                .Include(b => b.City)
-                .Include(b => b.Driver)
-                .ThenInclude(d => d.AppUser)
-                .Include(b => b.Schedule)
-                .Include(b => b.Vehicle)
-                .ThenInclude(v => v.VehicleMark)
-                .Include(v => v.Vehicle)
-                .ThenInclude(v => v.VehicleModel)
-                .Include(b => b.VehicleType)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value);
             if (booking == null)
             {
                 return NotFound();
