@@ -21,5 +21,6 @@ public interface IAppUnitOfWork: IUnitOfWork
      IDisabilityTypeRepository DisabilityTypes { get; }
      ICustomerRepository Customers { get; }
      IDriveRepository Drives { get; }
+     ICommentRepository Comments { get; }
 
 }
