@@ -135,6 +135,22 @@ public class RideTimeRepository: BaseEntityRepository<RideTime, AppDbContext>, I
             .ToList();
     }
 
+    public async Task<IEnumerable<string?>> GettingAllSelectedRideTimesAsync(RideTime rideTime, bool noTracking = true)
+    {
+        return await RepoDbSet
+            .Where(r => r.ScheduleId.Equals(rideTime.ScheduleId))
+            .Select(r => r.RideDateTime.ToString("t"))
+            .ToListAsync();
+    }
+
+    public IEnumerable<string?> GettingAllSelectedRideTimes(RideTime rideTime, bool noTracking = true)
+    {
+           return RepoDbSet
+            .Where(r => r.ScheduleId.Equals(rideTime.ScheduleId))
+            .Select(r => r.RideDateTime.ToString("t"))
+            .ToList();
+    }
+
     public List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime)
     {
         List<string> times = new List<string>();

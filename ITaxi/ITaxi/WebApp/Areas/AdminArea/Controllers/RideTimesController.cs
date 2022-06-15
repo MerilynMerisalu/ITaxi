@@ -13,11 +13,10 @@ namespace WebApp.Areas.AdminArea.Controllers
     public class RideTimesController : Controller
     {
         private readonly IAppUnitOfWork _uow;
-        private readonly AppDbContext _context;
+        
 
-        public RideTimesController(AppDbContext context, IAppUnitOfWork uow)
+        public RideTimesController( IAppUnitOfWork uow)
         {
-            _context = context;
             _uow = uow;
         }
 
@@ -101,7 +100,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             
             #warning Selectlist of schedules must be recreated when something goes wrong with creating the record
-            vm.Schedules = new SelectList(_context.Schedules, nameof(Schedule.Id),
+            vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(), nameof(Schedule.Id),
                 nameof(Schedule.ShiftDurationTime));
            #warning Selectable ride times must be recreated when something goes wrong with creating the record
             #warning Selected ride times remain so when something goes wrong with creating the record
@@ -125,16 +124,14 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.Id = rideTime.Id;
             vm.Schedules = new SelectList(
-                await _context.Schedules.Select(s => new {s.Id, s.ShiftDurationTime}).ToListAsync(),
+                 await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
                 nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
             vm.IsTaken = rideTime.IsTaken;
             #warning Ridetimes should be hidden and reappearing based on whether IsTaken is true or not
-            vm.RideTimes = new SelectList(await _context.RideTimes
-                .Where(r => r.ScheduleId.Equals(rideTime.ScheduleId))
-                .Select(r => r.RideDateTime.ToString("t"))
-                .ToListAsync());
+            vm.RideTimes = new SelectList(await _uow.RideTimes.GettingAllSelectedRideTimesAsync(rideTime),
+                nameof(RideTime.Id), nameof(RideTime.RideDateTime));
             vm.ScheduleId = rideTime.ScheduleId;
-            vm.RideTime = rideTime.RideDateTime.ToString("t");
+            vm.RideTime = _uow.RideTimes.DriveTimeFormatting(rideTime);
             return View(vm);
         }
 
@@ -196,7 +193,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.ShiftDurationTime = rideTime.Schedule!.ShiftDurationTime;
-            vm.RideTime = rideTime.RideDateTime.ToString("t");
+            vm.RideTime = _uow.RideTimes.DriveTimeFormatting(rideTime);
             vm.IsTaken = rideTime.IsTaken;
 
             return View(vm);
@@ -217,57 +214,6 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             return _uow.RideTimes.Exists(id);
         }
-        ///<summary>
-        /// This will return the schedule start and end date and time
-        /// </summary>
-        /// <returns>An array with schedule start and end time</returns>
-        private async Task<DateTime[]> GettingScheduleStartAndEndDateAndTimeAsync()
-        {
-            var scheduleStartAndEndTime = new DateTime[2];
-            var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync();
-            if (schedule != null)
-            {
-                scheduleStartAndEndTime[0] = schedule.StartDateAndTime;
-                
-                scheduleStartAndEndTime[1] = schedule.EndDateAndTime;
-            }
-                
-            
-            return scheduleStartAndEndTime;
-        }
-
-       
-        /// <summary>
-        /// Calculates ride times based on schedule start and end time 
-        /// </summary>
-        /// <param name="scheduleStartAndEndTime">
-        /// An array which contains schedule start and end time.</param>
-        /// <returns>A list of ride times</returns>
-        private List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime)
-        {
-            List<string> times = new List<string>();
-            var start = scheduleStartAndEndTime[0];
-            var time = start;
-            var end = scheduleStartAndEndTime[1];
-
-            while (time < end)
-            {
-                times.Add(time.ToString("t"));
-                time = time.AddMinutes(45);
-            }
-
-            return times;
-        }
-
-        /// <summary>
-        /// Returning times as a select list
-        /// </summary>
-        /// <param name="times">List of drive times for a driver</param>
-        /// <returns>Selectlist rideTimes</returns>
-        private SelectList GettingRideTimeSelectList(List<string> times)
-        {
-            var rideTimes = new SelectList(times);
-            return rideTimes;
-        }
+        
     }
 }

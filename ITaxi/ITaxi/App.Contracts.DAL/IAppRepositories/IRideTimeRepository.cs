@@ -13,6 +13,9 @@ public interface IRideTimeRepository: IEntityRepository<RideTime>
     IEnumerable<RideTime?> GettingAllOrderedRideTimes(bool noTracking = true);
     Task<IEnumerable<RideTime?>> GettingAllOrderedRideTimesWithoutIncludesAsync(bool noTracking = true);
     IEnumerable<RideTime?> GettingAllOrderedRideTimesWithoutIncludes(bool noTracking = true);
+    
+    Task<IEnumerable<string?>> GettingAllSelectedRideTimesAsync(RideTime rideTime, bool noTracking = true);
+    IEnumerable<string?> GettingAllSelectedRideTimes(RideTime rideTime, bool noTracking = true);
 
     List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime);
     string DriveTimeFormatting(RideTime rideTime);
