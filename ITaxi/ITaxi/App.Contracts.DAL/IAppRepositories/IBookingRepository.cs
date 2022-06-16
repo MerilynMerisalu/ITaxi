@@ -17,5 +17,6 @@ public interface IBookingRepository: IEntityRepository<Booking>
     Booking? GettingBookingWithoutIncludesById(Guid id, bool noTracking = true);
     Task<IEnumerable<Booking?>> SearchByCityAsync(string search);
     string PickUpDateAndTimeStrFormat(Booking booking);
+    DateTime DateTimeFormatting();
 
 }

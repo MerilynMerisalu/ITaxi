@@ -145,6 +145,11 @@ public class BookingRepository: BaseEntityRepository<Booking, AppDbContext>, IBo
         return booking.PickUpDateAndTime.ToString("D");
     }
 
+    public DateTime DateTimeFormatting()
+    {
+        return Convert.ToDateTime(DateTime.Now.ToString("g"));
+    }
+
     public override async Task<Booking?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
     {
         return await CreateQuery(noTracking).FirstOrDefaultAsync(b => b.Id.Equals(id));

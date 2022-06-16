@@ -65,12 +65,11 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Create()
         {
             var vm = new CreateEditBookingViewModel();
-            vm.Cities = new SelectList(await _context.Cities.Select(c => new {c.Id, c.CityName}).ToListAsync(),
+            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
                 nameof(City.Id), nameof(City.CityName));
-            vm.VehicleTypes = new SelectList(await _context.VehicleTypes
-                    .Select(v => new {v.Id, v.VehicleTypeName}).ToListAsync(),
+            vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
                 nameof(VehicleType.Id), nameof(VehicleType.VehicleTypeName));
-            vm.PickUpDateAndTime = Convert.ToDateTime(DateTime.Now.ToString("g"));
+            vm.PickUpDateAndTime = _uow.Bookings.DateTimeFormatting();
             return View(vm);
         }
 
