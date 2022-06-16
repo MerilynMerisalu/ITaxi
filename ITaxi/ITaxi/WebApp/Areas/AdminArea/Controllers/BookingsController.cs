@@ -134,7 +134,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b.Id.Equals(id));
+            var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.Id.Equals(id));
             if (booking == null)
             {
                 return NotFound();
@@ -165,7 +165,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditBookingViewModel vm)
         {
-            var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b.Id.Equals(id));
+            var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.Id.Equals(id));
             if (booking != null && id != booking.Id)
             {
                 return NotFound();
@@ -199,7 +199,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
                     }
                     var drive = await _uow.Drives
-                        .SingleOrDefaultAsync(d => d.Booking.Id.Equals(booking.Id), false );
+                        .SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(booking!.Id), false );
                     if (drive != null)
                     {
                         if (booking != null)
@@ -209,9 +209,10 @@ namespace WebApp.Areas.AdminArea.Controllers
                         }
 
                         _uow.Drives.Update(drive);
+                        await _uow.SaveChangesAsync();
                     }
 
-                    await _uow.SaveChangesAsync();
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
