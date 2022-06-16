@@ -188,12 +188,12 @@ public class ScheduleRepository: BaseEntityRepository<Schedule, AppDbContext>, I
     {
         return await RepoDbSet
             .Where(s => s.DriverId.Equals(driverId)).Select(s => s.Id)
-            .FirstOrDefaultAsync();
+            .FirstAsync();
     }
 
     public Guid GettingScheduleByDriverId(Guid driverId)
     {
         return  RepoDbSet.Where(s => s.DriverId.Equals(driverId))
-            .Select(s => s.Id).FirstOrDefault();
+            .Select(s => s.Id).First();
     }
 }

@@ -90,7 +90,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 booking.Driver = await _uow.Drivers.FirstAsync();
                 #warning needs fixing
                 booking.Schedule = await _uow.Schedules.FirstAsync();
-#warning needs fixing
+                #warning needs fixing
                 booking.Vehicle =
                     await _uow.Vehicles.FirstAsync();
                 booking.AdditionalInfo = vm.AdditionalInfo;
@@ -239,7 +239,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value);
+            var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value, false);
             if (booking == null)
             {
                 return NotFound();
@@ -266,9 +266,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b.Id.Equals(id));
-            var drive = await _uow.Drives.SingleOrDefaultAsync(d => d.Booking.Id.Equals(id));
-            var comment = await _uow.Comments.SingleOrDefaultAsync(c => c.DriveId.Equals(drive.Id));
+            var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b.Id.Equals(id), false);
+            var drive = await _uow.Drives.SingleOrDefaultAsync(d => d.Booking.Id.Equals(id), false);
+            var comment = await _uow.Comments.SingleOrDefaultAsync(c => c.DriveId.Equals(drive.Id), false);
             if (comment != null)
             {
                 _uow.Comments.Remove(comment);
@@ -284,7 +284,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
         private bool BookingExists(Guid id)
         {
-            return _uow.Bookings.Any(e => e.Id == id);
+            return _uow.Bookings.Exists(id);
         }
 
         /// <summary>

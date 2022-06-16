@@ -128,13 +128,13 @@ public class VehicleRepository: BaseEntityRepository<Vehicle, AppDbContext>, IVe
          return await RepoDbSet
             .Where(v => v.DriverId.Equals(booking.DriverId)
                         && v.VehicleAvailability == VehicleAvailability.Available)
-            .FirstOrDefaultAsync();
+            .FirstAsync();
     }
 
     public Vehicle? GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailability(Booking booking)
     {
         return  RepoDbSet
-            .FirstOrDefault(v => v.DriverId.Equals(booking.DriverId)
+            .First(v => v.DriverId.Equals(booking.DriverId)
                                  && v.VehicleAvailability == VehicleAvailability.Available);
     }
 }
