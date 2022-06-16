@@ -18,6 +18,8 @@ public interface IScheduleRepository: IEntityRepository<Schedule>
    Task<Schedule?> GettingTheFirstScheduleAsync(bool noTracking = true);
    Schedule? GettingTheFirstSchedule(bool noTracking = true);
    DateTime[] GettingStartAndEndTime();
+   Task<Guid> GettingScheduleByDriverIdAsync(Guid driverId);
+   Guid GettingScheduleByDriverId(Guid driverId);
 
 
 

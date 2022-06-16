@@ -2,6 +2,7 @@
 using App.Domain;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
+using WebApp.Models.Enum;
 
 namespace App.DAL.EF.Repositories;
 
@@ -122,5 +123,18 @@ public class VehicleRepository: BaseEntityRepository<Vehicle, AppDbContext>, IVe
         return years;
     }
 
-    
+    public async Task<Vehicle?> GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailabilityAsync(Booking booking)
+    {
+         return await RepoDbSet
+            .Where(v => v.DriverId.Equals(booking.DriverId)
+                        && v.VehicleAvailability == VehicleAvailability.Available)
+            .FirstOrDefaultAsync();
+    }
+
+    public Vehicle? GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailability(Booking booking)
+    {
+        return  RepoDbSet
+            .FirstOrDefault(v => v.DriverId.Equals(booking.DriverId)
+                                 && v.VehicleAvailability == VehicleAvailability.Available);
+    }
 }

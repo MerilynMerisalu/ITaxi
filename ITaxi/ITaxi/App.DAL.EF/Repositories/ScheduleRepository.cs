@@ -183,4 +183,17 @@ public class ScheduleRepository: BaseEntityRepository<Schedule, AppDbContext>, I
             
         return scheduleStartAndEndTime;
     }
+
+    public async Task<Guid> GettingScheduleByDriverIdAsync(Guid driverId)
+    {
+        return await RepoDbSet
+            .Where(s => s.DriverId.Equals(driverId)).Select(s => s.Id)
+            .FirstOrDefaultAsync();
+    }
+
+    public Guid GettingScheduleByDriverId(Guid driverId)
+    {
+        return  RepoDbSet.Where(s => s.DriverId.Equals(driverId))
+            .Select(s => s.Id).FirstOrDefault();
+    }
 }
