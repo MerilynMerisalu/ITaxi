@@ -1,4 +1,5 @@
-#nullable disable
+#nullable enable
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
@@ -10,36 +11,17 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Area(nameof(AdminArea))]
     public class DrivesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public DrivesController(AppDbContext context)
+        public DrivesController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: AdminArea/Drives
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Drives
-                .Include(d => d.Booking)
-                .ThenInclude(d => d.Schedule)
-                .Include(c => c.Booking)
-                .ThenInclude(c => c.Customer)
-                .ThenInclude(c => c.AppUser)
-                .Include(c => c.Booking)
-                .ThenInclude(c => c.City)
-                .Include(b => b.Booking)
-                .Include(v => v.Booking)
-                .ThenInclude(v => v.Vehicle)
-                .ThenInclude(v => v.VehicleType)
-                .Include(v => v.Booking)
-                .ThenInclude(v => v.Vehicle)
-                .ThenInclude(v => v.VehicleMark)
-                .Include(v => v.Booking)
-                .ThenInclude(v => v.Vehicle)
-                .ThenInclude(v => v.VehicleModel)
-                .Include(c => c.Comment);
-            return View(await appDbContext.ToListAsync());
+            return View(await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync());
         }
 
         // GET: AdminArea/Drives/Details/5
@@ -51,26 +33,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var drive = await _context.Drives
-                .Include(d => d.Driver)
-                .Include(d => d.Booking)
-                .ThenInclude(d => d.City)
-                .Include(d => d.Booking)
-                .ThenInclude(d => d.Schedule)
-                .Include(d => d.Comment)
-                .Include(d => d.Booking)
-                .ThenInclude(d => d.Vehicle)
-                .ThenInclude(v => v.VehicleMark)
-                .Include(v => v.Booking)
-                .ThenInclude(v => v.Vehicle)
-                .ThenInclude(v => v.VehicleModel)
-                .Include(v => v.Booking)
-                .ThenInclude(v => v.VehicleType)
-                .Include(c => c.Booking)
-                .ThenInclude(c => c.Customer)
-                .ThenInclude(c => c.AppUser)
-                
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var drive = await _uow.Drives
+                .FirstOrDefaultAsync(id.Value);
             if (drive == null)
             {
                 return NotFound();
@@ -98,7 +62,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Drives/Create
         public IActionResult Create()
         {
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address");
+            ViewData["DriverId"] = new SelectList(_uow.Drivers, "Id", "Address");
             return View();
         }
 
@@ -112,11 +76,11 @@ namespace WebApp.Areas.AdminArea.Controllers
             if (ModelState.IsValid)
             {
                 drive.Id = Guid.NewGuid();
-                _context.Add(drive);
-                await _context.SaveChangesAsync();
+                _uow.Add(drive);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address", drive.DriverId);
+            ViewData["DriverId"] = new SelectList(_uow.Drivers, "Id", "Address", drive.DriverId);
             return View(drive);
         }
 
@@ -128,12 +92,12 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var drive = await _context.Drives.FindAsync(id);
+            var drive = await _uow.Drives.FindAsync(id);
             if (drive == null)
             {
                 return NotFound();
             }
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address", drive.DriverId);
+            ViewData["DriverId"] = new SelectList(_uow.Drivers, "Id", "Address", drive.DriverId);
             return View(drive);
         }
 
@@ -153,8 +117,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
-                    _context.Update(drive);
-                    await _context.SaveChangesAsync();
+                    _uow.Update(drive);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -169,7 +133,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address", drive.DriverId);
+            ViewData["DriverId"] = new SelectList(_uow.Drivers, "Id", "Address", drive.DriverId);
             return View(drive);
         }
 
@@ -181,7 +145,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var drive = await _context.Drives
+            var drive = await _uow.Drives
                 .Include(d => d.Driver)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (drive == null)
@@ -197,9 +161,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var drive = await _context.Drives.FindAsync(id);
-            _context.Drives.Remove(drive);
-            await _context.SaveChangesAsync();
+            var drive = await _uow.Drives.FindAsync(id);
+            _uow.Drives.Remove(drive);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         */
@@ -213,28 +177,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> SearchByDateAsync([FromForm] DateTime search)
         {
 
-            var drives = await _context.Drives.Include(b => b.Booking)
-                .ThenInclude(b => b.Driver)
-                .ThenInclude(d => d.AppUser)
-                .Include(b => b.Booking)
-                .ThenInclude(d => d.Schedule)
-                .Include(b => b.Booking)
-                .ThenInclude(v => v.Vehicle)
-                .Include(v => v.Booking)
-                .ThenInclude(v => v.Vehicle)
-                .ThenInclude(v => v.VehicleMark)
-                .Include(v => v.Booking)
-                .ThenInclude(v => v.Vehicle)
-                .ThenInclude(v => v.VehicleModel)
-                .Include(v => v.Booking)
-                .ThenInclude(v => v.VehicleType)
-                .Include(d => d.Booking)
-                .ThenInclude(c => c.Customer)
-                .ThenInclude(c => c.AppUser)
-                .Include(c => c.Booking)
-                .ThenInclude(c => c.City)
-                .Include(c => c.Comment)
-                .Where(d => d.Booking!.PickUpDateAndTime.Date.Equals(search.Date)).ToListAsync();
+            var drives = await _uow.Drives.SearchByDateAsync(search);
             return View(nameof(Index), drives);
         }
 
@@ -245,22 +188,15 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Print()
         {
             
-            var driver = await _context.Drivers.Select(d => d).FirstOrDefaultAsync();
-           var drives = await _context.Drives.Include(d => d.Booking)
-               .ThenInclude(d => d.Schedule)
-                .Include(d => d.Booking)
-                .ThenInclude(d => d.VehicleType)
-                .Include(c => c.Booking)
-                .ThenInclude(c => c.Customer)
-                .ThenInclude(c => c.AppUser)
-                .Include(c => c.Booking)
-                .ThenInclude(c => c.City)
-                .Include(d => d.Booking)
-                .ThenInclude(d => d.Driver)
-                .ThenInclude(d => d.AppUser)
-                .Where(d => d.DriverId.Equals(driver.Id)).ToListAsync();
+            var driver = await _uow.Drivers.FirstAsync();
+            if (driver != null)
+            {
+                var drives = await _uow.Drives.PrintAsync(driver.Id);
 
-           return new ViewAsPdf("PrintDrives", drives);
+                return new ViewAsPdf("PrintDrives", drives);
+            }
+
+            return new ViewAsPdf("PrintDrives");
         }
     }
     
