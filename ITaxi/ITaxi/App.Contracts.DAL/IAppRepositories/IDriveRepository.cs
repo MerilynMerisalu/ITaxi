@@ -18,5 +18,8 @@ public interface IDriveRepository: IEntityRepository<Drive>
     Task<IEnumerable<Drive?>> PrintAsync(Guid id);
     IEnumerable<Drive?>Print(Guid id);
     string PickUpDateAndTimeStr(Drive drive);
+    Task<IEnumerable<Drive?>> GettingDrivesWithoutCommentAsync(bool noTracking = true);
+    IEnumerable<Drive?> GettingDrivesWithoutComment(bool noTracking = true);
+    
 
 }

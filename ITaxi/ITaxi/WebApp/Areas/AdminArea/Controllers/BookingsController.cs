@@ -3,7 +3,6 @@ using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
 using WebApp.Areas.AdminArea.ViewModels;
 using WebApp.Models.Enum;
@@ -265,9 +264,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b.Id.Equals(id), false);
-            var drive = await _uow.Drives.SingleOrDefaultAsync(d => d.Booking.Id.Equals(id), false);
-            var comment = await _uow.Comments.SingleOrDefaultAsync(c => c.DriveId.Equals(drive.Id), false);
+            var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b != null && b.Id.Equals(id), false);
+            var drive = await _uow.Drives.SingleOrDefaultAsync(d => d != null && d.Booking!.Id.Equals(id), false);
+            var comment = await _uow.Comments.SingleOrDefaultAsync(c => drive != null && c != null && c.DriveId.Equals(drive.Id), false);
             if (comment != null)
             {
                 _uow.Comments.Remove(comment);

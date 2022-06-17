@@ -1,8 +1,9 @@
-#nullable disable
+#nullable enable
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
+
 using App.Domain;
 using WebApp.Areas.AdminArea.ViewModels;
 
@@ -11,20 +12,17 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Area(nameof(AdminArea))]
     public class CommentsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public CommentsController(AppDbContext context)
+        public CommentsController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: AdminArea/Comments
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Comments
-                .Include(c => c.Drive)
-                .ThenInclude(d => d.Booking);
-            return View(await appDbContext.ToListAsync());
+            return View(await _uow.Comments.GettingAllOrderedCommentsWithIncludesAsync());
         }
 
         // GET: AdminArea/Comments/Details/5
@@ -36,11 +34,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments
-                .Include(c => c.Drive)
-                .Include(c => c.Drive)
-                .ThenInclude(d => d.Booking)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var comment = await _uow.Comments.FirstOrDefaultAsync(id.Value);
             if (comment == null)
             {
                 return NotFound();
@@ -57,9 +51,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Create()
         {
             var vm = new CreateEditCommentViewModel();
-            vm.Drives = new SelectList(await _context.Drives.Include(d => d.Booking)
-                    .Where(d => d.Comment.DriveId == null)
-                    .Select(d => new {d.Booking.PickUpDateAndTime, d.Id}).ToListAsync(),
+            vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(),
                 nameof(Drive.Id), nameof(Drive.Booking.PickUpDateAndTime));
             return View(vm);
         }
@@ -80,13 +72,13 @@ namespace WebApp.Areas.AdminArea.Controllers
                 comment.DriveId = vm.DriveId;
                 comment.CommentText = vm.CommentText;
                 
-                _context.Add(comment);
-                await _context.SaveChangesAsync();
+                _uow.Comments.Add(comment);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
                 
             }
 
-            vm.Drives = new SelectList(_context.Drives.Include(d => d.Booking),
+            vm.Drives = new SelectList(await _uow.Drives.GetAllAsync(),
                 nameof(Drive.Id),
                 nameof(Booking.DriveTime), nameof(comment.DriveId));
             
@@ -104,16 +96,13 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments.Include(c => c.Drive)
-                .ThenInclude(c => c.Booking)
-                .SingleOrDefaultAsync(c => c.Id.Equals(id));
+            var comment = await _uow.Comments.FirstOrDefaultAsync(id.Value);
             if (comment == null)
             {
                 return NotFound();
             }
 
-            vm.Drives = new SelectList(await _context.Drives.Include(d => d.Booking)
-                    .Select(d => new {d.Id, d.Booking.PickUpDateAndTime }).ToListAsync(), nameof(Drive.Id),
+            vm.Drives = new SelectList(await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync(), nameof(Drive.Id),
                 nameof(Drive.Booking.PickUpDateAndTime));
             if (comment.CommentText != null) vm.CommentText = comment.CommentText;
             vm.DriveId = comment.DriveId;
@@ -128,8 +117,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditCommentViewModel vm)
         {
-            var comment = await _context.Comments.Include(c => c.Drive)
-                .ThenInclude(c => c.Booking).SingleOrDefaultAsync(c => c.Id.Equals(id));
+            var comment = await _uow.Comments.FirstOrDefaultAsync(id);
             if (comment != null && id != comment.Id)
             {
                 return NotFound();
@@ -144,10 +132,10 @@ namespace WebApp.Areas.AdminArea.Controllers
                         comment.Id = id;
                         comment.DriveId = vm.DriveId;
                         comment.CommentText = vm.CommentText;
-                        _context.Update(comment);
+                        _uow.Comments.Update(comment);
                     }
 
-                    await _context.SaveChangesAsync();
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -175,11 +163,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments
-                .Include(c => c.Drive)
-                .Include(c => c.Drive)
-                .ThenInclude(c => c.Booking)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var comment = await _uow.Comments.FirstOrDefaultAsync(id.Value);
             if (comment == null)
             {
                 return NotFound();
@@ -197,15 +181,15 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var comment = await _context.Comments.SingleOrDefaultAsync(c => c.Id.Equals(id));
-            if (comment != null) _context.Comments.Remove(comment);
-            await _context.SaveChangesAsync();
+            var comment = await _uow.Comments.FirstOrDefaultAsync(id);
+            if (comment != null) _uow.Comments.Remove(comment);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CommentExists(Guid id)
         {
-            return _context.Comments.Any(e => e.Id == id);
+            return _uow.Comments.Exists(id);
         }
     }
 }
