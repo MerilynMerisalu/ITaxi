@@ -221,13 +221,14 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
 
     public async Task<IEnumerable<Drive?>> GettingDrivesWithoutCommentAsync(bool noTracking = true)
     {
-        return await CreateQuery(noTracking).Include(d => d.Booking)
-            .Where(d => d.Comment != null && d.Comment.DriveId == null).ToListAsync();
+        return await CreateQuery(noTracking)
+            .Where(d => d.Comment != null && d.Comment.DriveId == null)
+            .ToListAsync();
     }
 
     public IEnumerable<Drive?> GettingDrivesWithoutComment(bool noTracking = true)
     {
-        return CreateQuery(noTracking).Include(d => d.Booking)
+        return CreateQuery(noTracking)
             .Where(d => d.Comment != null && d.Comment.DriveId == null).ToList();
         
     }
