@@ -34,10 +34,10 @@ public class DetailsDriveViewModel
     public string VehicleIdentifier { get; set; } = default!;
     
     [DisplayName("Number of Passengers")]
-    public string NumberOfPassengers { get; set; } = default!;
+    public int NumberOfPassengers { get; set; } 
     
     [DisplayName("Has an Assistant")]
-    public string HasAnAssistant { get; set; } = default!;
+    public bool HasAnAssistant { get; set; }
     
     [DisplayName("Status of Booking")]
     public StatusOfBooking StatusOfBooking { get; set; }

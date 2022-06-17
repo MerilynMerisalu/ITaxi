@@ -48,11 +48,10 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.PickupAddress = drive.Booking.PickupAddress;
             vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
             vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
-            vm.HasAnAssistant = drive.Booking.HasAnAssistant.ToString();
-            vm.NumberOfPassengers = drive.Booking.NumberOfPassengers.ToString();
+            vm.HasAnAssistant = drive.Booking.HasAnAssistant;
+            vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
             vm.LastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
-            vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLongDateString() + " "
-                + drive.Booking.PickUpDateAndTime.ToShortTimeString();
+            vm.PickupDateAndTime = _uow.Drives.PickUpDateAndTimeStr(drive);
             vm.StatusOfBooking = drive.Booking.StatusOfBooking;
             
             return View(vm);

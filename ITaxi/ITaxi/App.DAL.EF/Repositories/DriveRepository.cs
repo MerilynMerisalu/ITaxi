@@ -212,4 +212,10 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
             .Where(d => d.DriverId.Equals(id)).ToList();
         return drives;
     }
+
+    public string PickUpDateAndTimeStr(Drive drive)
+    {
+        return drive.Booking!.PickUpDateAndTime.ToLongDateString() + " "
+            + drive.Booking!.PickUpDateAndTime.ToShortTimeString();
+    }
 }

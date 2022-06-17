@@ -17,5 +17,6 @@ public interface IDriveRepository: IEntityRepository<Drive>
 
     Task<IEnumerable<Drive?>> PrintAsync(Guid id);
     IEnumerable<Drive?>Print(Guid id);
-    
+    string PickUpDateAndTimeStr(Drive drive);
+
 }
