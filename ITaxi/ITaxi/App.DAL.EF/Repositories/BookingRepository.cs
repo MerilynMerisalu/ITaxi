@@ -142,7 +142,8 @@ public class BookingRepository: BaseEntityRepository<Booking, AppDbContext>, IBo
 
     public string PickUpDateAndTimeStrFormat(Booking booking)
     {
-        return booking.PickUpDateAndTime.ToString("D");
+       return booking.PickUpDateAndTime.ToLongDateString() + " "
+            + booking.PickUpDateAndTime.ToShortTimeString();
     }
 
     public DateTime DateTimeFormatting()

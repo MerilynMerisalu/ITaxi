@@ -56,7 +56,6 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.HasAnAssistant = booking.HasAnAssistant;
             vm.NumberOfPassengers = booking.NumberOfPassengers;
             vm.StatusOfBooking = booking.StatusOfBooking;
-            #warning check format
             vm.PickUpDateAndTime = _uow.Bookings.PickUpDateAndTimeStrFormat(booking);
 
             return View(vm);
@@ -257,9 +256,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.HasAnAssistant = booking.HasAnAssistant;
             vm.NumberOfPassengers = booking.NumberOfPassengers;
             vm.StatusOfBooking = booking.StatusOfBooking;
-#warning check format
             vm.PickUpDateAndTime = _uow.Bookings.PickUpDateAndTimeStrFormat(booking);
-            return View(booking);
+            return View(vm);
         }
 
         // POST: AdminArea/Bookings/Delete/5
