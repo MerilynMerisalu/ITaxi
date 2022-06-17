@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,25 +16,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class DrivesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public DrivesController(AppDbContext context)
+        public DrivesController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/Drives
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Drive>>> GetDrives()
         {
-            return await _context.Drives.ToListAsync();
+            return Ok( await _uow.Drives.GetAllDrivesWithoutIncludesAsync());
         }
 
         // GET: api/Drives/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Drive>> GetDrive(Guid id)
         {
-            var drive = await _context.Drives.FindAsync(id);
+            var drive = await _uow.Drives.GettingDriveWithoutIncludesAsync(id);
 
             if (drive == null)
             {
@@ -53,11 +54,12 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(drive).State = EntityState.Modified;
+            
 
             try
             {
-                await _context.SaveChangesAsync();
+                _uow.Drives.Update(drive);
+                await _uow.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,8 +81,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Drive>> PostDrive(Drive drive)
         {
-            _context.Drives.Add(drive);
-            await _context.SaveChangesAsync();
+            _uow.Drives.Add(drive);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetDrive", new { id = drive.Id }, drive);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDrive(Guid id)
         {
-            var drive = await _context.Drives.FindAsync(id);
+            var drive = await _uow.Drives.FirstOrDefaultAsync(id);
             if (drive == null)
             {
                 return NotFound();
             }
 
-            _context.Drives.Remove(drive);
-            await _context.SaveChangesAsync();
+            _uow.Drives.Remove(drive);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool DriveExists(Guid id)
         {
-            return _context.Drives.Any(e => e.Id == id);
+            return _uow.Drives.Exists(id);
         }
     }
 }
