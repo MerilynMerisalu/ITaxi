@@ -1,4 +1,5 @@
-﻿using App.Domain;
+﻿using System.Collections;
+using App.Domain;
 using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
@@ -18,8 +19,8 @@ public interface IDriveRepository: IEntityRepository<Drive>
     Task<IEnumerable<Drive?>> PrintAsync(Guid id);
     IEnumerable<Drive?>Print(Guid id);
     string PickUpDateAndTimeStr(Drive drive);
-    Task<IEnumerable<Drive?>> GettingDrivesWithoutCommentAsync(bool noTracking = true);
-    IEnumerable<Drive?> GettingDrivesWithoutComment(bool noTracking = true);
+    Task<ArrayList> GettingDrivesWithoutCommentAsync(bool noTracking = true);
+    ArrayList GettingDrivesWithoutComment(bool noTracking = true);
     
 
 }

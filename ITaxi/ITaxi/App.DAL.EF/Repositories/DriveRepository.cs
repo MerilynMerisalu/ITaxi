@@ -1,4 +1,5 @@
-﻿using App.Contracts.DAL.IAppRepositories;
+﻿using System.Collections;
+using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -219,17 +220,21 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
             + drive.Booking!.PickUpDateAndTime.ToShortTimeString();
     }
 
-    public async Task<IEnumerable<Drive?>> GettingDrivesWithoutCommentAsync(bool noTracking = true)
+    public async Task<ArrayList> GettingDrivesWithoutCommentAsync(bool noTracking = true)
     {
-        return await CreateQuery(noTracking)
+        var res = new ArrayList(); await CreateQuery(noTracking)
             .Where(d => d.Comment != null && d.Comment.DriveId == null)
+            .Select(d => new {d.Booking.PickUpDateAndTime, d.Id, })
             .ToListAsync();
+        return res;
     }
 
-    public IEnumerable<Drive?> GettingDrivesWithoutComment(bool noTracking = true)
+    public ArrayList GettingDrivesWithoutComment(bool noTracking = true)
     {
-        return CreateQuery(noTracking)
-            .Where(d => d.Comment != null && d.Comment.DriveId == null).ToList();
-        
+        var res = CreateQuery().Include(d => d.Booking)
+            .Where(d => d.Comment!.DriveId == null)
+            .Select(d => new {d.Booking!.PickUpDateAndTime, d.Id}).ToArray();
+        return new ArrayList {res};
+
     }
 }

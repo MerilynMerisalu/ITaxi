@@ -1,5 +1,6 @@
 #nullable enable
 using App.Contracts.DAL;
+using App.DAL.EF;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace WebApp.Areas.AdminArea.Controllers
     public class CommentsController : Controller
     {
         private readonly IAppUnitOfWork _uow;
+        private readonly AppDbContext _context;
 
-        public CommentsController(IAppUnitOfWork uow)
+        public CommentsController(IAppUnitOfWork uow, AppDbContext context)
         {
             _uow = uow;
+            _context = context;
         }
 
         // GET: AdminArea/Comments
@@ -51,8 +54,12 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Create()
         {
             var vm = new CreateEditCommentViewModel();
+            // vm.Drives = new SelectList( await _context.Drives.Include(d => d.Booking)
+            //         .Where(d => d.Comment.DriveId == null)
+            //         .Select(d => new {d.Booking.PickUpDateAndTime, d.Id}).ToListAsync()
             vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(),
                 nameof(Drive.Id), nameof(Drive.Booking.PickUpDateAndTime));
+            
             return View(vm);
         }
 
@@ -78,9 +85,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                 
             }
 
-            vm.Drives = new SelectList(await _uow.Drives.GetAllAsync(),
+            vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(),
                 nameof(Drive.Id),
-                nameof(Booking.DriveTime), nameof(comment.DriveId));
+                nameof(Booking.DriveTime));
             
             
             
@@ -103,9 +110,10 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.Drives = new SelectList(await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync(), nameof(Drive.Id),
-                nameof(Drive.Booking.PickUpDateAndTime));
+                nameof(Drive.Booking.PickUpDateAndTime),
+                nameof(vm.DriveId));
             if (comment.CommentText != null) vm.CommentText = comment.CommentText;
-            vm.DriveId = comment.DriveId;
+            vm.DriveId = comment.Drive!.Id;
 
             return View(vm);
         }
