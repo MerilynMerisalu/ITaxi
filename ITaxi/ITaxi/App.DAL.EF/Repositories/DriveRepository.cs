@@ -224,7 +224,7 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
     {
         var res = await  CreateQuery(noTracking)
             .Where(d =>  d.Comment.DriveId == null)
-            .Select(d => new {d.Booking.PickUpDateAndTime, d.Id, d.Comment.DriveId }).ToListAsync();
+            .Select(d => new {PickUpDateAndTime = d.Booking.PickUpDateAndTime.ToString("g"), d.Id, d.Comment.DriveId }).ToListAsync();
         return res;
     }
 
