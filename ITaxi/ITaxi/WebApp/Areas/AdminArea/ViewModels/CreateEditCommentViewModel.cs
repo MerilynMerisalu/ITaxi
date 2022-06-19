@@ -13,7 +13,7 @@ public class CreateEditCommentViewModel
     public Guid? DriveId { get; set; }
     //public Drive? Drive { get; set; }
 
-    [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
+    [DisplayFormat(DataFormatString = "g")]
     public SelectList? Drives { get; set; }
 
     [StringLength(1000)]

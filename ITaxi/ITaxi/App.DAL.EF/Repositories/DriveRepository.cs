@@ -220,12 +220,11 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
             + drive.Booking!.PickUpDateAndTime.ToShortTimeString();
     }
 
-    public async Task<ArrayList> GettingDrivesWithoutCommentAsync(bool noTracking = true)
+    public async Task<IList> GettingDrivesWithoutCommentAsync(bool noTracking = true)
     {
-        var res = new ArrayList(); await CreateQuery(noTracking)
-            .Where(d => d.Comment != null && d.Comment.DriveId == null)
-            .Select(d => new {d.Booking.PickUpDateAndTime, d.Id, })
-            .ToListAsync();
+        var res = await  CreateQuery(noTracking)
+            .Where(d =>  d.Comment.DriveId == null)
+            .Select(d => new {d.Booking.PickUpDateAndTime, d.Id, d.Comment.DriveId }).ToListAsync();
         return res;
     }
 
