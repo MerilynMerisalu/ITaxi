@@ -20,7 +20,7 @@ public interface IDriveRepository: IEntityRepository<Drive>
     IEnumerable<Drive?>Print(Guid id);
     string PickUpDateAndTimeStr(Drive drive);
     Task<IList> GettingDrivesWithoutCommentAsync(bool noTracking = true);
-    ArrayList GettingDrivesWithoutComment(bool noTracking = true);
+    IList GettingDrivesWithoutComment(bool noTracking = true);
     
 
 }

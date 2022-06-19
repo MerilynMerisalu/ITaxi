@@ -104,6 +104,11 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
     {
         return base.CreateQuery(noTracking).FirstOrDefault(c => c.Id.Equals(id));
     }
+
+    public string PickUpDateAndTimeStr(Comment comment)
+    {
+        return comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
+    }
 }
 
     

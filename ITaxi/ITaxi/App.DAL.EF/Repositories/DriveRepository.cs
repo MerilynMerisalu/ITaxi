@@ -223,17 +223,19 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
     public async Task<IList> GettingDrivesWithoutCommentAsync(bool noTracking = true)
     {
         var res = await  CreateQuery(noTracking)
-            .Where(d =>  d.Comment.DriveId == null)
-            .Select(d => new {PickUpDateAndTime = d.Booking.PickUpDateAndTime.ToString("g"), d.Id, d.Comment.DriveId }).ToListAsync();
+            .Where(d =>  d.Comment!.DriveId == null)
+            .Select(d => new {PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), 
+                d.Id, d.Comment!.DriveId }).ToListAsync();
         return res;
     }
 
-    public ArrayList GettingDrivesWithoutComment(bool noTracking = true)
+    public IList GettingDrivesWithoutComment(bool noTracking = true)
     {
-        var res = CreateQuery().Include(d => d.Booking)
-            .Where(d => d.Comment!.DriveId == null)
-            .Select(d => new {d.Booking!.PickUpDateAndTime, d.Id}).ToArray();
-        return new ArrayList {res};
+        var res =  CreateQuery(noTracking)
+            .Where(d =>  d.Comment!.DriveId == null)
+            .Select(d => new {PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), d.Id, 
+                d.Comment!.DriveId }).ToList();
+        return res;
 
     }
 }

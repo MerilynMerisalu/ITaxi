@@ -44,7 +44,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.Id = comment.Id;
-            vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
+            vm.Drive = _uow.Comments.PickUpDateAndTimeStr(comment);
             if (comment.CommentText != null) vm.CommentText = comment.CommentText;
 
             return View(vm);
@@ -108,6 +108,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 return NotFound();
             }
+
+            vm.Id = comment.Id;
 
             vm.Drives = new SelectList(await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync(), nameof(Drive.Id),
                 nameof(Drive.Booking.PickUpDateAndTime),
@@ -178,7 +180,9 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.Id = comment.Id;
-            vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
+            #warning Ask maybe can be done as a base method
+
+            vm.Drive = _uow.Comments.PickUpDateAndTimeStr(comment);
             if (comment.CommentText != null) vm.CommentText = comment.CommentText;
 
             return View(vm);

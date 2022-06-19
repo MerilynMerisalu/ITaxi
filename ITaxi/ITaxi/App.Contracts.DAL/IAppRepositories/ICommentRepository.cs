@@ -13,4 +13,5 @@ public interface ICommentRepository : IEntityRepository<Comment>
     IEnumerable<Comment> GettingAllOrderedCommentsWithoutIncludes(bool noTracking = true);
     Task<Comment?> GettingCommentWithoutIncludesAsync(Guid id, bool noTracking = true);
     Comment? GettingCommentWithoutIncludes(Guid id, bool noTracking = true);
+    string PickUpDateAndTimeStr(Comment comment);
 }
