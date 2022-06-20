@@ -232,10 +232,62 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
     public IList GettingDrivesWithoutComment(bool noTracking = true)
     {
         var res =  CreateQuery(noTracking)
+                .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
+                .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
+                .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
+                .ThenBy(d => d.Booking!.PickUpDateAndTime.Year)
+                .ThenBy(d => d.Booking!.PickUpDateAndTime.Hour)
+                .ThenBy(d => d.Booking!.PickUpDateAndTime.Minute)
+                .ThenBy(d => d.Booking!.Customer!.AppUser!.LastName)
+                .ThenBy(d => d.Booking!.Customer!.AppUser!.FirstName)
+                .ThenBy(d => d.Booking!.City!.CityName)
+                .ThenBy(d => d.Booking!.PickupAddress)
+                .ThenBy(d => d.Booking!.DestinationAddress)
+                .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
             .Where(d =>  d.Comment!.DriveId == null)
             .Select(d => new {PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), d.Id, 
                 d.Comment!.DriveId }).ToList();
         return res;
 
+    }
+
+    public async Task<IList> GettingAllDrivesForCommentsAsync(bool noTracking = true)
+    {
+        var res = await CreateQuery(noTracking)
+            .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Year)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Hour)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Minute)
+            .ThenBy(d => d.Booking!.Customer!.AppUser!.LastName)
+            .ThenBy(d => d.Booking!.Customer!.AppUser!.FirstName)
+            .ThenBy(d => d.Booking!.City!.CityName)
+            .ThenBy(d => d.Booking!.PickupAddress)
+            .ThenBy(d => d.Booking!.DestinationAddress)
+            .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
+            .Select(d => new {PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), d.Id, 
+                d.Comment!.DriveId }).ToListAsync();
+        return res;
+    }
+
+    public IList GettingDrivesForComments(bool noTracking = true)
+    {
+        var res =  CreateQuery(noTracking)
+            .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Year)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Hour)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Minute)
+            .ThenBy(d => d.Booking!.Customer!.AppUser!.LastName)
+            .ThenBy(d => d.Booking!.Customer!.AppUser!.FirstName)
+            .ThenBy(d => d.Booking!.City!.CityName)
+            .ThenBy(d => d.Booking!.PickupAddress)
+            .ThenBy(d => d.Booking!.DestinationAddress)
+            .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
+            .Select(d => new {PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), d.Id, 
+                d.Comment!.DriveId }).ToList();
+        return res;
     }
 }

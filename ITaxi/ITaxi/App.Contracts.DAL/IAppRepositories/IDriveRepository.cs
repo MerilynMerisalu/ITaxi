@@ -21,6 +21,7 @@ public interface IDriveRepository: IEntityRepository<Drive>
     string PickUpDateAndTimeStr(Drive drive);
     Task<IList> GettingDrivesWithoutCommentAsync(bool noTracking = true);
     IList GettingDrivesWithoutComment(bool noTracking = true);
-    
+    Task<IList> GettingAllDrivesForCommentsAsync(bool noTracking = true);
+    IList GettingDrivesForComments(bool noTracking = true);
 
 }

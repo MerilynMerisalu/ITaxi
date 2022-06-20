@@ -111,7 +111,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.Id = comment.Id;
 
-            vm.Drives = new SelectList(await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync(), nameof(Drive.Id),
+            vm.Drives = new SelectList(await _uow.Drives.GettingAllDrivesForCommentsAsync(), nameof(Drive.Id),
                 nameof(Drive.Booking.PickUpDateAndTime),
                 nameof(vm.DriveId));
             if (comment.CommentText != null) vm.CommentText = comment.CommentText;
