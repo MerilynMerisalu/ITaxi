@@ -105,7 +105,7 @@ namespace WebApp.ApiControllers
 
         private bool VehicleModelExists(Guid id)
         {
-            return _uow.VehicleModels.Any(e => e.Id == id);
+            return _uow.VehicleModels.Exists(id);
         }
     }
 }

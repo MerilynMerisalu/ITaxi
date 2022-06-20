@@ -81,8 +81,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var disabilityType = await _uow.DisabilityTypes
-                .SingleOrDefaultAsync(d => d.Id.Equals(id));
+            var disabilityType = await _uow.DisabilityTypes.FirstOrDefaultAsync(id.Value);
             if (disabilityType == null)
             {
                 return NotFound();
@@ -162,7 +161,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             var disabilityType = await _uow.DisabilityTypes
                 .FirstOrDefaultAsync(id);
-            if (await _uow.Customers.AnyAsync(d => disabilityType != null && d.DisabilityTypeId.Equals(disabilityType.Id)))
+            if (await _uow.Customers.AnyAsync(d => disabilityType != null && d!.DisabilityTypeId.Equals(disabilityType.Id)))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
