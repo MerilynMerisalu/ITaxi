@@ -102,4 +102,7 @@
     <data name="Save" xml:space="preserve">
         <value>Salvesta</value>
     </data>
+    <data name="AreYouSureYouWantToDeleteThis" xml:space="preserve">
+        <value>Kas olete kindel, et soovite antud üksuse kustutada?</value>
+    </data>
 </root>

@@ -102,4 +102,7 @@
     <data name="Save" xml:space="preserve">
         <value>Save</value>
     </data>
+    <data name="AreYouSureYouWantToDeleteThis" xml:space="preserve">
+        <value>Are You Sure You Want To Delete This? </value>
+    </data>
 </root>

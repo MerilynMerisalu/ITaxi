@@ -61,6 +61,15 @@ namespace Base.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are You Sure You Want To Delete This? .
+        /// </summary>
+        public static string AreYouSureYouWantToDeleteThis {
+            get {
+                return ResourceManager.GetString("AreYouSureYouWantToDeleteThis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back to List.
         /// </summary>
         public static string BackToList {
