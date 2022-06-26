@@ -61,7 +61,7 @@ namespace App.Resources.Areas.WebApp.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Admin Area.
+        ///   Looks up a localized string similar to Activities.
         /// </summary>
         public static string AdminArea {
             get {
@@ -124,7 +124,7 @@ namespace App.Resources.Areas.WebApp.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Customer Area.
+        ///   Looks up a localized string similar to Activities.
         /// </summary>
         public static string CustomerArea {
             get {
@@ -160,7 +160,7 @@ namespace App.Resources.Areas.WebApp.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Driver Area.
+        ///   Looks up a localized string similar to Activities.
         /// </summary>
         public static string DriverArea {
             get {
@@ -201,6 +201,15 @@ namespace App.Resources.Areas.WebApp.Views.Shared {
         public static string Drives {
             get {
                 return ResourceManager.GetString("Drives", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Photos.
+        /// </summary>
+        public static string Photos {
+            get {
+                return ResourceManager.GetString("Photos", resourceCulture);
             }
         }
         

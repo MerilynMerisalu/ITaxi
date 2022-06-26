@@ -77,4 +77,7 @@
     <data name="Comments" xml:space="preserve">
         <value>Kommentaarid</value>
     </data>
+    <data name="Photos" xml:space="preserve">
+        <value>Fotod</value>
+    </data>
 </root>
