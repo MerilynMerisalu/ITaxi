@@ -93,4 +93,10 @@
     <data name="Delete" xml:space="preserve">
         <value>Kustuta</value>
     </data>
+    <data name="Index" xml:space="preserve">
+        <value>Nimekiri</value>
+    </data>
+    <data name="CreateNew" xml:space="preserve">
+        <value>Loo Uus</value>
+    </data>
 </root>

@@ -93,4 +93,10 @@
     <data name="Delete" xml:space="preserve">
         <value>Delete</value>
     </data>
+    <data name="Index" xml:space="preserve">
+        <value>Index</value>
+    </data>
+    <data name="CreateNew" xml:space="preserve">
+        <value>Create New</value>
+    </data>
 </root>
