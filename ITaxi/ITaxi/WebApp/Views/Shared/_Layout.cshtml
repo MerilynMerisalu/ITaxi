@@ -96,6 +96,13 @@
                         @App.Resources.Areas.WebApp.Views.Shared._Layout.Customers
                     </a>
                 </li>
+                <li>
+                    <a class="dropdown-item" asp-area="AdminArea"
+                       asp-controller="Photos" asp-action="Index">
+                        @App.Resources.Areas.WebApp.Views.Shared._Layout.Photos
+                    </a>
+                </li>
+                
             }
             <li>
                 <nav class="navbar navbar-light bg-light">
@@ -128,6 +135,12 @@
                 <a class="dropdown-item" asp-area="AdminArea"
                    asp-controller="Vehicles" asp-action="Index">
                     @App.Resources.Areas.WebApp.Views.Shared._Layout.Vehicles
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-area="AdminArea"
+                   asp-controller="Photos" asp-action="Index">
+                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Photos
                 </a>
             </li>
             <li>
@@ -176,12 +189,7 @@
                 </a>
             </li>
 
-            <li>
-                <a class="dropdown-item" asp-area="AdminArea"
-                   asp-controller="Photos" asp-action="Index">
-                    @App.Resources.Areas.WebApp.Views.Shared._Layout.Photos
-                </a>
-            </li>
+            
             
 
         </ul>
