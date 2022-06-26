@@ -105,4 +105,7 @@
     <data name="AreYouSureYouWantToDeleteThis" xml:space="preserve">
         <value>Kas olete kindel, et soovite antud üksuse kustutada?</value>
     </data>
+    <data name="PleaseSelect" xml:space="preserve">
+        <value>Palun valige</value>
+    </data>
 </root>

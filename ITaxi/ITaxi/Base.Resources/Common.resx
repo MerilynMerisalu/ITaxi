@@ -105,4 +105,7 @@
     <data name="AreYouSureYouWantToDeleteThis" xml:space="preserve">
         <value>Are You Sure You Want To Delete This? </value>
     </data>
+    <data name="PleaseSelect" xml:space="preserve">
+        <value>Please Select</value>
+    </data>
 </root>

@@ -1,7 +1,6 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Security.AccessControl;
+﻿using System.ComponentModel.DataAnnotations;
 using Base.Domain;
+using Base.Resources;
 
 namespace App.Domain
 {
@@ -13,8 +12,9 @@ namespace App.Domain
         Name = "CountyName")] 
         public County? County { get; set; }
 
-        [Required]
-        [MaxLength(50)]
+        [Required(ErrorMessage = nameof(Common.RequiredAttributeErrorMessage))]
+        [MaxLength(50,ErrorMessage = 
+            "ErrorMessageMaxLength")]
         [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.City),
             Name = nameof(CityName))]
         public string CityName { get; set; } = default!;

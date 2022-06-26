@@ -8,11 +8,11 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 public class CreateEditCityViewModel
 {
     public Guid Id { get; set; }
-    [DisplayName("County Name")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.City), Name = "CountyName")]
     public Guid CountyId { get; set; }
     public SelectList? Counties { get; set; }
 
     [StringLength(50, MinimumLength = 1)]
-    [DisplayName("City Name")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.City), Name = "CityName")]
     public string CityName { get; set; } = default!;
 }

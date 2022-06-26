@@ -295,6 +295,15 @@ namespace Base.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please Select.
+        /// </summary>
+        public static string PleaseSelect {
+            get {
+                return ResourceManager.GetString("PleaseSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} field is required..
         /// </summary>
         public static string RequiredAttributeErrorMessage {
