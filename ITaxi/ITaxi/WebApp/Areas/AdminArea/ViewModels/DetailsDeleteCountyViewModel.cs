@@ -1,10 +1,12 @@
-﻿using System.ComponentModel;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
 public class DetailsDeleteCountyViewModel
 {
     public Guid Id { get; set; }
-    [DisplayName("County Name")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.County),
+        Name = nameof(CountyName))]
     public string CountyName { get; set; } = default!;
 }
