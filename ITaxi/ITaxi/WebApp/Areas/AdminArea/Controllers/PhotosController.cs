@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,18 +15,18 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Area("AdminArea")]
     public class PhotosController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public PhotosController(AppDbContext context)
+        public PhotosController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: AdminArea/Photos
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Photos.Include(p => p.AppUser);
-            return View(await appDbContext.ToListAsync());
+            var photos = await _uow.Photos.GetAllPhotosWithIncludesAsync();
+            return View(photos);
         }
 
         // GET: AdminArea/Photos/Details/5
@@ -37,9 +38,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var photo = await _context.Photos
-                .Include(p => p.AppUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var photo = await _uow.Photos.GetPhotoByIdAsync(id.Value);
             if (photo == null)
             {
                 return NotFound();
@@ -55,7 +54,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         public IActionResult Create()
         {
             var vm = new CreateEditPhotoViewModel();
-            //ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email");
+            //ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email");
             return View(vm);
         }
 
@@ -71,11 +70,11 @@ namespace WebApp.Areas.AdminArea.Controllers
                 photo.Id = Guid.NewGuid();
                 photo.Title = vm.Title;
                 photo.PhotoName = vm.PhotoName;
-                _context.Add(photo);
-                await _context.SaveChangesAsync();
+                _uow.Photos.Add(photo);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", photo.AppUserId);
+            //ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email", photo.AppUserId);
             return View(vm);
         }
 
@@ -88,12 +87,12 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var photo = await _context.Photos.FindAsync(id);
+            var photo = await _uow.Photos.FirstOrDefaultAsync(id.Value);
             if (photo == null)
             {
                 return NotFound();
             }
-            //ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", photo.AppUserId);
+            //ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email", photo.AppUserId);
             return View(vm);
         }
 
@@ -104,7 +103,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditPhotoViewModel vm)
         {
-            var photo =  await _context.Photos.FindAsync(id);
+            var photo =  await _uow.Photos.FirstOrDefaultAsync(id);
             if (photo != null && id != photo.Id)
             {
                 return NotFound();
@@ -114,8 +113,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
-                    _context.Update(photo!);
-                    await _context.SaveChangesAsync();
+                    _uow.Photos.Update(photo!);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -130,7 +129,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", photo.AppUserId);
+            //ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email", photo.AppUserId);
             return View(vm);
         }
 
@@ -143,9 +142,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var photo = await _context.Photos
-                .Include(p => p.AppUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var photo = await _uow.Photos.FirstOrDefaultAsync(id.Value);
             if (photo == null)
             {
                 return NotFound();
@@ -159,19 +156,19 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var photo = await _context.Photos.FindAsync(id);
+            var photo = await _uow.Photos.FirstOrDefaultAsync(id);
             if (photo != null)
             {
-                _context.Photos.Remove(photo);
+                _uow.Photos.Remove(photo);
             }
             
-            await _context.SaveChangesAsync();
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PhotoExists(Guid id)
         {
-          return (_context.Photos.Any(e => e.Id == id));
+          return _uow.Photos.Exists(id);
         }
     }
 }
