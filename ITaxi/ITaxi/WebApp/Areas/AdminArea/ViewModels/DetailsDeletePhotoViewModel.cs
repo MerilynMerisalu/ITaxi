@@ -14,6 +14,7 @@ public class DetailsDeletePhotoViewModel
     [Required]
     [MaxLength(255)]
     [StringLength(255)]
+    [Display(Name = "Photo Name")]
     public string? PhotoName { get; set; } 
 
 
