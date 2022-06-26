@@ -12,6 +12,7 @@ public class CreateEditCityViewModel
     public Guid CountyId { get; set; }
     public SelectList? Counties { get; set; }
 
+    [Required(ErrorMessageResourceType= typeof(Base.Resources.Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage") ]
     [StringLength(50, MinimumLength = 1)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.City), Name = "CityName")]
     public string CityName { get; set; } = default!;
