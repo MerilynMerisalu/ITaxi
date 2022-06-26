@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
@@ -30,6 +31,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Photos/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            var vm = new DetailsDeletePhotoViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -43,14 +45,18 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            return View(photo);
+            photo.Id = vm.Id;
+            photo.Title = vm.Title;
+            photo.PhotoName = vm.PhotoName;
+            return View(vm);
         }
 
         // GET: AdminArea/Photos/Create
         public IActionResult Create()
         {
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email");
-            return View();
+            var vm = new CreateEditPhotoViewModel();
+            //ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email");
+            return View(vm);
         }
 
         // POST: AdminArea/Photos/Create
@@ -58,22 +64,25 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,PhotoName,AppUserId,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Photo photo)
+        public async Task<IActionResult> Create(CreateEditPhotoViewModel vm, Photo photo)
         {
             if (ModelState.IsValid)
             {
                 photo.Id = Guid.NewGuid();
+                photo.Title = vm.Title;
+                photo.PhotoName = vm.PhotoName;
                 _context.Add(photo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", photo.AppUserId);
-            return View(photo);
+            //ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", photo.AppUserId);
+            return View(vm);
         }
 
         // GET: AdminArea/Photos/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            var vm = new CreateEditPhotoViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -84,8 +93,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 return NotFound();
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", photo.AppUserId);
-            return View(photo);
+            //ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", photo.AppUserId);
+            return View(vm);
         }
 
         // POST: AdminArea/Photos/Edit/5
@@ -93,9 +102,10 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Title,PhotoName,AppUserId,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Photo photo)
+        public async Task<IActionResult> Edit(Guid id, CreateEditPhotoViewModel vm)
         {
-            if (id != photo.Id)
+            var photo =  await _context.Photos.FindAsync(id);
+            if (photo != null && id != photo.Id)
             {
                 return NotFound();
             }
@@ -104,12 +114,12 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
-                    _context.Update(photo);
+                    _context.Update(photo!);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PhotoExists(photo.Id))
+                    if (photo != null && !PhotoExists(photo.Id))
                     {
                         return NotFound();
                     }
@@ -120,13 +130,14 @@ namespace WebApp.Areas.AdminArea.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", photo.AppUserId);
-            return View(photo);
+            //ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", photo.AppUserId);
+            return View(vm);
         }
 
         // GET: AdminArea/Photos/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
+            var vm = new DetailsDeletePhotoViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -140,7 +151,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            return View(photo);
+            return View(vm);
         }
 
         // POST: AdminArea/Photos/Delete/5
@@ -148,10 +159,6 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.Photos == null)
-            {
-                return Problem("Entity set 'AppDbContext.Photos'  is null.");
-            }
             var photo = await _context.Photos.FindAsync(id);
             if (photo != null)
             {
@@ -164,7 +171,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
         private bool PhotoExists(Guid id)
         {
-          return (_context.Photos?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Photos.Any(e => e.Id == id));
         }
     }
 }

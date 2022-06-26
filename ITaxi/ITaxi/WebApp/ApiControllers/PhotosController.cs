@@ -25,10 +25,6 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Photo>>> GetPhotos()
         {
-          if (_context.Photos == null)
-          {
-              return NotFound();
-          }
             return await _context.Photos.ToListAsync();
         }
 
@@ -36,10 +32,6 @@ namespace WebApp.ApiControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Photo>> GetPhoto(Guid id)
         {
-          if (_context.Photos == null)
-          {
-              return NotFound();
-          }
             var photo = await _context.Photos.FindAsync(id);
 
             if (photo == null)
@@ -86,10 +78,6 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Photo>> PostPhoto(Photo photo)
         {
-          if (_context.Photos == null)
-          {
-              return Problem("Entity set 'AppDbContext.Photos'  is null.");
-          }
             _context.Photos.Add(photo);
             await _context.SaveChangesAsync();
 
@@ -100,10 +88,6 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePhoto(Guid id)
         {
-            if (_context.Photos == null)
-            {
-                return NotFound();
-            }
             var photo = await _context.Photos.FindAsync(id);
             if (photo == null)
             {

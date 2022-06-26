@@ -1,5 +1,5 @@
-﻿
-<dl class="row">
+﻿@model WebApp.Areas.AdminArea.ViewModels.DetailsDeletePhotoViewModel
+
 <dt class = "col-sm-2">
     @Html.DisplayNameFor(model => model.Title)
 </dt>
@@ -12,10 +12,9 @@
 <dd class = "col-sm-10">
     @Html.DisplayFor(model => model.PhotoName)
 </dd>
-<dt class = "col-sm-2">
+@*<dt class = "col-sm-2">
     @Html.DisplayNameFor(model => model.AppUser)
-</dt>
-<dd class = "col-sm-10">
+</dt>*@
+@*<dd class = "col-sm-10">
     @Html.DisplayFor(model => model.AppUser.Email)
-</dd>
-</dl>
+</dd>*@
