@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class PhotosController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public PhotosController(AppDbContext context)
+        public PhotosController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/Photos
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Photo>>> GetPhotos()
         {
-            return await _context.Photos.ToListAsync();
+            return Ok( await _uow.Photos.GetAllAsync());
         }
 
         // GET: api/Photos/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Photo>> GetPhoto(Guid id)
         {
-            var photo = await _context.Photos.FindAsync(id);
+            var photo = await _uow.Photos.FirstOrDefaultAsync(id);
 
             if (photo == null)
             {
@@ -51,12 +52,12 @@ namespace WebApp.ApiControllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(photo).State = EntityState.Modified;
+            
 
             try
             {
-                await _context.SaveChangesAsync();
+                _uow.Photos.Update(photo);
+                await _uow.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -78,8 +79,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Photo>> PostPhoto(Photo photo)
         {
-            _context.Photos.Add(photo);
-            await _context.SaveChangesAsync();
+            _uow.Photos.Add(photo);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetPhoto", new { id = photo.Id }, photo);
         }
@@ -88,21 +89,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePhoto(Guid id)
         {
-            var photo = await _context.Photos.FindAsync(id);
+            var photo = await _uow.Photos.FirstOrDefaultAsync(id);
             if (photo == null)
             {
                 return NotFound();
             }
 
-            _context.Photos.Remove(photo);
-            await _context.SaveChangesAsync();
+            _uow.Photos.Remove(photo);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool PhotoExists(Guid id)
         {
-            return (_context.Photos?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_uow.Photos?.Exists(id)).GetValueOrDefault();
         }
     }
 }
