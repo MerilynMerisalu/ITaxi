@@ -99,4 +99,7 @@
     <data name="CreateNew" xml:space="preserve">
         <value>Create New</value>
     </data>
+    <data name="Save" xml:space="preserve">
+        <value>Save</value>
+    </data>
 </root>
