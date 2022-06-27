@@ -1,15 +1,14 @@
-﻿using System.ComponentModel;
-using App.Domain;
-
+﻿
+using System.ComponentModel.DataAnnotations;
 namespace WebApp.Areas.AdminArea.ViewModels;
 
 public class DetailsDeleteCityViewModel
 {
     public Guid Id { get; set; }
-    [DisplayName("County Name")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.City), Name = "CountyName")]
     public string CountyName { get; set; } = default!;
-    [DisplayName("City Name")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.City), Name = "CityName")]
     public string CityName { get; set; } = default!;
 
-    public ICollection<DriverLicenseCategory>? DriverLicenseCategories { get; set; }
+    
 }
