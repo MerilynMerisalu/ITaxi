@@ -68,7 +68,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             if (ModelState.IsValid)
             {
                 city.Id = Guid.NewGuid();
-                city.CountyId = vm.CountyId;
+                city.CountyId = vm.CountyId!.Value;
                 city.CityName = vm.CityName;
                 _uow.Cities.Add(city);
                 await _uow.SaveChangesAsync();
@@ -123,7 +123,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 try
                 {
                     city.Id = id; 
-                    city.CountyId = vm.CountyId;
+                    city.CountyId = vm.CountyId!.Value;
                     city.CityName = vm.CityName;
                     city.UpdatedAt = DateTime.UtcNow;
                     _uow.Cities.Update(city);

@@ -31,7 +31,7 @@
         <value>Tagasi nimekirja vaatesse</value>
     </data>
     <data name="ErrorMessageAttemptedValueIsInvalid" xml:space="preserve">
-        <value>Väärtus '{0}' ei ole sobilik väljale {1}.</value>
+        <value>Väärtus '{0}' ei ole sobilik väljale '{1}'.</value>
     </data>
     <data name="ErrorMessageEmail" xml:space="preserve">
         <value>Väli {0} ei ole legaalne e-posti aadress.</value>

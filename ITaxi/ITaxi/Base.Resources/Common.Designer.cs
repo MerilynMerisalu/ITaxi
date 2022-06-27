@@ -124,7 +124,7 @@ namespace Base.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value &apos;{0}&apos; is not valid for {1}..
+        ///   Looks up a localized string similar to The value &apos;{0}&apos; is not valid for ..
         /// </summary>
         public static string ErrorMessageAttemptedValueIsInvalid {
             get {
