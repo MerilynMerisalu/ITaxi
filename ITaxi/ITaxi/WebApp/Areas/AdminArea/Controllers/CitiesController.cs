@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
@@ -65,10 +66,11 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateEditCityViewModel vm, City city)
         {
+            //ModelState.Remove(nameof(vm.));
             if (ModelState.IsValid)
             {
                 city.Id = Guid.NewGuid();
-                city.CountyId = vm.CountyId!.Value;
+                city.CountyId = vm.CountyId;
                 city.CityName = vm.CityName;
                 _uow.Cities.Add(city);
                 await _uow.SaveChangesAsync();
@@ -123,7 +125,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 try
                 {
                     city.Id = id; 
-                    city.CountyId = vm.CountyId!.Value;
+                    city.CountyId = vm.CountyId;
                     city.CityName = vm.CityName;
                     city.UpdatedAt = DateTime.UtcNow;
                     _uow.Cities.Update(city);

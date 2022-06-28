@@ -10,10 +10,10 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 public class CreateEditCityViewModel
 {
     public Guid Id { get; set; }
-    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMissingKeyOrValue")]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.City), Name = "CountyName")]
     
-    public Guid? CountyId { get; set; }
+    public Guid CountyId { get; set; }
     
     public SelectList? Counties { get; set; }
 
