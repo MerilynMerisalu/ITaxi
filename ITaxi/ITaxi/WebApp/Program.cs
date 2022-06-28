@@ -6,10 +6,13 @@ using Base.Contracts.DAL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Rotativa.AspNetCore;
 using WebApp.Helpers;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,9 +28,20 @@ builder.Services.AddIdentity<AppUser, AppRole>(
     .AddDefaultTokenProviders()
     .AddDefaultUI()
     .AddEntityFrameworkStores<AppDbContext>();
-builder.Services.AddControllersWithViews(options => { options.ModelBinderProviders.Insert(0, new CustomLangStrBinderProvider()); });
+builder.Services.AddLocalization(options =>
+   {
+       options.ResourcesPath = "";
+   });
+builder.Services.AddControllersWithViews(options =>
+    {
+        options.ModelBinderProviders.Insert(0, new CustomLangStrBinderProvider());
+    })
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+    .AddDataAnnotationsLocalization(options =>
+        options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(Base.Resources.Common)));
 builder.Services.AddSingleton<IConfigureOptions<MvcOptions>,
     ConfigureModelBindingLocalization>();
+
 
 /* Setting up the language support system */
 var supportedCultures = builder.Configuration
