@@ -25,7 +25,7 @@ public class AppUser : BaseUser
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = "LastAndFirstName")]
     public string LastAndFirstName => $"{LastName} {FirstName}";
 
-    [Display(ResourceType = typeof(Base.Resources.Common), Name = nameof(Gender))]
+    [Display(ResourceType = typeof(Common), Name = nameof(Gender))]
     [EnumDataType(typeof(Gender))] public Gender Gender { get; set; }
 
     [Required]

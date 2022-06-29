@@ -20,7 +20,6 @@ namespace WebApp.Areas.AdminArea.Controllers
     {
         private readonly IAppUnitOfWork _uow;
         
-        
         public AdminsController(IAppUnitOfWork uow)
         {
             _uow = uow;
@@ -107,7 +106,11 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
+            vm.FirstName = admin.AppUser!.FirstName;
+            vm.LastName = admin.AppUser!.LastName;
             vm.PersonalIdentifier = admin.PersonalIdentifier;
+            vm.Gender = admin.AppUser!.Gender;
+            vm.CityId = admin.CityId;
             vm.Address = admin.Address;
             vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
             nameof(City.Id), nameof(City.CityName));
@@ -133,6 +136,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 {
                     if (admin != null)
                     {
+                        
                         admin.Address = vm.Address;
                         admin.CityId = vm.CityId;
                         admin.PersonalIdentifier = vm.PersonalIdentifier;
