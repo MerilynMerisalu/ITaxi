@@ -48,8 +48,15 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
+
+            vm.FirstName = admin.AppUser!.FirstName;
+            vm.LastName = admin.AppUser!.LastName;
+            vm.LastAndFirstName = admin.AppUser!.LastAndFirstName;
+            vm.Gender = admin.AppUser!.Gender;
             vm.Address = admin.Address;
             vm.City = admin.City;
+            vm.PhoneNumber = admin.AppUser!.PhoneNumber;
+            vm.IsActive = admin.AppUser!.IsActive;
             if (admin.PersonalIdentifier != null) vm.PersonalIdentifier = admin.PersonalIdentifier;
             vm.Id = admin.Id;
 
@@ -166,10 +173,15 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
+            vm.FirstName = admin.AppUser!.FirstName;
+            vm.LastName = admin.AppUser!.LastName;
+            vm.LastAndFirstName = admin.AppUser!.LastAndFirstName;
+            vm.Gender = admin.AppUser!.Gender;
             vm.Address = admin.Address;
             vm.City = admin.City;
+            vm.PhoneNumber = admin.AppUser!.PhoneNumber;
+            vm.IsActive = admin.AppUser!.IsActive;
             if (admin.PersonalIdentifier != null) vm.PersonalIdentifier = admin.PersonalIdentifier;
-
             return View(vm);
         }
 

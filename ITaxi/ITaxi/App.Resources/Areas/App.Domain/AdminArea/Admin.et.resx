@@ -17,9 +17,6 @@
     <data name="LastName" xml:space="preserve">
         <value>Perekonnanimi</value>
     </data>
-    <data name="Gender" xml:space="preserve">
-        <value>Sugu</value>
-    </data>
     <data name="LastAndFirstName" xml:space="preserve">
         <value>Perekonna- ja eesnimi</value>
     </data>
@@ -35,7 +32,7 @@
     <data name="AddressOfResidence" xml:space="preserve">
         <value>Elukoha Aadress</value>
     </data>
-    <data name="PhoneNumber" xml:space="preserve">
-        <value>Telefoni number</value>
+    <data name="Administrator" xml:space="preserve">
+        <value>Administraator</value>
     </data>
 </root>

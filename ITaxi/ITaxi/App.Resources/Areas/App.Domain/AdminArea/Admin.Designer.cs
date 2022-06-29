@@ -70,6 +70,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administrator.
+        /// </summary>
+        public static string Administrator {
+            get {
+                return ResourceManager.GetString("Administrator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City.
         /// </summary>
         public static string City {
@@ -97,15 +106,6 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gender.
-        /// </summary>
-        public static string Gender {
-            get {
-                return ResourceManager.GetString("Gender", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Last and First Name.
         /// </summary>
         public static string LastAndFirstName {
@@ -129,15 +129,6 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string PersonalIdentifier {
             get {
                 return ResourceManager.GetString("PersonalIdentifier", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Phone Number.
-        /// </summary>
-        public static string PhoneNumber {
-            get {
-                return ResourceManager.GetString("PhoneNumber", resourceCulture);
             }
         }
     }

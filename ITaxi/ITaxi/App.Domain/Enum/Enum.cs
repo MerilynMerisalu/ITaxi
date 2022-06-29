@@ -1,11 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Base.Resources;
 
 namespace App.Domain.Enum;
 
 public enum Gender
 {
+    [Display(ResourceType = typeof(Common), Name = "Custom")]
     Custom = 1,
+    [Display(ResourceType = typeof(Common), Name = "Female")]
     Female,
+    [Display(ResourceType = typeof(Common), Name = "Male")]
     Male
 }
 
@@ -25,6 +29,7 @@ public enum StatusOfBooking
 }
 
 public enum IsActive
-{   Active = 1,
-    [Display(Name = "In-Active")] InActive,
+{   [Display(ResourceType = typeof(Common), Name = "Active")]
+    Active = 1,
+    [Display(ResourceType = typeof(Common), Name = "InActive")] InActive,
 }

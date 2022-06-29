@@ -120,4 +120,19 @@
     <data name="ProfilePhoto" xml:space="preserve">
         <value>Profiilifoto</value>
     </data>
+    <data name="Female" xml:space="preserve">
+        <value>Naine</value>
+    </data>
+    <data name="Gender" xml:space="preserve">
+        <value>Sugu</value>
+    </data>
+    <data name="Male" xml:space="preserve">
+        <value>Mees</value>
+    </data>
+    <data name="Custom" xml:space="preserve">
+        <value>Kohandatud</value>
+    </data>
+    <data name="PhoneNumber" xml:space="preserve">
+        <value>Telefoninumber</value>
+    </data>
 </root>
