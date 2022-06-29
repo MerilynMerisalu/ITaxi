@@ -43,7 +43,7 @@ public class AppUser : BaseUser
     [DataType(DataType.PhoneNumber)]
     [MaxLength(50)]
     [StringLength(50, MinimumLength = 1)]
-    [DisplayName("Phone Number")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = "PhoneNumber")]
     public override string PhoneNumber { get; set; } = default!;
 
     [Required]
@@ -53,5 +53,5 @@ public class AppUser : BaseUser
     [DisplayName("Email Address")]
     public override string Email { get; set; } = default!;
 
-    [DisplayName("Is Active")] public bool IsActive { get; set; }
+    [Display(ResourceType = typeof(Common), Name=nameof(IsActive))] public bool IsActive { get; set; }
 }

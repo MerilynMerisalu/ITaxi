@@ -13,15 +13,17 @@ public class Admin: DomainEntityMetaId
 
     [MaxLength(50)]
     [StringLength(50)]
-    [DisplayName("Personal Identifier")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = "PersonalIdentifier")]
     public string? PersonalIdentifier { get; set; }
 
-    [DisplayName("City")] public Guid CityId { get; set; }
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = "City")] 
+    public Guid CityId { get; set; }
 
     public City? City { get; set; }
 
     [Required]
     [MaxLength(50)]
     [StringLength(50, MinimumLength = 1)]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = "AddressOfResidence")]
     public string Address { get; set; } = default!;
 }
