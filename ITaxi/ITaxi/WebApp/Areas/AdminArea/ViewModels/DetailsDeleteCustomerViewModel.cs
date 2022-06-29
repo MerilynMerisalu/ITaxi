@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using WebApp.Models.Enum;
+using App.Domain.Enum;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 

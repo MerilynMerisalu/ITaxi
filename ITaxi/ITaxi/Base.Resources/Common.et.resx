@@ -108,4 +108,16 @@
     <data name="PleaseSelect" xml:space="preserve">
         <value>Palun valige</value>
     </data>
+    <data name="InActive" xml:space="preserve">
+        <value>Mitteaktiivne</value>
+    </data>
+    <data name="IsActive" xml:space="preserve">
+        <value>Aktiivne?</value>
+    </data>
+    <data name="Active" xml:space="preserve">
+        <value>Aktiivne</value>
+    </data>
+    <data name="ProfilePhoto" xml:space="preserve">
+        <value>Profiilifoto</value>
+    </data>
 </root>

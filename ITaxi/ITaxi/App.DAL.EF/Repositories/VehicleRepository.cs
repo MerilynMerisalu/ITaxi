@@ -1,8 +1,8 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
+using App.Domain.Enum;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
-using WebApp.Models.Enum;
 
 namespace App.DAL.EF.Repositories;
 

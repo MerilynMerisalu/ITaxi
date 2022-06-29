@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using App.Domain.Enum;
 using Base.Domain;
-using WebApp.Models.Enum;
 
 namespace App.Domain;
 

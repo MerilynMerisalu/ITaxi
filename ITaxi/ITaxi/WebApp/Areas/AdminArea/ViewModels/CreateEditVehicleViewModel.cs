@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using App.Domain.Enum;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using WebApp.Models.Enum;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 

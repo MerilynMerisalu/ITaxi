@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.Domain;
+using App.Domain.Enum;
 using WebApp.Areas.AdminArea.ViewModels;
-using WebApp.Models.Enum;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {

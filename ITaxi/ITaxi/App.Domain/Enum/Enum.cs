@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.Models.Enum;
+namespace App.Domain.Enum;
 
 public enum Gender
 {
@@ -22,4 +22,9 @@ public enum StatusOfBooking
     [Display(Name = "In-Progress")] InProgress,
     Finished,
     Cancelled
+}
+
+public enum IsActive
+{   Active = 1,
+    [Display(Name = "In-Active")] InActive,
 }

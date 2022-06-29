@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using App.Domain;
-using WebApp.Models.Enum;
+using App.Domain.Enum;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 

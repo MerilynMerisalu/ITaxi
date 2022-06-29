@@ -7,12 +7,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using App.DAL.EF;
 using App.Domain;
+using App.Domain.Enum;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using WebApp.Models.Enum;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage
 {
@@ -80,7 +80,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
 
 
             [EnumDataType(typeof(Gender))]
-            [DisplayName(nameof(Models.Enum.Gender))]
+            [DisplayName(nameof(App.Domain.Enum.Gender))]
             public Gender Gender { get; set; }
 
             [DataType(DataType.Date)]

@@ -108,4 +108,16 @@
     <data name="PleaseSelect" xml:space="preserve">
         <value>Please Select</value>
     </data>
+    <data name="IsActive" xml:space="preserve">
+        <value>Is Active?</value>
+    </data>
+    <data name="InActive" xml:space="preserve">
+        <value>In-Active</value>
+    </data>
+    <data name="Active" xml:space="preserve">
+        <value>Active</value>
+    </data>
+    <data name="ProfilePhoto" xml:space="preserve">
+        <value>Profile Photo</value>
+    </data>
 </root>

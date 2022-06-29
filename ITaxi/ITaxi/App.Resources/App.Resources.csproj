@@ -31,6 +31,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>City.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Areas\App.Domain\AdminArea\Admin.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Admin.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -63,6 +67,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>City.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Areas\App.Domain\AdminArea\Admin.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Admin.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

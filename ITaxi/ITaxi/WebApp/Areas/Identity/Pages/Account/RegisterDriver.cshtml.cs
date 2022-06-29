@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.DAL.EF;
 using App.Domain;
+using App.Domain.Enum;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using App.Domain.Identity;
@@ -24,7 +25,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using WebApp.Models.Enum;
 
 namespace WebApp.Areas.Identity.Pages.Account
 {
