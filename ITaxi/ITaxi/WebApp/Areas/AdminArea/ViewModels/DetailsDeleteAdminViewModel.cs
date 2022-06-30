@@ -24,6 +24,11 @@ public class DetailsDeleteAdminViewModel
     [Display(ResourceType = typeof(Base.Resources.Common), Name = nameof(Gender))]
     public Gender Gender { get; set; }
     
+    [DataType(DataType.Date)]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = "DateOfBirth")]
+    public DateTime DateOfBirth { get; set; }
+    
+    
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = nameof(PersonalIdentifier))]
     public string PersonalIdentifier { get; set; } = default!;
     

@@ -28,6 +28,11 @@ public class EditAdminViewModel
     [Display(ResourceType = typeof(Common), Name = "Gender")]
     [EnumDataType(typeof(Gender))] public Gender Gender { get; set; }
 
+    [Display(ResourceType = typeof(Admin), Name = "DateOfBirth")]
+
+    [DataType(DataType.Date)]
+    public DateTime DateOfBirth { get; set; }
+
     [StringLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [Display(ResourceType = typeof(Admin), Name = "PersonalIdentifier")]
     public string? PersonalIdentifier { get; set; }
@@ -36,6 +41,9 @@ public class EditAdminViewModel
 
     [StringLength(50, MinimumLength = 1)]
     public string Address { get; set; } = default!;
+    
+    [Phone]
+    public string PhoneNumber { get; set; } = default!;
 
     public SelectList? Cities { get; set; }
 

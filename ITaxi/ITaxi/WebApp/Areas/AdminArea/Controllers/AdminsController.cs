@@ -52,6 +52,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.LastName = admin.AppUser!.LastName;
             vm.LastAndFirstName = admin.AppUser!.LastAndFirstName;
             vm.Gender = admin.AppUser!.Gender;
+            vm.DateOfBirth = admin.AppUser!.DateOfBirth;
             vm.Address = admin.Address;
             vm.City = admin.City;
             vm.PhoneNumber = admin.AppUser!.PhoneNumber;
@@ -108,6 +109,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.FirstName = admin.AppUser!.FirstName;
             vm.LastName = admin.AppUser!.LastName;
+            vm.DateOfBirth = admin.AppUser!.DateOfBirth;
             vm.PersonalIdentifier = admin.PersonalIdentifier;
             vm.Gender = admin.AppUser!.Gender;
             vm.CityId = admin.CityId;
@@ -181,6 +183,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.LastName = admin.AppUser!.LastName;
             vm.LastAndFirstName = admin.AppUser!.LastAndFirstName;
             vm.Gender = admin.AppUser!.Gender;
+            vm.DateOfBirth = admin.AppUser!.DateOfBirth;
             vm.Address = admin.Address;
             vm.City = admin.City;
             vm.PhoneNumber = admin.AppUser!.PhoneNumber;
