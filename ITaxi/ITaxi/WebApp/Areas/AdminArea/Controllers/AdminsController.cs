@@ -114,6 +114,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Gender = admin.AppUser!.Gender;
             vm.CityId = admin.CityId;
             vm.Address = admin.Address;
+            vm.PhoneNumber = admin.AppUser!.PhoneNumber;
+            vm.IsActive = admin.AppUser!.IsActive;
             vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
             nameof(City.Id), nameof(City.CityName));
             return View(vm);

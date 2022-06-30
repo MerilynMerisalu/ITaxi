@@ -43,7 +43,11 @@ public class EditAdminViewModel
     public string Address { get; set; } = default!;
     
     [Phone]
+    [Display(ResourceType = typeof(Common), Name = "PhoneNumber")]
     public string PhoneNumber { get; set; } = default!;
+
+    [Display(ResourceType = typeof(Common), Name = "IsActive")]
+    public bool IsActive { get; set; }
 
     public SelectList? Cities { get; set; }
 
