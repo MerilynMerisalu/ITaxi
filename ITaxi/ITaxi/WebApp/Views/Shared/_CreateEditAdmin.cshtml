@@ -1,5 +1,5 @@
 ﻿@using App.Domain.Enum
-@model WebApp.Areas.AdminArea.ViewModels.EditAdminViewModel
+@model WebApp.Areas.AdminArea.ViewModels.CreateEditAdminViewModel
 
 <div class="form-group">
     <label asp-for="FirstName" class="control-label"></label>
@@ -51,6 +51,26 @@
     <input asp-for="PhoneNumber" class="form-control" />
     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
 </div>
+<div class="form-group">
+    <label asp-for="Email" class="control-label"></label>
+    <input asp-for="Email" class="form-control" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Password"></label>
+    <input asp-for="Password" class="form-control" alt="Enter your password here."
+           placeholder="Enter your password here" />
+    <span asp-validation-for="Password" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="ConfirmPassword"></label>
+    <input asp-for="ConfirmPassword" class="form-control"
+           alt="Enter your password  here to confirm." placeholder="Enter your password here to confirm"/>
+    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+</div>
+
 <div class="form-group form-check">
     <label class="form-check-label">
         <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)

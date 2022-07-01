@@ -135,4 +135,13 @@
     <data name="PhoneNumber" xml:space="preserve">
         <value>Telefoninumber</value>
     </data>
+    <data name="Email" xml:space="preserve">
+        <value>E-post</value>
+    </data>
+    <data name="ConfirmPassword" xml:space="preserve">
+        <value>Salasõna Kinnitamine</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Salasõna</value>
+    </data>
 </root>

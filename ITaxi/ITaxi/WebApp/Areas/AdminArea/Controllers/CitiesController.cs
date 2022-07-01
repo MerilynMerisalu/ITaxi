@@ -66,7 +66,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateEditCityViewModel vm, City city)
         {
-            //ModelState.Remove(nameof(vm.));
+            
             if (ModelState.IsValid)
             {
                 city.Id = Guid.NewGuid();

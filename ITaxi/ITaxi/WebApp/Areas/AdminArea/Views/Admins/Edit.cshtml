@@ -1,5 +1,5 @@
 @using Base.Resources
-@model WebApp.Areas.AdminArea.ViewModels.EditAdminViewModel
+@model WebApp.Areas.AdminArea.ViewModels.CreateEditAdminViewModel
 @using App.Resources.Areas.App.Domain.AdminArea
 @{
     ViewData["Title"] = Common.Edit;
@@ -14,7 +14,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="All" class="text-danger"></div>
             
-            <partial name="_EditAdmin" model="Model"/>
+            <partial name="_CreateEditAdmin" model="Model"/>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <input type="submit" value="@Common.Save" class="btn btn-primary" />

@@ -64,12 +64,14 @@ namespace WebApp.Areas.AdminArea.Controllers
         }
 
         // GET: AdminArea/Admins/Create
-        /*
-        public IActionResult Create()
+        
+        public async Task<IActionResult> Create()
         {
+            var vm = new CreateEditAdminViewModel();
+            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
+                nameof(City.Id), nameof(City.CityName));
             
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName");
-            return View();
+            return View(vm);
         }
 
         // POST: AdminArea/Admins/Create
@@ -77,25 +79,26 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AppUserId,PersonalIdentifier,CityId,Address,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Admin admin)
+        public async Task<IActionResult> Create(CreateEditAdminViewModel vm, Admin admin)
         {
             if (ModelState.IsValid)
             {
                 admin.Id = Guid.NewGuid();
-                _context.Add(admin);
-                await _context.SaveChangesAsync();
+                _uow.Admins.Add(admin);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Email", admin.AppUserId);
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName", admin.CityId);
-            return View(admin);
+           
+            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(), nameof(City.Id),
+                nameof(City.CityName), nameof(vm.CityId));
+            return View(vm);
         }
-        */
+        
 
         // GET: AdminArea/Admins/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            var vm = new EditAdminViewModel();
+            var vm = new CreateEditAdminViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -126,7 +129,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, EditAdminViewModel vm)
+        public async Task<IActionResult> Edit(Guid id, CreateEditAdminViewModel vm)
         {
             var admin = await _uow.Admins.FirstOrDefaultAsync(id);
             if (admin != null && id != admin.Id)
