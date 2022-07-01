@@ -18,6 +18,8 @@ public class Admin: DomainEntityMetaId
 
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = "City")] 
     public Guid CityId { get; set; }
+    
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = "City")] 
 
     public City? City { get; set; }
 

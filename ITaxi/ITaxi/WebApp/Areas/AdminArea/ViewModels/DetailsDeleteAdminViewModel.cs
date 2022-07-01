@@ -45,4 +45,8 @@ public class DetailsDeleteAdminViewModel
     [Display(ResourceType = typeof(Base.Resources.Common), Name = "IsActive")]
     public bool IsActive { get; set; }
 
+    [Display(ResourceType = typeof(Base.Resources.Common), Name = "Email")]
+
+    public string Email { get; set; } = default!;
+
 }

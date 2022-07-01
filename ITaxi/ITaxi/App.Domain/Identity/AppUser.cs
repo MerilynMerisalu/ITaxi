@@ -43,6 +43,7 @@ public class AppUser : BaseUser
     [DataType(DataType.PhoneNumber)]
     [MaxLength(50)]
     [StringLength(50, MinimumLength = 1)]
+    [Display(ResourceType = typeof(Common), Name = nameof(PhoneNumber))]
     public override string PhoneNumber { get; set; } = default!;
 
     [Required]

@@ -56,6 +56,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Address = admin.Address;
             vm.City = admin.City;
             vm.PhoneNumber = admin.AppUser!.PhoneNumber;
+            vm.Email = admin.AppUser!.Email;
             vm.IsActive = admin.AppUser!.IsActive;
             if (admin.PersonalIdentifier != null) vm.PersonalIdentifier = admin.PersonalIdentifier;
             vm.Id = admin.Id;
@@ -118,6 +119,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.CityId = admin.CityId;
             vm.Address = admin.Address;
             vm.PhoneNumber = admin.AppUser!.PhoneNumber;
+            vm.Email = admin.AppUser.Email;
             vm.IsActive = admin.AppUser!.IsActive;
             vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
             nameof(City.Id), nameof(City.CityName));
@@ -192,6 +194,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Address = admin.Address;
             vm.City = admin.City;
             vm.PhoneNumber = admin.AppUser!.PhoneNumber;
+            vm.Email = admin.AppUser.Email;
             vm.IsActive = admin.AppUser!.IsActive;
             if (admin.PersonalIdentifier != null) vm.PersonalIdentifier = admin.PersonalIdentifier;
             return View(vm);
