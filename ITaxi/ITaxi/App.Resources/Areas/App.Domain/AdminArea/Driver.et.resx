@@ -1,0 +1,35 @@
+﻿<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="JobTitle" xml:space="preserve">
+        <value>Autojuht</value>
+    </data>
+    <data name="PersonalIdentifier" xml:space="preserve">
+        <value>Isikukood</value>
+    </data>
+    <data name="DriverLicenseCategories" xml:space="preserve">
+        <value>Autojuhilubade kategooriad</value>
+    </data>
+    <data name="DriverLicenseNumber" xml:space="preserve">
+        <value>Juhiloa number</value>
+    </data>
+    <data name="DriverLicenseExpiryDate" xml:space="preserve">
+        <value>Juhiloa aegumiskuupäev</value>
+    </data>
+    <data name="City" xml:space="preserve">
+        <value>Linn</value>
+    </data>
+    <data name="Address" xml:space="preserve">
+        <value>Elukoha aadress</value>
+    </data>
+</root>

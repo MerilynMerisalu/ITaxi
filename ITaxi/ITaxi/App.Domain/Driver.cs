@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using App.Domain.Identity;
 using Base.Domain;
+using Base.Resources;
 
 namespace App.Domain;
 
@@ -11,33 +12,37 @@ public class Driver: DomainEntityMetaId
     public Guid AppUserId { get; set; }
     public AppUser? AppUser { get; set; }
 
-    [MaxLength(25)]
-    [StringLength(25)]
-    [DisplayName("Personal Identifier")]
+    [MaxLength(25, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [StringLength(25, MinimumLength = 0, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "PersonalIdentifier")]
     public string? PersonalIdentifier { get; set; } 
 
-    [DisplayName("Driver License Categories")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseCategories")]
     public ICollection<DriverAndDriverLicenseCategory>? DriverLicenseCategories { get; set; }
 
-    [MaxLength(15)]
-    [MinLength(2)]
-    [StringLength(15, MinimumLength = 2)]
-    [DisplayName("Driver License Number")]
+    [MaxLength(15, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [MinLength(2, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMinLength")]
+    [StringLength(15, MinimumLength = 2, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseNumber")]
     public string DriverLicenseNumber { get; set; } = default!;
 
 
     [DataType(DataType.DateTime)]
-    [DisplayName("Driver License Expiry Date")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseExpiryDate")]
     [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
     public DateTime DriverLicenseExpiryDate { get; set; }
 
-    [DisplayName("City")] public Guid CityId { get; set; }
+    
+    public Guid CityId { get; set; }
 
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "City")]
     public City? City { get; set; }
 
-    [Required]
-    [MaxLength(30)]
-    [StringLength(30, MinimumLength = 1)]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(30, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+    [StringLength(30, MinimumLength = 1, 
+        ErrorMessageResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), 
+        ErrorMessageResourceName = "Address")]
     public string Address { get; set; } = default!;
 
 

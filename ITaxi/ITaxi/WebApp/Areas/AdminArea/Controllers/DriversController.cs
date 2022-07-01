@@ -49,11 +49,11 @@ namespace WebApp.Areas.AdminArea.Controllers
         }
 
         // GET: AdminArea/Drivers/Create
-        /*public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email");
-            ViewData["CityId"] = new SelectList(_uow.Cities, "Id", "CityName");
-            return View();
+            var vm = new CreateEditDriverViewModel();
+            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(), nameof(City.Id), nameof(City.CityName));
+            return View(vm);
         }
 
         // POST: AdminArea/Drivers/Create
@@ -66,14 +66,14 @@ namespace WebApp.Areas.AdminArea.Controllers
             if (ModelState.IsValid)
             {
                 driver.Id = Guid.NewGuid();
-                _uow.Add(driver);
+                _uow.Drivers.Add(driver);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email", driver.AppUserId);
-            ViewData["CityId"] = new SelectList(_uow.Cities, "Id", "CityName", driver.CityId);
+            
+            ViewData["CityId"] = new SelectList(await _uow.Cities.GetAllOrderedCitiesWithoutCountyAsync(), "Id", "CityName", driver.CityId);
             return View(driver);
-        }*/
+        }
 
         // GET: AdminArea/Drivers/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
@@ -87,7 +87,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             var driver = await _uow.Drivers
                 .FirstOrDefaultAsync(id.Value);
 
-            var vm = new EditDriverViewModel();
+            var vm = new CreateEditDriverViewModel();
             vm.DriverLicenseCategories= new SelectList(
                 await _uow
                     .DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
@@ -112,7 +112,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, EditDriverViewModel vm)
+        public async Task<IActionResult> Edit(Guid id, CreateEditDriverViewModel vm)
         {
             var driver = await _uow.Drivers.FirstOrDefaultAsync(id);
             

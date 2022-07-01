@@ -39,6 +39,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>DriverLicenseCategory.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Areas\App.Domain\AdminArea\Driver.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Driver.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -81,6 +85,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>DriverLicenseCategory.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Areas\App.Domain\AdminArea\Driver.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Driver.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
