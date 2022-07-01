@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
 public class DetailsDeleteDriverLicenseCategoryViewModel
 {
     public Guid Id { get; set; }
-    [DisplayName("Driver License Category Name")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.DriverLicenseCategory), Name = "DriverLicenseCategoryName")]
     public string DriverLicenseCategoryName { get; set; } = default!;
 }
