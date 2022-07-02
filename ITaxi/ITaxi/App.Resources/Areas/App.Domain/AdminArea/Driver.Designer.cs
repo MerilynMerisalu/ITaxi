@@ -79,6 +79,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date of Birth.
+        /// </summary>
+        public static string DateOfBirth {
+            get {
+                return ResourceManager.GetString("DateOfBirth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Driver License Categories.
         /// </summary>
         public static string DriverLicenseCategories {
@@ -106,11 +115,38 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First Name.
+        /// </summary>
+        public static string FirstName {
+            get {
+                return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Driver.
         /// </summary>
         public static string JobTitle {
             get {
                 return ResourceManager.GetString("JobTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last and First Name.
+        /// </summary>
+        public static string LastAndFirstName {
+            get {
+                return ResourceManager.GetString("LastAndFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Name.
+        /// </summary>
+        public static string LastName {
+            get {
+                return ResourceManager.GetString("LastName", resourceCulture);
             }
         }
         

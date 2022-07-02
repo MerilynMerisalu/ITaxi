@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using App.Domain.Identity;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
@@ -53,6 +54,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             var vm = new CreateEditDriverViewModel();
             vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(), nameof(City.Id), nameof(City.CityName));
+            vm.DriverLicenseCategories = new SelectList(
+                await _uow.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
+                nameof(DriverLicenseCategory.Id), nameof(DriverLicenseCategory.DriverLicenseCategoryName));
             return View(vm);
         }
 
@@ -61,18 +65,27 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AppUserId,PersonalIdentifier,DriverLicenseNumber,DriverLicenseExpiryDate,CityId,Address,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Driver driver)
+        public async Task<IActionResult> Create(CreateEditDriverViewModel vm, Driver driver)
         {
             if (ModelState.IsValid)
             {
                 driver.Id = Guid.NewGuid();
+                driver.AppUser!.FirstName = vm.FirstName;
+                driver.AppUser!.LastName = vm.LastName;
+                driver.AppUser!.Gender = vm.Gender;
+                driver.AppUser.DateOfBirth = DateTime.Parse(vm.DateOfBirth);
+                driver.PersonalIdentifier = vm.PersonalIdentifier;
+                driver.CityId = vm.CityId;
+                driver.Address = vm.Address;
+                driver.DriverLicenseNumber = vm.DriverLicenseNumber;
+                driver.DriverLicenseExpiryDate = vm.DriverLicenseExpiryDate;
                 _uow.Drivers.Add(driver);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            ViewData["CityId"] = new SelectList(await _uow.Cities.GetAllOrderedCitiesWithoutCountyAsync(), "Id", "CityName", driver.CityId);
-            return View(driver);
+            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesWithoutCountyAsync(), nameof(City.Id), nameof(City.CityName), driver.CityId);
+            return View(vm);
         }
 
         // GET: AdminArea/Drivers/Edit/5

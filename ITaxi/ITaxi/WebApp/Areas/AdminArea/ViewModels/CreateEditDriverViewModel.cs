@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using App.Domain;
+using App.Domain.Enum;
 using Base.Resources;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -9,6 +10,28 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 public class CreateEditDriverViewModel
 {
     public Guid Id { get; set; }
+    
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage"),]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "FirstName")]
+    public string FirstName { get; set; } = default!;
+            
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "LastName")]
+    public string LastName { get; set; } = default!;
+    
+    [EnumDataType(typeof(Gender))] 
+    [Display(ResourceType = typeof(Common), Name = "Gender")]
+    public Gender Gender { get; set; }
+
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [DataType(DataType.Date)]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DateOfBirth")]
+    public string DateOfBirth { get; set; } = default!;
+
     
     [StringLength(25, MinimumLength = 0, ErrorMessageResourceType = typeof(Common), 
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
