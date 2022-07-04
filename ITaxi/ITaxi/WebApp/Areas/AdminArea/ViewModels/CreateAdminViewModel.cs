@@ -9,10 +9,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class CreateEditAdminViewModel
+public class CreateAdminViewModel
 {
-    public Guid Id { get; set; }
-
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),

@@ -69,7 +69,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         
         public async Task<IActionResult> Create()
         {
-            var vm = new CreateEditAdminViewModel();
+            var vm = new CreateAdminViewModel();
             vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
                 nameof(City.Id), nameof(City.CityName));
             
@@ -81,7 +81,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditAdminViewModel vm, Admin admin)
+        public async Task<IActionResult> Create(CreateAdminViewModel vm, Admin admin)
         {
             if (ModelState.IsValid)
             {
@@ -100,7 +100,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Admins/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            var vm = new CreateEditAdminViewModel();
+            var vm = new EditAdminViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -115,7 +115,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.FirstName = admin.AppUser!.FirstName;
             vm.LastName = admin.AppUser!.LastName;
             #warning ask if there is a better way
-            vm.DateOfBirth = Convert.ToDateTime(admin.AppUser.DateOfBirth).ToShortDateString();
+            vm.DateOfBirth = admin.AppUser.DateOfBirth.Date;
             vm.PersonalIdentifier = admin.PersonalIdentifier;
             vm.Gender = admin.AppUser!.Gender;
             vm.CityId = admin.CityId;
@@ -133,7 +133,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CreateEditAdminViewModel vm)
+        public async Task<IActionResult> Edit(Guid id, EditAdminViewModel vm)
         {
             var admin = await _uow.Admins.FirstOrDefaultAsync(id);
             if (admin != null && id != admin.Id)
@@ -227,4 +227,6 @@ namespace WebApp.Areas.AdminArea.Controllers
             return _uow.Admins.Exists(id);
         }
     }
+
+    
 }
