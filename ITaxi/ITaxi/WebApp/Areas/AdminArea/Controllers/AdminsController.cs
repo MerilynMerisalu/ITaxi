@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Contracts.DAL;
@@ -113,7 +114,8 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.FirstName = admin.AppUser!.FirstName;
             vm.LastName = admin.AppUser!.LastName;
-            vm.DateOfBirth = admin.AppUser!.DateOfBirth;
+            #warning ask if there is a better way
+            vm.DateOfBirth = Convert.ToDateTime(admin.AppUser.DateOfBirth).ToShortDateString();
             vm.PersonalIdentifier = admin.PersonalIdentifier;
             vm.Gender = admin.AppUser!.Gender;
             vm.CityId = admin.CityId;

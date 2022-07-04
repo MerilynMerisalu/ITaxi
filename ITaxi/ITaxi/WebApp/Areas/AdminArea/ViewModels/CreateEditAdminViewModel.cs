@@ -33,7 +33,8 @@ public class CreateEditAdminViewModel
 
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = "DateOfBirth")]
     [DataType(DataType.Date)]
-    public DateTime DateOfBirth { get; set; }
+
+    public string DateOfBirth { get; set; } = default!;
 
     [StringLength(50, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageStringLengthMax")]

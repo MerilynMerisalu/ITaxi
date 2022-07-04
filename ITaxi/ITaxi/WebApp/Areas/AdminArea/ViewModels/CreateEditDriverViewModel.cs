@@ -30,7 +30,8 @@ public class CreateEditDriverViewModel
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.Date)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DateOfBirth")]
-    public string DateOfBirth { get; set; } = default!;
+    [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd/MM/yyyy}")]
+    public DateTime DateOfBirth { get; set; } = default!;
 
     
     [StringLength(25, MinimumLength = 0, ErrorMessageResourceType = typeof(Common), 
@@ -51,13 +52,13 @@ public class CreateEditDriverViewModel
 
     public SelectList? DriverLicenseCategories { get; set; }
 
-    
+   [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseCategories")] 
     public ICollection<Guid>? DriverAndDriverLicenseCategories { get; set; }
 
     [DataType(DataType.Date)]
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseNumber")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseExpiryDate")]
     [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd/MM/yyyy}")]
-    public DateTime DriverLicenseExpiryDate { get; set; }
+    public string DriverLicenseExpiryDate { get; set; } = default!;
 
     public SelectList? Cities { get; set; }
 

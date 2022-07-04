@@ -43,7 +43,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.PersonalIdentifier = driver.PersonalIdentifier;
             vm.CityName = driver.City!.CityName;
             vm.DriverLicenseNumber = driver.DriverLicenseNumber;
-            vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
+            vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLocalTime();
             vm.Address = driver.Address;
 
             return View(vm);
@@ -73,12 +73,12 @@ namespace WebApp.Areas.AdminArea.Controllers
                 driver.AppUser!.FirstName = vm.FirstName;
                 driver.AppUser!.LastName = vm.LastName;
                 driver.AppUser!.Gender = vm.Gender;
-                driver.AppUser.DateOfBirth = DateTime.Parse(vm.DateOfBirth);
+                driver.AppUser.DateOfBirth = (vm.DateOfBirth).ToUniversalTime();
                 driver.PersonalIdentifier = vm.PersonalIdentifier;
                 driver.CityId = vm.CityId;
                 driver.Address = vm.Address;
                 driver.DriverLicenseNumber = vm.DriverLicenseNumber;
-                driver.DriverLicenseExpiryDate = vm.DriverLicenseExpiryDate;
+                driver.DriverLicenseExpiryDate = DateTime.Parse(vm.DriverLicenseExpiryDate).ToUniversalTime();
                 _uow.Drivers.Add(driver);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -110,11 +110,16 @@ namespace WebApp.Areas.AdminArea.Controllers
                 nameof(City.Id), nameof(City.CityName));
             if (driver != null)
             {
+                vm.FirstName = driver.AppUser!.FirstName;
+                vm.LastName = driver.AppUser!.LastName;
+                vm.Gender = driver.AppUser!.Gender;
                 vm.Address = driver.Address;
                 vm.CityId = driver.CityId;
                 vm.PersonalIdentifier = driver.PersonalIdentifier;
+                vm.DateOfBirth = driver.AppUser!.DateOfBirth;
                 vm.DriverLicenseNumber = driver.DriverLicenseNumber;
-                vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
+                #warning Ask if this should be a repository method
+                vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLongDateString();
             }
 
             return View(vm);
@@ -158,7 +163,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                         }
 
                         driver.DriverLicenseNumber = vm.DriverLicenseNumber;
-                        driver.DriverLicenseExpiryDate = vm.DriverLicenseExpiryDate;
+                        driver.DriverLicenseExpiryDate = DateTime.Parse(vm.DriverLicenseExpiryDate).ToUniversalTime();
                         driver.CityId = vm.CityId;
                         driver.Address = vm.Address;
                         _uow.Drivers.Update(driver);
@@ -205,7 +210,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.CityName = driver.City!.CityName;
             vm.Address = driver.Address;
             vm.DriverLicenseNumber = driver.DriverLicenseNumber;
-            vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
+            vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLocalTime();
             
             return View(vm);
         }
