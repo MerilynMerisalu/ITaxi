@@ -1,6 +1,8 @@
-@model WebApp.Areas.AdminArea.ViewModels.CreateEditDriverViewModel
+@model WebApp.Areas.AdminArea.ViewModels.EditDriverViewModel
 @using Base.Resources
 @using App.Resources.Areas.App.Domain.AdminArea
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using App.Domain.Enum
 
 @{
     ViewData["Title"] = Common.Edit;
@@ -14,7 +16,62 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <partial name="_CreateEditDriver" model="Model"/>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <select asp-for="Gender" class="form-control" asp-items="@Html.GetEnumSelectList<Gender>()">
+                    <option>@Common.PleaseSelect</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PersonalIdentifier" class="control-label"></label>
+                <input asp-for="PersonalIdentifier" class="form-control" />
+                <span asp-validation-for="PersonalIdentifier" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="DriverAndDriverLicenseCategories"></label>
+                <select multiple="multiple" asp-for="DriverAndDriverLicenseCategories" class="form-control"
+                        asp-items="Model.DriverLicenseCategories">
+                </select>
+                <span asp-validation-for="DriverAndDriverLicenseCategories" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DriverLicenseNumber" class="control-label"></label>
+                <input asp-for="DriverLicenseNumber" class="form-control" />
+                <span asp-validation-for="DriverLicenseNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DriverLicenseExpiryDate" class="control-label"></label>
+                <input asp-for="DriverLicenseExpiryDate" class="form-control" />
+                <span asp-validation-for="DriverLicenseExpiryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CityId" class="control-label"></label>
+                <select asp-for="CityId" class="form-control" asp-items="@Model.Cities">
+                    <option>@Common.PleaseSelect</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <input type="submit" value=@Common.Save class="btn btn-primary" />

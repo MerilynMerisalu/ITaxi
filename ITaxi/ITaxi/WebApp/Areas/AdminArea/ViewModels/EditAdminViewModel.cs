@@ -30,7 +30,8 @@ public class EditAdminViewModel
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = "DateOfBirth")]
     [DataType(DataType.Date)]
 
-    public DateTime DateOfBirth { get; set; } = default!;
+    #warning Ask if itcan be refactoried to use partial view
+    public DateTime DateOfBirth { get; set; } 
 
     [StringLength(50, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageStringLengthMax")]

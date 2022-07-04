@@ -7,18 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class CreateEditDriverViewModel
+public class CreateDriverViewModel
 {
-    public Guid Id { get; set; }
-    
+
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage"),]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "FirstName")]
     public string FirstName { get; set; } = default!;
             
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "LastName")]
     public string LastName { get; set; } = default!;
@@ -31,7 +28,8 @@ public class CreateEditDriverViewModel
     [DataType(DataType.Date)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DateOfBirth")]
     [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd/MM/yyyy}")]
-    public DateTime DateOfBirth { get; set; } = default!;
+    #warning Ask if it can be refactoried to use partial view
+    public string DateOfBirth { get; set; } = default!;
 
     
     [StringLength(25, MinimumLength = 0, ErrorMessageResourceType = typeof(Common), 

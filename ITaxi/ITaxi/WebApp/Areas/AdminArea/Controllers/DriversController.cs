@@ -52,7 +52,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Drivers/Create
         public async Task<IActionResult> Create()
         {
-            var vm = new CreateEditDriverViewModel();
+            var vm = new CreateDriverViewModel();
             vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(), nameof(City.Id), nameof(City.CityName));
             vm.DriverLicenseCategories = new SelectList(
                 await _uow.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
@@ -65,7 +65,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditDriverViewModel vm, Driver driver)
+        public async Task<IActionResult> Create(CreateDriverViewModel vm, Driver driver)
         {
             if (ModelState.IsValid)
             {
@@ -73,7 +73,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 driver.AppUser!.FirstName = vm.FirstName;
                 driver.AppUser!.LastName = vm.LastName;
                 driver.AppUser!.Gender = vm.Gender;
-                driver.AppUser.DateOfBirth = (vm.DateOfBirth).ToUniversalTime();
+                driver.AppUser.DateOfBirth = DateTime.Parse(vm.DateOfBirth).ToUniversalTime();
                 driver.PersonalIdentifier = vm.PersonalIdentifier;
                 driver.CityId = vm.CityId;
                 driver.Address = vm.Address;
@@ -100,7 +100,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             var driver = await _uow.Drivers
                 .FirstOrDefaultAsync(id.Value);
 
-            var vm = new CreateEditDriverViewModel();
+            var vm = new EditDriverViewModel();
             vm.DriverLicenseCategories= new SelectList(
                 await _uow
                     .DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
@@ -119,7 +119,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 vm.DateOfBirth = driver.AppUser!.DateOfBirth;
                 vm.DriverLicenseNumber = driver.DriverLicenseNumber;
                 #warning Ask if this should be a repository method
-                vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLongDateString();
+                vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
             }
 
             return View(vm);
@@ -130,7 +130,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CreateEditDriverViewModel vm)
+        public async Task<IActionResult> Edit(Guid id, EditDriverViewModel vm)
         {
             var driver = await _uow.Drivers.FirstOrDefaultAsync(id);
             
@@ -163,7 +163,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                         }
 
                         driver.DriverLicenseNumber = vm.DriverLicenseNumber;
-                        driver.DriverLicenseExpiryDate = DateTime.Parse(vm.DriverLicenseExpiryDate).ToUniversalTime();
+                        driver.DriverLicenseExpiryDate = vm.DriverLicenseExpiryDate;
                         driver.CityId = vm.CityId;
                         driver.Address = vm.Address;
                         _uow.Drivers.Update(driver);
