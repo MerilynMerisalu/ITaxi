@@ -1,41 +1,78 @@
 ﻿@model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteDriverViewModel
 
 <dl class="row">
-    <dt class = "col-sm-2">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.FirstName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.FirstName)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.LastName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.LastName)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.LastAndFirstName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.LastAndFirstName)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Gender)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Gender)
+    </dd>
+    <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.PersonalIdentifier)
     </dt>
-    <dd class = "col-sm-10">
+    <dd class="col-sm-10">
         @Html.DisplayFor(model => model.PersonalIdentifier)
     </dd>
-    <dt class = "col-sm-2">
+    <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.DriverLicenseNumber)
     </dt>
-    <dd class = "col-sm-10">
+    <dd class="col-sm-10">
         @Html.DisplayFor(model => model.DriverLicenseNumber)
     </dd>
-    <dt class = "col-sm-2">
+    <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.DriverLicenseCategoryNames)
     </dt>
-    <dd class = "col-sm-10">
+    <dd class="col-sm-10">
         @Html.DisplayFor(model => model.DriverLicenseCategoryNames)
     </dd>
-    
-    <dt class = "col-sm-2">
+
+    <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.DriverLicenseExpiryDate)
     </dt>
-    <dd class = "col-sm-10">
+    <dd class="col-sm-10">
         @Html.DisplayFor(model => model.DriverLicenseExpiryDate)
     </dd>
-    <dt class = "col-sm-2">
+    <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.CityName)
     </dt>
-    <dd class = "col-sm-10">
+    <dd class="col-sm-10">
         @Html.DisplayFor(model => model.CityName)
     </dd>
-    <dt class = "col-sm-2">
+    <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.Address)
     </dt>
-    <dd class = "col-sm-10">
+    <dd class="col-sm-10">
         @Html.DisplayFor(model => model.Address)
     </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.PhoneNumber)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.PhoneNumber)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.EmailAddress)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.EmailAddress)
+    </dd>
+
 </dl>

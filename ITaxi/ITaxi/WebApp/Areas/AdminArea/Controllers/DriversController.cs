@@ -37,14 +37,23 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var driver = await _uow.Drivers.FirstOrDefaultAsync(id.Value);
-            vm.DriverLicenseCategoryNames = await _uow.DriverAndDriverLicenseCategories
-                .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
-            vm.Id = driver.Id;
-            vm.PersonalIdentifier = driver.PersonalIdentifier;
-            vm.CityName = driver.City!.CityName;
-            vm.DriverLicenseNumber = driver.DriverLicenseNumber;
-            vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLocalTime();
-            vm.Address = driver.Address;
+            if (driver != null)
+            {
+                vm.Id = driver.Id;
+                vm.FirstName = driver.AppUser!.FirstName;
+                vm.LastName = driver.AppUser!.LastName;
+                vm.LastAndFirstName = driver.AppUser!.LastAndFirstName;
+                vm.Gender = driver.AppUser!.Gender;
+                vm.DriverLicenseCategoryNames = await _uow.DriverAndDriverLicenseCategories
+                    .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
+                vm.PersonalIdentifier = driver.PersonalIdentifier;
+                vm.CityName = driver.City!.CityName;
+                vm.DriverLicenseNumber = driver.DriverLicenseNumber;
+                vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLocalTime();
+                vm.Address = driver.Address;
+                vm.PhoneNumber = driver.AppUser.PhoneNumber;
+                vm.EmailAddress = driver.AppUser!.Email;
+            }
 
             return View(vm);
         }
@@ -203,15 +212,20 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
+            vm.Id = driver.Id;
+            vm.FirstName = driver.AppUser!.FirstName;
+            vm.LastName = driver.AppUser!.LastName;
+            vm.LastAndFirstName = driver.AppUser!.LastAndFirstName;
+            vm.Gender = driver.AppUser!.Gender;
+            vm.DriverLicenseCategoryNames = await _uow.DriverAndDriverLicenseCategories
+                .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
             vm.PersonalIdentifier = driver.PersonalIdentifier;
-            var driverLicenseCategoryNames =  
-                await _uow.DriverAndDriverLicenseCategories.GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver.Id);
-            vm.DriverLicenseCategoryNames = driverLicenseCategoryNames;
             vm.CityName = driver.City!.CityName;
-            vm.Address = driver.Address;
             vm.DriverLicenseNumber = driver.DriverLicenseNumber;
             vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLocalTime();
-            
+            vm.Address = driver.Address;
+            vm.PhoneNumber = driver.AppUser.PhoneNumber;
+            vm.EmailAddress = driver.AppUser!.Email;
             return View(vm);
         }
 

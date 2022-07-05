@@ -75,8 +75,10 @@ public class CreateAdminViewModel
     [Compare("Password", ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ConfirmPassword")]
     public string ConfirmPassword { get; set; } = default!;
 
-    [Display(ResourceType = typeof(Common), Name=nameof(IsActive))] public bool IsActive { get; set; }
-
+    
+    [Display(ResourceType = typeof(Common), Name=nameof(IsActive))] 
+    public IsActive IsActive { get; set; }
+    
     public SelectList? Cities { get; set; }
 
 }
