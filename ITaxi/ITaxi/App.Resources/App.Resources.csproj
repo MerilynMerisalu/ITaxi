@@ -43,6 +43,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Driver.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Areas\App.Domain\AdminArea\VehicleType.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>VehicleType.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -90,6 +94,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Driver.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Areas\App.Domain\AdminArea\VehicleType.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>VehicleType.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
