@@ -1,5 +1,6 @@
 ﻿using App.Domain;
 using App.Domain.Identity;
+using Base.Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +13,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     {
     }
 
-    
+    public DbSet<LangStr> LangStrings { get; set; } = default!;
+    public DbSet<Translation> Translations { get; set; } = default!;
     public DbSet<County> Counties { get; set; } = default!;
     public DbSet<City> Cities { get; set; } = default!;
     public DbSet<Photo> Photos { get; set; } = default!;

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApp.Helpers;
 
-public class LangStrBinderProvider : IModelBinder
+/*public class LangStrBinderProvider : IModelBinder
 {
     private readonly ILogger<LangStrBinderProvider>? _logger;
     private readonly Type _type;
@@ -42,4 +42,4 @@ public class LangStrBinderProvider : IModelBinder
 
         return Task.CompletedTask;
     }
-}
+}*/

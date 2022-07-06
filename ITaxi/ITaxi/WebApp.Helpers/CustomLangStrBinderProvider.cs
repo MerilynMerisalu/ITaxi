@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApp.Helpers;
 
-public class CustomLangStrBinderProvider : IModelBinderProvider
+/*public class CustomLangStrBinderProvider : IModelBinderProvider
 {
     public IModelBinder? GetBinder(ModelBinderProviderContext context)
     {
@@ -23,4 +23,4 @@ public class CustomLangStrBinderProvider : IModelBinderProvider
 
         return null;
     }
-}
+}*/

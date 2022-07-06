@@ -11,10 +11,12 @@ public class VehicleTypeRepository: BaseEntityRepository<VehicleType, AppDbConte
     {
     }
 
+    
 
     public async Task<IEnumerable<VehicleType>> GetAllVehicleTypesOrderedAsync(bool noTracking = true)
     {
-        return await CreateQuery(noTracking).OrderBy(v => v.VehicleTypeName).ToListAsync();
+        return await CreateQuery(noTracking).Include(t => t.VehicleTypeName)
+            .ThenInclude(t => t.Translations).OrderBy(v => v.VehicleTypeName).ToListAsync();
     }
 
     public IEnumerable<VehicleType> GetAllVehicleTypesOrdered(bool noTracking = true)

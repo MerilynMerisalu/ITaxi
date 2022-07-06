@@ -32,6 +32,8 @@ builder.Services.AddLocalization(options =>
    {
        options.ResourcesPath = "";
    });
+
+/*
 builder.Services.AddControllersWithViews(options =>
     {
         options.ModelBinderProviders.Insert(0, new CustomLangStrBinderProvider());
@@ -39,6 +41,8 @@ builder.Services.AddControllersWithViews(options =>
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
     .AddDataAnnotationsLocalization(options =>
         options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(Base.Resources.Common)));
+        */
+
 builder.Services.AddSingleton<IConfigureOptions<MvcOptions>,
     ConfigureModelBindingLocalization>();
 

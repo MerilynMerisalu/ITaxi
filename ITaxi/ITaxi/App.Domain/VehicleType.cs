@@ -12,7 +12,8 @@ public class VehicleType: DomainEntityMetaId
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.VehicleType), Name = "VehicleTypeName")]
-    public string VehicleTypeName { get; set; } = default!;
+    public LangStr VehicleTypeName { get; set; } = default!;
+    
 
     public ICollection<Vehicle>? Vehicles { get; set; }
 }

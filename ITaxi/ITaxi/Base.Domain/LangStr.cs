@@ -1,66 +1,117 @@
-﻿namespace Base.Domain;
+﻿using Base.Contracts.Domain;
 
-public class LangStr :Dictionary<string, string>
-    {
-    private const string DefaultCulture = "en";
+namespace Base.Domain;
 
-    private string GetCultureName(string culture)
+public class LangStr : LangStr<Guid>
+{
+    public LangStr(): this("")
     {
-        return culture.Split("-")[0];
-    }
-    public LangStr()
-    {
+        
     }
 
-    public LangStr(string value) : this(value, Thread.CurrentThread.CurrentUICulture.Name)
+    public LangStr(string value, string? culture = null): base(value, culture)
     {
+        SetTranslation(value, culture);
+    }
+    public static implicit operator string(LangStr? langStr) => langStr?.ToString() ?? "null";
+    public static implicit operator LangStr(string value) => new LangStr(value);
+
+}
+
+public class LangStr<TKey>: DomainEntityId<TKey> 
+where TKey: IEquatable<TKey>
+{
+    private static string _defaultCulture = "en";
+
+    public virtual ICollection<Translation>? Translations { get; set; }
+
+    public LangStr(): this("")
+    {
+        
     }
 
-    public LangStr(string value, string culture)
+    public LangStr(string value,string? culture = null )
     {
-        this[GetCultureName(culture)] = value;
+        SetTranslation(value, culture);
+    }
+    
+    public virtual void SetTranslation(string value, string? culture = null)
+    {
+        if (Translations == null)
+        {
+            culture ??= Thread.CurrentThread.CurrentUICulture.Name;
+            if (Id.Equals(default(TKey)) && Translations == null)
+            {
+                Translations ??= new List<Translation>();
+            }
+            else
+            {
+                throw new NullReferenceException("Translations cannot be null. Did you forgot to do an include?");
+            }
+            
+        }
+        var translation = Translations.FirstOrDefault(t => t.Culture == culture);
+        if (translation == null)
+        {
+            Translations.Add(new Translation()
+            {
+                Culture = culture,
+                Value = value
+            });
+            
+        }
+        else
+        {
+            translation.Value = value;
+        }
+        
+       
+        
     }
 
     public string? Translate(string? culture = null)
     {
-        if (Count == 0) return null;
-
-        culture = culture?.Trim() ?? Thread.CurrentThread.CurrentUICulture.Name;
-        culture = GetCultureName(culture);
-
-        if (ContainsKey(culture))
+        if (Translations == null)
         {
-            return this[culture];
-        }
+            #warning Should I put the code into a method to make it more reusable
+            if (Id.Equals(default(TKey)) && Translations == null)
+            {
+                return "";
+            }
+            
+            culture = culture?.Trim() ?? Thread.CurrentThread.CurrentUICulture.Name;
+            
+            var translation = Translations.FirstOrDefault(t => t.Culture == culture);
+            if (translation != null)
+            {
+                return translation.Value;
+            }
 
-        var neutralCulture = culture.Split("-")[0];
+            translation = Translations.FirstOrDefault(t => t.Culture == culture);
+            if (translation != null)
+            {
+                return translation.Value;
+            }
+            
+            translation = Translations.FirstOrDefault(t => _defaultCulture.StartsWith(culture));
+            if (translation != null)
+            {
+                return translation.Value;
+            }
+
+            
+        }
         
-        if (ContainsKey(neutralCulture))
-        {
-            return this[neutralCulture];
-        }
+        return Translations.FirstOrDefault()?.Value;
         
-        if (ContainsKey(DefaultCulture))
-        {
-            return this[DefaultCulture];
-        }
-
-        return null;
-    }
-
-    public void SetTranslation(string value)
-    {
-        this[GetCultureName(Thread.CurrentThread.CurrentUICulture.Name)] = value;
     }
 
     public override string ToString()
     {
-        return Translate() ?? "???";
+        return Translate() ?? "?????";
     }
+    public static implicit operator string(LangStr<TKey>? langStr) => langStr?.ToString() ?? "null";
+    public static implicit operator LangStr<TKey>(string value) => new LangStr<TKey>(value);
 
-    // string xxx = new LangStr("zzz");
-    public static implicit operator string(LangStr? langStr) => langStr?.ToString() ?? "null";
-    
-    // LangStr lStr = "xxx"; // internally it will be lStr = new LangStr("xxx");
-    public static implicit operator LangStr(string value) => new(value);
 }
+    
