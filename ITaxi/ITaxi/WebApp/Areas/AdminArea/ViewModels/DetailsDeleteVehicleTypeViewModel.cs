@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using App.Resources.Areas.App.Domain.AdminArea;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
-
 public class DetailsDeleteVehicleTypeViewModel
 {
     public Guid Id { get; set; }
-    [DisplayName("Vehicle Type")]
+    [Display(ResourceType = typeof(VehicleType), Name = nameof(VehicleTypeName))]
     public string VehicleTypeName { get; set; } = default!;
 }

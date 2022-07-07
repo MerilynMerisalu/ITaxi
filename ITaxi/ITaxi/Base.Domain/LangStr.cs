@@ -21,7 +21,7 @@ public class LangStr : LangStr<Guid>
 public class LangStr<TKey>: DomainEntityId<TKey> 
 where TKey: IEquatable<TKey>
 {
-    public const string DefaultCulture = "en";
+    private static string _defaultCulture = "en";
 
     public virtual ICollection<Translation>? Translations { get; set; }
 
@@ -38,7 +38,7 @@ where TKey: IEquatable<TKey>
     public virtual void SetTranslation(string value, string? culture = null)
     {
         culture ??= Thread.CurrentThread.CurrentUICulture.Name;
-        culture ??= DefaultCulture;
+        culture ??= _defaultCulture;
         
         if (Translations == null)
         {
@@ -79,33 +79,39 @@ where TKey: IEquatable<TKey>
             #warning Should I put the code into a method to make it more reusable
             if (Id.Equals(default(TKey)) && Translations == null)
             {
-                return "";
+                return null;
             }
             
             culture = culture?.Trim() ?? Thread.CurrentThread.CurrentUICulture.Name;
-            
-            var translation = Translations.FirstOrDefault(t => t.Culture == culture);
-            if (translation != null)
-            {
-                return translation.Value;
-            }
 
-            translation = Translations.FirstOrDefault(t => t.Culture == culture);
-            if (translation != null)
+            if (Translations != null)
             {
-                return translation.Value;
-            }
-            
-            translation = Translations.FirstOrDefault(t => DefaultCulture.StartsWith(culture));
-            if (translation != null)
-            {
-                return translation.Value;
-            }
+                // Do we have an exact match
+                var translation = Translations.FirstOrDefault(t => t.Culture == culture);
+                if (translation != null)
+                {
+                    return translation.Value;
+                }
 
+                // Do we have a match without a region
+                translation = Translations.FirstOrDefault(t => culture.StartsWith(t.Culture));
+                if (translation != null)
+                {
+                    return translation.Value;
+                }
             
+                // Do we have a default culture string
+                translation = Translations.FirstOrDefault(t => _defaultCulture.StartsWith(_defaultCulture));
+                if (translation != null)
+                {
+                    return translation.Value;
+                }
+                
+                // just return the first one from the list or null
+            }
         }
         
-        return Translations.FirstOrDefault()?.Value;
+        return Translations!.FirstOrDefault()?.Value;
         
     }
 
