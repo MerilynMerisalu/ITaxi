@@ -74,7 +74,10 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     };
 });
 var app = builder.Build();
+Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
+Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
 await DataHelper.SetupAppData(app, app.Environment, app.Configuration);
+
 
 
 

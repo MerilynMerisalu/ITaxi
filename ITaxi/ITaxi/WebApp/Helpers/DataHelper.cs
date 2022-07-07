@@ -52,8 +52,8 @@ public static class DataHelper
         }
 
         // Before we Seed the data, set the current culture to en
-        Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(LangStr.DefaultCulture);
-        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(LangStr.DefaultCulture);
+        //Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(LangStr.DefaultCulture);
+        //Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(LangStr.DefaultCulture);
         
         if (configuration.GetValue<bool>("DataInitialization:SeedIdentity"))
         {
