@@ -27,7 +27,7 @@ public class CreateDriverViewModel
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.Date)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DateOfBirth")]
-    [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd/MM/yyyy}")]
+    [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:d}")]
     #warning Ask if it can be refactoried to use partial view
     public string DateOfBirth { get; set; } = default!;
 
@@ -55,7 +55,7 @@ public class CreateDriverViewModel
 
     [DataType(DataType.Date)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseExpiryDate")]
-    [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd/MM/yyyy}")]
+    [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:d}")]
     public string DriverLicenseExpiryDate { get; set; } = default!;
 
     public SelectList? Cities { get; set; }

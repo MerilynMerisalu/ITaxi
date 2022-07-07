@@ -21,7 +21,7 @@ public class LangStr : LangStr<Guid>
 public class LangStr<TKey>: DomainEntityId<TKey> 
 where TKey: IEquatable<TKey>
 {
-    private static string _defaultCulture = "en";
+    public const string DefaultCulture = "en";
 
     public virtual ICollection<Translation>? Translations { get; set; }
 
@@ -37,9 +37,12 @@ where TKey: IEquatable<TKey>
     
     public virtual void SetTranslation(string value, string? culture = null)
     {
+        culture ??= Thread.CurrentThread.CurrentUICulture.Name;
+        culture ??= DefaultCulture;
+        
         if (Translations == null)
         {
-            culture ??= Thread.CurrentThread.CurrentUICulture.Name;
+
             if (Id.Equals(default(TKey)) && Translations == null)
             {
                 Translations ??= new List<Translation>();
@@ -93,7 +96,7 @@ where TKey: IEquatable<TKey>
                 return translation.Value;
             }
             
-            translation = Translations.FirstOrDefault(t => _defaultCulture.StartsWith(culture));
+            translation = Translations.FirstOrDefault(t => DefaultCulture.StartsWith(culture));
             if (translation != null)
             {
                 return translation.Value;

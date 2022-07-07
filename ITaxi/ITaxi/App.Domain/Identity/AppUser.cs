@@ -31,7 +31,8 @@ public class AppUser : BaseUser
     [Required]
     [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = nameof(DateOfBirth))]
-    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+    [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+    #warning DateTime input control does not support user changing the language yet.
     public DateTime DateOfBirth { get; set; }
 
     [NotMapped]

@@ -30,7 +30,7 @@ public class EditDriverViewModel
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.Date)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DateOfBirth")]
-    [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd/MM/yyyy}")]
+    [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:d}")]
     public DateTime DateOfBirth { get; set; } = default!;
 
     
@@ -57,7 +57,8 @@ public class EditDriverViewModel
 
     [DataType(DataType.Date)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseExpiryDate")]
-    [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd/MM/yyyy}")]
+    [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:d}")]
+    #warning DateTime input control does not support user changing the language yet
     public DateTime DriverLicenseExpiryDate { get; set; }
 
     public SelectList? Cities { get; set; }

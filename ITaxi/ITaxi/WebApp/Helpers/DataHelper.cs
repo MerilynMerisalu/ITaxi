@@ -1,7 +1,9 @@
-﻿using App.DAL.EF;
+﻿using System.Globalization;
+using App.DAL.EF;
 using App.Domain;
 using App.Domain.Enum;
 using App.Domain.Identity;
+using Base.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,6 +51,10 @@ public static class DataHelper
             await context.Database.MigrateAsync();
         }
 
+        // Before we Seed the data, set the current culture to en
+        Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(LangStr.DefaultCulture);
+        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(LangStr.DefaultCulture);
+        
         if (configuration.GetValue<bool>("DataInitialization:SeedIdentity"))
         {
             var role = new AppRole()
@@ -131,7 +137,7 @@ public static class DataHelper
                 Id = new Guid(),
                 FirstName = "Katrin",
                 LastName = "Salu",
-                DateOfBirth = DateTime.Parse("20.08.1992"),
+                DateOfBirth = DateTime.Parse("1992-08-20"),
                 Gender = Gender.Female,
                 Email = "kati@gmail.com",
                 EmailConfirmed = true,
@@ -188,7 +194,7 @@ public static class DataHelper
                 Id = new Guid(),
                 FirstName = "Toomas",
                 LastName = "Paju",
-                DateOfBirth = DateTime.Parse("23.06.1988"),
+                DateOfBirth = DateTime.Parse("1988-06-23"),
                 Gender = Gender.Male,
                 Email = "toomas.paju@gmail.com",
                 EmailConfirmed = true,
@@ -231,7 +237,7 @@ public static class DataHelper
                 CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
                 PersonalIdentifier = "38806237921",
                 DriverLicenseNumber = "AAC 123",
-                DriverLicenseExpiryDate = DateTime.Parse("22.09.2026"),
+                DriverLicenseExpiryDate = DateTime.Parse("2026-09-22"),
                 Address = "Veerenni 13", 
                 CreatedBy = "System", 
                 CreatedAt = DateTime.Now.ToUniversalTime()
@@ -266,6 +272,7 @@ public static class DataHelper
             await context.DisabilityTypes.AddAsync(disabilityType);
             await context.SaveChangesAsync();
 
+            
             var vehicleType = new VehicleType()
             {
                 Id = new Guid(),
@@ -339,7 +346,7 @@ public static class DataHelper
                 Id = new Guid(),
                 FirstName = "Maarika",
                 LastName = "Mätas",
-                DateOfBirth = DateTime.Parse("14.02.2001"),
+                DateOfBirth = DateTime.Parse("2001-02-14"),
                 Gender = Gender.Female,
                 Email = "maarika.matas@gmail.com",
                 EmailConfirmed = true,
