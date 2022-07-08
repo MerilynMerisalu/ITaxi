@@ -28,7 +28,8 @@ public class BookingRepository: BaseEntityRepository<Booking, AppDbContext>, IBo
             .ThenInclude(v => v!.VehicleMark)
             .Include(v => v.Vehicle)
             .ThenInclude(v => v!.VehicleModel)
-            .Include(b => b.VehicleType)
+            .Include(b => b.VehicleType!.VehicleTypeName)
+            .ThenInclude(v => v.Translations)
             .Include(c => c.Drive)
             .ThenInclude(c => c!.Comment);
         return query;
