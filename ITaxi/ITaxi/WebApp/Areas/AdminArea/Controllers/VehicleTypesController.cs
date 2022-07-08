@@ -1,4 +1,5 @@
 #nullable enable
+using System.ComponentModel.DataAnnotations;
 using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/VehicleTypes
         public async Task<IActionResult> Index()
         {
+            #warning Hold the translate the value
             return View(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync());
         }
 
@@ -38,7 +40,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 return NotFound();
             }
-
+            
             vm.VehicleTypeName = vehicleType.VehicleTypeName;
             vm.Id = vehicleType.Id;
             return View(vm);
