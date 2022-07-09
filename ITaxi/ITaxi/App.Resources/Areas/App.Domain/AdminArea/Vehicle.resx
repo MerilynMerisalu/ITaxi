@@ -51,4 +51,7 @@
     <data name="InAvailable" xml:space="preserve">
         <value>In-Available</value>
     </data>
+    <data name="VehicleName" xml:space="preserve">
+        <value>Vehicle</value>
+    </data>
 </root>

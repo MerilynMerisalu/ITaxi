@@ -44,4 +44,7 @@
     <data name="InAvailable" xml:space="preserve">
         <value>Mittesaadaval</value>
     </data>
+    <data name="VehicleName" xml:space="preserve">
+        <value>Sõiduk</value>
+    </data>
 </root>

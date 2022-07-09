@@ -142,6 +142,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vehicle.
+        /// </summary>
+        public static string VehicleName {
+            get {
+                return ResourceManager.GetString("VehicleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vehicle Plate Number.
         /// </summary>
         public static string VehiclePlateNumber {
