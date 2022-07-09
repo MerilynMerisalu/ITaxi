@@ -25,6 +25,10 @@
             @Html.DisplayNameFor(model => model.AppUser!.LastAndFirstName)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.AppUser!.DateOfBirth)
+        </th>
+        
+        <th>
             @Html.DisplayNameFor(model => model.PersonalIdentifier)
         </th>
         <th>
@@ -63,8 +67,12 @@
             @Html.DisplayFor(modelItem => item.AppUser!.LastAndFirstName)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.AppUser!.DateOfBirth)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.PersonalIdentifier)
         </td>
+        
         <td>
             @Html.DisplayFor(modelItem => item.DriverLicenseNumber)
         </td>

@@ -44,6 +44,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 vm.LastName = driver.AppUser!.LastName;
                 vm.LastAndFirstName = driver.AppUser!.LastAndFirstName;
                 vm.Gender = driver.AppUser!.Gender;
+                vm.DateOfBirth = driver.AppUser!.DateOfBirth;
                 vm.DriverLicenseCategoryNames = await _uow.DriverAndDriverLicenseCategories
                     .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
                 vm.PersonalIdentifier = driver.PersonalIdentifier;
@@ -217,6 +218,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.LastName = driver.AppUser!.LastName;
             vm.LastAndFirstName = driver.AppUser!.LastAndFirstName;
             vm.Gender = driver.AppUser!.Gender;
+            vm.DateOfBirth = driver.AppUser!.DateOfBirth;
             vm.DriverLicenseCategoryNames = await _uow.DriverAndDriverLicenseCategories
                 .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
             vm.PersonalIdentifier = driver.PersonalIdentifier;

@@ -21,6 +21,9 @@ public class DetailsDeleteDriverViewModel
 
     [Display(ResourceType = typeof(Common), Name = "Gender")]
     public Gender Gender { get; set; } 
+    [DisplayFormat(DataFormatString = "{0:d}")]
+    [Display(ResourceType = typeof(Driver), Name = "DateOfBirth")]
+    public DateTime DateOfBirth { get; set; } 
     
     [Display(ResourceType = typeof(Driver), Name = "PersonalIdentifier")]
     public string? PersonalIdentifier { get; set; } 
