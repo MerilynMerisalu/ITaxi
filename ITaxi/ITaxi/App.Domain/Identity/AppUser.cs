@@ -9,15 +9,17 @@ namespace App.Domain.Identity;
 
 public class AppUser : BaseUser
 {
-    [Required]
-    [MaxLength(50)]
-    [StringLength(50, MinimumLength = 1)]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), 
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = nameof(FirstName))]
     public string FirstName { get; set; } = default!;
 
-    [Required]
-    [MaxLength(50)]
-    [StringLength(50, MinimumLength = 1)]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), 
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = nameof(LastName))]
     public string LastName { get; set; } = default!;
 
@@ -28,7 +30,7 @@ public class AppUser : BaseUser
     [Display(ResourceType = typeof(Common), Name = nameof(Gender))]
     [EnumDataType(typeof(Gender))] public Gender Gender { get; set; }
 
-    [Required]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Admin), Name = nameof(DateOfBirth))]
     [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
@@ -36,23 +38,26 @@ public class AppUser : BaseUser
     public DateTime DateOfBirth { get; set; }
 
     [NotMapped]
-    [Display(Name = "Profile Photo")]
+    [Display(ResourceType = typeof(Common), Name = "ProfilePhoto")]
     public IFormFile? ProfileImage{ get; set; }
 
 
-    [Required]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.PhoneNumber)]
-    [MaxLength(50)]
-    [StringLength(50, MinimumLength = 1)]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), 
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Common), Name = nameof(PhoneNumber))]
     public override string PhoneNumber { get; set; } = default!;
 
-    [Required]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.EmailAddress)]
-    [MaxLength(50)]
-    [StringLength(50, MinimumLength = 1)]
-    [DisplayName("Email Address")]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), 
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage" )]
+    [Display(ResourceType = typeof(Common), Name = "Email")]
     public override string Email { get; set; } = default!;
 
-    [Display(ResourceType = typeof(Common), Name=nameof(IsActive))] public bool IsActive { get; set; }
+    [Display(ResourceType = typeof(Common), Name=nameof(IsActive))] 
+    public bool IsActive { get; set; }
 }
