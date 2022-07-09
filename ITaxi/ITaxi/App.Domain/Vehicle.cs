@@ -2,50 +2,59 @@
 using System.ComponentModel.DataAnnotations;
 using App.Domain.Enum;
 using Base.Domain;
+using Base.Resources;
 
 namespace App.Domain;
 
 public class Vehicle:DomainEntityMetaId
 {
-    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "Driver")] 
+    public Guid DriverId { get; set; }
 
-    [DisplayName("Driver")] public Guid DriverId { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = nameof(Driver))] 
+    public Driver? Driver { get; set; }
 
-    [DisplayName("Driver")] public Driver? Driver { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleType")] 
+    public Guid VehicleTypeId { get; set; }
 
-    [DisplayName("Vehicle Type")] public Guid VehicleTypeId { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleType")]
+    public VehicleType? VehicleType { get; set; }
 
-    [DisplayName("Vehicle Type")] public VehicleType? VehicleType { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleMark")]
+    public Guid VehicleMarkId { get; set; }
 
-    [DisplayName("Vehicle Mark")] public Guid VehicleMarkId { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleMark")]
+    public VehicleMark? VehicleMark { get; set; }
 
-    [DisplayName("Vehicle Mark")] public VehicleMark? VehicleMark { get; set; }
 
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleModel")]
+    public Guid VehicleModelId { get; set; }
 
-    [DisplayName("Vehicle Model")] public Guid VehicleModelId { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleModel")] 
 
-    [DisplayName("Vehicle Model")] public VehicleModel? VehicleModel { get; set; }
+    public VehicleModel? VehicleModel { get; set; }
 
-    [Required]
-    [MaxLength(25)]
-    [StringLength(25, MinimumLength = 1)]
-    [DisplayName("Vehicle Plate Number")]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage" )]
+    [MaxLength(25, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [StringLength(25, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehiclePlateNumber")]
     public string VehiclePlateNumber { get; set; } = default!;
 
-    [Display(Name = "Manufacture Year")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "ManufactureYear")]
     [Required]
     public int ManufactureYear { get; set; }
 
-    [Range(1, 6)]
-    [Display(Name = "Number Of Seats")]
-    [Required]
+    [Range(1, 6, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "NumberOfSeats")]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     public int NumberOfSeats { get; set; }
 
-    [DisplayName("Vehicle Identifier")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleIdentifier")]
     public string VehicleIdentifier => $"{VehicleMark?.VehicleMarkName} {VehicleModel?.VehicleModelName} " +
                                        $"{VehiclePlateNumber} {VehicleType?.VehicleTypeName}";
 
-    [Display(Name = "Vehicle Availability")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleAvailability")]
     public VehicleAvailability VehicleAvailability { get; set; }
 
     public ICollection<Schedule>? Schedules { get; set; }

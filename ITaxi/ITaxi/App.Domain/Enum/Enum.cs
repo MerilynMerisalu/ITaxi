@@ -15,8 +15,10 @@ public enum Gender
 
 public enum VehicleAvailability
 {
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "Available")]
     Available = 1,
-    Occupied
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "InAvailable")]
+    InAvailable
 }
 
 public enum StatusOfBooking

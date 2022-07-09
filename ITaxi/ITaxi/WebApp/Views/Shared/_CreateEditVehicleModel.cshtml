@@ -1,4 +1,5 @@
-﻿@model WebApp.Areas.AdminArea.ViewModels.CreateEditVehicleModelViewModel
+﻿@using Base.Resources
+@model WebApp.Areas.AdminArea.ViewModels.CreateEditVehicleModelViewModel
 
 <div class="form-group">
     <label asp-for="VehicleModelName" class="control-label"></label>
@@ -8,6 +9,6 @@
 <div class="form-group">
     <label asp-for="VehicleMarkId" class="control-label"></label>
     <select asp-for="VehicleMarkId" class="form-control" asp-items="Model.VehicleMarks">
-        <option>Please Select</option>
+        <option>@Common.PleaseSelect</option>
     </select>
 </div>
