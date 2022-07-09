@@ -1,32 +1,34 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using App.Domain.Enum;
+using App.Resources.Areas.App.Domain.AdminArea;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
 public class DetailsDeleteVehicleViewModel
 {
     public Guid? Id { get; set; }
-    [DisplayName("Driver")]
+    [Display(ResourceType = typeof(Vehicle), Name = "Driver")]
     public string DriverFullName { get; set; } = default!;
 
-    [DisplayName("Vehicle Type")]
+    [Display(ResourceType = typeof(Vehicle), Name = "VehicleType")]
     public string VehicleType { get; set; } = default!;
     
-    [DisplayName("Vehicle Mark")]
+    [Display(ResourceType = typeof(Vehicle), Name = nameof(VehicleMark))]
     public string VehicleMark { get; set; } = default!;
     
-    [DisplayName("Vehicle Model")]
+    [Display(ResourceType = typeof(Vehicle), Name = nameof(VehicleModel))]
     public string VehicleModel { get; set; } = default!;
     
-    [DisplayName("Vehicle Plate Number")]
+    [Display(ResourceType = typeof(Vehicle), Name = nameof(VehiclePlateNumber))]
     public string VehiclePlateNumber { get; set; } = default!;
-    [DisplayName("Manufacture Year")]
+    [Display(ResourceType = typeof(Vehicle), Name = nameof(ManufactureYear))]
     public int ManufactureYear { get; set; }
 
-    [DisplayName("Number of Seats")]
+    [Display(ResourceType = typeof(Vehicle), Name = nameof(NumberOfSeats))]
     public int NumberOfSeats { get; set; }
 
-    [DisplayName("Vehicle Availability")] 
+    [Display(ResourceType = typeof(Vehicle), Name = nameof(VehicleAvailability))] 
     public VehicleAvailability VehicleAvailability { get; set; }
 
 
