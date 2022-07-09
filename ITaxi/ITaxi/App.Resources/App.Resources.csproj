@@ -51,6 +51,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>VehicleMark.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Areas\App.Domain\AdminArea\VehicleModel.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>VehicleModel.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -108,6 +112,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>VehicleMark.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Areas\App.Domain\AdminArea\VehicleModel.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>VehicleModel.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

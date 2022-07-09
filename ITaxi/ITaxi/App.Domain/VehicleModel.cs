@@ -1,19 +1,22 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Base.Domain;
+using Base.Resources;
 
 namespace App.Domain;
 
 public class VehicleModel: DomainEntityMetaId
 {
 
-    [Required]
-    [MaxLength(50)]
-    [StringLength(50, MinimumLength = 1)]
-    [DisplayName("Vehicle Model")]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.VehicleModel), Name = nameof(VehicleModelName))]
     public string VehicleModelName { get; set; } = default!;
 
-    [DisplayName("Vehicle Mark")] public Guid VehicleMarkId { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.VehicleModel), Name = "VehicleMarkName")]
+    public Guid VehicleMarkId { get; set; }
 
-    [DisplayName("Vehicle Mark")] public VehicleMark? VehicleMark { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.VehicleModel), Name = "VehicleMarkName")] 
+    public VehicleMark? VehicleMark { get; set; }
 }
