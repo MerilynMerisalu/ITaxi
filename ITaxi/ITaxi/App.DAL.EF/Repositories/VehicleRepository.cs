@@ -24,7 +24,9 @@ public class VehicleRepository: BaseEntityRepository<Vehicle, AppDbContext>, IVe
             .ThenInclude(d => d!.AppUser)
             .Include(v => v.VehicleMark)
             .Include(v => v.VehicleModel)
-            .Include(v => v.VehicleType);
+            .Include(v => v.VehicleType)
+            .ThenInclude(v => v!.VehicleTypeName)
+            .ThenInclude(v => v.Translations);
         return query;
     }
 
