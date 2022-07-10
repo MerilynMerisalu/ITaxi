@@ -33,4 +33,7 @@
     <data name="ShiftDurationTime" xml:space="preserve">
         <value>Shift Duration Time</value>
     </data>
+    <data name="ScheduleName" xml:space="preserve">
+        <value>Schedule</value>
+    </data>
 </root>

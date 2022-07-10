@@ -26,4 +26,7 @@
     <data name="ShiftDurationTime" xml:space="preserve">
         <value>Vahetuse kestvus</value>
     </data>
+    <data name="ScheduleName" xml:space="preserve">
+        <value>Vahetus</value>
+    </data>
 </root>
