@@ -13,7 +13,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <partial name="_CreateEditVehicleType" model="Model"/>
+            <partial name="AdminArea/PartialViews/_CreateEditVehicleType" model="Model"/>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <input type="submit" value=@Common.Save class="btn btn-primary" />

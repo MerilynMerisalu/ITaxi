@@ -22,7 +22,7 @@ namespace App.Resources.Areas.App.Domain.DriversArea {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Vehicle {
+    public class Vehicle {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace App.Resources.Areas.App.Domain.DriversArea {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("App.Resources.Areas.App.Domain.DriversArea.Vehicle", typeof(Vehicle).Assembly);
@@ -51,12 +51,111 @@ namespace App.Resources.Areas.App.Domain.DriversArea {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available.
+        /// </summary>
+        public static string Available {
+            get {
+                return ResourceManager.GetString("Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In-Available.
+        /// </summary>
+        public static string InAvailable {
+            get {
+                return ResourceManager.GetString("InAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year.
+        /// </summary>
+        public static string ManufactureYear {
+            get {
+                return ResourceManager.GetString("ManufactureYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of Seats.
+        /// </summary>
+        public static string NumberOfSeats {
+            get {
+                return ResourceManager.GetString("NumberOfSeats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle Availability.
+        /// </summary>
+        public static string VehicleAvailability {
+            get {
+                return ResourceManager.GetString("VehicleAvailability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle .
+        /// </summary>
+        public static string VehicleIdentifier {
+            get {
+                return ResourceManager.GetString("VehicleIdentifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle Mark.
+        /// </summary>
+        public static string VehicleMark {
+            get {
+                return ResourceManager.GetString("VehicleMark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle Model.
+        /// </summary>
+        public static string VehicleModel {
+            get {
+                return ResourceManager.GetString("VehicleModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle.
+        /// </summary>
+        public static string VehicleName {
+            get {
+                return ResourceManager.GetString("VehicleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle Plate Number.
+        /// </summary>
+        public static string VehiclePlateNumber {
+            get {
+                return ResourceManager.GetString("VehiclePlateNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle Type.
+        /// </summary>
+        public static string VehicleType {
+            get {
+                return ResourceManager.GetString("VehicleType", resourceCulture);
             }
         }
     }

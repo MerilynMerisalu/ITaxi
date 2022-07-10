@@ -1,4 +1,5 @@
-@model WebApp.Areas.AdminArea.ViewModels.CreateEditBookingViewModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+
 
 @{
     ViewData["Title"] = "Create";
@@ -12,7 +13,7 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <partial name="_CreateEditBooking" model="Model"/>
+            <partial name="AdminArea/PartialViews/_CreateEditBooking" model="Model"/>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

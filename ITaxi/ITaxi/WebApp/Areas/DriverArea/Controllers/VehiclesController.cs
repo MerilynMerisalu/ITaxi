@@ -1,14 +1,15 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using WebApp.Areas.DriversArea.ViewModels;
+using WebApp.Areas.DriverArea.ViewModels;
 
-namespace WebApp.Areas.DriversArea.Controllers;
-
-[Area(nameof(DriversArea))]
+namespace WebApp.Areas.DriverArea.Controllers;
+[Authorize(Roles = "Admin, Driver")]
+[Area(nameof(DriverArea))]
 public class VehiclesController : Controller
 {
     private readonly IAppUnitOfWork _uow;

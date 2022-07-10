@@ -1,0 +1,30 @@
+@using App.Resources.Areas.App.Domain.AdminArea
+@using Base.Resources
+@{
+    ViewData["Title"] = Common.Create;
+}
+
+<h1>@Common.Create</h1>
+
+<h4>@Vehicle.VehicleName</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            
+            <partial name="DriverArea/PartialViews/_CreateEditVehicle" model="Model"/>
+            <div class="form-group">
+                <input type="submit" value="@Common.Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@Common.BackToList</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

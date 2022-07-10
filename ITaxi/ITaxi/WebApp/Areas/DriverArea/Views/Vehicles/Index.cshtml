@@ -1,0 +1,77 @@
+@using Base.Resources
+@model IEnumerable<App.Domain.Vehicle>
+
+@{
+    ViewData["Title"] = Common.Index;
+}
+
+<h1>@Common.Index</h1>
+
+<p>
+    <a asp-action="Create">@Common.CreateNew</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.VehicleType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VehicleMark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VehicleModel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VehiclePlateNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ManufactureYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfSeats)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VehicleAvailability)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            
+            <td>
+                @*<@Html.DisplayFor(modelItem => item.VehicleType!.VehicleTypeName) *@
+                @item.VehicleType!.VehicleTypeName
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleMark!.VehicleMarkName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleModel!.VehicleModelName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehiclePlateNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ManufactureYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfSeats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleAvailability)
+            </td>
+            
+            
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

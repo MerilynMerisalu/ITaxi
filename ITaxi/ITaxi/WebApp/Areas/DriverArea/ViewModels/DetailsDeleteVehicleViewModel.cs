@@ -2,7 +2,7 @@
 using App.Domain.Enum;
 using App.Resources.Areas.App.Domain.AdminArea;
 
-namespace WebApp.Areas.DriversArea.ViewModels;
+namespace WebApp.Areas.DriverArea.ViewModels;
 
 public class DetailsDeleteVehicleViewModel
 {

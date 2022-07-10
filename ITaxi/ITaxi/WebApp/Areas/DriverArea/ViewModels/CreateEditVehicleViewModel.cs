@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using App.Domain.Enum;
-using App.Resources.Areas.App.Domain.AdminArea;
+using App.Resources.Areas.App.Domain.DriversArea;
 using Base.Resources;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace WebApp.Areas.DriversArea.ViewModels;
+namespace WebApp.Areas.DriverArea.ViewModels;
 
 public class CreateEditVehicleViewModel
 {

@@ -14,9 +14,9 @@
         <form asp-action="Create">
             <div asp-validation-summary="All" class="text-danger"></div>
             
-            <partial name="_CreateEditCity" model="Model"/>
+            <partial name="AdminArea/PartialViews/_CreateEditCity" model="Model"/>
             <div class="form-group">
-                <input type="submit" value=@Common.Save class="btn btn-primary" />
+                <input type="submit" value=@Common.Create class="btn btn-primary" />
             </div>
         </form>
     </div>

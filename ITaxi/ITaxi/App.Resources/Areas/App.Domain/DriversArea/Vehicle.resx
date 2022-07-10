@@ -18,4 +18,37 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="VehicleType" xml:space="preserve">
+        <value>Vehicle Type</value>
+    </data>
+    <data name="VehicleMark" xml:space="preserve">
+        <value>Vehicle Mark</value>
+    </data>
+    <data name="VehicleModel" xml:space="preserve">
+        <value>Vehicle Model</value>
+    </data>
+    <data name="VehiclePlateNumber" xml:space="preserve">
+        <value>Vehicle Plate Number</value>
+    </data>
+    <data name="ManufactureYear" xml:space="preserve">
+        <value>Year</value>
+    </data>
+    <data name="NumberOfSeats" xml:space="preserve">
+        <value>Number of Seats</value>
+    </data>
+    <data name="VehicleIdentifier" xml:space="preserve">
+        <value>Vehicle </value>
+    </data>
+    <data name="VehicleAvailability" xml:space="preserve">
+        <value>Vehicle Availability</value>
+    </data>
+    <data name="Available" xml:space="preserve">
+        <value>Available</value>
+    </data>
+    <data name="InAvailable" xml:space="preserve">
+        <value>In-Available</value>
+    </data>
+    <data name="VehicleName" xml:space="preserve">
+        <value>Vehicle</value>
+    </data>
 </root>
