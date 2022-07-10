@@ -142,15 +142,9 @@ public class ScheduleRepository: BaseEntityRepository<Schedule, AppDbContext>, I
         return CreateQuery(noTracking).FirstOrDefault(s => s.Id.Equals(id));
     }
 
-    public DateTime SettingScheduleStartDateAndTime()
-    {
-        return Convert.ToDateTime(DateTime.Now.ToUniversalTime().ToString("g"));
-    }
+    
 
-    public DateTime SettingScheduleEndDateAndTime()
-    {
-       return Convert.ToDateTime(DateTime.Now.AddHours(8).ToUniversalTime().ToString("g"));
-    }
+    
 
     public async Task<Schedule?> GettingTheFirstScheduleAsync(bool noTracking = true)
     {

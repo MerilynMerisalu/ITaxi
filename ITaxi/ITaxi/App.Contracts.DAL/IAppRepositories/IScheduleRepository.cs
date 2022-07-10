@@ -13,8 +13,6 @@ public interface IScheduleRepository: IEntityRepository<Schedule>
    IEnumerable<Schedule> GettingAllOrderedSchedulesWithoutIncludes(bool noTracking = true);
    Task<Schedule?> GettingScheduleWithoutIncludesAsync(Guid id, bool noTracking = true);
    Schedule? GetScheduleWithoutIncludes(Guid id, bool noTracking = true);
-   DateTime SettingScheduleStartDateAndTime();
-   DateTime SettingScheduleEndDateAndTime();
    Task<Schedule?> GettingTheFirstScheduleAsync(bool noTracking = true);
    Schedule? GettingTheFirstSchedule(bool noTracking = true);
    DateTime[] GettingStartAndEndTime();

@@ -45,8 +45,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Id = schedule.Id;
             vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
             vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
-            vm.StartDateAndTime = schedule.StartDateAndTime;
-            vm.EndDateAndTime = schedule.EndDateAndTime;
+            vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
+            vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
 
             return View(vm);
         }
@@ -54,13 +54,12 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Schedules/Create
         public async Task<IActionResult> Create()
         {
-            var vm = new CreateEditScheduleViewModel();
+            var vm = new CreateScheduleViewModel();
             vm.Vehicles = new SelectList( await _uow.Vehicles.GettingOrderedVehiclesAsync(),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
             #warning Schedule StartDateAndTime needs a custom validation
-            vm.StartDateAndTime = _uow.Schedules.SettingScheduleStartDateAndTime();
+            
             #warning Schedule EndDateAndTime needs a custom validation
-            vm.EndDateAndTime = _uow.Schedules.SettingScheduleEndDateAndTime();
 
             return View(vm);
         }
@@ -70,15 +69,15 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditScheduleViewModel vm, Schedule schedule)
+        public async Task<IActionResult> Create(CreateScheduleViewModel vm, Schedule schedule)
         {
             if (ModelState.IsValid)
             {
                 var driver = await _uow.Drivers.FirstAsync();
                 schedule.Id = Guid.NewGuid();
                 if (driver != null) schedule.DriverId = driver.Id;
-                schedule.StartDateAndTime = vm.StartDateAndTime;
-                schedule.EndDateAndTime = vm.EndDateAndTime;
+                schedule.StartDateAndTime = DateTime.Parse(vm.StartDateAndTime).ToUniversalTime();
+                schedule.EndDateAndTime = DateTime.Parse(vm.EndDateAndTime).ToUniversalTime();
                 _uow.Schedules.Add(schedule);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -90,7 +89,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Schedules/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            var vm = new CreateEditScheduleViewModel();
+            var vm = new EditScheduleViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -116,7 +115,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CreateEditScheduleViewModel vm )
+        public async Task<IActionResult> Edit(Guid id, EditScheduleViewModel vm )
         {
             var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
             
@@ -136,10 +135,10 @@ namespace WebApp.Areas.AdminArea.Controllers
                         {
                             schedule.Driver = await _uow.Drivers.FirstAsync();
                             schedule.DriverId = schedule.DriverId;
+                            schedule.StartDateAndTime = vm.StartDateAndTime;
+                            schedule.EndDateAndTime = vm.EndDateAndTime;
                         }
-                       
-                        schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
-                        schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
+                        
                         _uow.Schedules.Update(schedule);
                     }
 
@@ -179,8 +178,8 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
             vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
-            vm.StartDateAndTime = schedule.StartDateAndTime;
-            vm.EndDateAndTime = schedule.EndDateAndTime;
+            vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
+            vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
 
             return View(vm);
         }

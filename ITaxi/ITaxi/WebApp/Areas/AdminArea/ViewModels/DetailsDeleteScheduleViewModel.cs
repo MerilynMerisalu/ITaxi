@@ -12,10 +12,10 @@ public class DetailsDeleteScheduleViewModel
 
     [DisplayName(nameof(Vehicle))] 
     public string VehicleIdentifier { get; set; } = default!;
-    
-    [DisplayName("Start Date and Time")]
-    public DateTime StartDateAndTime { get; set; } 
-    
-    [DisplayName("End Date and Time")]
-    public DateTime EndDateAndTime { get; set; } 
+
+    [DisplayName("Start Date and Time")] 
+    public string StartDateAndTime { get; set; } = default!;
+
+    [DisplayName("End Date and Time")] 
+    public string EndDateAndTime { get; set; } = default!;
 }
