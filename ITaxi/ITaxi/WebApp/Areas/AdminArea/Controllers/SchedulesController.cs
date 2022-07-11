@@ -24,7 +24,13 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Schedules
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync());
+            var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync();
+            foreach (var s in res)
+            {
+                s.StartDateAndTime = s.StartDateAndTime.ToLocalTime();
+                s.EndDateAndTime = s.EndDateAndTime.ToLocalTime();
+            }
+            return View(res);
         }
 
         // GET: AdminArea/Schedules/Details/5
@@ -46,8 +52,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Id = schedule.Id;
             vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
             vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
-            vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
-            vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
+            vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
+            vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
 
             return View(vm);
         }
@@ -77,6 +83,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 var driver = await _uow.Drivers.FirstAsync();
                 schedule.Id = Guid.NewGuid();
                 if (driver != null) schedule.DriverId = driver.Id;
+                #warning need to hold datetimes in the utc-format in the db
                 schedule.StartDateAndTime = DateTime.Parse(vm.StartDateAndTime).ToUniversalTime();
                 schedule.EndDateAndTime = DateTime.Parse(vm.EndDateAndTime).ToUniversalTime();
                 _uow.Schedules.Add(schedule);
@@ -103,8 +110,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.VehicleId = schedule.VehicleId;
-            vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g"));
-            vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"));
+            vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToLocalTime().ToString("g"));
+            vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToLocalTime().ToString("g"));
             vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
                 nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier)); 
            
@@ -136,14 +143,15 @@ namespace WebApp.Areas.AdminArea.Controllers
                         {
                             schedule.Driver = await _uow.Drivers.FirstAsync();
                             schedule.DriverId = schedule.DriverId;
-                            //schedule.StartDateAndTime = Convert.ToDateTime(vm.StartDateAndTime);
-                            //schedule.EndDateAndTime = vm.EndDateAndTime;
+                            schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
+                            schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
                         }
                         
                         _uow.Schedules.Update(schedule);
+                        await _uow.SaveChangesAsync();
                     }
 
-                    await _uow.SaveChangesAsync();
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -179,8 +187,8 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
             vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
-            vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
-            vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
+            vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
+            vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
 
             return View(vm);
         }

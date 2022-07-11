@@ -17,7 +17,7 @@ public class CreateScheduleViewModel
 
     [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "ShiftStartDateAndTime")]
-    [DisplayFormat(DataFormatString = "{0:g}")]
+    //[DisplayFormat(DataFormatString = "{0:g}")]
     public string StartDateAndTime { get; set; } = default!;
 
     [DataType(DataType.DateTime)]
