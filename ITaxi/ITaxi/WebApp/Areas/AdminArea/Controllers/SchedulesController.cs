@@ -103,8 +103,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.VehicleId = schedule.VehicleId;
-            vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
-            vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
+            vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g"));
+            vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"));
             vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
                 nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier)); 
            
