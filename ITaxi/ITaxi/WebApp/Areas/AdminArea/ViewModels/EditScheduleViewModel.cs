@@ -13,17 +13,15 @@ public class EditScheduleViewModel
     public Guid VehicleId { get; set; }
 
 
-    [DataType(DataType.DateTime)]
+    
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "ShiftStartDateAndTime")]
     #warning Incorrect datetime formatting
-    [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = false)]
-    public DateTime StartDateAndTime { get; set; } = default!;
+    public string StartDateAndTime { get; set; } = default!;
 
-    [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "ShiftStartDateAndTime")]
-    [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = false)]
+    
     #warning Incorrect datetime formatting
-    public DateTime EndDateAndTime { get; set; } = default!;
+    public string EndDateAndTime { get; set; } = default!;
 
     public SelectList? Vehicles { get; set; }
 

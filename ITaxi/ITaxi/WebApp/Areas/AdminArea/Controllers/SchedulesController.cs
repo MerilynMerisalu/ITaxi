@@ -1,4 +1,5 @@
 #nullable enable
+using System.Globalization;
 using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -102,8 +103,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.VehicleId = schedule.VehicleId;
-            vm.StartDateAndTime = schedule.StartDateAndTime;
-            vm.EndDateAndTime = schedule.EndDateAndTime;
+            vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
+            vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
             vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
                 nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier)); 
            
@@ -135,8 +136,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                         {
                             schedule.Driver = await _uow.Drivers.FirstAsync();
                             schedule.DriverId = schedule.DriverId;
-                            schedule.StartDateAndTime = vm.StartDateAndTime;
-                            schedule.EndDateAndTime = vm.EndDateAndTime;
+                            //schedule.StartDateAndTime = Convert.ToDateTime(vm.StartDateAndTime);
+                            //schedule.EndDateAndTime = vm.EndDateAndTime;
                         }
                         
                         _uow.Schedules.Update(schedule);
