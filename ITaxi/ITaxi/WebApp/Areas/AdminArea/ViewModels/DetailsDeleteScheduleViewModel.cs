@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using App.Domain;
+using Schedule = App.Resources.Areas.App.Domain.AdminArea.Schedule;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
@@ -7,15 +9,15 @@ public class DetailsDeleteScheduleViewModel
 {
     public Guid Id { get; set; }
     
-    [DisplayName(nameof(Driver))] 
+    [Display(ResourceType = typeof(Schedule), Name = "Driver")] 
     public string DriversFullName { get; set; } = default!;
 
-    [DisplayName(nameof(Vehicle))] 
+    [Display(ResourceType = typeof(Schedule), Name = "Vehicle")]  
     public string VehicleIdentifier { get; set; } = default!;
 
-    [DisplayName("Start Date and Time")] 
+    [Display(ResourceType = typeof(Schedule), Name = "ShiftStartDateAndTime")]  
     public string StartDateAndTime { get; set; } = default!;
 
-    [DisplayName("End Date and Time")] 
+    [Display(ResourceType = typeof(Schedule), Name = "ShiftEndDateAndTime")] 
     public string EndDateAndTime { get; set; } = default!;
 }

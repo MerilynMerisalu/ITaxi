@@ -1,17 +1,19 @@
+@using Base.Resources
+@using App.Resources.Areas.App.Domain.AdminArea
 @model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteScheduleViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Common.Details;
 }
 
-<h1>Details</h1>
+<h1>@Common.Details</h1>
 
 <div>
-    <h4>Schedule</h4>
+    <h4>@Schedule.ScheduleName</h4>
     <hr />
     <partial name="AdminArea/PartialViews/_DetailsDeleteSchedule" model="Model"/>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">@Common.Edit</a> |
+    <a asp-action="Index">@Common.BackToList</a>
 </div>

@@ -24,6 +24,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Schedules
         public async Task<IActionResult> Index()
         {
+            #warning Should this be a repository method
             var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync();
             foreach (var s in res)
             {
@@ -52,7 +53,9 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Id = schedule.Id;
             vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
             vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
+        #warning Should this be a repository method
             vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
+        #warning Should this be a repository method
             vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
 
             return View(vm);
@@ -83,8 +86,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                 var driver = await _uow.Drivers.FirstAsync();
                 schedule.Id = Guid.NewGuid();
                 if (driver != null) schedule.DriverId = driver.Id;
-                #warning need to hold datetimes in the utc-format in the db
+        #warning Should this be a repository method
                 schedule.StartDateAndTime = DateTime.Parse(vm.StartDateAndTime).ToUniversalTime();
+        #warning Should this be a repository method
                 schedule.EndDateAndTime = DateTime.Parse(vm.EndDateAndTime).ToUniversalTime();
                 _uow.Schedules.Add(schedule);
                 await _uow.SaveChangesAsync();
@@ -110,7 +114,9 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.VehicleId = schedule.VehicleId;
+        #warning Should this be a repository method
             vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToLocalTime().ToString("g"));
+            #warning Should this be a repository method
             vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToLocalTime().ToString("g"));
             vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
                 nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier)); 
@@ -143,7 +149,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                         {
                             schedule.Driver = await _uow.Drivers.FirstAsync();
                             schedule.DriverId = schedule.DriverId;
+                            #warning Should this be a repository method
                             schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
+                            #warning Should this be a repository method
                             schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
                         }
                         
@@ -187,7 +195,9 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
             vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
+            #warning Should this be a repository method
             vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
+            #warning Should this be a repository method
             vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
 
             return View(vm);
