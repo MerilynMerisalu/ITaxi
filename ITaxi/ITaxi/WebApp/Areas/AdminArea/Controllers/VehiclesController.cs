@@ -56,7 +56,7 @@ public class VehiclesController : Controller
             , nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
         vm.VehicleModels = new SelectList(await _uow.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
             nameof(VehicleModel.Id), nameof(VehicleModel.VehicleModelName));
-        vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+        vm.VehicleTypes = new SelectList((await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync()),
             nameof(VehicleType.Id),
             nameof(VehicleType.VehicleTypeName));
         return View(vm);

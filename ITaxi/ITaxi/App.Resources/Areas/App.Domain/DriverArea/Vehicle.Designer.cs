@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace App.Resources.Areas.App.Domain.DriversArea {
+namespace App.Resources.Areas.App.Domain.DriverArea {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace App.Resources.Areas.App.Domain.DriversArea {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("App.Resources.Areas.App.Domain.DriversArea.Vehicle", typeof(Vehicle).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("App.Resources.Areas.App.Domain.DriverArea.Vehicle", typeof(Vehicle).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

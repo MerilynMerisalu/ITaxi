@@ -1,19 +1,22 @@
 @using Base.Resources
-@using App.Resources.Areas.App.Domain.DriversArea
+@using App.Resources.Areas.App.Domain.DriverArea
 @model WebApp.Areas.DriverArea.ViewModels.DetailsDeleteVehicleViewModel
 
 @{
-    ViewData["Title"] = Common.Details;
+    ViewData["Title"] = @Common.Delete;
 }
 
-<h1>@Common.Details</h1>
+<h1>@Common.Delete</h1>
 
+<h3>@Common.AreYouSureYouWantToDeleteThis</h3>
 <div>
     <h4>@Vehicle.VehicleName</h4>
     <hr />
     <partial name="DriverArea/PartialViews/_DetailsDeleteVehicle" model="Model"/>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">@Common.Edit</a> |
-    <a asp-action="Index">@Common.BackToList</a>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="@Common.Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">@Common.BackToList</a>
+    </form>
 </div>

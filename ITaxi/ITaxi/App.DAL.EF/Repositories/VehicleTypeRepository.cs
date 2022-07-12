@@ -15,13 +15,18 @@ public class VehicleTypeRepository: BaseEntityRepository<VehicleType, AppDbConte
 
     public async Task<IEnumerable<VehicleType>> GetAllVehicleTypesOrderedAsync(bool noTracking = true)
     {
-        return await CreateQuery(noTracking).Include(t => t.VehicleTypeName)
-            .ThenInclude(t => t.Translations).OrderBy(v => v.VehicleTypeName).ToListAsync();
+        #warning: special handling of OrderBy to account for language transalation
+        var res = await CreateQuery(noTracking).Include(t => t.VehicleTypeName)
+            .ThenInclude(t => t.Translations).ToListAsync();
+        return res.OrderBy(x => (string) x.VehicleTypeName).ToList();
     }
 
     public IEnumerable<VehicleType> GetAllVehicleTypesOrdered(bool noTracking = true)
     {
-        return  CreateQuery(noTracking).OrderBy(v => v.VehicleTypeName).ToList();
+#warning: special handling of OrderBy to account for language transalation
+        return  CreateQuery(noTracking)
+                    .ToList() // Bring into memory "Materialize"
+                    .OrderBy(v => v.VehicleTypeName).ToList();
 
     }
 }

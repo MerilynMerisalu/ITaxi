@@ -18,6 +18,7 @@ public class CreateEditVehicleViewModel
     [Display(ResourceType = typeof(Vehicle), Name = "VehicleModel")]
     public Guid VehicleModelId { get; set; }
     
+    #warning needs to sort alphabetically by the current language (not english)
     public SelectList? VehicleTypes { get; set; }
     public SelectList? VehicleMarks { get; set; }
     public SelectList? VehicleModels { get; set; }

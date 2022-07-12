@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using App.Domain.Enum;
-using App.Resources.Areas.App.Domain.DriversArea;
+using App.Resources.Areas.App.Domain.DriverArea;
 using Base.Resources;
 using Microsoft.AspNetCore.Mvc.Rendering;
 

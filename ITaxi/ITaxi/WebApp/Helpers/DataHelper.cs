@@ -11,12 +11,10 @@ namespace WebApp.Helpers;
 
 public static class DataHelper
 {
-    public static async Task SetupAppData(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration)
+    public static async Task SetupAppData(IApplicationBuilder app, IWebHostEnvironment env,
+        IConfiguration configuration)
     {
-        using var serviceScope = app.
-            ApplicationServices.
-            GetRequiredService<IServiceScopeFactory>().
-            CreateScope();
+        using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
 
         await using var context = serviceScope
             .ServiceProvider.GetService<AppDbContext>();
@@ -25,13 +23,13 @@ public static class DataHelper
         {
             throw new ApplicationException("Problem in services. No db context.");
         }
-        
+
         // TODO - Check database state
         // can't connect - wrong address
         // can't connect - wrong user/pass
         // can connect - but no database
         // can connect - there is database
-        
+
         // userManager and roleManager
 
         using var userManager = serviceScope.ServiceProvider.GetService<UserManager<AppUser>>();
@@ -41,16 +39,17 @@ public static class DataHelper
         {
             Console.Write("Cannot instantiate userManager or rolemanager!");
         }
-        
+
         if (configuration.GetValue<bool>("DataInitialization:DropDatabase"))
         {
             await context.Database.EnsureDeletedAsync();
         }
+
         if (configuration.GetValue<bool>("DataInitialization:MigrateDatabase"))
         {
             await context.Database.MigrateAsync();
         }
-        
+
         if (configuration.GetValue<bool>("DataInitialization:SeedIdentity"))
         {
             var role = new AppRole()
@@ -69,7 +68,7 @@ public static class DataHelper
                 }
 
             }
-            
+
             role = new AppRole()
             {
 
@@ -86,7 +85,7 @@ public static class DataHelper
                 }
 
             }
-            
+
             role = new AppRole()
             {
 
@@ -107,6 +106,27 @@ public static class DataHelper
 
         if (configuration.GetValue<bool>("DataInitialization:SeedData"))
         {
+            // Initialize all vehicle Types
+            //App.Resources.Areas.App.Domain.AdminArea.VehicleType.
+            var regularVehicleType = new VehicleType()
+            {
+                Id = new Guid(),
+                VehicleTypeName = App.Resources.Areas.App.Domain.AdminArea.VehicleType.Regular,
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            regularVehicleType.VehicleTypeName.SetTranslation("Tava", "et-EE");
+            await context.VehicleTypes.AddAsync(regularVehicleType);
+            var wheelChairVehicleType = new VehicleType()
+            {
+                Id = new Guid(),
+                VehicleTypeName = App.Resources.Areas.App.Domain.AdminArea.VehicleType.Wheelchair,
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            wheelChairVehicleType.VehicleTypeName.SetTranslation("Inva", "et-EE");
+            await context.VehicleTypes.AddAsync(wheelChairVehicleType);
+            await context.SaveChangesAsync();
+
+
             var county = new County()
             {
                 Id = new Guid(),
@@ -268,16 +288,6 @@ public static class DataHelper
             await context.DisabilityTypes.AddAsync(disabilityType);
             await context.SaveChangesAsync();
 
-            
-            var vehicleType = new VehicleType()
-            {
-                Id = new Guid(),
-                VehicleTypeName = "Regular",
-                CreatedAt = DateTime.Now.ToUniversalTime()
-            };
-            await context.VehicleTypes.AddAsync(vehicleType);
-            await context.SaveChangesAsync();
-
             var vehicleMark = new VehicleMark()
             {
                 Id = new Guid(),
@@ -302,7 +312,7 @@ public static class DataHelper
                 Id = new Guid(),
                 DriverId = driver.Id,
                 VehicleMarkId = vehicleMark.Id,
-                VehicleTypeId = vehicleType.Id,
+                VehicleTypeId = regularVehicleType.Id,
                 VehicleModelId = vehicleModel.Id,
                 ManufactureYear = 2020,
                 NumberOfSeats = 4,
@@ -389,7 +399,7 @@ public static class DataHelper
                 CustomerId = customer.Id,
                 CityId = city.Id,
                 ScheduleId = schedule.Id,
-                VehicleTypeId = vehicleType.Id,
+                VehicleTypeId = regularVehicleType.Id,
                 PickupAddress = "Kalamaja 5-12",
                 DestinationAddress = "Suursõjamäe 10",
                 PickUpDateAndTime = DateTime.Now.ToUniversalTime(),
