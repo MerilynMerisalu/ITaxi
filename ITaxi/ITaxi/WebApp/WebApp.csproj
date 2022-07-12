@@ -32,6 +32,7 @@
       <Folder Include="Areas\AdminArea\Views" />
       <Folder Include="Areas\Identity" />
       <Folder Include="DTO" />
+      <Folder Include="ViewModels" />
       <Folder Include="wwwroot\Images" />
     </ItemGroup>
 
