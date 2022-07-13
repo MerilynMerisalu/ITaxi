@@ -131,8 +131,7 @@ public static class DataHelper
             {
                 Id = new Guid(),
                 CountyName = "Harjumaa",
-                CreatedAt = DateTime.Now.ToUniversalTime(),
-                CreatedBy = "System"
+                CreatedAt = DateTime.Now.ToUniversalTime()
             };
              await context.Counties.AddAsync(county);
              await context.SaveChangesAsync();
@@ -143,7 +142,6 @@ public static class DataHelper
                 CityName = "Tallinn",
                 CountyId =  county.Id,
                 CreatedAt = DateTime.Now.ToUniversalTime(),
-                CreatedBy = "System"
             };
             await context.Cities.AddAsync(city);
             await context.SaveChangesAsync();
@@ -197,8 +195,7 @@ public static class DataHelper
                     a.FirstName.Equals("Katrin") && a.LastName.Equals("Salu")).Id,
                 CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
                 PersonalIdentifier = "49208202221",
-                Address = "Kalda 23", 
-                CreatedBy = "System", 
+                Address = "Kalda 23",
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.Admins.AddAsync(admin);
@@ -254,8 +251,7 @@ public static class DataHelper
                 PersonalIdentifier = "38806237921",
                 DriverLicenseNumber = "AAC 123",
                 DriverLicenseExpiryDate = DateTime.Parse("2026-09-22"),
-                Address = "Veerenni 13", 
-                CreatedBy = "System", 
+                Address = "Veerenni 13",
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.Drivers.AddAsync(driver);
@@ -301,8 +297,7 @@ public static class DataHelper
                 Id = new Guid(),
                 VehicleModelName = "Avensis",
                 VehicleMarkId = vehicleMark.Id,
-                CreatedAt = DateTime.Now.ToUniversalTime(),
-                CreatedBy = "System"
+                CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.VehicleModels.AddAsync(vehicleModel);
             await context.SaveChangesAsync();
@@ -318,8 +313,7 @@ public static class DataHelper
                 NumberOfSeats = 4,
                 VehiclePlateNumber = "139 AAC",
                 VehicleAvailability = VehicleAvailability.Available,
-                CreatedAt = DateTime.Now.ToUniversalTime(),
-                CreatedBy = "System"
+                CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.Vehicles.AddAsync(vehicle);
             await context.SaveChangesAsync();
@@ -331,7 +325,6 @@ public static class DataHelper
                 VehicleId = vehicle.Id,
                 StartDateAndTime = DateTime.Now.AddHours(10),
                 EndDateAndTime = DateTime.Now.AddHours(18),
-                CreatedBy = "System",
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.Schedules.AddAsync(schedule);
@@ -341,7 +334,6 @@ public static class DataHelper
             {
                 ScheduleId = schedule.Id,
                 RideDateTime = schedule.StartDateAndTime.AddMinutes(45),
-                CreatedBy = "System",
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.RideTimes.AddAsync(rideTime);
@@ -385,7 +377,6 @@ public static class DataHelper
                 AppUserId = context.Users.OrderBy(u => u.LastName).First(a => 
                     a.FirstName.Equals("Maarika") && a.LastName.Equals("Mätas")).Id,
                 DisabilityTypeId = disabilityType.Id,
-                CreatedBy = "System", 
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.Customers.AddAsync(customer);
@@ -406,7 +397,6 @@ public static class DataHelper
                 NumberOfPassengers = 2,
                 HasAnAssistant = true,
                 StatusOfBooking = StatusOfBooking.Awaiting,
-                CreatedBy = "System",
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.Bookings.AddAsync(booking);
@@ -417,7 +407,6 @@ public static class DataHelper
                 Id = new Guid(),
                 DriverId = driver.Id,
                 Booking = booking,
-                CreatedBy = "System",
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.Drives.AddAsync(drive);
@@ -428,7 +417,6 @@ public static class DataHelper
                 Id = new Guid(),
                 CommentText = "Jäin teenusega rahule!",
                 Drive = drive,
-                CreatedBy = "System",
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.Comments.AddAsync(comment);

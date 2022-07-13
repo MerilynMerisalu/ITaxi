@@ -14,4 +14,6 @@ public class CreateEditCountyViewModel
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.County),
         Name = nameof(CountyName))]
     public string CountyName { get; set; } = default!;
+
+    
 }

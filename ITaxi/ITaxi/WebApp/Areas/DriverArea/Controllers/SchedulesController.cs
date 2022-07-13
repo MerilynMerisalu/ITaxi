@@ -9,11 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 using Base.Contracts.DAL;
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.DriverArea.ViewModels;
 
 namespace WebApp.Areas.DriverArea.Controllers
 {
     [Area("DriverArea")]
+    [Authorize(Roles = "Admin, Driver" )]
     public class SchedulesController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -109,7 +111,8 @@ namespace WebApp.Areas.DriverArea.Controllers
         // GET: DriverArea/Schedules/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            var vm = new 
+            var vm = new EditScheduleViewModel();
+            
             if (id == null)
             {
                 return NotFound();
@@ -120,11 +123,16 @@ namespace WebApp.Areas.DriverArea.Controllers
             {
                 return NotFound();
             }
-            
 
-            ViewData["DriverId"] = new SelectList(_uow.Drivers, "Id", "Address", schedule.DriverId);
-            ViewData["VehicleId"] = new SelectList(_uow.Vehicles, "Id", "VehiclePlateNumber", schedule.VehicleId);
-            return View(schedule);
+
+            vm.Id = schedule.Id;
+            vm.VehicleId = schedule.VehicleId;
+            vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
+            vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g")).ToLocalTime();
+            vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g")).ToLocalTime();
+            
+            
+            return View(vm);
         }
 
         // POST: DriverArea/Schedules/Edit/5
@@ -132,17 +140,22 @@ namespace WebApp.Areas.DriverArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id,  )])
+        public async Task<IActionResult> Edit(Guid id, EditScheduleViewModel vm)
         {
-            if (id != schedule.Id)
+            var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
+            if (schedule == null || schedule.Id != id  )
             {
                 return NotFound();
-            }
 
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
+                    schedule.Id = id;
+                    schedule.VehicleId = vm.VehicleId;
+                    schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
+                    schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
                     _uow.Schedules.Update(schedule);
                     await _uow.SaveChangesAsync();
                 }
@@ -161,14 +174,16 @@ namespace WebApp.Areas.DriverArea.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["DriverId"] = new SelectList(_uow.Drivers, "Id", "Address", schedule.DriverId);
-            ViewData["VehicleId"] = new SelectList(_uow.Vehicles, "Id", "VehiclePlateNumber", schedule.VehicleId);
-            return View(schedule);
+            vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+                nameof(schedule.Vehicle.Id), nameof(schedule.Vehicle.VehicleIdentifier),
+                 nameof(schedule.VehicleId));
+            return View(vm);
         }
 
         // GET: DriverArea/Schedules/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
+            var vm = new DetailsDeleteScheduleViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -180,6 +195,11 @@ namespace WebApp.Areas.DriverArea.Controllers
                 return NotFound();
             }
 
+            vm.Id = schedule.Id;
+            vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
+            vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
+            vm.StartDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
+
             return View(schedule);
         }
 
@@ -188,15 +208,11 @@ namespace WebApp.Areas.DriverArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_uow.Schedules == null)
+            var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
+            if (await _uow.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
+               || await _uow.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
             {
-                return Problem("Entity set 'AppDbContext.Schedules'  is null.");
-            }
-
-            var schedule = await _uow.Schedules.FindAsync(id);
-            if (schedule != null)
-            {
-                _uow.Schedules.Remove(schedule);
+                return Content("Entity cannot be deleted because it has dependent entities!");
             }
 
             await _uow.SaveChangesAsync();
@@ -205,7 +221,7 @@ namespace WebApp.Areas.DriverArea.Controllers
 
         private bool ScheduleExists(Guid id)
         {
-            return (_uow.Schedules?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _uow.Schedules.Exists(id);
         }
     }
 }

@@ -51,6 +51,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Login.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Base Domain\Common.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Common.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
       
       
     </ItemGroup>
@@ -106,10 +110,16 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Login.resx</DependentUpon>
       </Compile>
+      <Compile Update="Base Domain\Common.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Common.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Identity\Pages" />
     </ItemGroup>
 
+    
 </Project>

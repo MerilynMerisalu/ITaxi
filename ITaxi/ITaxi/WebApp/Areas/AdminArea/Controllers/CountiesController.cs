@@ -4,12 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
     [Area(nameof(AdminArea))]
-    
+    [Authorize(Roles = nameof(Admin))]
     public class CountiesController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -22,7 +23,15 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Counties
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync());
+            #warning Should this be a repo method
+            var res = await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync();
+            foreach (var county in res)
+            {
+                county.CreatedAt = county.CreatedAt.ToLocalTime();
+                county.UpdatedAt = county.UpdatedAt.ToLocalTime();
+                
+            }
+            return View(res);
         }
 
         // GET: AdminArea/Counties/Details/5
@@ -41,6 +50,10 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.CountyName = county.CountyName;
+            vm.CreatedAt = county.CreatedAt.ToString("G");
+            vm.CreatedBy = county.CreatedBy ?? "";
+            vm.UpdatedAt = county.UpdatedAt.ToString("G");
+            vm.UpdatedBy = county.UpdatedBy ?? "";
             vm.Id = county.Id;
 
             return View(vm);
@@ -148,6 +161,10 @@ namespace WebApp.Areas.AdminArea.Controllers
                 }
 
                 vm.CountyName = county.CountyName;
+                vm.CreatedAt = county.CreatedAt.ToString("G");
+                vm.CreatedBy = county.CreatedBy ?? "";
+                vm.UpdatedAt = county.UpdatedAt.ToString("G");
+                vm.UpdatedBy = county.UpdatedBy ?? "";
 
                 return View(vm);
             }

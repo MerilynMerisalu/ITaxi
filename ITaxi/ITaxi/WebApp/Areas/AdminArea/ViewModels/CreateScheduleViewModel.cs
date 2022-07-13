@@ -26,5 +26,7 @@ public class CreateScheduleViewModel
     public string EndDateAndTime { get; set; } = default!;
 
     public SelectList? Vehicles { get; set; }
+
+    public SelectList? Drivers { get; set; }
     
 }
