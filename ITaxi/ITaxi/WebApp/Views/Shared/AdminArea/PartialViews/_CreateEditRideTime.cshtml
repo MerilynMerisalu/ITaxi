@@ -1,9 +1,10 @@
-﻿@model WebApp.Areas.AdminArea.ViewModels.CreateRideTimeViewModel
+﻿@using Base.Resources
+@model WebApp.Areas.AdminArea.ViewModels.CreateRideTimeViewModel
 
 <div class="form-group">
     <label asp-for="ScheduleId" class="control-label"></label>
     <select asp-for="ScheduleId" class="form-control" asp-items="Model.Schedules">
-        <option>Please Select</option>
+        <option>@Common.PleaseSelect</option>
     </select>
 </div>
 <div class="form-group">

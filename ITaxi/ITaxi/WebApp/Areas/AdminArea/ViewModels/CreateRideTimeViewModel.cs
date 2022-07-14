@@ -2,22 +2,23 @@
 using System.ComponentModel.DataAnnotations;
 using App.Domain;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RideTime = App.Resources.Areas.App.Domain.AdminArea.RideTime;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
 public class CreateRideTimeViewModel
 {
-    [DisplayName(nameof(Schedule))]
+    [Display(ResourceType = typeof(RideTime), Name = "Schedule")]
     public Guid ScheduleId { get; set; }
 
-    [DisplayFormat(DataFormatString ="{0:hh:mm}" )]
+    [DisplayFormat(DataFormatString ="{0:t" )]
     [DataType(DataType.Time)]
-    [DisplayName("Ride Times")]
+    [Display(ResourceType = typeof(RideTime), Name = "RideTimeSelectListName")]
     public SelectList? RideTimes { get; set; }
     
     public ICollection<DateTime>? SelectedRideTimes { get; set; }
     
     public SelectList? Schedules { get; set; }
-    [DisplayName("Is Taken")]
+    [Display(ResourceType = typeof(RideTime), Name = nameof(IsTaken))]
     public bool IsTaken { get; set; }
 }
