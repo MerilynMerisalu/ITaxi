@@ -1,12 +1,14 @@
+@using Base.Resources
+@using App.Resources.Areas.App.Domain.AdminArea
 @model WebApp.Areas.AdminArea.ViewModels.EditRideTimeViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = @Common.Edit;
 }
 
-<h1>Edit</h1>
+<h1>@Common.Edit</h1>
 
-<h4>RideTime</h4>
+<h4>@RideTime.RideDateAndTime</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,7 +16,9 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ScheduleId" class="control-label"></label>
-                <select asp-for="ScheduleId" class="form-control" asp-items="Model.Schedules"></select>
+                <select asp-for="ScheduleId" class="form-control" asp-items="Model.Schedules">
+                    <option>@Common.PleaseSelect</option>
+                </select>
                 <span asp-validation-for="ScheduleId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -30,14 +34,14 @@
             
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value=@Common.Save class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Common.BackToList</a>
 </div>
 
 @section Scripts {

@@ -57,7 +57,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Id = rideTime.Id;
             vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
             #warning Should it be a repository method
-            vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("g");
+            vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
             vm.IsTaken = rideTime.IsTaken;
             vm.CreatedAt = rideTime.CreatedAt.ToString("G");
             vm.CreatedBy = rideTime.CreatedBy!;
@@ -141,16 +141,24 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.Id = rideTime.Id;
+            
             vm.Schedules = new SelectList(
                  await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
                 nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
             vm.IsTaken = rideTime.IsTaken;
             #warning Ridetimes should be hidden and reappearing based on whether IsTaken is true or not
-            vm.RideTimes = new SelectList(await _uow.RideTimes.GettingAllSelectedRideTimesAsync(rideTime),
-                nameof(RideTime.Id), nameof(RideTime.RideDateTime));
+            var rideTimes = await _uow.RideTimes.GettingAllOrderedRideTimesAsync();
+            #warning Ask if there is a better way to implement this 
+            var rideTimeList = new List<string>();
+            foreach (var rideTimeLocal in rideTimes)
+            {
+                if (rideTimeLocal != null)
+                    rideTimeList.Add(rideTimeLocal.RideDateTime.ToLocalTime().ToShortTimeString());
+            }
+            vm.RideTimes = new SelectList(rideTimeList);
             vm.ScheduleId = rideTime.ScheduleId;
             #warning Should it be a repository method
-            vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("g");
+            vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
             return View(vm);
         }
 
@@ -174,7 +182,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 {
                     rideTime.Id = id;
                     rideTime.ScheduleId = vm.ScheduleId;
-                    rideTime.RideDateTime = DateTime.Parse(vm.RideTime);
+                    rideTime.RideDateTime = DateTime.Parse(vm.RideTime).ToUniversalTime();
                     rideTime.IsTaken = vm.IsTaken;
                     _uow.RideTimes.Update(rideTime);
                     await _uow.SaveChangesAsync();
@@ -213,7 +221,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
             #warning Should it be a repository method
-            vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("g");
+            vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
             vm.IsTaken = rideTime.IsTaken;
             vm.CreatedAt = rideTime.CreatedAt.ToString("G");
             vm.CreatedBy = rideTime.CreatedBy!;
