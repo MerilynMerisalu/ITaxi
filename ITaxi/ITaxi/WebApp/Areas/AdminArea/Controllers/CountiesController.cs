@@ -51,9 +51,9 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.CountyName = county.CountyName;
             vm.CreatedAt = county.CreatedAt.ToString("G");
-            vm.CreatedBy = county.CreatedBy ?? "";
+            vm.CreatedBy = county.CreatedBy!;
             vm.UpdatedAt = county.UpdatedAt.ToString("G");
-            vm.UpdatedBy = county.UpdatedBy ?? "";
+            vm.UpdatedBy = county.UpdatedBy!;
             vm.Id = county.Id;
 
             return View(vm);

@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
     [Area(nameof(AdminArea))]
+    [Authorize(Roles = nameof(Admin))]
     public class CitiesController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -24,8 +26,13 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Cities
         public async Task<IActionResult> Index()
         {
-            var cities = await _uow.Cities.GetAllOrderedCitiesAsync();
-            return View(cities);
+            var res = await _uow.Cities.GetAllOrderedCitiesAsync();
+            foreach (var city in res)
+            {
+                city.CreatedAt = city.CreatedAt.ToLocalTime();
+                city.UpdatedAt = city.UpdatedAt.ToLocalTime();
+            }
+            return View(res);
         }
 
         // GET: AdminArea/Cities/Details/5
@@ -46,6 +53,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Id = city.Id;
             vm.CountyName = city.County!.CountyName;
             vm.CityName = city.CityName;
+            vm.CreatedAt = city.CreatedAt.ToString("G");
+            vm.CreatedBy = city.CreatedBy!;
 
             return View(vm);
         }
@@ -165,6 +174,10 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.CityName = city.CityName;
             vm.CountyName = city.County!.CountyName;
+            vm.CityName = city.CityName;
+            vm.CreatedAt = city.CreatedAt.ToString("G");
+            vm.CreatedBy = city.CreatedBy!;
+
 
             return View(vm);
         }
