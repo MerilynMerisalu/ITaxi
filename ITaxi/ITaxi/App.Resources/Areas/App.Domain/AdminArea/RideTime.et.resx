@@ -20,4 +20,7 @@
     <data name="IsTaken" xml:space="preserve">
         <value>Võetud?</value>
     </data>
+    <data name="RideTimeSelectListName" xml:space="preserve">
+        <value>Sõiduajad</value>
+    </data>
 </root>

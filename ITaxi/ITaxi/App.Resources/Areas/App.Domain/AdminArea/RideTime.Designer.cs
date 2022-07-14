@@ -79,6 +79,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ride Times.
+        /// </summary>
+        public static string RideTimeSelectListName {
+            get {
+                return ResourceManager.GetString("RideTimeSelectListName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shift Duration Time.
         /// </summary>
         public static string Schedule {

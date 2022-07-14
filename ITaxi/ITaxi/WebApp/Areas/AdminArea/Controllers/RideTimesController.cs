@@ -55,10 +55,14 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.Id = rideTime.Id;
-            vm.ShiftDurationTime = rideTime.Schedule!.ShiftDurationTime;
+            vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
             #warning Should it be a repository method
             vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("g");
             vm.IsTaken = rideTime.IsTaken;
+            vm.CreatedAt = rideTime.CreatedAt.ToString("G");
+            vm.CreatedBy = rideTime.CreatedBy!;
+            vm.UpdatedAt = rideTime.UpdatedAt.ToString("G");
+            vm.CreatedBy = rideTime.CreatedBy!;
 
             return View(vm);
         }
@@ -207,10 +211,14 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            vm.ShiftDurationTime = rideTime.Schedule!.ShiftDurationTime;
+            vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
             #warning Should it be a repository method
             vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("g");
             vm.IsTaken = rideTime.IsTaken;
+            vm.CreatedAt = rideTime.CreatedAt.ToString("G");
+            vm.CreatedBy = rideTime.CreatedBy!;
+            vm.UpdatedAt = rideTime.UpdatedAt.ToString("G");
+            vm.CreatedBy = rideTime.CreatedBy!;
             
 
             return View(vm);

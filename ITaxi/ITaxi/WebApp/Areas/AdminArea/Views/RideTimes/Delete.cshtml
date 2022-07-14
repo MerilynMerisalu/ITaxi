@@ -1,20 +1,22 @@
+@using Base.Resources
+@using App.Resources.Areas.App.Domain.AdminArea
 @model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteRideTimeViewModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = Common.Delete;
 }
 
-<h1>Delete</h1>
+<h1>@Common.Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>@Common.AreYouSureYouWantToDeleteThis</h3>
 <div>
-    <h4>RideTime</h4>
+    <h4>@RideTime.RideDateAndTime</h4>
     <hr />
     <partial name="AdminArea/PartialViews/_DetailsDeleteRideTime" model="Model"/>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value=@Common.Delete class="btn btn-danger" /> |
+        <a asp-action="Index">@Common.BackToList</a>
     </form>
 </div>

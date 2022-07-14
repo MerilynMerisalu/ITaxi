@@ -11,6 +11,6 @@ public class AdminAreaBaseViewModel
     public string CreatedBy { get; set; } = default!;
     [Display(ResourceType = typeof(Common), Name = nameof(UpdatedAt))]
     public string UpdatedAt { get; set; } = default!;
-    [Display(ResourceType = typeof(Common), Name = nameof(CreatedBy))]
+    [Display(ResourceType = typeof(Common), Name = nameof(UpdatedBy))]
     public string UpdatedBy { get; set; } = default!;
 }

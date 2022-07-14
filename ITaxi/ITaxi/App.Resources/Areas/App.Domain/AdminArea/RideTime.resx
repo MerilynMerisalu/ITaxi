@@ -27,4 +27,7 @@
     <data name="IsTaken" xml:space="preserve">
         <value>Is Taken?</value>
     </data>
+    <data name="RideTimeSelectListName" xml:space="preserve">
+        <value>Ride Times</value>
+    </data>
 </root>
