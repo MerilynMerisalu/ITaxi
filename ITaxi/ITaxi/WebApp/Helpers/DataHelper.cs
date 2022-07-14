@@ -333,7 +333,7 @@ public static class DataHelper
             var rideTime = new RideTime()
             {
                 ScheduleId = schedule.Id,
-                RideDateTime = schedule.StartDateAndTime.AddMinutes(45),
+                RideDateTime = schedule.StartDateAndTime.AddMinutes(45).ToUniversalTime(),
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.RideTimes.AddAsync(rideTime);

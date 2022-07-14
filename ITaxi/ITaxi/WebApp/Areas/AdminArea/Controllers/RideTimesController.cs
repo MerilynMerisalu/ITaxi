@@ -23,7 +23,20 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/RideTimes
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.RideTimes.GettingAllOrderedRideTimesAsync());
+            var res = await _uow.RideTimes.GettingAllOrderedRideTimesAsync();
+            #warning Should this be a repository method
+            foreach (var rideTime in res)
+            {
+                if (rideTime != null)
+                {
+                    rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
+                    rideTime.CreatedAt = rideTime.CreatedAt.ToLocalTime();
+                    rideTime.UpdatedAt = rideTime.UpdatedAt.ToLocalTime();
+                }
+                    
+            }
+
+            return View(res);
         }
 
         // GET: AdminArea/RideTimes/Details/5
@@ -81,7 +94,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                         {
                             Id = new Guid(),
                             ScheduleId = vm.ScheduleId,
-                            RideDateTime = selectedRideTime,
+                            RideDateTime = selectedRideTime.ToUniversalTime(),
                             IsTaken = vm.IsTaken
                         };
                         

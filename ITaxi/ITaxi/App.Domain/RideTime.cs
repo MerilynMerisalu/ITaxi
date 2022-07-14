@@ -6,15 +6,18 @@ namespace App.Domain;
 
 public class RideTime: DomainEntityMetaId
 {
-    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "Schedule")]
     public Guid ScheduleId { get; set; }
+    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "Schedule")]
 
     public Schedule? Schedule { get; set; }
 
     [DataType(DataType.DateTime)]
-    [DisplayName("Ride Time")]
-    [DisplayFormat(DataFormatString = "{0:HH:mm}")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "RideDateAndTime")]
+    [DisplayFormat(DataFormatString = "{0:t}")]
     public DateTime RideDateTime { get; set; }
 
-    [DisplayName("Is Taken")] public bool IsTaken { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "IsTaken")]
+     public bool IsTaken { get; set; }
 }
