@@ -112,7 +112,6 @@ namespace WebApp.Areas.DriverArea.Controllers
         public async Task<IActionResult> Edit(Guid? id)
         {
             var vm = new EditScheduleViewModel();
-            
             if (id == null)
             {
                 return NotFound();
@@ -123,14 +122,17 @@ namespace WebApp.Areas.DriverArea.Controllers
             {
                 return NotFound();
             }
-
+            
+            
 
             vm.Id = schedule.Id;
             vm.VehicleId = schedule.VehicleId;
             vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
             vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g")).ToLocalTime();
             vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g")).ToLocalTime();
-            
+            vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+                nameof(Schedule.VehicleId), nameof(Schedule.Vehicle.VehicleIdentifier));
+
             
             return View(vm);
         }
@@ -198,9 +200,9 @@ namespace WebApp.Areas.DriverArea.Controllers
             vm.Id = schedule.Id;
             vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
             vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
-            vm.StartDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
+            vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
 
-            return View(schedule);
+            return View(vm);
         }
 
         // POST: DriverArea/Schedules/Delete/5
