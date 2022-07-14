@@ -12,7 +12,7 @@ public class EditScheduleViewModel
     public Guid VehicleId { get; set; }
 
 
-    public string VehicleIdentifier { get; set; } = default!;
+    
     
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.DriverArea.Schedule), Name = "ShiftStartDateAndTime")]
     

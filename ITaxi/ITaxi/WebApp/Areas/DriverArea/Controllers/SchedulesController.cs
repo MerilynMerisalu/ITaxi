@@ -123,16 +123,16 @@ namespace WebApp.Areas.DriverArea.Controllers
                 return NotFound();
             }
             
-            
-
             vm.Id = schedule.Id;
-            vm.VehicleId = schedule.VehicleId;
-            vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
-            vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g")).ToLocalTime();
-            vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g")).ToLocalTime();
+            
             vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
-                nameof(Schedule.VehicleId), nameof(Schedule.Vehicle.VehicleIdentifier));
-
+                nameof(Vehicle.Id),
+                nameof(Vehicle.VehicleIdentifier)
+                , nameof(schedule.VehicleId));
+            vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g")).ToLocalTime();
+            vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"))
+                .ToLocalTime();
+            vm.VehicleId = schedule.VehicleId;
             
             return View(vm);
         }
