@@ -4,122 +4,123 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Views\Shared\_Layout.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Views\Shared\_Layout.et.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>_Layout.et.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Common.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Common.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Views\Home\Index.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Index.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Views\Shared\_LoginPartial.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>_LoginPartial.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Identity\Pages\Login.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Login.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Identity\Pages\Account\ForgotPassword.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>ForgotPassword.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Identity\Pages\Account\ResendEmailConfirmation.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>ResendEmailConfirmation.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Identity\Pages\Account\_ManageNav.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>_ManageNav.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Identity\Pages\Account\Manage\_Layout.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Identity\Pages\Account\Login.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Login.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Base Domain\Common.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Common.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      
-      
+        <EmbeddedResource Update="Views\Shared\_Layout.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Views\Shared\_Layout.et.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>_Layout.et.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Common.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Common.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Views\Home\Index.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Index.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Views\Shared\_LoginPartial.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>_LoginPartial.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Identity\Pages\Login.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Login.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Identity\Pages\Account\ForgotPassword.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>ForgotPassword.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Identity\Pages\Account\ResendEmailConfirmation.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>ResendEmailConfirmation.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Identity\Pages\Account\_ManageNav.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>_ManageNav.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Identity\Pages\Account\Manage\_Layout.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Identity\Pages\Account\Login.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Login.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Base.Domain\Common.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Common.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+
+
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Views\Shared\_Layout.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>_Layout.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Common.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Common.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Views\Home\Index.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Index.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Views\Shared\_LoginPartial.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>_LoginPartial.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Identity\Pages\Login.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Login.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Identity\Pages\Account\ForgotPassword.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>ForgotYourPassword.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Identity\Pages\Account\ResendEmailConfirmation.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>ResendEmailConfirmation.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Identity\Pages\Account\_ManageNav.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>_ManageNav.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Identity\Pages\Account\Manage\_Layout.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>_Layout.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Identity\Pages\Account\Login.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Login.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Base Domain\Common.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Common.resx</DependentUpon>
-      </Compile>
+        <Compile Update="Views\Shared\_Layout.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>_Layout.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Common.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Common.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Views\Home\Index.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Index.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Views\Shared\_LoginPartial.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>_LoginPartial.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Identity\Pages\Login.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Login.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Identity\Pages\Account\ForgotPassword.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ForgotYourPassword.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Identity\Pages\Account\ResendEmailConfirmation.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ResendEmailConfirmation.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Identity\Pages\Account\_ManageNav.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>_ManageNav.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Identity\Pages\Account\Manage\_Layout.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>_Layout.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Identity\Pages\Account\Login.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Login.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Base.Domain\Common.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Common.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Identity\Pages" />
+        <Folder Include="Identity\Pages"/>
     </ItemGroup>
 
-    
+
 </Project>
