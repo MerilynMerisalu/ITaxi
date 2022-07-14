@@ -166,9 +166,9 @@ public class RideTimeRepository: BaseEntityRepository<RideTime, AppDbContext>, I
 
         return times;
     }
-
-    public string DriveTimeFormatting(RideTime rideTime)
+    #warning Should it be a repository method
+    /*public string DriveTimeFormatting(RideTime rideTime)
     {
         return rideTime.RideDateTime.ToString("t");
-    }
+    }*/
 }

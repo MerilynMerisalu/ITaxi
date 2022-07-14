@@ -18,6 +18,6 @@ public interface IRideTimeRepository: IEntityRepository<RideTime>
     IEnumerable<string?> GettingAllSelectedRideTimes(RideTime rideTime, bool noTracking = true);
 
     List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime);
-    string DriveTimeFormatting(RideTime rideTime);
+    //string DriveTimeFormatting(RideTime rideTime);
 
 }

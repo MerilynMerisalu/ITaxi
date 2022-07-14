@@ -5,7 +5,7 @@ using Base.Resources;
 using App.Resources.Areas.App.Domain.AdminArea;
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class DetailsDeleteDriverViewModel
+public class DetailsDeleteDriverViewModel: AdminAreaBaseViewModel
 {
     public Guid Id { get; set; }
 

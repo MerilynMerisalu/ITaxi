@@ -2,13 +2,13 @@
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class DetailsDeleteRideTimeViewModel
+public class DetailsDeleteRideTimeViewModel: AdminAreaBaseViewModel
 {
     public Guid Id { get; set; }
 
     public string Schedule { get; set; } = default!;
 
-    [DisplayName("Shift Duration Time")]
+    
     public string ShiftDurationTime { get; set; } = default!;
 
     [DisplayName("Ride Time")] 

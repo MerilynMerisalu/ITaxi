@@ -5,7 +5,7 @@ using App.Domain.Enum;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class DetailsDeleteAdminViewModel
+public class DetailsDeleteAdminViewModel: AdminAreaBaseViewModel
 {
     public Guid Id { get; set; }
     

@@ -6,7 +6,7 @@ using VehicleModel = App.Resources.Areas.App.Domain.AdminArea.VehicleModel;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class DetailsDeleteVehicleModelViewModel
+public class DetailsDeleteVehicleModelViewModel: AdminAreaBaseViewModel
 {
     public Guid Id { get; set; }
     [Display(ResourceType = typeof(VehicleModel), Name = nameof(VehicleModelName))]

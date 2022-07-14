@@ -57,6 +57,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
         #warning Should this be a repository method
             vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
+            vm.CreatedAt = schedule.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedAt = schedule.UpdatedAt.ToLocalTime().ToString("G");
 
             return View(vm);
         }

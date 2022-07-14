@@ -56,7 +56,8 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.Id = rideTime.Id;
             vm.ShiftDurationTime = rideTime.Schedule!.ShiftDurationTime;
-            vm.RideTime = _uow.RideTimes.DriveTimeFormatting(rideTime);
+            #warning Should it be a repository method
+            vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("g");
             vm.IsTaken = rideTime.IsTaken;
 
             return View(vm);
@@ -144,7 +145,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.RideTimes = new SelectList(await _uow.RideTimes.GettingAllSelectedRideTimesAsync(rideTime),
                 nameof(RideTime.Id), nameof(RideTime.RideDateTime));
             vm.ScheduleId = rideTime.ScheduleId;
-            vm.RideTime = _uow.RideTimes.DriveTimeFormatting(rideTime);
+            #warning Should it be a repository method
+            vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("g");
             return View(vm);
         }
 
@@ -206,8 +208,10 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.ShiftDurationTime = rideTime.Schedule!.ShiftDurationTime;
-            vm.RideTime = _uow.RideTimes.DriveTimeFormatting(rideTime);
+            #warning Should it be a repository method
+            vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("g");
             vm.IsTaken = rideTime.IsTaken;
+            
 
             return View(vm);
         }

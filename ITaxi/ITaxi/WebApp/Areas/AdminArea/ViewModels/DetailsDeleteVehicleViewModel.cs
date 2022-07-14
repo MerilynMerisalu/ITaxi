@@ -5,7 +5,7 @@ using App.Resources.Areas.App.Domain.AdminArea;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class DetailsDeleteVehicleViewModel
+public class DetailsDeleteVehicleViewModel: AdminAreaBaseViewModel
 {
     public Guid? Id { get; set; }
     [Display(ResourceType = typeof(Vehicle), Name = "Driver")]

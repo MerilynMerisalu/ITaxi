@@ -5,7 +5,7 @@ using Schedule = App.Resources.Areas.App.Domain.AdminArea.Schedule;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class DetailsDeleteScheduleViewModel
+public class DetailsDeleteScheduleViewModel:AdminAreaBaseViewModel
 {
     public Guid Id { get; set; }
     
