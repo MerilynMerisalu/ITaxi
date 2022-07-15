@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
     [Area(nameof(AdminArea))]
+    [Authorize(Roles = nameof(Admin))]
     public class DriverLicenseCategoriesController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -21,7 +23,14 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/DriverLicenseCategories
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync());
+            var res = await _uow.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync();
+            foreach (var driverLicenseCategory in res)
+            {
+                driverLicenseCategory.CreatedAt = driverLicenseCategory.CreatedAt.ToLocalTime();
+                driverLicenseCategory.UpdatedAt = driverLicenseCategory.UpdatedAt.ToLocalTime();
+            }
+
+            return View(res);
         }
 
         // GET: AdminArea/DriverLicenseCategories/Details/5
@@ -41,6 +50,10 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.DriverLicenseCategoryName = driverLicenseCategory.DriverLicenseCategoryName;
+            vm.CreatedBy = driverLicenseCategory.CreatedBy!;
+            vm.CreatedAt = driverLicenseCategory.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = driverLicenseCategory.UpdatedBy!;
+            vm.UpdatedAt = driverLicenseCategory.UpdatedAt.ToLocalTime().ToString("G");
 
             return View(vm);
         }
@@ -146,6 +159,10 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.DriverLicenseCategoryName = driverLicenseCategory.DriverLicenseCategoryName;
+            vm.CreatedBy = driverLicenseCategory.CreatedBy!;
+            vm.CreatedAt = driverLicenseCategory.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = driverLicenseCategory.UpdatedBy!;
+            vm.UpdatedAt = driverLicenseCategory.UpdatedAt.ToLocalTime().ToString("G");
             return View(vm);
         }
 
