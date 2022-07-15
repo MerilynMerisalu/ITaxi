@@ -11,11 +11,13 @@ using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
+    [Authorize(Roles = nameof(Admin))]
     [Area(nameof(AdminArea))]
     public class AdminsController : Controller
     {
@@ -30,7 +32,13 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Admins
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.Admins.GetAllAdminsOrderedByLastNameAsync());
+            var res = await _uow.Admins.GetAllAdminsOrderedByLastNameAsync();
+            foreach (var admin in res)
+            {
+                admin.CreatedAt = admin.CreatedAt.ToLocalTime();
+                admin.UpdatedAt = admin.UpdatedAt.ToLocalTime();
+            }
+            return View(res);
         }
 
         // GET: AdminArea/Admins/Details/5
@@ -59,8 +67,15 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.PhoneNumber = admin.AppUser!.PhoneNumber;
             vm.Email = admin.AppUser!.Email;
             vm.IsActive = admin.AppUser!.IsActive;
-            if (admin.PersonalIdentifier != null) vm.PersonalIdentifier = admin.PersonalIdentifier;
+            if (admin.PersonalIdentifier != null)
+            {
+                vm.PersonalIdentifier = admin.PersonalIdentifier;
+            }
             vm.Id = admin.Id;
+            vm.CreatedBy = admin.CreatedBy ?? " ";
+            vm.CreatedAt = admin.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = admin.UpdatedBy!;
+            vm.UpdatedAt = admin.UpdatedAt.ToLocalTime().ToString("G");
 
             return View(vm);
         }
@@ -198,7 +213,17 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.PhoneNumber = admin.AppUser!.PhoneNumber;
             vm.Email = admin.AppUser.Email;
             vm.IsActive = admin.AppUser!.IsActive;
-            if (admin.PersonalIdentifier != null) vm.PersonalIdentifier = admin.PersonalIdentifier;
+            if (admin.PersonalIdentifier != null)
+            {
+                vm.PersonalIdentifier = admin.PersonalIdentifier;
+                
+            }
+
+            vm.CreatedBy = admin.CreatedBy!;
+            vm.CreatedAt = admin.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = admin.UpdatedBy!;
+            vm.UpdatedAt = admin.UpdatedAt.ToLocalTime().ToString("G");
+            
             return View(vm);
         }
 
