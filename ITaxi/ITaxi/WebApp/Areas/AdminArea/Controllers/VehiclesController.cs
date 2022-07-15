@@ -51,6 +51,8 @@ public class VehiclesController : Controller
     {
         var vm = new CreateEditVehicleViewModel();
 
+        vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+            nameof(Driver.Id), nameof(Driver.AppUser.LastAndFirstName));
         vm.ManufactureYears = new SelectList(_uow.Vehicles.GettingManufactureYears());
             vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync()
             , nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
@@ -73,7 +75,7 @@ public class VehiclesController : Controller
         {
             vehicle.Id = Guid.NewGuid();
 
-            vehicle.Driver = await _uow.Drivers.FirstAsync();
+            vehicle.DriverId = vm.DriverId;
             if (vehicle.Driver != null) vehicle.DriverId = vehicle.Driver.Id;
             vehicle.ManufactureYear = vm.ManufactureYear;
             vehicle.VehicleAvailability = vm.VehicleAvailability;
@@ -155,8 +157,7 @@ public class VehiclesController : Controller
                 if (vehicle != null)
                 {
                     vehicle.Id = id;
-                    vehicle.Driver = await _uow.Drivers.SingleOrDefaultAsync(d => !d!.Id.Equals(vehicle.DriverId));
-                    vehicle.DriverId = vehicle.DriverId;
+                    vehicle.DriverId = vm.DriverId;
                     vehicle.ManufactureYear = vm.ManufactureYear;
                     vehicle.VehicleAvailability = vm.VehicleAvailability;
                     vehicle.VehicleMarkId = vm.VehicleMarkId;

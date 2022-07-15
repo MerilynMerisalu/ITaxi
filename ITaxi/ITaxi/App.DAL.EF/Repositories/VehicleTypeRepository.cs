@@ -11,13 +11,17 @@ public class VehicleTypeRepository: BaseEntityRepository<VehicleType, AppDbConte
     {
     }
 
-    
+    protected override IQueryable<VehicleType> CreateQuery(bool noTracking = true)
+    {
+        return base.CreateQuery(noTracking).Include(t => t.VehicleTypeName)
+            .ThenInclude(t => t.Translations);
+    }
+
 
     public async Task<IEnumerable<VehicleType>> GetAllVehicleTypesOrderedAsync(bool noTracking = true)
     {
         #warning: special handling of OrderBy to account for language transalation
-        var res = await CreateQuery(noTracking).Include(t => t.VehicleTypeName)
-            .ThenInclude(t => t.Translations).ToListAsync();
+        var res = await CreateQuery(noTracking).ToListAsync();
         return res.OrderBy(x => (string) x.VehicleTypeName).ToList();
     }
 

@@ -129,6 +129,7 @@ where TKey: IEquatable<TKey>
         return Translate() ?? "?????";
     }
     public static implicit operator string(LangStr<TKey>? langStr) => langStr?.ToString() ?? "null";
+    [Obsolete("Only use this for New entries, not for editing existing entries")]
     public static implicit operator LangStr<TKey>(string value) => new LangStr<TKey>(value);
 
 }

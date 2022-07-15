@@ -4,6 +4,7 @@ using App.Domain.Enum;
 using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Resources;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Driver = App.Domain.Driver;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
@@ -42,6 +43,12 @@ public class CreateEditVehicleViewModel
 
     [Display(ResourceType = typeof(Vehicle), Name = "VehicleAvailability")]
     public VehicleAvailability VehicleAvailability { get; set; }
+
+    public Guid DriverId { get; set; }
+
+    public Driver? Driver { get; set; }
+    
+    public SelectList? Drivers { get; set; }
     
     
     

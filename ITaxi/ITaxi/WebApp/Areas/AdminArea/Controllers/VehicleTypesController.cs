@@ -58,10 +58,11 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditVehicleTypeViewModel vm, VehicleType vehicleType)
+        public async Task<IActionResult> Create(CreateEditVehicleTypeViewModel vm)
         {
             if (ModelState.IsValid)
             {
+                var vehicleType = new VehicleType();
                 vehicleType.Id = Guid.NewGuid();
                 vehicleType.VehicleTypeName = vm.VehicleTypeName;
                 _uow.VehicleTypes.Add(vehicleType);
@@ -112,6 +113,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                     if (vehicleType != null)
                     {
                         vehicleType.Id = vm.Id;
+                        vehicleType.VehicleTypeName.SetTranslation(vm.VehicleTypeName);
+                        #warning Need to fix the implicit conversion operator to use the existing translation, if there is one
                         vehicleType.VehicleTypeName = vm.VehicleTypeName;
                         _uow.VehicleTypes.Update(vehicleType);
                         await _uow.SaveChangesAsync();
