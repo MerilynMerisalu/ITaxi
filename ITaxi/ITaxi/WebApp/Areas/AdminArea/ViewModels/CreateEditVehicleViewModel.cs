@@ -47,7 +47,9 @@ public class CreateEditVehicleViewModel
     [Display(ResourceType = typeof(Vehicle), Name = "Driver")]
     public Guid DriverId { get; set; }
 
-   
+    public Driver? Driver { get; set; }
+
+    
     
     public SelectList? Drivers { get; set; }
     

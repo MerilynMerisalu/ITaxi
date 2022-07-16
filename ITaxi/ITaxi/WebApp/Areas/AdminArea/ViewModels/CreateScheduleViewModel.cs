@@ -9,6 +9,8 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 public class CreateScheduleViewModel
 {
     public Guid Id { get; set; }
+
+    public Guid DriverId { get; set; }
     
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "Vehicle")]
 
@@ -17,7 +19,7 @@ public class CreateScheduleViewModel
 
     [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "ShiftStartDateAndTime")]
-    //[DisplayFormat(DataFormatString = "{0:g}")]
+    
     public string StartDateAndTime { get; set; } = default!;
 
     [DataType(DataType.DateTime)]

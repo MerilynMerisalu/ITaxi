@@ -2,6 +2,7 @@
 using App.Contracts.DAL;
 using App.DAL.EF;
 using App.Domain;
+using App.Domain.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -60,15 +61,16 @@ public class VehiclesController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditVehicleViewModel();
-
+        
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
-            nameof(Driver.Id), nameof(Driver.AppUser.LastAndFirstName));
+            #warning so called, "Magic string" works
+            nameof(Driver.Id), "AppUser.LastAndFirstName");
         vm.ManufactureYears = new SelectList(_uow.Vehicles.GettingManufactureYears());
             vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync()
             , nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
         vm.VehicleModels = new SelectList(await _uow.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
             nameof(VehicleModel.Id), nameof(VehicleModel.VehicleModelName));
-        vm.VehicleTypes = new SelectList((await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync()),
+        vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleType.Id),
             nameof(VehicleType.VehicleTypeName));
         return View(vm);
@@ -127,7 +129,8 @@ public class VehiclesController : Controller
         }
 
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
-            nameof(Driver.Id), nameof(Driver.AppUser.LastAndFirstName));
+#warning so called, "Magic string" works
+            nameof(Driver.Id), "AppUser.LastAndFirstName");
 
         vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleType.Id),

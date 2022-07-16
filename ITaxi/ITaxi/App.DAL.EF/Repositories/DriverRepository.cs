@@ -37,14 +37,16 @@ public class DriverRepository: BaseEntityRepository<Driver, AppDbContext>, IDriv
 
     public async Task<IEnumerable<Driver>> GetAllDriversOrderedByLastNameAsync(bool noTracking = true)
     {
-        return await CreateQuery(noTracking).OrderBy(d => d.AppUser!.LastName)
+        var res = await CreateQuery(noTracking).OrderBy(d => d.AppUser!.LastName)
             .ThenBy(d => d.AppUser!.FirstName).ToListAsync();
+
+        return res;
     }
 
     public IEnumerable<Driver> GetAllDriversOrderedByLastName(bool noTracking = true)
     {
-        return  CreateQuery(noTracking).OrderBy(d => d.AppUser!.LastName)
-            .ThenBy(d => d.AppUser!.FirstName).ToList();
+        var drivers = CreateQuery(noTracking).OrderBy(d => d.AppUser!.LastName);
+        return drivers.ToList();
     }
 
     
