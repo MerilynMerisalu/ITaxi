@@ -22,8 +22,14 @@ public class VehiclesController : Controller
     // GET: AdminArea/Vehicles
     public async Task<IActionResult> Index()
     {
+        var res = await _uow.Vehicles.GettingOrderedVehiclesAsync();
+        foreach (var vehicle in res)
+        {
+            vehicle.CreatedAt = vehicle.CreatedAt.ToLocalTime();
+            vehicle.UpdatedAt = vehicle.UpdatedAt.ToLocalTime();
+        }
 
-        return View( await _uow.Vehicles.GettingOrderedVehiclesAsync());
+        return View(res);
     }
 
     // GET: AdminArea/Vehicles/Details/5
@@ -42,6 +48,10 @@ public class VehiclesController : Controller
         vm.VehicleAvailability = vehicle.VehicleAvailability;
         vm.NumberOfSeats = vehicle.NumberOfSeats;
         vm.VehiclePlateNumber = vehicle.VehiclePlateNumber;
+        vm.CreatedBy = vehicle.CreatedBy!;
+        vm.CreatedAt = vehicle.CreatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedBy = vehicle.UpdatedBy!;
+        vm.UpdatedAt = vehicle.UpdatedAt.ToLocalTime().ToString("G");
 
         return View(vm);
     }
@@ -200,6 +210,11 @@ public class VehiclesController : Controller
         vm.VehicleAvailability = vehicle.VehicleAvailability;
         vm.NumberOfSeats = vehicle.NumberOfSeats;
         vm.VehiclePlateNumber = vehicle.VehiclePlateNumber;
+        vm.CreatedBy = vehicle.CreatedBy!;
+        vm.CreatedAt = vehicle.CreatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedBy = vehicle.UpdatedBy!;
+        vm.UpdatedAt = vehicle.UpdatedAt.ToLocalTime().ToString("G");
+
 
         return View(vm);
     }
