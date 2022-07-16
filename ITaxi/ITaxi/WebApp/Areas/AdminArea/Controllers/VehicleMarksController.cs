@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
     [Area(nameof(AdminArea))]
+    [Authorize(Roles = nameof(Admin))]
     public class VehicleMarksController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -21,7 +23,14 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/VehicleMarks
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync());
+            var res = await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync();
+            foreach (var vehicleMark in res)
+            {
+                vehicleMark.CreatedAt = vehicleMark.CreatedAt.ToLocalTime();
+                vehicleMark.UpdatedAt = vehicleMark.UpdatedAt.ToLocalTime();
+            }
+
+            return View(res);
         }
 
         // GET: AdminArea/VehicleMarks/Details/5
@@ -42,6 +51,10 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.VehicleMarkName = vehicleMark.VehicleMarkName;
             vm.Id = vehicleMark.Id;
+            vm.CreatedBy = vehicleMark.CreatedBy!;
+            vm.CreatedAt = vehicleMark.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = vehicleMark.UpdatedBy!;
+            vm.UpdatedAt = vehicleMark.UpdatedAt.ToLocalTime().ToString("G");
 
             return View(vm);
         }
@@ -153,6 +166,11 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.Id = vehicleMark.Id;
             vm.VehicleMarkName = vehicleMark.VehicleMarkName;
+            vm.CreatedBy = vehicleMark.CreatedBy!;
+            vm.CreatedAt = vehicleMark.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = vehicleMark.UpdatedBy!;
+            vm.UpdatedAt = vehicleMark.UpdatedAt.ToLocalTime().ToString("G");
+
 
             return View(vm);
         }
