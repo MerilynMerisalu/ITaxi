@@ -11,7 +11,7 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 public class CreateEditVehicleViewModel
 {
     public Guid Id { get; set; }
-   #warning needs to display translation from the database
+   
     [Display(ResourceType = typeof(Vehicle), Name = "VehicleType")]
     public Guid VehicleTypeId { get; set; }
     [Display(ResourceType = typeof(Vehicle), Name = "VehicleMark")]
@@ -44,9 +44,10 @@ public class CreateEditVehicleViewModel
     [Display(ResourceType = typeof(Vehicle), Name = "VehicleAvailability")]
     public VehicleAvailability VehicleAvailability { get; set; }
 
+    [Display(ResourceType = typeof(Vehicle), Name = "Driver")]
     public Guid DriverId { get; set; }
 
-    public Driver? Driver { get; set; }
+   
     
     public SelectList? Drivers { get; set; }
     

@@ -126,6 +126,9 @@ public class VehiclesController : Controller
             return NotFound();
         }
 
+        vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+            nameof(Driver.Id), nameof(Driver.AppUser.LastAndFirstName));
+
         vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleType.Id),
             nameof(VehicleType.VehicleTypeName));
@@ -137,6 +140,7 @@ public class VehiclesController : Controller
                 .GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
             nameof(VehicleModel.Id),
             nameof(VehicleModel.VehicleModelName));
+        
 
         vm.Id = vehicle.Id;
         vm.ManufactureYears = new SelectList(_uow.Vehicles.GettingManufactureYears());
@@ -145,8 +149,10 @@ public class VehiclesController : Controller
         vm.NumberOfSeats = vehicle.NumberOfSeats;
         vm.VehicleTypeId = vehicle.VehicleTypeId;
         vm.VehiclePlateNumber = vehicle.VehiclePlateNumber;
+        vm.DriverId = vehicle.DriverId;
         vm.VehicleMarkId = vehicle.VehicleMarkId;
         vm.VehicleModelId = vehicle.VehicleModelId;
+        
         return View(vm);
     }
 
