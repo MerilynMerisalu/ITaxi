@@ -155,8 +155,6 @@ public class VehiclesController : Controller
                 if (vehicle != null)
                 {
                     vehicle.Id = id;
-                    vehicle.Driver = await _uow.Drivers.SingleOrDefaultAsync(d => !d!.Id.Equals(vehicle.DriverId));
-                    vehicle.DriverId = vehicle.DriverId;
                     vehicle.ManufactureYear = vm.ManufactureYear;
                     vehicle.VehicleAvailability = vm.VehicleAvailability;
                     vehicle.VehicleMarkId = vm.VehicleMarkId;

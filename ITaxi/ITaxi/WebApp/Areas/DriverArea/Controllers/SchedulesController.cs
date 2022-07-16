@@ -217,6 +217,12 @@ namespace WebApp.Areas.DriverArea.Controllers
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
 
+            if (schedule != null)
+            {
+                _uow.Schedules.Remove(schedule);
+            } 
+                
+
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

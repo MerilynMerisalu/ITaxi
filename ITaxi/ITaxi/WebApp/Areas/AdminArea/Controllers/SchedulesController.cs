@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
     [Area(nameof(AdminArea))]
+    [Authorize(Roles = nameof(Admin))]
     public class SchedulesController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -18,19 +20,19 @@ namespace WebApp.Areas.AdminArea.Controllers
         public SchedulesController(IAppUnitOfWork uow)
         {
             _uow = uow;
-            
         }
 
         // GET: AdminArea/Schedules
         public async Task<IActionResult> Index()
         {
-            #warning Should this be a repository method
+#warning Should this be a repository method
             var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync();
             foreach (var s in res)
             {
                 s.StartDateAndTime = s.StartDateAndTime.ToLocalTime();
                 s.EndDateAndTime = s.EndDateAndTime.ToLocalTime();
             }
+
             return View(res);
         }
 
@@ -44,7 +46,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
-                
+
             if (schedule == null)
             {
                 return NotFound();
@@ -53,11 +55,13 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Id = schedule.Id;
             vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
             vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
-        #warning Should this be a repository method
+#warning Should this be a repository method
             vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
-        #warning Should this be a repository method
+#warning Should this be a repository method
             vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
+            vm.CreatedBy = schedule.CreatedBy!;
             vm.CreatedAt = schedule.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = schedule.UpdatedBy!;
             vm.UpdatedAt = schedule.UpdatedAt.ToLocalTime().ToString("G");
 
             return View(vm);
@@ -67,11 +71,14 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Create()
         {
             var vm = new CreateScheduleViewModel();
-            vm.Vehicles = new SelectList( await _uow.Vehicles.GettingOrderedVehiclesAsync(),
-            nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
-            #warning Schedule StartDateAndTime needs a custom validation
-            
-            #warning Schedule EndDateAndTime needs a custom validation
+            vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+                #warning so called, "Magic string" works
+                nameof(Driver.Id), "AppUser.FirstAndLastName");
+            vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+                nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
+#warning Schedule StartDateAndTime needs a custom validation
+
+#warning Schedule EndDateAndTime needs a custom validation
 
             return View(vm);
         }
@@ -85,18 +92,17 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             if (ModelState.IsValid)
             {
-                var driver = await _uow.Drivers.FirstAsync();
                 schedule.Id = Guid.NewGuid();
-                if (driver != null) schedule.DriverId = driver.Id;
-        #warning Should this be a repository method
+                schedule.DriverId = vm.DriverId;
+#warning Should this be a repository method
                 schedule.StartDateAndTime = DateTime.Parse(vm.StartDateAndTime).ToUniversalTime();
-        #warning Should this be a repository method
+#warning Should this be a repository method
                 schedule.EndDateAndTime = DateTime.Parse(vm.EndDateAndTime).ToUniversalTime();
                 _uow.Schedules.Add(schedule);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return View(vm);
         }
 
@@ -115,14 +121,18 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
+            vm.DriverId = schedule.DriverId;
             vm.VehicleId = schedule.VehicleId;
-        #warning Should this be a repository method
+#warning Should this be a repository method
             vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToLocalTime().ToString("g"));
-            #warning Should this be a repository method
+#warning Should this be a repository method
             vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToLocalTime().ToString("g"));
             vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
-                nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier)); 
-           
+                nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
+            vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+                #warning so called, "Magic string" works
+                nameof(Driver.Id), "AppUser.LastAndFirstName");
+
             return View(vm);
         }
 
@@ -131,10 +141,10 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, EditScheduleViewModel vm )
+        public async Task<IActionResult> Edit(Guid id, EditScheduleViewModel vm)
         {
             var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
-            
+
             if (schedule != null && id != schedule.Id)
             {
                 return NotFound();
@@ -147,21 +157,17 @@ namespace WebApp.Areas.AdminArea.Controllers
                     if (schedule != null)
                     {
                         schedule.Id = id;
-                        if (schedule.Driver != null)
-                        {
-                            schedule.Driver = await _uow.Drivers.FirstAsync();
-                            schedule.DriverId = schedule.DriverId;
-                            #warning Should this be a repository method
-                            schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
-                            #warning Should this be a repository method
-                            schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
-                        }
-                        
+
+                        schedule.DriverId = vm.DriverId;
+#warning Should this be a repository method
+                        schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
+#warning Should this be a repository method
+                        schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
+
+
                         _uow.Schedules.Update(schedule);
                         await _uow.SaveChangesAsync();
                     }
-
-                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -174,9 +180,10 @@ namespace WebApp.Areas.AdminArea.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return View(vm);
         }
 
@@ -197,10 +204,15 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
             vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
-            #warning Should this be a repository method
+#warning Should this be a repository method
             vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
-            #warning Should this be a repository method
+#warning Should this be a repository method
             vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
+            vm.CreatedBy = schedule.CreatedBy!;
+            vm.CreatedAt = schedule.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = schedule.UpdatedBy!;
+            vm.UpdatedAt = schedule.UpdatedAt.ToLocalTime().ToString("G");
+
 
             return View(vm);
         }
@@ -216,6 +228,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
+
             if (schedule != null) _uow.Schedules.Remove(schedule);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

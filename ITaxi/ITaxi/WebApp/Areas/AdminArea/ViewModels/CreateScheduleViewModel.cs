@@ -9,6 +9,8 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 public class CreateScheduleViewModel
 {
     public Guid Id { get; set; }
+    
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "Driver")]
 
     public Guid DriverId { get; set; }
     

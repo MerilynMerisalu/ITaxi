@@ -127,6 +127,11 @@
       <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Schedules\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Schedules\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Schedules\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Index.cshtml" />
     </ItemGroup>
 
 </Project>
