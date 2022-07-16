@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
     [Area(nameof(AdminArea))]
+    [Authorize(Roles = nameof(Admin))]
     public class VehicleModelsController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -22,7 +24,15 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/VehicleModels
         public async Task<IActionResult> Index()
         { 
-            return View(await _uow.VehicleModels.GetAllAsync() );
+            var res = await _uow.VehicleModels.GetAllAsync();
+            #warning Should this be a repo method
+            foreach (var admin in res)
+            {
+                admin.CreatedAt = admin.CreatedAt.ToLocalTime();
+                admin.UpdatedAt = admin.UpdatedAt.ToLocalTime();
+            }
+
+            return View(res);
         }
 
         // GET: AdminArea/VehicleModels/Details/5
@@ -43,6 +53,10 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.VehicleModelName = vehicleModel.VehicleModelName;
             vm.Id = vehicleModel.Id;
             vm.VehicleMarkName = vehicleModel.VehicleMark!.VehicleMarkName;
+            vm.CreatedBy = vehicleModel.CreatedBy!;
+            vm.CreatedAt = vehicleModel.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = vehicleModel.UpdatedBy!;
+            vm.UpdatedAt = vehicleModel.UpdatedAt.ToLocalTime().ToString("G");
             return View(vm);
         }
 
@@ -162,6 +176,10 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Id = vehicleModel.Id;
             vm.VehicleMarkName = vehicleModel.VehicleMark!.VehicleMarkName;
             vm.VehicleModelName = vehicleModel.VehicleModelName;
+            vm.CreatedBy = vehicleModel.CreatedBy!;
+            vm.CreatedAt = vehicleModel.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = vehicleModel.UpdatedBy!;
+            vm.UpdatedAt = vehicleModel.UpdatedAt.ToLocalTime().ToString("G");
             return View(vm);
         }
 
