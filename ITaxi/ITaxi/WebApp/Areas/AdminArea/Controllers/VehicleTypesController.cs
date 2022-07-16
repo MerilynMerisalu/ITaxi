@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
+    [Authorize(Roles = nameof(Admin))]
     [Area(nameof(AdminArea))]
     public class VehicleTypesController : Controller
     {
@@ -22,8 +24,16 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/VehicleTypes
         public async Task<IActionResult> Index()
         {
-            #warning Hold the translate the value
-            return View(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync());
+            
+           
+            var res = await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync();
+            #warning Should this be a repo method
+            foreach (var vehicleType in res)
+            {
+                vehicleType.CreatedAt = vehicleType.CreatedAt.ToLocalTime();
+                vehicleType.UpdatedAt = vehicleType.UpdatedAt.ToLocalTime();
+            }
+            return View(res);
         }
 
         // GET: AdminArea/VehicleTypes/Details/5
@@ -43,6 +53,10 @@ namespace WebApp.Areas.AdminArea.Controllers
             
             vm.VehicleTypeName = vehicleType.VehicleTypeName;
             vm.Id = vehicleType.Id;
+            vm.CreatedBy = vehicleType.CreatedBy!;
+            vm.CreatedAt = vehicleType.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = vehicleType.UpdatedBy!;
+            vm.UpdatedAt = vehicleType.UpdatedAt.ToLocalTime().ToString("G");
             return View(vm);
         }
 
@@ -156,6 +170,10 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.Id = vehicleType.Id;
             vm.VehicleTypeName = vehicleType.VehicleTypeName;
+            vm.CreatedBy = vehicleType.CreatedBy!;
+            vm.CreatedAt = vehicleType.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = vehicleType.UpdatedBy!;
+            vm.UpdatedAt = vehicleType.UpdatedAt.ToLocalTime().ToString("G");
 
             return View(vm);
         }
