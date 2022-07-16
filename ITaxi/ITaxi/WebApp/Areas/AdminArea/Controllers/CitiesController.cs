@@ -27,6 +27,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Index()
         {
             var res = await _uow.Cities.GetAllOrderedCitiesAsync();
+#warning Should this be a repo method
             foreach (var city in res)
             {
                 city.CreatedAt = city.CreatedAt.ToLocalTime();

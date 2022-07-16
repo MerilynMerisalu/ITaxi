@@ -20,14 +20,14 @@
         <th>
             @Html.DisplayNameFor(model => model.AppUser!.FirstName)
         </th>
-        
+
         <th>
             @Html.DisplayNameFor(model => model.AppUser!.LastAndFirstName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AppUser!.DateOfBirth)
         </th>
-        
+
         <th>
             @Html.DisplayNameFor(model => model.PersonalIdentifier)
         </th>
@@ -49,55 +49,79 @@
         <th>
             @Html.DisplayNameFor(model => model.AppUser!.IsActive)
         </th>
-        
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </th>
         <th></th>
     </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.AppUser!.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AppUser!.FirstName)
-        </td>
-        
-        <td>
-            @Html.DisplayFor(modelItem => item.AppUser!.LastAndFirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AppUser!.DateOfBirth)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PersonalIdentifier)
-        </td>
-        
-        <td>
-            @Html.DisplayFor(modelItem => item.DriverLicenseNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DriverLicenseExpiryDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.City!.CityName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AppUser!.PhoneNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AppUser!.IsActive)
-        </td>
-        
-        <td>
-            <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.FirstName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.LastAndFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.DateOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersonalIdentifier)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.DriverLicenseNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DriverLicenseExpiryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City!.CityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>

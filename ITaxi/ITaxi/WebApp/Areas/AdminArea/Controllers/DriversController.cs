@@ -6,11 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
     [Area(nameof(AdminArea))]
+    [Authorize(Roles = nameof(Admin))]
     public class DriversController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -23,8 +25,15 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Drivers
         public async Task<IActionResult> Index()
         {
-            
-            return View(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync());
+            var res = await _uow.Drivers.GetAllDriversOrderedByLastNameAsync();
+#warning Should this be a repo method
+            foreach (var driver in res)
+            {
+                driver.CreatedAt = driver.CreatedAt.ToLocalTime();
+                driver.UpdatedAt = driver.UpdatedAt.ToLocalTime();
+            }
+
+            return View(res);
         }
 
         // GET: AdminArea/Drivers/Details/5
@@ -54,6 +63,10 @@ namespace WebApp.Areas.AdminArea.Controllers
                 vm.Address = driver.Address;
                 vm.PhoneNumber = driver.AppUser.PhoneNumber;
                 vm.EmailAddress = driver.AppUser!.Email;
+                vm.CreatedBy = driver.CreatedBy!;
+                vm.CreatedAt = driver.CreatedAt.ToLocalTime().ToString("G");
+                vm.UpdatedBy = driver.UpdatedBy!;
+                vm.UpdatedAt = driver.UpdatedAt.ToLocalTime().ToString("G");
             }
 
             return View(vm);
@@ -228,6 +241,10 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Address = driver.Address;
             vm.PhoneNumber = driver.AppUser.PhoneNumber;
             vm.EmailAddress = driver.AppUser!.Email;
+            vm.CreatedBy = driver.CreatedBy!;
+            vm.CreatedAt = driver.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = driver.UpdatedBy!;
+            vm.UpdatedAt = driver.UpdatedAt.ToLocalTime().ToString("G");
             return View(vm);
         }
 
