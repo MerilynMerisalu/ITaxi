@@ -16,11 +16,13 @@ using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
     [Area(nameof(AdminArea))]
+    [Authorize(Roles = nameof(Admin))]
     public class RideTimesController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -42,6 +44,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 {
                     rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
                     rideTime.CreatedAt = rideTime.CreatedAt.ToLocalTime();
+                    #warning The value of updated at seems wrong
                     rideTime.UpdatedAt = rideTime.UpdatedAt.ToLocalTime();
                 }
                     
@@ -157,19 +160,21 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.Id = rideTime.Id;
-            
+            vm.DriverId = rideTime.DriverId;
+            vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+                nameof(Driver.Id), nameof(Driver.AppUser));
             vm.Schedules = new SelectList(
                  await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
                 nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
             vm.IsTaken = rideTime.IsTaken;
             #warning Ridetimes should be hidden and reappearing based on whether IsTaken is true or not
-            var rideTimes = await _uow.RideTimes.GettingAllOrderedRideTimesAsync();
+            var rideTimes = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime());
             #warning Ask if there is a better way to implement this 
             var rideTimeList = new List<string>();
             foreach (var rideTimeLocal in rideTimes)
             {
                 if (rideTimeLocal != null)
-                    rideTimeList.Add(rideTimeLocal.RideDateTime.ToLocalTime().ToShortTimeString());
+                    rideTimeList.Add(DateTime.Parse(rideTimeLocal).ToShortTimeString());
             }
             vm.RideTimes = new SelectList(rideTimeList);
             vm.ScheduleId = rideTime.ScheduleId;
@@ -197,9 +202,12 @@ namespace WebApp.Areas.AdminArea.Controllers
                 try
                 {
                     rideTime.Id = id;
+                    rideTime.DriverId = vm.DriverId;
                     rideTime.ScheduleId = vm.ScheduleId;
                     rideTime.RideDateTime = DateTime.Parse(vm.RideTime).ToUniversalTime();
                     rideTime.IsTaken = vm.IsTaken;
+                    rideTime.UpdatedAt = DateTime.Now;
+                    
                     _uow.RideTimes.Update(rideTime);
                     await _uow.SaveChangesAsync();
                 }
@@ -234,6 +242,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 return NotFound();
             }
+
+            vm.Driver = rideTime.Driver!.AppUser!.LastAndFirstName;
 
             vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
             #warning Should it be a repository method

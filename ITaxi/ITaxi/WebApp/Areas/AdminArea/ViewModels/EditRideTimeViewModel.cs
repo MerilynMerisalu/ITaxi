@@ -9,15 +9,20 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 public class EditRideTimeViewModel
 {
     public Guid Id { get; set; }
+    
+    [Display(ResourceType = typeof(RideTime), Name = "Driver")]
+    public Guid DriverId { get; set; }
+
+    public SelectList? Drivers { get; set; }
 
     [Display(ResourceType = typeof(RideTime), Name = "Schedule")]
     public Guid ScheduleId { get; set; }
 
     public SelectList? Schedules { get; set; }
 
-    //[DataType(DataType.Time)]
+    
     [Display(ResourceType = typeof(RideTime), Name = "RideDateAndTime")]
-    //[DisplayFormat(DataFormatString = "{0:t}", ApplyFormatInEditMode = false)]
+    
     public string RideTime { get; set; } = default!;
     
     [Display(ResourceType = typeof(RideTime), Name = "RideTimeSelectListName")]
