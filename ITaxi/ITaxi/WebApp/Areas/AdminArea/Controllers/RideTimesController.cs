@@ -206,7 +206,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                     rideTime.ScheduleId = vm.ScheduleId;
                     rideTime.RideDateTime = DateTime.Parse(vm.RideTime).ToUniversalTime();
                     rideTime.IsTaken = vm.IsTaken;
-                    rideTime.UpdatedAt = DateTime.Now;
+                    rideTime.UpdatedAt = DateTime.Now.ToUniversalTime();
                     
                     _uow.RideTimes.Update(rideTime);
                     await _uow.SaveChangesAsync();
