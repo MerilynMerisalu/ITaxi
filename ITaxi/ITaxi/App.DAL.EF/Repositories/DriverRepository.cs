@@ -45,8 +45,11 @@ public class DriverRepository: BaseEntityRepository<Driver, AppDbContext>, IDriv
 
     public IEnumerable<Driver> GetAllDriversOrderedByLastName(bool noTracking = true)
     {
-        var drivers = CreateQuery(noTracking).OrderBy(d => d.AppUser!.LastName);
-        return drivers.ToList();
+        return CreateQuery(noTracking).
+            OrderBy(d => d.AppUser!.LastName)
+            .ThenBy(d => d.AppUser!.FirstName)
+            .ToList();
+        
     }
 
     

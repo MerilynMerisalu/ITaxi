@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using App.Domain.Identity;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
@@ -82,6 +83,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Create()
         {
             var vm = new CreateRideTimeViewModel();
+            vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+#warning "Magic string" code smell, fix it 
+                nameof(Driver.Id), "AppUser.LastAndFirstName");
             vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync()
                 , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
             DateTime[] scheduleStartAndEndTime = _uow.Schedules.GettingStartAndEndTime();
@@ -109,6 +113,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                         var rideTime = new RideTime()
                         {
                             Id = new Guid(),
+                            DriverId = vm.DriverId,
                             ScheduleId = vm.ScheduleId,
                             RideDateTime = selectedRideTime.ToUniversalTime(),
                             IsTaken = vm.IsTaken
