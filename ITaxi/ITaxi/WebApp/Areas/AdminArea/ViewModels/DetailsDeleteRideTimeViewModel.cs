@@ -6,6 +6,11 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 public class DetailsDeleteRideTimeViewModel: AdminAreaBaseViewModel
 {
     public Guid Id { get; set; }
+    
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.RideTime),
+        Name = nameof(Driver))]
+    public string Driver { get; set; } = default!;
+
 
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.RideTime),
         Name = nameof(Schedule))]

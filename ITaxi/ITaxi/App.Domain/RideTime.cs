@@ -6,6 +6,10 @@ namespace App.Domain;
 
 public class RideTime: DomainEntityMetaId
 {
+    public Guid DriverId { get; set; }
+
+    public Driver? Driver { get; set; }
+    
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "Schedule")]
     public Guid ScheduleId { get; set; }
     

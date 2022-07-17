@@ -50,4 +50,5 @@ public class Driver: DomainEntityMetaId
     public ICollection<Vehicle>? Vehicles { get; set; }
     public ICollection<Drive>? Drives { get; set; }
     public ICollection<Schedule>? Schedules { get; set; }
+    public ICollection<RideTime>? RideTimes { get; set; }
 }

@@ -63,7 +63,7 @@ public class VehiclesController : Controller
         var vm = new CreateEditVehicleViewModel();
         
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
-            #warning so called, "Magic string" works
+            #warning  "Magic string" code smell, fix it 
             nameof(Driver.Id), "AppUser.LastAndFirstName");
         vm.ManufactureYears = new SelectList(_uow.Vehicles.GettingManufactureYears());
             vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync()
@@ -129,7 +129,7 @@ public class VehiclesController : Controller
         }
 
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
-#warning so called, "Magic string" works
+#warning "Magic string" code smell, fix it 
             nameof(Driver.Id), "AppUser.LastAndFirstName");
 
         vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),

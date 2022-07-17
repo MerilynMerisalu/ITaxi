@@ -19,7 +19,8 @@ public class RideTimeRepository: BaseEntityRepository<RideTime, AppDbContext>, I
             query.AsNoTracking();
         }
 
-        query = query.Include(c => c.Schedule);
+        query = query.Include(c => c.Schedule)
+            .ThenInclude(c => c!.Driver).ThenInclude(c => c!.AppUser);
             
         return query;
     }

@@ -72,7 +72,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             var vm = new CreateScheduleViewModel();
             vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
-                #warning so called, "Magic string" works
+                #warning "Magic string" code smell, fix it 
                 nameof(Driver.Id), "AppUser.FirstAndLastName");
             vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
                 nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
@@ -130,7 +130,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
                 nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
             vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
-                #warning so called, "Magic string" works
+                #warning "Magic string" code smell, fix it 
                 nameof(Driver.Id), "AppUser.LastAndFirstName");
 
             return View(vm);

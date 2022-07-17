@@ -83,6 +83,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>RideTime.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Areas\App.Domain\DriverArea\RideTime.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>RideTime.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -177,6 +181,11 @@
         <DependentUpon>Schedule.resx</DependentUpon>
       </Compile>
       <Compile Update="Areas\App.Domain\AdminArea\RideTime.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>RideTime.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Areas\App.Domain\DriverArea\RideTime.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>RideTime.resx</DependentUpon>

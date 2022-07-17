@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace App.Resources.Areas.App.Domain.AdminArea {
+namespace App.Resources.Areas.App.Domain.DriverArea {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class RideTime {
+    internal class RideTime {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("App.Resources.Areas.App.Domain.AdminArea.RideTime", typeof(RideTime).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("App.Resources.Areas.App.Domain.DriverArea.RideTime", typeof(RideTime).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,18 +61,9 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Driver.
-        /// </summary>
-        public static string Driver {
-            get {
-                return ResourceManager.GetString("Driver", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Is Taken?.
         /// </summary>
-        public static string IsTaken {
+        internal static string IsTaken {
             get {
                 return ResourceManager.GetString("IsTaken", resourceCulture);
             }
@@ -81,7 +72,7 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         /// <summary>
         ///   Looks up a localized string similar to Ride Time.
         /// </summary>
-        public static string RideDateAndTime {
+        internal static string RideDateAndTime {
             get {
                 return ResourceManager.GetString("RideDateAndTime", resourceCulture);
             }
@@ -90,7 +81,7 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         /// <summary>
         ///   Looks up a localized string similar to Ride Times.
         /// </summary>
-        public static string RideTimeSelectListName {
+        internal static string RideTimeSelectListName {
             get {
                 return ResourceManager.GetString("RideTimeSelectListName", resourceCulture);
             }
@@ -99,7 +90,7 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         /// <summary>
         ///   Looks up a localized string similar to Shift Duration Time.
         /// </summary>
-        public static string Schedule {
+        internal static string Schedule {
             get {
                 return ResourceManager.GetString("Schedule", resourceCulture);
             }

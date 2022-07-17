@@ -30,7 +30,4 @@
     <data name="RideTimeSelectListName" xml:space="preserve">
         <value>Ride Times</value>
     </data>
-    <data name="Driver" xml:space="preserve">
-        <value>Driver</value>
-    </data>
 </root>

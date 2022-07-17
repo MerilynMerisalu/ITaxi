@@ -1,3 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using App.DAL.EF;
+using App.Domain;
+
 #nullable enable
 using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +65,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.Id = rideTime.Id;
+            vm.Driver = rideTime.Driver!.AppUser!.LastAndFirstName;
             vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
             #warning Should it be a repository method
             vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");

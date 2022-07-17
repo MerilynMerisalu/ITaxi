@@ -1,11 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
-<root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-            
-        </xsd:element>
-    </xsd:schema>
+﻿<root>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -19,18 +12,15 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="Schedule" xml:space="preserve">
-        <value>Shift Duration Time</value>
+        <value>Vahetuse kestvus</value>
     </data>
     <data name="RideDateAndTime" xml:space="preserve">
-        <value>Ride Time</value>
+        <value>Sõiduaeg</value>
     </data>
     <data name="IsTaken" xml:space="preserve">
-        <value>Is Taken?</value>
+        <value>Võetud?</value>
     </data>
     <data name="RideTimeSelectListName" xml:space="preserve">
-        <value>Ride Times</value>
-    </data>
-    <data name="Driver" xml:space="preserve">
-        <value>Driver</value>
+        <value>Sõiduajad</value>
     </data>
 </root>
