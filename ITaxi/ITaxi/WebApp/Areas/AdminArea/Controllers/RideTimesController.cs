@@ -1,22 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
+
 using App.Domain;
 
 #nullable enable
 using App.Contracts.DAL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
-using App.Domain.Identity;
-using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
@@ -173,8 +163,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             var rideTimeList = new List<string>();
             foreach (var rideTimeLocal in rideTimes)
             {
-                if (rideTimeLocal != null)
-                    rideTimeList.Add(DateTime.Parse(rideTimeLocal).ToShortTimeString());
+                rideTimeList.Add(DateTime.Parse(rideTimeLocal).ToShortTimeString());
             }
             vm.RideTimes = new SelectList(rideTimeList);
             vm.ScheduleId = rideTime.ScheduleId;

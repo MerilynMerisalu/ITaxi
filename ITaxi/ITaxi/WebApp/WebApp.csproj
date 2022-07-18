@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>aspnet-WebApp-38900D17-6AA0-4488-98B5-944245C23643</UserSecretsId>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
