@@ -152,6 +152,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Id = rideTime.Id;
             vm.DriverId = rideTime.DriverId;
             vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+#warning "Magic string" code smell, fix it 
                 nameof(Driver.Id), "AppUser.LastAndFirstName");
             vm.Schedules = new SelectList(
                  await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
