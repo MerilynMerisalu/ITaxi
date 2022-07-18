@@ -1,0 +1,20 @@
+﻿@using Base.Resources
+@model WebApp.Areas.DriverArea.ViewModels.CreateRideTimeViewModel
+
+<div class="form-group">
+    <label asp-for="ScheduleId" class="control-label"></label>
+    <select asp-for="ScheduleId" class="form-control" asp-items="Model.Schedules">
+        <option>@Common.PleaseSelect</option>
+    </select>
+</div>
+<div class="form-group">
+    <label asp-for="RideTimes" class="control-label"></label>
+    <select asp-for="SelectedRideTimes" multiple="multiple" class="form-control" asp-items="Model.RideTimes">
+    </select>
+    <span asp-validation-for="SelectedRideTimes" class="text-danger"></span>
+</div>
+<div class="form-group form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" asp-for="IsTaken" /> @Html.DisplayNameFor(model => model.IsTaken)
+    </label>
+</div>

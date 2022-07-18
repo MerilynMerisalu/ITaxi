@@ -34,7 +34,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 {
                     rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
                     rideTime.CreatedAt = rideTime.CreatedAt.ToLocalTime();
-                    #warning The value of updated at seems wrong
+                    
                     rideTime.UpdatedAt = rideTime.UpdatedAt.ToLocalTime();
                 }
                     
@@ -152,7 +152,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Id = rideTime.Id;
             vm.DriverId = rideTime.DriverId;
             vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
-                nameof(Driver.Id), nameof(Driver.AppUser));
+                nameof(Driver.Id), "AppUser.LastAndFirstName");
             vm.Schedules = new SelectList(
                  await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
                 nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));

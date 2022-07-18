@@ -22,7 +22,7 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class RideTime {
+    public class RideTime {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("App.Resources.Areas.App.Domain.DriverArea.RideTime", typeof(RideTime).Assembly);
@@ -51,7 +51,7 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         /// <summary>
         ///   Looks up a localized string similar to Is Taken?.
         /// </summary>
-        internal static string IsTaken {
+        public static string IsTaken {
             get {
                 return ResourceManager.GetString("IsTaken", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         /// <summary>
         ///   Looks up a localized string similar to Ride Time.
         /// </summary>
-        internal static string RideDateAndTime {
+        public static string RideDateAndTime {
             get {
                 return ResourceManager.GetString("RideDateAndTime", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         /// <summary>
         ///   Looks up a localized string similar to Ride Times.
         /// </summary>
-        internal static string RideTimeSelectListName {
+        public static string RideTimeSelectListName {
             get {
                 return ResourceManager.GetString("RideTimeSelectListName", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         /// <summary>
         ///   Looks up a localized string similar to Shift Duration Time.
         /// </summary>
-        internal static string Schedule {
+        public static string Schedule {
             get {
                 return ResourceManager.GetString("Schedule", resourceCulture);
             }

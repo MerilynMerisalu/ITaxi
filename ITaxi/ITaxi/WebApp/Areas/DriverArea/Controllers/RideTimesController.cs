@@ -1,58 +1,81 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
+using WebApp.Areas.DriverArea.ViewModels;
 
 namespace WebApp.Areas.DriverArea.Controllers
 {
     [Area("DriverArea")]
+    [Authorize(Roles = "Admin, Driver")]
     public class RideTimesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public RideTimesController(AppDbContext context)
+        public RideTimesController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: DriverArea/RideTimes
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.RideTimes.Include(r => r.Driver).Include(r => r.Schedule);
-            return View(await appDbContext.ToListAsync());
+            var res = await _uow.RideTimes.GettingAllOrderedRideTimesAsync();
+#warning Should this be a repository method
+            foreach (var rideTime in res)
+            {
+                if (rideTime != null)
+                {
+                    rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
+                    rideTime.CreatedAt = rideTime.CreatedAt.ToLocalTime();
+
+                    rideTime.UpdatedAt = rideTime.UpdatedAt.ToLocalTime();
+                }
+            }
+
+            return View(res);
         }
 
         // GET: DriverArea/RideTimes/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.RideTimes == null)
+            var vm = new DetailsDeleteRideTimeViewModel();
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var rideTime = await _context.RideTimes
-                .Include(r => r.Driver)
-                .Include(r => r.Schedule)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id.Value);
             if (rideTime == null)
             {
                 return NotFound();
             }
 
-            return View(rideTime);
+            vm.Id = rideTime.Id;
+
+            vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
+#warning Should it be a repository method
+            vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
+            vm.IsTaken = rideTime.IsTaken;
+
+            return View(vm);
         }
 
         // GET: DriverArea/RideTimes/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address");
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id");
-            return View();
+            var vm = new CreateRideTimeViewModel();
+
+            vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync()
+                , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
+            DateTime[] scheduleStartAndEndTime = _uow.Schedules.GettingStartAndEndTime();
+            var rideTimes = _uow.RideTimes.CalculatingRideTimes(scheduleStartAndEndTime);
+            vm.RideTimes = new SelectList(rideTimes);
+
+
+            return View(vm);
         }
 
         // POST: DriverArea/RideTimes/Create
@@ -60,36 +83,83 @@ namespace WebApp.Areas.DriverArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DriverId,ScheduleId,RideDateTime,IsTaken,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] RideTime rideTime)
+        public async Task<IActionResult> Create(CreateRideTimeViewModel vm, List<RideTime> rideTimes)
         {
+            var driver = await _uow.Drivers.FirstAsync();
             if (ModelState.IsValid)
             {
-                rideTime.Id = Guid.NewGuid();
-                _context.Add(rideTime);
-                await _context.SaveChangesAsync();
+                if (vm.SelectedRideTimes != null)
+                {
+                    foreach (var selectedRideTime in vm.SelectedRideTimes)
+                    {
+                        if (driver != null)
+                        {
+                            var rideTime = new RideTime()
+                            {
+                                Id = new Guid(),
+                                DriverId = driver.Id,
+                                ScheduleId = vm.ScheduleId,
+                                RideDateTime = selectedRideTime.ToUniversalTime(),
+                                IsTaken = vm.IsTaken
+                            };
+
+                            rideTimes.Add(rideTime);
+                        }
+                    }
+
+                    await _uow.RideTimes.AddRangeAsync(rideTimes);
+                    await _uow.SaveChangesAsync();
+                }
+#warning Needs custom validation to check that at least one ride time is chosen
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address", rideTime.DriverId);
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", rideTime.ScheduleId);
-            return View(rideTime);
+
+
+#warning Selectlist of schedules must be recreated when something goes wrong with creating the record
+            vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
+                nameof(Schedule.Id),
+                nameof(Schedule.ShiftDurationTime));
+#warning Selectable ride times must be recreated when something goes wrong with creating the record
+#warning Selected ride times remain so when something goes wrong with creating the record
+            return View(vm);
         }
 
         // GET: DriverArea/RideTimes/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.RideTimes == null)
+            var vm = new EditRideTimeViewModel();
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var rideTime = await _context.RideTimes.FindAsync(id);
+            var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id.Value);
             if (rideTime == null)
             {
                 return NotFound();
             }
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address", rideTime.DriverId);
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", rideTime.ScheduleId);
-            return View(rideTime);
+
+            vm.Id = rideTime.Id;
+
+            vm.Schedules = new SelectList(
+                await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
+                nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
+            vm.IsTaken = rideTime.IsTaken;
+#warning Ridetimes should be hidden and reappearing based on whether IsTaken is true or not
+            var rideTimes = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime());
+#warning Ask if there is a better way to implement this
+            var rideTimeList = new List<string>();
+            foreach (var rideTimeLocal in rideTimes)
+            {
+                rideTimeList.Add(DateTime.Parse(rideTimeLocal).ToShortTimeString());
+            }
+
+            vm.RideTimes = new SelectList(rideTimeList);
+            vm.ScheduleId = rideTime.ScheduleId;
+#warning Should it be a repository method
+            vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
+            return View(vm);
         }
 
         // POST: DriverArea/RideTimes/Edit/5
@@ -97,9 +167,11 @@ namespace WebApp.Areas.DriverArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("DriverId,ScheduleId,RideDateTime,IsTaken,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] RideTime rideTime)
+        public async Task<IActionResult> Edit(Guid id, EditRideTimeViewModel vm)
         {
-            if (id != rideTime.Id)
+            var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id);
+
+            if (id != rideTime!.Id)
             {
                 return NotFound();
             }
@@ -108,8 +180,14 @@ namespace WebApp.Areas.DriverArea.Controllers
             {
                 try
                 {
-                    _context.Update(rideTime);
-                    await _context.SaveChangesAsync();
+                    rideTime.Id = id;
+                    rideTime.ScheduleId = vm.ScheduleId;
+                    rideTime.RideDateTime = DateTime.Parse(vm.RideTime).ToUniversalTime();
+                    rideTime.IsTaken = vm.IsTaken;
+                    rideTime.UpdatedAt = DateTime.Now.ToUniversalTime();
+
+                    _uow.RideTimes.Update(rideTime);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -122,55 +200,53 @@ namespace WebApp.Areas.DriverArea.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address", rideTime.DriverId);
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", rideTime.ScheduleId);
-            return View(rideTime);
+
+            return View(vm);
         }
 
         // GET: DriverArea/RideTimes/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.RideTimes == null)
+            var vm = new DetailsDeleteRideTimeViewModel();
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var rideTime = await _context.RideTimes
-                .Include(r => r.Driver)
-                .Include(r => r.Schedule)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id.Value);
             if (rideTime == null)
             {
                 return NotFound();
             }
 
-            return View(rideTime);
+
+            vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
+#warning Should it be a repository method
+            vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
+            vm.IsTaken = rideTime.IsTaken;
+
+            return View(vm);
         }
+
 
         // POST: DriverArea/RideTimes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.RideTimes == null)
-            {
-                return Problem("Entity set 'AppDbContext.RideTimes'  is null.");
-            }
-            var rideTime = await _context.RideTimes.FindAsync(id);
-            if (rideTime != null)
-            {
-                _context.RideTimes.Remove(rideTime);
-            }
-            
-            await _context.SaveChangesAsync();
+            var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id);
+            if (rideTime != null) _uow.RideTimes.Remove(rideTime);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+
         private bool RideTimeExists(Guid id)
         {
-          return (_context.RideTimes?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _uow.RideTimes.Exists(id);
         }
     }
 }

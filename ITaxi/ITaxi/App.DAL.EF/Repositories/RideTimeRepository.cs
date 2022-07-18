@@ -165,6 +165,7 @@ public class RideTimeRepository: BaseEntityRepository<RideTime, AppDbContext>, I
             time = time.AddMinutes(45);
         }
 
+        
         return times;
     }
     #warning Should it be a repository method
