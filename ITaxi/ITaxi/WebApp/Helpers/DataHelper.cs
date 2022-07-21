@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Enum;
@@ -110,7 +111,7 @@ public static class DataHelper
             //App.Resources.Areas.App.Domain.AdminArea.VehicleType.
             var regularVehicleType = new VehicleType()
             {
-                Id = new Guid(),
+                Id = Guid.NewGuid(),
                 VehicleTypeName = App.Resources.Areas.App.Domain.AdminArea.VehicleType.Regular,
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
@@ -118,7 +119,7 @@ public static class DataHelper
             await context.VehicleTypes.AddAsync(regularVehicleType);
             var wheelChairVehicleType = new VehicleType()
             {
-                Id = new Guid(),
+                Id = Guid.NewGuid(),
                 VehicleTypeName = App.Resources.Areas.App.Domain.AdminArea.VehicleType.Wheelchair,
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
@@ -126,7 +127,21 @@ public static class DataHelper
             await context.VehicleTypes.AddAsync(wheelChairVehicleType);
             await context.SaveChangesAsync();
 
+            var testVehicleType = context.VehicleTypes.Include(x => x.VehicleTypeName.Translations).FirstOrDefault();
+            Debug.WriteLine(testVehicleType);
+            var disabilityType = new DisabilityType()
+            {
+                Id = Guid.NewGuid(),
+                DisabilityTypeName = "None",
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            disabilityType.DisabilityTypeName.SetTranslation("Puudub", "et-EE");
+            await context.DisabilityTypes.AddAsync(disabilityType);
+            await context.SaveChangesAsync();
 
+            var testDisabilityType = context.DisabilityTypes.Include(x => x.DisabilityTypeName.Translations).FirstOrDefault();
+            Debug.WriteLine(testDisabilityType);
+            
             var county = new County()
             {
                 Id = new Guid(),
@@ -275,14 +290,7 @@ public static class DataHelper
             await context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategory);
             await context.SaveChangesAsync();
 
-            var disabilityType = new DisabilityType()
-            {
-                Id = new Guid(),
-                DisabilityTypeName = "None",
-                CreatedAt = DateTime.Now.ToUniversalTime()
-            };
-            await context.DisabilityTypes.AddAsync(disabilityType);
-            await context.SaveChangesAsync();
+            
 
             var vehicleMark = new VehicleMark()
             {

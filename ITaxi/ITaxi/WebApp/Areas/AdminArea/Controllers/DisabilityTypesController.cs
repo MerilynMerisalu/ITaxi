@@ -111,7 +111,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                     if (disabilityType != null)
                     {
                         disabilityType.Id = id;
-                        disabilityType.DisabilityTypeName = vm.DisabilityTypeName;
+                        //disabilityType.DisabilityTypeName = vm.DisabilityTypeName;
+                        disabilityType.DisabilityTypeName.SetTranslation(vm.DisabilityTypeName);
                         _uow.DisabilityTypes.Update(disabilityType);
                     }
 

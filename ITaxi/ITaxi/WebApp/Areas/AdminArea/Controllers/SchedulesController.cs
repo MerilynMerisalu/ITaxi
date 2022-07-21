@@ -73,7 +73,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             var vm = new CreateScheduleViewModel();
             vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
                 #warning "Magic string" code smell, fix it 
-                nameof(Driver.Id), "AppUser.FirstAndLastName");
+                nameof(Driver.Id), $"{nameof(Driver.AppUser)}.{nameof(Driver.AppUser.LastAndFirstName)}");
             vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
                 nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
 #warning Schedule StartDateAndTime needs a custom validation
