@@ -20,7 +20,8 @@ public class CustomerRepository: BaseEntityRepository<Customer, AppDbContext>, I
         }
 
         query = query.Include(a => a.AppUser)
-            .Include(a => a.DisabilityType);
+            .Include(a => a.DisabilityType).ThenInclude(a => a!.DisabilityTypeName)
+            .ThenInclude(a => a.Translations);
         return query;
     }
 

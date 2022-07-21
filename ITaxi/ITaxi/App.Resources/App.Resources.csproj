@@ -91,6 +91,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>DisabilityType.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Areas\App.Domain\AdminArea\Customer.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Customer.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -198,6 +202,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>DisabilityType.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Areas\App.Domain\AdminArea\Customer.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Customer.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
