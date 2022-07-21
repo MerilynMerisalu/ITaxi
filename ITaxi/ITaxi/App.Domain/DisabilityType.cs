@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Base.Domain;
+using Base.Resources;
 
 namespace App.Domain;
 
@@ -8,8 +9,8 @@ public class DisabilityType: DomainEntityMetaId
 {
     
 
-    [Required]
-    [MaxLength(80)]
-    [DisplayName("Disability Type")]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(80, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.DisabilityType), Name = nameof(DisabilityTypeName))]
     public string DisabilityTypeName { get; set; } = default!;
 }

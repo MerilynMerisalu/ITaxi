@@ -87,6 +87,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>RideTime.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Areas\App.Domain\AdminArea\DisabilityType.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>DisabilityType.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -189,6 +193,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>RideTime.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Areas\App.Domain\AdminArea\DisabilityType.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>DisabilityType.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
