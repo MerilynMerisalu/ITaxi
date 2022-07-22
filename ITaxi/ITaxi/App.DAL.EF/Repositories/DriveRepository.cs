@@ -26,6 +26,11 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
             .ThenInclude(c => c!.Customer)
             .ThenInclude(c => c!.AppUser)
             .Include(c => c.Booking)
+            .ThenInclude(c => c!.Customer)
+            .ThenInclude(c => c!.DisabilityType)
+            .ThenInclude(c => c!.DisabilityTypeName)
+            .ThenInclude(c => c.Translations)
+            .Include(c => c.Booking)
             .ThenInclude(c => c!.City)
             .Include(b => b.Booking)
             .Include(v => v.Booking)
@@ -121,28 +126,7 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
 
     public async Task<IEnumerable<Drive?>> SearchByDateAsync(DateTime search)
     {
-        var drives = await RepoDbSet
-            .Include(b => b.Booking)
-            .ThenInclude(b => b!.Driver)
-            .ThenInclude(d => d!.AppUser)
-            .Include(b => b.Booking)
-            .ThenInclude(d => d!.Schedule)
-            .Include(b => b.Booking)
-            .ThenInclude(v => v!.Vehicle)
-            .Include(v => v.Booking)
-            .ThenInclude(v => v!.Vehicle)
-            .ThenInclude(v => v!.VehicleMark)
-            .Include(v => v.Booking)
-            .ThenInclude(v => v!.Vehicle)
-            .ThenInclude(v => v!.VehicleModel)
-            .Include(v => v.Booking)
-            .ThenInclude(v => v!.VehicleType)
-            .Include(d => d.Booking)
-            .ThenInclude(c => c!.Customer)
-            .ThenInclude(c => c!.AppUser)
-            .Include(c => c.Booking)
-            .ThenInclude(c => c!.City)
-            .Include(c => c.Comment)
+        var drives = await CreateQuery()
             .Where(d => d.Booking!.PickUpDateAndTime.Date
                 .Equals(search.Date)).ToListAsync();
         return drives;
@@ -150,28 +134,7 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
 
     public IEnumerable<Drive?> SearchByDate(DateTime search)
     {
-        var drives =  RepoDbSet
-            .Include(b => b.Booking)
-            .ThenInclude(b => b!.Driver)
-            .ThenInclude(d => d!.AppUser)
-            .Include(b => b.Booking)
-            .ThenInclude(d => d!.Schedule)
-            .Include(b => b.Booking)
-            .ThenInclude(v => v!.Vehicle)
-            .Include(v => v.Booking)
-            .ThenInclude(v => v!.Vehicle)
-            .ThenInclude(v => v!.VehicleMark)
-            .Include(v => v.Booking)
-            .ThenInclude(v => v!.Vehicle)
-            .ThenInclude(v => v!.VehicleModel)
-            .Include(v => v.Booking)
-            .ThenInclude(v => v!.VehicleType)
-            .Include(d => d.Booking)
-            .ThenInclude(c => c!.Customer)
-            .ThenInclude(c => c!.AppUser)
-            .Include(c => c.Booking)
-            .ThenInclude(c => c!.City)
-            .Include(c => c.Comment)
+        var drives =  CreateQuery()
             .Where(d => d.Booking!.PickUpDateAndTime.Date
                 .Equals(search.Date)).ToList();
         return drives;
@@ -180,36 +143,14 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
     public async Task<IEnumerable<Drive?>> PrintAsync(Guid id)
     {
         
-        var drives = await RepoDbSet.Include(d => d.Booking)
-            .ThenInclude(d => d!.Schedule)
-            .Include(d => d.Booking)
-            .ThenInclude(d => d!.VehicleType)
-            .Include(c => c.Booking)
-            .ThenInclude(c => c!.Customer)
-            .ThenInclude(c => c!.AppUser)
-            .Include(c => c.Booking)
-            .ThenInclude(c => c!.City)
-            .Include(d => d.Booking)
-            .ThenInclude(d => d!.Driver)
-            .ThenInclude(d => d!.AppUser)
+        var drives = await CreateQuery()
             .Where(d => d.DriverId.Equals(id)).ToListAsync();
         return drives;
     }
 
     public IEnumerable<Drive?> Print(Guid id)
     {
-        var drives = RepoDbSet.Include(d => d.Booking)
-            .ThenInclude(d => d!.Schedule)
-            .Include(d => d.Booking)
-            .ThenInclude(d => d!.VehicleType)
-            .Include(c => c.Booking)
-            .ThenInclude(c => c!.Customer)
-            .ThenInclude(c => c!.AppUser)
-            .Include(c => c.Booking)
-            .ThenInclude(c => c!.City)
-            .Include(d => d.Booking)
-            .ThenInclude(d => d!.Driver)
-            .ThenInclude(d => d!.AppUser)
+        var drives =CreateQuery()
             .Where(d => d.DriverId.Equals(id)).ToList();
         return drives;
     }
