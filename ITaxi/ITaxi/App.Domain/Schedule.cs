@@ -9,7 +9,6 @@ namespace App.Domain;
 public class Schedule: DomainEntityMetaId
 {
     
-
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Schedule), Name = "Driver")]
     public Guid DriverId { get; set; }
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Schedule), Name = nameof(Driver))]

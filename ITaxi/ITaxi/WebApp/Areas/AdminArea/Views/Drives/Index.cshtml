@@ -1,3 +1,4 @@
+@using App.Resources.Areas.App.Domain
 @model IEnumerable<App.Domain.Drive>
 
 @{
@@ -12,7 +13,7 @@
     <input type="submit" value="Search" />
 </form>
 <p>
-    <a asp-action="Print">Create PDF</a>
+    <a asp-action="Print">@Common.CreatePdf</a>
 </p>
 
 <table class="table">
@@ -24,6 +25,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.Customer!.AppUser!.LastAndFirstName)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Customer!.DisabilityType)
+            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.PickUpDateAndTime)
             </th>
@@ -37,7 +42,7 @@
                 @Html.DisplayNameFor(model => model.Booking!.DestinationAddress)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Booking!.VehicleType)
+                @Html.DisplayNameFor(model => model.Booking!.VehicleType!.VehicleTypeName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.Vehicle)
@@ -69,6 +74,10 @@
                 @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.LastAndFirstName)
             </td>
             <td>
+                @Html.DisplayTextFor(modelItem => item.Booking!.Customer!.DisabilityType!.DisabilityTypeName)
+            </td>
+            
+            <td>
                 @Html.DisplayFor(modelItem => item.Booking!.PickUpDateAndTime)
             </td>
             <td>
@@ -81,7 +90,7 @@
                 @Html.DisplayFor(modelItem => item.Booking!.DestinationAddress)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Booking!.VehicleType!.VehicleTypeName)
+                @Html.DisplayTextFor(modelItem => item.Booking!.VehicleType!.VehicleTypeName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.Vehicle!.VehicleIdentifier)

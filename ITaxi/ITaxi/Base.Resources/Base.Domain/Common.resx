@@ -39,4 +39,7 @@
     <data name="System" xml:space="preserve">
         <value>System</value>
     </data>
+    <data name="CreatePdf" xml:space="preserve">
+        <value>Create PDF</value>
+    </data>
 </root>

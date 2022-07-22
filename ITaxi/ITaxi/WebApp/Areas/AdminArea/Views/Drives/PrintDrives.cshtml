@@ -24,7 +24,7 @@
                 @Html.DisplayNameFor(model => model.Booking!.PickUpDateAndTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Booking!.VehicleType)
+                @Html.DisplayNameFor(model => model.Booking!.VehicleType!.VehicleTypeName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.Customer)
@@ -65,7 +65,7 @@
                 @Html.DisplayFor(modelItem => item.Booking!.PickUpDateAndTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Booking!.VehicleType!.VehicleTypeName)
+                @Html.DisplayTextFor(modelItem => item.Booking!.VehicleType!.VehicleTypeName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.LastAndFirstName)

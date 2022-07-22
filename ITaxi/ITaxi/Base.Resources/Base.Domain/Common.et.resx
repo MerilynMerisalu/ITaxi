@@ -30,4 +30,7 @@
     <data name="System" xml:space="preserve">
         <value>Süsteem</value>
     </data>
+    <data name="CreatePdf" xml:space="preserve">
+        <value>Loo PDF</value>
+    </data>
 </root>

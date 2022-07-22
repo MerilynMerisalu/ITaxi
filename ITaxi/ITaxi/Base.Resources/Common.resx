@@ -149,4 +149,7 @@
     <data name="ConfirmPassword" xml:space="preserve">
         <value>Confirm Password</value>
     </data>
+    <data name="ErrorMessageComparePasswords" xml:space="preserve">
+        <value>The password and confirmation password do not match.</value>
+    </data>
 </root>

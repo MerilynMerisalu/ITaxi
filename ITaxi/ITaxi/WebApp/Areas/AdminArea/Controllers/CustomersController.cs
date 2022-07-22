@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.Domain;
+using App.Domain.Identity;
+using Microsoft.AspNetCore.Identity;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
@@ -12,17 +14,27 @@ namespace WebApp.Areas.AdminArea.Controllers
     public class CustomersController : Controller
     {
         private readonly IAppUnitOfWork _uow;
-
-        public CustomersController(IAppUnitOfWork uow)
+        private readonly UserManager<AppUser> _userManager;
+        public CustomersController(IAppUnitOfWork uow, UserManager<AppUser> userManager)
         {
             _uow = uow;
+            _userManager = userManager;
         }
 
         // GET: AdminArea/Customers
         public async Task<IActionResult> Index()
         {
-            
-            return View(await _uow.Customers.GettingAllOrderedCustomersAsync());
+#warning Should this be a repo method
+            var res = await _uow.Customers.GettingAllOrderedCustomersAsync();
+            foreach (var customer in res)
+            {
+                if (customer != null)
+                {
+                    customer.CreatedAt = customer.CreatedAt.ToLocalTime();
+                    customer.UpdatedAt = customer.UpdatedAt.ToLocalTime();
+                }
+            }
+            return View(res);
         }
 
         // GET: AdminArea/Customers/Details/5
@@ -42,22 +54,31 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             
             vm.Id = customer.Id;
+            vm.FirstName = customer.AppUser!.FirstName;
+            vm.LastName = customer.AppUser!.LastName;
             vm.LastAndFirstName = customer.AppUser!.LastAndFirstName;
             vm.DateOfBirth = customer.AppUser.DateOfBirth.Date.ToString("d");
             vm.Gender = customer.AppUser.Gender;
             vm.PhoneNumber = customer.AppUser.PhoneNumber;
             vm.Email = customer.AppUser.Email;
             vm.DisabilityTypeName = customer.DisabilityType!.DisabilityTypeName;
+            vm.CreatedBy = customer.CreatedBy!;
+            vm.CreatedAt = customer.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = customer.UpdatedBy!;
+            vm.UpdatedAt = customer.UpdatedAt.ToLocalTime().ToString("G");
+            
 
             return View(vm);
         }
 
         // GET: AdminArea/Customers/Create
-        /*public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email");
-            ViewData["DisabilityTypeId"] = new SelectList(_uow.DisabilityTypes, "Id", "DisabilityTypeName");
-            return View();
+            var vm = new CreateCustomerViewModel();
+            
+            vm.DisabilityTypes = new SelectList(await _uow.DisabilityTypes.GetAllOrderedDisabilityTypesAsync(),
+                nameof(DisabilityType.Id), nameof(DisabilityType.DisabilityTypeName));
+            return View(vm);
         }
 
         // POST: AdminArea/Customers/Create
@@ -65,19 +86,39 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AppUserId,DisabilityTypeId,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Customer customer)
+        public async Task<IActionResult> Create(CreateCustomerViewModel vm)
         {
+            var customer = new Customer();
+            var appUser = new AppUser()
+            {
+                Id = Guid.NewGuid(),
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                Gender = vm.Gender,
+                DateOfBirth = DateTime.Parse(vm.DateOfBirth).ToUniversalTime(),
+                PhoneNumber = vm.PhoneNumber,
+                PhoneNumberConfirmed = true,
+                Email = vm.Email,
+                EmailConfirmed = true
+
+            };
+            await _userManager.CreateAsync(appUser, vm.Password);
+            
+            
             if (ModelState.IsValid)
             {
                 customer.Id = Guid.NewGuid();
-                _uow.Add(customer);
+                customer.AppUserId = appUser.Id;
+                customer.DisabilityTypeId = vm.DisabilityTypeId;
+                _uow.Customers.Add(customer);
+                await _userManager.AddToRoleAsync(appUser, nameof(Customer));
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email", customer.AppUserId);
-            ViewData["DisabilityTypeId"] = new SelectList(_uow.DisabilityTypes, "Id", "DisabilityTypeName", customer.DisabilityTypeId);
-            return View(customer);
-        }*/
+            
+            
+            return View(vm);
+        }
 
         // GET: AdminArea/Customers/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
@@ -163,12 +204,19 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.Id = customer.Id;
+            vm.FirstName = customer.AppUser!.FirstName;
+            vm.LastName = customer.AppUser!.LastName;
             vm.LastAndFirstName = customer.AppUser!.LastAndFirstName;
             vm.Email = customer.AppUser!.Email;
             vm.Gender = customer.AppUser!.Gender;
             vm.DateOfBirth = customer.AppUser!.DateOfBirth.ToString("d");
             vm.PhoneNumber = customer.AppUser.PhoneNumber;
             vm.DisabilityTypeName = customer.DisabilityType!.DisabilityTypeName;
+            vm.CreatedBy = customer.CreatedBy!;
+            vm.CreatedAt = customer.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = customer.UpdatedBy!;
+            vm.UpdatedAt = customer.UpdatedAt.ToLocalTime().ToString("G");
+
             return View(vm);
         }
 

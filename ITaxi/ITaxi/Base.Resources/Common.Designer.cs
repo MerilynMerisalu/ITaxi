@@ -169,6 +169,15 @@ namespace Base.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The password and confirmation password do not match..
+        /// </summary>
+        public static string ErrorMessageComparePasswords {
+            get {
+                return ResourceManager.GetString("ErrorMessageComparePasswords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} field is not a valid e-mail address..
         /// </summary>
         public static string ErrorMessageEmail {

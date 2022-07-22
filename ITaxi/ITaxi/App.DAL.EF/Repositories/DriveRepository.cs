@@ -36,6 +36,8 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
             .Include(v => v.Booking)
             .ThenInclude(v => v!.Vehicle)
             .ThenInclude(v => v!.VehicleType)
+            .ThenInclude(c => c!.VehicleTypeName)
+            .ThenInclude(c => c.Translations)
             .Include(v => v.Booking)
             .ThenInclude(v => v!.Vehicle)
             .ThenInclude(v => v!.VehicleMark)
