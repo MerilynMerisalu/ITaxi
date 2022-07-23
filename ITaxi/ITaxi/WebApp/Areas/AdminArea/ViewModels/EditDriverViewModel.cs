@@ -71,5 +71,9 @@ public class EditDriverViewModel
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "Address")]
     public string Address { get; set; } = default!;
+    
+    [Display(ResourceType = typeof(Common), Name = nameof(IsActive))]
+
+    public bool IsActive { get; set; }
 
 }

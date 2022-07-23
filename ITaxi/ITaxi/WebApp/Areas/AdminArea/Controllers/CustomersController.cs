@@ -140,6 +140,13 @@ namespace WebApp.Areas.AdminArea.Controllers
                 , nameof(DisabilityType.Id),
                 nameof(DisabilityType.DisabilityTypeName));
             vm.DisabilityTypeId = customer.DisabilityTypeId;
+            vm.FirstName = customer.AppUser!.FirstName;
+            vm.LastName = customer.AppUser!.LastName;
+            vm.Gender = customer.AppUser!.Gender;
+            vm.DateOfBirth = customer!.AppUser.DateOfBirth;
+            vm.IsActive = customer.AppUser!.IsActive;
+            vm.PhoneNumber = customer.AppUser!.PhoneNumber;
+            vm.Email = customer.AppUser!.Email;
             
             
             return View(vm);
@@ -162,12 +169,22 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
+                    var appUser = await _userManager.FindByIdAsync(customer.AppUserId.ToString());
+                    appUser.FirstName = vm.FirstName;
+                    appUser.LastName = vm.LastName;
+                    appUser.Gender = vm.Gender;
+                    appUser.DateOfBirth = vm.DateOfBirth.ToUniversalTime();
+                    appUser.Email = vm.Email;
+                    appUser.PhoneNumber = vm.PhoneNumber;
+                    appUser.IsActive = vm.IsActive;
                     if (true)
                     {
                         customer.Id = id;
                         customer.DisabilityTypeId = vm.DisabilityTypeId; 
                          _uow.Customers.Update(customer);
                     }
+
+                    await _userManager.UpdateAsync(appUser);
 
                     await _uow.SaveChangesAsync();
                 }
@@ -230,10 +247,12 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
-            //var appUser = await _uow.Users.SingleAsync(a => a.Id.Equals(customer.AppUserId));
-            if (customer != null) _uow.Customers.Remove(customer);
-            #warning Ask how to delete an user when using uow 
-            //_uow.Users.Remove(appUser);
+
+            var appUser = await _userManager.FindByIdAsync(customer!.AppUserId.ToString());
+            
+            #warning Ask how to delete an user when using uow
+            await _userManager.RemoveFromRoleAsync(appUser, nameof(Customer));
+            _uow.Customers.Remove(customer);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

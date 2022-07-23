@@ -7,6 +7,7 @@ using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
@@ -16,10 +17,13 @@ namespace WebApp.Areas.AdminArea.Controllers
     public class DriversController : Controller
     {
         private readonly IAppUnitOfWork _uow;
+        private readonly UserManager<AppUser> _userManager;
 
-        public DriversController(IAppUnitOfWork uow)
+
+        public DriversController(IAppUnitOfWork uow, UserManager<AppUser> userManager)
         {
             _uow = uow;
+            _userManager = userManager;
         }
 
         // GET: AdminArea/Drivers
@@ -76,7 +80,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Create()
         {
             var vm = new CreateDriverViewModel();
-            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(), nameof(City.Id), nameof(City.CityName));
+            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(), nameof(City.Id),
+                nameof(City.CityName));
             vm.DriverLicenseCategories = new SelectList(
                 await _uow.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
                 nameof(DriverLicenseCategory.Id), nameof(DriverLicenseCategory.DriverLicenseCategoryName));
@@ -106,15 +111,15 @@ namespace WebApp.Areas.AdminArea.Controllers
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
-            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesWithoutCountyAsync(), nameof(City.Id), nameof(City.CityName), driver.CityId);
+
+            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesWithoutCountyAsync(), nameof(City.Id),
+                nameof(City.CityName), driver.CityId);
             return View(vm);
         }
 
         // GET: AdminArea/Drivers/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            
             if (id == null)
             {
                 return NotFound();
@@ -124,10 +129,10 @@ namespace WebApp.Areas.AdminArea.Controllers
                 .FirstOrDefaultAsync(id.Value);
 
             var vm = new EditDriverViewModel();
-            vm.DriverLicenseCategories= new SelectList(
+            vm.DriverLicenseCategories = new SelectList(
                 await _uow
                     .DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
-                nameof(DriverLicenseCategory.Id), 
+                nameof(DriverLicenseCategory.Id),
                 nameof(DriverLicenseCategory.DriverLicenseCategoryName));
             vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
                 nameof(City.Id), nameof(City.CityName));
@@ -141,7 +146,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 vm.PersonalIdentifier = driver.PersonalIdentifier;
                 vm.DateOfBirth = driver.AppUser!.DateOfBirth;
                 vm.DriverLicenseNumber = driver.DriverLicenseNumber;
-                #warning Ask if this should be a repository method
+#warning Ask if this should be a repository method
                 vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
             }
 
@@ -156,7 +161,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Edit(Guid id, EditDriverViewModel vm)
         {
             var driver = await _uow.Drivers.FirstOrDefaultAsync(id);
-            
+
             if (driver != null && id != driver.Id)
             {
                 return NotFound();
@@ -172,7 +177,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                         driver.PersonalIdentifier = vm.PersonalIdentifier;
                         if (vm.DriverAndDriverLicenseCategories != null)
                         {
-                            await _uow.DriverAndDriverLicenseCategories.RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(driver.Id);
+                            await _uow.DriverAndDriverLicenseCategories
+                                .RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(driver.Id);
 
                             foreach (var selectedDriverLicenseCategory in vm.DriverAndDriverLicenseCategories)
                             {
@@ -181,7 +187,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                                     DriverId = driver.Id,
                                     DriverLicenseCategoryId = selectedDriverLicenseCategory
                                 };
-                                 _uow.DriverAndDriverLicenseCategories.Add(driverAndDriverLicenseCategory);
+                                _uow.DriverAndDriverLicenseCategories.Add(driverAndDriverLicenseCategory);
                             }
                         }
 
@@ -205,9 +211,10 @@ namespace WebApp.Areas.AdminArea.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-           
+
             return View(vm);
         }
 
@@ -261,14 +268,15 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             await _uow.DriverAndDriverLicenseCategories.RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(id);
-           
+
             if (driver != null)
             {
+                var appUser = await _userManager.FindByIdAsync(driver!.AppUserId.ToString());
+
+#warning Ask how to delete an user when using uow
+                await _userManager.RemoveFromRoleAsync(appUser, nameof(Driver));
                 _uow.Drivers.Remove(driver);
-                #warning ask how to remove appuser using uow
-                /*var appUser = await _uow.Users
-                    .SingleOrDefaultAsync(d => d.Id.Equals(driver.AppUserId));
-                if (appUser != null) _uow.Users.Remove(appUser);*/
+                await _uow.SaveChangesAsync();
             }
 
             await _uow.SaveChangesAsync();
@@ -279,7 +287,5 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             return _uow.Drivers.Exists(id);
         }
-        
     }
-    
 }

@@ -216,6 +216,61 @@ public static class DataHelper
             await context.Admins.AddAsync(admin);
             await context.SaveChangesAsync();
 
+              appUser = new AppUser()
+            {
+                Id = new Guid(),
+                FirstName = "Tiina",
+                LastName = "Pilv",
+                DateOfBirth = DateTime.Parse("1977-08-22"),
+                Gender = Gender.Female,
+                Email = "tiina.pilv@gmail.com",
+                EmailConfirmed = true,
+                PhoneNumber = "22356891"
+
+            };
+            appUser.UserName = appUser.Email;
+
+             result = userManager!.CreateAsync(appUser, "Tiinakass123$").Result;
+            
+            if (!result.Succeeded)
+            {
+                foreach (var identityError in result.Errors)
+                {
+                    Console.WriteLine("Cant create user! Error: " + identityError.Description);
+                }
+            }
+            result = userManager.AddToRoleAsync(appUser, "Admin").Result;
+            if (!result.Succeeded)
+            {
+                foreach (var identityError in result.Errors)
+                {
+                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
+                }
+            }
+            
+            result = userManager.AddToRoleAsync(appUser, "Admin").Result;
+            if (!result.Succeeded)
+            {
+                foreach (var identityError in result.Errors)
+                {
+                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
+                }
+            }
+
+            
+            admin = new Admin()
+            {
+                Id = new Guid(),
+                AppUserId = context.Users.OrderBy(u => u.LastName).First(a => 
+                    a.FirstName.Equals("Tiina") && a.LastName.Equals("Pilv")).Id,
+                CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
+                PersonalIdentifier = "47708222221",
+                Address = "Suurmäe 13-9",
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            await context.Admins.AddAsync(admin);
+            await context.SaveChangesAsync();
+
 
              appUser = new AppUser()
             {

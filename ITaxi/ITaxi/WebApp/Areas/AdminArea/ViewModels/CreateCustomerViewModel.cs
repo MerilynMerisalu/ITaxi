@@ -65,10 +65,7 @@ public class CreateCustomerViewModel
     public string ConfirmPassword { get; set; } = default!;
     
     [Display(ResourceType = typeof(Common), Name=nameof(IsActive))] 
-    public IsActive IsActive { get; set; }
-
-    
-
+    public bool IsActive { get; set; }
     public SelectList? DisabilityTypes { get; set; }
     
 
