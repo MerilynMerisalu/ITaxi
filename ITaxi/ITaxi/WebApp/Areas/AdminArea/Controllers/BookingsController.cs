@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.Domain;
 using App.Domain.Enum;
+using App.Domain.Identity;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
@@ -77,12 +78,24 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Bookings/Create
         public async Task<IActionResult> Create()
         {
-            var vm = new CreateEditBookingViewModel();
+            var vm = new CreateBookingViewModel();
+            vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
+                nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
             vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
                 nameof(City.Id), nameof(City.CityName));
             vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
                 nameof(VehicleType.Id), nameof(VehicleType.VehicleTypeName));
-            vm.PickUpDateAndTime = _uow.Bookings.DateTimeFormatting();
+            vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+#warning "Magic string" code smell, fix it 
+                nameof(Driver.Id), 
+                $"{nameof(Driver.AppUser)}.{nameof(Driver.AppUser.LastAndFirstName)}");
+            vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+                nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
+            vm.Customers = new SelectList(await _uow.Customers.GettingAllOrderedCustomersAsync(),
+                nameof(Customer.Id), 
+#warning "Magic string" code smell, fix it 
+                $"{nameof(Customer.AppUser)}.{nameof(Customer.AppUser.LastAndFirstName)}");
+            
             return View(vm);
         }
 
@@ -91,20 +104,19 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditBookingViewModel vm)
+        public async Task<IActionResult> Create(CreateBookingViewModel vm)
         {
             var booking = new Booking();
             if (ModelState.IsValid)
             {
                 booking.Id = Guid.NewGuid();
                 booking.CityId = vm.CityId;
-                booking.Customer =  await _uow.Customers.FirstAsync();
-                booking.Driver = await _uow.Drivers.FirstAsync();
+                booking.CustomerId = vm.CustomerId;
+                booking.DriverId = vm.DriverId;
                 #warning needs fixing
-                booking.Schedule = await _uow.Schedules.FirstAsync();
+                booking.ScheduleId = vm.ScheduleId;
                 #warning needs fixing
-                booking.Vehicle =
-                    await _uow.Vehicles.FirstAsync();
+                booking.VehicleId = vm.VehicleId;
                 booking.AdditionalInfo = vm.AdditionalInfo;
                 booking.DestinationAddress = vm.DestinationAddress;
                 booking.PickupAddress = vm.PickupAddress;
@@ -113,7 +125,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 booking.NumberOfPassengers = vm.NumberOfPassengers;
                 booking.StatusOfBooking = StatusOfBooking.Awaiting;
 #warning Booking PickUpDateAndTime needs a custom validation
-                booking.PickUpDateAndTime = vm.PickUpDateAndTime.ToUniversalTime();
+                booking.PickUpDateAndTime = DateTime.Parse(vm.PickUpDateAndTime).ToUniversalTime();
                 _uow.Bookings.Add(booking);
 
                 var drive = new Drive()
@@ -128,11 +140,27 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesWithoutCountyAsync(), nameof(City.Id),
-                nameof(City.CityName), nameof(booking.CityId));
+            vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
+                nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime), 
+                nameof(vm.ScheduleId));
+            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
+                nameof(City.Id), nameof(City.CityName), nameof(vm.CityId));
             vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
-                nameof(VehicleType.Id), nameof(VehicleType.VehicleTypeName),
-                nameof(booking.VehicleTypeId));
+                nameof(VehicleType.Id), nameof(VehicleType.VehicleTypeName)
+                , nameof(vm.VehicleTypeId));
+            vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+#warning "Magic string" code smell, fix it 
+                nameof(Driver.Id), 
+                $"{nameof(Driver.AppUser)}.{nameof(Driver.AppUser.LastAndFirstName)}",
+                nameof(vm.DriverId));
+            vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+                nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier), 
+                nameof(vm.VehicleId));
+            vm.Customers = new SelectList(await _uow.Customers.GettingAllOrderedCustomersAsync(),
+                nameof(Customer.Id), 
+#warning "Magic string" code smell, fix it 
+                $"{nameof(Customer.AppUser)}.{nameof(Customer.AppUser.LastAndFirstName)}", 
+                nameof(vm.CustomerId));
             
             return View(vm);
         }
@@ -140,7 +168,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Bookings/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            var vm = new CreateEditBookingViewModel();
+            var vm = new EditBookingViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -152,9 +180,24 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            
+
+            vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
+                nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
+            vm.ScheduleId = booking.ScheduleId;
+            vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+#warning "Magic string" code smell, fix it
+                nameof(Driver.Id),
+                $"{nameof(Driver.AppUser)}.{nameof(Driver.AppUser.LastAndFirstName)}");
+            vm.DriverId = vm.DriverId;
+            vm.Customers = new SelectList(await _uow.Customers.GettingAllOrderedCustomersAsync(),
+                nameof(Customer.Id),
+                $"{nameof(Customer.AppUser)}.{nameof(Customer.AppUser.LastAndFirstName)}");
+            vm.CustomerId = booking.CustomerId;
             vm.Cities = new SelectList(await _uow.Cities.GetAllCitiesWithoutCountyAsync()
                 , nameof(City.Id), nameof(City.CityName));
+            vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+                nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
+            vm.VehicleId = booking.VehicleId;
             vm.AdditionalInfo = booking.AdditionalInfo;
             vm.CityId = booking.CityId;
             vm.DestinationAddress = booking.DestinationAddress;
@@ -166,7 +209,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.HasAnAssistant = booking.HasAnAssistant;
             vm.NumberOfPassengers = booking.NumberOfPassengers;
             vm.VehicleTypeId = booking.VehicleTypeId;
-            vm.PickUpDateAndTime = booking.PickUpDateAndTime;
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime();
             return View(vm);
         }
 
@@ -175,7 +218,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, CreateEditBookingViewModel vm)
+        public async Task<IActionResult> Edit(Guid id, EditBookingViewModel vm)
         {
             var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.Id.Equals(id));
             if (booking != null && id != booking.Id)
@@ -190,13 +233,12 @@ namespace WebApp.Areas.AdminArea.Controllers
                     if (booking != null)
                     {
                         booking.Id = id;
+                        booking.ScheduleId = vm.ScheduleId;
                         booking.CityId = vm.CityId;
-                        booking.Customer = await _uow.Customers.FirstAsync();
-                        booking.Driver = await _uow.Drivers.FirstAsync();
-                        #warning needs fixing
-                        booking.Schedule = await _uow.Schedules.FirstAsync();
-                        #warning needs fixing
-                        booking.Vehicle = await _uow.Vehicles.FirstAsync();
+                        booking.CustomerId = vm.CustomerId;
+                        booking.DriverId = vm.DriverId;
+                        booking.ScheduleId = vm.ScheduleId;
+                        booking.VehicleId = vm.VehicleId;
                         booking.AdditionalInfo = vm.AdditionalInfo;
                         booking.DestinationAddress = vm.DestinationAddress;
                         booking.PickupAddress = vm.PickupAddress;
@@ -204,7 +246,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                         booking.HasAnAssistant = vm.HasAnAssistant;
                         booking.NumberOfPassengers = vm.NumberOfPassengers;
                         booking.StatusOfBooking = StatusOfBooking.Awaiting;
-                        booking.PickUpDateAndTime = vm.PickUpDateAndTime;
+                        booking.PickUpDateAndTime = vm.PickUpDateAndTime.ToUniversalTime();
 
                         _uow.Bookings.Update(booking);
 

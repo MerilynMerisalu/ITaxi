@@ -72,8 +72,6 @@ public class Booking : DomainEntityMetaId
     [MaxLength(1000, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     [DataType(DataType.MultilineText)]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(AdditionalInfo))]
-
-    
     public string? AdditionalInfo { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(StatusOfBooking))]
