@@ -188,7 +188,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 #warning "Magic string" code smell, fix it
                 nameof(Driver.Id),
                 $"{nameof(Driver.AppUser)}.{nameof(Driver.AppUser.LastAndFirstName)}");
-            vm.DriverId = vm.DriverId;
+            vm.DriverId = booking.DriverId;
             vm.Customers = new SelectList(await _uow.Customers.GettingAllOrderedCustomersAsync(),
                 nameof(Customer.Id),
                 $"{nameof(Customer.AppUser)}.{nameof(Customer.AppUser.LastAndFirstName)}");
