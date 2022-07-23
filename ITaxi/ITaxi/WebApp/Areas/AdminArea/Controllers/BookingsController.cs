@@ -6,11 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using App.Domain;
 using App.Domain.Enum;
 using App.Domain.Identity;
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
     [Area(nameof(AdminArea))]
+    [Authorize(Roles = nameof(Admin))]
     public class BookingsController : Controller
     {
         
