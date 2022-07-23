@@ -65,4 +65,7 @@
     <data name="Cancelled" xml:space="preserve">
         <value>Tühistatud</value>
     </data>
+    <data name="BookingName" xml:space="preserve">
+        <value>Broneering</value>
+    </data>
 </root>

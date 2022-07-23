@@ -72,4 +72,7 @@
     <data name="Cancelled" xml:space="preserve">
         <value>Cancelled</value>
     </data>
+    <data name="BookingName" xml:space="preserve">
+        <value>Booking</value>
+    </data>
 </root>

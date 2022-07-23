@@ -88,6 +88,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Booking.
+        /// </summary>
+        public static string BookingName {
+            get {
+                return ResourceManager.GetString("BookingName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancelled.
         /// </summary>
         public static string Cancelled {

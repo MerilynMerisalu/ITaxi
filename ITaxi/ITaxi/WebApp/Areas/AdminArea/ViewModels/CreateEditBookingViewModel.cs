@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using App.Resources.Areas.App.Domain.AdminArea;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
@@ -7,7 +8,13 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 public class CreateEditBookingViewModel
 {
     public Guid Id { get; set; }
+    
+    [Display(ResourceType = typeof(Booking), Name = "Schedule")]
+    public Guid ScheduleId { get; set; }
 
+    [Display(ResourceType = typeof(Booking), Name = "Driver")]
+    public Guid DriverId { get; set; }
+    
     [DisplayName("Vehicle Type")]
     public Guid VehicleTypeId { get; set; }
 
@@ -40,4 +47,8 @@ public class CreateEditBookingViewModel
     [DisplayName("Additional Info")]
     [StringLength(1000)]
     public string? AdditionalInfo { get; set; }
+
+    public SelectList? Schedules { get; set; }
+
+    public SelectList? Drivers { get; set; }
 }

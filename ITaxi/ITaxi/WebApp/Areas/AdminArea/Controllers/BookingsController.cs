@@ -25,8 +25,18 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Bookings
         public async Task<IActionResult> Index()
         {
-            
-            return View(await _uow.Bookings.GettingAllOrderedBookingsAsync());
+#warning Should this be a repo method
+            var res = await _uow.Bookings.GettingAllOrderedBookingsAsync();
+            foreach (var booking in res)
+            {
+                if (booking != null)
+                {
+                    booking.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime();
+                    booking.CreatedAt = booking.CreatedAt.ToLocalTime();
+                    booking.UpdatedAt = booking.UpdatedAt.ToLocalTime();
+                }
+            }
+            return View(res);
         }
 
         // GET: AdminArea/Bookings/Details/5
@@ -46,7 +56,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.Id = booking.Id;
             vm.City = booking.City!.CityName;
-            vm.LastAndFirstName = booking.Driver!.AppUser!.LastAndFirstName;
+            vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
             vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
             vm.AdditionalInfo = booking.AdditionalInfo;
             vm.DestinationAddress = booking.DestinationAddress;
@@ -55,7 +65,11 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.HasAnAssistant = booking.HasAnAssistant;
             vm.NumberOfPassengers = booking.NumberOfPassengers;
             vm.StatusOfBooking = booking.StatusOfBooking;
-            vm.PickUpDateAndTime = _uow.Bookings.PickUpDateAndTimeStrFormat(booking);
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+            vm.CreatedBy = booking.CreatedBy!;
+            vm.CreatedAt = booking.CreatedAt.ToLocalTime().ToString("G");
+            vm.CreatedBy = booking.UpdatedBy!;
+            vm.CreatedBy = booking.UpdatedAt.ToLocalTime().ToString("G");
 
             return View(vm);
         }
@@ -192,8 +206,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                         booking.StatusOfBooking = StatusOfBooking.Awaiting;
                         booking.PickUpDateAndTime = vm.PickUpDateAndTime;
 
-                        
-                            _uow.Bookings.Update(booking);
+                        _uow.Bookings.Update(booking);
 
                     }
                     var drive = await _uow.Drives
@@ -245,7 +258,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
             vm.Id = booking.Id;
             vm.City = booking.City!.CityName;
-            vm.LastAndFirstName = booking.Driver!.AppUser!.LastAndFirstName;
+            vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
             
             vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
             vm.AdditionalInfo = booking.AdditionalInfo;
@@ -255,7 +268,12 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.HasAnAssistant = booking.HasAnAssistant;
             vm.NumberOfPassengers = booking.NumberOfPassengers;
             vm.StatusOfBooking = booking.StatusOfBooking;
-            vm.PickUpDateAndTime = _uow.Bookings.PickUpDateAndTimeStrFormat(booking);
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+            vm.CreatedBy = booking.CreatedBy!;
+            vm.CreatedAt = booking.CreatedAt.ToLocalTime().ToString("G");
+            vm.CreatedBy = booking.UpdatedBy!;
+            vm.CreatedBy = booking.UpdatedAt.ToLocalTime().ToString("G");
+
             return View(vm);
         }
 

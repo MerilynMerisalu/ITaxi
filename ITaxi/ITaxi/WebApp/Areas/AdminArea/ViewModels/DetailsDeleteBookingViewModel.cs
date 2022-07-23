@@ -1,48 +1,52 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using App.Domain.Enum;
+using App.Resources.Areas.App.Domain.AdminArea;
+using Base.Resources;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class DetailsDeleteBookingViewModel
+public class DetailsDeleteBookingViewModel: AdminAreaBaseViewModel
 {
     public Guid Id { get; set; }
     
-    [DisplayName("Shift Duration Time")]
+    [Display(ResourceType = typeof(Booking), Name = "Schedule")]
 
     public string ShiftDurationTime { get; set; } = default!;
     
-    [DisplayName("Last and First Name")]
-
-    public string LastAndFirstName { get; set; } = default!;
-    
-    [DisplayName("Vehicle Type")]
-    public string VehicleType { get; set; } = default!;
+    [Display(ResourceType = typeof(Booking), Name = nameof(Driver))]
 
     public string Driver { get; set; } = default!;
-    public string Vehicle { get; set; } = default!;
+    
+    [Display(ResourceType = typeof(Booking), Name = nameof(VehicleType))]
+    public string VehicleType { get; set; } = default!;
 
+    [Display(ResourceType = typeof(Booking), Name = nameof(Vehicle))]
+    public string Vehicle { get; set; } = default!;
+    
+    [Display(ResourceType = typeof(Booking), Name = nameof(City))]
     public string City { get; set; } = default!;
 
-    [DisplayName("Pickup Date and Time")]
-    /*[DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]*/
+    [Display(ResourceType = typeof(Booking), Name = nameof(PickUpDateAndTime))]
+    
     public string PickUpDateAndTime { get; set; } = default!;
     
-    [DisplayName("Pickup Address")]
+    [Display(ResourceType = typeof(Booking), Name = nameof(PickupAddress))]
     public string PickupAddress { get; set; } = default!;
     
-    [DisplayName("Destination Address")]
+    [Display(ResourceType = typeof(Booking), Name = nameof(DestinationAddress))]
     public string DestinationAddress { get; set; } = default!;
     
-    [DisplayName("Number of Passengers")]
+    [Display(ResourceType = typeof(Booking), Name = nameof(NumberOfPassengers))]
     public int NumberOfPassengers { get; set; }
 
-    [DisplayName("Has an Assistant")]
+    [Display(ResourceType = typeof(Booking), Name = nameof(HasAnAssistant))]
     public bool HasAnAssistant { get; set; }
-    [DisplayName("Additional Info")]
+    
+    [Display(ResourceType = typeof(Booking), Name = nameof(AdditionalInfo))]
     public string? AdditionalInfo { get; set; }
     
-    [DisplayName("Status of Booking")]
+    [Display(ResourceType = typeof(Booking), Name = nameof(StatusOfBooking))]
 
     public StatusOfBooking StatusOfBooking { get; set; }
 

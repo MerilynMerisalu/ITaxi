@@ -33,6 +33,7 @@
       <Folder Include="Areas\AdminArea\Views" />
       <Folder Include="Areas\CustomerArea\ViewModels" />
       <Folder Include="Areas\Identity" />
+      <Folder Include="Views\Shared\CustomerArea" />
       <Folder Include="wwwroot\Images" />
     </ItemGroup>
 
