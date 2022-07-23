@@ -1,68 +1,82 @@
+@using Base.Resources
 @model IEnumerable<App.Domain.Booking>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = Common.Index;
 }
 
-<h1>Index</h1>
+<h1>@Common.Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Common.CreateNew</a>
 </p>
 <form action="@Url.Action("SearchByCity")" method="post">
-    <input type="text" name="search" />
-    <input type="submit" value="Search" />
+    <input type="text" name="search"/>
+    <input type="submit" value="@Common.Search"/>
 </form>
 <table class="table">
     <thead>
-        <tr>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.Driver)
-            </th>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.VehicleType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vehicle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PickUpDateAndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PickupAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DestinationAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumberOfPassengers)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HasAnAssistant)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdditionalInfo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StatusOfBooking)
-            </th>
-            
-            <th></th>
-        </tr>
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Driver)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.VehicleType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Vehicle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PickUpDateAndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PickupAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DestinationAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumberOfPassengers)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HasAnAssistant)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AdditionalInfo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusOfBooking)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </th>
+
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Driver!.AppUser!.LastAndFirstName)
             </td>
             <td>
-                @item.VehicleType!.VehicleTypeName
+                @Html.DisplayTextFor(modelItem => item.VehicleType!.VehicleTypeName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Vehicle!.VehicleIdentifier)
@@ -91,13 +105,25 @@
             <td>
                 @Html.DisplayFor(modelItem => item.StatusOfBooking)
             </td>
-            
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

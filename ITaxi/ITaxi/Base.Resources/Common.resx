@@ -152,4 +152,7 @@
     <data name="ErrorMessageComparePasswords" xml:space="preserve">
         <value>The password and confirmation password do not match.</value>
     </data>
+    <data name="Search" xml:space="preserve">
+        <value>Search</value>
+    </data>
 </root>

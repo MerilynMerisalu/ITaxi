@@ -97,7 +97,7 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shift Duration Time.
+        ///   Looks up a localized string similar to Schedule.
         /// </summary>
         public static string Schedule {
             get {

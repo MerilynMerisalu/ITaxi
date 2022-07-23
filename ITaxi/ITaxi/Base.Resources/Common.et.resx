@@ -152,4 +152,7 @@
     <data name="ErrorMessageComparePasswords" xml:space="preserve">
         <value>Salasõna ja salasõna kinnitus ei kattu.</value>
     </data>
+    <data name="Search" xml:space="preserve">
+        <value>Otsi</value>
+    </data>
 </root>

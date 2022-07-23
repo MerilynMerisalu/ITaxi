@@ -2,63 +2,83 @@
 using System.ComponentModel.DataAnnotations;
 using App.Domain.Enum;
 using Base.Domain;
+using Base.Resources;
 
 namespace App.Domain;
 
 public class Booking : DomainEntityMetaId
 {
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Schedule")]
     public Guid ScheduleId { get; set; }
-
+    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(Schedule))]
     public Schedule? Schedule { get; set; }
+    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Driver")]
 
     public Guid DriverId { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(Driver))]
     public Driver? Driver { get; set; }
 
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Customer")]
     public Guid CustomerId { get; set; }
 
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(Customer))]
     public Customer? Customer { get; set; }
 
-    [DisplayName("Vehicle Type")] public Guid VehicleTypeId { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "VehicleType")] 
+    public Guid VehicleTypeId { get; set; }
 
-    [DisplayName("Vehicle Type")] public VehicleType? VehicleType { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(VehicleType))]
+    public VehicleType? VehicleType { get; set; }
 
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Vehicle")]
     public Guid VehicleId { get; set; }
+    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(Vehicle))]
 
     public Vehicle? Vehicle { get; set; }
 
-    [DisplayName(nameof(City))] public Guid CityId { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "City")]
+    public Guid CityId { get; set; }
 
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(City))]
     public City? City { get; set; }
 
     [DataType(DataType.DateTime)]
-    [DisplayName("Pickup Date and Time")]
-    [DisplayFormat(DataFormatString = "{0:G}")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(PickUpDateAndTime))]
+    [DisplayFormat(DataFormatString = "{0:g}")]
     public DateTime PickUpDateAndTime { get; set; }
 
-    [Required]
-    [MaxLength(50)]
-    [StringLength(50, MinimumLength = 1)]
-    [DisplayName("Pickup Address")]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(PickupAddress))]
     public string PickupAddress { get; set; } = default!;
 
-    [Required]
-    [MaxLength(50)]
-    [DisplayName("Destination Address")]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(DestinationAddress))]
     public string DestinationAddress { get; set; } = default!;
 
-    [Required]
-    [Range(1, 5)]
-    [DisplayName("Number Of Passengers")]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Range(1, 5, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(NumberOfPassengers))]
     public int NumberOfPassengers { get; set; }
+    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(HasAnAssistant))]
 
-    [DisplayName("Has an Assistant?")] public bool HasAnAssistant { get; set; }
+    public bool HasAnAssistant { get; set; }
 
-    [MaxLength(1000)]
+    [MaxLength(1000, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     [DataType(DataType.MultilineText)]
-    [DisplayName("Additional Info")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(AdditionalInfo))]
+
+    
     public string? AdditionalInfo { get; set; }
 
-    [DisplayName("Status of Booking")] public StatusOfBooking StatusOfBooking { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(StatusOfBooking))]
+ 
+    public StatusOfBooking StatusOfBooking { get; set; }
 
     public Guid? DriveId { get; set; }
     public Drive? Drive { get; set; }

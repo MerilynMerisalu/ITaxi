@@ -23,15 +23,21 @@ public enum VehicleAvailability
 
 public enum StatusOfBooking
 {
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "AwaitingForConfirmation")]    
     Awaiting = 1,
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Accepted")]
     Accepted,
-    [Display(Name = "In-Progress")] InProgress,
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "InProgress")]
+    InProgress,
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Finished")]
     Finished,
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Cancelled")]
     Cancelled
 }
 
 public enum IsActive
 {   [Display(ResourceType = typeof(Common), Name = "Active")]
     Active = 1,
-    [Display(ResourceType = typeof(Common), Name = "InActive")] InActive,
+    [Display(ResourceType = typeof(Common), Name = "InActive")]
+    InActive,
 }
