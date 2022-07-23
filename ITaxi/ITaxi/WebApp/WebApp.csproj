@@ -31,9 +31,8 @@
     <ItemGroup>
       <Folder Include="ApiControllers" />
       <Folder Include="Areas\AdminArea\Views" />
+      <Folder Include="Areas\CustomerArea\ViewModels" />
       <Folder Include="Areas\Identity" />
-      <Folder Include="DTO" />
-      <Folder Include="ViewModels" />
       <Folder Include="wwwroot\Images" />
     </ItemGroup>
 

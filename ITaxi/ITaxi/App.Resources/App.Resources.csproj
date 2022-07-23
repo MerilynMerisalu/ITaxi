@@ -95,6 +95,10 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Customer.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Areas\App.Domain\AdminArea\Booking.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Booking.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -208,6 +212,15 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Customer.resx</DependentUpon>
       </Compile>
+      <Compile Update="Areas\App.Domain\AdminArea\Booking.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Booking.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Areas\App.Domain\CustomerArea" />
     </ItemGroup>
 
     
