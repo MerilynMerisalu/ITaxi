@@ -359,7 +359,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         }
         
         // POST: AdminArea/Bookings/Decline/5
-        [HttpPost, ActionName("Decline")]
+        [HttpPost, ActionName(nameof(Decline))]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeclineConfirmed(Guid id)
         {
@@ -379,7 +379,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         }
 
         // POST: AdminArea/Bookings/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName(nameof(Delete))]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
