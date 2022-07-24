@@ -62,10 +62,13 @@
     <data name="Finished" xml:space="preserve">
         <value>Lõpetatud</value>
     </data>
-    <data name="Cancelled" xml:space="preserve">
+    <data name="Declined" xml:space="preserve">
         <value>Tühistatud</value>
     </data>
     <data name="BookingName" xml:space="preserve">
         <value>Broneering</value>
+    </data>
+    <data name="Decline" xml:space="preserve">
+        <value>Tühista</value>
     </data>
 </root>

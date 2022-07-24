@@ -69,10 +69,13 @@
     <data name="Finished" xml:space="preserve">
         <value>Finished</value>
     </data>
-    <data name="Cancelled" xml:space="preserve">
-        <value>Cancelled</value>
+    <data name="Declined" xml:space="preserve">
+        <value>Declined</value>
     </data>
     <data name="BookingName" xml:space="preserve">
         <value>Booking</value>
+    </data>
+    <data name="Decline" xml:space="preserve">
+        <value>Decline </value>
     </data>
 </root>

@@ -71,8 +71,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime().ToString("g");
             vm.CreatedBy = booking.CreatedBy!;
             vm.CreatedAt = booking.CreatedAt.ToLocalTime().ToString("G");
-            vm.CreatedBy = booking.UpdatedBy!;
-            vm.CreatedBy = booking.UpdatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = booking.UpdatedBy!;
+            vm.UpdatedAt = booking.UpdatedAt.ToLocalTime().ToString("G");
 
             return View(vm);
         }
@@ -286,6 +286,43 @@ namespace WebApp.Areas.AdminArea.Controllers
             return View(vm);
         }
 
+        
+        public async Task<IActionResult> Decline(Guid? id)
+        {
+            var vm = new DeclineBookingViewModel();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value);
+            if (booking == null)
+            {
+                return NotFound();
+            }
+
+            vm.Id = booking.Id;
+            vm.City = booking.City!.CityName;
+            vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
+            vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
+            vm.AdditionalInfo = booking.AdditionalInfo;
+            vm.DestinationAddress = booking.DestinationAddress;
+            vm.PickupAddress = booking.PickupAddress;
+            vm.VehicleType = booking.VehicleType!.VehicleTypeName;
+            vm.HasAnAssistant = booking.HasAnAssistant;
+            vm.NumberOfPassengers = booking.NumberOfPassengers;
+            vm.StatusOfBooking = booking.StatusOfBooking;
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+            vm.CreatedBy = booking.CreatedBy!;
+            vm.CreatedAt = booking.CreatedAt.ToLocalTime().ToString("G");
+            vm.UpdatedBy = booking.UpdatedBy!;
+            vm.UpdatedAt = booking.UpdatedAt.ToLocalTime().ToString("G");
+
+            return View(vm);
+        }
+
+        
+        
         // GET: AdminArea/Bookings/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {

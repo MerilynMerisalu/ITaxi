@@ -31,8 +31,8 @@ public enum StatusOfBooking
     InProgress,
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Finished")]
     Finished,
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Cancelled")]
-    Cancelled
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Declined")]
+    Declined
 }
 
 public enum IsActive

@@ -97,15 +97,6 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancelled.
-        /// </summary>
-        public static string Cancelled {
-            get {
-                return ResourceManager.GetString("Cancelled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to City.
         /// </summary>
         public static string City {
@@ -120,6 +111,24 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string Customer {
             get {
                 return ResourceManager.GetString("Customer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decline .
+        /// </summary>
+        public static string Decline {
+            get {
+                return ResourceManager.GetString("Decline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Declined.
+        /// </summary>
+        public static string Declined {
+            get {
+                return ResourceManager.GetString("Declined", resourceCulture);
             }
         }
         
