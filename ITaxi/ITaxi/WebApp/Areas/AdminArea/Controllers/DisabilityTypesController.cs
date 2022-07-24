@@ -21,7 +21,15 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/DisabilityTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.DisabilityTypes.GetAllOrderedDisabilityTypesAsync());
+            var res = await _uow.DisabilityTypes.GetAllOrderedDisabilityTypesAsync();
+#warning Should this be a repo method
+            foreach (var disabilityType in res)
+            {
+                disabilityType.CreatedAt = disabilityType.CreatedAt.ToLocalTime();
+                disabilityType.UpdatedAt = disabilityType.UpdatedAt.ToLocalTime();
+            }
+
+            return View(res);
         }
 
         // GET: AdminArea/DisabilityTypes/Details/5
@@ -69,6 +77,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(vm);
         }
 
@@ -129,8 +138,10 @@ namespace WebApp.Areas.AdminArea.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(vm);
         }
 
@@ -162,10 +173,12 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             var disabilityType = await _uow.DisabilityTypes
                 .FirstOrDefaultAsync(id);
-            if (await _uow.Customers.AnyAsync(d => disabilityType != null && d!.DisabilityTypeId.Equals(disabilityType.Id)))
+            if (await _uow.Customers.AnyAsync(d =>
+                    disabilityType != null && d!.DisabilityTypeId.Equals(disabilityType.Id)))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
+
             if (disabilityType != null) _uow.DisabilityTypes.Remove(disabilityType);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

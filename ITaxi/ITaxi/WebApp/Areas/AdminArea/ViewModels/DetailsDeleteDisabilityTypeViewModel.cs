@@ -4,7 +4,7 @@ using App.Resources.Areas.App.Domain.AdminArea;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class DetailsDeleteDisabilityTypeViewModel
+public class DetailsDeleteDisabilityTypeViewModel: AdminAreaBaseViewModel
 {
     public Guid Id { get; set; }
 
