@@ -58,6 +58,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.Id = booking.Id;
+            vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
             vm.City = booking.City!.CityName;
             vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
             vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
@@ -302,6 +303,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             vm.Id = booking.Id;
+            vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
             vm.City = booking.City!.CityName;
             vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
             vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
@@ -338,6 +340,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
             vm.Id = booking.Id;
+            vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
             vm.City = booking.City!.CityName;
             vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
             
