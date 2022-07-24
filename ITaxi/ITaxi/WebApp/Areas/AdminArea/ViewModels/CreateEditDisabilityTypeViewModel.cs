@@ -10,7 +10,7 @@ public class CreateEditDisabilityTypeViewModel
     public Guid Id { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-    [MaxLength(80, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [StringLength(80, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(DisabilityType), Name = nameof(DisabilityTypeName))]
     public string DisabilityTypeName { get; set; } = default!;
 }

@@ -129,7 +129,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                         vehicleType.Id = vm.Id;
                         vehicleType.VehicleTypeName.SetTranslation(vm.VehicleTypeName);
                         #warning Need to fix the implicit conversion operator to use the existing translation, if there is one
-                        vehicleType.VehicleTypeName = vm.VehicleTypeName;
+                        //vehicleType.VehicleTypeName = vm.VehicleTypeName;
                         _uow.VehicleTypes.Update(vehicleType);
                         await _uow.SaveChangesAsync();
                     }
