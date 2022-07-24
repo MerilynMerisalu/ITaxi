@@ -71,4 +71,7 @@
     <data name="Decline" xml:space="preserve">
         <value>Tühista</value>
     </data>
+    <data name="AreYouSureYouWantToDeclineThis" xml:space="preserve">
+        <value>Kas olete kindel, et soovite antud broneeringu tühistada?</value>
+    </data>
 </root>

@@ -286,7 +286,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             return View(vm);
         }
 
-        
+        // GET: AdminArea/Bookings/Decline/5
         public async Task<IActionResult> Decline(Guid? id)
         {
             var vm = new DeclineBookingViewModel();
@@ -356,6 +356,26 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.CreatedBy = booking.UpdatedAt.ToLocalTime().ToString("G");
 
             return View(vm);
+        }
+        
+        // POST: AdminArea/Bookings/Decline/5
+        [HttpPost, ActionName("Decline")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeclineConfirmed(Guid id)
+        {
+            var booking = await _uow.Bookings.FirstOrDefaultAsync(id);
+            if (booking != null)
+            {
+                var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id));
+                _uow.Bookings.BookingDecline(booking);
+                drive!.Booking = booking;
+                _uow.Bookings.Update(booking);
+                await _uow.SaveChangesAsync();
+                _uow.Drives.Update(drive);
+
+            }
+            await _uow.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: AdminArea/Bookings/Delete/5

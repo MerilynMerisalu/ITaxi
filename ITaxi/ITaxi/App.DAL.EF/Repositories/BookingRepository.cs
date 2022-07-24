@@ -1,5 +1,6 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
+using App.Domain.Enum;
 using Base.DAL.EF;
 using Base.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -150,6 +151,14 @@ public class BookingRepository: BaseEntityRepository<Booking, AppDbContext>, IBo
     public DateTime DateTimeFormatting()
     {
         return Convert.ToDateTime(DateTime.Now.ToString("g"));
+    }
+
+    
+
+    public Booking BookingDecline(Booking booking)
+    {
+        booking.StatusOfBooking = StatusOfBooking.Declined;
+        return booking;
     }
 
     public override async Task<Booking?> FirstOrDefaultAsync(Guid id, bool noTracking = true)

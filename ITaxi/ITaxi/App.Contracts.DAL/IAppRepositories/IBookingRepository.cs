@@ -18,5 +18,7 @@ public interface IBookingRepository: IEntityRepository<Booking>
     Task<IEnumerable<Booking?>> SearchByCityAsync(string search);
     string PickUpDateAndTimeStrFormat(Booking booking);
     DateTime DateTimeFormatting();
+    
+    Booking BookingDecline(Booking booking);
 
 }

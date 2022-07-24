@@ -79,6 +79,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are You Sure You Want To Decline This? .
+        /// </summary>
+        public static string AreYouSureYouWantToDeclineThis {
+            get {
+                return ResourceManager.GetString("AreYouSureYouWantToDeclineThis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Awaiting for Confirmation.
         /// </summary>
         public static string AwaitingForConfirmation {
