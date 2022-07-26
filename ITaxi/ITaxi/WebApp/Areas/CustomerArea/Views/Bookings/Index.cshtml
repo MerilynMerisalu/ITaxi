@@ -51,8 +51,10 @@
         <th>
             @Html.DisplayNameFor(model => model.AdditionalInfo)
         </th>
-       
-
+        <th>
+            @Html.DisplayNameFor(model => model.StatusOfBooking)
+        </th>
+        
         <th></th>
     </tr>
     </thead>
@@ -90,11 +92,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.AdditionalInfo)
             </td>
-           
             <td>
+                @Html.DisplayFor(modelItem => item.StatusOfBooking)
+            </td>
+            
+            <td>
+                <a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
-                               <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
-                               <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
             </td>
         </tr>
     }

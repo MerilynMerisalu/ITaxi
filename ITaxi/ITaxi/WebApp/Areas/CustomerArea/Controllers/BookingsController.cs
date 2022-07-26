@@ -9,7 +9,7 @@ using WebApp.Areas.CustomerArea.ViewModels;
 
 namespace WebApp.Areas.CustomerArea.Controllers
 {
-    [Area("CustomerArea")]
+    [Area(nameof(CustomerArea))]
     public class BookingsController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -53,7 +53,7 @@ namespace WebApp.Areas.CustomerArea.Controllers
             vm.VehicleType = booking.VehicleType!.VehicleTypeName;
             vm.HasAnAssistant = booking.HasAnAssistant;
             vm.NumberOfPassengers = booking.NumberOfPassengers;
-
+            vm.StatusOfBooking = booking.StatusOfBooking;
             vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToString("g");
 
             return View(vm);
@@ -62,7 +62,7 @@ namespace WebApp.Areas.CustomerArea.Controllers
         // GET: CustomerArea/Bookings/Create
         public async Task<IActionResult> Create()
         {
-            var vm = new ViewModels.CreateBookingViewModel();
+            var vm = new CreateBookingViewModel();
             vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
                 nameof(City.Id), nameof(City.CityName));
             vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
@@ -227,6 +227,56 @@ namespace WebApp.Areas.CustomerArea.Controllers
             
             return View(vm);
         }
+        // GET: CustomerArea/Bookings/Decline/5
+        public async Task<IActionResult> Decline(Guid? id)
+        {
+            var vm = new DeclineBookingViewModel();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value);
+            if (booking == null)
+            {
+                return NotFound();
+            }
+
+            vm.Id = booking.Id;
+            vm.City = booking.City!.CityName;
+            vm.AdditionalInfo = booking.AdditionalInfo;
+            vm.DestinationAddress = booking.DestinationAddress;
+            vm.PickupAddress = booking.PickupAddress;
+            vm.VehicleType = booking.VehicleType!.VehicleTypeName;
+            vm.HasAnAssistant = booking.HasAnAssistant;
+            vm.NumberOfPassengers = booking.NumberOfPassengers;
+            vm.StatusOfBooking = booking.StatusOfBooking;
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+            
+
+            return View(vm);
+        }
+        // POST: AdminArea/Bookings/Decline/5
+        [HttpPost, ActionName(nameof(Decline))]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeclineConfirmed(Guid id)
+        {
+            var booking = await _uow.Bookings.FirstOrDefaultAsync(id);
+            if (booking != null)
+            {
+                var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id));
+                _uow.Bookings.BookingDecline(booking);
+                drive!.Booking = booking;
+                _uow.Bookings.Update(booking);
+                await _uow.SaveChangesAsync();
+                _uow.Drives.Update(drive);
+
+            }
+            await _uow.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+
 
         // GET: CustomerArea/Bookings/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
@@ -251,12 +301,14 @@ namespace WebApp.Areas.CustomerArea.Controllers
             vm.VehicleType = booking.VehicleType!.VehicleTypeName;
             vm.HasAnAssistant = booking.HasAnAssistant;
             vm.NumberOfPassengers = booking.NumberOfPassengers;
+            vm.StatusOfBooking = booking.StatusOfBooking;
             vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToString("g");
             return View(vm);
         }
-
+        
+        
         // POST: CustomerArea/Bookings/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName(nameof(Delete))]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
