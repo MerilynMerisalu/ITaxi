@@ -37,6 +37,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                     booking.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime();
                     booking.CreatedAt = booking.CreatedAt.ToLocalTime();
                     booking.UpdatedAt = booking.UpdatedAt.ToLocalTime();
+                    booking.DeclineDateAndTime = booking.DeclineDateAndTime.ToLocalTime();
                 }
             }
             return View(res);
@@ -371,6 +372,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id));
                 _uow.Bookings.BookingDecline(booking);
+                booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
+                booking.IsDeclined = true;
                 drive!.Booking = booking;
                 _uow.Bookings.Update(booking);
                 await _uow.SaveChangesAsync();

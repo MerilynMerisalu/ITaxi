@@ -65,7 +65,11 @@
         <th>
             @Html.DisplayNameFor(model => model.UpdatedAt)
         </th>
-
+        
+        <th>
+            @Html.DisplayNameFor(model => model.DeclineDateAndTime)
+        </th>
+        
         <th></th>
     </tr>
     </thead>
@@ -118,7 +122,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
-
+            @if (item.IsDeclined)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeclineDateAndTime)
+                </td>
+            
+            }
+            <td>
+                
+            </td>
             <td>
                 <a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |

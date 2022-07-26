@@ -82,4 +82,9 @@ public class Booking : DomainEntityMetaId
     public Drive? Drive { get; set; }
 
     public  string DriveTime => $"{PickUpDateAndTime:g}";
+    
+    public bool IsDeclined { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.Common), Name = "DeclineDateAndTime")]
+    public DateTime DeclineDateAndTime { get; set; }
+    
 }

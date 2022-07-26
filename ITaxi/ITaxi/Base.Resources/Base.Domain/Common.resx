@@ -42,4 +42,7 @@
     <data name="CreatePdf" xml:space="preserve">
         <value>Create PDF</value>
     </data>
+    <data name="DeclineDateAndTime" xml:space="preserve">
+        <value>Date and Time of the Decline </value>
+    </data>
 </root>

@@ -88,6 +88,15 @@ namespace App.Resources.Areas.App.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date and Time of the Decline .
+        /// </summary>
+        public static string DeclineDateAndTime {
+            get {
+                return ResourceManager.GetString("DeclineDateAndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to System.
         /// </summary>
         public static string System {

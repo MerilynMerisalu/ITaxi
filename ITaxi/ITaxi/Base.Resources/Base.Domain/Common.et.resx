@@ -33,4 +33,7 @@
     <data name="CreatePdf" xml:space="preserve">
         <value>Loo PDF</value>
     </data>
+    <data name="DeclineDateAndTime" xml:space="preserve">
+        <value>Tühistamiskuupäev ja-kellaaeg</value>
+    </data>
 </root>
