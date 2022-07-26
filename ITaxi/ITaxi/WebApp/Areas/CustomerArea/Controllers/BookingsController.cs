@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.Domain;
 using App.Domain.Enum;
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.CustomerArea.ViewModels;
 
 
 namespace WebApp.Areas.CustomerArea.Controllers
 {
     [Area(nameof(CustomerArea))]
+    [Authorize(Roles = "Admin, Customer")]
     public class BookingsController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -98,7 +100,7 @@ namespace WebApp.Areas.CustomerArea.Controllers
                 booking.NumberOfPassengers = vm.NumberOfPassengers;
                 booking.StatusOfBooking = StatusOfBooking.Awaiting;
 #warning Booking PickUpDateAndTime needs a custom validation
-                booking.PickUpDateAndTime = vm.PickUpDateAndTime.ToUniversalTime();
+                booking.PickUpDateAndTime = DateTime.Parse(vm.PickUpDateAndTime).ToUniversalTime();
                 _uow.Bookings.Add(booking);
 
                 var drive = new Drive()

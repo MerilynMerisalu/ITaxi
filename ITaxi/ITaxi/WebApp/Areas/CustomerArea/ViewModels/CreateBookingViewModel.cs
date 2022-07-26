@@ -19,10 +19,12 @@ public class CreateBookingViewModel
     public Guid CityId { get; set; }
 
     public SelectList? Cities { get; set; }
-    
+
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Display(ResourceType = typeof(Booking), Name = nameof(PickUpDateAndTime))]
-    public DateTime PickUpDateAndTime { get; set; }
+    [DataType(DataType.DateTime)]
+    [DisplayFormat(DataFormatString = "{0:g}")]
+    public string PickUpDateAndTime { get; set; } = default!;
 
     [Display(ResourceType = typeof(Booking), Name = nameof(PickupAddress))]
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
