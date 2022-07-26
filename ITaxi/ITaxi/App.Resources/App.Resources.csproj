@@ -100,7 +100,7 @@
         <LastGenOutput>Booking.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="Areas\App.Domain\CustomerArea\Booking.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Booking.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>

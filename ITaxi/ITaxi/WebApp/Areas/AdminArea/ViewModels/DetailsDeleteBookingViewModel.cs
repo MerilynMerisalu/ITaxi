@@ -18,6 +18,10 @@ public class DetailsDeleteBookingViewModel: AdminAreaBaseViewModel
 
     public string Driver { get; set; } = default!;
     
+    [Display(ResourceType = typeof(Booking), Name = nameof(Customer))]
+
+    public string Customer { get; set; } = default!;
+    
     [Display(ResourceType = typeof(Booking), Name = nameof(VehicleType))]
     public string VehicleType { get; set; } = default!;
 

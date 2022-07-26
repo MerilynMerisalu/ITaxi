@@ -1,26 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain.Enum;
-using App.Resources.Areas.App.Domain.AdminArea;
+using App.Resources.Areas.App.Domain.CustomerArea;
 
-namespace WebApp.Areas.AdminArea.ViewModels;
+namespace WebApp.Areas.CustomerArea.ViewModels;
 
-public class DeclineBookingViewModel: AdminAreaBaseViewModel
+public class DetailsDeleteBookingViewModel
 {
     public Guid Id { get; set; }
-    
-    [Display(ResourceType = typeof(Booking), Name = "Schedule")]
-
-    public string ShiftDurationTime { get; set; } = default!;
-    
-    [Display(ResourceType = typeof(Booking), Name = nameof(Customer))]
-
-    public string Customer { get; set; } = default!;
-
-    
-    [Display(ResourceType = typeof(Booking), Name = nameof(Driver))]
-
-    public string Driver { get; set; } = default!;
-    
     [Display(ResourceType = typeof(Booking), Name = nameof(VehicleType))]
     public string VehicleType { get; set; } = default!;
 
@@ -48,8 +33,5 @@ public class DeclineBookingViewModel: AdminAreaBaseViewModel
     
     [Display(ResourceType = typeof(Booking), Name = nameof(AdditionalInfo))]
     public string? AdditionalInfo { get; set; }
-    
-    [Display(ResourceType = typeof(Booking), Name = nameof(StatusOfBooking))]
 
-    public StatusOfBooking StatusOfBooking { get; set; }
 }

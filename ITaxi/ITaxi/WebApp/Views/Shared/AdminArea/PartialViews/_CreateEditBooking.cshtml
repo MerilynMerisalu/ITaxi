@@ -13,7 +13,12 @@
     <option>@Common.PleaseSelect</option>
 </select>
 </div>
-
+<div class="form-group">
+    <label asp-for="CustomerId" class="control-label"></label>
+    <select asp-for="CustomerId" class="form-control" asp-items="Model.Customers">
+        <option>@Common.PleaseSelect</option>
+    </select>
+</div>
 <div class="form-group">
     <label asp-for="VehicleTypeId" class="control-label"></label>
     <select asp-for="VehicleTypeId" class="form-control" asp-items="Model.VehicleTypes">
@@ -21,21 +26,15 @@
     </select>
 </div>
 <div class="form-group">
-    <label asp-for="CityId" class="control-label"></label>
-    <select asp-for="CityId" class="form-control" asp-items="Model.Cities">
-        <option>@Common.PleaseSelect</option>
-    </select>
-</div>
-<div class="form-group">
-    <label asp-for="CustomerId" class="control-label"></label>
-    <select asp-for="CustomerId" class="form-control" asp-items="Model.Customers">
+    <label asp-for="VehicleId" class="control-label"></label>
+    <select asp-for="VehicleId" class="form-control" asp-items="Model.Vehicles">
         <option>@Common.PleaseSelect</option>
     </select>
 </div>
 
 <div class="form-group">
-    <label asp-for="VehicleId" class="control-label"></label>
-    <select asp-for="VehicleId" class="form-control" asp-items="Model.Vehicles">
+    <label asp-for="CityId" class="control-label"></label>
+    <select asp-for="CityId" class="form-control" asp-items="Model.Cities">
         <option>@Common.PleaseSelect</option>
     </select>
 </div>

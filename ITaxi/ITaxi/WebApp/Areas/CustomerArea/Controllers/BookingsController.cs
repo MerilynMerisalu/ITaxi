@@ -1,68 +1,74 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.Contracts.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using App.Domain.Enum;
+using WebApp.Areas.CustomerArea.ViewModels;
+
 
 namespace WebApp.Areas.CustomerArea.Controllers
 {
     [Area("CustomerArea")]
     public class BookingsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public BookingsController(AppDbContext context)
+        public BookingsController( IAppUnitOfWork uow)
         {
-            _context = context;
+            
+            _uow = uow;
         }
 
+        
         // GET: CustomerArea/Bookings
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Bookings.Include(b => b.City).Include(b => b.Customer).Include(b => b.Drive).Include(b => b.Driver).Include(b => b.Schedule).Include(b => b.Vehicle).Include(b => b.VehicleType);
-            return View(await appDbContext.ToListAsync());
+            
+            return View(await _uow.Bookings.GettingAllOrderedBookingsAsync());
         }
 
         // GET: CustomerArea/Bookings/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.Bookings == null)
+            var vm = new DetailsDeleteBookingViewModel();
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var booking = await _context.Bookings
-                .Include(b => b.City)
-                .Include(b => b.Customer)
-                .Include(b => b.Drive)
-                .Include(b => b.Driver)
-                .Include(b => b.Schedule)
-                .Include(b => b.Vehicle)
-                .Include(b => b.VehicleType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value);
             if (booking == null)
             {
                 return NotFound();
             }
 
-            return View(booking);
+            vm.Id = booking.Id;
+            
+            vm.City = booking.City!.CityName;
+            vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
+            vm.AdditionalInfo = booking.AdditionalInfo;
+            vm.DestinationAddress = booking.DestinationAddress;
+            vm.PickupAddress = booking.PickupAddress;
+            vm.VehicleType = booking.VehicleType!.VehicleTypeName;
+            vm.HasAnAssistant = booking.HasAnAssistant;
+            vm.NumberOfPassengers = booking.NumberOfPassengers;
+
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToString("g");
+
+            return View(vm);
         }
 
         // GET: CustomerArea/Bookings/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName");
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id");
-            ViewData["DriveId"] = new SelectList(_context.Drives, "Id", "Id");
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address");
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id");
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "Id", "VehiclePlateNumber");
-            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "Id", "Id");
-            return View();
+            var vm = new ViewModels.CreateBookingViewModel();
+            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
+                nameof(City.Id), nameof(City.CityName));
+            vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+                nameof(VehicleType.Id), nameof(VehicleType.VehicleTypeName));
+            
+            return View(vm);
         }
 
         // POST: CustomerArea/Bookings/Create
@@ -70,56 +76,94 @@ namespace WebApp.Areas.CustomerArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ScheduleId,DriverId,CustomerId,VehicleTypeId,VehicleId,CityId,PickUpDateAndTime,PickupAddress,DestinationAddress,NumberOfPassengers,HasAnAssistant,AdditionalInfo,StatusOfBooking,DriveId,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Booking booking)
+        public async Task<IActionResult> Create(CreateBookingViewModel vm)
         {
+            var booking = new Booking();
             if (ModelState.IsValid)
             {
                 booking.Id = Guid.NewGuid();
-                _context.Add(booking);
-                await _context.SaveChangesAsync();
+                booking.CityId = vm.CityId;
+                booking.Customer =  await _uow.Customers.FirstAsync();
+                booking.Driver = await _uow.Drivers.FirstAsync();
+                #warning needs fixing
+                booking.Schedule = await _uow.Schedules.FirstAsync();
+                #warning needs fixing
+                booking.Vehicle =
+                    await _uow.Vehicles.FirstAsync();
+                booking.AdditionalInfo = vm.AdditionalInfo;
+                booking.DestinationAddress = vm.DestinationAddress;
+                booking.PickupAddress = vm.PickupAddress;
+                booking.VehicleTypeId = vm.VehicleTypeId;
+                booking.HasAnAssistant = vm.HasAnAssistant;
+                booking.NumberOfPassengers = vm.NumberOfPassengers;
+                booking.StatusOfBooking = StatusOfBooking.Awaiting;
+#warning Booking PickUpDateAndTime needs a custom validation
+                booking.PickUpDateAndTime = vm.PickUpDateAndTime.ToUniversalTime();
+                _uow.Bookings.Add(booking);
+
+                var drive = new Drive()
+                {
+                    Id = new Guid(),
+                    Booking = booking,
+                    DriverId = booking.DriverId
+                };
+
+                _uow.Drives.Add(drive);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName", booking.CityId);
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", booking.CustomerId);
-            ViewData["DriveId"] = new SelectList(_context.Drives, "Id", "Id", booking.DriveId);
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address", booking.DriverId);
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", booking.ScheduleId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "Id", "VehiclePlateNumber", booking.VehicleId);
-            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "Id", "Id", booking.VehicleTypeId);
-            return View(booking);
+
+            vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesWithoutCountyAsync(), nameof(City.Id),
+                nameof(City.CityName), nameof(booking.CityId));
+            vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+                nameof(VehicleType.Id), nameof(VehicleType.VehicleTypeName),
+                nameof(booking.VehicleTypeId));
+            
+            return View(vm);
         }
 
-        // GET: CustomerArea/Bookings/Edit/5
+        // GET: AdminArea/Bookings/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.Bookings == null)
+            var vm = new EditBookingViewModel();
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var booking = await _context.Bookings.FindAsync(id);
+            var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.Id.Equals(id));
             if (booking == null)
             {
                 return NotFound();
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName", booking.CityId);
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", booking.CustomerId);
-            ViewData["DriveId"] = new SelectList(_context.Drives, "Id", "Id", booking.DriveId);
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address", booking.DriverId);
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", booking.ScheduleId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "Id", "VehiclePlateNumber", booking.VehicleId);
-            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "Id", "Id", booking.VehicleTypeId);
-            return View(booking);
+
+            
+            vm.Cities = new SelectList(await _uow.Cities.GetAllCitiesWithoutCountyAsync()
+                , nameof(City.Id), nameof(City.CityName));
+            vm.AdditionalInfo = booking.AdditionalInfo;
+            vm.CityId = booking.CityId;
+            vm.DestinationAddress = booking.DestinationAddress;
+            vm.PickupAddress = booking.PickupAddress;
+            vm.VehicleTypes = new SelectList(
+                await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+                nameof(VehicleType.Id)
+                , nameof(VehicleType.VehicleTypeName));
+            vm.HasAnAssistant = booking.HasAnAssistant;
+            vm.NumberOfPassengers = booking.NumberOfPassengers;
+            vm.VehicleTypeId = booking.VehicleTypeId;
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime;
+            return View(vm);
         }
 
-        // POST: CustomerArea/Bookings/Edit/5
+        // POST: AdminArea/Bookings/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ScheduleId,DriverId,CustomerId,VehicleTypeId,VehicleId,CityId,PickUpDateAndTime,PickupAddress,DestinationAddress,NumberOfPassengers,HasAnAssistant,AdditionalInfo,StatusOfBooking,DriveId,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Booking booking)
+        public async Task<IActionResult> Edit(Guid id, EditBookingViewModel vm)
         {
-            if (id != booking.Id)
+            var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.Id.Equals(id));
+            if (booking != null && id != booking.Id)
             {
                 return NotFound();
             }
@@ -128,12 +172,48 @@ namespace WebApp.Areas.CustomerArea.Controllers
             {
                 try
                 {
-                    _context.Update(booking);
-                    await _context.SaveChangesAsync();
+                    if (booking != null)
+                    {
+                        booking.Id = id;
+                        booking.CityId = vm.CityId;
+                        booking.Customer = await _uow.Customers.FirstAsync();
+                        booking.Driver = await _uow.Drivers.FirstAsync();
+                        #warning needs fixing
+                        booking.Schedule = await _uow.Schedules.FirstAsync();
+                        #warning needs fixing
+                        booking.Vehicle = await _uow.Vehicles.FirstAsync();
+                        booking.AdditionalInfo = vm.AdditionalInfo;
+                        booking.DestinationAddress = vm.DestinationAddress;
+                        booking.PickupAddress = vm.PickupAddress;
+                        booking.VehicleTypeId = vm.VehicleTypeId;
+                        booking.HasAnAssistant = vm.HasAnAssistant;
+                        booking.NumberOfPassengers = vm.NumberOfPassengers;
+                        booking.StatusOfBooking = StatusOfBooking.Awaiting;
+                        booking.PickUpDateAndTime = vm.PickUpDateAndTime;
+
+                        
+                            _uow.Bookings.Update(booking);
+
+                    }
+                    var drive = await _uow.Drives
+                        .SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(booking!.Id), false );
+                    if (drive != null)
+                    {
+                        if (booking != null)
+                        {
+                            drive.DriverId = booking.DriverId;
+                            drive.Booking = booking;
+                        }
+
+                        _uow.Drives.Update(drive);
+                        await _uow.SaveChangesAsync();
+                    }
+
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookingExists(booking.Id))
+                    if (booking != null && !BookingExists(booking.Id))
                     {
                         return NotFound();
                     }
@@ -144,39 +224,35 @@ namespace WebApp.Areas.CustomerArea.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CityId"] = new SelectList(_context.Cities, "Id", "CityName", booking.CityId);
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", booking.CustomerId);
-            ViewData["DriveId"] = new SelectList(_context.Drives, "Id", "Id", booking.DriveId);
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Address", booking.DriverId);
-            ViewData["ScheduleId"] = new SelectList(_context.Schedules, "Id", "Id", booking.ScheduleId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "Id", "VehiclePlateNumber", booking.VehicleId);
-            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "Id", "Id", booking.VehicleTypeId);
-            return View(booking);
+            
+            return View(vm);
         }
 
         // GET: CustomerArea/Bookings/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.Bookings == null)
+            var vm = new DetailsDeleteBookingViewModel();
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var booking = await _context.Bookings
-                .Include(b => b.City)
-                .Include(b => b.Customer)
-                .Include(b => b.Drive)
-                .Include(b => b.Driver)
-                .Include(b => b.Schedule)
-                .Include(b => b.Vehicle)
-                .Include(b => b.VehicleType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value, false);
             if (booking == null)
             {
                 return NotFound();
             }
-
-            return View(booking);
+            vm.Id = booking.Id;
+            vm.City = booking.City!.CityName;
+            vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
+            vm.AdditionalInfo = booking.AdditionalInfo;
+            vm.DestinationAddress = booking.DestinationAddress;
+            vm.PickupAddress = booking.PickupAddress;
+            vm.VehicleType = booking.VehicleType!.VehicleTypeName;
+            vm.HasAnAssistant = booking.HasAnAssistant;
+            vm.NumberOfPassengers = booking.NumberOfPassengers;
+            vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToString("g");
+            return View(vm);
         }
 
         // POST: CustomerArea/Bookings/Delete/5
@@ -184,23 +260,37 @@ namespace WebApp.Areas.CustomerArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.Bookings == null)
+            var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b != null && b.Id.Equals(id), false);
+            var drive = await _uow.Drives.SingleOrDefaultAsync(d => d != null && d.Booking!.Id.Equals(id), false);
+            var comment = await _uow.Comments.SingleOrDefaultAsync(c => drive != null && c != null && c.DriveId.Equals(drive.Id), false);
+            if (comment != null)
             {
-                return Problem("Entity set 'AppDbContext.Bookings'  is null.");
+                _uow.Comments.Remove(comment);
             }
-            var booking = await _context.Bookings.FindAsync(id);
-            if (booking != null)
+            if (drive != null)
             {
-                _context.Bookings.Remove(booking);
+                _uow.Drives.Remove(drive);
             }
-            
-            await _context.SaveChangesAsync();
+            if (booking != null) _uow.Bookings.Remove(booking);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BookingExists(Guid id)
         {
-          return (_context.Bookings?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _uow.Bookings.Exists(id);
+        }
+
+        /// <summary>
+        /// Search records by city name
+        /// </summary>
+        /// <param name="search">City name</param>
+        /// <returns>An index view with search results</returns>
+        [HttpPost]
+        public async Task<IActionResult> SearchByCityAsync([FromForm] string search)
+        {
+            var results = await _uow.Bookings.SearchByCityAsync(search);
+            return View(nameof(Index), results);
         }
     }
 }

@@ -1,71 +1,56 @@
-@model App.Domain.Booking
-
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Base.Resources
+@using App.Resources.Areas.App.Domain.CustomerArea
+@model WebApp.Areas.CustomerArea.ViewModels.CreateBookingViewModel 
 @{
-    Layout = null;
+    ViewData["Title"] = Common.Create;
 }
 
-<!DOCTYPE html>
+<h1>@Common.Create</h1>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
-</head>
-<body>
-
-<h4>Booking</h4>
-<hr />
+<h4>@Booking.BookingName</h4>
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ScheduleId" class="control-label"></label>
-                <select asp-for="ScheduleId" class ="form-control" asp-items="ViewBag.ScheduleId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="DriverId" class="control-label"></label>
-                <select asp-for="DriverId" class ="form-control" asp-items="ViewBag.DriverId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CustomerId" class="control-label"></label>
-                <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
-            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="VehicleTypeId" class="control-label"></label>
-                <select asp-for="VehicleTypeId" class ="form-control" asp-items="ViewBag.VehicleTypeId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="VehicleId" class="control-label"></label>
-                <select asp-for="VehicleId" class ="form-control" asp-items="ViewBag.VehicleId"></select>
+                <select asp-for="VehicleTypeId" class="form-control" asp-items="Model.VehicleTypes">
+                    <option>@Common.PleaseSelect</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="CityId" class="control-label"></label>
-                <select asp-for="CityId" class ="form-control" asp-items="ViewBag.CityId"></select>
+                <select asp-for="CityId" class="form-control" asp-items="Model.Cities">
+                    <option>@Common.PleaseSelect</option>
+                </select>
             </div>
+
             <div class="form-group">
                 <label asp-for="PickUpDateAndTime" class="control-label"></label>
-                <input asp-for="PickUpDateAndTime" class="form-control" />
+                <input asp-for="PickUpDateAndTime" class="form-control"/>
                 <span asp-validation-for="PickUpDateAndTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PickupAddress" class="control-label"></label>
-                <input asp-for="PickupAddress" class="form-control" />
+                <input asp-for="PickupAddress" class="form-control"/>
                 <span asp-validation-for="PickupAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DestinationAddress" class="control-label"></label>
-                <input asp-for="DestinationAddress" class="form-control" />
+                <input asp-for="DestinationAddress" class="form-control"/>
                 <span asp-validation-for="DestinationAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NumberOfPassengers" class="control-label"></label>
-                <input asp-for="NumberOfPassengers" class="form-control" />
+                <input asp-for="NumberOfPassengers" class="form-control" min="1" max="5"/>
                 <span asp-validation-for="NumberOfPassengers" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="HasAnAssistant" /> @Html.DisplayNameFor(model => model.HasAnAssistant)
+                    <input class="form-check-input" asp-for="HasAnAssistant"/> 
+                    @Html.DisplayNameFor(model => model.HasAnAssistant)
                 </label>
             </div>
             <div class="form-group">
@@ -74,44 +59,16 @@
                 <span asp-validation-for="AdditionalInfo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StatusOfBooking" class="control-label"></label>
-                <select asp-for="StatusOfBooking" class="form-control"></select>
-                <span asp-validation-for="StatusOfBooking" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DriveId" class="control-label"></label>
-                <select asp-for="DriveId" class ="form-control" asp-items="ViewBag.DriveId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedBy" class="control-label"></label>
-                <input asp-for="CreatedBy" class="form-control" />
-                <span asp-validation-for="CreatedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedBy" class="control-label"></label>
-                <input asp-for="UpdatedBy" class="form-control" />
-                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedAt" class="control-label"></label>
-                <input asp-for="UpdatedAt" class="form-control" />
-                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="@Common.Create" class="btn btn-primary"/>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Common.BackToList</a>
 </div>
 
-</body>
-</html>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,11 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
-<root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-            
-        </xsd:element>
-    </xsd:schema>
+﻿<root>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -20,57 +13,57 @@
     </resheader>
     
     <data name="VehicleType" xml:space="preserve">
-        <value>Vehicle Type</value>
+        <value>Sõidukitüüp</value>
     </data>
     <data name="Vehicle" xml:space="preserve">
-        <value>Vehicle</value>
+        <value>Sõiduk</value>
     </data>
     <data name="City" xml:space="preserve">
-        <value>City</value>
+        <value>Linn</value>
     </data>
     <data name="PickUpDateAndTime" xml:space="preserve">
-        <value>Pick Up Date and Time</value>
+        <value>Sõidu toimumiskuupäev ja -kellaaeg</value>
     </data>
     <data name="PickupAddress" xml:space="preserve">
-        <value>Pick Up Address </value>
+        <value>Lähtekoha aadress</value>
     </data>
     <data name="DestinationAddress" xml:space="preserve">
-        <value>Destination Address</value>
+        <value>Sihtkoha aadress</value>
     </data>
     <data name="NumberOfPassengers" xml:space="preserve">
-        <value>Number of Passengers</value>
+        <value>Reisijate arv</value>
     </data>
     <data name="HasAnAssistant" xml:space="preserve">
-        <value>Has an Assistant?</value>
+        <value>Abistaja olemasolu?</value>
     </data>
     <data name="AdditionalInfo" xml:space="preserve">
-        <value>Additional Info</value>
+        <value>Lisainfo</value>
     </data>
     <data name="StatusOfBooking" xml:space="preserve">
-        <value>Status of Booking</value>
+        <value>Broneeringu olek</value>
     </data>
     <data name="AwaitingForConfirmation" xml:space="preserve">
-        <value>Awaiting for Confirmation</value>
+        <value>Kinnituse ootel</value>
     </data>
     <data name="Accepted" xml:space="preserve">
-        <value>Accepted</value>
+        <value>Kinnitatud</value>
     </data>
     <data name="InProgress" xml:space="preserve">
-        <value>In-Progress</value>
+        <value>Toimumas</value>
     </data>
     <data name="Finished" xml:space="preserve">
-        <value>Finished</value>
+        <value>Lõpetatud</value>
     </data>
     <data name="Declined" xml:space="preserve">
-        <value>Declined</value>
+        <value>Tühistatud</value>
     </data>
     <data name="BookingName" xml:space="preserve">
-        <value>Booking</value>
+        <value>Broneering</value>
     </data>
     <data name="Decline" xml:space="preserve">
-        <value>Decline </value>
+        <value>Tühista</value>
     </data>
     <data name="AreYouSureYouWantToDeclineThis" xml:space="preserve">
-        <value>Are You Sure You Want To Decline This? </value>
+        <value>Kas olete kindel, et soovite antud broneeringu tühistada?</value>
     </data>
 </root>

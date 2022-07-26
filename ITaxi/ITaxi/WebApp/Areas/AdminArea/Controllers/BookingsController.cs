@@ -343,7 +343,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
             vm.City = booking.City!.CityName;
             vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
-            
+            vm.Customer = booking.Customer!.AppUser!.LastAndFirstName;
             vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
             vm.AdditionalInfo = booking.AdditionalInfo;
             vm.DestinationAddress = booking.DestinationAddress;
