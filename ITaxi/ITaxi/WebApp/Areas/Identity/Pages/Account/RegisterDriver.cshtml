@@ -1,130 +1,129 @@
 ﻿@page
 @using App.Domain.Enum
+@using App.Resources.Areas.Identity.Pages.Account
+@using Base.Resources
 @model RegisterDriverModel
 @{
-    ViewData["Title"] = "Register Driver";
+    ViewData["Title"] = @DriverRegister.RegisterDriver;
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1>@DriverRegister.RegisterDriver</h1>
 
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
+            <h2>@Register.RegisterAccount</h2>
             <hr/>
             <div asp-validation-summary="All" class="text-danger"></div>
 
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" alt="Enter your email here."
-                       placeholder="Enter your email here"/>
+                <input asp-for="Input.Email" class="form-control" alt="@DriverRegister.EnterYourEmailAddressHere"
+                       placeholder="@DriverRegister.EnterYourEmailAddressHere"/>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.FirstName"></label>
-                <input asp-for="Input.FirstName" class="form-control" alt="Enter your first name here."
-                       placeholder="Enter your first name here"/>
+                <input asp-for="Input.FirstName" class="form-control" alt="@DriverRegister.EnterYourFirstNameHere"
+                       placeholder="@DriverRegister.EnterYourFirstNameHere"/>
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.LastName"></label>
-                <input asp-for="Input.LastName" class="form-control" alt="Enter your last name here."
-                       placeholder="Enter your last name here"/>
+                <input asp-for="Input.LastName" class="form-control" alt="@DriverRegister.EnterYourLastNameHere"
+                       placeholder="@DriverRegister.EnterYourLastNameHere"/>
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.Gender"></label>
                 <select asp-for="Input.Gender" class="form-control" asp-items="Html.GetEnumSelectList<Gender>()">
-                    <option>Please Select</option>
+                    <option>@Common.PleaseSelect</option>
                 </select>
                 <span asp-validation-for="Input.Gender" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Input.DateOfBirth"></label>
-                <input asp-for="Input.DateOfBirth" class="form-control" alt="Enter your date of birth here."/>
+                <input asp-for="Input.DateOfBirth" class="form-control" alt="@DriverRegister.EnterYourDateOfBirthHere"
+                       placeholder="@DriverRegister.EnterYourDateOfBirthHere"/>
                 <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Input.PersonalIdentifier"></label>
-                <input asp-for="Input.PersonalIdentifier" class="form-control" alt="Enter your personal identifier code here."
-                       placeholder="Enter your personal identifier code here"/>
+                <input asp-for="Input.PersonalIdentifier" class="form-control" 
+                       alt="@DriverRegister.EnterYourPersonalIdentifierCodeHere"
+                       placeholder="@DriverRegister.EnterYourPersonalIdentifierCodeHere"/>
                 <span asp-validation-for="Input.PersonalIdentifier" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.DriverLicenseNumber"></label>
-                <input asp-for="Input.DriverLicenseNumber" class="form-control" alt="Enter your driver license number."
-                       placeholder="Enter your driver license number"/>
+                <input asp-for="Input.DriverLicenseNumber" class="form-control" 
+                       alt="@DriverRegister.EnterYourDriverLicenseNumberHere"
+                       placeholder="@DriverRegister.EnterYourDriverLicenseNumberHere"/>
                 <span asp-validation-for="Input.DriverLicenseNumber" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="Input.DriverAndDriverLicenseCategories"></label>
                 <select multiple="multiple" asp-for="Input.DriverAndDriverLicenseCategories" class="form-control"
                         asp-items="Model.DriverLicenseCategories">
-                    <option value="">Please Select</option>
                 </select>
                 <span asp-validation-for="Input.DriverAndDriverLicenseCategories" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.ExpiryDate"></label>
                 <input asp-for="Input.ExpiryDate" class="form-control"
-                       alt="Choose the expiry date of your driver license "/>
+                       alt="@DriverRegister.ChooseTheExpiryDateOfYourDriverLicense"/>
                 <span asp-validation-for="Input.ExpiryDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.CityId"></label>
                 <select asp-for="Input.CityId" class="form-control" asp-items="Model.Cities">
-                    <option>Please Select</option>
+                    <option>@Common.PleaseSelect</option>
                 </select>
                 <span asp-validation-for="Input.CityId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Input.Address"></label>
-                <input asp-for="Input.Address" class="form-control" alt="Enter your address here."
-                       placeholder="Enter your address here"/>
+                <input asp-for="Input.Address" class="form-control" alt="@DriverRegister.EnterYourAddressOfResidenceHere"
+                       placeholder="@DriverRegister.EnterYourAddressOfResidenceHere"/>
                 <span asp-validation-for="Input.Address" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Input.PhoneNumber"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" alt="Enter your phone number here."
-                       placeholder="Enter your phone number here"/>
+                <input asp-for="Input.PhoneNumber" class="form-control" alt="@DriverRegister.EnterYourPhoneNumberHere"
+                       placeholder=@DriverRegister.EnterYourPhoneNumberHere/>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" alt="Enter your password here."
-                       placeholder="Enter your password here"/>
+                <input asp-for="Input.Password" class="form-control" alt="@DriverRegister.EnterYourPasswordHere"
+                       placeholder="@DriverRegister.EnterYourPasswordHere"/>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.ConfirmPassword"></label>
                 <input asp-for="Input.ConfirmPassword" class="form-control"
-                       alt="Enter your password  here to confirm." placeholder="Enter your password here to confirm"/>
+                       alt="@DriverRegister.EnterPasswordConfirmationHere" placeholder="@DriverRegister.EnterPasswordConfirmationHere"/>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
 
 
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">@Register.RegisterAccount</button>
         </form>
     </div>
     <div class="col-md-6 col-md-offset-2">
         <section>
-            <h3>Use another service to register.</h3>
+            <h3>@Register.LoginThirdParty</h3>
             <hr/>
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
                     <div>
                         <p>
-                            There are no external authentication services configured. See this
-                            <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
-                                article
-                                about setting up this ASP.NET application to support logging in via external services
-                            </a>.
+                            @Register.NoThirdParty
                         </p>
                     </div>
                 }

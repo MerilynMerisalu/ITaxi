@@ -11,6 +11,8 @@ using App.DAL.EF;
 using App.Domain;
 using App.Domain.Enum;
 using App.Domain.Identity;
+using App.Resources.Areas.Identity.Pages.Account;
+using Base.Resources;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -195,76 +197,87 @@ public class RegisterDriverModel : PageModel
     /// </summary>
     public class InputModel
     {
-        [Required]
-        [MaxLength(50)]
-        [StringLength(50, MinimumLength = 1)]
-        [DisplayName("First Name")]
+        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+        [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), 
+            ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+        [Display(ResourceType = typeof(DriverRegister), Name = nameof(FirstName))]
         public string FirstName { get; set; } = default!;
 
-        [Required]
-        [MaxLength(50)]
-        [StringLength(50, MinimumLength = 1)]
-        [DisplayName("Last Name")]
+        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+        [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), 
+            ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+        [Display(ResourceType = typeof(DriverRegister), Name = nameof(LastName))]
         public string LastName { get; set; } = default!;
 
-        [EnumDataType(typeof(Gender))] public Gender Gender { get; set; }
+        [Display(ResourceType = typeof(DriverRegister), Name = nameof(Gender))]
+        [EnumDataType(typeof(Gender))] 
+        public Gender Gender { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.Date)]
-        [DisplayName("Date of Birth")]
+        [Display(ResourceType = typeof(DriverRegister), Name = nameof(DateOfBirth))]
         public DateTime DateOfBirth { get; set; }
 
         [StringLength(50)]
-        [DisplayName("Personal Identifier")]
+        [Display(ResourceType = typeof(DriverRegister), Name = nameof(PersonalIdentifier))]
         public string? PersonalIdentifier { get; set; }
 
         [DataType(DataType.Text)]
-        [DisplayName(nameof(City))]
+        [Display(ResourceType = typeof(DriverRegister), Name = "City")]
         public Guid CityId { get; set; }
 
-        [DisplayName("Driver License Categories")]
+        [Display(ResourceType = typeof(DriverRegister), Name = "DriverLicenseCategories")]
         public ICollection<Guid>? DriverAndDriverLicenseCategories { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.Text)]
         [StringLength(25)]
-        [DisplayName("Driver License Number")]
+        [Display(ResourceType = typeof(DriverRegister), Name = nameof(DriverLicenseNumber))]
         public string DriverLicenseNumber { get; set; } = default!;
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.Date)]
-        [DisplayName("Driver License's Expiry Date")]
+        [Display(ResourceType = typeof(DriverRegister), Name = "DriverLicensesExpiryDate")]
         public DateTime ExpiryDate { get; set; }
-
+        
+        
+        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.Text)]
-        [StringLength(72, MinimumLength = 2)]
+        [StringLength(72, MinimumLength = 2, ErrorMessageResourceType = typeof(Common), 
+            ErrorMessageResourceName = "StringLengthAttributeErrorMessage" )]
+        [Display(ResourceType = typeof(AdminRegister), Name = "AddressOfResidence")]
         public string Address { get; set; } = default!;
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.PhoneNumber)]
-        [MaxLength(50)]
-        [StringLength(50, MinimumLength = 1)]
-        [DisplayName("Phone Number")]
+        [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+        [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+        [Display(ResourceType = typeof(Common), Name = nameof(PhoneNumber))]
         public string PhoneNumber { get; set; } = default!;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
+        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [EmailAddress(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageEmail")]
+        [Display(ResourceType = typeof(DriverRegister), Name = "Email")]
         public string Email { get; set; } = default!;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [StringLength(100, ErrorMessageResourceType = typeof(Common)
+            , ErrorMessageResourceName = "StringLengthAttributeErrorMessage",
             MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(ResourceType = typeof(Common), Name = nameof(Password))]
         public string Password { get; set; } = default!;
 
         /// <summary>
@@ -272,8 +285,9 @@ public class RegisterDriverModel : PageModel
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(ResourceType = typeof(Common), Name = nameof(ConfirmPassword))]
+        [Compare(nameof(Password), ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "ErrorMessageComparePasswords")]
         public string ConfirmPassword { get; set; } = default!;
     }
 }

@@ -32,4 +32,7 @@
     <data name="RegisterAccount" xml:space="preserve">
         <value>Register</value>
     </data>
+    <data name="CreateANewAccount" xml:space="preserve">
+        <value>Create a New Account </value>
+    </data>
 </root>

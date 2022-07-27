@@ -24,4 +24,7 @@
     <data name="RegisterAccount" xml:space="preserve">
         <value>Registreeri</value>
     </data>
+    <data name="CreateANewAccount" xml:space="preserve">
+        <value>Loo uus konto</value>
+    </data>
 </root>

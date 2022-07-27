@@ -103,6 +103,10 @@
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Booking.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Areas\Identity\Pages\Account\DriverRegister.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>DriverRegister.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -225,6 +229,11 @@
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>Booking.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\DriverRegister.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>DriverRegister.resx</DependentUpon>
         </Compile>
     </ItemGroup>
 
