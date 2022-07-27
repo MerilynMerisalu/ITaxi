@@ -12,10 +12,10 @@ services:
       - ACCEPT_EULA=1
       - MSSQL_USER=SA
       - MSSQL_SA_PASSWORD=Hobujaama10
-      
+    
     volumes:
-        - itaxi-volume:/var/lib/mssql/data
-      
+      - itaxi-volume:/var/lib/mssql/data
+
 volumes:
   itaxi-volume:
 
