@@ -8,7 +8,7 @@
 
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width"/>
     <title>Index</title>
 </head>
 <body>
@@ -17,17 +17,17 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhotoName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser!.LastAndFirstName)
-            </th>
-            @*<th>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhotoName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AppUser!.LastAndFirstName)
+        </th>
+        @*<th>
                 @Html.DisplayNameFor(model => model.CreatedBy)
             </th>
             <th>
@@ -39,11 +39,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.UpdatedAt)
             </th>*@
-            <th></th>
-        </tr>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -72,7 +73,7 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
 </body>

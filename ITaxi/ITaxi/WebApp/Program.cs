@@ -2,17 +2,13 @@ using System.Globalization;
 using App.Contracts.DAL;
 using App.DAL.EF;
 using App.Domain.Identity;
-using Base.Contracts.DAL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Rotativa.AspNetCore;
 using WebApp.Helpers;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,10 +24,7 @@ builder.Services.AddIdentity<AppUser, AppRole>(
     .AddDefaultTokenProviders()
     .AddDefaultUI()
     .AddEntityFrameworkStores<AppDbContext>();
-builder.Services.AddLocalization(options =>
-   {
-       options.ResourcesPath = "";
-   });
+builder.Services.AddLocalization(options => { options.ResourcesPath = ""; });
 
 /*
 builder.Services.AddControllersWithViews(options =>
@@ -80,8 +73,6 @@ Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
 await DataHelper.SetupAppData(app, app.Environment, app.Configuration);
 
 
-
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -109,12 +100,12 @@ if (requestLocalizationOptions != null)
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    "areas",
+    "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    "default",
+    "{controller=Home}/{action=Index}/{id?}");
 
 
 app.Run();

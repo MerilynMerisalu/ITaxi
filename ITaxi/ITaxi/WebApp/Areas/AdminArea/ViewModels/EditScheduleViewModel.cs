@@ -1,5 +1,5 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using App.Resources.Areas.App.Domain.AdminArea;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
@@ -7,25 +7,24 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 public class EditScheduleViewModel
 {
     public Guid Id { get; set; }
-    
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "Driver")]
+
+    [Display(ResourceType = typeof(Schedule), Name = "Driver")]
 
     public Guid DriverId { get; set; }
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "Vehicle")]
+
+    [Display(ResourceType = typeof(Schedule), Name = "Vehicle")]
     public Guid VehicleId { get; set; }
 
 
-    
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "ShiftStartDateAndTime")]
-    
+    [Display(ResourceType = typeof(Schedule), Name = "ShiftStartDateAndTime")]
+
     public DateTime StartDateAndTime { get; set; }
 
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "ShiftEndDateAndTime")]
-    
+    [Display(ResourceType = typeof(Schedule), Name = "ShiftEndDateAndTime")]
+
     public DateTime EndDateAndTime { get; set; }
 
     public SelectList? Vehicles { get; set; }
 
     public SelectList? Drivers { get; set; }
-
 }

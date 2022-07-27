@@ -3,7 +3,7 @@ using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface IBookingRepository: IEntityRepository<Booking>
+public interface IBookingRepository : IEntityRepository<Booking>
 {
     Task<IEnumerable<Booking?>> GettingAllBookingsWithoutIncludesAsync(bool noTracking = true);
     IEnumerable<Booking?> GettingAllBookingsWithoutIncludes(bool noTracking = true);
@@ -18,7 +18,6 @@ public interface IBookingRepository: IEntityRepository<Booking>
     Task<IEnumerable<Booking?>> SearchByCityAsync(string search);
     string PickUpDateAndTimeStrFormat(Booking booking);
     DateTime DateTimeFormatting();
-    
-    Booking BookingDecline(Booking booking);
 
+    Booking BookingDecline(Booking booking);
 }

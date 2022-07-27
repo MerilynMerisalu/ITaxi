@@ -1,111 +1,89 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using App.Contracts.DAL;
-using Microsoft.AspNetCore.Http;
+using App.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
 
-namespace WebApp.ApiControllers
+namespace WebApp.ApiControllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class RideTimesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class RideTimesController : ControllerBase
+    private readonly IAppUnitOfWork _uow;
+
+    public RideTimesController(IAppUnitOfWork uow)
     {
-        private readonly IAppUnitOfWork _uow;
+        _uow = uow;
+    }
 
-        public RideTimesController(IAppUnitOfWork uow)
+    // GET: api/RideTimes
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<RideTime>>> GetRideTimes()
+    {
+        return Ok(await _uow.RideTimes.GettingAllRideTimesWithoutIncludesAsync());
+    }
+
+    // GET: api/RideTimes/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<RideTime>> GetRideTime(Guid id)
+    {
+        var rideTime = await _uow.RideTimes.GettingRideTimeWithoutIncludesByIdAsync(id);
+
+        if (rideTime == null) return NotFound();
+
+        return rideTime;
+    }
+
+    // PUT: api/RideTimes/5
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutRideTime(Guid id, RideTime rideTime)
+    {
+        if (id != rideTime.Id) return BadRequest();
+
+
+        try
         {
-            _uow = uow;
-        }
-
-        // GET: api/RideTimes
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<RideTime>>> GetRideTimes()
-        {
-            return Ok(await _uow.RideTimes.GettingAllRideTimesWithoutIncludesAsync());
-        }
-
-        // GET: api/RideTimes/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<RideTime>> GetRideTime(Guid id)
-        {
-            var rideTime = await _uow.RideTimes.GettingRideTimeWithoutIncludesByIdAsync(id);
-
-            if (rideTime == null)
-            {
-                return NotFound();
-            }
-
-            return rideTime;
-        }
-
-        // PUT: api/RideTimes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRideTime(Guid id, RideTime rideTime)
-        {
-            if (id != rideTime.Id)
-            {
-                return BadRequest();
-            }
-
-            
-
-            try
-            {
-                _uow.RideTimes.Update(rideTime);
-                await _uow.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RideTimeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/RideTimes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<RideTime>> PostRideTime(RideTime rideTime)
-        {
-            _uow.RideTimes.Add(rideTime);
+            _uow.RideTimes.Update(rideTime);
             await _uow.SaveChangesAsync();
-
-            return CreatedAtAction("GetRideTime", new { id = rideTime.Id }, rideTime);
         }
-
-        // DELETE: api/RideTimes/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRideTime(Guid id)
+        catch (DbUpdateConcurrencyException)
         {
-            var rideTime = await _uow.RideTimes.GettingRideTimeWithoutIncludesByIdAsync(id);
-            if (rideTime == null)
-            {
+            if (!RideTimeExists(id))
                 return NotFound();
-            }
-
-            _uow.RideTimes.Remove(rideTime);
-            await _uow.SaveChangesAsync();
-
-            return NoContent();
+            throw;
         }
 
-        private bool RideTimeExists(Guid id)
-        {
-            return _uow.RideTimes.Exists(id);
-        }
+        return NoContent();
+    }
+
+    // POST: api/RideTimes
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPost]
+    public async Task<ActionResult<RideTime>> PostRideTime(RideTime rideTime)
+    {
+        _uow.RideTimes.Add(rideTime);
+        await _uow.SaveChangesAsync();
+
+        return CreatedAtAction("GetRideTime", new {id = rideTime.Id}, rideTime);
+    }
+
+    // DELETE: api/RideTimes/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteRideTime(Guid id)
+    {
+        var rideTime = await _uow.RideTimes.GettingRideTimeWithoutIncludesByIdAsync(id);
+        if (rideTime == null) return NotFound();
+
+        _uow.RideTimes.Remove(rideTime);
+        await _uow.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    private bool RideTimeExists(Guid id)
+    {
+        return _uow.RideTimes.Exists(id);
     }
 }

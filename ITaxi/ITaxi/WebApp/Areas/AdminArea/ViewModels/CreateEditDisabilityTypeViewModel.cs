@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Resources;
 
@@ -10,7 +9,8 @@ public class CreateEditDisabilityTypeViewModel
     public Guid Id { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-    [StringLength(80, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [StringLength(80, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(DisabilityType), Name = nameof(DisabilityTypeName))]
     public string DisabilityTypeName { get; set; } = default!;
 }

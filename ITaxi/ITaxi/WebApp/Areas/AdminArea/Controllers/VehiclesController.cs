@@ -1,8 +1,6 @@
 #nullable enable
 using App.Contracts.DAL;
-using App.DAL.EF;
 using App.Domain;
-using App.Domain.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -61,12 +59,12 @@ public class VehiclesController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditVehicleViewModel();
-        
+
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
-            #warning  "Magic string" code smell, fix it 
+#warning "Magic string" code smell, fix it
             nameof(Driver.Id), "AppUser.LastAndFirstName");
         vm.ManufactureYears = new SelectList(_uow.Vehicles.GettingManufactureYears());
-            vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync()
+        vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync()
             , nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
         vm.VehicleModels = new SelectList(await _uow.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
             nameof(VehicleModel.Id), nameof(VehicleModel.VehicleModelName));
@@ -123,13 +121,10 @@ public class VehiclesController : Controller
         if (id == null) return NotFound();
 
         var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id.Value);
-        if (vehicle == null)
-        {
-            return NotFound();
-        }
+        if (vehicle == null) return NotFound();
 
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
-#warning "Magic string" code smell, fix it 
+#warning "Magic string" code smell, fix it
             nameof(Driver.Id), "AppUser.LastAndFirstName");
 
         vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
@@ -143,7 +138,7 @@ public class VehiclesController : Controller
                 .GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
             nameof(VehicleModel.Id),
             nameof(VehicleModel.VehicleModelName));
-        
+
 
         vm.Id = vehicle.Id;
         vm.ManufactureYears = new SelectList(_uow.Vehicles.GettingManufactureYears());
@@ -155,7 +150,7 @@ public class VehiclesController : Controller
         vm.DriverId = vehicle.DriverId;
         vm.VehicleMarkId = vehicle.VehicleMarkId;
         vm.VehicleModelId = vehicle.VehicleModelId;
-        
+
         return View(vm);
     }
 
@@ -186,8 +181,6 @@ public class VehiclesController : Controller
                     _uow.Vehicles.Update(vehicle);
                     await _uow.SaveChangesAsync();
                 }
-
-                
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -237,16 +230,14 @@ public class VehiclesController : Controller
         var vehicle = await _uow.Vehicles.SingleOrDefaultAsync(v => v != null && v.Id.Equals(id));
         if (await _uow.Schedules.AnyAsync(s => vehicle != null && s != null && s.VehicleId.Equals(vehicle.Id))
             || await _uow.Bookings.AnyAsync(v => vehicle != null && v != null && v.VehicleId.Equals(vehicle.Id)))
-        {
             return Content("Entity cannot be deleted because it has dependent entities!");
-        }
 
         if (vehicle != null)
         {
             _uow.Vehicles.Remove(vehicle);
             await _uow.SaveChangesAsync();
         }
-        
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -254,6 +245,4 @@ public class VehiclesController : Controller
     {
         return _uow.Vehicles.Exists(id);
     }
-
-    
 }

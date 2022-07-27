@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Resources;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,7 +7,6 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 
 public class CreateBookingViewModel
 {
-    
     [Display(ResourceType = typeof(Booking), Name = "Schedule")]
     public Guid ScheduleId { get; set; }
 
@@ -21,19 +19,19 @@ public class CreateBookingViewModel
     [Display(ResourceType = typeof(Booking), Name = "Vehicle")]
 
     public Guid VehicleId { get; set; }
-    
+
     [Display(ResourceType = typeof(Booking), Name = "VehicleType")]
     public Guid VehicleTypeId { get; set; }
 
     public SelectList? VehicleTypes { get; set; }
-    
+
     [Display(ResourceType = typeof(Booking), Name = "City")]
 
     public Guid CityId { get; set; }
 
     public SelectList? Cities { get; set; }
 
-    [Display(ResourceType = typeof(Booking), Name = nameof(PickUpDateAndTime))] 
+    [Display(ResourceType = typeof(Booking), Name = nameof(PickUpDateAndTime))]
     [DataType(DataType.DateTime)]
     [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = false)]
     public string PickUpDateAndTime { get; set; } = default!;
@@ -46,12 +44,12 @@ public class CreateBookingViewModel
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     public string DestinationAddress { get; set; } = default!;
-    
+
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Range(1, 5, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
     [Display(ResourceType = typeof(Booking), Name = nameof(NumberOfPassengers))]
     public int NumberOfPassengers { get; set; }
-    
+
     [Display(ResourceType = typeof(Booking), Name = nameof(HasAnAssistant))]
 
     public bool HasAnAssistant { get; set; }

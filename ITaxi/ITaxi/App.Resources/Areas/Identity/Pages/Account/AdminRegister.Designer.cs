@@ -61,6 +61,186 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Address of Residence.
+        /// </summary>
+        public static string AddressOfResidence {
+            get {
+                return ResourceManager.GetString("AddressOfResidence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to City.
+        /// </summary>
+        public static string City {
+            get {
+                return ResourceManager.GetString("City", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Password.
+        /// </summary>
+        public static string ConfirmPassword {
+            get {
+                return ResourceManager.GetString("ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date of Birth.
+        /// </summary>
+        public static string DateOfBirth {
+            get {
+                return ResourceManager.GetString("DateOfBirth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Your Password Confirmation Here.
+        /// </summary>
+        public static string EnterPasswordConfirmationHere {
+            get {
+                return ResourceManager.GetString("EnterPasswordConfirmationHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Your Address of Residence Here.
+        /// </summary>
+        public static string EnterYourAddressOfResidenceHere {
+            get {
+                return ResourceManager.GetString("EnterYourAddressOfResidenceHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Your Date of Birth Here.
+        /// </summary>
+        public static string EnterYourDateOfBirthHere {
+            get {
+                return ResourceManager.GetString("EnterYourDateOfBirthHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Your Email Address Here.
+        /// </summary>
+        public static string EnterYourEmailAddressHere {
+            get {
+                return ResourceManager.GetString("EnterYourEmailAddressHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Your First Name Here.
+        /// </summary>
+        public static string EnterYourFirstNameHere {
+            get {
+                return ResourceManager.GetString("EnterYourFirstNameHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Your Last Name Here.
+        /// </summary>
+        public static string EnterYourLastNameHere {
+            get {
+                return ResourceManager.GetString("EnterYourLastNameHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Your Password Here.
+        /// </summary>
+        public static string EnterYourPasswordHere {
+            get {
+                return ResourceManager.GetString("EnterYourPasswordHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Your Personal Identifier Code Here.
+        /// </summary>
+        public static string EnterYourPersonalIdentifierCodeHere {
+            get {
+                return ResourceManager.GetString("EnterYourPersonalIdentifierCodeHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter Your Phone Number Here.
+        /// </summary>
+        public static string EnterYourPhoneNumberHere {
+            get {
+                return ResourceManager.GetString("EnterYourPhoneNumberHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First Name.
+        /// </summary>
+        public static string FirstName {
+            get {
+                return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gender.
+        /// </summary>
+        public static string Gender {
+            get {
+                return ResourceManager.GetString("Gender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Name.
+        /// </summary>
+        public static string LastName {
+            get {
+                return ResourceManager.GetString("LastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personal Identifier.
+        /// </summary>
+        public static string PersonalIdentifier {
+            get {
+                return ResourceManager.GetString("PersonalIdentifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone Number.
+        /// </summary>
+        public static string PhoneNumber {
+            get {
+                return ResourceManager.GetString("PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register Admin.
         /// </summary>
         public static string RegisterAdmin {

@@ -1,6 +1,6 @@
-@model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteAdminViewModel
-@using Base.Resources
 @using App.Resources.Areas.App.Domain.AdminArea
+@using Base.Resources
+@model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteAdminViewModel
 @{
     ViewData["Title"] = Common.Details;
 }
@@ -9,9 +9,9 @@
 
 <div>
     <h4>@Admin.Administrator</h4>
-    <hr />
+    <hr/>
     <dl class="row">
-    <partial name="AdminArea/PartialViews/_DetailsDeleteAdmin" model="Model"/>
+        <partial name="AdminArea/PartialViews/_DetailsDeleteAdmin" model="Model"/>
     </dl>
 </div>
 <div>

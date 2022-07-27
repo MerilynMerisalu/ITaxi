@@ -1,6 +1,6 @@
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Base.Resources
 @using App.Resources.Areas.App.Domain.CustomerArea
+@using Base.Resources
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model WebApp.Areas.CustomerArea.ViewModels.CreateBookingViewModel 
 @{
     ViewData["Title"] = Common.Create;
@@ -49,7 +49,7 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="HasAnAssistant"/> 
+                    <input class="form-check-input" asp-for="HasAnAssistant"/>
                     @Html.DisplayNameFor(model => model.HasAnAssistant)
                 </label>
             </div>
@@ -70,5 +70,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

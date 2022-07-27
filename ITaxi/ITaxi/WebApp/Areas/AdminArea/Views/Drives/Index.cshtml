@@ -9,8 +9,8 @@
 
 
 <form action="@Url.Action("SearchByDate")" method="post">
-    <input type="date" name="search" />
-    <input type="submit" value="Search" />
+    <input type="date" name="search"/>
+    <input type="submit" value="Search"/>
 </form>
 <p>
     <a asp-action="Print">@Common.CreatePdf</a>
@@ -18,54 +18,55 @@
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.Schedule!.ShiftDurationTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.Customer!.AppUser!.LastAndFirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.Customer!.DisabilityType)
-            </th>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.PickUpDateAndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.City!.CityName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.PickupAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.DestinationAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.VehicleType!.VehicleTypeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.Vehicle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.NumberOfPassengers)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.HasAnAssistant)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.StatusOfBooking)
-            </th>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.Comment)
-            </th>
-            
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Booking!.Schedule!.ShiftDurationTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Booking!.Customer!.AppUser!.LastAndFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Booking!.Customer!.DisabilityType)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Booking!.PickUpDateAndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Booking!.City!.CityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Booking!.PickupAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Booking!.DestinationAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Booking!.VehicleType!.VehicleTypeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Booking!.Vehicle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Booking!.NumberOfPassengers)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Booking!.HasAnAssistant)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Booking!.StatusOfBooking)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.Schedule!.ShiftDurationTime)
@@ -76,7 +77,7 @@
             <td>
                 @Html.DisplayTextFor(modelItem => item.Booking!.Customer!.DisabilityType!.DisabilityTypeName)
             </td>
-            
+
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.PickUpDateAndTime)
             </td>
@@ -108,9 +109,9 @@
                 @Html.DisplayFor(modelItem => item.Booking!.Drive!.Comment!.CommentText)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

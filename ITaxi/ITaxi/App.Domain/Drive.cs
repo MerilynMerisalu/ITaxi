@@ -2,7 +2,7 @@
 
 namespace App.Domain;
 
-public class Drive: DomainEntityMetaId
+public class Drive : DomainEntityMetaId
 {
     public Guid DriverId { get; set; }
     public Driver? Driver { get; set; }

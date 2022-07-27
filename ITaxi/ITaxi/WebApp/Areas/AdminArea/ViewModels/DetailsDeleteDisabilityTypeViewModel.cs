@@ -1,10 +1,9 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using App.Resources.Areas.App.Domain.AdminArea;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class DetailsDeleteDisabilityTypeViewModel: AdminAreaBaseViewModel
+public class DetailsDeleteDisabilityTypeViewModel : AdminAreaBaseViewModel
 {
     public Guid Id { get; set; }
 

@@ -3,8 +3,8 @@ using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface IVehicleTypeRepository: IEntityRepository<VehicleType>
+public interface IVehicleTypeRepository : IEntityRepository<VehicleType>
 {
-     Task<IEnumerable<VehicleType>> GetAllVehicleTypesOrderedAsync(bool noTracking = true);
+    Task<IEnumerable<VehicleType>> GetAllVehicleTypesOrderedAsync(bool noTracking = true);
     IEnumerable<VehicleType> GetAllVehicleTypesOrdered(bool noTracking = true);
 }

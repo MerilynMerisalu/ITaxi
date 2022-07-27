@@ -1,6 +1,5 @@
-
-@using Base.Resources
 @using App.Resources.Areas.App.Domain.AdminArea
+@using Base.Resources
 @model WebApp.Areas.CustomerArea.ViewModels.EditBookingViewModel
 
 @{
@@ -10,12 +9,12 @@
 <h1>@Common.Edit</h1>
 
 <h4>@Booking.BookingName</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="All" class="text-danger"></div>
-            
+
             <div class="form-group">
                 <label asp-for="VehicleTypeId" class="control-label"></label>
                 <select asp-for="VehicleTypeId" class="form-control" asp-items="Model.VehicleTypes">
@@ -28,30 +27,30 @@
                     <option>@Common.PleaseSelect</option>
                 </select>
             </div>
-            
+
             <div class="form-group">
                 <label asp-for="PickUpDateAndTime" class="control-label"></label>
-                <input asp-for="PickUpDateAndTime" class="form-control" />
+                <input asp-for="PickUpDateAndTime" class="form-control"/>
                 <span asp-validation-for="PickUpDateAndTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PickupAddress" class="control-label"></label>
-                <input asp-for="PickupAddress" class="form-control" />
+                <input asp-for="PickupAddress" class="form-control"/>
                 <span asp-validation-for="PickupAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DestinationAddress" class="control-label"></label>
-                <input asp-for="DestinationAddress" class="form-control" />
+                <input asp-for="DestinationAddress" class="form-control"/>
                 <span asp-validation-for="DestinationAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NumberOfPassengers" class="control-label"></label>
-                <input asp-for="NumberOfPassengers" class="form-control" min="1" max="5" />
+                <input asp-for="NumberOfPassengers" class="form-control" min="1" max="5"/>
                 <span asp-validation-for="NumberOfPassengers" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="HasAnAssistant" /> @Html.DisplayNameFor(model => model.HasAnAssistant)
+                    <input class="form-check-input" asp-for="HasAnAssistant"/> @Html.DisplayNameFor(model => model.HasAnAssistant)
                 </label>
             </div>
             <div class="form-group">
@@ -60,9 +59,9 @@
                 <span asp-validation-for="AdditionalInfo" class="text-danger"></span>
             </div>
 
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id"/>
             <div class="form-group">
-                <input type="submit" value=@Common.Save class="btn btn-primary" />
+                <input type="submit" value="@Common.Save" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -73,5 +72,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

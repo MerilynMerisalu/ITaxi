@@ -1,19 +1,19 @@
 ﻿@page
-@model ResendEmailConfirmationModel
 @using Base.Resources.Identity.Pages.Account
+@model ResendEmailConfirmationModel
 @{
-    ViewData["Title"] = @ResendEmailConfirmation.ResendEmailConfirm;
+    ViewData["Title"] = ResendEmailConfirmation.ResendEmailConfirm;
 }
 
 <h1>@ViewData["Title"]</h1>
 <h2>@ResendEmailConfirmation.ResendEmailConfirm.</h2>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-floating">
-                <input asp-for="Input.Email" class="form-control" aria-required="true" />
+                <input asp-for="Input.Email" class="form-control" aria-required="true"/>
                 <label asp-for="Input.Email" class="form-label"></label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
@@ -23,5 +23,5 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
 }

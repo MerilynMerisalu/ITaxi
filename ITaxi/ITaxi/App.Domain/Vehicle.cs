@@ -1,21 +1,20 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using App.Domain.Enum;
 using Base.Domain;
 using Base.Resources;
 
 namespace App.Domain;
 
-public class Vehicle:DomainEntityMetaId
+public class Vehicle : DomainEntityMetaId
 {
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "Driver")] 
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "Driver")]
     public Guid DriverId { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = nameof(Driver))] 
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = nameof(Driver))]
     public Driver? Driver { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleType")]
-    
+
     public Guid VehicleTypeId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleType")]
@@ -31,11 +30,11 @@ public class Vehicle:DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleModel")]
     public Guid VehicleModelId { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleModel")] 
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleModel")]
 
     public VehicleModel? VehicleModel { get; set; }
 
-    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage" )]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(25, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(25, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]

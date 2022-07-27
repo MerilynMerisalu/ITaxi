@@ -1,11 +1,10 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Base.Domain;
 using Base.Resources;
 
 namespace App.Domain;
 
-public class VehicleType: DomainEntityMetaId
+public class VehicleType : DomainEntityMetaId
 {
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
@@ -13,7 +12,7 @@ public class VehicleType: DomainEntityMetaId
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.VehicleType), Name = "VehicleTypeName")]
     public LangStr VehicleTypeName { get; set; } = default!;
-    
+
 
     public ICollection<Vehicle>? Vehicles { get; set; }
 }

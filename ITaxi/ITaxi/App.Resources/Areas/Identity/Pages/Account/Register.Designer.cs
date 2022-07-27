@@ -61,56 +61,29 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date of Birth.
+        ///   Looks up a localized string similar to Use another service to log in..
         /// </summary>
-        public static string DateOfBirth {
+        public static string LoginThirdParty {
             get {
-                return ResourceManager.GetString("DateOfBirth", resourceCulture);
+                return ResourceManager.GetString("LoginThirdParty", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter Your Email Here.
+        ///   Looks up a localized string similar to There are no external authentication services configured..
         /// </summary>
-        public static string EnterYourEmailHere {
+        public static string NoThirdParty {
             get {
-                return ResourceManager.GetString("EnterYourEmailHere", resourceCulture);
+                return ResourceManager.GetString("NoThirdParty", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to First Name.
+        ///   Looks up a localized string similar to Register.
         /// </summary>
-        public static string FirstName {
+        public static string RegisterAccount {
             get {
-                return ResourceManager.GetString("FirstName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gender.
-        /// </summary>
-        public static string Gender {
-            get {
-                return ResourceManager.GetString("Gender", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Last Name.
-        /// </summary>
-        public static string LastName {
-            get {
-                return ResourceManager.GetString("LastName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Phone Number.
-        /// </summary>
-        public static string PhoneNumber {
-            get {
-                return ResourceManager.GetString("PhoneNumber", resourceCulture);
+                return ResourceManager.GetString("RegisterAccount", resourceCulture);
             }
         }
     }

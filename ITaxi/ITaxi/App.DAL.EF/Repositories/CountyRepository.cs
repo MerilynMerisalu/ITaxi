@@ -5,22 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class CountyRepository: BaseEntityRepository<County, AppDbContext>, ICountyRepository
+public class CountyRepository : BaseEntityRepository<County, AppDbContext>, ICountyRepository
 {
     public CountyRepository(AppDbContext dbContext) : base(dbContext)
     {
-    }
-
-
-    protected override IQueryable<County> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.OrderBy(c => c.CountyName).AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-
-        return query;
     }
 
     public override async Task<IEnumerable<County>> GetAllAsync(bool noTracking = true)
@@ -40,6 +28,15 @@ public class CountyRepository: BaseEntityRepository<County, AppDbContext>, ICoun
 
     public IEnumerable<County> GetAllCountiesOrderedByCountyName(bool noTracking = true)
     {
-       return CreateQuery(noTracking).OrderBy(c => c.CountyName).ToList();
+        return CreateQuery(noTracking).OrderBy(c => c.CountyName).ToList();
+    }
+
+
+    protected override IQueryable<County> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.OrderBy(c => c.CountyName).AsQueryable();
+        if (noTracking) query.AsNoTracking();
+
+        return query;
     }
 }

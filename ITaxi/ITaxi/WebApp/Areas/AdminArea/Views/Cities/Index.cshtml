@@ -1,5 +1,5 @@
-@model IEnumerable<App.Domain.City>
 @using Base.Resources
+@model IEnumerable<App.Domain.City>
 
 @{
     ViewData["Title"] = Common.Index;
@@ -57,7 +57,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
-            
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |

@@ -3,7 +3,7 @@ using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface IVehicleModelRepository: IEntityRepository<VehicleModel>
+public interface IVehicleModelRepository : IEntityRepository<VehicleModel>
 {
     Task<IEnumerable<VehicleModel>> GetAllVehicleModelsWithoutVehicleMarksAsync(bool noTracking = true);
     IEnumerable<VehicleModel> GetAllVehicleModelsWithoutVehicleMarks(bool noTracking = true);

@@ -50,7 +50,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
             .WithMany(d => d.Drivers)
             .HasForeignKey(d => d.DriverLicenseCategoryId);
     }
-    
+
     // only needed if postgres db is used
     /*public override int SaveChanges()
     {

@@ -11,20 +11,6 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
     {
     }
 
-    protected override IQueryable<Comment> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-
-        query = query.Include(c => c.Drive)
-            .ThenInclude(d => d!.Booking);
-        ;
-        return query;
-    }
-
     public override async Task<IEnumerable<Comment>> GetAllAsync(bool noTracking = true)
     {
         return await CreateQuery(noTracking).ToListAsync();
@@ -68,7 +54,6 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
             .ThenBy(c => c.Drive!.Booking!.PickUpDateAndTime.Minute)
             .ThenBy(c => c.CommentText)
             .ToListAsync();
-
     }
 
     public IEnumerable<Comment> GettingAllOrderedCommentsWithIncludes(bool noTracking = true)
@@ -82,7 +67,6 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
             .ThenBy(c => c.Drive!.Booking!.PickUpDateAndTime.Minute)
             .ThenBy(c => c.CommentText)
             .ToList();
-
     }
 
     public async Task<IEnumerable<Comment>> GettingAllOrderedCommentsWithoutIncludesAsync(bool noTracking = true)
@@ -109,7 +93,15 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
     {
         return comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
     }
-}
 
-    
-  
+    protected override IQueryable<Comment> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.AsQueryable();
+        if (noTracking) query.AsNoTracking();
+
+        query = query.Include(c => c.Drive)
+            .ThenInclude(d => d!.Booking);
+        ;
+        return query;
+    }
+}

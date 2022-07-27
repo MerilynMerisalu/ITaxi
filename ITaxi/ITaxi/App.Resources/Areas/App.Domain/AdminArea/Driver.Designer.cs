@@ -63,9 +63,9 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         /// <summary>
         ///   Looks up a localized string similar to Address of Residence.
         /// </summary>
-        public static string Address {
+        public static string AddressOfResidence {
             get {
-                return ResourceManager.GetString("Address", resourceCulture);
+                return ResourceManager.GetString("AddressOfResidence", resourceCulture);
             }
         }
         

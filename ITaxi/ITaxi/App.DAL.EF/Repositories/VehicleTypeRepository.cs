@@ -5,22 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class VehicleTypeRepository: BaseEntityRepository<VehicleType, AppDbContext>, IVehicleTypeRepository
+public class VehicleTypeRepository : BaseEntityRepository<VehicleType, AppDbContext>, IVehicleTypeRepository
 {
     public VehicleTypeRepository(AppDbContext dbContext) : base(dbContext)
     {
     }
 
-    protected override IQueryable<VehicleType> CreateQuery(bool noTracking = true)
-    {
-        return base.CreateQuery(noTracking).Include(t => t.VehicleTypeName)
-            .ThenInclude(t => t.Translations);
-    }
-
 
     public async Task<IEnumerable<VehicleType>> GetAllVehicleTypesOrderedAsync(bool noTracking = true)
     {
-        #warning: special handling of OrderBy to account for language transalation
+#warning: special handling of OrderBy to account for language transalation
         var res = await CreateQuery(noTracking).ToListAsync();
         return res.OrderBy(x => (string) x.VehicleTypeName).ToList();
     }
@@ -28,9 +22,14 @@ public class VehicleTypeRepository: BaseEntityRepository<VehicleType, AppDbConte
     public IEnumerable<VehicleType> GetAllVehicleTypesOrdered(bool noTracking = true)
     {
 #warning: special handling of OrderBy to account for language transalation
-        return  CreateQuery(noTracking)
-                    .ToList() // Bring into memory "Materialize"
-                    .OrderBy(v => v.VehicleTypeName).ToList();
+        return CreateQuery(noTracking)
+            .ToList() // Bring into memory "Materialize"
+            .OrderBy(v => v.VehicleTypeName).ToList();
+    }
 
+    protected override IQueryable<VehicleType> CreateQuery(bool noTracking = true)
+    {
+        return base.CreateQuery(noTracking).Include(t => t.VehicleTypeName)
+            .ThenInclude(t => t.Translations);
     }
 }

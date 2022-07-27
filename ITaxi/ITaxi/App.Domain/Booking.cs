@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using App.Domain.Enum;
 using Base.Domain;
 using Base.Resources;
@@ -10,13 +9,14 @@ public class Booking : DomainEntityMetaId
 {
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Schedule")]
     public Guid ScheduleId { get; set; }
-    
+
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(Schedule))]
     public Schedule? Schedule { get; set; }
-    
+
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Driver")]
 
     public Guid DriverId { get; set; }
+
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(Driver))]
     public Driver? Driver { get; set; }
 
@@ -26,7 +26,7 @@ public class Booking : DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(Customer))]
     public Customer? Customer { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "VehicleType")] 
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "VehicleType")]
     public Guid VehicleTypeId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(VehicleType))]
@@ -34,7 +34,7 @@ public class Booking : DomainEntityMetaId
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Vehicle")]
     public Guid VehicleId { get; set; }
-    
+
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(Vehicle))]
 
     public Vehicle? Vehicle { get; set; }
@@ -64,7 +64,7 @@ public class Booking : DomainEntityMetaId
     [Range(1, 5, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(NumberOfPassengers))]
     public int NumberOfPassengers { get; set; }
-    
+
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(HasAnAssistant))]
 
     public bool HasAnAssistant { get; set; }
@@ -75,16 +75,16 @@ public class Booking : DomainEntityMetaId
     public string? AdditionalInfo { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(StatusOfBooking))]
- 
+
     public StatusOfBooking StatusOfBooking { get; set; }
 
     public Guid? DriveId { get; set; }
     public Drive? Drive { get; set; }
 
-    public  string DriveTime => $"{PickUpDateAndTime:g}";
-    
+    public string DriveTime => $"{PickUpDateAndTime:g}";
+
     public bool IsDeclined { get; set; }
+
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.Common), Name = "DeclineDateAndTime")]
     public DateTime DeclineDateAndTime { get; set; }
-    
 }

@@ -1,111 +1,89 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using App.Contracts.DAL;
-using Microsoft.AspNetCore.Http;
+using App.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
 
-namespace WebApp.ApiControllers
+namespace WebApp.ApiControllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class VehicleModelsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class VehicleModelsController : ControllerBase
+    private readonly IAppUnitOfWork _uow;
+
+    public VehicleModelsController(IAppUnitOfWork uow)
     {
-        private readonly IAppUnitOfWork _uow;
+        _uow = uow;
+    }
 
-        public VehicleModelsController(IAppUnitOfWork uow)
+    // GET: api/VehicleModels
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<VehicleModel>>> GetVehicleModels()
+    {
+        return Ok(await _uow.VehicleModels.GetAllVehicleModelsWithoutVehicleMarksAsync());
+    }
+
+    // GET: api/VehicleModels/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<VehicleModel>> GetVehicleModel(Guid id)
+    {
+        var vehicleModel = await _uow.VehicleModels.FirstOrDefaultVehicleModelWithoutVehicleMarkAsync(id);
+
+        if (vehicleModel == null) return NotFound();
+
+        return vehicleModel;
+    }
+
+    // PUT: api/VehicleModels/5
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutVehicleModel(Guid id, VehicleModel vehicleModel)
+    {
+        if (id != vehicleModel.Id) return BadRequest();
+
+
+        try
         {
-            _uow = uow;
-        }
-
-        // GET: api/VehicleModels
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<VehicleModel>>> GetVehicleModels()
-        {
-            return Ok(await _uow.VehicleModels.GetAllVehicleModelsWithoutVehicleMarksAsync());
-        }
-
-        // GET: api/VehicleModels/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<VehicleModel>> GetVehicleModel(Guid id)
-        {
-            var vehicleModel = await _uow.VehicleModels.FirstOrDefaultVehicleModelWithoutVehicleMarkAsync(id);
-
-            if (vehicleModel == null)
-            {
-                return NotFound();
-            }
-
-            return vehicleModel;
-        }
-
-        // PUT: api/VehicleModels/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutVehicleModel(Guid id, VehicleModel vehicleModel)
-        {
-            if (id != vehicleModel.Id)
-            {
-                return BadRequest();
-            }
-
-            
-
-            try
-            {
-                _uow.VehicleModels.Update(vehicleModel);
-                await _uow.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!VehicleModelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/VehicleModels
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<VehicleModel>> PostVehicleModel(VehicleModel vehicleModel)
-        {
-            _uow.VehicleModels.Add(vehicleModel);
+            _uow.VehicleModels.Update(vehicleModel);
             await _uow.SaveChangesAsync();
-
-            return CreatedAtAction("GetVehicleModel", new { id = vehicleModel.Id }, vehicleModel);
         }
-
-        // DELETE: api/VehicleModels/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVehicleModel(Guid id)
+        catch (DbUpdateConcurrencyException)
         {
-            var vehicleModel = await _uow.VehicleModels.FirstOrDefaultAsync(id);
-            if (vehicleModel == null)
-            {
+            if (!VehicleModelExists(id))
                 return NotFound();
-            }
-
-            _uow.VehicleModels.Remove(vehicleModel);
-            await _uow.SaveChangesAsync();
-
-            return NoContent();
+            throw;
         }
 
-        private bool VehicleModelExists(Guid id)
-        {
-            return _uow.VehicleModels.Exists(id);
-        }
+        return NoContent();
+    }
+
+    // POST: api/VehicleModels
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPost]
+    public async Task<ActionResult<VehicleModel>> PostVehicleModel(VehicleModel vehicleModel)
+    {
+        _uow.VehicleModels.Add(vehicleModel);
+        await _uow.SaveChangesAsync();
+
+        return CreatedAtAction("GetVehicleModel", new {id = vehicleModel.Id}, vehicleModel);
+    }
+
+    // DELETE: api/VehicleModels/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteVehicleModel(Guid id)
+    {
+        var vehicleModel = await _uow.VehicleModels.FirstOrDefaultAsync(id);
+        if (vehicleModel == null) return NotFound();
+
+        _uow.VehicleModels.Remove(vehicleModel);
+        await _uow.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    private bool VehicleModelExists(Guid id)
+    {
+        return _uow.VehicleModels.Exists(id);
     }
 }

@@ -10,7 +10,6 @@ public class CreateRideTimeViewModel
     public Guid ScheduleId { get; set; }
 
 
-
     [DisplayFormat(DataFormatString = "{0:t}")]
     [DataType(DataType.Time)]
     [Display(ResourceType = typeof(RideTime), Name = "RideTimeSelectListName")]

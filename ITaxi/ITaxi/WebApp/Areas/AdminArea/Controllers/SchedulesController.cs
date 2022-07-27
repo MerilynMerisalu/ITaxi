@@ -1,242 +1,212 @@
 #nullable enable
-using System.Globalization;
 using App.Contracts.DAL;
+using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
-using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.AdminArea.ViewModels;
 
-namespace WebApp.Areas.AdminArea.Controllers
+namespace WebApp.Areas.AdminArea.Controllers;
+
+[Area(nameof(AdminArea))]
+[Authorize(Roles = nameof(Admin))]
+public class SchedulesController : Controller
 {
-    [Area(nameof(AdminArea))]
-    [Authorize(Roles = nameof(Admin))]
-    public class SchedulesController : Controller
+    private readonly IAppUnitOfWork _uow;
+
+    public SchedulesController(IAppUnitOfWork uow)
     {
-        private readonly IAppUnitOfWork _uow;
+        _uow = uow;
+    }
 
-        public SchedulesController(IAppUnitOfWork uow)
+    // GET: AdminArea/Schedules
+    public async Task<IActionResult> Index()
+    {
+#warning Should this be a repository method
+        var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync();
+        foreach (var s in res)
         {
-            _uow = uow;
+            s.StartDateAndTime = s.StartDateAndTime.ToLocalTime();
+            s.EndDateAndTime = s.EndDateAndTime.ToLocalTime();
         }
 
-        // GET: AdminArea/Schedules
-        public async Task<IActionResult> Index()
-        {
+        return View(res);
+    }
+
+    // GET: AdminArea/Schedules/Details/5
+    public async Task<IActionResult> Details(Guid? id)
+    {
+        var vm = new DetailsDeleteScheduleViewModel();
+        if (id == null) return NotFound();
+
+        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
+
+        if (schedule == null) return NotFound();
+
+        vm.Id = schedule.Id;
+        vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
+        vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
 #warning Should this be a repository method
-            var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync();
-            foreach (var s in res)
-            {
-                s.StartDateAndTime = s.StartDateAndTime.ToLocalTime();
-                s.EndDateAndTime = s.EndDateAndTime.ToLocalTime();
-            }
-
-            return View(res);
-        }
-
-        // GET: AdminArea/Schedules/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            var vm = new DetailsDeleteScheduleViewModel();
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
-
-            if (schedule == null)
-            {
-                return NotFound();
-            }
-
-            vm.Id = schedule.Id;
-            vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
-            vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
+        vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
 #warning Should this be a repository method
-            vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
-#warning Should this be a repository method
-            vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
-            vm.CreatedBy = schedule.CreatedBy!;
-            vm.CreatedAt = schedule.CreatedAt.ToLocalTime().ToString("G");
-            vm.UpdatedBy = schedule.UpdatedBy!;
-            vm.UpdatedAt = schedule.UpdatedAt.ToLocalTime().ToString("G");
+        vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
+        vm.CreatedBy = schedule.CreatedBy!;
+        vm.CreatedAt = schedule.CreatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedBy = schedule.UpdatedBy!;
+        vm.UpdatedAt = schedule.UpdatedAt.ToLocalTime().ToString("G");
 
-            return View(vm);
-        }
+        return View(vm);
+    }
 
-        // GET: AdminArea/Schedules/Create
-        public async Task<IActionResult> Create()
-        {
-            var vm = new CreateScheduleViewModel();
-            vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
-                #warning "Magic string" code smell, fix it 
-                nameof(Driver.Id), $"{nameof(Driver.AppUser)}.{nameof(Driver.AppUser.LastAndFirstName)}");
-            vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
-                nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
+    // GET: AdminArea/Schedules/Create
+    public async Task<IActionResult> Create()
+    {
+        var vm = new CreateScheduleViewModel();
+        vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+#warning "Magic string" code smell, fix it
+            nameof(Driver.Id), $"{nameof(Driver.AppUser)}.{nameof(Driver.AppUser.LastAndFirstName)}");
+        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+            nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
 #warning Schedule StartDateAndTime needs a custom validation
 
 #warning Schedule EndDateAndTime needs a custom validation
 
-            return View(vm);
-        }
+        return View(vm);
+    }
 
-        // POST: AdminArea/Schedules/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateScheduleViewModel vm, Schedule schedule)
+    // POST: AdminArea/Schedules/Create
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(CreateScheduleViewModel vm, Schedule schedule)
+    {
+        if (ModelState.IsValid)
         {
-            if (ModelState.IsValid)
-            {
-                schedule.Id = Guid.NewGuid();
-                schedule.DriverId = vm.DriverId;
+            schedule.Id = Guid.NewGuid();
+            schedule.DriverId = vm.DriverId;
 #warning Should this be a repository method
-                schedule.StartDateAndTime = DateTime.Parse(vm.StartDateAndTime).ToUniversalTime();
+            schedule.StartDateAndTime = DateTime.Parse(vm.StartDateAndTime).ToUniversalTime();
 #warning Should this be a repository method
-                schedule.EndDateAndTime = DateTime.Parse(vm.EndDateAndTime).ToUniversalTime();
-                _uow.Schedules.Add(schedule);
-                await _uow.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(vm);
-        }
-
-        // GET: AdminArea/Schedules/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            var vm = new EditScheduleViewModel();
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
-            if (schedule == null)
-            {
-                return NotFound();
-            }
-
-            vm.DriverId = schedule.DriverId;
-            vm.VehicleId = schedule.VehicleId;
-#warning Should this be a repository method
-            vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToLocalTime().ToString("g"));
-#warning Should this be a repository method
-            vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToLocalTime().ToString("g"));
-            vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
-                nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
-            vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
-                #warning "Magic string" code smell, fix it 
-                nameof(Driver.Id), "AppUser.LastAndFirstName");
-
-            return View(vm);
-        }
-
-        // POST: AdminArea/Schedules/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, EditScheduleViewModel vm)
-        {
-            var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
-
-            if (schedule != null && id != schedule.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    if (schedule != null)
-                    {
-                        schedule.Id = id;
-
-                        schedule.DriverId = vm.DriverId;
-#warning Should this be a repository method
-                        schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
-#warning Should this be a repository method
-                        schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
-
-
-                        _uow.Schedules.Update(schedule);
-                        await _uow.SaveChangesAsync();
-                    }
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (schedule != null && !ScheduleExists(schedule.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(vm);
-        }
-
-        // GET: AdminArea/Schedules/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            var vm = new DetailsDeleteScheduleViewModel();
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
-            if (schedule == null)
-            {
-                return NotFound();
-            }
-
-            vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
-            vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
-#warning Should this be a repository method
-            vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
-#warning Should this be a repository method
-            vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
-            vm.CreatedBy = schedule.CreatedBy!;
-            vm.CreatedAt = schedule.CreatedAt.ToLocalTime().ToString("G");
-            vm.UpdatedBy = schedule.UpdatedBy!;
-            vm.UpdatedAt = schedule.UpdatedAt.ToLocalTime().ToString("G");
-
-
-            return View(vm);
-        }
-
-        // POST: AdminArea/Schedules/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
-            if (await _uow.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
-                || await _uow.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
-            {
-                return Content("Entity cannot be deleted because it has dependent entities!");
-            }
-
-            if (schedule != null) _uow.Schedules.Remove(schedule);
+            schedule.EndDateAndTime = DateTime.Parse(vm.EndDateAndTime).ToUniversalTime();
+            _uow.Schedules.Add(schedule);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ScheduleExists(Guid id)
+        return View(vm);
+    }
+
+    // GET: AdminArea/Schedules/Edit/5
+    public async Task<IActionResult> Edit(Guid? id)
+    {
+        var vm = new EditScheduleViewModel();
+        if (id == null) return NotFound();
+
+        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
+        if (schedule == null) return NotFound();
+
+        vm.DriverId = schedule.DriverId;
+        vm.VehicleId = schedule.VehicleId;
+#warning Should this be a repository method
+        vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToLocalTime().ToString("g"));
+#warning Should this be a repository method
+        vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToLocalTime().ToString("g"));
+        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+            nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
+        vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+#warning "Magic string" code smell, fix it
+            nameof(Driver.Id), "AppUser.LastAndFirstName");
+
+        return View(vm);
+    }
+
+    // POST: AdminArea/Schedules/Edit/5
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(Guid id, EditScheduleViewModel vm)
+    {
+        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
+
+        if (schedule != null && id != schedule.Id) return NotFound();
+
+        if (ModelState.IsValid)
         {
-            return _uow.Schedules.Exists(id);
+            try
+            {
+                if (schedule != null)
+                {
+                    schedule.Id = id;
+
+                    schedule.DriverId = vm.DriverId;
+#warning Should this be a repository method
+                    schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
+#warning Should this be a repository method
+                    schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
+
+
+                    _uow.Schedules.Update(schedule);
+                    await _uow.SaveChangesAsync();
+                }
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (schedule != null && !ScheduleExists(schedule.Id))
+                    return NotFound();
+                throw;
+            }
+
+            return RedirectToAction(nameof(Index));
         }
+
+        return View(vm);
+    }
+
+    // GET: AdminArea/Schedules/Delete/5
+    public async Task<IActionResult> Delete(Guid? id)
+    {
+        var vm = new DetailsDeleteScheduleViewModel();
+        if (id == null) return NotFound();
+
+        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
+        if (schedule == null) return NotFound();
+
+        vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
+        vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
+#warning Should this be a repository method
+        vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
+#warning Should this be a repository method
+        vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
+        vm.CreatedBy = schedule.CreatedBy!;
+        vm.CreatedAt = schedule.CreatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedBy = schedule.UpdatedBy!;
+        vm.UpdatedAt = schedule.UpdatedAt.ToLocalTime().ToString("G");
+
+
+        return View(vm);
+    }
+
+    // POST: AdminArea/Schedules/Delete/5
+    [HttpPost]
+    [ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(Guid id)
+    {
+        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
+        if (await _uow.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
+            || await _uow.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
+            return Content("Entity cannot be deleted because it has dependent entities!");
+
+        if (schedule != null) _uow.Schedules.Remove(schedule);
+        await _uow.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    private bool ScheduleExists(Guid id)
+    {
+        return _uow.Schedules.Exists(id);
     }
 }

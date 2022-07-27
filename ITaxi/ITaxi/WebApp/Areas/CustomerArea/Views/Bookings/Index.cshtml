@@ -1,5 +1,5 @@
-@using Base.Resources
 @using App.Resources.Areas.App.Domain.CustomerArea
+@using Base.Resources
 @model IEnumerable<App.Domain.Booking>
 
 @{
@@ -54,7 +54,7 @@
         <th>
             @Html.DisplayNameFor(model => model.StatusOfBooking)
         </th>
-        
+
         <th></th>
     </tr>
     </thead>
@@ -95,7 +95,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.StatusOfBooking)
             </td>
-            
+
             <td>
                 <a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |

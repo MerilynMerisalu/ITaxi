@@ -6,46 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveRepository
+public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDriveRepository
 {
     public DriveRepository(AppDbContext dbContext) : base(dbContext)
     {
-    }
-
-    protected override IQueryable<Drive> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-
-        query = query.Include(d => d.Booking)
-            .ThenInclude(d => d!.Schedule)
-            .Include(c => c.Booking)
-            .ThenInclude(c => c!.Customer)
-            .ThenInclude(c => c!.AppUser)
-            .Include(c => c.Booking)
-            .ThenInclude(c => c!.Customer)
-            .ThenInclude(c => c!.DisabilityType)
-            .ThenInclude(c => c!.DisabilityTypeName)
-            .ThenInclude(c => c.Translations)
-            .Include(c => c.Booking)
-            .ThenInclude(c => c!.City)
-            .Include(b => b.Booking)
-            .Include(v => v.Booking)
-            .ThenInclude(v => v!.Vehicle)
-            .ThenInclude(v => v!.VehicleType)
-            .ThenInclude(c => c!.VehicleTypeName)
-            .ThenInclude(c => c.Translations)
-            .Include(v => v.Booking)
-            .ThenInclude(v => v!.Vehicle)
-            .ThenInclude(v => v!.VehicleMark)
-            .Include(v => v.Booking)
-            .ThenInclude(v => v!.Vehicle)
-            .ThenInclude(v => v!.VehicleModel)
-            .Include(c => c.Comment);
-        return query;
     }
 
     public override async Task<IEnumerable<Drive>> GetAllAsync(bool noTracking = true)
@@ -99,7 +63,7 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
 
     public IEnumerable<Drive> GettingAllOrderedDrivesWithIncludes(bool noTracking = true)
     {
-        return  CreateQuery(noTracking)
+        return CreateQuery(noTracking)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
@@ -115,7 +79,7 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
             .ToList();
     }
 
-    
+
     public async Task<Drive?> GettingDriveWithoutIncludesAsync(Guid id, bool noTracking = true)
     {
         return await base.CreateQuery(noTracking).FirstOrDefaultAsync(d => d.Id.Equals(id));
@@ -123,7 +87,7 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
 
     public Drive? GetDriveWithoutIncludes(Guid id, bool noTracking = true)
     {
-        return  base.CreateQuery(noTracking).FirstOrDefault(d => d.Id.Equals(id));
+        return base.CreateQuery(noTracking).FirstOrDefault(d => d.Id.Equals(id));
     }
 
     public async Task<IEnumerable<Drive?>> SearchByDateAsync(DateTime search)
@@ -136,7 +100,7 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
 
     public IEnumerable<Drive?> SearchByDate(DateTime search)
     {
-        var drives =  CreateQuery()
+        var drives = CreateQuery()
             .Where(d => d.Booking!.PickUpDateAndTime.Date
                 .Equals(search.Date)).ToList();
         return drives;
@@ -144,7 +108,6 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
 
     public async Task<IEnumerable<Drive?>> PrintAsync(Guid id)
     {
-        
         var drives = await CreateQuery()
             .Where(d => d.DriverId.Equals(id)).ToListAsync();
         return drives;
@@ -152,7 +115,7 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
 
     public IEnumerable<Drive?> Print(Guid id)
     {
-        var drives =CreateQuery()
+        var drives = CreateQuery()
             .Where(d => d.DriverId.Equals(id)).ToList();
         return drives;
     }
@@ -160,41 +123,47 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
     public string PickUpDateAndTimeStr(Drive drive)
     {
         return drive.Booking!.PickUpDateAndTime.ToLongDateString() + " "
-            + drive.Booking!.PickUpDateAndTime.ToShortTimeString();
+                                                                   + drive.Booking!.PickUpDateAndTime
+                                                                       .ToShortTimeString();
     }
 
     public async Task<IList> GettingDrivesWithoutCommentAsync(bool noTracking = true)
     {
-        var res = await  CreateQuery(noTracking)
-            .Where(d =>  d.Comment!.DriveId == null)
-            .Select(d => new {PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), 
-                d.Id, d.Comment!.DriveId }).ToListAsync();
+        var res = await CreateQuery(noTracking)
+            .Where(d => d.Comment!.DriveId == null)
+            .Select(d => new
+            {
+                PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"),
+                d.Id, d.Comment!.DriveId
+            }).ToListAsync();
         return res;
     }
 
     public IList GettingDrivesWithoutComment(bool noTracking = true)
     {
-        var res =  CreateQuery(noTracking)
-                .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
-                .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
-                .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
-                .ThenBy(d => d.Booking!.PickUpDateAndTime.Year)
-                .ThenBy(d => d.Booking!.PickUpDateAndTime.Hour)
-                .ThenBy(d => d.Booking!.PickUpDateAndTime.Minute)
-                .ThenBy(d => d.Booking!.Customer!.AppUser!.LastName)
-                .ThenBy(d => d.Booking!.Customer!.AppUser!.FirstName)
-                .ThenBy(d => d.Booking!.City!.CityName)
-                .ThenBy(d => d.Booking!.PickupAddress)
-                .ThenBy(d => d.Booking!.DestinationAddress)
-                .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
-            .Where(d =>  d.Comment!.DriveId == null)
-            .Select(d => new {PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), d.Id, 
-                d.Comment!.DriveId }).ToList();
+        var res = CreateQuery(noTracking)
+            .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Year)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Hour)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Minute)
+            .ThenBy(d => d.Booking!.Customer!.AppUser!.LastName)
+            .ThenBy(d => d.Booking!.Customer!.AppUser!.FirstName)
+            .ThenBy(d => d.Booking!.City!.CityName)
+            .ThenBy(d => d.Booking!.PickupAddress)
+            .ThenBy(d => d.Booking!.DestinationAddress)
+            .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
+            .Where(d => d.Comment!.DriveId == null)
+            .Select(d => new
+            {
+                PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), d.Id,
+                d.Comment!.DriveId
+            }).ToList();
         return res;
-
     }
 
-    public async Task<IList >GettingAllDrivesForCommentsAsync(bool noTracking = true)
+    public async Task<IList> GettingAllDrivesForCommentsAsync(bool noTracking = true)
     {
         var res = await CreateQuery(noTracking)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
@@ -209,14 +178,17 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
             .ThenBy(d => d.Booking!.PickupAddress)
             .ThenBy(d => d.Booking!.DestinationAddress)
             .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
-            .Select(d => new {PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), d.Id, 
-                d.Comment!.DriveId }).ToListAsync();
+            .Select(d => new
+            {
+                PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), d.Id,
+                d.Comment!.DriveId
+            }).ToListAsync();
         return res;
     }
 
     public IList GettingDrivesForComments(bool noTracking = true)
     {
-        var res =  CreateQuery(noTracking)
+        var res = CreateQuery(noTracking)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
@@ -229,8 +201,44 @@ public class DriveRepository: BaseEntityRepository<Drive, AppDbContext>, IDriveR
             .ThenBy(d => d.Booking!.PickupAddress)
             .ThenBy(d => d.Booking!.DestinationAddress)
             .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
-            .Select(d => new {PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), d.Id, 
-                d.Comment!.DriveId }).ToList();
+            .Select(d => new
+            {
+                PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), d.Id,
+                d.Comment!.DriveId
+            }).ToList();
         return res;
+    }
+
+    protected override IQueryable<Drive> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.AsQueryable();
+        if (noTracking) query.AsNoTracking();
+
+        query = query.Include(d => d.Booking)
+            .ThenInclude(d => d!.Schedule)
+            .Include(c => c.Booking)
+            .ThenInclude(c => c!.Customer)
+            .ThenInclude(c => c!.AppUser)
+            .Include(c => c.Booking)
+            .ThenInclude(c => c!.Customer)
+            .ThenInclude(c => c!.DisabilityType)
+            .ThenInclude(c => c!.DisabilityTypeName)
+            .ThenInclude(c => c.Translations)
+            .Include(c => c.Booking)
+            .ThenInclude(c => c!.City)
+            .Include(b => b.Booking)
+            .Include(v => v.Booking)
+            .ThenInclude(v => v!.Vehicle)
+            .ThenInclude(v => v!.VehicleType)
+            .ThenInclude(c => c!.VehicleTypeName)
+            .ThenInclude(c => c.Translations)
+            .Include(v => v.Booking)
+            .ThenInclude(v => v!.Vehicle)
+            .ThenInclude(v => v!.VehicleMark)
+            .Include(v => v.Booking)
+            .ThenInclude(v => v!.Vehicle)
+            .ThenInclude(v => v!.VehicleModel)
+            .Include(c => c.Comment);
+        return query;
     }
 }

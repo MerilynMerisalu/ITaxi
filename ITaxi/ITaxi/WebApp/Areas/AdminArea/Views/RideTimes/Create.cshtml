@@ -1,5 +1,5 @@
-@using Base.Resources
 @using App.Resources.Areas.App.Domain.AdminArea
+@using Base.Resources
 @model WebApp.Areas.AdminArea.ViewModels.CreateRideTimeViewModel
 
 @{
@@ -9,16 +9,16 @@
 <h1>@Common.Create</h1>
 
 <h4>@RideTime.RideDateAndTime</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="All" class="text-danger"></div>
-            
+
             <partial name="AdminArea/PartialViews/_CreateEditRideTime" model="Model"/>
-            
+
             <div class="form-group">
-                <input type="submit" value=@Common.Create class="btn btn-primary" />
+                <input type="submit" value="@Common.Create" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -29,5 +29,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

@@ -7,226 +7,226 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\County.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>County.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\WebApp\Views\Shared\_Layout.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\WebApp\Views\Shared\_LoginPartial.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>_LoginPartial.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\Identity\Pages\Account\Register.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Register.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\Identity\Pages\Account\AdminRegister.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>AdminRegister.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\City.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>City.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\Admin.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Admin.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\DriverLicenseCategory.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>DriverLicenseCategory.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\Driver.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Driver.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\VehicleType.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>VehicleType.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\VehicleMark.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>VehicleMark.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\VehicleModel.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>VehicleModel.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\Vehicle.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Vehicle.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\DriversArea\Vehicle.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Vehicle.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\Comment.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Comment.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\Schedule.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Schedule.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\DriverArea\Vehicle.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Vehicle.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\DriverArea\Schedule.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Schedule.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\RideTime.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>RideTime.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\DriverArea\RideTime.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>RideTime.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\DisabilityType.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>DisabilityType.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\Customer.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Customer.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\AdminArea\Booking.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Booking.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Areas\App.Domain\CustomerArea\Booking.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Booking.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\County.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>County.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\WebApp\Views\Shared\_Layout.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\WebApp\Views\Shared\_LoginPartial.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>_LoginPartial.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\Identity\Pages\Account\Register.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Register.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\Identity\Pages\Account\AdminRegister.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>AdminRegister.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\City.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>City.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\Admin.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Admin.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\DriverLicenseCategory.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>DriverLicenseCategory.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\Driver.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Driver.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\VehicleType.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>VehicleType.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\VehicleMark.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>VehicleMark.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\VehicleModel.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>VehicleModel.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\Vehicle.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Vehicle.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\DriversArea\Vehicle.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Vehicle.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\Comment.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Comment.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\Schedule.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Schedule.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\DriverArea\Vehicle.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Vehicle.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\DriverArea\Schedule.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Schedule.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\RideTime.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>RideTime.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\DriverArea\RideTime.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>RideTime.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\DisabilityType.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>DisabilityType.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\Customer.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Customer.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\Booking.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Booking.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\CustomerArea\Booking.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Booking.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Areas\App.Domain\AdminArea\County.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>County.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\WebApp\Views\Shared\_Layout.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>_Layout.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\WebApp\Views\Shared\_LoginPartial.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>_LoginPartial.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\Identity\Pages\Account\Register.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Register.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\Identity\Pages\Account\AdminRegister.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>AdminRegister.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\City.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>City.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\Admin.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Admin.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\DriverLicenseCategory.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>DriverLicenseCategory.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\Driver.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Driver.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\VehicleType.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>VehicleType.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\VehicleMark.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>VehicleMark.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\VehicleModel.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>VehicleModel.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\Vehicle.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Vehicle.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\DriversArea\Vehicle.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Vehicle.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\Comment.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Comment.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\Schedule.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Schedule.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\DriverArea\Vehicle.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Vehicle.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\DriverArea\Schedule.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Schedule.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\RideTime.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>RideTime.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\DriverArea\RideTime.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>RideTime.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\DisabilityType.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>DisabilityType.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\Customer.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Customer.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\AdminArea\Booking.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Booking.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Areas\App.Domain\CustomerArea\Booking.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Booking.resx</DependentUpon>
-      </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\County.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>County.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\WebApp\Views\Shared\_Layout.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>_Layout.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\WebApp\Views\Shared\_LoginPartial.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>_LoginPartial.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Register.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Register.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\AdminRegister.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>AdminRegister.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\City.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>City.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\Admin.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Admin.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\DriverLicenseCategory.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>DriverLicenseCategory.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\Driver.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Driver.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\VehicleType.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>VehicleType.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\VehicleMark.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>VehicleMark.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\VehicleModel.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>VehicleModel.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\Vehicle.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Vehicle.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\DriversArea\Vehicle.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Vehicle.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\Comment.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Comment.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\Schedule.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Schedule.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\DriverArea\Vehicle.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Vehicle.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\DriverArea\Schedule.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Schedule.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\RideTime.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>RideTime.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\DriverArea\RideTime.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>RideTime.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\DisabilityType.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>DisabilityType.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\Customer.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Customer.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\Booking.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Booking.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\CustomerArea\Booking.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Booking.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
-    
+
 </Project>

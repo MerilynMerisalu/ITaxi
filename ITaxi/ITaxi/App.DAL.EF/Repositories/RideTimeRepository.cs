@@ -5,24 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class RideTimeRepository: BaseEntityRepository<RideTime, AppDbContext>, IRideTimeRepository
+public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, IRideTimeRepository
 {
     public RideTimeRepository(AppDbContext dbContext) : base(dbContext)
     {
-    }
-
-    protected override IQueryable<RideTime> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-
-        query = query.Include(c => c.Schedule)
-            .ThenInclude(c => c!.Driver).ThenInclude(c => c!.AppUser);
-            
-        return query;
     }
 
     public override async Task<IEnumerable<RideTime>> GetAllAsync(bool noTracking = true)
@@ -86,7 +72,6 @@ public class RideTimeRepository: BaseEntityRepository<RideTime, AppDbContext>, I
             .ThenBy(r => r.RideDateTime.Hour)
             .ThenBy(r => r.RideDateTime.Minute)
             .ToListAsync();
-
     }
 
     public IEnumerable<RideTime?> GettingAllOrderedRideTimes(bool noTracking = true)
@@ -146,7 +131,7 @@ public class RideTimeRepository: BaseEntityRepository<RideTime, AppDbContext>, I
 
     public IEnumerable<string?> GettingAllSelectedRideTimes(RideTime rideTime, bool noTracking = true)
     {
-           return RepoDbSet
+        return RepoDbSet
             .Where(r => r.ScheduleId.Equals(rideTime.ScheduleId))
             .Select(r => r.RideDateTime.ToString("t"))
             .ToList();
@@ -154,7 +139,7 @@ public class RideTimeRepository: BaseEntityRepository<RideTime, AppDbContext>, I
 
     public List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime)
     {
-        List<string> times = new List<string>();
+        var times = new List<string>();
         var start = scheduleStartAndEndTime[0];
         var time = start;
         var end = scheduleStartAndEndTime[1];
@@ -165,10 +150,20 @@ public class RideTimeRepository: BaseEntityRepository<RideTime, AppDbContext>, I
             time = time.AddMinutes(45);
         }
 
-        
+
         return times;
     }
-    #warning Should it be a repository method
+
+    protected override IQueryable<RideTime> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.AsQueryable();
+        if (noTracking) query.AsNoTracking();
+
+        query = query.Include(c => c.Schedule)
+            .ThenInclude(c => c!.Driver).ThenInclude(c => c!.AppUser);
+
+        return query;
+    }
     /*public string DriveTimeFormatting(RideTime rideTime)
     {
         return rideTime.RideDateTime.ToString("t");

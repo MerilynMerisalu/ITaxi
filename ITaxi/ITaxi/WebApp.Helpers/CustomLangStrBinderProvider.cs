@@ -1,10 +1,4 @@
-﻿using App.Domain;
-using Base.Domain;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-namespace WebApp.Helpers;
+﻿namespace WebApp.Helpers;
 
 /*public class CustomLangStrBinderProvider : IModelBinderProvider
 {

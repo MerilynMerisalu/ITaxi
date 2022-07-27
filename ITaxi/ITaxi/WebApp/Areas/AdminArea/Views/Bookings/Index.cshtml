@@ -1,5 +1,5 @@
-@using Base.Resources
 @using App.Resources.Areas.App.Domain.AdminArea
+@using Base.Resources
 @model IEnumerable<App.Domain.Booking>
 
 @{
@@ -65,11 +65,11 @@
         <th>
             @Html.DisplayNameFor(model => model.UpdatedAt)
         </th>
-        
+
         <th>
             @Html.DisplayNameFor(model => model.DeclineDateAndTime)
         </th>
-        
+
         <th></th>
     </tr>
     </thead>
@@ -127,10 +127,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.DeclineDateAndTime)
                 </td>
-            
             }
             <td>
-                
+
             </td>
             <td>
                 <a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |

@@ -1,5 +1,5 @@
-@model IEnumerable<App.Domain.DriverLicenseCategory>
 @using Base.Resources
+@model IEnumerable<App.Domain.DriverLicenseCategory>
 
 @{
     ViewData["Title"] = Common.Index;
@@ -43,19 +43,19 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
             </td>
-            
+
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
-            
+
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedBy)
             </td>
-            
+
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
-            
+
 
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |

@@ -5,17 +5,15 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 public class DetailsDeletePhotoViewModel
 {
     public Guid Id { get; set; }
-    
+
     [Required]
     [MaxLength(255)]
     [StringLength(255)]
     public string Title { get; set; } = default!;
-    
+
     [Required]
     [MaxLength(255)]
     [StringLength(255)]
     [Display(Name = "Photo Name")]
-    public string? PhotoName { get; set; } 
-
-
+    public string? PhotoName { get; set; }
 }

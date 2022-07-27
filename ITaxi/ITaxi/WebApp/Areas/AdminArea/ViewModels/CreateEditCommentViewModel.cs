@@ -9,8 +9,7 @@ public class CreateEditCommentViewModel
 {
     public Guid Id { get; set; }
 
-    [DisplayName(nameof(Drive))]
-    public Guid? DriveId { get; set; }
+    [DisplayName(nameof(Drive))] public Guid? DriveId { get; set; }
     //public Drive? Drive { get; set; }
 
     public SelectList? Drives { get; set; }
@@ -19,6 +18,4 @@ public class CreateEditCommentViewModel
     [DataType(DataType.MultilineText)]
     [DisplayName(nameof(Comment))]
     public string CommentText { get; set; } = default!;
-    
-    #warning check if using any database method is optimal 
 }

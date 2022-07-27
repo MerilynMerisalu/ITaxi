@@ -2,7 +2,6 @@
 
 namespace App.Domain.Identity;
 
-public class AppRole: BaseRole
+public class AppRole : BaseRole
 {
-    
 }

@@ -9,128 +9,128 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.7" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.7" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.7" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.7"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.7"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.7"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.7">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.7" />
-        <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.7"/>
+        <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\App.DAL.EF\App.DAL.EF.csproj" />
-      <ProjectReference Include="..\App.Resources\App.Resources.csproj" />
-      <ProjectReference Include="..\Base.Resources\Base.Resources.csproj" />
-      <ProjectReference Include="..\WebApp.Helpers\WebApp.Helpers.csproj" />
+        <ProjectReference Include="..\App.DAL.EF\App.DAL.EF.csproj"/>
+        <ProjectReference Include="..\App.Resources\App.Resources.csproj"/>
+        <ProjectReference Include="..\Base.Resources\Base.Resources.csproj"/>
+        <ProjectReference Include="..\WebApp.Helpers\WebApp.Helpers.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ApiControllers" />
-      <Folder Include="Areas\AdminArea\Views" />
-      <Folder Include="Areas\Identity" />
-      <Folder Include="wwwroot\Images" />
+        <Folder Include="ApiControllers"/>
+        <Folder Include="Areas\AdminArea\Views"/>
+        <Folder Include="Areas\Identity"/>
+        <Folder Include="wwwroot\Images"/>
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="Views\Admins\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Admins\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Admins\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Admins\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Admins\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Bookings\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Bookings\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Bookings\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Bookings\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Bookings\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Cities\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Cities\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Cities\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Cities\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Cities\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Comments\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Comments\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Comments\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Comments\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Comments\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Counties\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Counties\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Counties\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Counties\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Counties\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Customers\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Customers\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Customers\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Customers\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Customers\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DisabilityTypes\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DisabilityTypes\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DisabilityTypes\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DisabilityTypes\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DisabilityTypes\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DriverLicenseCategories\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DriverLicenseCategories\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DriverLicenseCategories\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DriverLicenseCategories\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DriverLicenseCategories\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Drivers\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Drivers\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Drivers\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Drivers\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Drivers\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DriversAndDriverLicenseCategories\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DriversAndDriverLicenseCategories\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DriversAndDriverLicenseCategories\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DriversAndDriverLicenseCategories\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\DriversAndDriverLicenseCategories\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Drives\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Drives\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Drives\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Drives\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Drives\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\RideTime\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\RideTime\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\RideTime\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\RideTime\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\RideTime\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Schedules\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Schedules\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Schedules\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Schedules\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Schedules\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleMarks\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleMarks\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleMarks\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleMarks\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleMarks\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleModels\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleModels\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleModels\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleModels\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleModels\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Vehicles\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Vehicles\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Vehicles\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Vehicles\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Vehicles\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleTypes\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleTypes\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleTypes\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleTypes\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\VehicleTypes\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Schedules\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Schedules\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Schedules\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Schedules\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Schedules\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Admins\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Admins\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Admins\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Admins\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Admins\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Bookings\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Bookings\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Bookings\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Bookings\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Bookings\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Cities\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Cities\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Cities\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Cities\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Cities\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Comments\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Comments\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Comments\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Comments\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Comments\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Counties\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Counties\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Counties\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Counties\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Counties\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Customers\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Customers\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Customers\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Customers\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Customers\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DisabilityTypes\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DisabilityTypes\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DisabilityTypes\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DisabilityTypes\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DisabilityTypes\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DriverLicenseCategories\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DriverLicenseCategories\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DriverLicenseCategories\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DriverLicenseCategories\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DriverLicenseCategories\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Drivers\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Drivers\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Drivers\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Drivers\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Drivers\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DriversAndDriverLicenseCategories\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DriversAndDriverLicenseCategories\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DriversAndDriverLicenseCategories\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DriversAndDriverLicenseCategories\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\DriversAndDriverLicenseCategories\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Drives\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Drives\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Drives\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Drives\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Drives\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\RideTime\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\RideTime\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\RideTime\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\RideTime\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\RideTime\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Schedules\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Schedules\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Schedules\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Schedules\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Schedules\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleMarks\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleMarks\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleMarks\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleMarks\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleMarks\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleModels\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleModels\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleModels\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleModels\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleModels\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Vehicles\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Vehicles\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Vehicles\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Vehicles\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Vehicles\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleTypes\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleTypes\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleTypes\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleTypes\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\VehicleTypes\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Schedules\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Schedules\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Schedules\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Schedules\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Schedules\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Create.cshtml"/>
+        <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Delete.cshtml"/>
+        <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Details.cshtml"/>
+        <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Edit.cshtml"/>
+        <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Index.cshtml"/>
     </ItemGroup>
 
 </Project>

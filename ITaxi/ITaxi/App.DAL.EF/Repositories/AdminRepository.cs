@@ -5,23 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class AdminRepository: BaseEntityRepository<Admin, AppDbContext>, IAdminRepository
+public class AdminRepository : BaseEntityRepository<Admin, AppDbContext>, IAdminRepository
 {
     public AdminRepository(AppDbContext dbContext) : base(dbContext)
     {
-    }
-
-    protected override IQueryable<Admin> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-
-        query = query.Include(a => a.AppUser)
-            .Include(a => a.City);
-        return query;
     }
 
     public override IEnumerable<Admin> GetAll(bool noTracking = true)
@@ -38,7 +25,7 @@ public class AdminRepository: BaseEntityRepository<Admin, AppDbContext>, IAdminR
 
     public override async Task<Admin?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
     {
-        var res =  CreateQuery(noTracking);
+        var res = CreateQuery(noTracking);
         return await res.FirstOrDefaultAsync(a => a.Id.Equals(id));
     }
 
@@ -57,5 +44,15 @@ public class AdminRepository: BaseEntityRepository<Admin, AppDbContext>, IAdminR
     {
         return CreateQuery(noTracking).OrderBy(a => a.AppUser!.LastName)
             .ThenBy(a => a.AppUser!.FirstName).ToList();
+    }
+
+    protected override IQueryable<Admin> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.AsQueryable();
+        if (noTracking) query.AsNoTracking();
+
+        query = query.Include(a => a.AppUser)
+            .Include(a => a.City);
+        return query;
     }
 }

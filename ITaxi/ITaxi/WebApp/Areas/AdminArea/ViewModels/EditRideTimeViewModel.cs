@@ -1,15 +1,13 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using App.Domain;
+﻿using System.ComponentModel.DataAnnotations;
+using App.Resources.Areas.App.Domain.AdminArea;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using RideTime = App.Resources.Areas.App.Domain.AdminArea.RideTime;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
 public class EditRideTimeViewModel
 {
     public Guid Id { get; set; }
-    
+
     [Display(ResourceType = typeof(RideTime), Name = "Driver")]
     public Guid DriverId { get; set; }
 
@@ -20,13 +18,14 @@ public class EditRideTimeViewModel
 
     public SelectList? Schedules { get; set; }
 
-    
+
     [Display(ResourceType = typeof(RideTime), Name = "RideDateAndTime")]
-    
+
     public string RideTime { get; set; } = default!;
-    
+
     [Display(ResourceType = typeof(RideTime), Name = "RideTimeSelectListName")]
     public SelectList? RideTimes { get; set; }
+
     [Display(ResourceType = typeof(RideTime), Name = nameof(IsTaken))]
     public bool IsTaken { get; set; }
 }

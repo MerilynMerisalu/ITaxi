@@ -2,38 +2,14 @@
 using App.Domain;
 using App.Domain.Enum;
 using Base.DAL.EF;
-using Base.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class BookingRepository: BaseEntityRepository<Booking, AppDbContext>, IBookingRepository
+public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IBookingRepository
 {
     public BookingRepository(AppDbContext dbContext) : base(dbContext)
     {
-    }
-
-    protected override IQueryable<Booking> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-        
-        query = query.Include(b => b.City)
-            .Include(b => b.Driver)
-            .ThenInclude(d => d!.AppUser)
-            .Include(b => b.Schedule)
-            .Include(b => b.Vehicle)
-            .ThenInclude(v => v!.VehicleMark)
-            .Include(v => v.Vehicle)
-            .ThenInclude(v => v!.VehicleModel)
-            .Include(b => b.VehicleType!.VehicleTypeName)
-            .ThenInclude(v => v.Translations)
-            .Include(c => c.Drive)
-            .ThenInclude(c => c!.Comment);
-        return query;
     }
 
     public override async Task<IEnumerable<Booking>> GetAllAsync(bool noTracking = true)
@@ -56,7 +32,7 @@ public class BookingRepository: BaseEntityRepository<Booking, AppDbContext>, IBo
         return base.CreateQuery(noTracking).ToList();
     }
 
-    public async Task<IEnumerable<Booking?>>GettingAllOrderedBookingsAsync(bool noTracking = true)
+    public async Task<IEnumerable<Booking?>> GettingAllOrderedBookingsAsync(bool noTracking = true)
     {
         return await CreateQuery(noTracking)
             .OrderBy(b => b.PickUpDateAndTime.Date)
@@ -73,7 +49,7 @@ public class BookingRepository: BaseEntityRepository<Booking, AppDbContext>, IBo
 
     public IEnumerable<Booking?> GettingAllOrderedBookings(bool noTracking = true)
     {
-        return  CreateQuery(noTracking)
+        return CreateQuery(noTracking)
             .OrderBy(b => b.PickUpDateAndTime.Date)
             .ThenBy(b => b.PickUpDateAndTime.Day)
             .ThenBy(b => b.PickUpDateAndTime.Month)
@@ -126,7 +102,7 @@ public class BookingRepository: BaseEntityRepository<Booking, AppDbContext>, IBo
 
     public async Task<IEnumerable<Booking?>> SearchByCityAsync(string search)
     {
-         var results =
+        var results =
             await RepoDbSet.Include(b => b.City)
                 .Include(b => b.Driver)
                 .ThenInclude(d => d!.AppUser)
@@ -139,13 +115,13 @@ public class BookingRepository: BaseEntityRepository<Booking, AppDbContext>, IBo
                 .Include(b => b.Drive)
                 .ThenInclude(b => b!.Comment)
                 .Where(b => b.City!.CityName.Contains(search)).ToListAsync();
-         return results;
+        return results;
     }
 
     public string PickUpDateAndTimeStrFormat(Booking booking)
     {
-       return booking.PickUpDateAndTime.ToLongDateString() + " "
-            + booking.PickUpDateAndTime.ToShortTimeString();
+        return booking.PickUpDateAndTime.ToLongDateString() + " "
+                                                            + booking.PickUpDateAndTime.ToShortTimeString();
     }
 
     public DateTime DateTimeFormatting()
@@ -153,7 +129,6 @@ public class BookingRepository: BaseEntityRepository<Booking, AppDbContext>, IBo
         return Convert.ToDateTime(DateTime.Now.ToString("g"));
     }
 
-    
 
     public Booking BookingDecline(Booking booking)
     {
@@ -169,5 +144,25 @@ public class BookingRepository: BaseEntityRepository<Booking, AppDbContext>, IBo
     public override Booking? FirstOrDefault(Guid id, bool noTracking = true)
     {
         return CreateQuery(noTracking).FirstOrDefault(b => b.Id.Equals(id));
+    }
+
+    protected override IQueryable<Booking> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.AsQueryable();
+        if (noTracking) query.AsNoTracking();
+
+        query = query.Include(b => b.City)
+            .Include(b => b.Driver)
+            .ThenInclude(d => d!.AppUser)
+            .Include(b => b.Schedule)
+            .Include(b => b.Vehicle)
+            .ThenInclude(v => v!.VehicleMark)
+            .Include(v => v.Vehicle)
+            .ThenInclude(v => v!.VehicleModel)
+            .Include(b => b.VehicleType!.VehicleTypeName)
+            .ThenInclude(v => v.Translations)
+            .Include(c => c.Drive)
+            .ThenInclude(c => c!.Comment);
+        return query;
     }
 }

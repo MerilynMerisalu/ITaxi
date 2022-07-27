@@ -1,6 +1,6 @@
-@model WebApp.Areas.DriverArea.ViewModels.CreateRideTimeViewModel
-@using Base.Resources
 @using App.Resources.Areas.App.Domain.DriverArea
+@using Base.Resources
+@model WebApp.Areas.DriverArea.ViewModels.CreateRideTimeViewModel
 
 
 @{
@@ -18,7 +18,7 @@
             <partial name="DriverArea/PartialViews/_CreateEditRideTime" model="Model"/>
 
             <div class="form-group">
-                <input type="submit" value=@Common.Create class="btn btn-primary"/>
+                <input type="submit" value="@Common.Create" class="btn btn-primary"/>
             </div>
         </form>
     </div>

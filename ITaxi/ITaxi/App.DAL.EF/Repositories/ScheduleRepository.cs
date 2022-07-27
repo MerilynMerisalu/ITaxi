@@ -5,29 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class ScheduleRepository: BaseEntityRepository<Schedule, AppDbContext>, IScheduleRepository
+public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, IScheduleRepository
 {
     public ScheduleRepository(AppDbContext dbContext) : base(dbContext)
     {
-    }
-
-    protected override IQueryable<Schedule> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-
-        query = query.Include(c => c.Driver)
-            .ThenInclude(a => a!.AppUser)
-            .Include(s => s.Vehicle)
-            .ThenInclude(s => s!.VehicleMark)
-            .Include(s => s.Vehicle)
-            .ThenInclude(s => s!.VehicleModel)
-            .Include(v => v.Vehicle)
-            .ThenInclude(v => v!.VehicleType);
-        return query;
     }
 
     public override async Task<IEnumerable<Schedule>> GetAllAsync(bool noTracking = true)
@@ -39,7 +20,7 @@ public class ScheduleRepository: BaseEntityRepository<Schedule, AppDbContext>, I
     {
         return CreateQuery(noTracking).ToList();
     }
-    
+
 
     public override async Task<Schedule?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
     {
@@ -72,7 +53,6 @@ public class ScheduleRepository: BaseEntityRepository<Schedule, AppDbContext>, I
             .ThenBy(s => s.EndDateAndTime.Hour)
             .ThenBy(s => s.EndDateAndTime.Minute)
             .ToListAsync();
-
     }
 
     public IEnumerable<Schedule> GettingAllOrderedSchedulesWithIncludes(bool noTracking = true)
@@ -113,7 +93,7 @@ public class ScheduleRepository: BaseEntityRepository<Schedule, AppDbContext>, I
 
     public IEnumerable<Schedule> GettingAllOrderedSchedulesWithoutIncludes(bool noTracking = true)
     {
-        return  base.CreateQuery(noTracking).OrderBy(s => s.StartDateAndTime.Date)
+        return base.CreateQuery(noTracking).OrderBy(s => s.StartDateAndTime.Date)
             .ThenBy(s => s.StartDateAndTime.Year)
             .ThenBy(s => s.StartDateAndTime.Month)
             .ThenBy(s => s.StartDateAndTime.Day)
@@ -128,13 +108,11 @@ public class ScheduleRepository: BaseEntityRepository<Schedule, AppDbContext>, I
             .ToList();
     }
 
-    
 
-    public async Task<Schedule?>GettingScheduleWithoutIncludesAsync(Guid id, bool noTracking = true)
+    public async Task<Schedule?> GettingScheduleWithoutIncludesAsync(Guid id, bool noTracking = true)
     {
         return await base.CreateQuery(noTracking)
             .FirstOrDefaultAsync(s => s.Id.Equals(id));
-
     }
 
     public Schedule? GetScheduleWithoutIncludes(Guid id, bool noTracking = true)
@@ -142,17 +120,13 @@ public class ScheduleRepository: BaseEntityRepository<Schedule, AppDbContext>, I
         return CreateQuery(noTracking).FirstOrDefault(s => s.Id.Equals(id));
     }
 
-    
-
-    
 
     public async Task<Schedule?> GettingTheFirstScheduleAsync(bool noTracking = true)
     {
         return await CreateQuery()
-        .OrderBy(s => s.StartDateAndTime.Hour)
-        .ThenBy(s => s.StartDateAndTime.Minute)
-        .FirstOrDefaultAsync();
-        
+            .OrderBy(s => s.StartDateAndTime.Hour)
+            .ThenBy(s => s.StartDateAndTime.Minute)
+            .FirstOrDefaultAsync();
     }
 
     public Schedule? GettingTheFirstSchedule(bool noTracking = true)
@@ -170,11 +144,11 @@ public class ScheduleRepository: BaseEntityRepository<Schedule, AppDbContext>, I
         if (schedule != null)
         {
             scheduleStartAndEndTime[0] = schedule.StartDateAndTime;
-                
+
             scheduleStartAndEndTime[1] = schedule.EndDateAndTime;
         }
-                
-            
+
+
         return scheduleStartAndEndTime;
     }
 
@@ -187,7 +161,23 @@ public class ScheduleRepository: BaseEntityRepository<Schedule, AppDbContext>, I
 
     public Guid GettingScheduleByDriverId(Guid driverId)
     {
-        return  RepoDbSet.Where(s => s.DriverId.Equals(driverId))
+        return RepoDbSet.Where(s => s.DriverId.Equals(driverId))
             .Select(s => s.Id).First();
+    }
+
+    protected override IQueryable<Schedule> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.AsQueryable();
+        if (noTracking) query.AsNoTracking();
+
+        query = query.Include(c => c.Driver)
+            .ThenInclude(a => a!.AppUser)
+            .Include(s => s.Vehicle)
+            .ThenInclude(s => s!.VehicleMark)
+            .Include(s => s.Vehicle)
+            .ThenInclude(s => s!.VehicleModel)
+            .Include(v => v.Vehicle)
+            .ThenInclude(v => v!.VehicleType);
+        return query;
     }
 }

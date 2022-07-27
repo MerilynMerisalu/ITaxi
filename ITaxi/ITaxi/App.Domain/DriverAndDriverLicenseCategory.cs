@@ -2,7 +2,7 @@
 
 namespace App.Domain;
 
-public class DriverAndDriverLicenseCategory: DomainEntityId
+public class DriverAndDriverLicenseCategory : DomainEntityId
 {
     public Guid DriverId { get; set; }
 

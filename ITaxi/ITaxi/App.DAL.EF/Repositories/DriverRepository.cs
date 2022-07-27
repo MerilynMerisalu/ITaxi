@@ -5,24 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class DriverRepository: BaseEntityRepository<Driver, AppDbContext>, IDriverRepository
+public class DriverRepository : BaseEntityRepository<Driver, AppDbContext>, IDriverRepository
 {
     public DriverRepository(AppDbContext dbContext) : base(dbContext)
     {
-        
-    }
-
-    protected override IQueryable<Driver> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-
-        query = query.Include(a => a.AppUser)
-            .Include(a => a.City);
-        return query;
     }
 
     public override Task<Driver?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
@@ -45,12 +31,18 @@ public class DriverRepository: BaseEntityRepository<Driver, AppDbContext>, IDriv
 
     public IEnumerable<Driver> GetAllDriversOrderedByLastName(bool noTracking = true)
     {
-        return CreateQuery(noTracking).
-            OrderBy(d => d.AppUser!.LastName)
+        return CreateQuery(noTracking).OrderBy(d => d.AppUser!.LastName)
             .ThenBy(d => d.AppUser!.FirstName)
             .ToList();
-        
     }
 
-    
+    protected override IQueryable<Driver> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.AsQueryable();
+        if (noTracking) query.AsNoTracking();
+
+        query = query.Include(a => a.AppUser)
+            .Include(a => a.City);
+        return query;
+    }
 }

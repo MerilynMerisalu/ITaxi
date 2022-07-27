@@ -5,24 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class CustomerRepository: BaseEntityRepository<Customer, AppDbContext>, ICustomerRepository
+public class CustomerRepository : BaseEntityRepository<Customer, AppDbContext>, ICustomerRepository
 {
     public CustomerRepository(AppDbContext dbContext) : base(dbContext)
     {
-    }
-
-    protected override IQueryable<Customer> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-
-        query = query.Include(a => a.AppUser)
-            .Include(a => a.DisabilityType).ThenInclude(a => a!.DisabilityTypeName)
-            .ThenInclude(a => a.Translations);
-        return query;
     }
 
     public override async Task<IEnumerable<Customer>> GetAllAsync(bool noTracking = true)
@@ -81,5 +67,16 @@ public class CustomerRepository: BaseEntityRepository<Customer, AppDbContext>, I
     public Customer? GettingCustomerByIdWithoutIncludes(Guid id, bool noTracking = true)
     {
         return base.CreateQuery(noTracking).FirstOrDefault(c => c.Id.Equals(id));
+    }
+
+    protected override IQueryable<Customer> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.AsQueryable();
+        if (noTracking) query.AsNoTracking();
+
+        query = query.Include(a => a.AppUser)
+            .Include(a => a.DisabilityType).ThenInclude(a => a!.DisabilityTypeName)
+            .ThenInclude(a => a.Translations);
+        return query;
     }
 }

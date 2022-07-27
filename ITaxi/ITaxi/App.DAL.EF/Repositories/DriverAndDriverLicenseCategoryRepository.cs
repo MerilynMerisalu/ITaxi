@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class DriverAndDriverLicenseCategoryRepository: BaseEntityRepository<DriverAndDriverLicenseCategory, AppDbContext>,
+public class DriverAndDriverLicenseCategoryRepository :
+    BaseEntityRepository<DriverAndDriverLicenseCategory, AppDbContext>,
     IDriverAndDriverLicenseCategoryRepository
 
 {
@@ -13,19 +14,6 @@ public class DriverAndDriverLicenseCategoryRepository: BaseEntityRepository<Driv
     {
     }
 
-    protected override IQueryable<DriverAndDriverLicenseCategory> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-
-        query = query.Include(c => c.DriverLicenseCategory)
-            .Include(c => c.Driver);
-        return query;
-    }
-    
     public async Task<string?> GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(Guid id, string separator = ", ")
     {
         var driverLicenseCategoryNames = await CreateQuery()
@@ -38,15 +26,16 @@ public class DriverAndDriverLicenseCategoryRepository: BaseEntityRepository<Driv
 
     public string GetAllDriverLicenseCategoriesBelongingToTheDriver(Guid id, string separator = ", ")
     {
-        var driverLicenseCategoryNamesAsList =  CreateQuery()
+        var driverLicenseCategoryNamesAsList = CreateQuery()
             .Where(i => i.DriverId.Equals(id))
             .OrderBy(c => c.DriverLicenseCategory!.DriverLicenseCategoryName)
             .Select(dl => dl.DriverLicenseCategory!.DriverLicenseCategoryName)
             .ToList();
-        return string.Join(separator, driverLicenseCategoryNamesAsList );
+        return string.Join(separator, driverLicenseCategoryNamesAsList);
     }
 
-    public async Task<List<DriverAndDriverLicenseCategory?>> RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(Guid id)
+    public async Task<List<DriverAndDriverLicenseCategory?>>
+        RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(Guid id)
     {
         var driverAndDriverLicenseCategories =
             await CreateQuery()
@@ -56,7 +45,13 @@ public class DriverAndDriverLicenseCategoryRepository: BaseEntityRepository<Driv
         return RemoveAll(driverAndDriverLicenseCategories)!;
     }
 
-    
+    protected override IQueryable<DriverAndDriverLicenseCategory> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.AsQueryable();
+        if (noTracking) query.AsNoTracking();
 
-   
+        query = query.Include(c => c.DriverLicenseCategory)
+            .Include(c => c.Driver);
+        return query;
+    }
 }

@@ -1,18 +1,17 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Base.Domain;
 
 namespace App.Domain;
 
-public class RideTime: DomainEntityMetaId
+public class RideTime : DomainEntityMetaId
 {
     public Guid DriverId { get; set; }
 
     public Driver? Driver { get; set; }
-    
+
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "Schedule")]
     public Guid ScheduleId { get; set; }
-    
+
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "Schedule")]
 
     public Schedule? Schedule { get; set; }
@@ -23,5 +22,5 @@ public class RideTime: DomainEntityMetaId
     public DateTime RideDateTime { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "IsTaken")]
-     public bool IsTaken { get; set; }
+    public bool IsTaken { get; set; }
 }

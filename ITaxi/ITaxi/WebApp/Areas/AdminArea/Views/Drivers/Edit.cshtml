@@ -1,8 +1,8 @@
-@model WebApp.Areas.AdminArea.ViewModels.EditDriverViewModel
-@using Base.Resources
-@using App.Resources.Areas.App.Domain.AdminArea
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using App.Domain.Enum
+@using App.Resources.Areas.App.Domain.AdminArea
+@using Base.Resources
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model WebApp.Areas.AdminArea.ViewModels.EditDriverViewModel
 
 @{
     ViewData["Title"] = Common.Edit;
@@ -11,19 +11,19 @@
 <h1>@Common.Edit</h1>
 
 <h4>@Driver.JobTitle</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
+                <input asp-for="FirstName" class="form-control"/>
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
+                <input asp-for="LastName" class="form-control"/>
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -34,15 +34,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
+                <input asp-for="DateOfBirth" class="form-control"/>
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PersonalIdentifier" class="control-label"></label>
-                <input asp-for="PersonalIdentifier" class="form-control" />
+                <input asp-for="PersonalIdentifier" class="form-control"/>
                 <span asp-validation-for="PersonalIdentifier" class="text-danger"></span>
             </div>
-            
+
             <div class="form-group">
                 <label asp-for="DriverAndDriverLicenseCategories"></label>
                 <select multiple="multiple" asp-for="DriverAndDriverLicenseCategories" class="form-control"
@@ -52,12 +52,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="DriverLicenseNumber" class="control-label"></label>
-                <input asp-for="DriverLicenseNumber" class="form-control" />
+                <input asp-for="DriverLicenseNumber" class="form-control"/>
                 <span asp-validation-for="DriverLicenseNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DriverLicenseExpiryDate" class="control-label"></label>
-                <input asp-for="DriverLicenseExpiryDate" class="form-control" />
+                <input asp-for="DriverLicenseExpiryDate" class="form-control"/>
                 <span asp-validation-for="DriverLicenseExpiryDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -68,13 +68,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
+                <input asp-for="Address" class="form-control"/>
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
 
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id"/>
             <div class="form-group">
-                <input type="submit" value=@Common.Save class="btn btn-primary" />
+                <input type="submit" value="@Common.Save" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -85,5 +85,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

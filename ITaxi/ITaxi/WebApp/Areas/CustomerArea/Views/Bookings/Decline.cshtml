@@ -1,5 +1,5 @@
-﻿@using Base.Resources
-@using App.Resources.Areas.App.Domain.CustomerArea
+﻿@using App.Resources.Areas.App.Domain.CustomerArea
+@using Base.Resources
 @model WebApp.Areas.CustomerArea.ViewModels.DeclineBookingViewModel
 @{
     ViewData["Title"] = Booking.Decline;
@@ -18,7 +18,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.VehicleType)
         </dd>
-    <dt class="col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.City)
         </dt>
         <dd class="col-sm-10">
@@ -66,11 +66,11 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StatusOfBooking)
         </dd>
-        
+
     </dl>
     <form asp-action="Decline">
         <input type="hidden" asp-for="Id"/>
-        <input type="submit" value=@Booking.Decline class="btn btn-danger"/> |
+        <input type="submit" value="@Booking.Decline" class="btn btn-danger"/> |
         <a asp-action="Index">@Common.BackToList</a>
     </form>
 </div>

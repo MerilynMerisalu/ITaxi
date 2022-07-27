@@ -1,10 +1,8 @@
 ﻿using System.Diagnostics;
-using System.Globalization;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Enum;
 using App.Domain.Identity;
-using Base.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,10 +18,7 @@ public static class DataHelper
         await using var context = serviceScope
             .ServiceProvider.GetService<AppDbContext>();
 
-        if (context == null)
-        {
-            throw new ApplicationException("Problem in services. No db context.");
-        }
+        if (context == null) throw new ApplicationException("Problem in services. No db context.");
 
         // TODO - Check database state
         // can't connect - wrong address
@@ -36,80 +31,51 @@ public static class DataHelper
         using var userManager = serviceScope.ServiceProvider.GetService<UserManager<AppUser>>();
         using var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<AppRole>>();
 
-        if (userManager == null || roleManager == null)
-        {
-            Console.Write("Cannot instantiate userManager or rolemanager!");
-        }
+        if (userManager == null || roleManager == null) Console.Write("Cannot instantiate userManager or rolemanager!");
 
         if (configuration.GetValue<bool>("DataInitialization:DropDatabase"))
-        {
             await context.Database.EnsureDeletedAsync();
-        }
 
-        if (configuration.GetValue<bool>("DataInitialization:MigrateDatabase"))
-        {
-            await context.Database.MigrateAsync();
-        }
+        if (configuration.GetValue<bool>("DataInitialization:MigrateDatabase")) await context.Database.MigrateAsync();
 
         if (configuration.GetValue<bool>("DataInitialization:SeedIdentity"))
         {
-            var role = new AppRole()
+            var role = new AppRole
             {
-
-                Name = "Admin",
-
+                Name = "Admin"
             };
             role.NormalizedName = role.Name.ToUpper();
             var result = roleManager!.CreateAsync(role).Result;
             if (!result.Succeeded)
-            {
                 foreach (var identityError in result.Errors)
-                {
                     Console.WriteLine("Cant create role! Error: " + identityError.Description);
-                }
 
-            }
-
-            role = new AppRole()
+            role = new AppRole
             {
-
-                Name = "Driver",
-
+                Name = "Driver"
             };
             role.NormalizedName = role.Name.ToUpper();
             result = roleManager!.CreateAsync(role).Result;
             if (!result.Succeeded)
-            {
                 foreach (var identityError in result.Errors)
-                {
                     Console.WriteLine("Cant create role! Error: " + identityError.Description);
-                }
 
-            }
-
-            role = new AppRole()
+            role = new AppRole
             {
-
-                Name = "Customer",
-
+                Name = "Customer"
             };
             role.NormalizedName = role.Name.ToUpper();
             result = roleManager!.CreateAsync(role).Result;
             if (!result.Succeeded)
-            {
                 foreach (var identityError in result.Errors)
-                {
                     Console.WriteLine("Cant create role! Error: " + identityError.Description);
-                }
-
-            }
         }
 
         if (configuration.GetValue<bool>("DataInitialization:SeedData"))
         {
             // Initialize all vehicle Types
             //App.Resources.Areas.App.Domain.AdminArea.VehicleType.
-            var regularVehicleType = new VehicleType()
+            var regularVehicleType = new VehicleType
             {
                 Id = Guid.NewGuid(),
                 VehicleTypeName = App.Resources.Areas.App.Domain.AdminArea.VehicleType.Regular,
@@ -117,7 +83,7 @@ public static class DataHelper
             };
             regularVehicleType.VehicleTypeName.SetTranslation("Tava", "et-EE");
             await context.VehicleTypes.AddAsync(regularVehicleType);
-            var wheelChairVehicleType = new VehicleType()
+            var wheelChairVehicleType = new VehicleType
             {
                 Id = Guid.NewGuid(),
                 VehicleTypeName = App.Resources.Areas.App.Domain.AdminArea.VehicleType.Wheelchair,
@@ -129,7 +95,7 @@ public static class DataHelper
 
             var testVehicleType = context.VehicleTypes.Include(x => x.VehicleTypeName.Translations).FirstOrDefault();
             Debug.WriteLine(testVehicleType);
-            var disabilityType = new DisabilityType()
+            var disabilityType = new DisabilityType
             {
                 Id = Guid.NewGuid(),
                 DisabilityTypeName = "None",
@@ -139,29 +105,30 @@ public static class DataHelper
             await context.DisabilityTypes.AddAsync(disabilityType);
             await context.SaveChangesAsync();
 
-            var testDisabilityType = context.DisabilityTypes.Include(x => x.DisabilityTypeName.Translations).FirstOrDefault();
+            var testDisabilityType =
+                context.DisabilityTypes.Include(x => x.DisabilityTypeName.Translations).FirstOrDefault();
             Debug.WriteLine(testDisabilityType);
-            
-            var county = new County()
+
+            var county = new County
             {
                 Id = new Guid(),
                 CountyName = "Harjumaa",
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
-             await context.Counties.AddAsync(county);
-             await context.SaveChangesAsync();
+            await context.Counties.AddAsync(county);
+            await context.SaveChangesAsync();
 
-            var city = new City()
+            var city = new City
             {
                 Id = new Guid(),
                 CityName = "Tallinn",
-                CountyId =  county.Id,
-                CreatedAt = DateTime.Now.ToUniversalTime(),
+                CountyId = county.Id,
+                CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.Cities.AddAsync(city);
             await context.SaveChangesAsync();
 
-            var appUser = new AppUser()
+            var appUser = new AppUser
             {
                 Id = new Guid(),
                 FirstName = "Katrin",
@@ -171,42 +138,29 @@ public static class DataHelper
                 Email = "kati@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "22356891"
-
             };
             appUser.UserName = appUser.Email;
 
             var result = userManager!.CreateAsync(appUser, "Katrinkass123$").Result;
-            
-            if (!result.Succeeded)
-            {
-                foreach (var identityError in result.Errors)
-                {
-                    Console.WriteLine("Cant create user! Error: " + identityError.Description);
-                }
-            }
-            result = userManager.AddToRoleAsync(appUser, "Admin").Result;
-            if (!result.Succeeded)
-            {
-                foreach (var identityError in result.Errors)
-                {
-                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
-                }
-            }
-            
-            result = userManager.AddToRoleAsync(appUser, "Admin").Result;
-            if (!result.Succeeded)
-            {
-                foreach (var identityError in result.Errors)
-                {
-                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
-                }
-            }
 
-            
-            var admin = new Admin()
+            if (!result.Succeeded)
+                foreach (var identityError in result.Errors)
+                    Console.WriteLine("Cant create user! Error: " + identityError.Description);
+            result = userManager.AddToRoleAsync(appUser, "Admin").Result;
+            if (!result.Succeeded)
+                foreach (var identityError in result.Errors)
+                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
+
+            result = userManager.AddToRoleAsync(appUser, "Admin").Result;
+            if (!result.Succeeded)
+                foreach (var identityError in result.Errors)
+                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
+
+
+            var admin = new Admin
             {
                 Id = new Guid(),
-                AppUserId = context.Users.OrderBy(u => u.LastName).First(a => 
+                AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                     a.FirstName.Equals("Katrin") && a.LastName.Equals("Salu")).Id,
                 CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
                 PersonalIdentifier = "49208202221",
@@ -216,7 +170,7 @@ public static class DataHelper
             await context.Admins.AddAsync(admin);
             await context.SaveChangesAsync();
 
-              appUser = new AppUser()
+            appUser = new AppUser
             {
                 Id = new Guid(),
                 FirstName = "Tiina",
@@ -226,42 +180,29 @@ public static class DataHelper
                 Email = "tiina.pilv@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "22356891"
-
             };
             appUser.UserName = appUser.Email;
 
-             result = userManager!.CreateAsync(appUser, "Tiinakass123$").Result;
-            
-            if (!result.Succeeded)
-            {
-                foreach (var identityError in result.Errors)
-                {
-                    Console.WriteLine("Cant create user! Error: " + identityError.Description);
-                }
-            }
-            result = userManager.AddToRoleAsync(appUser, "Admin").Result;
-            if (!result.Succeeded)
-            {
-                foreach (var identityError in result.Errors)
-                {
-                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
-                }
-            }
-            
-            result = userManager.AddToRoleAsync(appUser, "Admin").Result;
-            if (!result.Succeeded)
-            {
-                foreach (var identityError in result.Errors)
-                {
-                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
-                }
-            }
+            result = userManager!.CreateAsync(appUser, "Tiinakass123$").Result;
 
-            
-            admin = new Admin()
+            if (!result.Succeeded)
+                foreach (var identityError in result.Errors)
+                    Console.WriteLine("Cant create user! Error: " + identityError.Description);
+            result = userManager.AddToRoleAsync(appUser, "Admin").Result;
+            if (!result.Succeeded)
+                foreach (var identityError in result.Errors)
+                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
+
+            result = userManager.AddToRoleAsync(appUser, "Admin").Result;
+            if (!result.Succeeded)
+                foreach (var identityError in result.Errors)
+                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
+
+
+            admin = new Admin
             {
                 Id = new Guid(),
-                AppUserId = context.Users.OrderBy(u => u.LastName).First(a => 
+                AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                     a.FirstName.Equals("Tiina") && a.LastName.Equals("Pilv")).Id,
                 CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
                 PersonalIdentifier = "47708222221",
@@ -272,7 +213,7 @@ public static class DataHelper
             await context.SaveChangesAsync();
 
 
-             appUser = new AppUser()
+            appUser = new AppUser
             {
                 Id = new Guid(),
                 FirstName = "Toomas",
@@ -282,40 +223,27 @@ public static class DataHelper
                 Email = "toomas.paju@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "55358834"
-
             };
             appUser.UserName = appUser.Email;
 
-             result = userManager!.CreateAsync(appUser, "Toomaskoer123$").Result;
-            
+            result = userManager!.CreateAsync(appUser, "Toomaskoer123$").Result;
+
             if (!result.Succeeded)
-            {
                 foreach (var identityError in result.Errors)
-                {
                     Console.WriteLine("Cant create user! Error: " + identityError.Description);
-                }
-            }
             result = userManager.AddToRoleAsync(appUser, "Driver").Result;
             if (!result.Succeeded)
-            {
                 foreach (var identityError in result.Errors)
-                {
                     Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
-                }
-            }
-            
+
             result = userManager.AddToRoleAsync(appUser, "Driver").Result;
             if (!result.Succeeded)
-            {
                 foreach (var identityError in result.Errors)
-                {
                     Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
-                }
-            }
-            var driver = new Driver()
+            var driver = new Driver
             {
                 Id = new Guid(),
-                AppUserId = context.Users.OrderBy(u => u.LastName).First(a => 
+                AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                     a.FirstName.Equals("Toomas") && a.LastName.Equals("Paju")).Id,
                 CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
                 PersonalIdentifier = "38806237921",
@@ -326,8 +254,8 @@ public static class DataHelper
             };
             await context.Drivers.AddAsync(driver);
             await context.SaveChangesAsync();
-            
-            var driverLicenseCategory = new DriverLicenseCategory()
+
+            var driverLicenseCategory = new DriverLicenseCategory
             {
                 Id = new Guid(),
                 DriverLicenseCategoryName = "B2",
@@ -337,7 +265,7 @@ public static class DataHelper
             await context.DriverLicenseCategories.AddAsync(driverLicenseCategory);
             await context.SaveChangesAsync();
 
-            var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory()
+            var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory
             {
                 DriverId = driver.Id,
                 DriverLicenseCategoryId = driverLicenseCategory.Id
@@ -345,9 +273,8 @@ public static class DataHelper
             await context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategory);
             await context.SaveChangesAsync();
 
-            
 
-            var vehicleMark = new VehicleMark()
+            var vehicleMark = new VehicleMark
             {
                 Id = new Guid(),
                 VehicleMarkName = "Toyota",
@@ -355,7 +282,7 @@ public static class DataHelper
             };
             await context.VehicleMarks.AddAsync(vehicleMark);
             await context.SaveChangesAsync();
-            var vehicleModel = new VehicleModel()
+            var vehicleModel = new VehicleModel
             {
                 Id = new Guid(),
                 VehicleModelName = "Avensis",
@@ -365,7 +292,7 @@ public static class DataHelper
             await context.VehicleModels.AddAsync(vehicleModel);
             await context.SaveChangesAsync();
 
-            var vehicle = new Vehicle()
+            var vehicle = new Vehicle
             {
                 Id = new Guid(),
                 DriverId = driver.Id,
@@ -381,7 +308,7 @@ public static class DataHelper
             await context.Vehicles.AddAsync(vehicle);
             await context.SaveChangesAsync();
 
-            var schedule = new Schedule()
+            var schedule = new Schedule
             {
                 Id = new Guid(),
                 DriverId = driver.Id,
@@ -393,7 +320,7 @@ public static class DataHelper
             await context.Schedules.AddAsync(schedule);
             await context.SaveChangesAsync();
 
-            var rideTime = new RideTime()
+            var rideTime = new RideTime
             {
                 ScheduleId = schedule.Id,
                 Driver = schedule.Driver,
@@ -402,8 +329,8 @@ public static class DataHelper
             };
             await context.RideTimes.AddAsync(rideTime);
             await context.SaveChangesAsync();
-            
-             appUser = new AppUser()
+
+            appUser = new AppUser
             {
                 Id = new Guid(),
                 FirstName = "Maarika",
@@ -413,40 +340,31 @@ public static class DataHelper
                 Email = "maarika.matas@gmail.com",
                 EmailConfirmed = true,
                 PhoneNumber = "66357754"
-
             };
             appUser.UserName = appUser.Email;
 
-             result = userManager!.CreateAsync(appUser, "Maarikakass123$").Result;
-            
+            result = userManager!.CreateAsync(appUser, "Maarikakass123$").Result;
+
             if (!result.Succeeded)
-            {
                 foreach (var identityError in result.Errors)
-                {
                     Console.WriteLine("Cant create user! Error: " + identityError.Description);
-                }
-            }
             result = userManager.AddToRoleAsync(appUser, "Customer").Result;
             if (!result.Succeeded)
-            {
                 foreach (var identityError in result.Errors)
-                {
                     Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
-                }
-            }
-            
-            var customer = new Customer()
+
+            var customer = new Customer
             {
                 Id = new Guid(),
-                AppUserId = context.Users.OrderBy(u => u.LastName).First(a => 
+                AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                     a.FirstName.Equals("Maarika") && a.LastName.Equals("Mätas")).Id,
                 DisabilityTypeId = disabilityType.Id,
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.Customers.AddAsync(customer);
             await context.SaveChangesAsync();
-            
-            var booking = new Booking()
+
+            var booking = new Booking
             {
                 Id = new Guid(),
                 DriverId = driver.Id,
@@ -466,7 +384,7 @@ public static class DataHelper
             await context.Bookings.AddAsync(booking);
             await context.SaveChangesAsync();
 
-            var drive = new Drive()
+            var drive = new Drive
             {
                 Id = new Guid(),
                 DriverId = driver.Id,
@@ -475,8 +393,8 @@ public static class DataHelper
             };
             await context.Drives.AddAsync(drive);
             await context.SaveChangesAsync();
-            
-            var comment = new Comment()
+
+            var comment = new Comment
             {
                 Id = new Guid(),
                 CommentText = "Jäin teenusega rahule!",
@@ -486,8 +404,5 @@ public static class DataHelper
             await context.Comments.AddAsync(comment);
             await context.SaveChangesAsync();
         }
-        
-        
     }
-    
 }

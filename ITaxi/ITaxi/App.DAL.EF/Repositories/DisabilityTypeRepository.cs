@@ -5,24 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class DisabilityTypeRepository: BaseEntityRepository<DisabilityType, AppDbContext>,
+public class DisabilityTypeRepository : BaseEntityRepository<DisabilityType, AppDbContext>,
     IDisabilityTypeRepository
 {
     public DisabilityTypeRepository(AppDbContext dbContext) : base(dbContext)
     {
-    }
-
-    protected override IQueryable<DisabilityType> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-
-        query = query.Include(c => c.DisabilityTypeName).
-            ThenInclude(c => c.Translations);
-        return query;
     }
 
     public async Task<IEnumerable<DisabilityType>> GetAllOrderedDisabilityTypesAsync(bool noTracking = true)
@@ -33,6 +20,14 @@ public class DisabilityTypeRepository: BaseEntityRepository<DisabilityType, AppD
     public IEnumerable<DisabilityType> GetAllOrderedDisabilityTypes(bool noTracking = true)
     {
         return CreateQuery(noTracking).OrderBy(d => d.DisabilityTypeName).ToList();
+    }
 
+    protected override IQueryable<DisabilityType> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.AsQueryable();
+        if (noTracking) query.AsNoTracking();
+
+        query = query.Include(c => c.DisabilityTypeName).ThenInclude(c => c.Translations);
+        return query;
     }
 }

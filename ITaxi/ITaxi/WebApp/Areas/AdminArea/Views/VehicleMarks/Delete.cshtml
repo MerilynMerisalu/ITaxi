@@ -1,9 +1,9 @@
-@using Base.Resources
 @using App.Resources.Areas.App.Domain.AdminArea
+@using Base.Resources
 @model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteVehicleMarkViewModel
 
 @{
-    ViewData["Title"] = @Common.Delete;
+    ViewData["Title"] = Common.Delete;
 }
 
 <h1>@Common.Delete</h1>
@@ -11,12 +11,12 @@
 <h3>@Common.AreYouSureYouWantToDeleteThis</h3>
 <div>
     <h4>@VehicleMark.VehicleMarkName</h4>
-    <hr />
+    <hr/>
     <partial name="AdminArea/PartialViews/_DetailsDeleteVehicleMark" model="Model"/>
-    
+
     <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value=@Common.Delete class="btn btn-danger" /> |
+        <input type="hidden" asp-for="Id"/>
+        <input type="submit" value="@Common.Delete" class="btn btn-danger"/> |
         <a asp-action="Index">@Common.BackToList</a>
     </form>
 </div>

@@ -1,24 +1,16 @@
 ﻿@using Microsoft.Extensions.Options
 @inject IOptions<RequestLocalizationOptions> LocalizationOptions
 @{
-    var cultureItems = (LocalizationOptions.Value.SupportedUICultures!)
+    var cultureItems = LocalizationOptions.Value.SupportedUICultures!
         .Select(c => new {Value = c.Name, Text = c.NativeName}).ToList();
 }
 
-        @foreach (var item in cultureItems)
-        {
-            <a class="dropdown-item" asp-area=""
-               asp-controller="Home"
-               asp-action="SetLanguage" asp-route-culture="@item.Value"
-               asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">
-                @item.Text
-            </a>
-        }
-         
-         
-    
-
-
-
-    
-    
+@foreach (var item in cultureItems)
+{
+    <a class="dropdown-item" asp-area=""
+       asp-controller="Home"
+       asp-action="SetLanguage" asp-route-culture="@item.Value"
+       asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">
+        @item.Text
+    </a>
+}

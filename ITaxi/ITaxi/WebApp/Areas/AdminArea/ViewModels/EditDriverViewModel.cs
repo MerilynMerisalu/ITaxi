@@ -1,7 +1,6 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using App.Domain;
+﻿using System.ComponentModel.DataAnnotations;
 using App.Domain.Enum;
+using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Resources;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -10,70 +9,70 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 public class EditDriverViewModel
 {
     public Guid Id { get; set; }
-    
+
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
-    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage"),]
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "FirstName")]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(Driver), Name = "FirstName")]
     public string FirstName { get; set; } = default!;
-            
+
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
-    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "LastName")]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(Driver), Name = "LastName")]
     public string LastName { get; set; } = default!;
-    
-    [EnumDataType(typeof(Gender))] 
+
+    [EnumDataType(typeof(Gender))]
     [Display(ResourceType = typeof(Common), Name = "Gender")]
     public Gender Gender { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.Date)]
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DateOfBirth")]
+    [Display(ResourceType = typeof(Driver), Name = "DateOfBirth")]
     [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:d}")]
     public DateTime DateOfBirth { get; set; } = default!;
 
-    
-    [StringLength(25, MinimumLength = 0, ErrorMessageResourceType = typeof(Common), 
+
+    [StringLength(25, MinimumLength = 0, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver),
+    [Display(ResourceType = typeof(Driver),
         Name = nameof(PersonalIdentifier))]
-    public string? PersonalIdentifier { get; set; } 
-    
+    public string? PersonalIdentifier { get; set; }
+
     [StringLength(15, MinimumLength = 2, ErrorMessageResourceType = typeof(Common)
-    , ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), 
+        , ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(Driver),
         Name = "DriverLicenseNumber")]
     public string DriverLicenseNumber { get; set; } = default!;
-    
-    
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseCategories")]
+
+
+    [Display(ResourceType = typeof(Driver), Name = "DriverLicenseCategories")]
 
     public SelectList? DriverLicenseCategories { get; set; }
 
-   [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseCategories")] 
+    [Display(ResourceType = typeof(Driver), Name = "DriverLicenseCategories")]
     public ICollection<Guid>? DriverAndDriverLicenseCategories { get; set; }
 
     [DataType(DataType.Date)]
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseExpiryDate")]
+    [Display(ResourceType = typeof(Driver), Name = "DriverLicenseExpiryDate")]
     [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:d}")]
-    #warning DateTime input control does not support user changing the language yet
+#warning DateTime input control does not support user changing the language yet
     public DateTime DriverLicenseExpiryDate { get; set; }
 
     public SelectList? Cities { get; set; }
 
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "City")]
+    [Display(ResourceType = typeof(Driver), Name = "City")]
     public Guid CityId { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-    [StringLength(30, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), 
+    [StringLength(30, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "Address")]
+    [Display(ResourceType = typeof(Driver), Name = "AddressOfResidence")]
     public string Address { get; set; } = default!;
-    
+
     [Display(ResourceType = typeof(Common), Name = nameof(IsActive))]
 
     public bool IsActive { get; set; }
-
 }

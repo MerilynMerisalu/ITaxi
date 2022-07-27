@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Base.DAL.EF;
 
-public class BaseEntityRepository<TEntity, TDbContext>: BaseEntityRepository<TEntity, Guid, TDbContext>
-    where TEntity: class, IDomainEntityId<Guid>
-    where TDbContext: DbContext
+public class BaseEntityRepository<TEntity, TDbContext> : BaseEntityRepository<TEntity, Guid, TDbContext>
+    where TEntity : class, IDomainEntityId<Guid>
+    where TDbContext : DbContext
 {
     public BaseEntityRepository(TDbContext dbContext) : base(dbContext)
     {
@@ -28,19 +28,6 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
         RepoDbSet = dbContext.Set<TEntity>();
     }
 
-    protected virtual IQueryable<TEntity> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query = query.AsQueryable().AsNoTracking();
-            return query;
-        }
-
-        return query;
-    }
-    
-    
 
     public virtual TEntity Add(TEntity entity)
     {
@@ -67,16 +54,13 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
     {
         var entity = FirstOrDefault(id);
         if (entity == null)
-        {
             // TODO: implement custom exception for entity not found
             throw new NullReferenceException($"Entity {typeof(TEntity).Name} with id {id} was not found");
-        }
         return Remove(entity);
     }
 
     public virtual List<TEntity> RemoveAll(List<TEntity> entities)
     {
-        
         RepoDbSet.RemoveRange(entities);
         return entities.ToList();
     }
@@ -105,18 +89,16 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
 
     public virtual TEntity? SingleOrDefault(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
     {
-        var query =  CreateQuery(noTracking);
+        var query = CreateQuery(noTracking);
         var result = query.Select(d => d).SingleOrDefault(filter);
         return result;
-
     }
 
     public TEntity? First(bool noTracking = true)
     {
-        var query =  CreateQuery( noTracking);
+        var query = CreateQuery(noTracking);
         var result = query.First();
         return result;
-
     }
 
     public List<TEntity> AddRange(List<TEntity> entities)
@@ -145,10 +127,8 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
     {
         var entity = await FirstOrDefaultAsync(id);
         if (entity == null)
-        {
             // TODO: implement custom exception for entity not found
             throw new NullReferenceException($"Entity {typeof(TEntity).Name} with id {id} was not found");
-        }
         return Remove(entity);
     }
 
@@ -159,7 +139,8 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
         return res;
     }
 
-    public virtual async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true)
+    public virtual async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter,
+        bool noTracking = true)
     {
         var query = CreateQuery(noTracking);
         var result = await query.Select(d => d).SingleOrDefaultAsync(filter);
@@ -168,9 +149,20 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
 
     public virtual async Task<TEntity?> FirstAsync(bool noTracking = true)
     {
-        var query =  CreateQuery( noTracking);
+        var query = CreateQuery(noTracking);
         var result = await query.FirstAsync();
         return result;
+    }
 
+    protected virtual IQueryable<TEntity> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.AsQueryable();
+        if (noTracking)
+        {
+            query = query.AsQueryable().AsNoTracking();
+            return query;
+        }
+
+        return query;
     }
 }

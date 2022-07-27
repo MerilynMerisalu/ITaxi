@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.DriverArea.ViewModels;
 
 namespace WebApp.Areas.DriverArea.Controllers;
+
 [Authorize(Roles = "Admin, Driver")]
 [Area(nameof(DriverArea))]
 public class VehiclesController : Controller
@@ -22,7 +23,6 @@ public class VehiclesController : Controller
     // GET: AdminArea/Vehicles
     public async Task<IActionResult> Index()
     {
-
         return View(await _uow.Vehicles.GettingOrderedVehiclesAsync());
     }
 
@@ -33,7 +33,7 @@ public class VehiclesController : Controller
         var vm = new DetailsDeleteVehicleViewModel();
         var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id.Value);
         if (vehicle == null) return NotFound();
-        
+
         vm.Id = id;
         vm.VehicleType = vehicle.VehicleType!.VehicleTypeName;
         vm.VehicleMark = vehicle.VehicleMark!.VehicleMarkName;
@@ -109,10 +109,7 @@ public class VehiclesController : Controller
         if (id == null) return NotFound();
 
         var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id.Value);
-        if (vehicle == null)
-        {
-            return NotFound();
-        }
+        if (vehicle == null) return NotFound();
 
         vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleType.Id),
@@ -164,14 +161,11 @@ public class VehiclesController : Controller
                     _uow.Vehicles.Update(vehicle);
                     await _uow.SaveChangesAsync();
                 }
-
-
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (vehicle != null && !VehicleExists(vehicle.Id))
                     return NotFound();
-                
             }
 
             return RedirectToAction(nameof(Index));
@@ -188,7 +182,7 @@ public class VehiclesController : Controller
         var vm = new DetailsDeleteVehicleViewModel();
         var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id.Value);
         if (vehicle == null) return NotFound();
-        
+
         vm.Id = id;
         vm.VehicleType = vehicle.VehicleType!.VehicleTypeName;
         vm.VehicleMark = vehicle.VehicleMark!.VehicleMarkName;
@@ -210,9 +204,7 @@ public class VehiclesController : Controller
         var vehicle = await _uow.Vehicles.SingleOrDefaultAsync(v => v != null && v.Id.Equals(id));
         if (await _uow.Schedules.AnyAsync(s => vehicle != null && s != null && s.VehicleId.Equals(vehicle.Id))
             || await _uow.Bookings.AnyAsync(v => vehicle != null && v != null && v.VehicleId.Equals(vehicle.Id)))
-        {
             return Content("Entity cannot be deleted because it has dependent entities!");
-        }
 
         if (vehicle != null)
         {
@@ -227,5 +219,4 @@ public class VehiclesController : Controller
     {
         return _uow.Vehicles.Exists(id);
     }
-    
 }

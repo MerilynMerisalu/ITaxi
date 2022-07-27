@@ -6,28 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class VehicleRepository: BaseEntityRepository<Vehicle, AppDbContext>, IVehicleRepository
+public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IVehicleRepository
 {
     public VehicleRepository(AppDbContext dbContext) : base(dbContext)
     {
-    }
-
-    protected override IQueryable<Vehicle> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-
-        query = query.Include(c => c.Driver)
-            .ThenInclude(d => d!.AppUser)
-            .Include(v => v.VehicleMark)
-            .Include(v => v.VehicleModel)
-            .Include(v => v.VehicleType)
-            .ThenInclude(v => v!.VehicleTypeName)
-            .ThenInclude(v => v.Translations);
-        return query;
     }
 
     public override async Task<IEnumerable<Vehicle>> GetAllAsync(bool noTracking = true)
@@ -107,7 +89,6 @@ public class VehicleRepository: BaseEntityRepository<Vehicle, AppDbContext>, IVe
     public Vehicle? GettingVehicleWithoutIncludesById(Guid id, bool noTracking = true)
     {
         return base.CreateQuery(noTracking).FirstOrDefault(v => v.Id.Equals(id));
-
     }
 
     public List<int> GettingManufactureYears()
@@ -127,7 +108,7 @@ public class VehicleRepository: BaseEntityRepository<Vehicle, AppDbContext>, IVe
 
     public async Task<Vehicle?> GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailabilityAsync(Booking booking)
     {
-         return await RepoDbSet
+        return await RepoDbSet
             .Where(v => v.DriverId.Equals(booking.DriverId)
                         && v.VehicleAvailability == VehicleAvailability.Available)
             .FirstAsync();
@@ -135,8 +116,23 @@ public class VehicleRepository: BaseEntityRepository<Vehicle, AppDbContext>, IVe
 
     public Vehicle? GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailability(Booking booking)
     {
-        return  RepoDbSet
+        return RepoDbSet
             .First(v => v.DriverId.Equals(booking.DriverId)
-                                 && v.VehicleAvailability == VehicleAvailability.Available);
+                        && v.VehicleAvailability == VehicleAvailability.Available);
+    }
+
+    protected override IQueryable<Vehicle> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.AsQueryable();
+        if (noTracking) query.AsNoTracking();
+
+        query = query.Include(c => c.Driver)
+            .ThenInclude(d => d!.AppUser)
+            .Include(v => v.VehicleMark)
+            .Include(v => v.VehicleModel)
+            .Include(v => v.VehicleType)
+            .ThenInclude(v => v!.VehicleTypeName)
+            .ThenInclude(v => v.Translations);
+        return query;
     }
 }

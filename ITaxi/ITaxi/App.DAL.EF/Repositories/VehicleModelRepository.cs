@@ -1,27 +1,14 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
-using Base.Contracts.DAL;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class VehicleModelRepository: BaseEntityRepository<VehicleModel, AppDbContext>, IVehicleModelRepository
+public class VehicleModelRepository : BaseEntityRepository<VehicleModel, AppDbContext>, IVehicleModelRepository
 {
     public VehicleModelRepository(AppDbContext dbContext) : base(dbContext)
     {
-    }
-
-    protected override IQueryable<VehicleModel> CreateQuery(bool noTracking = true)
-    {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking)
-        {
-            query.AsNoTracking();
-        }
-
-        query = query.Include(c => c.VehicleMark);
-        return query;
     }
 
 
@@ -45,7 +32,8 @@ public class VehicleModelRepository: BaseEntityRepository<VehicleModel, AppDbCon
         return base.CreateQuery(noTracking).FirstOrDefault(v => v.Id.Equals(id));
     }
 
-    public async Task<IEnumerable<VehicleModel>> GetAllVehicleModelsOrderedByVehicleMarkNameAsync(bool noTracking = true)
+    public async Task<IEnumerable<VehicleModel>> GetAllVehicleModelsOrderedByVehicleMarkNameAsync(
+        bool noTracking = true)
     {
         return await CreateQuery(noTracking).OrderBy(v => v.VehicleMark!.VehicleMarkName)
             .ThenBy(v => v.VehicleModelName).ToListAsync();
@@ -55,5 +43,14 @@ public class VehicleModelRepository: BaseEntityRepository<VehicleModel, AppDbCon
     {
         return CreateQuery(noTracking).OrderBy(v => v.VehicleMark!.VehicleMarkName)
             .ThenBy(v => v.VehicleModelName).ToList();
+    }
+
+    protected override IQueryable<VehicleModel> CreateQuery(bool noTracking = true)
+    {
+        var query = RepoDbSet.AsQueryable();
+        if (noTracking) query.AsNoTracking();
+
+        query = query.Include(c => c.VehicleMark);
+        return query;
     }
 }
