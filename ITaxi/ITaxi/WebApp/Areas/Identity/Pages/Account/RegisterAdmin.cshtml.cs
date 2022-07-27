@@ -126,9 +126,7 @@ public class RegisterAdminModel : PageModel
                 await _context.Admins.AddAsync(admin);
                 await _context.SaveChangesAsync();
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                {
                     return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl});
-                }
 
                 await _signInManager.SignInAsync(user, false);
                 return LocalRedirect(returnUrl);

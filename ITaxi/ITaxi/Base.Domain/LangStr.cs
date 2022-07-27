@@ -18,7 +18,7 @@ public class LangStr : LangStr<Guid>
 
     public static implicit operator LangStr(string value)
     {
-        return new(value);
+        return new LangStr(value);
     }
 }
 
@@ -113,6 +113,6 @@ public class LangStr<TKey> : DomainEntityId<TKey>
     [Obsolete("Only use this for New entries, not for editing existing entries")]
     public static implicit operator LangStr<TKey>(string value)
     {
-        return new(value);
+        return new LangStr<TKey>(value);
     }
 }

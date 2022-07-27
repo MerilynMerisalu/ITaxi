@@ -11,6 +11,8 @@ using App.DAL.EF;
 using App.Domain;
 using App.Domain.Enum;
 using App.Domain.Identity;
+using App.Resources.Areas.Identity.Pages.Account;
+using Base.Resources;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -18,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
@@ -46,6 +49,8 @@ public class RegisterCustomerModel : PageModel
         _emailSender = emailSender;
         _context = context;
         DisabilityTypes = new SelectList(_context.DisabilityTypes
+                .Include(d => 
+                    d.DisabilityTypeName).ThenInclude(d => d.Translations)
                 .OrderBy(d => d.DisabilityTypeName)
                 .Select(d => new {d.Id, d.DisabilityTypeName}).ToList(),
             nameof(DisabilityType.Id), nameof(DisabilityType.DisabilityTypeName));
@@ -125,9 +130,7 @@ public class RegisterCustomerModel : PageModel
                 await _context.Customers.AddAsync(customer);
                 await _context.SaveChangesAsync();
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                {
                     return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl});
-                }
 
                 await _signInManager.SignInAsync(user, false);
                 return LocalRedirect(returnUrl);
@@ -167,52 +170,65 @@ public class RegisterCustomerModel : PageModel
     /// </summary>
     public class InputModel
     {
-        [Required]
-        [MaxLength(50)]
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [MaxLength(50, ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "ErrorMessageMaxLength")]
         [StringLength(50, MinimumLength = 1)]
-        [DisplayName("First Name")]
+        [Display(ResourceType = typeof(CustomerRegister), Name = nameof(FirstName))]
         public string FirstName { get; set; } = default!;
 
-        [Required]
-        [MaxLength(50)]
-        [StringLength(50, MinimumLength = 1)]
-        [DisplayName("Last Name")]
+        [Required(ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+        [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+        [Display(ResourceType = typeof(CustomerRegister), Name = nameof(LastName))]
         public string LastName { get; set; } = default!;
+        
+        [Display(ResourceType = typeof(CustomerRegister), Name = nameof(Gender))]
+        [EnumDataType(typeof(Gender))]
+        public Gender Gender { get; set; }
 
-        [EnumDataType(typeof(Gender))] public Gender Gender { get; set; }
-
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.Date)]
-        [DisplayName("Date of Birth")]
+        [Display(ResourceType = typeof(CustomerRegister), Name = nameof(DateOfBirth))]
         public DateTime DateOfBirth { get; set; }
 
-        [DisplayName("Disability Type")] public Guid DisabilityTypeId { get; set; }
+        [Display(ResourceType = typeof(CustomerRegister), Name = "DisabilityType")]
+        public Guid DisabilityTypeId { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.PhoneNumber)]
-        [MaxLength(50)]
-        [StringLength(50, MinimumLength = 1)]
-        [DisplayName("Phone Number")]
+        [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+        [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+        [Display(ResourceType = typeof(CustomerRegister), Name = nameof(PhoneNumber))]
         public string PhoneNumber { get; set; } = default!;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [EmailAddress(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageEmail")]
+        [Display(ResourceType = typeof(CustomerRegister), Name = nameof(Email))]
         public string Email { get; set; } = default!;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [StringLength(100, ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "StringLengthAttributeErrorMessage",
             MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(ResourceType = typeof(CustomerRegister), Name = nameof(Password))]
         public string Password { get; set; } = default!;
 
         /// <summary>
@@ -220,8 +236,10 @@ public class RegisterCustomerModel : PageModel
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(ResourceType = typeof(Common), Name = nameof(ConfirmPassword))]
+        [Compare(nameof(Password), ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "ErrorMessageComparePasswords"
+        )]
         public string ConfirmPassword { get; set; } = default!;
     }
 }

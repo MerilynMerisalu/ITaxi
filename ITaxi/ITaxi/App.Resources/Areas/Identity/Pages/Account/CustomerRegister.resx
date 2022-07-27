@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <root>
-    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
-                id="root"
-                xmlns="">
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <xsd:element name="root" msdata:IsDataSet="true">
-
+            
         </xsd:element>
     </xsd:schema>
     <resheader name="resmimetype">
@@ -15,17 +13,13 @@
         <value>1.3</value>
     </resheader>
     <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="RegisterAdmin" xml:space="preserve">
-        <value>Register Admin</value>
+    <data name="RegisterCustomer" xml:space="preserve">
+        <value>Register Customer</value>
     </data>
     <data name="FirstName" xml:space="preserve">
         <value>First Name</value>
@@ -38,15 +32,6 @@
     </data>
     <data name="DateOfBirth" xml:space="preserve">
         <value>Date of Birth</value>
-    </data>
-    <data name="PersonalIdentifier" xml:space="preserve">
-        <value>Personal Identifier</value>
-    </data>
-    <data name="City" xml:space="preserve">
-        <value>City</value>
-    </data>
-    <data name="AddressOfResidence" xml:space="preserve">
-        <value>Address of Residence</value>
     </data>
     <data name="PhoneNumber" xml:space="preserve">
         <value>Phone Number</value>
@@ -66,15 +51,6 @@
     <data name="EnterYourFirstNameHere" xml:space="preserve">
         <value>Enter Your First Name Here</value>
     </data>
-    <data name="EnterYourDateOfBirthHere" xml:space="preserve">
-        <value>Enter Your Date of Birth Here</value>
-    </data>
-    <data name="EnterYourPersonalIdentifierCodeHere" xml:space="preserve">
-        <value>Enter Your Personal Identifier Code Here</value>
-    </data>
-    <data name="EnterYourAddressOfResidenceHere" xml:space="preserve">
-        <value>Enter Your Address of Residence Here</value>
-    </data>
     <data name="EnterYourPhoneNumberHere" xml:space="preserve">
         <value>Enter Your Phone Number Here</value>
     </data>
@@ -86,5 +62,11 @@
     </data>
     <data name="EnterYourLastNameHere" xml:space="preserve">
         <value>Enter Your Last Name Here</value>
+    </data>
+    <data name="DisabilityType" xml:space="preserve">
+        <value>Disability Type</value>
+    </data>
+    <data name="EnterYourDateOfBirthHere" xml:space="preserve">
+        <value>Enter Your Date of Birth Here</value>
     </data>
 </root>

@@ -3,7 +3,6 @@
 
 #nullable enable
 
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -155,9 +154,7 @@ public class RegisterDriverModel : PageModel
                 }
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                {
                     return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl});
-                }
 
                 await _signInManager.SignInAsync(user, false);
                 return LocalRedirect(returnUrl);
@@ -197,22 +194,24 @@ public class RegisterDriverModel : PageModel
     /// </summary>
     public class InputModel
     {
-        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
-        [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), 
+        [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
         [Display(ResourceType = typeof(DriverRegister), Name = nameof(FirstName))]
         public string FirstName { get; set; } = default!;
 
-        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
-        [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), 
+        [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
         [Display(ResourceType = typeof(DriverRegister), Name = nameof(LastName))]
         public string LastName { get; set; } = default!;
 
         [Display(ResourceType = typeof(DriverRegister), Name = nameof(Gender))]
-        [EnumDataType(typeof(Gender))] 
+        [EnumDataType(typeof(Gender))]
         public Gender Gender { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Common),
@@ -232,28 +231,33 @@ public class RegisterDriverModel : PageModel
         [Display(ResourceType = typeof(DriverRegister), Name = "DriverLicenseCategories")]
         public ICollection<Guid>? DriverAndDriverLicenseCategories { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.Text)]
         [StringLength(25)]
         [Display(ResourceType = typeof(DriverRegister), Name = nameof(DriverLicenseNumber))]
         public string DriverLicenseNumber { get; set; } = default!;
 
-        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.Date)]
         [Display(ResourceType = typeof(DriverRegister), Name = "DriverLicensesExpiryDate")]
         public DateTime ExpiryDate { get; set; }
-        
-        
-        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+
+
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.Text)]
-        [StringLength(72, MinimumLength = 2, ErrorMessageResourceType = typeof(Common), 
-            ErrorMessageResourceName = "StringLengthAttributeErrorMessage" )]
+        [StringLength(72, MinimumLength = 2, ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
         [Display(ResourceType = typeof(AdminRegister), Name = "AddressOfResidence")]
         public string Address { get; set; } = default!;
 
-        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.PhoneNumber)]
-        [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+        [MaxLength(50, ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
         [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
         [Display(ResourceType = typeof(Common), Name = nameof(PhoneNumber))]
@@ -263,7 +267,8 @@ public class RegisterDriverModel : PageModel
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [EmailAddress(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageEmail")]
         [Display(ResourceType = typeof(DriverRegister), Name = "Email")]
         public string Email { get; set; } = default!;
@@ -272,7 +277,8 @@ public class RegisterDriverModel : PageModel
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [StringLength(100, ErrorMessageResourceType = typeof(Common)
             , ErrorMessageResourceName = "StringLengthAttributeErrorMessage",
             MinimumLength = 6)]

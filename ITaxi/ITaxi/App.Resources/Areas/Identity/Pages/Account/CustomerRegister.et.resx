@@ -15,8 +15,8 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
-    <data name="RegisterDriver" xml:space="preserve">
-        <value>Autojuhi Registreerimine</value>
+    <data name="RegisterCustomer" xml:space="preserve">
+        <value>Kliendi Registreerimine</value>
     </data>
     <data name="FirstName" xml:space="preserve">
         <value>Eesnimi</value>
@@ -29,15 +29,6 @@
     </data>
     <data name="DateOfBirth" xml:space="preserve">
         <value>Sünniaeg</value>
-    </data>
-    <data name="PersonalIdentifier" xml:space="preserve">
-        <value>Isikukood</value>
-    </data>
-    <data name="City" xml:space="preserve">
-        <value>Linn</value>
-    </data>
-    <data name="AddressOfResidence" xml:space="preserve">
-        <value>Elukoha aadress</value>
     </data>
     <data name="PhoneNumber" xml:space="preserve">
         <value>Telefoninumber</value>
@@ -57,15 +48,6 @@
     <data name="EnterYourFirstNameHere" xml:space="preserve">
         <value>Sisestage siia oma eesnimi</value>
     </data>
-    <data name="EnterYourDateOfBirthHere" xml:space="preserve">
-        <value>Sisestage siia oma sünniaeg</value>
-    </data>
-    <data name="EnterYourPersonalIdentifierCodeHere" xml:space="preserve">
-        <value>Sisestage siia oma isikukood</value>
-    </data>
-    <data name="EnterYourAddressOfResidenceHere" xml:space="preserve">
-        <value>Sisestage siia oma elukoha aadress</value>
-    </data>
     <data name="EnterYourPhoneNumberHere" xml:space="preserve">
         <value>Sisestage siia oma telefoni number</value>
     </data>
@@ -78,19 +60,10 @@
     <data name="EnterYourLastNameHere" xml:space="preserve">
         <value>Sisestage siia oma perekonnanimi</value>
     </data>
-    <data name="DriverLicenseCategories" xml:space="preserve">
-        <value>Juhilubade kategooriad</value>
+    <data name="DisabilityType" xml:space="preserve">
+        <value>Puudeliik</value>
     </data>
-    <data name="DriverLicenseNumber" xml:space="preserve">
-        <value>Juhilubade number</value>
-    </data>
-    <data name="DriverLicensesExpiryDate" xml:space="preserve">
-        <value>Juhilubade aegumiskuupäev</value>
-    </data>
-    <data name="EnterYourDriverLicenseNumberHere" xml:space="preserve">
-        <value>Sisestage siia oma juhilloa number</value>
-    </data>
-    <data name="ChooseTheExpiryDateOfYourDriverLicense" xml:space="preserve">
-        <value>Valige oma juhiloa aegumiskuupäev</value>
+    <data name="EnterYourDateOfBirthHere" xml:space="preserve">
+        <value>Sisestage siia oma sünniaeg</value>
     </data>
 </root>
