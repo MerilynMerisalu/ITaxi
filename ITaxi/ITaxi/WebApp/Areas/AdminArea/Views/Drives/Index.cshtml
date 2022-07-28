@@ -22,10 +22,14 @@
     <thead>
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.Booking!.Driver)
+        </th>
+        
+        <th>
             @Html.DisplayNameFor(model => model.Booking!.Schedule!.ShiftDurationTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Booking!.Customer!.AppUser!.LastAndFirstName)
+            @Html.DisplayNameFor(model => model.Booking!.Customer)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Booking!.Customer!.DisabilityType)
@@ -98,6 +102,10 @@
     {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Booking!.Driver!.AppUser!.LastAndFirstName)
+            </td>
+            
+            <td>
                 @Html.DisplayFor(modelItem => item.Booking!.Schedule!.ShiftDurationTime)
             </td>
             <td>
@@ -162,35 +170,35 @@
                     @Html.DisplayFor(modelItem => item.DriveEndDateAndTime)
                 </td>
             }
-            
+
             <td>
-                
+
             </td>
 
             <td>
-                
+
             </td>
 
             <td>
-                
+
             </td>
             <td>
-                
+
             </td>
             <td>
-               @Html.DisplayFor(modelItem => item.CreatedBy) 
+                @Html.DisplayFor(modelItem => item.CreatedBy)
             </td>
 
             <td>
-                 @Html.DisplayFor(modelItem => item.CreatedAt)           
+                @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedBy)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)          
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
-            
+
 
             <td>
                 <a asp-action="" asp-route-id="@item.Id">@Drive.Accept</a> |

@@ -17,7 +17,7 @@ public class Booking : DomainEntityMetaId
 
     public Guid DriverId { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(Driver))]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Driver")]
     public Driver? Driver { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Customer")]

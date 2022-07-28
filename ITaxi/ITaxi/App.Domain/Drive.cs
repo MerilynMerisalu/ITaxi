@@ -5,7 +5,10 @@ namespace App.Domain;
 
 public class Drive : DomainEntityMetaId
 {
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "JobTitle")]
     public Guid DriverId { get; set; }
+    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "JobTitle")]
     public Driver? Driver { get; set; }
 
     public Booking? Booking { get; set; }

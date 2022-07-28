@@ -46,6 +46,10 @@ public class DrivesController : Controller
         vm.LastAndFirstName= drive.Booking.Customer!.AppUser!.LastAndFirstName;
         vm.PickupDateAndTime = _uow.Drives.PickUpDateAndTimeStr(drive);
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+        vm.IsDriveAccepted = drive.IsDriveAccepted;
+        vm.IsDriveDeclined = drive.IsDriveDeclined;
+        vm.IsDriveStarted = drive.IsDriveStarted;
+        vm.IsDriveFinished = drive.IsDriveFinished;
         vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
         vm.DriveDeclineDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
         vm.DriveInProgressDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
