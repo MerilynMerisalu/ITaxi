@@ -39,6 +39,6 @@
         <value>Sõidu täitmise alguskuupäev ja -kellaaeg</value>
     </data>
     <data name="FinishedDateAndTime" xml:space="preserve">
-        <value>Lõpeetamise kuupäev ja -kellaaeg</value>
+        <value>Lõpetamise kuupäev ja -kellaaeg</value>
     </data>
 </root>
