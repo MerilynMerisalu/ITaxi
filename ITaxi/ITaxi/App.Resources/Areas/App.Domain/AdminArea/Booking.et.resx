@@ -61,7 +61,7 @@
         <value>Kinnitatud</value>
     </data>
     <data name="InProgress" xml:space="preserve">
-        <value>Toimumas</value>
+        <value>Täitmisel</value>
     </data>
     <data name="Finished" xml:space="preserve">
         <value>Lõpetatud</value>

@@ -17,4 +17,16 @@
     <data name="Comment" xml:space="preserve">
         <value>Kommentaar</value>
     </data>
+    <data name="Decline" xml:space="preserve">
+        <value>Tühista</value>
+    </data>
+    <data name="Accept" xml:space="preserve">
+        <value>Kinnita</value>
+    </data>
+    <data name="InProgress" xml:space="preserve">
+        <value>Täitmisel</value>
+    </data>
+    <data name="Finished" xml:space="preserve">
+        <value>Lõpetatud</value>
+    </data>
 </root>

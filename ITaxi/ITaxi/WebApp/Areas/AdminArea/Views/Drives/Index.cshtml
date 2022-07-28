@@ -1,16 +1,18 @@
 @using App.Resources.Areas.App.Domain
+@using App.Resources.Areas.App.Domain.AdminArea
+
 @model IEnumerable<App.Domain.Drive>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = Base.Resources.Common.Index;
 }
 
-<h1>Index</h1>
+<h1>@Base.Resources.Common.Index</h1>
 
 
 <form action="@Url.Action("SearchByDate")" method="post">
     <input type="date" name="search"/>
-    <input type="submit" value="Search"/>
+    <input type="submit" value="@Base.Resources.Common.Search"/>
 </form>
 <p>
     <a asp-action="Print">@Common.CreatePdf</a>
@@ -109,7 +111,12 @@
                 @Html.DisplayFor(modelItem => item.Booking!.Drive!.Comment!.CommentText)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a asp-action="" asp-route-id="@item.Id">@Drive.Accept</a> |
+                <a asp-action="" asp-route-id="@item.Id">@Drive.Decline</a> |
+                <a asp-action="" asp-route-id="@item.Id">@Drive.InProgress</a> |
+                <a asp-action="" asp-route-id="@item.Id">@Drive.Finished</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@Base.Resources.Common.Details</a> 
+                
             </td>
         </tr>
     }
