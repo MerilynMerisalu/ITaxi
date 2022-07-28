@@ -32,6 +32,7 @@ public class DrivesController : Controller
             .FirstOrDefaultAsync(id.Value);
         if (drive == null) return NotFound();
 
+        vm.DriverLastAndFirstName = drive.Driver!.AppUser!.LastAndFirstName;
         vm.City = drive.Booking!.City!.CityName;
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
         if (drive.Comment?.CommentText != null) vm.CommentText = drive.Comment.CommentText;
@@ -42,9 +43,17 @@ public class DrivesController : Controller
         vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
         vm.HasAnAssistant = drive.Booking.HasAnAssistant;
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
-        vm.LastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
+        vm.LastAndFirstName= drive.Booking.Customer!.AppUser!.LastAndFirstName;
         vm.PickupDateAndTime = _uow.Drives.PickUpDateAndTimeStr(drive);
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
+        vm.DriveDeclineDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
+        vm.DriveInProgressDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
+        vm.CreatedBy = drive.CreatedBy!;
+        vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedBy = drive.UpdatedBy!;
+        vm.UpdatedAt = drive.UpdatedAt.ToLocalTime().ToString("G");
+       
 
         return View(vm);
     }

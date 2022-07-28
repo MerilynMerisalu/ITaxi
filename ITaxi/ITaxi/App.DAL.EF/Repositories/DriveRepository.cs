@@ -238,7 +238,9 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
             .Include(v => v.Booking)
             .ThenInclude(v => v!.Vehicle)
             .ThenInclude(v => v!.VehicleModel)
-            .Include(c => c.Comment);
+            .Include(c => c.Comment)
+            .Include(d => d.Driver)
+            .ThenInclude(d => d!.AppUser);
         return query;
     }
 }

@@ -1,13 +1,15 @@
+@using Base.Resources
+@using App.Resources.Areas.App.Domain.AdminArea
 @model WebApp.Areas.AdminArea.ViewModels.DetailsDriveViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Common.Details;
 }
 
-<h1>Details</h1>
+<h1>@Common.Details</h1>
 
 <div>
-    <h4>Drive</h4>
+    <h4>@Drive.DriveName</h4>
     <hr/>
     <dl class="row">
         <dt class="col-sm-2">
@@ -16,6 +18,13 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ShiftDurationTime)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DriverLastAndFirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DriverLastAndFirstName)
+        </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LastAndFirstName)
         </dt>
@@ -89,10 +98,61 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CommentText)
         </dd>
-
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DriveAcceptedDateAndTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DriveAcceptedDateAndTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DriveDeclineDateAndTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DriveInProgressDateAndTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DriveInProgressDateAndTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DriveFinishedDateAndTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DriveFinishedDateAndTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UpdatedBy)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UpdatedAt)
+        </dd>
     </dl>
 </div>
 <div>
+    <a asp-action="" asp-route-id="@Model.Id">@Drive.Accept</a> |
+    <a asp-action="" asp-route-id="@Model.Id">@Drive.Decline</a> |
+    <a asp-action="" asp-route-id="@Model.Id">@Drive.InProgress</a> |
+    <a asp-action="" asp-route-id="@Model.Id">@Drive.Finished</a> |
     @*<a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |*@
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Common.BackToList</a>
 </div>
