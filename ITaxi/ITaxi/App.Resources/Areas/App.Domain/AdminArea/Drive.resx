@@ -36,4 +36,16 @@
     <data name="Finished" xml:space="preserve">
         <value>Finished</value>
     </data>
+    <data name="AcceptedDateAndTime" xml:space="preserve">
+        <value>Drive Acceptance Date and Time</value>
+    </data>
+    <data name="DeclineDateAndTime" xml:space="preserve">
+        <value>Drive Decline Date and Time</value>
+    </data>
+    <data name="InProgressDateAndTime" xml:space="preserve">
+        <value>Start Date and Time of the Drive</value>
+    </data>
+    <data name="FinishedDateAndTime" xml:space="preserve">
+        <value>Drive End Date and Time</value>
+    </data>
 </root>

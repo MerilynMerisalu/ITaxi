@@ -70,6 +70,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drive Acceptance Date and Time.
+        /// </summary>
+        public static string AcceptedDateAndTime {
+            get {
+                return ResourceManager.GetString("AcceptedDateAndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comment.
         /// </summary>
         public static string Comment {
@@ -84,6 +93,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string Decline {
             get {
                 return ResourceManager.GetString("Decline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drive Decline Date and Time.
+        /// </summary>
+        public static string DeclineDateAndTime {
+            get {
+                return ResourceManager.GetString("DeclineDateAndTime", resourceCulture);
             }
         }
         
@@ -106,11 +124,29 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drive End Date and Time.
+        /// </summary>
+        public static string FinishedDateAndTime {
+            get {
+                return ResourceManager.GetString("FinishedDateAndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In-Progress.
         /// </summary>
         public static string InProgress {
             get {
                 return ResourceManager.GetString("InProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Date and Time of the Drive.
+        /// </summary>
+        public static string InProgressDateAndTime {
+            get {
+                return ResourceManager.GetString("InProgressDateAndTime", resourceCulture);
             }
         }
     }

@@ -29,4 +29,16 @@
     <data name="Finished" xml:space="preserve">
         <value>Lõpetatud</value>
     </data>
+    <data name="AcceptedDateAndTime" xml:space="preserve">
+        <value>Kinnitamise kuupäev ja -kellaaeg</value>
+    </data>
+    <data name="DeclineDateAndTime" xml:space="preserve">
+        <value>Tühistamise kuupäev ja kellaaeg</value>
+    </data>
+    <data name="InProgressDateAndTime" xml:space="preserve">
+        <value>Sõidu täitmise alguskuupäev ja -kellaaeg</value>
+    </data>
+    <data name="FinishedDateAndTime" xml:space="preserve">
+        <value>Lõpeetamise kuupäev ja -kellaaeg</value>
+    </data>
 </root>
