@@ -98,30 +98,54 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CommentText)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DriveAcceptedDateAndTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DriveAcceptedDateAndTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DriveDeclineDateAndTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DriveInProgressDateAndTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DriveInProgressDateAndTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DriveFinishedDateAndTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DriveFinishedDateAndTime)
-        </dd>
+        @if (Model.IsDriveAccepted)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DriveAcceptedDateAndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DriveAcceptedDateAndTime)
+            </dd>
+        }
+        @if (Model.IsDriveDeclined)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DriveDeclineDateAndTime)
+            </dd>
+        }
+        @if (Model.IsDriveStarted)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DriveDeclineDateAndTime)
+            </dd>
+        }
+        @if (Model.IsDriveStarted)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DriveInProgressDateAndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DriveInProgressDateAndTime)
+            </dd>
+        }
+
+        @if (Model.IsDriveFinished)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DriveFinishedDateAndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DriveFinishedDateAndTime)
+            </dd>
+        }
+        
+        
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedBy)
         </dt>

@@ -58,17 +58,26 @@ public class DetailsDriveViewModel : AdminAreaBaseViewModel
     
     [Display(ResourceType = typeof(Drive), Name = "AcceptedDateAndTime")]
 
-    public string DriveAcceptedDateAndTime { get; set; }
+    public string? DriveAcceptedDateAndTime { get; set; }
 
     [Display(ResourceType = typeof(Drive), Name = "DeclineDateAndTime")]
     
-    public string DriveDeclineDateAndTime { get; set; }
+    public string? DriveDeclineDateAndTime { get; set; }
     
     [Display(ResourceType = typeof(Drive), Name = "InProgressDateAndTime")]
     
-    public string DriveInProgressDateAndTime { get; set; }
+    public string? DriveInProgressDateAndTime { get; set; }
     [Display(ResourceType = typeof(Drive), Name = "FinishedDateAndTime")]
-    public string DriveFinishedDateAndTime { get; set; }
+    public string? DriveFinishedDateAndTime { get; set; }
+    
+    public bool IsDriveAccepted { get; set; }
+    
+    public bool IsDriveDeclined { get; set; }
+    
+    public bool IsDriveStarted { get; set; }
+    
+    public bool IsDriveFinished { get; set; }
+
     
 }
 
