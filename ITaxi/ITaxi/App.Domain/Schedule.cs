@@ -31,6 +31,7 @@ public class Schedule : DomainEntityMetaId
     [Required]
     public DateTime EndDateAndTime { get; set; }
 
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Schedule), Name = "ScheduleName")]
     public string ShiftDurationTime => $"{StartDateAndTime:g} - {EndDateAndTime:g}";
 
     public ICollection<RideTime>? RideTimes { get; set; }
