@@ -109,9 +109,9 @@ public class BookingsController : Controller
             booking.CityId = vm.CityId;
             booking.CustomerId = vm.CustomerId;
             booking.DriverId = vm.DriverId;
-#warning needs fixing
+
             booking.ScheduleId = vm.ScheduleId;
-#warning needs fixing
+
             booking.VehicleId = vm.VehicleId;
             booking.AdditionalInfo = vm.AdditionalInfo;
             booking.DestinationAddress = vm.DestinationAddress;
