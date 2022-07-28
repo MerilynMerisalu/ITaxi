@@ -97,6 +97,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Booking Decline Date and Time.
+        /// </summary>
+        public static string BookingDeclineDateAndTime {
+            get {
+                return ResourceManager.GetString("BookingDeclineDateAndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Booking.
         /// </summary>
         public static string BookingName {

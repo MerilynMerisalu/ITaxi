@@ -87,4 +87,7 @@
     <data name="AreYouSureYouWantToDeclineThis" xml:space="preserve">
         <value>Are You Sure You Want To Decline This? </value>
     </data>
+    <data name="BookingDeclineDateAndTime" xml:space="preserve">
+        <value>Booking Decline Date and Time</value>
+    </data>
 </root>

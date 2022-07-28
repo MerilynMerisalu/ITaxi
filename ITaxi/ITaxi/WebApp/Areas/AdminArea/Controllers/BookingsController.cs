@@ -61,6 +61,8 @@ public class BookingsController : Controller
         vm.NumberOfPassengers = booking.NumberOfPassengers;
         vm.StatusOfBooking = booking.StatusOfBooking;
         vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+        vm.BookingDeclineDateAndTime = booking.DeclineDateAndTime.ToLocalTime().ToString("G");
+        vm.IsDeclined = booking.IsDeclined;
         vm.CreatedBy = booking.CreatedBy!;
         vm.CreatedAt = booking.CreatedAt.ToLocalTime().ToString("G");
         vm.UpdatedBy = booking.UpdatedBy!;
@@ -315,6 +317,8 @@ public class BookingsController : Controller
         vm.HasAnAssistant = booking.HasAnAssistant;
         vm.NumberOfPassengers = booking.NumberOfPassengers;
         vm.StatusOfBooking = booking.StatusOfBooking;
+        vm.BookingDeclineDateAndTime = booking.DeclineDateAndTime.ToLocalTime().ToString("G");
+        vm.IsDeclined = booking.IsDeclined;
         vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime().ToString("g");
         vm.CreatedBy = booking.CreatedBy!;
         vm.CreatedAt = booking.CreatedAt.ToLocalTime().ToString("G");
@@ -337,6 +341,7 @@ public class BookingsController : Controller
             _uow.Bookings.BookingDecline(booking);
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             booking.IsDeclined = true;
+            booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             drive!.Booking = booking;
             _uow.Bookings.Update(booking);
             await _uow.SaveChangesAsync();

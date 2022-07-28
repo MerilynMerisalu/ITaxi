@@ -78,4 +78,7 @@
     <data name="AreYouSureYouWantToDeclineThis" xml:space="preserve">
         <value>Kas olete kindel, et soovite antud broneeringu tühistada?</value>
     </data>
+    <data name="BookingDeclineDateAndTime" xml:space="preserve">
+        <value>Broneeningu tühistamiskuupäev ja -kellaaeg</value>
+    </data>
 </root>

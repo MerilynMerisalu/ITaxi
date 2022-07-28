@@ -82,6 +82,15 @@
     <dd class="col-sm-10">
         @Html.DisplayFor(model => model.StatusOfBooking)
     </dd>
+    @if (Model.IsDeclined)
+    {
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BookingDeclineDateAndTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BookingDeclineDateAndTime)
+        </dd>
+    }
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.CreatedBy)
     </dt>
