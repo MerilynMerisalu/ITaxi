@@ -63,6 +63,33 @@
             @Html.DisplayNameFor(model => model.Comment)
         </th>
 
+        <th>
+            @Html.DisplayNameFor(model => model.DriveAcceptedDateAndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DriveStartDateAndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DriveEndDateAndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </th>
+
         <th></th>
     </tr>
     </thead>
@@ -111,12 +138,42 @@
                 @Html.DisplayFor(modelItem => item.Booking!.Drive!.Comment!.CommentText)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.DriveAcceptedDateAndTime)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.DriveDeclineDateAndTime)
+            </td>
+
+            <td>
+                @Html.DisplayTextFor(modelItem => item.DriveStartDateAndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DriveEndDateAndTime)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            
+            <td>
                 <a asp-action="" asp-route-id="@item.Id">@Drive.Accept</a> |
                 <a asp-action="" asp-route-id="@item.Id">@Drive.Decline</a> |
                 <a asp-action="" asp-route-id="@item.Id">@Drive.InProgress</a> |
                 <a asp-action="" asp-route-id="@item.Id">@Drive.Finished</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">@Base.Resources.Common.Details</a> 
-                
+                <a asp-action="Details" asp-route-id="@item.Id">@Base.Resources.Common.Details</a>
+
             </td>
         </tr>
     }
