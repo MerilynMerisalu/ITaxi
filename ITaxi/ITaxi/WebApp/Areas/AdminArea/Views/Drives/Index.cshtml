@@ -137,36 +137,61 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.Drive!.Comment!.CommentText)
             </td>
+            @if (item.IsDriveAccepted)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriveAcceptedDateAndTime)
+                </td>
+            }
+
+            @if (item.IsDriveDeclined)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriveDeclineDateAndTime)
+                </td>
+            }
+            @if (item.IsDriveStarted)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriveStartDateAndTime)
+                </td>
+            }
+            @if (item.IsDriveFinished)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriveEndDateAndTime)
+                </td>
+            }
+            
             <td>
-                @Html.DisplayFor(modelItem => item.DriveAcceptedDateAndTime)
+                
             </td>
 
             <td>
-                @Html.DisplayFor(modelItem => item.DriveDeclineDateAndTime)
+                
             </td>
 
             <td>
-                @Html.DisplayTextFor(modelItem => item.DriveStartDateAndTime)
+                
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DriveEndDateAndTime)
+                
+            </td>
+            <td>
+               @Html.DisplayFor(modelItem => item.CreatedBy) 
             </td>
 
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
+                 @Html.DisplayFor(modelItem => item.CreatedAt)           
             </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedBy)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
+                @Html.DisplayFor(modelItem => item.UpdatedAt)          
             </td>
             
+
             <td>
                 <a asp-action="" asp-route-id="@item.Id">@Drive.Accept</a> |
                 <a asp-action="" asp-route-id="@item.Id">@Drive.Decline</a> |
