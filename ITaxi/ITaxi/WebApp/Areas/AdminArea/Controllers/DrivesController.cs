@@ -20,7 +20,31 @@ public class DrivesController : Controller
     // GET: AdminArea/Drives
     public async Task<IActionResult> Index()
     {
-        return View(await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync());
+        var res = await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync();
+#warning Should this be a repo method
+        foreach (var drive in res)
+        {
+            if (drive.IsDriveAccepted)
+            {
+                drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
+            }
+            else if (drive.IsDriveDeclined)
+            {
+                drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
+            }
+            else if (drive.IsDriveStarted)
+            {
+                drive.DriveStartDateAndTime = drive.DriveStartDateAndTime.ToLocalTime();
+            }
+            else if (drive.IsDriveFinished)
+            {
+                drive.DriveEndDateAndTime = drive.DriveEndDateAndTime.ToLocalTime();
+            }
+            drive.CreatedAt = drive.CreatedAt.ToLocalTime();
+            drive.UpdatedAt = drive.UpdatedAt.ToLocalTime();
+        }
+        
+        return View(res);
     }
 
     // GET: AdminArea/Drives/Details/5
@@ -251,7 +275,7 @@ public class DrivesController : Controller
         {
             return NotFound();
         }
-        drive.DriveAcceptedDateAndTime = DateTime.Now;
+        drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
         drive.IsDriveAccepted = true;
 
         _uow.Drives.Update(drive);

@@ -215,6 +215,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         if (drive != null)
         {
             drive.IsDriveAccepted = true;
+            
             return drive;
         }
 

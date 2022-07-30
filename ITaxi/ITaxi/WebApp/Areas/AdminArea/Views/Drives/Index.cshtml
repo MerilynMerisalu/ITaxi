@@ -66,19 +66,35 @@
         <th>
             @Html.DisplayNameFor(model => model.Comment)
         </th>
-
-        <th>
-            @Html.DisplayNameFor(model => model.DriveAcceptedDateAndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DriveStartDateAndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DriveEndDateAndTime)
-        </th>
+        @foreach (var i in Model)
+        {
+            if (i.IsDriveAccepted)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.DriveAcceptedDateAndTime)
+                </th>
+            }
+            else if (i.IsDriveDeclined)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
+                </th>
+            }
+            else if (i.IsDriveStarted)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.DriveStartDateAndTime)
+                </th>
+            }
+            
+            else if (i.IsDriveFinished)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.DriveEndDateAndTime)
+                </th>
+            }
+        }
+        
         <th>
             @Html.DisplayNameFor(model => model.CreatedBy)
         </th>
@@ -170,21 +186,7 @@
                     @Html.DisplayFor(modelItem => item.DriveEndDateAndTime)
                 </td>
             }
-
-            <td>
-
-            </td>
-
-            <td>
-
-            </td>
-
-            <td>
-
-            </td>
-            <td>
-
-            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
             </td>
