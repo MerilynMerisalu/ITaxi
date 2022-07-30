@@ -79,6 +79,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accepting Drive.
+        /// </summary>
+        public static string AcceptingDrive {
+            get {
+                return ResourceManager.GetString("AcceptingDrive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comment.
         /// </summary>
         public static string Comment {
@@ -111,6 +120,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string DeclineDateAndTime {
             get {
                 return ResourceManager.GetString("DeclineDateAndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Declining Drive.
+        /// </summary>
+        public static string DecliningDrive {
+            get {
+                return ResourceManager.GetString("DecliningDrive", resourceCulture);
             }
         }
         
@@ -165,6 +183,24 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string InProgressDateAndTime {
             get {
                 return ResourceManager.GetString("InProgressDateAndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End the Drive.
+        /// </summary>
+        public static string SettingDriveIntoFinishedState {
+            get {
+                return ResourceManager.GetString("SettingDriveIntoFinishedState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start the Drive.
+        /// </summary>
+        public static string SettingDriveIntoInProgressState {
+            get {
+                return ResourceManager.GetString("SettingDriveIntoInProgressState", resourceCulture);
             }
         }
     }

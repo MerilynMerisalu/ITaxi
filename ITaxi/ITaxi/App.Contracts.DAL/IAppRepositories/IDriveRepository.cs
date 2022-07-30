@@ -23,4 +23,6 @@ public interface IDriveRepository : IEntityRepository<Drive>
     IList GettingDrivesWithoutComment(bool noTracking = true);
     Task<IList> GettingAllDrivesForCommentsAsync(bool noTracking = true);
     IList GettingDrivesForComments(bool noTracking = true);
+    Drive? AcceptingDrive(Guid id);
+    Task<Drive?> AcceptingDriveAsync(Guid id);
 }

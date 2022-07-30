@@ -209,6 +209,31 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return res;
     }
 
+    public Drive? AcceptingDrive(Guid id)
+    {
+        var drive = FirstOrDefault(id);
+        if (drive != null)
+        {
+            drive.IsDriveAccepted = true;
+            return drive;
+        }
+
+        return null;
+    }
+
+    public async Task<Drive?> AcceptingDriveAsync(Guid id)
+    {
+        var drive = await FirstOrDefaultAsync(id);
+        if (drive != null)
+        {
+            drive.IsDriveAccepted = true;
+            return drive;
+        }
+
+        return null;
+    }
+
+
     protected override IQueryable<Drive> CreateQuery(bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();

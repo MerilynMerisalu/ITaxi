@@ -1,0 +1,29 @@
+﻿@model WebApp.Areas.AdminArea.ViewModels.DriveStateViewModel
+@using App.Resources.Areas.App.Domain.AdminArea
+@using Base.Resources
+
+
+@{
+    ViewData["Title"] = Drive.AcceptingDrive;
+}
+
+<h1>@Drive.AcceptingDrive</h1>
+
+<div>
+    <h4>@Drive.DriveName</h4>
+    <hr/>
+    <dl class="row">
+        <partial name="AdminArea/PartialViews/_DriveState" model="Model"/>
+    </dl>
+     <form asp-action="Accept">
+            <input type="hidden" asp-for="Id"/>
+            <input type="submit" value="@Drive.Accept" class="btn btn-danger"/> 
+     </form>
+</div>
+<div>
+        <a asp-action="" asp-route-id="@Model.Id">@Drive.Decline</a> |
+        <a asp-action="" asp-route-id="@Model.Id">@Drive.InProgress</a> |
+        <a asp-action="" asp-route-id="@Model.Id">@Drive.Finished</a> |
+        <a asp-action="Details" asp-route-id="@Model?.Id">@Common.Details</a> |
+        <a asp-action="Index">@Common.BackToList</a>
+</div>

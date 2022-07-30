@@ -47,4 +47,16 @@
     <data name="Customer" xml:space="preserve">
         <value>Klient</value>
     </data>
+    <data name="AcceptingDrive" xml:space="preserve">
+        <value>Sõidu kinnitamine</value>
+    </data>
+    <data name="DecliningDrive" xml:space="preserve">
+        <value>Sõidu tühistamine</value>
+    </data>
+    <data name="SettingDriveIntoInProgressState" xml:space="preserve">
+        <value>Alusta sõitu </value>
+    </data>
+    <data name="SettingDriveIntoFinishedState" xml:space="preserve">
+        <value>Lõpeta sõit</value>
+    </data>
 </root>

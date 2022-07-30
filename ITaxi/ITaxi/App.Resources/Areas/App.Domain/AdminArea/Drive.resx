@@ -54,4 +54,16 @@
     <data name="Customer" xml:space="preserve">
         <value>Customer</value>
     </data>
+    <data name="AcceptingDrive" xml:space="preserve">
+        <value>Accepting Drive</value>
+    </data>
+    <data name="DecliningDrive" xml:space="preserve">
+        <value>Declining Drive</value>
+    </data>
+    <data name="SettingDriveIntoInProgressState" xml:space="preserve">
+        <value>Start the Drive</value>
+    </data>
+    <data name="SettingDriveIntoFinishedState" xml:space="preserve">
+        <value>End the Drive</value>
+    </data>
 </root>

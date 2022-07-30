@@ -1,5 +1,6 @@
 #nullable enable
 using App.Contracts.DAL;
+using App.Domain.Enum;
 using Microsoft.AspNetCore.Mvc;
 using Rotativa.AspNetCore;
 using WebApp.Areas.AdminArea.ViewModels;
@@ -200,4 +201,71 @@ public class DrivesController : Controller
 
         return new ViewAsPdf("PrintDrives");
     }
+    
+    // GET: AdminArea/Drives/Accept/5
+    public async Task<IActionResult> Accept(Guid? id)
+    {
+        if (id == null) return NotFound();
+
+        var vm = new DriveStateViewModel();
+        var drive = await _uow.Drives.FirstOrDefaultAsync(id.Value);
+        if (drive == null) return NotFound();
+
+        vm.Id = drive.Id;
+        vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
+        vm.City = drive.Booking.City!.CityName;
+        vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
+        vm.DriverLastAndFirstName = drive.Driver!.AppUser!.LastAndFirstName;
+        vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
+        vm.DestinationAddress = drive.Booking.DestinationAddress;
+        vm.PickupAddress = drive.Booking.PickupAddress;
+        vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
+        vm.HasAnAssistant = drive.Booking.HasAnAssistant;
+        vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
+        vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+        vm.CreatedBy = drive.CreatedBy!;
+        vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedBy = drive.UpdatedBy!;
+        vm.UpdatedAt = drive.UpdatedAt.ToLocalTime().ToString("G");
+
+
+        return View(vm);
+    }
+    
+    // POST: AdminArea/Bookings/Accept/5
+    [HttpPost]
+    [ActionName(nameof(Accept))]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AcceptConfirmed(Guid id)
+    {
+        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        if (drive == null)
+        {
+            return NotFound();
+        
+        }
+
+        drive = await _uow.Drives.AcceptingDriveAsync(id);
+        if (drive == null)
+        {
+            return NotFound();
+        }
+        drive.DriveAcceptedDateAndTime = DateTime.Now;
+        drive.IsDriveAccepted = true;
+
+        _uow.Drives.Update(drive);
+        await _uow.SaveChangesAsync();
+
+        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id));
+        if (booking != null)
+        {
+            booking.StatusOfBooking = StatusOfBooking.Accepted;
+            _uow.Bookings.Update(booking);
+            await _uow.SaveChangesAsync();
+        }
+        
+        return RedirectToAction(nameof(Index));
+    }
+
 }

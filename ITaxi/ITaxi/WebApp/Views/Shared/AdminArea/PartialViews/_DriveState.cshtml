@@ -1,0 +1,162 @@
+﻿@model WebApp.Areas.AdminArea.ViewModels.DriveStateViewModel
+
+<dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Schedule)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShiftDurationTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DriverLastAndFirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DriverLastAndFirstName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CustomerLastAndFirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerLastAndFirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PickupDateAndTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PickupDateAndTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.City)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PickupAddress)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PickupAddress)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DestinationAddress)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DestinationAddress)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VehicleType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.VehicleType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VehicleIdentifier)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.VehicleIdentifier)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfPassengers)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfPassengers)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HasAnAssistant)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.HasAnAssistant)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StatusOfBooking)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StatusOfBooking)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HasAnAssistant)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.HasAnAssistant)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CommentText)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CommentText)
+        </dd>
+        @if (Model.IsDriveAccepted)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DriveAcceptedDateAndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DriveAcceptedDateAndTime)
+            </dd>
+        }
+        @if (Model.IsDriveDeclined)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DriveDeclineDateAndTime)
+            </dd>
+        }
+        @if (Model.IsDriveStarted)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DriveDeclineDateAndTime)
+            </dd>
+        }
+        @if (Model.IsDriveStarted)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DriveInProgressDateAndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DriveInProgressDateAndTime)
+            </dd>
+        }
+
+        @if (Model.IsDriveFinished)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DriveFinishedDateAndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DriveFinishedDateAndTime)
+            </dd>
+        }
+        
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UpdatedBy)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UpdatedAt)
+        </dd>
+    </dl>
