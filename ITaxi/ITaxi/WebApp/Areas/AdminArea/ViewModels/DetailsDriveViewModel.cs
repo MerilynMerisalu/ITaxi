@@ -23,8 +23,8 @@ public class DetailsDriveViewModel : AdminAreaBaseViewModel
     [Display(ResourceType = typeof(Driver), Name = "JobTitle")]
     public string DriverLastAndFirstName { get; set; } = default!;
 
-    [Display(ResourceType = typeof(Customer), Name = nameof(LastAndFirstName))]
-    public string LastAndFirstName { get; set; } = default!;
+    [Display(ResourceType = typeof(Customer), Name = "CustomerName")]
+    public string CustomerLastAndFirstName { get; set; } = default!;
 
     [Display(ResourceType = typeof(Booking), Name = "PickUpDateAndTime")]
     public string PickupDateAndTime { get; set; } = default!;

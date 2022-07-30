@@ -43,7 +43,7 @@ public class DrivesController : Controller
         vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
         vm.HasAnAssistant = drive.Booking.HasAnAssistant;
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
-        vm.LastAndFirstName= drive.Booking.Customer!.AppUser!.LastAndFirstName;
+        vm.CustomerLastAndFirstName= drive.Booking.Customer!.AppUser!.LastAndFirstName;
         vm.PickupDateAndTime = _uow.Drives.PickUpDateAndTimeStr(drive);
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.IsDriveAccepted = drive.IsDriveAccepted;
