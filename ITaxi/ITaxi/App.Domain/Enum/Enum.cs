@@ -32,11 +32,6 @@ public enum StatusOfBooking
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Accepted")]
     Accepted,
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "InProgress")]
-    InProgress,
-
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Finished")]
-    Finished,
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = "Declined")]
     Declined
@@ -49,4 +44,13 @@ public enum IsActive
 
     [Display(ResourceType = typeof(Common), Name = "InActive")]
     InActive
+}
+
+public enum StatusOfDrive
+{
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "InProgress")]
+    InProgress,
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "Finished")]
+    Finished
+    
 }

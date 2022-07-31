@@ -69,12 +69,7 @@
     <data name="Accepted" xml:space="preserve">
         <value>Accepted</value>
     </data>
-    <data name="InProgress" xml:space="preserve">
-        <value>In-Progress</value>
-    </data>
-    <data name="Finished" xml:space="preserve">
-        <value>Finished</value>
-    </data>
+    
     <data name="Declined" xml:space="preserve">
         <value>Declined</value>
     </data>

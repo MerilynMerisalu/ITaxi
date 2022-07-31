@@ -66,4 +66,7 @@
     <data name="SettingDriveIntoFinishedState" xml:space="preserve">
         <value>End the Drive</value>
     </data>
+    <data name="DriveStatus" xml:space="preserve">
+        <value>Status of Drive</value>
+    </data>
 </root>

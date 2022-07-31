@@ -59,4 +59,7 @@
     <data name="SettingDriveIntoFinishedState" xml:space="preserve">
         <value>Lõpeta sõit</value>
     </data>
+    <data name="DriveStatus" xml:space="preserve">
+        <value>Sõidu olek</value>
+    </data>
 </root>

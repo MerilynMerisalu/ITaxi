@@ -169,29 +169,11 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Finished.
-        /// </summary>
-        public static string Finished {
-            get {
-                return ResourceManager.GetString("Finished", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Has an Assistant?.
         /// </summary>
         public static string HasAnAssistant {
             get {
                 return ResourceManager.GetString("HasAnAssistant", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to In-Progress.
-        /// </summary>
-        public static string InProgress {
-            get {
-                return ResourceManager.GetString("InProgress", resourceCulture);
             }
         }
         

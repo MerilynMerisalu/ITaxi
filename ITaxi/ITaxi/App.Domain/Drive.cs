@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using App.Domain.Enum;
 using Base.Domain;
 
 namespace App.Domain;
@@ -28,8 +29,10 @@ public class Drive : DomainEntityMetaId
 
     public DateTime DriveStartDateAndTime { get; set; }
     
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "DriveStatus")]
+    public StatusOfDrive StatusOfDrive { get; set; }
+    
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "FinishedDateAndTime")]
-
     public DateTime DriveEndDateAndTime { get; set; }
 
     public bool IsDriveAccepted { get; set; }
