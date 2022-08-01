@@ -161,12 +161,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.Drive!.Comment!.CommentText)
             </td>
-            @if (item.IsDriveAccepted)
+            @*@if (item.IsDriveAccepted)
             {
                 <td>
                     @Html.DisplayFor(modelItem => item.DriveAcceptedDateAndTime)
                 </td>
             }
+            *@
 
             @if (item.IsDriveDeclined)
             {

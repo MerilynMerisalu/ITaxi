@@ -24,7 +24,7 @@ public class DrivesController : Controller
 #warning Should this be a repo method
         foreach (var drive in res)
         {
-            if (drive.IsDriveAccepted)
+            /*if (drive.IsDriveAccepted)
             {
                 drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
             }
@@ -39,7 +39,7 @@ public class DrivesController : Controller
             else if (drive.IsDriveFinished)
             {
                 drive.DriveEndDateAndTime = drive.DriveEndDateAndTime.ToLocalTime();
-            }
+            }*/
             drive.CreatedAt = drive.CreatedAt.ToLocalTime();
             drive.UpdatedAt = drive.UpdatedAt.ToLocalTime();
         }
