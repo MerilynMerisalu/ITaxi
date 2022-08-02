@@ -277,6 +277,7 @@ public class DrivesController : Controller
             return NotFound();
         }
         drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
+        drive.StatusOfDrive = StatusOfDrive.Accepted;
         drive.IsDriveAccepted = true;
 
         _uow.Drives.Update(drive);
