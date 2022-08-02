@@ -41,12 +41,6 @@
     <data name="FinishedDateAndTime" xml:space="preserve">
         <value>Lõpetamise kuupäev ja -kellaaeg</value>
     </data>
-    <data name="Driver" xml:space="preserve">
-        <value>Sõidukijuht</value>
-    </data>
-    <data name="Customer" xml:space="preserve">
-        <value>Klient</value>
-    </data>
     <data name="AcceptingDrive" xml:space="preserve">
         <value>Sõidu kinnitamine</value>
     </data>

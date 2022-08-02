@@ -115,15 +115,6 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Customer.
-        /// </summary>
-        public static string Customer {
-            get {
-                return ResourceManager.GetString("Customer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Decline.
         /// </summary>
         public static string Decline {
@@ -165,15 +156,6 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string DriveName {
             get {
                 return ResourceManager.GetString("DriveName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Driver.
-        /// </summary>
-        public static string Driver {
-            get {
-                return ResourceManager.GetString("Driver", resourceCulture);
             }
         }
         

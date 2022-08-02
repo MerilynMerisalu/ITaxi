@@ -48,12 +48,6 @@
     <data name="FinishedDateAndTime" xml:space="preserve">
         <value>Drive End Date and Time</value>
     </data>
-    <data name="Driver" xml:space="preserve">
-        <value>Driver</value>
-    </data>
-    <data name="Customer" xml:space="preserve">
-        <value>Customer</value>
-    </data>
     <data name="AcceptingDrive" xml:space="preserve">
         <value>Accepting Drive</value>
     </data>
