@@ -62,7 +62,10 @@
         <th>
             @Html.DisplayNameFor(model => model.Booking!.StatusOfBooking)
         </th>
-
+        <th>
+            @Html.DisplayNameFor(model => model.StatusOfDrive)
+        </th>
+        
         <th>
             @Html.DisplayNameFor(model => model.Comment)
         </th>
@@ -159,6 +162,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.StatusOfBooking)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusOfDrive)
+            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.Drive!.Comment!.CommentText)
             </td>

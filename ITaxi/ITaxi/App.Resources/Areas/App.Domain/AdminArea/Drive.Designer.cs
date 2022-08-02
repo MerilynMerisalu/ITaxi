@@ -70,6 +70,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accepted.
+        /// </summary>
+        public static string Accepted {
+            get {
+                return ResourceManager.GetString("Accepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drive Acceptance Date and Time.
         /// </summary>
         public static string AcceptedDateAndTime {
@@ -84,6 +93,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string AcceptingDrive {
             get {
                 return ResourceManager.GetString("AcceptingDrive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Awaiting for Confirmation.
+        /// </summary>
+        public static string AwaitingForConfirmation {
+            get {
+                return ResourceManager.GetString("AwaitingForConfirmation", resourceCulture);
             }
         }
         
@@ -111,6 +129,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string Decline {
             get {
                 return ResourceManager.GetString("Decline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Declined.
+        /// </summary>
+        public static string Declined {
+            get {
+                return ResourceManager.GetString("Declined", resourceCulture);
             }
         }
         

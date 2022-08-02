@@ -13,6 +13,8 @@ public class Drive : DomainEntityMetaId
     public Driver? Driver { get; set; }
 
     public Booking? Booking { get; set; }
+    
+    
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = nameof(Comment))]
     public Comment? Comment { get; set; }

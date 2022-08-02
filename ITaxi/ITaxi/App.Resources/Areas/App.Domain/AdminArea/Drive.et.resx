@@ -62,4 +62,13 @@
     <data name="DriveStatus" xml:space="preserve">
         <value>Sõidu olek</value>
     </data>
+    <data name="AwaitingForConfirmation" xml:space="preserve">
+        <value>Kinnituse ootel</value>
+    </data>
+    <data name="Declined" xml:space="preserve">
+        <value>Tühistatud</value>
+    </data>
+    <data name="Accepted" xml:space="preserve">
+        <value>Kinnitatud</value>
+    </data>
 </root>

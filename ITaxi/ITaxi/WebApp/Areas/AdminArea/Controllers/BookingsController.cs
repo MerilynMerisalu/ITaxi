@@ -128,7 +128,8 @@ public class BookingsController : Controller
             {
                 Id = new Guid(),
                 Booking = booking,
-                DriverId = booking.DriverId
+                DriverId = booking.DriverId,
+                StatusOfDrive = StatusOfDrive.Awaiting
             };
 
             _uow.Drives.Add(drive);

@@ -389,6 +389,7 @@ public static class DataHelper
                 Id = new Guid(),
                 DriverId = driver.Id,
                 Booking = booking,
+                StatusOfDrive = StatusOfDrive.Awaiting,
                 CreatedAt = DateTime.Now.ToUniversalTime()
             };
             await context.Drives.AddAsync(drive);
