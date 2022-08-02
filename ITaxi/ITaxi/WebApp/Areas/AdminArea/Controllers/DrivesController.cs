@@ -293,6 +293,8 @@ public class DrivesController : Controller
         
         return RedirectToAction(nameof(Index));
     }
+    
+    // GET: AdminArea/Drives/Decline/5
     public async Task<IActionResult> Decline(Guid? id)
     {
         if (id == null) return NotFound();
@@ -323,7 +325,7 @@ public class DrivesController : Controller
         return View(vm);
     }
     
-    // POST: AdminArea/Bookings/Accept/5
+    // POST: AdminArea/Bookings/Decline/5
     [HttpPost]
     [ActionName(nameof(Decline))]
     [ValidateAntiForgeryToken]
@@ -359,6 +361,7 @@ public class DrivesController : Controller
         return RedirectToAction(nameof(Index));
     }
     
+    // GET: AdminArea/Drives/StartDrive/5
     public async Task<IActionResult> StartDrive(Guid? id)
     {
         if (id == null) return NotFound();
@@ -387,7 +390,7 @@ public class DrivesController : Controller
         
         return View(vm);
     }
-    // POST: AdminArea/Bookings/Accept/5
+    // POST: AdminArea/Bookings/Start/5
     [HttpPost]
     [ActionName(nameof(StartDrive))]
     [ValidateAntiForgeryToken]
