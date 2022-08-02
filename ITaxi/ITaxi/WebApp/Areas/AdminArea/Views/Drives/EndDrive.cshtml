@@ -4,10 +4,10 @@
 
 
 @{
-    ViewData["Title"] = Drive.InProgress;
+    ViewData["Title"] = Drive.Finished;
 }
 
-<h1>@Drive.SettingDriveIntoInProgressState</h1>
+<h1>@Drive.SettingDriveIntoFinishedState</h1>
 
 <div>
     <h4>@Drive.DriveName</h4>
@@ -15,15 +15,15 @@
     <dl class="row">
         <partial name="AdminArea/PartialViews/_DriveState" model="Model"/>
     </dl>
-    <form asp-action="StartDrive">
+    <form asp-action="EndDrive">
         <input type="hidden" asp-for="Id"/>
-        <input type="submit" value="@Drive.SettingDriveIntoInProgressState" class="btn btn-danger"/> 
+        <input type="submit" value="@Drive.SettingDriveIntoFinishedState" class="btn btn-danger"/> 
     </form>
 </div>
 <div>
     <a asp-action="Accept" asp-route-id="@Model.Id">@Drive.Accept</a> |
     <a asp-action="Decline" asp-route-id="@Model.Id">@Drive.Decline</a> |
-    <a asp-action="" asp-route-id="@Model.Id">@Drive.Finished</a> |
+    <a asp-action="StartDrive" asp-route-id="@Model.Id">@Drive.InProgress</a> |
     <a asp-action="Details" asp-route-id="@Model?.Id">@Common.Details</a> |
     <a asp-action="Index">@Common.BackToList</a>
 </div>
