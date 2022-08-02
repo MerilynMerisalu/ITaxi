@@ -28,11 +28,11 @@ public class DrivesController : Controller
             {
                 drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
             }
-            /*else if (drive.IsDriveDeclined)
+            else if (drive.IsDriveDeclined)
             {
                 drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
             }
-            else if (drive.IsDriveStarted)
+            /*else if (drive.IsDriveStarted)
             {
                 drive.DriveStartDateAndTime = drive.DriveStartDateAndTime.ToLocalTime();
             }
@@ -319,6 +319,41 @@ public class DrivesController : Controller
 
 
         return View(vm);
+    }
+    
+    // POST: AdminArea/Bookings/Accept/5
+    [HttpPost]
+    [ActionName(nameof(Decline))]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeclineConfirmed(Guid id)
+    {
+        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        if (drive == null)
+        {
+            return NotFound();
+        
+        }
+
+        drive = await _uow.Drives.DecliningDriveAsync(id);
+        if (drive == null)
+        {
+            return NotFound();
+        }
+        drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
+        drive.IsDriveDeclined = true;
+
+        _uow.Drives.Update(drive);
+        await _uow.SaveChangesAsync();
+
+        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id));
+        if (booking != null)
+        {
+            booking.StatusOfBooking = StatusOfBooking.Declined;
+            _uow.Bookings.Update(booking);
+            await _uow.SaveChangesAsync();
+        }
+        
+        return RedirectToAction(nameof(Index));
     }
 
 }
