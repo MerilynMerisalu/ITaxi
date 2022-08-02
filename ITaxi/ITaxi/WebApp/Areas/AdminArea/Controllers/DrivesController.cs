@@ -24,11 +24,11 @@ public class DrivesController : Controller
 #warning Should this be a repo method
         foreach (var drive in res)
         {
-            if (drive.IsDriveAccepted)
+            if (drive.IsDriveAccepted || (drive.IsDriveAccepted && drive.IsDriveDeclined))
             {
                 drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
             }
-            else if (drive.IsDriveDeclined)
+            if (drive.IsDriveDeclined || (drive.IsDriveAccepted && drive.IsDriveDeclined))
             {
                 drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
             }
