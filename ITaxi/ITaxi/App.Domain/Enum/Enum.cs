@@ -49,7 +49,7 @@ public enum IsActive
 public enum StatusOfDrive
 {
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "InProgress")]
-    InProgress,
+    Started,
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "Finished")]
     Finished
     
