@@ -284,6 +284,16 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
+    public Drive? EndingDrive(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Drive?> EndingDriveAsync(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
 
     protected override IQueryable<Drive> CreateQuery(bool noTracking = true)
     {
