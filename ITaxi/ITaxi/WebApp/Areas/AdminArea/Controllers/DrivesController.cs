@@ -24,11 +24,11 @@ public class DrivesController : Controller
 #warning Should this be a repo method
         foreach (var drive in res)
         {
-            /*if (drive.IsDriveAccepted)
+            if (drive.IsDriveAccepted)
             {
                 drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
             }
-            else if (drive.IsDriveDeclined)
+            /*else if (drive.IsDriveDeclined)
             {
                 drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
             }
@@ -290,6 +290,35 @@ public class DrivesController : Controller
         }
         
         return RedirectToAction(nameof(Index));
+    }
+    public async Task<IActionResult> Decline(Guid? id)
+    {
+        if (id == null) return NotFound();
+
+        var vm = new DriveStateViewModel();
+        var drive = await _uow.Drives.FirstOrDefaultAsync(id.Value);
+        if (drive == null) return NotFound();
+
+        vm.Id = drive.Id;
+        vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
+        vm.City = drive.Booking.City!.CityName;
+        vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
+        vm.DriverLastAndFirstName = drive.Driver!.AppUser!.LastAndFirstName;
+        vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
+        vm.DestinationAddress = drive.Booking.DestinationAddress;
+        vm.PickupAddress = drive.Booking.PickupAddress;
+        vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
+        vm.HasAnAssistant = drive.Booking.HasAnAssistant;
+        vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
+        vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+        vm.CreatedBy = drive.CreatedBy!;
+        vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedBy = drive.UpdatedBy!;
+        vm.UpdatedAt = drive.UpdatedAt.ToLocalTime().ToString("G");
+
+
+        return View(vm);
     }
 
 }

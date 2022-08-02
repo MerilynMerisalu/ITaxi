@@ -161,32 +161,32 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.Drive!.Comment!.CommentText)
             </td>
-            @*@if (item.IsDriveAccepted)
+            @if (item.IsDriveAccepted)
             {
                 <td>
                     @Html.DisplayFor(modelItem => item.DriveAcceptedDateAndTime)
                 </td>
             }
-            *@
+            
 
-            @if (item.IsDriveDeclined)
+            @*@if (item.IsDriveDeclined)
             {
                 <td>
                     @Html.DisplayFor(modelItem => item.DriveDeclineDateAndTime)
                 </td>
-            }
-            @if (item.IsDriveStarted)
+            }*@
+            @*@if (item.IsDriveStarted)
             {
                 <td>
                     @Html.DisplayFor(modelItem => item.DriveStartDateAndTime)
                 </td>
-            }
-            @if (item.IsDriveFinished)
+            }*@
+            @*@if (item.IsDriveFinished)
             {
                 <td>
                     @Html.DisplayFor(modelItem => item.DriveEndDateAndTime)
                 </td>
-            }
+            }*@
             
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
@@ -205,7 +205,7 @@
 
             <td>
                 <a asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a> |
-                <a asp-action="" asp-route-id="@item.Id">@Drive.Decline</a> |
+                <a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> |
                 <a asp-action="" asp-route-id="@item.Id">@Drive.InProgress</a> |
                 <a asp-action="" asp-route-id="@item.Id">@Drive.Finished</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">@Base.Resources.Common.Details</a>
