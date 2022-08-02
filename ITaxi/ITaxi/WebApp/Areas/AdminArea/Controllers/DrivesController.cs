@@ -410,6 +410,7 @@ public class DrivesController : Controller
         }
 
         drive.DriveStartDateAndTime = DateTime.Now.ToUniversalTime();
+        drive.StatusOfDrive = StatusOfDrive.Started;
         drive.IsDriveStarted = true;
 
         _uow.Drives.Update(drive);
