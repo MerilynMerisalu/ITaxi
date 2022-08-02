@@ -259,6 +259,31 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
+    public Drive? StartingDrive(Guid id)
+    {
+        var drive = FirstOrDefault(id);
+        if (drive != null)
+        {
+            drive.IsDriveStarted = true;
+            
+            return drive;
+        }
+
+        return null;
+    }
+
+    public async Task<Drive?> StartingDriveAsync(Guid id)
+    {
+        var drive = await FirstOrDefaultAsync(id);
+        if (drive != null)
+        {
+            drive.IsDriveStarted = true;
+            return drive;
+        }
+
+        return null;
+    }
+
 
     protected override IQueryable<Drive> CreateQuery(bool noTracking = true)
     {

@@ -24,6 +24,10 @@ public class DrivesController : Controller
 #warning Should this be a repo method
         foreach (var drive in res)
         {
+            /* if (drive.IsDriveFinished)
+            {
+                drive.DriveEndDateAndTime = drive.DriveEndDateAndTime.ToLocalTime();
+            }*/
             if (drive.IsDriveAccepted || (drive.IsDriveAccepted && drive.IsDriveDeclined))
             {
                 drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
@@ -32,14 +36,11 @@ public class DrivesController : Controller
             {
                 drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
             }
-            /*else if (drive.IsDriveStarted)
+            if (drive.IsDriveStarted || (drive.IsDriveAccepted && drive.IsDriveStarted))
             {
                 drive.DriveStartDateAndTime = drive.DriveStartDateAndTime.ToLocalTime();
             }
-            else if (drive.IsDriveFinished)
-            {
-                drive.DriveEndDateAndTime = drive.DriveEndDateAndTime.ToLocalTime();
-            }*/
+            
             drive.CreatedAt = drive.CreatedAt.ToLocalTime();
             drive.UpdatedAt = drive.UpdatedAt.ToLocalTime();
         }
@@ -384,5 +385,32 @@ public class DrivesController : Controller
         
         return View(vm);
     }
+    // POST: AdminArea/Bookings/Accept/5
+    [HttpPost]
+    [ActionName(nameof(StartDrive))]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> StartConfirmed(Guid id)
+    {
+        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        if (drive == null)
+        {
+            return NotFound();
 
+        }
+
+        drive = await _uow.Drives.StartingDriveAsync(id);
+        if (drive == null)
+        {
+            return NotFound();
+        }
+
+        drive.DriveStartDateAndTime = DateTime.Now.ToUniversalTime();
+        drive.IsDriveStarted = true;
+
+        _uow.Drives.Update(drive);
+        await _uow.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+
+    }
+    
 }

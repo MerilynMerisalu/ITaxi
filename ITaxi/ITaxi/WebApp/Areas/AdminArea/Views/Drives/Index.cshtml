@@ -81,7 +81,7 @@
                 </th>
             }
 
-            if (i.IsDriveStarted)
+            if (i.IsDriveStarted || (i.IsDriveAccepted && i.IsDriveStarted))
             {
                 <th>
                     @Html.DisplayNameFor(model => model.DriveStartDateAndTime)
@@ -176,12 +176,12 @@
                 </td>
             }
 
-            @*@if (item.IsDriveStarted)
+            @if (item.IsDriveStarted || (item.IsDriveAccepted && item.IsDriveStarted))
             {
                 <td>
                     @Html.DisplayFor(modelItem => item.DriveStartDateAndTime)
                 </td>
-            }*@
+            }
             @*@if (item.IsDriveFinished)
             {
                 <td>

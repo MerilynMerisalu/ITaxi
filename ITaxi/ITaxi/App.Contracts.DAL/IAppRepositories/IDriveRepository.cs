@@ -27,4 +27,6 @@ public interface IDriveRepository : IEntityRepository<Drive>
     Task<Drive?> AcceptingDriveAsync(Guid id);
     Drive? DecliningDrive(Guid id);
     Task<Drive?> DecliningDriveAsync(Guid id);
+    Drive? StartingDrive(Guid id);
+    Task<Drive?> StartingDriveAsync(Guid id);
 }
