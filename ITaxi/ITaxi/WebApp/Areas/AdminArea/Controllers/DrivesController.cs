@@ -342,6 +342,7 @@ public class DrivesController : Controller
             return NotFound();
         }
         drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
+        drive.StatusOfDrive = StatusOfDrive.Declined;
         drive.IsDriveDeclined = true;
 
         _uow.Drives.Update(drive);
