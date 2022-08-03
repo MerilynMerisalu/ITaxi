@@ -24,27 +24,31 @@ public class DrivesController : Controller
 #warning Should this be a repo method
         foreach (var drive in res)
         {
-            /* if (drive.IsDriveFinished)
-            {
-                drive.DriveEndDateAndTime = drive.DriveEndDateAndTime.ToLocalTime();
-            }*/
+
             if (drive.IsDriveAccepted || (drive.IsDriveAccepted && drive.IsDriveDeclined))
             {
                 drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
             }
+
             if (drive.IsDriveDeclined || (drive.IsDriveAccepted && drive.IsDriveDeclined))
             {
                 drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
             }
+
             if (drive.IsDriveStarted || (drive.IsDriveAccepted && drive.IsDriveStarted))
             {
                 drive.DriveStartDateAndTime = drive.DriveStartDateAndTime.ToLocalTime();
             }
-            
+
+            if (drive.IsDriveFinished)
+            {
+                drive.DriveEndDateAndTime = drive.DriveEndDateAndTime.ToLocalTime();
+            }
+
             drive.CreatedAt = drive.CreatedAt.ToLocalTime();
             drive.UpdatedAt = drive.UpdatedAt.ToLocalTime();
         }
-        
+
         return View(res);
     }
 
@@ -69,7 +73,7 @@ public class DrivesController : Controller
         vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
         vm.HasAnAssistant = drive.Booking.HasAnAssistant;
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
-        vm.CustomerLastAndFirstName= drive.Booking.Customer!.AppUser!.LastAndFirstName;
+        vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
         vm.PickupDateAndTime = _uow.Drives.PickUpDateAndTimeStr(drive);
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.IsDriveAccepted = drive.IsDriveAccepted;
@@ -83,7 +87,7 @@ public class DrivesController : Controller
         vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");
         vm.UpdatedBy = drive.UpdatedBy!;
         vm.UpdatedAt = drive.UpdatedAt.ToLocalTime().ToString("G");
-       
+
 
         return View(vm);
     }
@@ -226,7 +230,7 @@ public class DrivesController : Controller
 
         return new ViewAsPdf("PrintDrives");
     }
-    
+
     // GET: AdminArea/Drives/Accept/5
     public async Task<IActionResult> Accept(Guid? id)
     {
@@ -257,7 +261,7 @@ public class DrivesController : Controller
 
         return View(vm);
     }
-    
+
     // POST: AdminArea/Bookings/Accept/5
     [HttpPost]
     [ActionName(nameof(Accept))]
@@ -268,7 +272,7 @@ public class DrivesController : Controller
         if (drive == null)
         {
             return NotFound();
-        
+
         }
 
         drive = await _uow.Drives.AcceptingDriveAsync(id);
@@ -276,6 +280,7 @@ public class DrivesController : Controller
         {
             return NotFound();
         }
+
         drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
         drive.StatusOfDrive = StatusOfDrive.Accepted;
         drive.IsDriveAccepted = true;
@@ -290,10 +295,10 @@ public class DrivesController : Controller
             _uow.Bookings.Update(booking);
             await _uow.SaveChangesAsync();
         }
-        
+
         return RedirectToAction(nameof(Index));
     }
-    
+
     // GET: AdminArea/Drives/Decline/5
     public async Task<IActionResult> Decline(Guid? id)
     {
@@ -324,7 +329,7 @@ public class DrivesController : Controller
 
         return View(vm);
     }
-    
+
     // POST: AdminArea/Bookings/Decline/5
     [HttpPost]
     [ActionName(nameof(Decline))]
@@ -335,7 +340,7 @@ public class DrivesController : Controller
         if (drive == null)
         {
             return NotFound();
-        
+
         }
 
         drive = await _uow.Drives.DecliningDriveAsync(id);
@@ -343,6 +348,7 @@ public class DrivesController : Controller
         {
             return NotFound();
         }
+
         drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
         drive.StatusOfDrive = StatusOfDrive.Declined;
         drive.IsDriveDeclined = true;
@@ -357,10 +363,10 @@ public class DrivesController : Controller
             _uow.Bookings.Update(booking);
             await _uow.SaveChangesAsync();
         }
-        
+
         return RedirectToAction(nameof(Index));
     }
-    
+
     // GET: AdminArea/Drives/StartDrive/5
     public async Task<IActionResult> StartDrive(Guid? id)
     {
@@ -387,9 +393,10 @@ public class DrivesController : Controller
         vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");
         vm.UpdatedBy = drive.UpdatedBy!;
         vm.UpdatedAt = drive.UpdatedAt.ToLocalTime().ToString("G");
-        
+
         return View(vm);
     }
+
     // POST: AdminArea/Bookings/Start/5
     [HttpPost]
     [ActionName(nameof(StartDrive))]
@@ -418,6 +425,7 @@ public class DrivesController : Controller
         return RedirectToAction(nameof(Index));
 
     }
+
     // GET: AdminArea/Drives/EndDrive/5
     public async Task<IActionResult> EndDrive(Guid? id)
     {
@@ -444,8 +452,39 @@ public class DrivesController : Controller
         vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");
         vm.UpdatedBy = drive.UpdatedBy!;
         vm.UpdatedAt = drive.UpdatedAt.ToLocalTime().ToString("G");
-        
+
         return View(vm);
     }
     
+
+    // POST: AdminArea/Drives/EndDrive/5
+    [HttpPost]
+    [ActionName(nameof(EndDrive))]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> EndDriveConfirmed(Guid id)
+    {
+        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        if (drive == null)
+        {
+            return NotFound();
+
+        }
+
+        drive = await _uow.Drives.EndingDriveAsync(id);
+        if (drive == null)
+        {
+            return NotFound();
+        }
+        
+        drive.IsDriveFinished = true;
+        drive.StatusOfDrive = StatusOfDrive.Finished;
+        drive.DriveEndDateAndTime = DateTime.Now.ToUniversalTime();
+
+        _uow.Drives.Update(drive);
+        await _uow.SaveChangesAsync();
+        
+
+        return RedirectToAction(nameof(Index));
+    }
+
 }

@@ -286,12 +286,27 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
 
     public Drive? EndingDrive(Guid id)
     {
-        throw new NotImplementedException();
+        var drive = FirstOrDefault(id);
+        if (drive != null)
+        {
+            drive.IsDriveFinished = true;
+            
+            return drive;
+        }
+
+        return null;
     }
 
     public async Task<Drive?> EndingDriveAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var drive = await FirstOrDefaultAsync(id);
+        if (drive != null)
+        {
+            drive.IsDriveFinished = true;
+            return drive;
+        }
+
+        return null;
     }
 
 
