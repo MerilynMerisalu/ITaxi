@@ -80,9 +80,27 @@ public class DrivesController : Controller
         vm.IsDriveDeclined = drive.IsDriveDeclined;
         vm.IsDriveStarted = drive.IsDriveStarted;
         vm.IsDriveFinished = drive.IsDriveFinished;
-        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
-        vm.DriveDeclineDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
-        vm.DriveInProgressDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
+        if (drive.IsDriveAccepted )
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
+        }
+
+        if (drive.IsDriveDeclined)
+        {
+            vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime().ToString("G");
+        }
+
+        if (drive.IsDriveStarted)
+        {
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("G");
+        }
+
+        if (drive.IsDriveFinished)
+        {
+            vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToLocalTime().ToString("G");
+        }
+
+        
         vm.CreatedBy = drive.CreatedBy!;
         vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");
         vm.UpdatedBy = drive.UpdatedBy!;
