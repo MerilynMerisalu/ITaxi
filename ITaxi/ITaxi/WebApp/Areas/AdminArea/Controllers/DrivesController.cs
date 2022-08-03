@@ -1,6 +1,8 @@
 #nullable enable
 using App.Contracts.DAL;
+using App.Domain;
 using App.Domain.Enum;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rotativa.AspNetCore;
 using WebApp.Areas.AdminArea.ViewModels;
@@ -8,6 +10,7 @@ using WebApp.Areas.AdminArea.ViewModels;
 namespace WebApp.Areas.AdminArea.Controllers;
 
 [Area(nameof(AdminArea))]
+[Authorize(Roles = nameof(Admin))]
 public class DrivesController : Controller
 {
     private readonly IAppUnitOfWork _uow;
