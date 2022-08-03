@@ -8,7 +8,7 @@ using WebApp.Areas.DriverArea.ViewModels;
 
 namespace WebApp.Areas.DriverArea.Controllers;
 
-[Area("DriverArea")]
+[Area(nameof(DriverArea))]
 [Authorize(Roles = "Admin, Driver")]
 public class RideTimesController : Controller
 {
@@ -201,7 +201,7 @@ public class RideTimesController : Controller
 
     // POST: DriverArea/RideTimes/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
@@ -216,4 +216,6 @@ public class RideTimesController : Controller
     {
         return _uow.RideTimes.Exists(id);
     }
+    
+    
 }

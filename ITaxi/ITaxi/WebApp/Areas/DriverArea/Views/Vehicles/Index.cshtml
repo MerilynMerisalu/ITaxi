@@ -1,4 +1,6 @@
 @using Base.Resources
+@using App.Resources.Areas.App.Domain.DriverArea
+
 @model IEnumerable<App.Domain.Vehicle>
 
 @{
@@ -44,8 +46,8 @@
         <tr>
 
             <td>
-                @*<@Html.DisplayFor(modelItem => item.VehicleType!.VehicleTypeName) *@
-                @item.VehicleType!.VehicleTypeName
+                
+                @Html.DisplayTextFor(modelItem =>item.VehicleType!.VehicleTypeName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.VehicleMark!.VehicleMarkName)
@@ -70,7 +72,8 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a> |
+                <a asp-action="Gallery" asp-route-id="@item.Id">@Gallery.GalleryName</a> |
             </td>
         </tr>
     }

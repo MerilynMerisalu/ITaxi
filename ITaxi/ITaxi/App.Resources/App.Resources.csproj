@@ -123,6 +123,10 @@
           <Generator>PublicResXFileCodeGenerator</Generator>
           <LastGenOutput>Gallery.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\DriverArea\Gallery.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Gallery.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -267,6 +271,11 @@
           <DependentUpon>Drive.resx</DependentUpon>
         </Compile>
         <Compile Update="Areas\App.Domain\AdminArea\Gallery.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Gallery.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\DriverArea\Gallery.Designer.cs">
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
           <DependentUpon>Gallery.resx</DependentUpon>
