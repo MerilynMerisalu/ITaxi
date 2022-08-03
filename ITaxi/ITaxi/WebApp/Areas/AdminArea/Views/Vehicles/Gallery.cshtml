@@ -1,0 +1,15 @@
+﻿@using App.Resources.Areas.App.Domain.AdminArea
+@model WebApp.Areas.AdminArea.ViewModels.GalleryViewModel
+
+@{
+    ViewData["Title"] = Gallery.GalleryName;
+}
+
+<h1>@Gallery.VehicleName</h1>
+
+<h3>@Model.VehicleIdentifier</h3>
+<p>
+    @Gallery.NoImages
+</p>
+
+<td><a asp-action="" asp-route-id="">@Gallery.UploadImages</a> </td>

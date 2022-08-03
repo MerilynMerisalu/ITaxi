@@ -245,4 +245,19 @@ public class VehiclesController : Controller
     {
         return _uow.Vehicles.Exists(id);
     }
+    
+    // GET: AdminArea/Vehicle/Gallery/5
+    public async Task<IActionResult> Gallery(Guid? id)
+    {
+        if (id == null) return NotFound();
+
+        var vm = new GalleryViewModel();
+        var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id.Value);
+        if (vehicle == null) return NotFound();
+
+        vm.VehicleIdentifier = vehicle.VehicleIdentifier;
+        vm.Id = vehicle.Id;
+        
+        return View(vm);
+    }
 }
