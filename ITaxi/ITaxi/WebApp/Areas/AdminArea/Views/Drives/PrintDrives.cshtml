@@ -30,12 +30,21 @@
             @Html.DisplayNameFor(model => model.Booking!.Customer)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Booking!.Customer!.DisabilityType!.DisabilityTypeName)
+        </th>
+        
+        <th>
             @Html.DisplayNameFor(model => model.Booking!.City)
         </th>
+        
         <th>
             @Html.DisplayNameFor(model => model.Booking!.PickupAddress)
         </th>
 
+        <th>
+            @Html.DisplayNameFor(model => model.Booking!.DestinationAddress)
+        </th>
+        
         <th>
             @Html.DisplayNameFor(model => model.Booking!.Customer!.AppUser!.PhoneNumber)
         </th>
@@ -72,12 +81,22 @@
                 @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.LastAndFirstName)
             </td>
             <td>
+                @Html.DisplayTextFor(modelItem => 
+                    item.Booking!.Customer!.DisabilityType!.DisabilityTypeName)
+            </td>
+            
+            <td>
                 @Html.DisplayFor(modelItem => item.Booking!.City!.CityName)
             </td>
+            
+            
+            
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.PickupAddress)
             </td>
-
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking!.DestinationAddress)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.PhoneNumber)
             </td>
