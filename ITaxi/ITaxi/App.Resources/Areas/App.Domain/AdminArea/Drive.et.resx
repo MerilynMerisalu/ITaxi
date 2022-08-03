@@ -39,7 +39,7 @@
         <value>Sõidu täitmise alguskuupäev ja -kellaaeg</value>
     </data>
     <data name="FinishedDateAndTime" xml:space="preserve">
-        <value>Lõpetamise kuupäev ja -kellaaeg</value>
+        <value> Sõidu lõpetamise kuupäev ja -kellaaeg</value>
     </data>
     <data name="AcceptingDrive" xml:space="preserve">
         <value>Sõidu kinnitamine</value>

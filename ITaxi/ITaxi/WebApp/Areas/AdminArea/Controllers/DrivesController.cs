@@ -284,6 +284,7 @@ public class DrivesController : Controller
         drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
         drive.StatusOfDrive = StatusOfDrive.Accepted;
         drive.IsDriveAccepted = true;
+        drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
         _uow.Drives.Update(drive);
         await _uow.SaveChangesAsync();
@@ -292,6 +293,7 @@ public class DrivesController : Controller
         if (booking != null)
         {
             booking.StatusOfBooking = StatusOfBooking.Accepted;
+            booking.UpdatedAt = DateTime.Now.ToUniversalTime();
             _uow.Bookings.Update(booking);
             await _uow.SaveChangesAsync();
         }
@@ -330,7 +332,7 @@ public class DrivesController : Controller
         return View(vm);
     }
 
-    // POST: AdminArea/Bookings/Decline/5
+    // POST: AdminArea/Drives/Decline/5
     [HttpPost]
     [ActionName(nameof(Decline))]
     [ValidateAntiForgeryToken]
@@ -352,6 +354,7 @@ public class DrivesController : Controller
         drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
         drive.StatusOfDrive = StatusOfDrive.Declined;
         drive.IsDriveDeclined = true;
+        drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
         _uow.Drives.Update(drive);
         await _uow.SaveChangesAsync();
@@ -360,6 +363,7 @@ public class DrivesController : Controller
         if (booking != null)
         {
             booking.StatusOfBooking = StatusOfBooking.Declined;
+            booking.UpdatedAt = DateTime.Now.ToUniversalTime();
             _uow.Bookings.Update(booking);
             await _uow.SaveChangesAsync();
         }
@@ -419,6 +423,7 @@ public class DrivesController : Controller
         drive.DriveStartDateAndTime = DateTime.Now.ToUniversalTime();
         drive.StatusOfDrive = StatusOfDrive.Started;
         drive.IsDriveStarted = true;
+        drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
         _uow.Drives.Update(drive);
         await _uow.SaveChangesAsync();
@@ -479,6 +484,7 @@ public class DrivesController : Controller
         drive.IsDriveFinished = true;
         drive.StatusOfDrive = StatusOfDrive.Finished;
         drive.DriveEndDateAndTime = DateTime.Now.ToUniversalTime();
+        drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
         _uow.Drives.Update(drive);
         await _uow.SaveChangesAsync();
