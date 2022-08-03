@@ -1,11 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
-<root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-            
-        </xsd:element>
-    </xsd:schema>
+﻿<root>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -19,49 +12,57 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="DriveName" xml:space="preserve">
-        <value>Drive</value>
+        <value>Sõit</value>
     </data>
     <data name="Comment" xml:space="preserve">
-        <value>Comment</value>
+        <value>Kommentaar</value>
     </data>
     <data name="Decline" xml:space="preserve">
-        <value>Decline</value>
+        <value>Tühista</value>
     </data>
     <data name="Accept" xml:space="preserve">
-        <value>Accept</value>
+        <value>Kinnita</value>
     </data>
     <data name="InProgress" xml:space="preserve">
-        <value>In-Progress</value>
+        <value>Täitmisel</value>
     </data>
     <data name="Finished" xml:space="preserve">
-        <value>Finished</value>
+        <value>Lõpetatud</value>
     </data>
     <data name="AcceptedDateAndTime" xml:space="preserve">
-        <value>Drive Acceptance Date and Time</value>
+        <value>Kinnitamise kuupäev ja -kellaaeg</value>
     </data>
     <data name="DeclineDateAndTime" xml:space="preserve">
-        <value>Drive Decline Date and Time</value>
+        <value>Tühistamise kuupäev ja kellaaeg</value>
     </data>
     <data name="InProgressDateAndTime" xml:space="preserve">
-        <value>Start Date and Time of the Drive</value>
+        <value>Sõidu täitmise alguskuupäev ja -kellaaeg</value>
     </data>
     <data name="FinishedDateAndTime" xml:space="preserve">
-        <value>Drive End Date and Time</value>
+        <value> Sõidu lõpetamise kuupäev ja -kellaaeg</value>
     </data>
     <data name="AcceptingDrive" xml:space="preserve">
-        <value>Accepting Drive</value>
+        <value>Sõidu kinnitamine</value>
     </data>
     <data name="DecliningDrive" xml:space="preserve">
-        <value>Declining Drive</value>
+        <value>Sõidu tühistamine</value>
     </data>
     <data name="SettingDriveIntoInProgressState" xml:space="preserve">
-        <value>Start the Drive</value>
+        <value>Alusta sõitu </value>
     </data>
     <data name="SettingDriveIntoFinishedState" xml:space="preserve">
-        <value>End the Drive</value>
+        <value>Lõpeta sõit</value>
     </data>
     <data name="DriveStatus" xml:space="preserve">
-        <value>Status of Drive</value>
+        <value>Sõidu olek</value>
     </data>
-    
+    <data name="AwaitingForConfirmation" xml:space="preserve">
+        <value>Kinnituse ootel</value>
+    </data>
+    <data name="Declined" xml:space="preserve">
+        <value>Tühistatud</value>
+    </data>
+    <data name="Accepted" xml:space="preserve">
+        <value>Kinnitatud</value>
+    </data>
 </root>
