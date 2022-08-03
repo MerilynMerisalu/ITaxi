@@ -76,6 +76,7 @@ public class DrivesController : Controller
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
         vm.PickupDateAndTime = _uow.Drives.PickUpDateAndTimeStr(drive);
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+        vm.StatusOfDrive = drive.StatusOfDrive;
         vm.IsDriveAccepted = drive.IsDriveAccepted;
         vm.IsDriveDeclined = drive.IsDriveDeclined;
         vm.IsDriveStarted = drive.IsDriveStarted;
@@ -270,6 +271,7 @@ public class DrivesController : Controller
         vm.HasAnAssistant = drive.Booking.HasAnAssistant;
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+        vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
         vm.CreatedBy = drive.CreatedBy!;
         vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");
@@ -340,6 +342,7 @@ public class DrivesController : Controller
         vm.HasAnAssistant = drive.Booking.HasAnAssistant;
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+        vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
         vm.CreatedBy = drive.CreatedBy!;
         vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");
@@ -410,6 +413,7 @@ public class DrivesController : Controller
         vm.HasAnAssistant = drive.Booking.HasAnAssistant;
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+        vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
         vm.CreatedBy = drive.CreatedBy!;
         vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");
@@ -470,6 +474,7 @@ public class DrivesController : Controller
         vm.HasAnAssistant = drive.Booking.HasAnAssistant;
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+        vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
         vm.CreatedBy = drive.CreatedBy!;
         vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");

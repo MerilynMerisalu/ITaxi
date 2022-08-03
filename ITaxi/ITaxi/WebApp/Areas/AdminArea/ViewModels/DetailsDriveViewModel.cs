@@ -53,6 +53,10 @@ public class DetailsDriveViewModel : AdminAreaBaseViewModel
     [Display(ResourceType = typeof(Booking), Name = nameof(StatusOfBooking))]
     public StatusOfBooking StatusOfBooking { get; set; }
 
+    [Display(ResourceType = typeof(Drive), Name = "DriveStatus")]
+    public StatusOfDrive StatusOfDrive { get; set; }
+
+    
     [Display(ResourceType = typeof(Comment), Name = "CommentName")]
     public string CommentText { get; set; } = default!;
     
