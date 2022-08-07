@@ -11,7 +11,7 @@ using WebApp.Areas.DriverArea.ViewModels;
 namespace WebApp.Areas.DriverArea.Controllers;
 
 [Area(nameof(DriverArea))]
-// [Authorize(Roles = "Admin, Driver")]
+[Authorize(Roles = "Admin, Driver")]
 public class DrivesController : Controller
 {
     private readonly IAppUnitOfWork _uow;
