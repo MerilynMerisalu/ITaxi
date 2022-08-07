@@ -177,10 +177,27 @@
             }
             
             <td>
-                <a asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a> |
-                <a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> |
-                <a asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a> |
-                <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a> |
+                @if (item.IsDriveDeclined)
+                {
+                    <a hidden="hidden" asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a> 
+                    <a hidden="hidden" asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a>
+                }
+
+                else
+                {
+                    <a asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
+                    <a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a>
+                }
+                
+                
+                @if (item.IsDriveAccepted)
+                {
+                    <a asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a>  
+                    <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a>
+                }
+                
+                 
+               
                 <a asp-action="Details" asp-route-id="@item.Id">@Base.Resources.Common.Details</a>
 
             </td>

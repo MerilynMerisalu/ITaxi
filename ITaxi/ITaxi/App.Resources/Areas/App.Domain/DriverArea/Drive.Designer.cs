@@ -69,6 +69,15 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accepted.
+        /// </summary>
+        public static string Accepted {
+            get {
+                return ResourceManager.GetString("Accepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drive Acceptance Date and Time.
         /// </summary>
         public static string AcceptedDateAndTime {
@@ -87,6 +96,24 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Awaiting for Confirmation.
+        /// </summary>
+        public static string AwaitingForConfirmation {
+            get {
+                return ResourceManager.GetString("AwaitingForConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to City.
+        /// </summary>
+        public static string City {
+            get {
+                return ResourceManager.GetString("City", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comment.
         /// </summary>
         public static string Comment {
@@ -96,11 +123,29 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer&apos;s Last and First Name.
+        /// </summary>
+        public static string CustomerLastAndFirstName {
+            get {
+                return ResourceManager.GetString("CustomerLastAndFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Decline.
         /// </summary>
         public static string Decline {
             get {
                 return ResourceManager.GetString("Decline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Declined.
+        /// </summary>
+        public static string Declined {
+            get {
+                return ResourceManager.GetString("Declined", resourceCulture);
             }
         }
         
@@ -119,6 +164,24 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         public static string DecliningDrive {
             get {
                 return ResourceManager.GetString("DecliningDrive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination Address.
+        /// </summary>
+        public static string DestinationAddress {
+            get {
+                return ResourceManager.GetString("DestinationAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disability Type.
+        /// </summary>
+        public static string DisabilityTypeName {
+            get {
+                return ResourceManager.GetString("DisabilityTypeName", resourceCulture);
             }
         }
         
@@ -159,6 +222,15 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Has an Assistant?.
+        /// </summary>
+        public static string HasAnAssistant {
+            get {
+                return ResourceManager.GetString("HasAnAssistant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In-Progress.
         /// </summary>
         public static string InProgress {
@@ -177,6 +249,42 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number of Passengers.
+        /// </summary>
+        public static string NumberOfPassengers {
+            get {
+                return ResourceManager.GetString("NumberOfPassengers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pickup Address.
+        /// </summary>
+        public static string PickupAddress {
+            get {
+                return ResourceManager.GetString("PickupAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pickup Date and Time.
+        /// </summary>
+        public static string PickupDateAndTime {
+            get {
+                return ResourceManager.GetString("PickupDateAndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule.
+        /// </summary>
+        public static string Schedule {
+            get {
+                return ResourceManager.GetString("Schedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End the Drive.
         /// </summary>
         public static string SettingDriveIntoFinishedState {
@@ -191,6 +299,51 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         public static string SettingDriveIntoInProgressState {
             get {
                 return ResourceManager.GetString("SettingDriveIntoInProgressState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift Duration Time.
+        /// </summary>
+        public static string ShiftDurationTime {
+            get {
+                return ResourceManager.GetString("ShiftDurationTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status of Booking.
+        /// </summary>
+        public static string StatusOfBooking {
+            get {
+                return ResourceManager.GetString("StatusOfBooking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status of Drive.
+        /// </summary>
+        public static string StatusOfDrive {
+            get {
+                return ResourceManager.GetString("StatusOfDrive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle.
+        /// </summary>
+        public static string VehicleIdentifier {
+            get {
+                return ResourceManager.GetString("VehicleIdentifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle Type.
+        /// </summary>
+        public static string VehicleType {
+            get {
+                return ResourceManager.GetString("VehicleType", resourceCulture);
             }
         }
     }

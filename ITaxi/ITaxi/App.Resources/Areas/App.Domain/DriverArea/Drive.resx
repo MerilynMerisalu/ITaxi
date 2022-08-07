@@ -63,5 +63,55 @@
     <data name="DriveStatus" xml:space="preserve">
         <value>Status of Drive</value>
     </data>
-    
+    <data name="CustomerLastAndFirstName" xml:space="preserve">
+        <value>Customer's Last and First Name</value>
+    </data>
+    <data name="PickupDateAndTime" xml:space="preserve">
+        <value>Pickup Date and Time</value>
+    </data>
+    <data name="AwaitingForConfirmation" xml:space="preserve">
+        <value>Awaiting for Confirmation</value>
+    </data>
+    <data name="Declined" xml:space="preserve">
+        <value>Declined</value>
+    </data>
+    <data name="Accepted" xml:space="preserve">
+        <value>Accepted</value>
+    </data>
+    <data name="City" xml:space="preserve">
+        <value>City</value>
+    </data>
+    <data name="PickupAddress" xml:space="preserve">
+        <value>Pickup Address</value>
+    </data>
+    <data name="DestinationAddress" xml:space="preserve">
+        <value>Destination Address</value>
+    </data>
+    <data name="VehicleType" xml:space="preserve">
+        <value>Vehicle Type</value>
+    </data>
+    <data name="VehicleIdentifier" xml:space="preserve">
+        <value>Vehicle</value>
+    </data>
+    <data name="NumberOfPassengers" xml:space="preserve">
+        <value>Number of Passengers</value>
+    </data>
+    <data name="HasAnAssistant" xml:space="preserve">
+        <value>Has an Assistant?</value>
+    </data>
+    <data name="DisabilityTypeName" xml:space="preserve">
+        <value>Disability Type</value>
+    </data>
+    <data name="Schedule" xml:space="preserve">
+        <value>Schedule</value>
+    </data>
+    <data name="ShiftDurationTime" xml:space="preserve">
+        <value>Shift Duration Time</value>
+    </data>
+    <data name="StatusOfBooking" xml:space="preserve">
+        <value>Status of Booking</value>
+    </data>
+    <data name="StatusOfDrive" xml:space="preserve">
+        <value>Status of Drive</value>
+    </data>
 </root>

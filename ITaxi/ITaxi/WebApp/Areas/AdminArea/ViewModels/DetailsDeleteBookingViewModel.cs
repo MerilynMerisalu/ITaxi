@@ -51,9 +51,9 @@ public class DetailsDeleteBookingViewModel : AdminAreaBaseViewModel
     [Display(ResourceType = typeof(Booking), Name = nameof(StatusOfBooking))]
 
     public StatusOfBooking StatusOfBooking { get; set; }
-    
+
     [Display(ResourceType = typeof(Booking), Name = nameof(BookingDeclineDateAndTime))]
-    public string BookingDeclineDateAndTime { get; set; }
+    public string BookingDeclineDateAndTime { get; set; } = default!;
 
     public bool IsDeclined { get; set; }
     

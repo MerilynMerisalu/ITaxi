@@ -5,12 +5,13 @@ using App.Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rotativa.AspNetCore;
-using WebApp.Areas.AdminArea.ViewModels;
+using WebApp.Areas.DriverArea.ViewModels;
+
 
 namespace WebApp.Areas.DriverArea.Controllers;
 
 [Area(nameof(DriverArea))]
-[Authorize(Roles = "Admin, Driver")]
+// [Authorize(Roles = "Admin, Driver")]
 public class DrivesController : Controller
 {
     private readonly IAppUnitOfWork _uow;
@@ -20,7 +21,7 @@ public class DrivesController : Controller
         _uow = uow;
     }
 
-    // GET: AdminArea/Drives
+    // GET: DriverArea/Drives
     public async Task<IActionResult> Index()
     {
         var res = await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync();
@@ -30,31 +31,33 @@ public class DrivesController : Controller
 
             if (drive.IsDriveAccepted || (drive.IsDriveAccepted && drive.IsDriveDeclined))
             {
+                #warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
                 drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
             }
 
             if (drive.IsDriveDeclined || (drive.IsDriveAccepted && drive.IsDriveDeclined))
             {
+                #warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
                 drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
             }
 
             if (drive.IsDriveStarted || (drive.IsDriveAccepted && drive.IsDriveStarted))
             {
+                #warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
                 drive.DriveStartDateAndTime = drive.DriveStartDateAndTime.ToLocalTime();
             }
 
             if (drive.IsDriveFinished)
             {
+                #warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
                 drive.DriveEndDateAndTime = drive.DriveEndDateAndTime.ToLocalTime();
             }
-
-            
         }
 
         return View(res);
     }
 
-    // GET: AdminArea/Drives/Details/5
+    // GET: DriverArea/Drives/Details/5
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDriveViewModel();
@@ -103,21 +106,18 @@ public class DrivesController : Controller
             vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToLocalTime().ToString("G");
         }
 
-        
-       
-
         return View(vm);
     }
 
     /*
-    // GET: AdminArea/Drives/Create
+    // GET: DriverArea/Drives/Create
     public IActionResult Create()
     {
         ViewData["DriverId"] = new SelectList(_uow.Drivers, "Id", "Address");
         return View();
     }
 
-    // POST: AdminArea/Drives/Create
+    // POST: DriverArea/Drives/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
@@ -135,7 +135,7 @@ public class DrivesController : Controller
         return View(drive);
     }
 
-    // GET: AdminArea/Drives/Edit/5
+    // GET: DriverArea/Drives/Edit/5
     public async Task<IActionResult> Edit(Guid? id)
     {
         if (id == null)
@@ -152,7 +152,7 @@ public class DrivesController : Controller
         return View(drive);
     }
 
-    // POST: AdminArea/Drives/Edit/5
+    // POST: DriverArea/Drives/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
@@ -188,7 +188,7 @@ public class DrivesController : Controller
         return View(drive);
     }
 
-    // GET: AdminArea/Drives/Delete/5
+    // GET: DriverArea/Drives/Delete/5
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null)
@@ -207,7 +207,7 @@ public class DrivesController : Controller
         return View(drive);
     }
 
-    // POST: AdminArea/Drives/Delete/5
+    // POST: DriverArea/Drives/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -224,6 +224,8 @@ public class DrivesController : Controller
     /// </summary>
     /// <param name="search">date</param>
     /// <returns>An index view with search results</returns>
+    
+    
     [HttpPost]
     public async Task<IActionResult> SearchByDateAsync([FromForm] DateTime search)
     {
@@ -248,7 +250,7 @@ public class DrivesController : Controller
         return new ViewAsPdf("PrintDrives");
     }
 
-    // GET: AdminArea/Drives/Accept/5
+    // GET: DriverArea/Drives/Accept/5
     public async Task<IActionResult> Accept(Guid? id)
     {
         if (id == null) return NotFound();
@@ -271,11 +273,10 @@ public class DrivesController : Controller
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
         
-
         return View(vm);
     }
 
-    // POST: AdminArea/Bookings/Accept/5
+    // POST: DriverArea/Bookings/Accept/5
     [HttpPost]
     [ActionName(nameof(Accept))]
     [ValidateAntiForgeryToken]
@@ -314,7 +315,7 @@ public class DrivesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // GET: AdminArea/Drives/Decline/5
+    // GET: DriverArea/Drives/Decline/5
     public async Task<IActionResult> Decline(Guid? id)
     {
         if (id == null) return NotFound();
@@ -336,16 +337,11 @@ public class DrivesController : Controller
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
-        vm.CreatedBy = drive.CreatedBy!;
-        vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");
-        vm.UpdatedBy = drive.UpdatedBy!;
-        vm.UpdatedAt = drive.UpdatedAt.ToLocalTime().ToString("G");
-
-
+        
         return View(vm);
     }
 
-    // POST: AdminArea/Drives/Decline/5
+    // POST: DriverArea/Drives/Decline/5
     [HttpPost]
     [ActionName(nameof(Decline))]
     [ValidateAntiForgeryToken]
@@ -384,7 +380,7 @@ public class DrivesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // GET: AdminArea/Drives/StartDrive/5
+    // GET: DriverArea/Drives/StartDrive/5
     public async Task<IActionResult> StartDrive(Guid? id)
     {
         if (id == null) return NotFound();
@@ -407,11 +403,10 @@ public class DrivesController : Controller
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
         
-
         return View(vm);
     }
 
-    // POST: AdminArea/Bookings/Start/5
+    // POST: DriverArea/Bookings/Start/5
     [HttpPost]
     [ActionName(nameof(StartDrive))]
     [ValidateAntiForgeryToken]
@@ -441,7 +436,7 @@ public class DrivesController : Controller
 
     }
 
-    // GET: AdminArea/Drives/EndDrive/5
+    // GET: DriverArea/Drives/EndDrive/5
     public async Task<IActionResult> EndDrive(Guid? id)
     {
         if (id == null) return NotFound();
@@ -495,8 +490,6 @@ public class DrivesController : Controller
         _uow.Drives.Update(drive);
         await _uow.SaveChangesAsync();
         
-
         return RedirectToAction(nameof(Index));
     }
-
 }

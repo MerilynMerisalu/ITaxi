@@ -1,0 +1,30 @@
+﻿@model WebApp.Areas.DriverArea.ViewModels.DriveStateViewModel
+@using App.Resources.Areas.App.Domain.DriverArea
+@using Base.Resources
+
+
+@{
+    ViewData["Title"] = Drive.DecliningDrive;
+}
+
+<h1>@Drive.DecliningDrive</h1>
+
+<div>
+    <h4>@Drive.DriveName</h4>
+    <hr/>
+    <dl class="row">
+        <partial name="DriverArea/PartialViews/_DriveState" model="Model"/>
+    </dl>
+    <form asp-action="Decline">
+        <input type="hidden" asp-for="Id"/>
+        <input type="submit" value="@Drive.Decline" class="btn btn-danger"/> 
+    </form>
+</div>
+<div>
+    <a asp-action="Accept" asp-route-id="@Model.Id">@Drive.Accept</a> |
+    <a asp-action="StartDrive" asp-route-id="@Model.Id">@Drive.InProgress</a> |
+    <a asp-action="" asp-route-id="@Model.Id">@Drive.Finished</a> |
+    <a asp-action="Details" asp-route-id="@Model?.Id">@Common.Details</a> |
+    <a asp-action="Index">@Common.BackToList</a>
+</div>
+

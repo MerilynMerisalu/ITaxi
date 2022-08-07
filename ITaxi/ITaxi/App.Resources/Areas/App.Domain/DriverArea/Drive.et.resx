@@ -65,4 +65,46 @@
     <data name="Accepted" xml:space="preserve">
         <value>Kinnitatud</value>
     </data>
+    <data name="CustomerLastAndFirstName" xml:space="preserve">
+        <value>Kliendi perekonna- ja eesnimi</value>
+    </data>
+    <data name="PickupDateAndTime" xml:space="preserve">
+        <value>Sõidu toimumiskuupäev ja -kellaaeg</value>
+    </data>
+    <data name="City" xml:space="preserve">
+        <value>Linn</value>
+    </data>
+    <data name="PickupAddress" xml:space="preserve">
+        <value>Lähtekoha aadress</value>
+    </data>
+    <data name="DestinationAddress" xml:space="preserve">
+        <value>Sihtkoha aadress</value>
+    </data>
+    <data name="VehicleType" xml:space="preserve">
+        <value>Sõidukitüüp</value>
+    </data>
+    <data name="VehicleIdentifier" xml:space="preserve">
+        <value>Sõiduk</value>
+    </data>
+    <data name="NumberOfPassengers" xml:space="preserve">
+        <value>Reisijate arv</value>
+    </data>
+    <data name="HasAnAssistant" xml:space="preserve">
+        <value>Abistaja olemasolu?</value>
+    </data>
+    <data name="DisabilityTypeName" xml:space="preserve">
+        <value>Puudeliik</value>
+    </data>
+    <data name="Schedule" xml:space="preserve">
+        <value>Vahetus</value>
+    </data>
+    <data name="ShiftDurationTime" xml:space="preserve">
+        <value>Vahetuse kestvus</value>
+    </data>
+    <data name="StatusOfBooking" xml:space="preserve">
+        <value>Broneeringu olek</value>
+    </data>
+    <data name="StatusOfDrive" xml:space="preserve">
+        <value>Sõidu olek</value>
+    </data>
 </root>
