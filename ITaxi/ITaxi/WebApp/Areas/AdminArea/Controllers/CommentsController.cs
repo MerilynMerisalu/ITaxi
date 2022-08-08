@@ -95,7 +95,7 @@ public class CommentsController : Controller
 
         vm.Drives = new SelectList(await _uow.Drives.GettingAllDrivesForCommentsAsync(), nameof(Drive.Id),
             nameof(Drive.Booking.PickUpDateAndTime),
-            nameof(vm.DriveId));
+            nameof(Drive.Id));
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.DriveId = comment.Drive!.Id;
 
@@ -121,6 +121,7 @@ public class CommentsController : Controller
                     comment.Id = id;
                     comment.DriveId = vm.DriveId;
                     comment.CommentText = vm.CommentText;
+                    comment.UpdatedAt = DateTime.Now;
                     _uow.Comments.Update(comment);
                 }
 

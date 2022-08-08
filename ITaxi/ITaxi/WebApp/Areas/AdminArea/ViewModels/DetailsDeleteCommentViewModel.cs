@@ -1,5 +1,6 @@
-﻿using System.ComponentModel;
-using App.Domain;
+﻿
+using System.ComponentModel.DataAnnotations;
+
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
@@ -7,7 +8,9 @@ public class DetailsDeleteCommentViewModel
 {
     public Guid Id { get; set; }
 
-    [DisplayName(nameof(Drive))] public string Drive { get; set; } = default!;
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Comment),
+        Name = nameof(Drive))] public string Drive { get; set; } = default!;
 
-    [DisplayName(nameof(Comment))] public string CommentText { get; set; } = default!;
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Comment), Name = "CommentName")]
+    public string CommentText { get; set; } = default!;
 }
