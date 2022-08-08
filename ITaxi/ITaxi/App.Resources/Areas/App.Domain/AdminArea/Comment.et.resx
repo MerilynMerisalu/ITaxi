@@ -21,4 +21,7 @@
     <data name="Drive" xml:space="preserve">
         <value>Sõidu toimumiskuupäev ja -kellaaeg</value>
     </data>
+    <data name="NoDrives" xml:space="preserve">
+        <value>Kommenteeritavaid sõite pole</value>
+    </data>
 </root>

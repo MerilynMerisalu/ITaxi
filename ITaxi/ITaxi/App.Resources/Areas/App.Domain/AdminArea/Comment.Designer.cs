@@ -76,5 +76,14 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
                 return ResourceManager.GetString("Drive", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no drives to select from.
+        /// </summary>
+        public static string NoDrives {
+            get {
+                return ResourceManager.GetString("NoDrives", resourceCulture);
+            }
+        }
     }
 }

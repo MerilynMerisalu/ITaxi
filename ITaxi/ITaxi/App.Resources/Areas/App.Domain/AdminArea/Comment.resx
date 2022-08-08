@@ -30,4 +30,7 @@
     <data name="Drive" xml:space="preserve">
         <value>The Date and Time of the Drive</value>
     </data>
+    <data name="NoDrives" xml:space="preserve">
+        <value>There are no drives to select from</value>
+    </data>
 </root>

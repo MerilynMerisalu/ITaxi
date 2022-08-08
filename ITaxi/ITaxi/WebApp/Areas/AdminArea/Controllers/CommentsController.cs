@@ -14,7 +14,6 @@ namespace WebApp.Areas.AdminArea.Controllers;
 public class CommentsController : Controller
 {
     
-    
     private readonly IAppUnitOfWork _uow;
 
     public CommentsController(IAppUnitOfWork uow)
