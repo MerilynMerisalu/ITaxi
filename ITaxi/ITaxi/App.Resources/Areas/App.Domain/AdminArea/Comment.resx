@@ -27,4 +27,7 @@
     <data name="CommentName" xml:space="preserve">
         <value>Comment</value>
     </data>
+    <data name="Drive" xml:space="preserve">
+        <value>The Date and Time of the Drive</value>
+    </data>
 </root>

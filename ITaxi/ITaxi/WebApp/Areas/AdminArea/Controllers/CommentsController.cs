@@ -2,23 +2,25 @@
 using App.Contracts.DAL;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers;
-
+[Authorize(Roles = nameof(Admin))]
 [Area(nameof(AdminArea))]
 public class CommentsController : Controller
 {
-    private readonly AppDbContext _context;
+    
+    
     private readonly IAppUnitOfWork _uow;
 
-    public CommentsController(IAppUnitOfWork uow, AppDbContext context)
+    public CommentsController(IAppUnitOfWork uow)
     {
         _uow = uow;
-        _context = context;
+        
     }
 
     // GET: AdminArea/Comments
@@ -47,9 +49,7 @@ public class CommentsController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditCommentViewModel();
-        // vm.Drives = new SelectList( await _context.Drives.Include(d => d.Booking)
-        //         .Where(d => d.Comment.DriveId == null)
-        //         .Select(d => new {d.Booking.PickUpDateAndTime, d.Id}).ToListAsync()
+        
         vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(),
             nameof(Drive.Id), nameof(Drive.Booking.PickUpDateAndTime));
 
@@ -160,7 +160,7 @@ public class CommentsController : Controller
 
     // POST: AdminArea/Comments/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
