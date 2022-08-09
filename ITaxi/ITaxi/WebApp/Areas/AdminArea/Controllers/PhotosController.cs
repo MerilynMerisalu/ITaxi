@@ -1,4 +1,4 @@
-#nullable disable
+/*#nullable disable
 using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +7,7 @@ using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
-[Area("AdminArea")]
+[Area(nameof(AdminArea))]
 public class PhotosController : Controller
 {
     private readonly IAppUnitOfWork _uow;
@@ -35,7 +35,7 @@ public class PhotosController : Controller
 
         photo.Id = vm.Id;
         photo.Title = vm.Title;
-        photo.PhotoName = vm.PhotoName;
+        photo.PhotoURL = vm.PhotoName;
         return View(vm);
     }
 
@@ -58,7 +58,7 @@ public class PhotosController : Controller
         {
             photo.Id = Guid.NewGuid();
             photo.Title = vm.Title;
-            photo.PhotoName = vm.PhotoName;
+            photo.PhotoURL = vm.PhotoName;
             _uow.Photos.Add(photo);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -140,4 +140,4 @@ public class PhotosController : Controller
     {
         return _uow.Photos.Exists(id);
     }
-}
+}*/

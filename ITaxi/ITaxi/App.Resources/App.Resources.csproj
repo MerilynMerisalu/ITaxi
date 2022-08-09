@@ -131,6 +131,10 @@
           <Generator>PublicResXFileCodeGenerator</Generator>
           <LastGenOutput>Comment.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\Photo.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Photo.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -288,6 +292,11 @@
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
           <DependentUpon>Comment.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\Photo.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Photo.resx</DependentUpon>
         </Compile>
     </ItemGroup>
 

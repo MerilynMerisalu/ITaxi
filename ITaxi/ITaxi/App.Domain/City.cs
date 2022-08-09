@@ -13,9 +13,8 @@ public class City : DomainEntityMetaId
         Name = "CountyName")]
     public County? County { get; set; }
 
-    [Required(ErrorMessage = nameof(Common.RequiredAttributeErrorMessage))]
-    [MaxLength(50, ErrorMessage =
-        "ErrorMessageMaxLength")]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.City),
         Name = nameof(CityName))]
     public string CityName { get; set; } = default!;
