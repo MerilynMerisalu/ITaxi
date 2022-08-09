@@ -1,170 +1,181 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+#nullable enable
+using App.Contracts.DAL;
+using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
+using WebApp.Areas.CustomerArea.ViewModels;
 
-namespace WebApp.Areas.CustomerArea.Controllers
+namespace WebApp.Areas.CustomerArea.Controllers;
+[Authorize(Roles = "Admin, Customer")]
+[Area(nameof(CustomerArea))]
+public class CommentsController : Controller
 {
-    [Area("CustomerArea")]
-    public class CommentsController : Controller
+    
+    private readonly IAppUnitOfWork _uow;
+
+    public CommentsController(IAppUnitOfWork uow)
     {
-        private readonly AppDbContext _context;
+        _uow = uow;
+        
+    }
 
-        public CommentsController(AppDbContext context)
+    // GET: CustomerArea/Comments
+    public async Task<IActionResult> Index()
+    {
+        return View(await _uow.Comments.GettingAllOrderedCommentsWithIncludesAsync());
+    }
+
+    // GET: CustomerArea/Comments/Details/5
+    public async Task<IActionResult> Details(Guid? id)
+    {
+        var vm = new DetailsDeleteCommentViewModel();
+        if (id == null) return NotFound();
+
+        var comment = await _uow.Comments.FirstOrDefaultAsync(id.Value);
+        if (comment == null) return NotFound();
+
+        vm.Id = comment.Id;
+        vm.Drive = _uow.Comments.PickUpDateAndTimeStr(comment);
+        vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
+        if (comment.CommentText != null) vm.CommentText = comment.CommentText;
+       
+
+        return View(vm);
+    }
+
+    // GET: AdminArea/Comments/Create
+    public async Task<IActionResult> Create()
+    {
+        var vm = new CreateEditCommentViewModel();
+        
+        vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(),
+            nameof(Drive.Id), nameof(Drive.Booking.PickUpDateAndTime));
+
+        return View(vm);
+    }
+
+    // POST: AdminArea/Comments/Create
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(CreateEditCommentViewModel vm)
+    {
+        var comment = new Comment();
+        if (ModelState.IsValid)
         {
-            _context = context;
-        }
+            comment.Id = Guid.NewGuid();
+            comment.DriveId = vm.DriveId;
+            comment.CommentText = vm.CommentText;
 
-        // GET: CustomerArea/Comments
-        public async Task<IActionResult> Index()
-        {
-            var appDbContext = _context.Comments.Include(c => c.Drive);
-            return View(await appDbContext.ToListAsync());
-        }
-
-        // GET: CustomerArea/Comments/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null || _context.Comments == null)
-            {
-                return NotFound();
-            }
-
-            var comment = await _context.Comments
-                .Include(c => c.Drive)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (comment == null)
-            {
-                return NotFound();
-            }
-
-            return View(comment);
-        }
-
-        // GET: CustomerArea/Comments/Create
-        public IActionResult Create()
-        {
-            ViewData["DriveId"] = new SelectList(_context.Drives, "Id", "Id");
-            return View();
-        }
-
-        // POST: CustomerArea/Comments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DriveId,CommentText,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Comment comment)
-        {
-            if (ModelState.IsValid)
-            {
-                comment.Id = Guid.NewGuid();
-                _context.Add(comment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["DriveId"] = new SelectList(_context.Drives, "Id", "Id", comment.DriveId);
-            return View(comment);
-        }
-
-        // GET: CustomerArea/Comments/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null || _context.Comments == null)
-            {
-                return NotFound();
-            }
-
-            var comment = await _context.Comments.FindAsync(id);
-            if (comment == null)
-            {
-                return NotFound();
-            }
-            ViewData["DriveId"] = new SelectList(_context.Drives, "Id", "Id", comment.DriveId);
-            return View(comment);
-        }
-
-        // POST: CustomerArea/Comments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("DriveId,CommentText,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Comment comment)
-        {
-            if (id != comment.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(comment);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CommentExists(comment.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["DriveId"] = new SelectList(_context.Drives, "Id", "Id", comment.DriveId);
-            return View(comment);
-        }
-
-        // GET: CustomerArea/Comments/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null || _context.Comments == null)
-            {
-                return NotFound();
-            }
-
-            var comment = await _context.Comments
-                .Include(c => c.Drive)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (comment == null)
-            {
-                return NotFound();
-            }
-
-            return View(comment);
-        }
-
-        // POST: CustomerArea/Comments/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            if (_context.Comments == null)
-            {
-                return Problem("Entity set 'AppDbContext.Comments'  is null.");
-            }
-            var comment = await _context.Comments.FindAsync(id);
-            if (comment != null)
-            {
-                _context.Comments.Remove(comment);
-            }
-            
-            await _context.SaveChangesAsync();
+            _uow.Comments.Add(comment);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CommentExists(Guid id)
+        vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(),
+            nameof(Drive.Id),
+            nameof(Booking.DriveTime));
+
+
+        return View(vm);
+    }
+
+    // GET: AdminArea/Comments/Edit/5
+    public async Task<IActionResult> Edit(Guid? id)
+    {
+        var vm = new CreateEditCommentViewModel();
+        if (id == null) return NotFound();
+
+        var comment = await _uow.Comments.FirstOrDefaultAsync(id.Value);
+        if (comment == null) return NotFound();
+
+        vm.Id = comment.Id;
+
+        vm.Drives = new SelectList(await _uow.Drives.GettingAllDrivesForCommentsAsync(), nameof(Drive.Id),
+            nameof(Drive.Booking.PickUpDateAndTime),
+            nameof(Drive.Id));
+        if (comment.CommentText != null) vm.CommentText = comment.CommentText;
+        vm.DriveId = comment.Drive!.Id;
+        
+
+        return View(vm);
+    }
+
+    // POST: AdminArea/Comments/Edit/5
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(Guid id, CreateEditCommentViewModel vm)
+    {
+        var comment = await _uow.Comments.FirstOrDefaultAsync(id);
+        if (comment != null && id != comment.Id) return NotFound();
+
+        if (ModelState.IsValid)
         {
-          return (_context.Comments?.Any(e => e.Id == id)).GetValueOrDefault();
+            try
+            {
+                if (comment != null)
+                {
+                    comment.Id = id;
+                    comment.CommentText = vm.CommentText;
+                    comment.UpdatedAt = DateTime.Now;
+                    _uow.Comments.Update(comment);
+                }
+
+                await _uow.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (comment != null && !CommentExists(comment.Id))
+                    return NotFound();
+                throw;
+            }
+
+            return RedirectToAction(nameof(Index));
         }
+
+        return View(vm);
+    }
+
+    // GET: AdminArea/Comments/Delete/5
+    public async Task<IActionResult> Delete(Guid? id)
+    {
+        var vm = new DetailsDeleteCommentViewModel();
+        if (id == null) return NotFound();
+
+        var comment = await _uow.Comments.FirstOrDefaultAsync(id.Value);
+        if (comment == null) return NotFound();
+
+        vm.Id = comment.Id;
+#warning Ask maybe can be done as a base method
+
+        vm.Drive = _uow.Comments.PickUpDateAndTimeStr(comment);
+        
+        vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
+        if (comment.CommentText != null) vm.CommentText = comment.CommentText;
+        
+
+        return View(vm);
+    }
+
+    // POST: AdminArea/Comments/Delete/5
+    [HttpPost]
+    [ActionName(nameof(Delete))]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(Guid id)
+    {
+        var comment = await _uow.Comments.FirstOrDefaultAsync(id);
+        if (comment != null) _uow.Comments.Remove(comment);
+        await _uow.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    private bool CommentExists(Guid id)
+    {
+        return _uow.Comments.Exists(id);
     }
 }

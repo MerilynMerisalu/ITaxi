@@ -1,63 +1,49 @@
-@model App.Domain.Comment
+@using Base.Resources
+@using App.Resources.Areas.App.Domain.CustomerArea
+@model WebApp.Areas.CustomerArea.ViewModels.CreateEditCommentViewModel
 
 @{
-    Layout = null;
+    ViewData["Title"] = Common.Create;
 }
 
-<!DOCTYPE html>
+<h1>@Common.Create</h1>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
-</head>
-<body>
-
-<h4>Comment</h4>
-<hr />
+<h4>@Comment.CommentName</h4>
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="DriveId" class="control-label"></label>
-                <select asp-for="DriveId" class ="form-control" asp-items="ViewBag.DriveId"></select>
+                <select asp-for="DriveId" class="form-control" asp-items="Model.Drives">
+                    @if (Model.Drives == null || !Model.Drives.Any())
+                    {
+                        <option>@Comment.NoDrives</option>
+                    }
+                    else
+                    {
+                        <options asp-items="@Model.Drives"/>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="CommentText" class="control-label"></label>
                 <textarea asp-for="CommentText" class="form-control"></textarea>
                 <span asp-validation-for="CommentText" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="CreatedBy" class="control-label"></label>
-                <input asp-for="CreatedBy" class="form-control" />
-                <span asp-validation-for="CreatedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedBy" class="control-label"></label>
-                <input asp-for="UpdatedBy" class="form-control" />
-                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedAt" class="control-label"></label>
-                <input asp-for="UpdatedAt" class="form-control" />
-                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="@Common.Create" class="btn btn-primary"/>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Common.BackToList</a>
 </div>
 
-</body>
-</html>
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
