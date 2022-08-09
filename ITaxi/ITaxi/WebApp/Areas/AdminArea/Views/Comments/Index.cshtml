@@ -17,7 +17,22 @@
             @Html.DisplayNameFor(model => model.Drive)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Drive!.Booking!.Customer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Drive!.Booking!.Driver)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.CommentText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedAt)
         </th>
 
         <th></th>
@@ -31,8 +46,29 @@
                 @Html.DisplayFor(modelItem => item.Drive!.Booking!.PickUpDateAndTime)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Drive!.Booking!.Customer!.AppUser!.LastAndFirstName)
+            </td>
+            
+                        
+            <td>
+                @Html.DisplayFor(modelItem => item.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName)
+            </td>
+            
+            <td>
                 @Html.DisplayFor(modelItem => item.CommentText)
             </td>
+            
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            
 
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |

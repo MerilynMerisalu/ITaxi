@@ -10,6 +10,7 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
     public CommentRepository(AppDbContext dbContext) : base(dbContext)
     {
     }
+    
 
     public override async Task<IEnumerable<Comment>> GetAllAsync(bool noTracking = true)
     {
@@ -100,8 +101,13 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
         if (noTracking) query.AsNoTracking();
 
         query = query.Include(c => c.Drive)
-            .ThenInclude(d => d!.Booking);
-        ;
+            .ThenInclude(d => d!.Booking)
+            .ThenInclude(d => d!.Customer)
+            .ThenInclude(d => d!.AppUser)
+            .Include(d => d.Drive)
+            .ThenInclude(d => d!.Driver)
+            .ThenInclude(d => d!.AppUser);
+        
         return query;
     }
 }

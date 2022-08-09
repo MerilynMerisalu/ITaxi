@@ -39,7 +39,14 @@ public class CommentsController : Controller
 
         vm.Id = comment.Id;
         vm.Drive = _uow.Comments.PickUpDateAndTimeStr(comment);
+        vm.CustomerName = comment.Drive!.Booking!.Customer!.AppUser!.LastAndFirstName;
+        vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
+        vm.CreatedAt = comment.CreatedAt.ToString("G");
+        vm.CreatedBy = comment.CreatedBy!;
+        vm.UpdatedAt = comment.UpdatedAt.ToString("G");
+        vm.UpdatedBy = comment.UpdatedBy!;
+
 
         return View(vm);
     }
@@ -98,6 +105,7 @@ public class CommentsController : Controller
             nameof(Drive.Id));
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.DriveId = comment.Drive!.Id;
+        
 
         return View(vm);
     }
@@ -153,7 +161,13 @@ public class CommentsController : Controller
 #warning Ask maybe can be done as a base method
 
         vm.Drive = _uow.Comments.PickUpDateAndTimeStr(comment);
+        vm.CustomerName = comment.Drive!.Booking!.Customer!.AppUser!.LastAndFirstName;
+        vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
+        vm.CreatedAt = comment.CreatedAt.ToString("G");
+        vm.CreatedBy = comment.CreatedBy!;
+        vm.UpdatedAt = comment.UpdatedAt.ToString("G");
+        vm.UpdatedBy = comment.UpdatedBy!;
 
         return View(vm);
     }
