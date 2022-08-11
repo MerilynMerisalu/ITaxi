@@ -66,6 +66,10 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         new CookieRequestCultureProvider()
     };
 });
+
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
+builder.Services.AddTransient<IMailService, MailService>();
+
 var app = builder.Build();
 Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
 Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");

@@ -120,7 +120,11 @@ public class IndexModel : PageModel
             return Page();
         }
 
-        await SavingImage();
+        if (Input.ImageFile != null)
+        {
+            await SavingImage();
+        }
+
         var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
         if (Input.PhoneNumber != phoneNumber)
         {
@@ -165,16 +169,19 @@ public class IndexModel : PageModel
     /// <returns>IActionResult</returns>
     private async Task<IActionResult> SavingImage()
     {
+
         var user = await _userManager.GetUserAsync(User);
-        using (var memoryStream = new MemoryStream())
+        if(Input.ImageFile != null)
         {
-            await Input.ImageFile!.CopyToAsync(memoryStream);
-            user.ProfilePhoto = memoryStream.ToArray();
-            user.ProfilePhotoName = Path.GetFileName(Input.ImageFile.FileName);
+            using (var memoryStream = new MemoryStream())
+            {
+                await Input.ImageFile!.CopyToAsync(memoryStream);
+                user.ProfilePhoto = memoryStream.ToArray();
+                user.ProfilePhotoName = Path.GetFileName(Input.ImageFile.FileName);
+            }
+
+            _context.Users.Update(user);
         }
-
-        _context.Users.Update(user);
-
 
         Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
 
