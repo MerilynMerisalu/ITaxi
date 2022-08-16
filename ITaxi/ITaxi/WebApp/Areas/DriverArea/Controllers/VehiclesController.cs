@@ -25,7 +25,8 @@ public class VehiclesController : Controller
     public async Task<IActionResult> Index()
     {
         var userId = User.GettingUserId();
-        return View(await _uow.Vehicles.GettingOrderedVehiclesAsync(userId));
+        var roleName = User.GettingUserRoleName();
+        return View(await _uow.Vehicles.GettingOrderedVehiclesAsync(userId, roleName));
     }
 
     // GET: AdminArea/Vehicles/Details/5
@@ -33,7 +34,9 @@ public class VehiclesController : Controller
     {
         if (id == null) return NotFound();
         var vm = new DetailsDeleteVehicleViewModel();
-        var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id.Value);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId);
         if (vehicle == null) return NotFound();
 
         vm.Id = id;

@@ -4,6 +4,7 @@ using App.Domain.Enum;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace App.DAL.EF.Repositories;
 
 public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IVehicleRepository
@@ -32,22 +33,24 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
         return CreateQuery(noTracking).FirstOrDefault(v => v.Id.Equals(id));
     }
 
-    public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesAsync(Guid? userId ,bool noTracking = true)
+    public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesAsync
+        (Guid? userId, string? roleName ,bool noTracking = true)
     {
-        if (userId == null)
+        if (roleName is nameof(Admin))
         {
-            return await CreateQuery(noTracking)
+            return CreateQuery(noTracking)
                 .OrderBy(v => v.VehicleType!.VehicleTypeName)
                 .ThenBy(v => v.VehicleMark!.VehicleMarkName)
                 .ThenBy(v => v.VehicleModel!.VehicleModelName)
-                .ThenBy(v => v.ManufactureYear).ToListAsync();
+                .ThenBy(v => v.ManufactureYear).ToList();
         }
         return await CreateQuery(noTracking)
             .OrderBy(v => v.VehicleType!.VehicleTypeName)
             .ThenBy(v => v.VehicleMark!.VehicleMarkName)
             .ThenBy(v => v.VehicleModel!.VehicleModelName)
             .ThenBy(v => v.ManufactureYear)
-            .Where(v => v.Driver!.AppUserId.Equals(userId)).ToListAsync();
+            .Where(v => v.Driver!.AppUserId.Equals(userId))
+            .ToListAsync();
     }
 
     public IEnumerable<Vehicle> GettingOrderedVehicles(bool noTracking = true)
@@ -79,6 +82,18 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
     {
         return base.CreateQuery(noTracking)
             .OrderBy(v => v.ManufactureYear).ToList();
+    }
+
+    public async Task<Vehicle?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, bool noTracking = true)
+    {
+        if (userId == null)
+        {
+            return await CreateQuery(noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
+        }
+
+        var vehicle = await CreateQuery(noTracking).FirstOrDefaultAsync
+            (v => v.Id.Equals(id) && v.Driver!.AppUserId.Equals(userId));
+        return vehicle;
     }
 
     public async Task<Vehicle?> GettingVehicleByIdAsync(Guid id, bool noTracking = true)
