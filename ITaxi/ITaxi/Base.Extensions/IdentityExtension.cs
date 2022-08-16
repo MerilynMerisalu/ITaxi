@@ -31,7 +31,6 @@ public static class IdentityExtension
     public static string GettingUserRoleName(this ClaimsPrincipal user)
     {
         
-
         var claimRole = user.Claims.FirstOrDefault(u => u.Type.Equals(ClaimTypes.Role));
         if (claimRole == null)
         {

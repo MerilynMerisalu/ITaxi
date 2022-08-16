@@ -53,8 +53,17 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
             .ToListAsync();
     }
 
-    public IEnumerable<Vehicle> GettingOrderedVehicles(bool noTracking = true)
+    public IEnumerable<Vehicle> GettingOrderedVehicles(Guid? userId = null, string? roleName = null,
+        bool noTracking = true)
     {
+        if (roleName is nameof(Admin))
+        {
+            return CreateQuery(noTracking)
+                .OrderBy(v => v.VehicleType!.VehicleTypeName)
+                .ThenBy(v => v.VehicleMark!.VehicleMarkName)
+                .ThenBy(v => v.VehicleModel!.VehicleModelName)
+                .ThenBy(v => v.ManufactureYear).ToList();
+        }
        
         return CreateQuery(noTracking)
             .OrderBy(v => v.VehicleType!.VehicleTypeName)
