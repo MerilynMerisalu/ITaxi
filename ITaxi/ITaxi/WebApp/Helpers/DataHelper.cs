@@ -274,6 +274,58 @@ public static class DataHelper
             await context.SaveChangesAsync();
 
 
+             appUser = new AppUser
+            {
+                Id = new Guid(),
+                FirstName = "Peep",
+                LastName = "Tolmusk",
+                DateOfBirth = DateTime.Parse("1966-05-13"),
+                Gender = Gender.Male,
+                Email = "peep.tolmusk@gmail.com",
+                EmailConfirmed = true,
+                PhoneNumber = "22447799"
+            };
+            appUser.UserName = appUser.Email;
+
+            result = userManager!.CreateAsync(appUser, "Peepkoer123$").Result;
+
+            if (!result.Succeeded)
+                foreach (var identityError in result.Errors)
+                    Console.WriteLine("Cant create user! Error: " + identityError.Description);
+            result = userManager.AddToRoleAsync(appUser, "Driver").Result;
+            if (!result.Succeeded)
+                foreach (var identityError in result.Errors)
+                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
+
+            result = userManager.AddToRoleAsync(appUser, "Driver").Result;
+            if (!result.Succeeded)
+                foreach (var identityError in result.Errors)
+                    Console.WriteLine("Cant add user to role! Error: " + identityError.Description); 
+            driver = new Driver
+            {
+                Id = new Guid(),
+                AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
+                    a.FirstName.Equals("Peep") && a.LastName.Equals("Tolmusk")).Id,
+                CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
+                PersonalIdentifier = "36605138911",
+                DriverLicenseNumber = "BCC 445",
+                DriverLicenseExpiryDate = DateTime.Parse("2028-09-22"),
+                Address = "Pelguranna 13 - 5",
+                CreatedAt = DateTime.Now.ToUniversalTime()
+            };
+            await context.Drivers.AddAsync(driver);
+            await context.SaveChangesAsync();
+            
+            driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory
+            {
+                DriverId = driver.Id,
+                DriverLicenseCategoryId = driverLicenseCategory.Id
+            };
+            await context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategory);
+            await context.SaveChangesAsync();
+
+
+            
             var vehicleMark = new VehicleMark
             {
                 Id = new Guid(),
@@ -295,7 +347,8 @@ public static class DataHelper
             var vehicle = new Vehicle
             {
                 Id = new Guid(),
-                DriverId = driver.Id,
+                DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!
+                    .Equals("38806237921")).Result.Id,
                 VehicleMarkId = vehicleMark.Id,
                 VehicleTypeId = regularVehicleType.Id,
                 VehicleModelId = vehicleModel.Id,
