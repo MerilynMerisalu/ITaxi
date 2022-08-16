@@ -31,13 +31,15 @@ public class RegisterDriverModel : PageModel
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserStore<AppUser> _userStore;
+    
 
     public RegisterDriverModel(
         UserManager<AppUser> userManager,
         IUserStore<AppUser> userStore,
         SignInManager<AppUser> signInManager,
         ILogger<RegisterDriverModel> logger,
-        IEmailSender emailSender, AppDbContext context)
+        IEmailSender emailSender, AppDbContext context
+        )
     {
         _userManager = userManager;
         _userStore = userStore;
@@ -137,10 +139,7 @@ public class RegisterDriverModel : PageModel
                 if (Input.DriverAndDriverLicenseCategories != null)
                 {
 #warning Adding driver and driver license categories needs a custom validation rule
-                    /*if (Input.DriverAndDriverLicenseCategories.Count <= 0)
-                    {
-                        
-                    }*/
+                    
                     foreach (var driverLicenseCategoryId in Input.DriverAndDriverLicenseCategories)
                     {
                         var driverAndDriverLicenseCategories = new DriverAndDriverLicenseCategory
@@ -150,6 +149,15 @@ public class RegisterDriverModel : PageModel
                         };
                         await _context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategories);
                         await _context.SaveChangesAsync();
+                        
+                        
+                    }
+
+                    #warning temporarly solution
+                    result = await _userManager.AddToRoleAsync(user, nameof(Driver));
+                    if (!result.Succeeded)
+                    {
+                        throw new ApplicationException("Cannot add an user to a role");
                     }
                 }
 

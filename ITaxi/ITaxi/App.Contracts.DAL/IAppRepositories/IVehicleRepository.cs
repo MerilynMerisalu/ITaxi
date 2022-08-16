@@ -5,7 +5,7 @@ namespace App.Contracts.DAL.IAppRepositories;
 
 public interface IVehicleRepository : IEntityRepository<Vehicle>
 {
-    Task<IEnumerable<Vehicle>> GettingOrderedVehiclesAsync(bool noTracking = true);
+    Task<IEnumerable<Vehicle>> GettingOrderedVehiclesAsync(Guid? userId = null, bool noTracking = true);
     IEnumerable<Vehicle> GettingOrderedVehicles(bool noTracking = true);
     Task<IEnumerable<Vehicle>> GettingVehiclesWithoutIncludesAsync(bool noTracking = true);
     IEnumerable<Vehicle> GettingVehiclesWithoutIncludes(bool noTracking = true);

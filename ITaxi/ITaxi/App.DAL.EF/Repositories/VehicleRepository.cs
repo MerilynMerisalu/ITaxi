@@ -32,17 +32,27 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
         return CreateQuery(noTracking).FirstOrDefault(v => v.Id.Equals(id));
     }
 
-    public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesAsync(bool noTracking = true)
+    public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesAsync(Guid? userId ,bool noTracking = true)
     {
+        if (userId == null)
+        {
+            return await CreateQuery(noTracking)
+                .OrderBy(v => v.VehicleType!.VehicleTypeName)
+                .ThenBy(v => v.VehicleMark!.VehicleMarkName)
+                .ThenBy(v => v.VehicleModel!.VehicleModelName)
+                .ThenBy(v => v.ManufactureYear).ToListAsync();
+        }
         return await CreateQuery(noTracking)
             .OrderBy(v => v.VehicleType!.VehicleTypeName)
             .ThenBy(v => v.VehicleMark!.VehicleMarkName)
             .ThenBy(v => v.VehicleModel!.VehicleModelName)
-            .ThenBy(v => v.ManufactureYear).ToListAsync();
+            .ThenBy(v => v.ManufactureYear)
+            .Where(v => v.Driver!.AppUserId.Equals(userId)).ToListAsync();
     }
 
     public IEnumerable<Vehicle> GettingOrderedVehicles(bool noTracking = true)
     {
+       
         return CreateQuery(noTracking)
             .OrderBy(v => v.VehicleType!.VehicleTypeName)
             .ThenBy(v => v.VehicleMark!.VehicleMarkName)
