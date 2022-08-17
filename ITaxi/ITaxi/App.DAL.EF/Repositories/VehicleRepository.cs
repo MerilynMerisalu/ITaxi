@@ -37,17 +37,23 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
     public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesAsync(Guid? userId, string? roleName = 
         null ,bool noTracking = true)
     {
-        IQueryable<Vehicle> query = CreateQuery(noTracking)
+        List<Vehicle> res  = await CreateQuery(noTracking)
             .OrderBy(v => v.VehicleType!.VehicleTypeName)
             .ThenBy(v => v.VehicleMark!.VehicleMarkName)
             .ThenBy(v => v.VehicleModel!.VehicleModelName)
-            .ThenBy(v => v.ManufactureYear);
-        if (roleName is not nameof(Admin))
+            .ThenBy(v => v.ManufactureYear)
+            .Where(d => d.Driver!.AppUserId.Equals(userId)).ToListAsync();
+        if (roleName is nameof(Admin))
         {
-            query = query.Where(v => v.Driver!.AppUserId.Equals(userId));
+
+             res = await  CreateQuery(noTracking)
+                .OrderBy(v => v.VehicleType!.VehicleTypeName)
+                .ThenBy(v => v.VehicleMark!.VehicleMarkName)
+                .ThenBy(v => v.VehicleModel!.VehicleModelName)
+                .ThenBy(v => v.ManufactureYear).ToListAsync();
         }
            
-        return await query.ToListAsync();
+        return res;
     }
 
     public IEnumerable<Vehicle> GettingOrderedVehicles(Guid? userId = null, string? roleName = null,

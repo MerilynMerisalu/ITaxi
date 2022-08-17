@@ -1,6 +1,7 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,7 +15,8 @@ namespace WebApp.Areas.AdminArea.Controllers;
 public class VehiclesController : Controller
 {
     private readonly IAppUnitOfWork _uow;
-
+    #warning Ask if this is the right way to get the user name of a logged in user
+    private string UserEmail => User.Identity!.Name!;
     public VehiclesController(IAppUnitOfWork uow)
     {
         _uow = uow;
@@ -23,7 +25,8 @@ public class VehiclesController : Controller
     // GET: AdminArea/Vehicles
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.Vehicles.GettingOrderedVehiclesAsync();
+        var role = User.GettingUserRoleName();
+        var res = await _uow.Vehicles.GettingOrderedVehiclesAsync(null, role );
         foreach (var vehicle in res)
         {
             vehicle.CreatedAt = vehicle.CreatedAt.ToLocalTime();
@@ -49,9 +52,9 @@ public class VehiclesController : Controller
         vm.VehicleAvailability = vehicle.VehicleAvailability;
         vm.NumberOfSeats = vehicle.NumberOfSeats;
         vm.VehiclePlateNumber = vehicle.VehiclePlateNumber;
-        vm.CreatedBy = vehicle.CreatedBy!;
+        vm.CreatedBy = vehicle.CreatedBy = UserEmail;
         vm.CreatedAt = vehicle.CreatedAt.ToLocalTime().ToString("G");
-        vm.UpdatedBy = vehicle.UpdatedBy!;
+        vm.UpdatedBy = vehicle.UpdatedBy = UserEmail;
         vm.UpdatedAt = vehicle.UpdatedAt.ToLocalTime().ToString("G");
 
         return View(vm);
@@ -178,8 +181,11 @@ public class VehiclesController : Controller
                     vehicle.VehicleAvailability = vm.VehicleAvailability;
                     vehicle.VehicleMarkId = vm.VehicleMarkId;
                     vehicle.VehicleModelId = vm.VehicleModelId;
+                    vehicle.VehiclePlateNumber = vm.VehiclePlateNumber;
                     vehicle.VehicleTypeId = vm.VehicleTypeId;
                     vehicle.NumberOfSeats = vm.NumberOfSeats;
+                    vehicle.UpdatedBy = User.Identity!.Name;
+                    vehicle.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _uow.Vehicles.Update(vehicle);
                     await _uow.SaveChangesAsync();
                 }
