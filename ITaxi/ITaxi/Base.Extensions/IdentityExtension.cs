@@ -28,9 +28,49 @@ public static class IdentityExtension
         return res;
     }
     #warning Ask if this should be improved
+    /// <summary>
+    /// Check if this user has any role claims that match the requirement
+    /// </summary>
+    /// <param name="user">The user to extend and check the claims</param>
+    /// <param name="role">The role that we want to match on</param>
+    /// <returns>True if the user has a claim that matches the required <paramref name="role" /></returns>
+    /// <exception cref="NullReferenceException">Expecting that the current user has a role claim</exception>
+    public static bool UserIsInRole(this ClaimsPrincipal user, string role)
+    {
+        if (!user.Claims.Any(u => u.Type.Equals(ClaimTypes.Role)))
+        {
+            throw new NullReferenceException("Role identifier claim not found!");
+        }  
+        var claimRoles = user.Claims.Where(u => u.Type.Equals(ClaimTypes.Role))
+            .SelectMany(c => c.Value.Split(','))
+            .Distinct()
+            .ToList();
+        return claimRoles.Contains(role, StringComparer.OrdinalIgnoreCase);
+    }
+    
+    /// <summary>
+    /// Check if this user has any role claims that match the requirement
+    /// </summary>
+    /// <param name="user">The user to extend and check the claims</param>
+    /// <param name="role">The role that we want to match on</param>
+    /// <returns>True if the user has a claim that matches the required <paramref name="role" /></returns>
+    /// <exception cref="NullReferenceException">Expecting that the current user has a role claim</exception>
+    public static IEnumerable<string> GettingUserRoleNames(this ClaimsPrincipal user)
+    {
+        if (!user.Claims.Any(u => u.Type.Equals(ClaimTypes.Role)))
+        {
+            throw new NullReferenceException("Role identifier claim not found!");
+        }  
+        var claimRoles = user.Claims.Where(u => u.Type.Equals(ClaimTypes.Role))
+            .SelectMany(c => c.Value.Split(','))
+            .Distinct()
+            .ToList();
+        return claimRoles;
+    }
     public static string GettingUserRoleName(this ClaimsPrincipal user)
     {
-        
+        // role: "Admin,User"
+        // role: "Driver"
         var claimRole = user.Claims.FirstOrDefault(u => u.Type.Equals(ClaimTypes.Role));
         if (claimRole == null)
         {

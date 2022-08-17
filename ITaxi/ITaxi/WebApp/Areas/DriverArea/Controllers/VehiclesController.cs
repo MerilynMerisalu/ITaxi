@@ -35,8 +35,8 @@ public class VehiclesController : Controller
         if (id == null) return NotFound();
         var vm = new DetailsDeleteVehicleViewModel();
         var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName);
+        var roleNames = User.GettingUserRoleNames();
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleNames);
         if (vehicle == null) return NotFound();
 
         vm.Id = id;

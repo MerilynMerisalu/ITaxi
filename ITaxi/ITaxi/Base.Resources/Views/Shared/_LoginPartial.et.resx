@@ -24,4 +24,7 @@
     <data name="Login" xml:space="preserve">
         <value>Logi Sisse</value>
     </data>
+    <data name="GreetingAnonymousUser" xml:space="preserve">
+        <value>Tere</value>
+    </data>
 </root>

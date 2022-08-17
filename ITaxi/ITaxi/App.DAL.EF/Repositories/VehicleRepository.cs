@@ -33,24 +33,21 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
         return CreateQuery(noTracking).FirstOrDefault(v => v.Id.Equals(id));
     }
 
+    #warning Use DI to inject the current AppUser object instead of passing manually for each method call 
     public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesAsync(Guid? userId, string? roleName = 
         null ,bool noTracking = true)
     {
-        if (roleName is nameof(Admin))
-        {
-            return CreateQuery(noTracking)
-                .OrderBy(v => v.VehicleType!.VehicleTypeName)
-                .ThenBy(v => v.VehicleMark!.VehicleMarkName)
-                .ThenBy(v => v.VehicleModel!.VehicleModelName)
-                .ThenBy(v => v.ManufactureYear).ToList();
-        }
-        return await CreateQuery(noTracking)
+        IQueryable<Vehicle> query = CreateQuery(noTracking)
             .OrderBy(v => v.VehicleType!.VehicleTypeName)
             .ThenBy(v => v.VehicleMark!.VehicleMarkName)
             .ThenBy(v => v.VehicleModel!.VehicleModelName)
-            .ThenBy(v => v.ManufactureYear)
-            .Where(v => v.Driver!.AppUserId.Equals(userId))
-            .ToListAsync();
+            .ThenBy(v => v.ManufactureYear);
+        if (roleName is not nameof(Admin))
+        {
+            query = query.Where(v => v.Driver!.AppUserId.Equals(userId));
+        }
+           
+        return await query.ToListAsync();
     }
 
     public IEnumerable<Vehicle> GettingOrderedVehicles(Guid? userId = null, string? roleName = null,
@@ -94,9 +91,9 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
             .OrderBy(v => v.ManufactureYear).ToList();
     }
 
-    public async Task<Vehicle?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName =null, bool noTracking = true)
+    public async Task<Vehicle?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, IEnumerable<string>? roleNames =null, bool noTracking = true)
     {
-        if (roleName == nameof(Admin))
+        if (roleNames != null && roleNames.Contains(nameof(Admin)))
         {
             return await CreateQuery(noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
         }

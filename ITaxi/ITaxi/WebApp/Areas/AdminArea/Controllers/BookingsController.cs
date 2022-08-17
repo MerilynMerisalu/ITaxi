@@ -361,7 +361,7 @@ public class BookingsController : Controller
             mailRequest.ToEmail ="programmeerija88@gmail.com";
             #warning Include a link to quick login to the portal to see this booking in the email content
             mailRequest.Body = $"Booking Declined: {booking.PickUpDateAndTime:g} {booking.PickupAddress}";
-
+/*
             using (MailMessage mm = new MailMessage("testitaxi29@gmail.com", mailRequest.ToEmail))
             {
                 mm.Subject = mailRequest.Subject;
@@ -371,16 +371,16 @@ public class BookingsController : Controller
                 using(SmtpClient smtp =  new SmtpClient())
                 {
                     smtp.Host = "smtp.gmail.com";
-                    smtp.EnableSsl = false;
+                    smtp.EnableSsl = true;
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    NetworkCredential creds = new NetworkCredential("testitaxi29@gmail.com", "Hobujaama100.");
+                    NetworkCredential creds = new NetworkCredential("testitaxi29@gmail.com", "okracmaewhbjmpuc");
                     smtp.UseDefaultCredentials = false;
                     smtp.Credentials = creds;
                     smtp.Port = 587;
                     smtp.Send(mm);
                 }
             }
-            
+            */
             
             // Send Email Notification
             //_mailService.
