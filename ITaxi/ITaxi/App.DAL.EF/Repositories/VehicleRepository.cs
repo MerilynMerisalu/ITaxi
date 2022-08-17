@@ -33,8 +33,8 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
         return CreateQuery(noTracking).FirstOrDefault(v => v.Id.Equals(id));
     }
 
-    public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesAsync
-        (Guid? userId, string? roleName ,bool noTracking = true)
+    public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesAsync(Guid? userId, string? roleName = 
+        null ,bool noTracking = true)
     {
         if (roleName is nameof(Admin))
         {
@@ -72,7 +72,8 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
             .ThenBy(v => v.ManufactureYear).ToList();
     }
 
-    public async Task<IEnumerable<Vehicle>> GettingVehiclesWithoutIncludesAsync(bool noTracking = true)
+    public async Task<IEnumerable<Vehicle>> GettingVehiclesWithoutIncludesAsync(
+        bool noTracking = true)
     {
         return await base.CreateQuery(noTracking).ToListAsync();
     }
@@ -93,15 +94,19 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
             .OrderBy(v => v.ManufactureYear).ToList();
     }
 
-    public async Task<Vehicle?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, bool noTracking = true)
+    public async Task<Vehicle?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName =null, bool noTracking = true)
     {
-        if (userId == null)
+        if (roleName == nameof(Admin))
         {
             return await CreateQuery(noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
         }
 
         var vehicle = await CreateQuery(noTracking).FirstOrDefaultAsync
             (v => v.Id.Equals(id) && v.Driver!.AppUserId.Equals(userId));
+        if (vehicle != null && vehicle.Driver!.AppUserId != userId)
+        {
+            return null;
+        }
         return vehicle;
     }
 
