@@ -99,6 +99,8 @@ public class VehiclesController : Controller
             vehicle.VehicleTypeId = vm.VehicleTypeId;
             vehicle.NumberOfSeats = vm.NumberOfSeats;
             vehicle.VehiclePlateNumber = vm.VehiclePlateNumber;
+            vehicle.CreatedBy = User.Identity!.Name;
+            vehicle.CreatedAt = DateTime.Now.ToUniversalTime();
             _uow.Vehicles.Add(vehicle);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
