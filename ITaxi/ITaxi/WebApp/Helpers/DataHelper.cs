@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Security.Claims;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Enum;
@@ -168,7 +169,11 @@ public static class DataHelper
                 appUser.UserName = appUser.Email;
 
                 var result = userManager!.CreateAsync(appUser, "Katrinkass123$").Result;
+#warning ask if this is the right way to add a claim in my app context
+                result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
+                result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
 
+                
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant create user! Error: " + identityError.Description);
@@ -210,6 +215,11 @@ public static class DataHelper
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Tiinakass123$").Result;
+                
+#warning ask if this is the right way to add a claim in my app context
+                result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
+                result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
+
 
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
@@ -253,6 +263,10 @@ public static class DataHelper
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Toomaskoer123$").Result;
+#warning ask if this is the right way to add a claim in my app context
+                result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
+                result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
+
 
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
@@ -314,6 +328,10 @@ public static class DataHelper
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Peepkoer123$").Result;
+                #warning ask if this is the right way to add a claim in my app context
+                result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
+                result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
+
 
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
@@ -424,6 +442,10 @@ public static class DataHelper
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Maarikakass123$").Result;
+#warning ask if this is the right way to add a claim in my app context
+                result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
+                result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
+
 
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)

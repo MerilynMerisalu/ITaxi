@@ -1,4 +1,5 @@
 @using App.Domain.Identity
+@using Base.Extensions
 @using Base.Resources.Views.Shared
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
@@ -6,32 +7,33 @@
 @inject UserManager<AppUser> UserManager
 
 @{
-    AppUser? user = await UserManager.GetUserAsync(User);
+   // AppUser? user = await UserManager.GetUserAsync(User);
 }
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            @if (user?.ProfilePhoto != null)
+            @*@if (User.?.ProfilePhoto != null)
             {
                 <img alt="User Profile Photo" style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="data:image/*;base64,@(Convert.ToBase64String(UserManager.GetUserAsync(User).Result.ProfilePhoto!))">
-            }
-            else
+            }#1#*@
+        <img alt="Default Profile Photo" style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="~/Images/icons8-selfies-50.png">
+            @*/else
             {
-                <img alt="Default Profile Photo" style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="~/Images/icons8-selfies-50.png">
-            }
+                
+            }*/*@
         </li>
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                 @* ReSharper disable once ConditionIsAlwaysTrueOrFalse *@
-                @if (user != null)
+                @if (User != null)
                 {
-                    @string.Format(_LoginPartial.GreetingLoggedInUser,
-                        user.LastAndFirstName + "!")
+                    @string.Format(_LoginPartial.GreetingLoggedInUser, User.GettingUserName())
+                        // user.LastAndFirstName + "!")
                 }
                 else
                 {
-                    @string.Format(_LoginPartial.GreetingAnonymousUser)
+                    @string.Format(_LoginPartial.GreetingAnonymousUser);
                 }
 
             </a>

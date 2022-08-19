@@ -82,4 +82,11 @@ public static class IdentityExtension
         return res;*/
         return claimRole.Value;
     }
+
+    public static string GettingUserName(this ClaimsPrincipal user)
+    {
+        return $"{user.Claims.FirstOrDefault(c => c.Type.Equals("aspnet.lastname"))?.Value ?? "???"} " +
+               $"{user.Claims.FirstOrDefault(c => c.Type.Equals("aspnet.firstname"))?.Value ?? "???"}" 
+            ;
+    }
 }
