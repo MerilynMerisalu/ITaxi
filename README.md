@@ -5,3 +5,4 @@ dotnet tool update --global dotnet-ef;dotnet tool update -g dotnet-aspnet-codege
 dotnet ef migrations add --project App.DAL.EF --startup-project WebApp Initial
 echo y | dotnet ef database drop --project App.DAL.EF --startup-project WebApp
 dotnet ef database update --project App.DAL.EF --startup-project WebApp        
+dotnet aspnet-codegenerator identity -dc App.DAL.EF.AppDbContext -udui -f
