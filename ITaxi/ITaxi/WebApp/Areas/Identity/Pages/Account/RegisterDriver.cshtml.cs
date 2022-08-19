@@ -4,6 +4,7 @@
 #nullable enable
 
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using App.DAL.EF;
@@ -110,6 +111,11 @@ public class RegisterDriverModel : PageModel
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
             var result = await _userManager.CreateAsync(user, Input.Password);
+            
+#warning ask if this is the right way to add a claim in my app context
+            result = await _userManager.AddClaimAsync(user, new Claim("aspnet.firstname", user.FirstName));
+            result = await _userManager.AddClaimAsync(user, new Claim("aspnet.lastname", user.LastName));
+
 
             if (result.Succeeded)
             {
