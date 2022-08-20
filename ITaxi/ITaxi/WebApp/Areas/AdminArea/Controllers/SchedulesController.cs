@@ -1,6 +1,7 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,8 +24,9 @@ public class SchedulesController : Controller
     // GET: AdminArea/Schedules
     public async Task<IActionResult> Index()
     {
+        var roleName = User.GettingUserRoleName();
 #warning Should this be a repository method
-        var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync();
+        var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
         foreach (var s in res)
         {
             s.StartDateAndTime = s.StartDateAndTime.ToLocalTime();

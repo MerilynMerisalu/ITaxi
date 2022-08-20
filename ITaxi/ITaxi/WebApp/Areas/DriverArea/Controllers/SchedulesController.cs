@@ -1,5 +1,6 @@
 using App.Contracts.DAL;
 using App.Domain;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -24,7 +25,9 @@ public class SchedulesController : Controller
     {
 #warning Should this be a repository method
 
-        var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
         foreach (var s in res)
         {
             s.StartDateAndTime = s.StartDateAndTime.ToLocalTime();

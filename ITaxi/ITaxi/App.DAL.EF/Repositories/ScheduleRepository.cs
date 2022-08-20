@@ -1,5 +1,6 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
+using App.Domain.Identity;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +36,18 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
     public IEnumerable<Schedule> GetAllSchedulesWithoutIncludes(bool noTracking = true)
     {
         return base.CreateQuery(noTracking).ToList();
+    }
+
+    public async Task<IEnumerable<Schedule>> GettingAllOrderedSchedulesWithIncludesAsync(Guid? userId = null, 
+        string? roleName = null, bool noTracking = true)
+    {
+        if(roleName is nameof(Admin))
+        {
+            return await GettingAllOrderedSchedulesWithIncludesAsync(noTracking);
+        }
+
+        return GettingAllOrderedSchedulesWithIncludesAsync(noTracking).Result.Where(u => 
+            u.Driver!.AppUserId.Equals(userId));
     }
 
     public async Task<IEnumerable<Schedule>> GettingAllOrderedSchedulesWithIncludesAsync(bool noTracking = true)

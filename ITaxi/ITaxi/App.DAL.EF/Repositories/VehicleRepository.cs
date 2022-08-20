@@ -45,8 +45,7 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
             .Where(d => d.Driver!.AppUserId.Equals(userId)).ToListAsync();
         if (roleName is nameof(Admin))
         {
-
-             res = await  CreateQuery(noTracking)
+            res = await  CreateQuery(noTracking)
                 .OrderBy(v => v.VehicleType!.VehicleTypeName)
                 .ThenBy(v => v.VehicleMark!.VehicleMarkName)
                 .ThenBy(v => v.VehicleModel!.VehicleModelName)
