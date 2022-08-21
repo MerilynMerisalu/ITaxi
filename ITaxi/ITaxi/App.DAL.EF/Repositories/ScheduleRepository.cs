@@ -43,11 +43,10 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
     {
         if(roleName is nameof(Admin))
         {
-            return await GettingAllOrderedSchedulesWithIncludesAsync(noTracking);
+            return await CreateQuery().ToListAsync();
         }
 
-        return GettingAllOrderedSchedulesWithIncludesAsync(noTracking).Result.Where(u => 
-            u.Driver!.AppUserId.Equals(userId));
+        return await CreateQuery().Where(u => u.Driver!.AppUserId.Equals(userId)).ToListAsync();
     }
 
     public async Task<IEnumerable<Schedule>> GettingAllOrderedSchedulesWithIncludesAsync(bool noTracking = true)
@@ -133,14 +132,20 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
         return CreateQuery(noTracking).FirstOrDefault(s => s.Id.Equals(id));
     }
 
-
-    public async Task<Schedule?> GettingTheFirstScheduleAsync(bool noTracking = true)
+   
+    public async Task<Schedule?> GettingTheFirstScheduleAsync(Guid id, Guid? userid = null, string? roleName = null,
+        bool noTracking = true)
     {
-        return await CreateQuery()
-            .OrderBy(s => s.StartDateAndTime.Hour)
-            .ThenBy(s => s.StartDateAndTime.Minute)
-            .FirstOrDefaultAsync();
+        if (roleName is nameof(Admin))
+        {
+            return await CreateQuery().FirstOrDefaultAsync(s => s.Id.Equals(id));
+        }
+
+        var res = await CreateQuery().Where(u => u.Driver!.AppUserId.Equals(userid))
+            .FirstOrDefaultAsync(s => s.Id.Equals(id));
+        return res;
     }
+    
 
     public Schedule? GettingTheFirstSchedule(bool noTracking = true)
     {

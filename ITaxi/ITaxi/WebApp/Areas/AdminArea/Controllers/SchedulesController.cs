@@ -42,7 +42,9 @@ public class SchedulesController : Controller
         var vm = new DetailsDeleteScheduleViewModel();
         if (id == null) return NotFound();
 
-        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
+        var roleName = User.GettingUserRoleName();
+        var userId = User.GettingUserId();
+        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value,userId, roleName);
 
         if (schedule == null) return NotFound();
 
@@ -109,13 +111,16 @@ public class SchedulesController : Controller
         var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
         if (schedule == null) return NotFound();
 
+        vm.Id = schedule.Id;
         vm.DriverId = schedule.DriverId;
         vm.VehicleId = schedule.VehicleId;
+        vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
 #warning Should this be a repository method
         vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToLocalTime().ToString("g"));
 #warning Should this be a repository method
+        var roleName = User.GettingUserRoleName();
         vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToLocalTime().ToString("g"));
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(null,roleName ),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
@@ -173,7 +178,9 @@ public class SchedulesController : Controller
         var vm = new DetailsDeleteScheduleViewModel();
         if (id == null) return NotFound();
 
-        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
+        
+        var roleName = User.GettingUserRoleName();
+        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, null, roleName);
         if (schedule == null) return NotFound();
 
         vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
@@ -193,7 +200,7 @@ public class SchedulesController : Controller
 
     // POST: AdminArea/Schedules/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {

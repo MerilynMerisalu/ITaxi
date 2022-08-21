@@ -314,7 +314,7 @@ public static class DataHelper
                 await context.SaveChangesAsync();
 
 
-                /*appUser = new AppUser
+                appUser = new AppUser
                 {
                     Id = new Guid(),
                     FirstName = "Peep",
@@ -359,7 +359,7 @@ public static class DataHelper
                 };
                 await context.Drivers.AddAsync(driver);
                 await context.SaveChangesAsync();
-                */
+                
 
                 driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory
                 {
@@ -409,7 +409,8 @@ public static class DataHelper
                 var schedule = new Schedule
                 {
                     Id = new Guid(),
-                    DriverId = driver.Id,
+                    DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("38806237921")).Result
+                        .Id,
                     VehicleId = vehicle.Id,
                     StartDateAndTime = DateTime.Now.AddHours(10),
                     EndDateAndTime = DateTime.Now.AddHours(18),
@@ -469,7 +470,8 @@ public static class DataHelper
                 var booking = new Booking
                 {
                     Id = new Guid(),
-                    DriverId = driver.Id,
+                    DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("38806237921")).Result.
+                        Id,
                     VehicleId = vehicle.Id,
                     CustomerId = customer.Id,
                     CityId = city.Id,
@@ -489,7 +491,8 @@ public static class DataHelper
                 var drive = new Drive
                 {
                     Id = new Guid(),
-                    DriverId = driver.Id,
+                    DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("38806237921")).Result
+                        .Id,
                     Booking = booking,
                     StatusOfDrive = StatusOfDrive.Awaiting,
                     CreatedAt = DateTime.Now.ToUniversalTime()

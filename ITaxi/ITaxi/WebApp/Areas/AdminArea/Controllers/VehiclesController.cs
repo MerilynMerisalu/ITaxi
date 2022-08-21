@@ -16,6 +16,7 @@ public class VehiclesController : Controller
 {
     private readonly IAppUnitOfWork _uow;
     #warning Ask if this is the right way to get the user name of a logged in user
+    #warning Ask how to get the user role using interface
     private string UserEmail => User.Identity!.Name!;
     public VehiclesController(IAppUnitOfWork uow)
     {
