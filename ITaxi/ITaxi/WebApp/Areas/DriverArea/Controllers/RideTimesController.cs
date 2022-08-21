@@ -1,5 +1,6 @@
 using App.Contracts.DAL;
 using App.Domain;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -22,15 +23,15 @@ public class RideTimesController : Controller
     // GET: DriverArea/RideTimes
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.RideTimes.GettingAllOrderedRideTimesAsync();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var res = await _uow.RideTimes.GettingAllOrderedRideTimesAsync(userId, roleName);
 #warning Should this be a repository method
         foreach (var rideTime in res)
             if (rideTime != null)
             {
                 rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
-                rideTime.CreatedAt = rideTime.CreatedAt.ToLocalTime();
-
-                rideTime.UpdatedAt = rideTime.UpdatedAt.ToLocalTime();
+                
             }
 
         return View(res);

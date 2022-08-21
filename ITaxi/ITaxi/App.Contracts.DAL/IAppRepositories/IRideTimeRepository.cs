@@ -9,7 +9,7 @@ public interface IRideTimeRepository : IEntityRepository<RideTime>
     IEnumerable<RideTime?> GettingAllRideTimesWithoutIncludes(bool noTracking = true);
     Task<RideTime?> GettingRideTimeWithoutIncludesByIdAsync(Guid id, bool noTracking = true);
     RideTime? GettingRideTimeWithoutIncludesById(Guid id, bool noTracking = true);
-    Task<IEnumerable<RideTime?>> GettingAllOrderedRideTimesAsync(bool noTracking = true);
+    Task<IEnumerable<RideTime?>> GettingAllOrderedRideTimesAsync(Guid? userId = null, string? roleName = null, bool noTracking = true);
     IEnumerable<RideTime?> GettingAllOrderedRideTimes(bool noTracking = true);
     Task<IEnumerable<RideTime?>> GettingAllOrderedRideTimesWithoutIncludesAsync(bool noTracking = true);
     IEnumerable<RideTime?> GettingAllOrderedRideTimesWithoutIncludes(bool noTracking = true);

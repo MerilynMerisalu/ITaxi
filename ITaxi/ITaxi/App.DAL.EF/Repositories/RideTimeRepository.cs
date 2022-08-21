@@ -51,8 +51,31 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
         return base.CreateQuery(noTracking).FirstOrDefault(r => r.ScheduleId.Equals(id));
     }
 
-    public async Task<IEnumerable<RideTime?>> GettingAllOrderedRideTimesAsync(bool noTracking = true)
+    public async Task<IEnumerable<RideTime?>> GettingAllOrderedRideTimesAsync(Guid? userId = null,
+        string? roleName = null, bool noTracking = true)
     {
+        if (roleName is nameof(Admin))
+        {
+            return await CreateQuery(noTracking)
+                .OrderBy(r => r.Schedule!.StartDateAndTime.Date)
+                .ThenBy(r => r.Schedule!.StartDateAndTime.Day)
+                .ThenBy(r => r.Schedule!.StartDateAndTime.Month)
+                .ThenBy(r => r.Schedule!.StartDateAndTime.Year)
+                .ThenBy(r => r.Schedule!.StartDateAndTime.Hour)
+                .ThenBy(r => r.Schedule!.StartDateAndTime.Minute)
+                .ThenBy(r => r.Schedule!.EndDateAndTime.Date)
+                .ThenBy(r => r.Schedule!.EndDateAndTime.Month)
+                .ThenBy(r => r.Schedule!.EndDateAndTime.Year)
+                .ThenBy(r => r.Schedule!.EndDateAndTime.Hour)
+                .ThenBy(r => r.Schedule!.EndDateAndTime.Minute)
+                .ThenBy(r => r.RideDateTime.Date)
+                .ThenBy(r => r.RideDateTime.Day)
+                .ThenBy(r => r.RideDateTime.Month)
+                .ThenBy(r => r.RideDateTime.Year)
+                .ThenBy(r => r.RideDateTime.Hour)
+                .ThenBy(r => r.RideDateTime.Minute)
+                .ToListAsync();
+        }
         return await CreateQuery(noTracking)
             .OrderBy(r => r.Schedule!.StartDateAndTime.Date)
             .ThenBy(r => r.Schedule!.StartDateAndTime.Day)
@@ -71,6 +94,7 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
             .ThenBy(r => r.RideDateTime.Year)
             .ThenBy(r => r.RideDateTime.Hour)
             .ThenBy(r => r.RideDateTime.Minute)
+            .Where(r => r.Driver!.AppUserId.Equals(userId))
             .ToListAsync();
     }
 

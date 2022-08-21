@@ -9,7 +9,7 @@ using WebApp.Areas.DriverArea.ViewModels;
 
 namespace WebApp.Areas.DriverArea.Controllers;
 
-[Area("DriverArea")]
+[Area(nameof(DriverArea))]
 [Authorize(Roles = "Admin, Driver")]
 public class SchedulesController : Controller
 {

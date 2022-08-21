@@ -2,6 +2,7 @@
 
 using App.Contracts.DAL;
 using App.Domain;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,7 +26,9 @@ public class RideTimesController : Controller
     // GET: AdminArea/RideTimes
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.RideTimes.GettingAllOrderedRideTimesAsync();
+        
+        var roleName = User.GettingUserRoleName();
+        var res = await _uow.RideTimes.GettingAllOrderedRideTimesAsync(null, roleName);
 #warning Should this be a repository method
         foreach (var rideTime in res)
             if (rideTime != null)
@@ -216,7 +219,7 @@ public class RideTimesController : Controller
 
     // POST: AdminArea/RideTimes/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
