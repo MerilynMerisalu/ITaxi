@@ -117,9 +117,8 @@ public class SchedulesController : Controller
 
         vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
             nameof(Vehicle.Id),
-            nameof(Vehicle.VehicleIdentifier)
-            , nameof(schedule.VehicleId));
-        vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g")).ToLocalTime();
+            nameof(Vehicle.VehicleIdentifier));
+            vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g")).ToLocalTime();
         vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"))
             .ToLocalTime();
         vm.VehicleId = schedule.VehicleId;
