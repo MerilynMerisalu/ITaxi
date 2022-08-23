@@ -28,7 +28,7 @@ public class Schedule : DomainEntityMetaId
 
     [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Schedule), Name = "ShiftEndDateAndTime")]
-    [Required]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     public DateTime EndDateAndTime { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Schedule), Name = "ScheduleName")]

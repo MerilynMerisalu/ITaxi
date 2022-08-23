@@ -114,7 +114,6 @@ public class SchedulesController : Controller
         vm.Id = schedule.Id;
         vm.DriverId = schedule.DriverId;
         vm.VehicleId = schedule.VehicleId;
-        vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
 #warning Should this be a repository method
         vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToLocalTime().ToString("g"));
 #warning Should this be a repository method
@@ -149,6 +148,7 @@ public class SchedulesController : Controller
                     schedule.Id = id;
 
                     schedule.DriverId = vm.DriverId;
+                    schedule.VehicleId = vm.VehicleId;
 #warning Should this be a repository method
                     schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
 #warning Should this be a repository method
