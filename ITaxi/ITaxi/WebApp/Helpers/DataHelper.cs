@@ -491,23 +491,20 @@ public static class DataHelper
                 await context.SaveChangesAsync();
                 
                 
-                 /*
+                 
                  rideTime = new RideTime
                 {
-                    ScheduleId = context.Schedules.SingleOrDefaultAsync(v => v.Driver!.PersonalIdentifier!
-                        .Equals("36605138911")).Result!.Id,
                     DriverId = context.Drivers.SingleOrDefaultAsync(d => 
                         d.PersonalIdentifier!.Equals("36605138911")).Result!.Id,
-                    RideDateTime = context.Schedules.SingleOrDefaultAsync
-                            (s => s.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!
-                        .StartDateAndTime.ToUniversalTime(),
+                    ScheduleId = context.Schedules
+                        .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("36605138911"))
+                        .Result!.Id,
+                    RideDateTime = context.Schedules.FirstOrDefaultAsync(s => 
+                        s.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!.StartDateAndTime,
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
                 await context.RideTimes.AddAsync(rideTime);
                 await context.SaveChangesAsync();
-                */
-                
-
 
                 appUser = new AppUser
                 {
