@@ -33,6 +33,8 @@ public class RideTimesController : Controller
         foreach (var rideTime in res)
             if (rideTime != null)
             {
+                rideTime.Schedule!.StartDateAndTime = rideTime.Schedule!.StartDateAndTime.ToLocalTime();
+                rideTime.Schedule!.EndDateAndTime = rideTime.Schedule!.EndDateAndTime.ToLocalTime();
                 rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
                 rideTime.CreatedAt = rideTime.CreatedAt.ToLocalTime();
 

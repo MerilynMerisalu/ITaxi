@@ -369,8 +369,6 @@ public static class DataHelper
                 await context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategory);
                 await context.SaveChangesAsync();
 
-
-
                 var vehicleMark = new VehicleMark
                 {
                     Id = new Guid(),
@@ -462,23 +460,8 @@ public static class DataHelper
                 };
                 await context.Schedules.AddAsync(schedule);
                 await context.SaveChangesAsync();
-
-                var rideTime = new RideTime
-                {
-                    ScheduleId = context.Schedules.SingleOrDefaultAsync(
-                        s => s.Driver!.PersonalIdentifier!.Equals("38806237921"))
-                        .Result!.Id,
-                    DriverId = context.Drivers.SingleOrDefaultAsync(d => 
-                        d.PersonalIdentifier!.Equals("38806237921")).Result!.Id,
-                    RideDateTime = context.Schedules.SingleOrDefaultAsync
-                            (s => s.Driver!.PersonalIdentifier!.Equals("38806237921")).Result!
-                        .StartDateAndTime.ToUniversalTime(),
-                    CreatedAt = DateTime.Now.ToUniversalTime()
-                };
-                await context.RideTimes.AddAsync(rideTime);
-                await context.SaveChangesAsync();
                 
-                 schedule = new Schedule
+                schedule = new Schedule
                 {
                     Id = new Guid(),
                     DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("36605138911")).Result
@@ -492,6 +475,23 @@ public static class DataHelper
                 await context.Schedules.AddAsync(schedule);
                 await context.SaveChangesAsync();
 
+                
+                var rideTime = new RideTime
+                {
+                    DriverId = context.Drivers.SingleOrDefaultAsync(d => 
+                        d.PersonalIdentifier!.Equals("38806237921")).Result!.Id,
+                    ScheduleId = context.Schedules
+                        .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("38806237921"))
+                        .Result!.Id,
+                    RideDateTime = context.Schedules.FirstOrDefaultAsync(s => 
+                        s.Driver!.PersonalIdentifier!.Equals("38806237921")).Result!.StartDateAndTime,
+                    CreatedAt = DateTime.Now.ToUniversalTime()
+                };
+                await context.RideTimes.AddAsync(rideTime);
+                await context.SaveChangesAsync();
+                
+                
+                 /*
                  rideTime = new RideTime
                 {
                     ScheduleId = context.Schedules.SingleOrDefaultAsync(v => v.Driver!.PersonalIdentifier!
@@ -505,6 +505,8 @@ public static class DataHelper
                 };
                 await context.RideTimes.AddAsync(rideTime);
                 await context.SaveChangesAsync();
+                */
+                
 
 
                 appUser = new AppUser
