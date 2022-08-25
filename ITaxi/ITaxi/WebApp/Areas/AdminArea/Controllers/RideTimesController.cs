@@ -49,10 +49,15 @@ public class RideTimesController : Controller
     {
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
+        
+        
 
         var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id.Value);
         if (rideTime == null) return NotFound();
 
+        rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
+        rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
+        
         vm.Id = rideTime.Id;
         vm.Driver = rideTime.Driver!.AppUser!.LastAndFirstName;
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;

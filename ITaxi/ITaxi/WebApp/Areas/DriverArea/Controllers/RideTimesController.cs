@@ -48,8 +48,10 @@ public class RideTimesController : Controller
         var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id.Value);
         if (rideTime == null) return NotFound();
 
+        rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
+        rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
         vm.Id = rideTime.Id;
-
+        
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
 #warning Should it be a repository method
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
