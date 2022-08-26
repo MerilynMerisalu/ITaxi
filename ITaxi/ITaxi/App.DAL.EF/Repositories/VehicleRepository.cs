@@ -37,20 +37,13 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
     public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesAsync(Guid? userId, string? roleName = 
         null ,bool noTracking = true)
     {
-        List<Vehicle> res  = await CreateQuery(noTracking)
+        List<Vehicle> res = await CreateQuery(userId, roleName,noTracking)
             .OrderBy(v => v.VehicleType!.VehicleTypeName)
             .ThenBy(v => v.VehicleMark!.VehicleMarkName)
             .ThenBy(v => v.VehicleModel!.VehicleModelName)
             .ThenBy(v => v.ManufactureYear)
-            .Where(d => d.Driver!.AppUserId.Equals(userId)).ToListAsync();
-        if (roleName is nameof(Admin))
-        {
-            res = await  CreateQuery(noTracking)
-                .OrderBy(v => v.VehicleType!.VehicleTypeName)
-                .ThenBy(v => v.VehicleMark!.VehicleMarkName)
-                .ThenBy(v => v.VehicleModel!.VehicleModelName)
-                .ThenBy(v => v.ManufactureYear).ToListAsync();
-        }
+            .ToListAsync();
+        
            
         return res;
     }
@@ -58,16 +51,7 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
     public IEnumerable<Vehicle> GettingOrderedVehicles(Guid? userId = null, string? roleName = null,
         bool noTracking = true)
     {
-        if (roleName is nameof(Admin))
-        {
-            return CreateQuery(noTracking)
-                .OrderBy(v => v.VehicleType!.VehicleTypeName)
-                .ThenBy(v => v.VehicleMark!.VehicleMarkName)
-                .ThenBy(v => v.VehicleModel!.VehicleModelName)
-                .ThenBy(v => v.ManufactureYear).ToList();
-        }
-       
-        return CreateQuery(noTracking)
+        return CreateQuery(userId, roleName,noTracking)
             .OrderBy(v => v.VehicleType!.VehicleTypeName)
             .ThenBy(v => v.VehicleMark!.VehicleMarkName)
             .ThenBy(v => v.VehicleModel!.VehicleModelName)
@@ -96,25 +80,25 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
             .OrderBy(v => v.ManufactureYear).ToList();
     }
 
-    public async Task<Vehicle?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, IEnumerable<string>? roleNames =null, bool noTracking = true)
+    public async Task<Vehicle?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, 
+        string? roleName=null , bool noTracking = true)
     {
-        if (roleNames != null && roleNames.Contains(nameof(Admin)))
-        {
-            return await CreateQuery(noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
-        }
 
-        var vehicle = await CreateQuery(noTracking).FirstOrDefaultAsync
-            (v => v.Id.Equals(id) && v.Driver!.AppUserId.Equals(userId));
-        if (vehicle != null && vehicle.Driver!.AppUserId != userId)
+
+        var vehicle = await CreateQuery(userId, roleName,noTracking).
+            FirstOrDefaultAsync(v => v.Id.Equals(id));
+        if (vehicle == null)
         {
             return null;
+
         }
+       
         return vehicle;
     }
 
-    public async Task<Vehicle?> GettingVehicleByIdAsync(Guid id, bool noTracking = true)
+    public async Task<Vehicle?> GettingVehicleByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return await CreateQuery(noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
+        return await CreateQuery(userId, roleName, noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
     }
 
     public Vehicle? GettingVehicleById(Guid id, bool noTracking = true)
@@ -162,18 +146,30 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
                         && v.VehicleAvailability == VehicleAvailability.Available);
     }
 
-    protected override IQueryable<Vehicle> CreateQuery(bool noTracking = true)
+    protected  IQueryable<Vehicle> CreateQuery(Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query.AsNoTracking();
 
+        if (roleName is nameof(Admin))
+        {
+            query = query.Include(c => c.Driver)
+                .ThenInclude(d => d!.AppUser)
+                .Include(v => v.VehicleMark)
+                .Include(v => v.VehicleModel)
+                .Include(v => v.VehicleType)
+                .ThenInclude(v => v!.VehicleTypeName)
+                .ThenInclude(v => v.Translations);
+            return query;
+        }
+        
         query = query.Include(c => c.Driver)
             .ThenInclude(d => d!.AppUser)
             .Include(v => v.VehicleMark)
             .Include(v => v.VehicleModel)
             .Include(v => v.VehicleType)
             .ThenInclude(v => v!.VehicleTypeName)
-            .ThenInclude(v => v.Translations);
+            .ThenInclude(v => v.Translations).Where(u => u.Driver!.AppUserId.Equals(userId));
         return query;
     }
 }

@@ -17,6 +17,8 @@ public class VehiclesController : Controller
     private readonly IAppUnitOfWork _uow;
 #warning Ask if this is the right way to get the user name of a logged in user
     private string UserEmail => User.Identity!.Name!;
+    
+#warning Ask how to get the user role using interface
     public VehiclesController(IAppUnitOfWork uow)
     {
         _uow = uow;
@@ -36,12 +38,13 @@ public class VehiclesController : Controller
         if (id == null) return NotFound();
         var vm = new DetailsDeleteVehicleViewModel();
         var userId = User.GettingUserId();
-        var roleNames = User.GettingUserRoleNames();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleNames);
+        var roleName = User.GettingUserRoleName();
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName);
         if (vehicle == null) return NotFound();
 
         vm.Id = id;
         vm.VehicleType = vehicle.VehicleType!.VehicleTypeName;
+        
         vm.VehicleMark = vehicle.VehicleMark!.VehicleMarkName;
         vm.VehicleModel = vehicle.VehicleModel!.VehicleModelName;
         vm.ManufactureYear = vehicle.ManufactureYear;
@@ -122,8 +125,8 @@ public class VehiclesController : Controller
         if (id == null) return NotFound();
 
         var userId = User.GettingUserId();
-        var roleNames = User.GettingUserRoleNames();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId,roleNames );
+        var roleName = User.GettingUserRoleName();
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId,roleName );
         if (vehicle == null) return NotFound();
 
         vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
@@ -157,7 +160,9 @@ public class VehiclesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleViewModel vm)
     {
-        var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id, userId, roleName);
         if (vehicle != null && id != vehicle.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -167,7 +172,7 @@ public class VehiclesController : Controller
                 if (vehicle != null)
                 {
                     vehicle.Id = id;
-                    var userId = User.GettingUserId();
+                    
                     var driver = _uow.Drivers.SingleOrDefaultAsync(d => d!.AppUserId.Equals(userId)).Result;
                     if (driver == null)
                     {
@@ -206,9 +211,9 @@ public class VehiclesController : Controller
         
         if (id == null) return NotFound();
         var userId = User.GettingUserId();
-        var roleNames = User.GettingUserRoleNames();
+        var roleName = User.GettingUserRoleName();
         var vm = new DetailsDeleteVehicleViewModel();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleNames);
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName);
         if (vehicle == null) return NotFound();
 
         vm.Id = id;
@@ -230,8 +235,8 @@ public class VehiclesController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var userId = User.GettingUserId();
-        var userRoles = User.GettingUserRoleNames();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id, userId, userRoles);
+        var roleName = User.GettingUserRoleName();
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id, userId, roleName);
         if (await _uow.Schedules.AnyAsync(s => vehicle != null && s != null && s.VehicleId.Equals(vehicle.Id))
             || await _uow.Bookings.AnyAsync(v => vehicle != null && v != null && v.VehicleId.Equals(vehicle.Id)))
             return Content("Entity cannot be deleted because it has dependent entities!");
@@ -257,8 +262,8 @@ public class VehiclesController : Controller
 
         var vm = new GalleryViewModel();
         var userId = User.GettingUserId();
-        var userRoles = User.GettingUserRoleNames();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, userRoles);
+        var roleName = User.GettingUserRoleName();
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName);
         if (vehicle == null) return NotFound();
 
         vm.VehicleIdentifier = vehicle.VehicleIdentifier;

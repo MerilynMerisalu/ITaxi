@@ -12,7 +12,7 @@ public interface IVehicleRepository : IEntityRepository<Vehicle>
     IEnumerable<Vehicle> GettingVehiclesWithoutIncludes(bool noTracking = true);
     Task<IEnumerable<Vehicle>> GettingOrderedVehiclesWithoutIncludesAsync(bool noTracking = true);
     IEnumerable<Vehicle> GettingOrderedVehiclesWithoutIncludes(bool noTracking = true);
-    Task<Vehicle?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, IEnumerable<string>? roles = null, bool noTracking = true);
+    Task<Vehicle?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
     Vehicle? GettingVehicleById(Guid id, bool noTracking = true);
     Task<Vehicle?> GettingVehicleWithoutIncludesByIdAsync(Guid id, bool noTracking = true);
     Vehicle? GettingVehicleWithoutIncludesById(Guid id, bool noTracking = true);

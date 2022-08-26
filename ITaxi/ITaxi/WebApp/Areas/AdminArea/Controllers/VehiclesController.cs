@@ -41,8 +41,10 @@ public class VehiclesController : Controller
     public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null) return NotFound();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
         var vm = new DetailsDeleteVehicleViewModel();
-        var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id.Value);
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName );
         if (vehicle == null) return NotFound();
         vm.DriverFullName = vehicle.Driver!.AppUser!.FirstAndLastName;
         vm.Id = id;
@@ -128,7 +130,9 @@ public class VehiclesController : Controller
         var vm = new CreateEditVehicleViewModel();
         if (id == null) return NotFound();
 
-        var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id.Value);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName);
         if (vehicle == null) return NotFound();
 
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
@@ -211,8 +215,10 @@ public class VehiclesController : Controller
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null) return NotFound();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
         var vm = new DetailsDeleteVehicleViewModel();
-        var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id.Value);
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName);
         if (vehicle == null) return NotFound();
         vm.DriverFullName = vehicle.Driver!.AppUser!.FirstAndLastName;
         vm.Id = id;
@@ -263,7 +269,9 @@ public class VehiclesController : Controller
         if (id == null) return NotFound();
 
         var vm = new GalleryViewModel();
-        var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id.Value);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName );
         if (vehicle == null) return NotFound();
 
         vm.VehicleIdentifier = vehicle.VehicleIdentifier;
