@@ -49,10 +49,10 @@ public class RideTimesController : Controller
     {
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
-        
-        
 
-        var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id.Value);
+
+        var roleName = User.GettingUserRoleName();
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, roleName);
         if (rideTime == null) return NotFound();
 
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
@@ -108,7 +108,9 @@ public class RideTimesController : Controller
                         DriverId = vm.DriverId,
                         ScheduleId = vm.ScheduleId,
                         RideDateTime = selectedRideTime.ToUniversalTime(),
-                        IsTaken = vm.IsTaken
+                        IsTaken = vm.IsTaken,
+                        CreatedBy = User.Identity!.Name,
+                        CreatedAt = DateTime.Now.ToUniversalTime()
                     };
 
                     rideTimes.Add(rideTime);
@@ -169,7 +171,9 @@ public class RideTimesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditRideTimeViewModel vm)
     {
-        var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id);
+        
+        var roleName = User.GettingUserRoleName();
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id, null, roleName);
 
         if (id != rideTime!.Id) return NotFound();
 
@@ -182,6 +186,7 @@ public class RideTimesController : Controller
                 rideTime.ScheduleId = vm.ScheduleId;
                 rideTime.RideDateTime = DateTime.Parse(vm.RideTime).ToUniversalTime();
                 rideTime.IsTaken = vm.IsTaken;
+                rideTime.UpdatedBy = User.Identity!.Name!;
                 rideTime.UpdatedAt = DateTime.Now.ToUniversalTime();
 
                 _uow.RideTimes.Update(rideTime);
@@ -205,8 +210,8 @@ public class RideTimesController : Controller
     {
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
-
-        var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id.Value);
+        var roleName = User.GettingUserRoleName();
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, roleName);
         if (rideTime == null) return NotFound();
 
         vm.Driver = rideTime.Driver!.AppUser!.LastAndFirstName;
@@ -230,7 +235,8 @@ public class RideTimesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id);
+        var roleName = User.GettingUserRoleName();
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id, null, roleName);
         if (rideTime != null) _uow.RideTimes.Remove(rideTime);
         await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));

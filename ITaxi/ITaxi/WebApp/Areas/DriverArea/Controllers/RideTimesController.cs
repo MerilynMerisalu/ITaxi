@@ -45,7 +45,9 @@ public class RideTimesController : Controller
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
 
-        var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id.Value);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, userId, roleName);
         if (rideTime == null) return NotFound();
 
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
@@ -82,7 +84,9 @@ public class RideTimesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateRideTimeViewModel vm, List<RideTime> rideTimes)
     {
-        var driver = await _uow.Drivers.FirstAsync();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var driver = await _uow.Drivers.SingleOrDefaultAsync(d => d!.AppUserId.Equals(userId));
         if (ModelState.IsValid)
         {
             if (vm.SelectedRideTimes != null)
@@ -112,7 +116,8 @@ public class RideTimesController : Controller
 
 
 #warning Selectlist of schedules must be recreated when something goes wrong with creating the record
-        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
+        vm.Schedules = new SelectList(await _uow.Schedules
+                .GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName),
             nameof(Schedule.Id),
             nameof(Schedule.ShiftDurationTime));
 #warning Selectable ride times must be recreated when something goes wrong with creating the record
@@ -123,16 +128,18 @@ public class RideTimesController : Controller
     // GET: DriverArea/RideTimes/Edit/5
     public async Task<IActionResult> Edit(Guid? id)
     {
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
         var vm = new EditRideTimeViewModel();
         if (id == null) return NotFound();
 
-        var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id.Value);
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, userId, roleName);
         if (rideTime == null) return NotFound();
 
         vm.Id = rideTime.Id;
 
         vm.Schedules = new SelectList(
-            await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
+            await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName),
             nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
         vm.IsTaken = rideTime.IsTaken;
 #warning Ridetimes should be hidden and reappearing based on whether IsTaken is true or not
@@ -155,7 +162,9 @@ public class RideTimesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditRideTimeViewModel vm)
     {
-        var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
 
         if (id != rideTime!.Id) return NotFound();
 
