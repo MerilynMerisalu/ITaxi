@@ -44,7 +44,7 @@ public class SchedulesController : Controller
 
         var roleName = User.GettingUserRoleName();
         var userId = User.GettingUserId();
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value,userId, roleName);
+        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, userId, roleName);
 
         if (schedule == null) return NotFound();
 
@@ -110,7 +110,7 @@ public class SchedulesController : Controller
         var vm = new EditScheduleViewModel();
         if (id == null) return NotFound();
 
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, null, roleName);
+        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
         if (schedule == null) return NotFound();
 
         vm.Id = schedule.Id;

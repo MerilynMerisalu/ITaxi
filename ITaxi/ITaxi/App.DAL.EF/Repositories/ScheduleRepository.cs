@@ -23,9 +23,10 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
     }
 
 
-    public override async Task<Schedule?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
+    public  async Task<Schedule?> FirstOrDefaultAsync(Guid id, Guid? userId = null,
+        string? roleName = null, bool noTracking = true)
     {
-        return await CreateQuery(noTracking).FirstOrDefaultAsync(s => s.Id.Equals(id));
+        return await CreateQuery(userId, roleName,noTracking).FirstOrDefaultAsync(s => s.Id.Equals(id));
     }
 
     public async Task<IEnumerable<Schedule>> GetAllSchedulesWithoutIncludesAsync(bool noTracking = true)
@@ -38,20 +39,12 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
         return base.CreateQuery(noTracking).ToList();
     }
 
-    public async Task<IEnumerable<Schedule>> GettingAllOrderedSchedulesWithIncludesAsync(Guid? userId = null, 
-        string? roleName = null, bool noTracking = true)
-    {
-        if(roleName is nameof(Admin))
-        {
-            return await CreateQuery().ToListAsync();
-        }
+    
 
-        return await CreateQuery().Where(u => u.Driver!.AppUserId.Equals(userId)).ToListAsync();
-    }
-
-    public async Task<IEnumerable<Schedule>> GettingAllOrderedSchedulesWithIncludesAsync(bool noTracking = true)
+    public async Task<IEnumerable<Schedule>> GettingAllOrderedSchedulesWithIncludesAsync
+        (Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
-        return await CreateQuery(noTracking)
+        var res = await CreateQuery(userId, roleName,noTracking)
             .OrderBy(s => s.StartDateAndTime.Date)
             .ThenBy(s => s.StartDateAndTime.Year)
             .ThenBy(s => s.StartDateAndTime.Month)
@@ -65,6 +58,7 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
             .ThenBy(s => s.EndDateAndTime.Hour)
             .ThenBy(s => s.EndDateAndTime.Minute)
             .ToListAsync();
+        return res;
     }
 
     public IEnumerable<Schedule> GettingAllOrderedSchedulesWithIncludes(bool noTracking = true)
@@ -136,15 +130,10 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
     public async Task<Schedule?> GettingTheFirstScheduleAsync(Guid id, Guid? userid = null, string? roleName = null,
         bool noTracking = true)
     {
-        if (roleName is nameof(Admin))
-        {
-            return await CreateQuery().FirstOrDefaultAsync(s => s.Id.Equals(id));
-        }
-
-        var res = await CreateQuery().Where(u => u.Driver!.AppUserId.Equals(userid))
-            .FirstOrDefaultAsync(s => s.Id.Equals(id));
+        var res = await CreateQuery(userid, roleName).FirstOrDefaultAsync(s => s.Id.Equals(id));
         return res;
     }
+    
     
 
     public Schedule? GettingTheFirstSchedule(bool noTracking = true)
@@ -177,17 +166,30 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
             .FirstAsync();
     }
 
-    public Guid GettingScheduleByDriverId(Guid driverId)
+    /*public Guid GettingScheduleByDriverId(Guid driverId)
     {
         return RepoDbSet.Where(s => s.DriverId.Equals(driverId))
             .Select(s => s.Id).First();
-    }
+    }*/
 
-    protected override IQueryable<Schedule> CreateQuery(bool noTracking = true)
+    protected  IQueryable<Schedule> CreateQuery(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query.AsNoTracking();
 
+        if (roleName is nameof(Admin))
+        {
+            query = query.Include(c => c.Driver)
+                .ThenInclude(a => a!.AppUser)
+                .Include(s => s.Vehicle)
+                .ThenInclude(s => s!.VehicleMark)
+                .Include(s => s.Vehicle)
+                .ThenInclude(s => s!.VehicleModel)
+                .Include(v => v.Vehicle)
+                .ThenInclude(v => v!.VehicleType);
+            return query;
+        }
+        
         query = query.Include(c => c.Driver)
             .ThenInclude(a => a!.AppUser)
             .Include(s => s.Vehicle)
@@ -195,7 +197,10 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
             .Include(s => s.Vehicle)
             .ThenInclude(s => s!.VehicleModel)
             .Include(v => v.Vehicle)
-            .ThenInclude(v => v!.VehicleType);
+            .ThenInclude(v => v!.VehicleType)
+            .Where(s => s.Driver!.AppUserId.Equals(userId));
         return query;
     }
+    
+    
 }

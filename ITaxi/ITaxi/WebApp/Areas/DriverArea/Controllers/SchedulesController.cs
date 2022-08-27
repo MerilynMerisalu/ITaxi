@@ -44,9 +44,8 @@ public class SchedulesController : Controller
         var vm = new DetailsDeleteScheduleViewModel();
         if (id == null) return NotFound();
 
-        var roleName = User.GettingUserRoleName();
-        var userId = User.GettingUserId();
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value ,userId, roleName);
+       
+        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
 
         if (schedule == null) return NotFound();
 
@@ -66,7 +65,9 @@ public class SchedulesController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateScheduleViewModel();
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
 #warning Schedule StartDateAndTime needs a custom validation
 
@@ -110,7 +111,7 @@ public class SchedulesController : Controller
         var vm = new EditScheduleViewModel();
         if (id == null) return NotFound();
 
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, userId, roleName);
+        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
         if (schedule == null) return NotFound();
 
         vm.Id = schedule.Id;
@@ -133,9 +134,7 @@ public class SchedulesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditScheduleViewModel vm)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id, userId, roleName);
+        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
         if (schedule == null || schedule.Id != id) return NotFound();
         if (ModelState.IsValid)
         {
@@ -171,10 +170,8 @@ public class SchedulesController : Controller
     {
         var vm = new DetailsDeleteScheduleViewModel();
         if (id == null) return NotFound();
-
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserName();
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, userId, roleName);
+        
+        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
         if (schedule == null) return NotFound();
 
         vm.Id = schedule.Id;
@@ -191,9 +188,8 @@ public class SchedulesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id, userId, roleName);
+        
+        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
         if (await _uow.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
             || await _uow.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
             return Content("Entity cannot be deleted because it has dependent entities!");
