@@ -67,10 +67,11 @@ public class SchedulesController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateScheduleViewModel();
+        var roleName = User.GettingUserRoleName();
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
             nameof(Driver.Id), $"{nameof(Driver.AppUser)}.{nameof(Driver.AppUser.LastAndFirstName)}");
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(null,roleName ),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
 #warning Schedule StartDateAndTime needs a custom validation
 
