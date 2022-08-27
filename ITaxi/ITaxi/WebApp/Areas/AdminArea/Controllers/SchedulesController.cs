@@ -24,13 +24,17 @@ public class SchedulesController : Controller
     // GET: AdminArea/Schedules
     public async Task<IActionResult> Index()
     {
+#warning Ask if this is the right way to get the user name of a logged in user
+#warning Ask how to get the user role using interface
         var roleName = User.GettingUserRoleName();
 #warning Should this be a repository method
         var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
         foreach (var s in res)
         {
             s.StartDateAndTime = s.StartDateAndTime.ToLocalTime();
+            s.CreatedAt = s.CreatedAt.ToLocalTime();
             s.EndDateAndTime = s.EndDateAndTime.ToLocalTime();
+            s.UpdatedAt = s.UpdatedAt.ToLocalTime();
         }
 
         return View(res);
@@ -159,6 +163,8 @@ public class SchedulesController : Controller
                     schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
 #warning Should this be a repository method
                     schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
+                    schedule.UpdatedAt = DateTime.Now.ToUniversalTime();
+                    schedule.UpdatedBy = User.Identity!.Name;
 
 
                     _uow.Schedules.Update(schedule);

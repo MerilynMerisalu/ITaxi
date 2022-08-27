@@ -23,8 +23,21 @@
             @Html.DisplayNameFor(model => model.StartDateAndTime)
         </th>
         <th>
-        @Html.DisplayNameFor(model => model.EndDateAndTime)
-
+            @Html.DisplayNameFor(model => model.EndDateAndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </th>
+        
         <th></th>
     </tr>
     </thead>
@@ -45,7 +58,21 @@
                 @Html.DisplayFor(modelItem => item.EndDateAndTime)
             </td>
 
-
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            
+            
+            
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
