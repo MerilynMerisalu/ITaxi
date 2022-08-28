@@ -157,7 +157,7 @@ public class RideTimesController : Controller
 #warning "Magic string" code smell, fix it
             nameof(Driver.Id), "AppUser.LastAndFirstName");
         vm.Schedules = new SelectList(
-            await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
+            await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName),
             nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
         var schedules = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
         vm.IsTaken = rideTime.IsTaken;
