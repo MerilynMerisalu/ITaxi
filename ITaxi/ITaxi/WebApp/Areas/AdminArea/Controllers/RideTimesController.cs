@@ -75,11 +75,12 @@ public class RideTimesController : Controller
     // GET: AdminArea/RideTimes/Create
     public async Task<IActionResult> Create()
     {
+        var roleName = User.GettingUserRoleName();
         var vm = new CreateRideTimeViewModel();
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
             nameof(Driver.Id), "AppUser.LastAndFirstName");
-        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync()
+        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName)
             , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
         var scheduleStartAndEndTime = _uow.Schedules.GettingStartAndEndTime();
         var rideTimes = _uow.RideTimes.CalculatingRideTimes(scheduleStartAndEndTime);
