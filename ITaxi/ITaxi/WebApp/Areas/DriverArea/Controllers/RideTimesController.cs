@@ -66,10 +66,13 @@ public class RideTimesController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateRideTimeViewModel();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
 
-        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync()
+        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName)
             , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
-        var scheduleStartAndEndTime = _uow.Schedules.GettingStartAndEndTime();
+        var schedules = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
+        var scheduleStartAndEndTime = _uow.Schedules.GettingStartAndEndTime(schedules);
         var rideTimes = _uow.RideTimes.CalculatingRideTimes(scheduleStartAndEndTime);
         vm.RideTimes = new SelectList(rideTimes);
 
@@ -141,9 +144,10 @@ public class RideTimesController : Controller
         vm.Schedules = new SelectList(
             await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName),
             nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
+        var schedules = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
         vm.IsTaken = rideTime.IsTaken;
 #warning Ridetimes should be hidden and reappearing based on whether IsTaken is true or not
-        var rideTimes = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime());
+        var rideTimes = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime(schedules));
 #warning Ask if there is a better way to implement this
         var rideTimeList = new List<string>();
         foreach (var rideTimeLocal in rideTimes) rideTimeList.Add(DateTime.Parse(rideTimeLocal).ToShortTimeString());

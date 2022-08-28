@@ -46,7 +46,7 @@ public class SchedulesController : Controller
 
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, userId, roleName);
+        var schedule =  _uow.Schedules.GettingTheFirstSchedule(userId, roleName);
 
         if (schedule == null) return NotFound();
 
@@ -177,7 +177,7 @@ public class SchedulesController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, userId, roleName);
+        var schedule =  _uow.Schedules.GettingTheFirstSchedule( userId, roleName);
         if (schedule == null) return NotFound();
 
         vm.Id = schedule.Id;
@@ -196,7 +196,7 @@ public class SchedulesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id, userId, roleName);
+        var schedule =  _uow.Schedules.GettingTheFirstSchedule( userId, roleName);
         if (await _uow.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
             || await _uow.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
             return Content("Entity cannot be deleted because it has dependent entities!");

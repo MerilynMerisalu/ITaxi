@@ -136,18 +136,20 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
     
     
 
-    public Schedule? GettingTheFirstSchedule(bool noTracking = true)
+    public Schedule? GettingTheFirstSchedule(Guid? userId, string ? roleName = null,bool noTracking = true)
     {
-        return CreateQuery()
+        return CreateQuery(userId, roleName)
             .OrderBy(s => s.StartDateAndTime.Hour)
             .ThenBy(s => s.StartDateAndTime.Minute)
             .FirstOrDefault();
     }
 
-    public DateTime[] GettingStartAndEndTime()
+    public DateTime[] GettingStartAndEndTime(IEnumerable<Schedule> schedules, Guid? userId = null,
+        string? roleName = null)
     {
+        #warning needs improving
         var scheduleStartAndEndTime = new DateTime[2];
-        var schedule = GettingTheFirstSchedule();
+        var schedule = schedules.First();
         if (schedule != null)
         {
             scheduleStartAndEndTime[0] = schedule.StartDateAndTime;

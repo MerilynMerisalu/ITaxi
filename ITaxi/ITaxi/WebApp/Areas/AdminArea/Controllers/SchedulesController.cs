@@ -47,8 +47,8 @@ public class SchedulesController : Controller
         if (id == null) return NotFound();
 
         var roleName = User.GettingUserRoleName();
-        var userId = User.GettingUserId();
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, userId, roleName);
+        
+        var schedule =  _uow.Schedules.GettingTheFirstSchedule(null, roleName);
 
         if (schedule == null) return NotFound();
 
@@ -192,7 +192,7 @@ public class SchedulesController : Controller
 
         
         var roleName = User.GettingUserRoleName();
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, null, roleName);
+        var schedule =  _uow.Schedules.GettingTheFirstSchedule( null, roleName);
         if (schedule == null) return NotFound();
 
         vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
