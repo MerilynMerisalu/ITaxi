@@ -15,14 +15,13 @@ namespace WebApp.Areas.DriverArea.Controllers;
 public class VehiclesController : Controller
 {
     private readonly IAppUnitOfWork _uow;
-#warning Ask if this is the right way to get the user name of a logged in user
-    private string UserEmail => User.Identity!.Name!;
-    
-#warning Ask how to get the user role using interface
+
     public VehiclesController(IAppUnitOfWork uow)
     {
         _uow = uow;
     }
+
+    private string UserEmail => User.Identity!.Name!;
 
     // GET: AdminArea/Vehicles
     public async Task<IActionResult> Index()
@@ -44,7 +43,7 @@ public class VehiclesController : Controller
 
         vm.Id = id;
         vm.VehicleType = vehicle.VehicleType!.VehicleTypeName;
-        
+
         vm.VehicleMark = vehicle.VehicleMark!.VehicleMarkName;
         vm.VehicleModel = vehicle.VehicleModel!.VehicleModelName;
         vm.ManufactureYear = vehicle.ManufactureYear;
@@ -82,10 +81,7 @@ public class VehiclesController : Controller
         {
             var userId = User.GettingUserId();
             var driver = _uow.Drivers.SingleOrDefaultAsync(d => d!.AppUserId.Equals(userId)).Result;
-            if (driver == null)
-            {
-                return NotFound();
-            }
+            if (driver == null) return NotFound();
 
             vehicle.Id = Guid.NewGuid();
             vehicle.DriverId = driver.Id;
@@ -126,7 +122,7 @@ public class VehiclesController : Controller
 
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId,roleName );
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName);
         if (vehicle == null) return NotFound();
 
         vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
@@ -172,12 +168,9 @@ public class VehiclesController : Controller
                 if (vehicle != null)
                 {
                     vehicle.Id = id;
-                    
+
                     var driver = _uow.Drivers.SingleOrDefaultAsync(d => d!.AppUserId.Equals(userId)).Result;
-                    if (driver == null)
-                    {
-                        return NotFound();
-                    }
+                    if (driver == null) return NotFound();
 
                     vehicle.VehiclePlateNumber = vm.VehiclePlateNumber;
                     vehicle.ManufactureYear = vm.ManufactureYear;
@@ -208,7 +201,6 @@ public class VehiclesController : Controller
     // GET: AdminArea/Vehicles/Delete/5
     public async Task<IActionResult> Delete(Guid? id)
     {
-        
         if (id == null) return NotFound();
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
@@ -254,7 +246,7 @@ public class VehiclesController : Controller
     {
         return _uow.Vehicles.Exists(id);
     }
-    
+
     // GET: DriverArea/Vehicle/Gallery/5
     public async Task<IActionResult> Gallery(Guid? id)
     {
@@ -268,7 +260,7 @@ public class VehiclesController : Controller
 
         vm.VehicleIdentifier = vehicle.VehicleIdentifier;
         vm.Id = vehicle.Id;
-        
+
         return View(vm);
     }
 }

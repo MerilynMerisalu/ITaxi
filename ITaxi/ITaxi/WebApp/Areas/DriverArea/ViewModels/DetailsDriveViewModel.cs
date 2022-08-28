@@ -2,19 +2,18 @@
 using App.Domain.Enum;
 using App.Resources.Areas.App.Domain.DriverArea;
 
-
 namespace WebApp.Areas.DriverArea.ViewModels;
 
 public class DetailsDriveViewModel
 {
     public Guid Id { get; set; }
+
     [Display(ResourceType = typeof(Drive), Name = nameof(Schedule))]
     public string Schedule { get; set; } = default!;
 
     [Display(ResourceType = typeof(Drive), Name = nameof(ShiftDurationTime))]
     public string ShiftDurationTime { get; set; } = default!;
 
-    
 
     [Display(ResourceType = typeof(Drive), Name = "CustomerLastAndFirstName")]
     public string CustomerLastAndFirstName { get; set; } = default!;
@@ -43,37 +42,36 @@ public class DetailsDriveViewModel
     [Display(ResourceType = typeof(Drive), Name = nameof(HasAnAssistant))]
     public bool HasAnAssistant { get; set; }
 
-    
-    
+
     [Display(ResourceType = typeof(Drive), Name = "Comment")]
     public string CommentText { get; set; } = default!;
-    
+
     [Display(ResourceType = typeof(Drive), Name = "AcceptedDateAndTime")]
 
     public string? DriveAcceptedDateAndTime { get; set; }
 
     [Display(ResourceType = typeof(Drive), Name = "DeclineDateAndTime")]
-    
+
     public string? DriveDeclineDateAndTime { get; set; }
-    
+
     [Display(ResourceType = typeof(Drive), Name = "InProgressDateAndTime")]
-    
+
     public string? DriveInProgressDateAndTime { get; set; }
+
     [Display(ResourceType = typeof(Drive), Name = "FinishedDateAndTime")]
     public string? DriveFinishedDateAndTime { get; set; }
-    
+
     public bool IsDriveAccepted { get; set; }
-    
+
     public bool IsDriveDeclined { get; set; }
-    
+
     public bool IsDriveStarted { get; set; }
-    
+
     public bool IsDriveFinished { get; set; }
-    
+
     [Display(ResourceType = typeof(Drive), Name = nameof(StatusOfBooking))]
     public StatusOfBooking StatusOfBooking { get; set; }
-    
+
     [Display(ResourceType = typeof(Drive), Name = nameof(StatusOfDrive))]
     public StatusOfDrive StatusOfDrive { get; set; }
 }
-

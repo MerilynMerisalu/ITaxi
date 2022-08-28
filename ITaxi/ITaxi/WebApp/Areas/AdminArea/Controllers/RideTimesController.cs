@@ -26,7 +26,6 @@ public class RideTimesController : Controller
     // GET: AdminArea/RideTimes
     public async Task<IActionResult> Index()
     {
-        
         var roleName = User.GettingUserRoleName();
         var res = await _uow.RideTimes.GettingAllOrderedRideTimesAsync(null, roleName);
 #warning Should this be a repository method
@@ -57,7 +56,7 @@ public class RideTimesController : Controller
 
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
         rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
-        
+
         vm.Id = rideTime.Id;
         vm.Driver = rideTime.Driver!.AppUser!.LastAndFirstName;
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
@@ -83,6 +82,12 @@ public class RideTimesController : Controller
         vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName)
             , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
         var schedules = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
+        foreach (var schedule in schedules)
+        {
+            schedule.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToLocalTime().ToString("g"));
+            schedule.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToLocalTime().ToString("g"));
+        }
+
         var scheduleStartAndEndTime = _uow.Schedules.GettingStartAndEndTime(schedules);
         var rideTimes = _uow.RideTimes.CalculatingRideTimes(scheduleStartAndEndTime);
         vm.RideTimes = new SelectList(rideTimes);
@@ -143,7 +148,7 @@ public class RideTimesController : Controller
         var vm = new EditRideTimeViewModel();
         if (id == null) return NotFound();
 
-        var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id.Value);
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, roleName);
         if (rideTime == null) return NotFound();
 
         vm.Id = rideTime.Id;
@@ -175,7 +180,6 @@ public class RideTimesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditRideTimeViewModel vm)
     {
-        
         var roleName = User.GettingUserRoleName();
         var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id, null, roleName);
 
@@ -219,6 +223,9 @@ public class RideTimesController : Controller
         if (rideTime == null) return NotFound();
 
         vm.Driver = rideTime.Driver!.AppUser!.LastAndFirstName;
+
+        rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
+        rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
 
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
 #warning Should it be a repository method

@@ -10,7 +10,7 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
     public CommentRepository(AppDbContext dbContext) : base(dbContext)
     {
     }
-    
+
 
     public override async Task<IEnumerable<Comment>> GetAllAsync(bool noTracking = true)
     {
@@ -107,7 +107,7 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
             .Include(d => d.Drive)
             .ThenInclude(d => d!.Driver)
             .ThenInclude(d => d!.AppUser);
-        
+
         return query;
     }
 }

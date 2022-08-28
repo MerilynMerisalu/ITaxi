@@ -33,7 +33,6 @@ public class RideTimesController : Controller
                 rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
                 rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
                 rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
-                
             }
 
         return View(res);
@@ -53,7 +52,7 @@ public class RideTimesController : Controller
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
         rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
         vm.Id = rideTime.Id;
-        
+
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
 #warning Should it be a repository method
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
@@ -234,6 +233,4 @@ public class RideTimesController : Controller
     {
         return _uow.RideTimes.Exists(id);
     }
-    
-    
 }

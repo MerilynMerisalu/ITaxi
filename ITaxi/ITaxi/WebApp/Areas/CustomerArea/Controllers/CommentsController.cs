@@ -8,17 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.CustomerArea.ViewModels;
 
 namespace WebApp.Areas.CustomerArea.Controllers;
+
 [Authorize(Roles = "Admin, Customer")]
 [Area(nameof(CustomerArea))]
 public class CommentsController : Controller
 {
-    
     private readonly IAppUnitOfWork _uow;
 
     public CommentsController(IAppUnitOfWork uow)
     {
         _uow = uow;
-        
     }
 
     // GET: CustomerArea/Comments
@@ -40,7 +39,7 @@ public class CommentsController : Controller
         vm.Drive = _uow.Comments.PickUpDateAndTimeStr(comment);
         vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
-       
+
 
         return View(vm);
     }
@@ -49,7 +48,7 @@ public class CommentsController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditCommentViewModel();
-        
+
         vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(),
             nameof(Drive.Id), nameof(Drive.Booking.PickUpDateAndTime));
 
@@ -99,7 +98,7 @@ public class CommentsController : Controller
             nameof(Drive.Id));
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.DriveId = comment.Drive!.Id;
-        
+
 
         return View(vm);
     }
@@ -154,10 +153,10 @@ public class CommentsController : Controller
 #warning Ask maybe can be done as a base method
 
         vm.Drive = _uow.Comments.PickUpDateAndTimeStr(comment);
-        
+
         vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
-        
+
 
         return View(vm);
     }

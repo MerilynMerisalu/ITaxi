@@ -1,12 +1,10 @@
 #nullable enable
-using System.Net;
-using System.Net.Mail;
+using System.Diagnostics;
 using App.Contracts.DAL;
 using App.Domain;
 using App.Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
@@ -18,8 +16,8 @@ namespace WebApp.Areas.AdminArea.Controllers;
 [Authorize(Roles = nameof(Admin))]
 public class BookingsController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
     private readonly IMailService _mailService;
+    private readonly IAppUnitOfWork _uow;
 
     public BookingsController(IAppUnitOfWork uow, IMailService mailService)
     {
@@ -351,15 +349,15 @@ public class BookingsController : Controller
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             drive!.Booking = booking;
             _uow.Bookings.Update(booking);
-            #warning refactor into a common service for bookings
-            #warning Add an EmailAddress Field to Driver with the "~Real"~address
-            #warning Add a language field to Driver
+#warning refactor into a common service for bookings
+#warning Add an EmailAddress Field to Driver with the "~Real"~address
+#warning Add a language field to Driver
             // Prepare Email Notification
-            MailRequest mailRequest = new MailRequest();
-            #warning Add Language Support for email templates
+            var mailRequest = new MailRequest();
+#warning Add Language Support for email templates
             mailRequest.Subject = $"Booking Declined: {booking.PickUpDateAndTime:g} {booking.PickupAddress}";
-            mailRequest.ToEmail ="programmeerija88@gmail.com";
-            #warning Include a link to quick login to the portal to see this booking in the email content
+            mailRequest.ToEmail = "programmeerija88@gmail.com";
+#warning Include a link to quick login to the portal to see this booking in the email content
             mailRequest.Body = $"Booking Declined: {booking.PickUpDateAndTime:g} {booking.PickupAddress}";
 /*
             using (MailMessage mm = new MailMessage("testitaxi29@gmail.com", mailRequest.ToEmail))
@@ -381,12 +379,12 @@ public class BookingsController : Controller
                 }
             }
             */
-            
+
             // Send Email Notification
             //_mailService.
             var response = await _mailService.SendEmailAsync(mailRequest);
-            System.Diagnostics.Trace.WriteLine(response);
-            
+            Trace.WriteLine(response);
+
             await _uow.SaveChangesAsync();
             _uow.Drives.Update(drive);
         }

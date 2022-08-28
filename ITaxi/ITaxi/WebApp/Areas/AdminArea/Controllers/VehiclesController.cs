@@ -15,19 +15,19 @@ namespace WebApp.Areas.AdminArea.Controllers;
 public class VehiclesController : Controller
 {
     private readonly IAppUnitOfWork _uow;
-    #warning Ask if this is the right way to get the user name of a logged in user
-    #warning Ask how to get the user role using interface
-    private string UserEmail => User.Identity!.Name!;
+
     public VehiclesController(IAppUnitOfWork uow)
     {
         _uow = uow;
     }
 
+    private string UserEmail => User.Identity!.Name!;
+
     // GET: AdminArea/Vehicles
     public async Task<IActionResult> Index()
     {
         var role = User.GettingUserRoleName();
-        var res = await _uow.Vehicles.GettingOrderedVehiclesAsync(null, role );
+        var res = await _uow.Vehicles.GettingOrderedVehiclesAsync(null, role);
         foreach (var vehicle in res)
         {
             vehicle.CreatedAt = vehicle.CreatedAt.ToLocalTime();
@@ -44,7 +44,7 @@ public class VehiclesController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var vm = new DetailsDeleteVehicleViewModel();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName );
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName);
         if (vehicle == null) return NotFound();
         vm.DriverFullName = vehicle.Driver!.AppUser!.FirstAndLastName;
         vm.Id = id;
@@ -262,7 +262,7 @@ public class VehiclesController : Controller
     {
         return _uow.Vehicles.Exists(id);
     }
-    
+
     // GET: AdminArea/Vehicle/Gallery/5
     public async Task<IActionResult> Gallery(Guid? id)
     {
@@ -271,12 +271,12 @@ public class VehiclesController : Controller
         var vm = new GalleryViewModel();
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName );
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName);
         if (vehicle == null) return NotFound();
 
         vm.VehicleIdentifier = vehicle.VehicleIdentifier;
         vm.Id = vehicle.Id;
-        
+
         return View(vm);
     }
 }

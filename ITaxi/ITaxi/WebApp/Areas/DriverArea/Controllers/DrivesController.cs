@@ -1,12 +1,10 @@
 #nullable enable
 using App.Contracts.DAL;
-using App.Domain;
 using App.Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rotativa.AspNetCore;
 using WebApp.Areas.DriverArea.ViewModels;
-
 
 namespace WebApp.Areas.DriverArea.Controllers;
 
@@ -28,28 +26,27 @@ public class DrivesController : Controller
 #warning Should this be a repo method
         foreach (var drive in res)
         {
-
             if (drive.IsDriveAccepted || (drive.IsDriveAccepted && drive.IsDriveDeclined))
             {
-                #warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
+#warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
                 drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
             }
 
             if (drive.IsDriveDeclined || (drive.IsDriveAccepted && drive.IsDriveDeclined))
             {
-                #warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
+#warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
                 drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
             }
 
             if (drive.IsDriveStarted || (drive.IsDriveAccepted && drive.IsDriveStarted))
             {
-                #warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
+#warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
                 drive.DriveStartDateAndTime = drive.DriveStartDateAndTime.ToLocalTime();
             }
 
             if (drive.IsDriveFinished)
             {
-                #warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
+#warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
                 drive.DriveEndDateAndTime = drive.DriveEndDateAndTime.ToLocalTime();
             }
         }
@@ -67,7 +64,7 @@ public class DrivesController : Controller
             .FirstOrDefaultAsync(id.Value);
         if (drive == null) return NotFound();
 
-        
+
         vm.City = drive.Booking!.City!.CityName;
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
         if (drive.Comment?.CommentText != null) vm.CommentText = drive.Comment.CommentText;
@@ -86,25 +83,16 @@ public class DrivesController : Controller
         vm.IsDriveDeclined = drive.IsDriveDeclined;
         vm.IsDriveStarted = drive.IsDriveStarted;
         vm.IsDriveFinished = drive.IsDriveFinished;
-        if (drive.IsDriveAccepted )
-        {
+        if (drive.IsDriveAccepted)
             vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
-        }
 
         if (drive.IsDriveDeclined)
-        {
             vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime().ToString("G");
-        }
 
         if (drive.IsDriveStarted)
-        {
             vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("G");
-        }
 
-        if (drive.IsDriveFinished)
-        {
-            vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToLocalTime().ToString("G");
-        }
+        if (drive.IsDriveFinished) vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToLocalTime().ToString("G");
 
         return View(vm);
     }
@@ -224,8 +212,6 @@ public class DrivesController : Controller
     /// </summary>
     /// <param name="search">date</param>
     /// <returns>An index view with search results</returns>
-    
-    
     [HttpPost]
     public async Task<IActionResult> SearchByDateAsync([FromForm] DateTime search)
     {
@@ -272,7 +258,7 @@ public class DrivesController : Controller
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
-        
+
         return View(vm);
     }
 
@@ -283,17 +269,10 @@ public class DrivesController : Controller
     public async Task<IActionResult> AcceptConfirmed(Guid id)
     {
         var drive = await _uow.Drives.FirstOrDefaultAsync(id);
-        if (drive == null)
-        {
-            return NotFound();
-
-        }
+        if (drive == null) return NotFound();
 
         drive = await _uow.Drives.AcceptingDriveAsync(id);
-        if (drive == null)
-        {
-            return NotFound();
-        }
+        if (drive == null) return NotFound();
 
         drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
         drive.StatusOfDrive = StatusOfDrive.Accepted;
@@ -337,7 +316,7 @@ public class DrivesController : Controller
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
-        
+
         return View(vm);
     }
 
@@ -348,17 +327,10 @@ public class DrivesController : Controller
     public async Task<IActionResult> DeclineConfirmed(Guid id)
     {
         var drive = await _uow.Drives.FirstOrDefaultAsync(id);
-        if (drive == null)
-        {
-            return NotFound();
-
-        }
+        if (drive == null) return NotFound();
 
         drive = await _uow.Drives.DecliningDriveAsync(id);
-        if (drive == null)
-        {
-            return NotFound();
-        }
+        if (drive == null) return NotFound();
 
         drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
         drive.StatusOfDrive = StatusOfDrive.Declined;
@@ -402,7 +374,7 @@ public class DrivesController : Controller
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
-        
+
         return View(vm);
     }
 
@@ -413,17 +385,10 @@ public class DrivesController : Controller
     public async Task<IActionResult> StartConfirmed(Guid id)
     {
         var drive = await _uow.Drives.FirstOrDefaultAsync(id);
-        if (drive == null)
-        {
-            return NotFound();
-
-        }
+        if (drive == null) return NotFound();
 
         drive = await _uow.Drives.StartingDriveAsync(id);
-        if (drive == null)
-        {
-            return NotFound();
-        }
+        if (drive == null) return NotFound();
 
         drive.DriveStartDateAndTime = DateTime.Now.ToUniversalTime();
         drive.StatusOfDrive = StatusOfDrive.Started;
@@ -433,7 +398,6 @@ public class DrivesController : Controller
         _uow.Drives.Update(drive);
         await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
-
     }
 
     // GET: DriverArea/Drives/EndDrive/5
@@ -458,10 +422,10 @@ public class DrivesController : Controller
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
-       
+
         return View(vm);
     }
-    
+
 
     // POST: AdminArea/Drives/EndDrive/5
     [HttpPost]
@@ -470,18 +434,11 @@ public class DrivesController : Controller
     public async Task<IActionResult> EndDriveConfirmed(Guid id)
     {
         var drive = await _uow.Drives.FirstOrDefaultAsync(id);
-        if (drive == null)
-        {
-            return NotFound();
-
-        }
+        if (drive == null) return NotFound();
 
         drive = await _uow.Drives.EndingDriveAsync(id);
-        if (drive == null)
-        {
-            return NotFound();
-        }
-        
+        if (drive == null) return NotFound();
+
         drive.IsDriveFinished = true;
         drive.StatusOfDrive = StatusOfDrive.Finished;
         drive.DriveEndDateAndTime = DateTime.Now.ToUniversalTime();
@@ -489,7 +446,7 @@ public class DrivesController : Controller
 
         _uow.Drives.Update(drive);
         await _uow.SaveChangesAsync();
-        
+
         return RedirectToAction(nameof(Index));
     }
 }

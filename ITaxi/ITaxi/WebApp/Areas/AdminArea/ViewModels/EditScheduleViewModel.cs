@@ -14,7 +14,7 @@ public class EditScheduleViewModel
 
     [Display(ResourceType = typeof(Schedule), Name = "Vehicle")]
     public Guid VehicleId { get; set; }
-    
+
 
     [Display(ResourceType = typeof(Schedule), Name = "ShiftStartDateAndTime")]
 

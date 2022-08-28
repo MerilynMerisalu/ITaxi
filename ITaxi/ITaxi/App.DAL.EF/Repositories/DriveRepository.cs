@@ -165,7 +165,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
 
     public async Task<IList> GettingAllDrivesForCommentsAsync(bool noTracking = true)
     {
-        #warning add a optional parameter to CreateQuery that allows the order by to be appended in that method
+#warning add a optional parameter to CreateQuery that allows the order by to be appended in that method
         var res = await CreateQuery(noTracking)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
@@ -216,7 +216,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         if (drive != null)
         {
             drive.IsDriveAccepted = true;
-            
+
             return drive;
         }
 
@@ -241,7 +241,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         if (drive != null)
         {
             drive.IsDriveDeclined = true;
-            
+
             return drive;
         }
 
@@ -266,7 +266,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         if (drive != null)
         {
             drive.IsDriveStarted = true;
-            
+
             return drive;
         }
 
@@ -291,7 +291,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         if (drive != null)
         {
             drive.IsDriveFinished = true;
-            
+
             return drive;
         }
 

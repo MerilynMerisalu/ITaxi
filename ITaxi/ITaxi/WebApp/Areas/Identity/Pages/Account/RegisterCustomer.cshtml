@@ -1,7 +1,7 @@
 ﻿@page
-@using App.Domain.Enum
 @using App.Resources.Areas.Identity.Pages.Account
 @using Base.Resources
+@using App.Domain.Enum
 @model RegisterCustomerModel
 @{
     ViewData["Title"] = CustomerRegister.RegisterCustomer;
@@ -18,18 +18,18 @@
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" alt="@CustomerRegister.EnterYourEmailAddressHere"
-                       placeholder=@CustomerRegister.EnterYourEmailAddressHere/>
+                       placeholder="@CustomerRegister.EnterYourEmailAddressHere"/>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.FirstName"></label>
                 <input asp-for="Input.FirstName" class="form-control" alt="@CustomerRegister.EnterYourFirstNameHere"
-                       placeholder=@CustomerRegister.EnterYourFirstNameHere/>
+                       placeholder="@CustomerRegister.EnterYourFirstNameHere"/>
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.LastName"></label>
-                <input asp-for="Input.LastName" class="form-control" alt=@CustomerRegister.EnterYourLastNameHere
+                <input asp-for="Input.LastName" class="form-control" alt="@CustomerRegister.EnterYourLastNameHere"
                        placeholder="@CustomerRegister.EnterYourLastNameHere"/>
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
@@ -54,20 +54,20 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.PhoneNumber"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" alt=@DriverRegister.EnterYourPhoneNumberHere
-                       placeholder=@DriverRegister.EnterYourPhoneNumberHere/>
+                <input asp-for="Input.PhoneNumber" class="form-control" alt="@DriverRegister.EnterYourPhoneNumberHere"
+                       placeholder="@DriverRegister.EnterYourPhoneNumberHere"/>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" alt=@CustomerRegister.EnterYourPasswordHere
-                       placeholder=@CustomerRegister.EnterYourPasswordHere/>
+                <input asp-for="Input.Password" class="form-control" alt="@CustomerRegister.EnterYourPasswordHere"
+                       placeholder="@CustomerRegister.EnterYourPasswordHere"/>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.ConfirmPassword"></label>
                 <input asp-for="Input.ConfirmPassword" class="form-control"
-                       alt=@CustomerRegister.EnterPasswordConfirmationHere placeholder=@CustomerRegister.EnterPasswordConfirmationHere/>
+                       alt="@CustomerRegister.EnterPasswordConfirmationHere" placeholder="@CustomerRegister.EnterPasswordConfirmationHere"/>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
 

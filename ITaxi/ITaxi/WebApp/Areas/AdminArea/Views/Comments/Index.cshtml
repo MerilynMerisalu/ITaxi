@@ -48,17 +48,17 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Drive!.Booking!.Customer!.AppUser!.LastAndFirstName)
             </td>
-            
-                        
+
+
             <td>
                 @Html.DisplayFor(modelItem => item.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName)
             </td>
-            
+
             <td>
                 @Html.DisplayFor(modelItem => item.CommentText)
             </td>
-            
-            
+
+
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
@@ -68,7 +68,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
-            
+
 
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |

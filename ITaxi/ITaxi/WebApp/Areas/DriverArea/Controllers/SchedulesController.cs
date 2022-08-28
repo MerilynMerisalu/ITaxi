@@ -40,13 +40,13 @@ public class SchedulesController : Controller
     // GET: DriverArea/Schedules/Details/5
     public async Task<IActionResult> Details(Guid? id)
     {
-        #warning create a custom 404 (Not found) page
+#warning create a custom 404 (Not found) page
         var vm = new DetailsDeleteScheduleViewModel();
         if (id == null) return NotFound();
 
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var schedule =  _uow.Schedules.GettingTheFirstSchedule(userId, roleName);
+        var schedule = _uow.Schedules.GettingTheFirstSchedule(userId, roleName);
 
         if (schedule == null) return NotFound();
 
@@ -122,7 +122,7 @@ public class SchedulesController : Controller
         vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
             nameof(Vehicle.Id),
             nameof(Vehicle.VehicleIdentifier));
-            vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g")).ToLocalTime();
+        vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g")).ToLocalTime();
         vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"))
             .ToLocalTime();
         vm.VehicleId = schedule.VehicleId;
@@ -173,11 +173,11 @@ public class SchedulesController : Controller
     {
         var vm = new DetailsDeleteScheduleViewModel();
         if (id == null) return NotFound();
-        
+
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        
-        var schedule =  _uow.Schedules.GettingTheFirstSchedule( userId, roleName);
+
+        var schedule = _uow.Schedules.GettingTheFirstSchedule(userId, roleName);
         if (schedule == null) return NotFound();
 
         vm.Id = schedule.Id;
@@ -196,7 +196,7 @@ public class SchedulesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var schedule =  _uow.Schedules.GettingTheFirstSchedule( userId, roleName);
+        var schedule = _uow.Schedules.GettingTheFirstSchedule(userId, roleName);
         if (await _uow.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
             || await _uow.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
             return Content("Entity cannot be deleted because it has dependent entities!");
@@ -205,8 +205,8 @@ public class SchedulesController : Controller
         {
             _uow.Schedules.Remove(schedule);
             await _uow.SaveChangesAsync();
-        } 
-        
+        }
+
         return RedirectToAction(nameof(Index));
     }
 

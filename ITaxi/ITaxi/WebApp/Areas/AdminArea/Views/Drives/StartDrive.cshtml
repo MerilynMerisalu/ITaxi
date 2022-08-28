@@ -1,6 +1,6 @@
-﻿@model WebApp.Areas.AdminArea.ViewModels.DriveStateViewModel
-@using App.Resources.Areas.App.Domain.AdminArea
+﻿@using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
+@model WebApp.Areas.AdminArea.ViewModels.DriveStateViewModel
 
 
 @{
@@ -17,7 +17,7 @@
     </dl>
     <form asp-action="StartDrive">
         <input type="hidden" asp-for="Id"/>
-        <input type="submit" value="@Drive.SettingDriveIntoInProgressState" class="btn btn-danger"/> 
+        <input type="submit" value="@Drive.SettingDriveIntoInProgressState" class="btn btn-danger"/>
     </form>
 </div>
 <div>

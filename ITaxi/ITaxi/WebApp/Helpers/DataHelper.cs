@@ -53,7 +53,7 @@ public static class DataHelper
                 var role = roleManager!.FindByNameAsync(roleInfo.name).Result;
                 if (role == null)
                 {
-                    var identityResult = roleManager.CreateAsync(new AppRole()
+                    var identityResult = roleManager.CreateAsync(new AppRole
                     {
                         Name = roleInfo.name,
                         DisplayName = roleInfo.displayName
@@ -61,7 +61,6 @@ public static class DataHelper
                     if (!identityResult.Result.Succeeded)
                         foreach (var identityError in identityResult.Result.Errors)
                             Console.WriteLine("Cant create role! Error: " + identityError.Description);
-
                 }
             }
             /*var role = new AppRole
@@ -173,7 +172,7 @@ public static class DataHelper
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
 
-                
+
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant create user! Error: " + identityError.Description);
@@ -215,7 +214,7 @@ public static class DataHelper
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Tiinakass123$").Result;
-                
+
 #warning ask if this is the right way to add a claim in my app context
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
@@ -328,7 +327,7 @@ public static class DataHelper
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Peepkoer123$").Result;
-                #warning ask if this is the right way to add a claim in my app context
+#warning ask if this is the right way to add a claim in my app context
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
 
@@ -359,7 +358,7 @@ public static class DataHelper
                 };
                 await context.Drivers.AddAsync(driver);
                 await context.SaveChangesAsync();
-                
+
 
                 driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory
                 {
@@ -392,7 +391,7 @@ public static class DataHelper
                     Id = new Guid(),
                     DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!
                         .Equals("38806237921")).Result.Id,
-                    VehicleMarkId = context.VehicleMarks.SingleOrDefaultAsync(v => 
+                    VehicleMarkId = context.VehicleMarks.SingleOrDefaultAsync(v =>
                         v.VehicleMarkName.Equals("Toyota")).Result!.Id,
                     VehicleTypeId = regularVehicleType.Id,
                     VehicleModelId = context.VehicleModels
@@ -406,8 +405,8 @@ public static class DataHelper
                 await context.Vehicles.AddAsync(vehicle);
                 await context.SaveChangesAsync();
 
-                
-                 vehicleMark = new VehicleMark
+
+                vehicleMark = new VehicleMark
                 {
                     Id = new Guid(),
                     VehicleMarkName = "Ford",
@@ -415,12 +414,12 @@ public static class DataHelper
                 };
                 await context.VehicleMarks.AddAsync(vehicleMark);
                 await context.SaveChangesAsync();
-                
+
                 vehicleModel = new VehicleModel
                 {
                     Id = new Guid(),
                     VehicleModelName = "Focus",
-                    VehicleMarkId =  context.VehicleMarks
+                    VehicleMarkId = context.VehicleMarks
                         .SingleOrDefaultAsync
                             (v => v.VehicleMarkName.Equals("Ford")).Result!.Id,
                     CreatedAt = DateTime.Now.ToUniversalTime()
@@ -428,7 +427,7 @@ public static class DataHelper
                 await context.VehicleModels.AddAsync(vehicleModel);
                 await context.SaveChangesAsync();
 
-                 vehicle = new Vehicle
+                vehicle = new Vehicle
                 {
                     Id = new Guid(),
                     DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!
@@ -446,7 +445,7 @@ public static class DataHelper
                 };
                 await context.Vehicles.AddAsync(vehicle);
                 await context.SaveChangesAsync();
-                
+
                 var schedule = new Schedule
                 {
                     Id = new Guid(),
@@ -460,7 +459,7 @@ public static class DataHelper
                 };
                 await context.Schedules.AddAsync(schedule);
                 await context.SaveChangesAsync();
-                
+
                 schedule = new Schedule
                 {
                     Id = new Guid(),
@@ -475,31 +474,30 @@ public static class DataHelper
                 await context.Schedules.AddAsync(schedule);
                 await context.SaveChangesAsync();
 
-                
+
                 var rideTime = new RideTime
                 {
-                    DriverId = context.Drivers.SingleOrDefaultAsync(d => 
+                    DriverId = context.Drivers.SingleOrDefaultAsync(d =>
                         d.PersonalIdentifier!.Equals("38806237921")).Result!.Id,
                     ScheduleId = context.Schedules
                         .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("38806237921"))
                         .Result!.Id,
-                    RideDateTime = context.Schedules.FirstOrDefaultAsync(s => 
+                    RideDateTime = context.Schedules.FirstOrDefaultAsync(s =>
                         s.Driver!.PersonalIdentifier!.Equals("38806237921")).Result!.StartDateAndTime,
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
                 await context.RideTimes.AddAsync(rideTime);
                 await context.SaveChangesAsync();
-                
-                
-                 
-                 rideTime = new RideTime
+
+
+                rideTime = new RideTime
                 {
-                    DriverId = context.Drivers.SingleOrDefaultAsync(d => 
+                    DriverId = context.Drivers.SingleOrDefaultAsync(d =>
                         d.PersonalIdentifier!.Equals("36605138911")).Result!.Id,
                     ScheduleId = context.Schedules
                         .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("36605138911"))
                         .Result!.Id,
-                    RideDateTime = context.Schedules.FirstOrDefaultAsync(s => 
+                    RideDateTime = context.Schedules.FirstOrDefaultAsync(s =>
                         s.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!.StartDateAndTime,
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
@@ -547,8 +545,7 @@ public static class DataHelper
                 var booking = new Booking
                 {
                     Id = new Guid(),
-                    DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("38806237921")).Result.
-                        Id,
+                    DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("38806237921")).Result.Id,
                     VehicleId = vehicle.Id,
                     CustomerId = customer.Id,
                     CityId = city.Id,

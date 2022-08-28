@@ -120,10 +120,7 @@ public class IndexModel : PageModel
             return Page();
         }
 
-        if (Input.ImageFile != null)
-        {
-            await SavingImage();
-        }
+        if (Input.ImageFile != null) await SavingImage();
 
         var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
         if (Input.PhoneNumber != phoneNumber)
@@ -169,9 +166,8 @@ public class IndexModel : PageModel
     /// <returns>IActionResult</returns>
     private async Task<IActionResult> SavingImage()
     {
-
         var user = await _userManager.GetUserAsync(User);
-        if(Input.ImageFile != null)
+        if (Input.ImageFile != null)
         {
             using (var memoryStream = new MemoryStream())
             {

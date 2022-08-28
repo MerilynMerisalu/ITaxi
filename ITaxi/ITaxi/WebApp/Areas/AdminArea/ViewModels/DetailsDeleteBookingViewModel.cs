@@ -56,5 +56,4 @@ public class DetailsDeleteBookingViewModel : AdminAreaBaseViewModel
     public string BookingDeclineDateAndTime { get; set; } = default!;
 
     public bool IsDeclined { get; set; }
-    
 }

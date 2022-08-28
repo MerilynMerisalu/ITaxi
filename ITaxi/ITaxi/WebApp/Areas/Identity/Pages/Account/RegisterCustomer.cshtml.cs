@@ -3,7 +3,6 @@
 
 #nullable enable
 
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text;
@@ -50,7 +49,7 @@ public class RegisterCustomerModel : PageModel
         _emailSender = emailSender;
         _context = context;
         DisabilityTypes = new SelectList(_context.DisabilityTypes
-                .Include(d => 
+                .Include(d =>
                     d.DisabilityTypeName).ThenInclude(d => d.Translations)
                 .OrderBy(d => d.DisabilityTypeName)
                 .Select(d => new {d.Id, d.DisabilityTypeName}).ToList(),
@@ -184,13 +183,13 @@ public class RegisterCustomerModel : PageModel
         public string FirstName { get; set; } = default!;
 
         [Required(ErrorMessageResourceType = typeof(Common),
-        ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
         [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
         [Display(ResourceType = typeof(CustomerRegister), Name = nameof(LastName))]
         public string LastName { get; set; } = default!;
-        
+
         [Display(ResourceType = typeof(CustomerRegister), Name = nameof(Gender))]
         [EnumDataType(typeof(Gender))]
         public Gender Gender { get; set; }

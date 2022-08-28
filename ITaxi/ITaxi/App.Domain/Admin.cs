@@ -11,7 +11,8 @@ public class Admin : DomainEntityMetaId
     public AppUser? AppUser { get; set; }
 
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
-    [StringLength(50,ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage" )]
+    [StringLength(50, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Admin), Name = "PersonalIdentifier")]
     public string? PersonalIdentifier { get; set; }
 
@@ -23,7 +24,7 @@ public class Admin : DomainEntityMetaId
     public City? City { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-    [MaxLength(50,ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength" )]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     [StringLength(50, MinimumLength = 1)]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Admin), Name = "AddressOfResidence")]
     public string Address { get; set; } = default!;

@@ -1,11 +1,9 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using App.Resources.Areas.App.Domain.AdminArea;
-
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
-public class DetailsDeleteCommentViewModel: AdminAreaBaseViewModel
+public class DetailsDeleteCommentViewModel : AdminAreaBaseViewModel
 {
     public Guid Id { get; set; }
 
@@ -16,7 +14,7 @@ public class DetailsDeleteCommentViewModel: AdminAreaBaseViewModel
     public string CustomerName { get; set; } = default!;
 
     [Display(ResourceType = typeof(Comment),
-        Name = nameof(Drive))] 
+        Name = nameof(Drive))]
     public string Drive { get; set; } = default!;
 
     [Display(ResourceType = typeof(Comment), Name = "CommentName")]

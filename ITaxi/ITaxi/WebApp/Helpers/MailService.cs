@@ -8,6 +8,7 @@ namespace WebApp.Helpers;
 public class MailService : IMailService
 {
     private readonly MailSettings _mailSettings;
+
     public MailService(IOptions<MailSettings> mailSettings)
     {
         _mailSettings = mailSettings.Value;
@@ -24,7 +25,6 @@ public class MailService : IMailService
         {
             byte[] fileBytes;
             foreach (var file in mailRequest.Attachments)
-            {
                 if (file.Length > 0)
                 {
                     using (var ms = new MemoryStream())
@@ -32,10 +32,11 @@ public class MailService : IMailService
                         await file.CopyToAsync(ms);
                         fileBytes = ms.ToArray();
                     }
+
                     builder.Attachments.Add(file.FileName, fileBytes, ContentType.Parse(file.ContentType));
                 }
-            }
         }
+
         builder.HtmlBody = mailRequest.Body;
         email.Body = builder.ToMessageBody();
         using var smtp = new SmtpClient();

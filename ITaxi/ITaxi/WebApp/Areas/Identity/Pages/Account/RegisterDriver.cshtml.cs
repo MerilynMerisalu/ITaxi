@@ -32,7 +32,7 @@ public class RegisterDriverModel : PageModel
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserStore<AppUser> _userStore;
-    
+
 
     public RegisterDriverModel(
         UserManager<AppUser> userManager,
@@ -40,7 +40,7 @@ public class RegisterDriverModel : PageModel
         SignInManager<AppUser> signInManager,
         ILogger<RegisterDriverModel> logger,
         IEmailSender emailSender, AppDbContext context
-        )
+    )
     {
         _userManager = userManager;
         _userStore = userStore;
@@ -111,7 +111,7 @@ public class RegisterDriverModel : PageModel
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
             var result = await _userManager.CreateAsync(user, Input.Password);
-            
+
 #warning ask if this is the right way to add a claim in my app context
             result = await _userManager.AddClaimAsync(user, new Claim("aspnet.firstname", user.FirstName));
             result = await _userManager.AddClaimAsync(user, new Claim("aspnet.lastname", user.LastName));
@@ -145,7 +145,7 @@ public class RegisterDriverModel : PageModel
                 if (Input.DriverAndDriverLicenseCategories != null)
                 {
 #warning Adding driver and driver license categories needs a custom validation rule
-                    
+
                     foreach (var driverLicenseCategoryId in Input.DriverAndDriverLicenseCategories)
                     {
                         var driverAndDriverLicenseCategories = new DriverAndDriverLicenseCategory
@@ -155,16 +155,11 @@ public class RegisterDriverModel : PageModel
                         };
                         await _context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategories);
                         await _context.SaveChangesAsync();
-                        
-                        
                     }
 
-                    #warning temporarly solution
+#warning temporarly solution
                     result = await _userManager.AddToRoleAsync(user, nameof(Driver));
-                    if (!result.Succeeded)
-                    {
-                        throw new ApplicationException("Cannot add an user to a role");
-                    }
+                    if (!result.Succeeded) throw new ApplicationException("Cannot add an user to a role");
                 }
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)

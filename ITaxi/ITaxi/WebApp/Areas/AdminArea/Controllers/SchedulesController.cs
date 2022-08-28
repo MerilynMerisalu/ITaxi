@@ -47,8 +47,8 @@ public class SchedulesController : Controller
         if (id == null) return NotFound();
 
         var roleName = User.GettingUserRoleName();
-        
-        var schedule =  _uow.Schedules.GettingTheFirstSchedule(null, roleName);
+
+        var schedule = _uow.Schedules.GettingTheFirstSchedule(null, roleName);
 
         if (schedule == null) return NotFound();
 
@@ -75,7 +75,7 @@ public class SchedulesController : Controller
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
             nameof(Driver.Id), $"{nameof(Driver.AppUser)}.{nameof(Driver.AppUser.LastAndFirstName)}");
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(null,roleName ),
+        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(null, roleName),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
 #warning Schedule StartDateAndTime needs a custom validation
 
@@ -110,7 +110,6 @@ public class SchedulesController : Controller
     // GET: AdminArea/Schedules/Edit/5
     public async Task<IActionResult> Edit(Guid? id)
     {
-        
         var roleName = User.GettingUserRoleName();
         var vm = new EditScheduleViewModel();
         if (id == null) return NotFound();
@@ -133,7 +132,6 @@ public class SchedulesController : Controller
             nameof(Driver.Id), "AppUser.LastAndFirstName");
 
         return View(vm);
-        
     }
 
     // POST: AdminArea/Schedules/Edit/5
@@ -147,8 +145,7 @@ public class SchedulesController : Controller
 
         if (schedule != null && id != schedule.Id) return NotFound();
 
-        
-        
+
         if (ModelState.IsValid)
         {
             try
@@ -190,9 +187,9 @@ public class SchedulesController : Controller
         var vm = new DetailsDeleteScheduleViewModel();
         if (id == null) return NotFound();
 
-        
+
         var roleName = User.GettingUserRoleName();
-        var schedule =  _uow.Schedules.GettingTheFirstSchedule( null, roleName);
+        var schedule = _uow.Schedules.GettingTheFirstSchedule(null, roleName);
         if (schedule == null) return NotFound();
 
         vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;

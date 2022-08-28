@@ -9,9 +9,9 @@ public class DetailsDeleteCommentViewModel
 
     [Display(ResourceType = typeof(Comment), Name = "Driver")]
     public string DriverName { get; set; } = default!;
-    
+
     [Display(ResourceType = typeof(Comment),
-        Name = nameof(Drive))] 
+        Name = nameof(Drive))]
     public string Drive { get; set; } = default!;
 
     [Display(ResourceType = typeof(Comment), Name = "CommentName")]

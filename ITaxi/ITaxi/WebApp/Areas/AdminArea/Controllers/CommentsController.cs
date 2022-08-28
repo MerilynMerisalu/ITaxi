@@ -1,6 +1,5 @@
 #nullable enable
 using App.Contracts.DAL;
-using App.DAL.EF;
 using App.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,17 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers;
+
 [Authorize(Roles = nameof(Admin))]
 [Area(nameof(AdminArea))]
 public class CommentsController : Controller
 {
-    
     private readonly IAppUnitOfWork _uow;
 
     public CommentsController(IAppUnitOfWork uow)
     {
         _uow = uow;
-        
     }
 
     // GET: AdminArea/Comments
@@ -55,7 +53,7 @@ public class CommentsController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditCommentViewModel();
-        
+
         vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(),
             nameof(Drive.Id), nameof(Drive.Booking.PickUpDateAndTime));
 
@@ -105,7 +103,7 @@ public class CommentsController : Controller
             nameof(Drive.Id));
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.DriveId = comment.Drive!.Id;
-        
+
 
         return View(vm);
     }

@@ -1,19 +1,13 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using App.Domain;
+﻿using System.ComponentModel.DataAnnotations;
 using App.Domain.Enum;
-using Booking = App.Resources.Areas.App.Domain.AdminArea.Booking;
-using Comment = App.Resources.Areas.App.Domain.AdminArea.Comment;
-using Customer = App.Resources.Areas.App.Domain.AdminArea.Customer;
-using Drive = App.Resources.Areas.App.Domain.AdminArea.Drive;
-using Driver = App.Resources.Areas.App.Domain.AdminArea.Driver;
-using Schedule = App.Resources.Areas.App.Domain.AdminArea.Schedule;
+using App.Resources.Areas.App.Domain.AdminArea;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
 public class DetailsDriveViewModel : AdminAreaBaseViewModel
 {
     public Guid Id { get; set; }
+
     [Display(ResourceType = typeof(Schedule), Name = "ScheduleName")]
     public string Schedule { get; set; } = default!;
 
@@ -56,32 +50,30 @@ public class DetailsDriveViewModel : AdminAreaBaseViewModel
     [Display(ResourceType = typeof(Drive), Name = "DriveStatus")]
     public StatusOfDrive StatusOfDrive { get; set; }
 
-    
+
     [Display(ResourceType = typeof(Comment), Name = "CommentName")]
     public string CommentText { get; set; } = default!;
-    
+
     [Display(ResourceType = typeof(Drive), Name = "AcceptedDateAndTime")]
 
     public string? DriveAcceptedDateAndTime { get; set; }
 
     [Display(ResourceType = typeof(Drive), Name = "DeclineDateAndTime")]
-    
+
     public string? DriveDeclineDateAndTime { get; set; }
-    
+
     [Display(ResourceType = typeof(Drive), Name = "InProgressDateAndTime")]
-    
+
     public string? DriveInProgressDateAndTime { get; set; }
+
     [Display(ResourceType = typeof(Drive), Name = "FinishedDateAndTime")]
     public string? DriveFinishedDateAndTime { get; set; }
-    
+
     public bool IsDriveAccepted { get; set; }
-    
+
     public bool IsDriveDeclined { get; set; }
-    
+
     public bool IsDriveStarted { get; set; }
-    
+
     public bool IsDriveFinished { get; set; }
-
-    
 }
-
