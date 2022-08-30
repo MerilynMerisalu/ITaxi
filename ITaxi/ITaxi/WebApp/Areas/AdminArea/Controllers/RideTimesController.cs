@@ -16,6 +16,8 @@ namespace WebApp.Areas.AdminArea.Controllers;
 public class RideTimesController : Controller
 {
     private readonly IAppUnitOfWork _uow;
+    #warning Ask if this is the right way to get the user name of a logged in user
+#warning Ask how to get the user role using interface
 
 
     public RideTimesController(IAppUnitOfWork uow)
@@ -218,11 +220,12 @@ public class RideTimesController : Controller
     {
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
+        var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, roleName);
+        var rideTime =  await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, roleName);
         if (rideTime == null) return NotFound();
 
-        vm.Driver = rideTime.Driver!.AppUser!.LastAndFirstName;
+        
 
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
         rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
