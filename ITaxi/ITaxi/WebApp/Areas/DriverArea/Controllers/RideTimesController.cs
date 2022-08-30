@@ -144,7 +144,8 @@ public class RideTimesController : Controller
         if (rideTime == null) return NotFound();
 
         vm.Id = rideTime.Id;
-
+        rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
+        rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
         vm.Schedules = new SelectList(
             await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName),
             nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
