@@ -71,6 +71,11 @@ public class RideTimesController : Controller
         vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName)
             , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
         var schedules = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
+        foreach (var schedule in schedules)
+        {
+            schedule.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToLocalTime().ToString("g"));
+            schedule.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToLocalTime().ToString("g"));
+        }
         var scheduleStartAndEndTime = _uow.Schedules.GettingStartAndEndTime(schedules);
         var rideTimes = _uow.RideTimes.CalculatingRideTimes(scheduleStartAndEndTime);
         vm.RideTimes = new SelectList(rideTimes);
