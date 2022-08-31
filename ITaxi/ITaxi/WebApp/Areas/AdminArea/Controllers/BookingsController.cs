@@ -1,8 +1,11 @@
 #nullable enable
 using System.Diagnostics;
+using System.Net;
+using System.Net.Mail;
 using App.Contracts.DAL;
 using App.Domain;
 using App.Domain.Enum;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -29,8 +32,9 @@ public class BookingsController : Controller
     // GET: AdminArea/Bookings
     public async Task<IActionResult> Index()
     {
+        var roleName = User.GettingUserRoleName();
 #warning Should this be a repo method
-        var res = await _uow.Bookings.GettingAllOrderedBookingsAsync();
+        var res = await _uow.Bookings.GettingAllOrderedBookingsAsync(null, roleName);
         foreach (var booking in res)
             if (booking != null)
             {
@@ -49,7 +53,10 @@ public class BookingsController : Controller
         var vm = new DetailsDeleteBookingViewModel();
         if (id == null) return NotFound();
 
-        var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value);
+        var roleName = User.GettingUserRoleName();
+
+
+        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName);
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
@@ -109,6 +116,7 @@ public class BookingsController : Controller
         var booking = new Booking();
         if (ModelState.IsValid)
         {
+            
             booking.Id = Guid.NewGuid();
             booking.CityId = vm.CityId;
             booking.CustomerId = vm.CustomerId;
@@ -276,7 +284,8 @@ public class BookingsController : Controller
         var vm = new DeclineBookingViewModel();
         if (id == null) return NotFound();
 
-        var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value);
+        var roleName = User.GettingUserRoleName();
+        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName);
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
@@ -306,8 +315,9 @@ public class BookingsController : Controller
     {
         var vm = new DetailsDeleteBookingViewModel();
         if (id == null) return NotFound();
+        var roleName = User.GettingUserRoleName();
 
-        var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value, false);
+        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName );
         if (booking == null) return NotFound();
         vm.Id = booking.Id;
         vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
@@ -339,11 +349,12 @@ public class BookingsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeclineConfirmed(Guid id)
     {
-        var booking = await _uow.Bookings.FirstOrDefaultAsync(id);
+        var roleName = User.GettingUserRoleName();
+        var booking = await _uow.Bookings.GettingBookingAsync(id, null, roleName);
         if (booking != null)
         {
             var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id));
-            _uow.Bookings.BookingDecline(booking);
+            await _uow.Bookings.BookingDeclineAsync(booking.Id, null, roleName );
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             booking.IsDeclined = true;
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
@@ -353,13 +364,13 @@ public class BookingsController : Controller
 #warning Add an EmailAddress Field to Driver with the "~Real"~address
 #warning Add a language field to Driver
             // Prepare Email Notification
-            var mailRequest = new MailRequest();
+            /*var mailRequest = new MailRequest();
 #warning Add Language Support for email templates
             mailRequest.Subject = $"Booking Declined: {booking.PickUpDateAndTime:g} {booking.PickupAddress}";
             mailRequest.ToEmail = "programmeerija88@gmail.com";
 #warning Include a link to quick login to the portal to see this booking in the email content
             mailRequest.Body = $"Booking Declined: {booking.PickUpDateAndTime:g} {booking.PickupAddress}";
-/*
+
             using (MailMessage mm = new MailMessage("testitaxi29@gmail.com", mailRequest.ToEmail))
             {
                 mm.Subject = mailRequest.Subject;
@@ -378,12 +389,12 @@ public class BookingsController : Controller
                     smtp.Send(mm);
                 }
             }
-            */
+            
 
             // Send Email Notification
             //_mailService.
             var response = await _mailService.SendEmailAsync(mailRequest);
-            Trace.WriteLine(response);
+            Trace.WriteLine(response);*/
 
             await _uow.SaveChangesAsync();
             _uow.Drives.Update(drive);
@@ -399,7 +410,8 @@ public class BookingsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b != null && b.Id.Equals(id), false);
+        var roleName = User.GettingUserRoleName();
+        var booking = await _uow.Bookings.GettingBookingAsync(id, null,roleName );
         var drive = await _uow.Drives.SingleOrDefaultAsync(d => d != null && d.Booking!.Id.Equals(id), false);
         var comment =
             await _uow.Comments.SingleOrDefaultAsync(c => drive != null && c != null && c.DriveId.Equals(drive.Id),

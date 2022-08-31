@@ -32,9 +32,10 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
         return base.CreateQuery(noTracking).ToList();
     }
 
-    public async Task<IEnumerable<Booking?>> GettingAllOrderedBookingsAsync(bool noTracking = true)
+    public async Task<IEnumerable<Booking?>> GettingAllOrderedBookingsAsync(Guid? userId = null,
+       string? roleName = null, bool noTracking = true)
     {
-        return await CreateQuery(noTracking)
+        return await CreateQuery(userId, roleName,noTracking)
             .OrderBy(b => b.PickUpDateAndTime.Date)
             .ThenBy(b => b.PickUpDateAndTime.Day)
             .ThenBy(b => b.PickUpDateAndTime.Month)
@@ -47,9 +48,11 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
             .ToListAsync();
     }
 
-    public IEnumerable<Booking?> GettingAllOrderedBookings(bool noTracking = true)
+   
+
+    public IEnumerable<Booking?> GettingAllOrderedBookings(Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return CreateQuery(noTracking)
+        return CreateQuery(userId,roleName,noTracking)
             .OrderBy(b => b.PickUpDateAndTime.Date)
             .ThenBy(b => b.PickUpDateAndTime.Day)
             .ThenBy(b => b.PickUpDateAndTime.Month)
@@ -76,6 +79,7 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
             .ToListAsync();
     }
 
+    
     public IEnumerable<Booking?> GettingAllOrderedBookingsWithoutIncludes(bool noTracking = true)
     {
         return base.CreateQuery(noTracking)
@@ -130,27 +134,71 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
     }
 
 
-    public Booking BookingDecline(Booking booking)
+    public async Task<Booking?> BookingDeclineAsync(Guid id, Guid? userId = null, string? roleName = null)
     {
+        var booking = await FirstOrDefaultAsync(id, userId, roleName);
+        if (booking == null)
+        {
+            return null;
+        }
         booking.StatusOfBooking = StatusOfBooking.Declined;
         return booking;
     }
 
-    public override async Task<Booking?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
+    public Booking? BookingDecline(Guid id, Guid? userId = null, string? roleName = null)
     {
-        return await CreateQuery(noTracking).FirstOrDefaultAsync(b => b.Id.Equals(id));
+        var booking = FirstOrDefault(id, userId, roleName);
+        if (booking == null)
+        {
+            return null;
+        }
+        booking.StatusOfBooking = StatusOfBooking.Declined;
+        return booking;
     }
 
-    public override Booking? FirstOrDefault(Guid id, bool noTracking = true)
+    public async Task<Booking?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null)
     {
-        return CreateQuery(noTracking).FirstOrDefault(b => b.Id.Equals(id));
+        var booking = await FirstOrDefaultAsync(id, userId, roleName);
+        return booking;
     }
 
-    protected override IQueryable<Booking> CreateQuery(bool noTracking = true)
+    public Booking? GettingBooking(Guid id, Guid? userId = null, string? roleName = null)
+    {
+        var booking = FirstOrDefault(id, userId, roleName);
+        return booking;
+    }
+
+    public  async Task<Booking?> FirstOrDefaultAsync(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return await CreateQuery(userId, roleName,noTracking).FirstOrDefaultAsync(b => b.Id.Equals(id));
+    }
+
+    public  Booking? FirstOrDefault(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return CreateQuery(userId, roleName,noTracking).FirstOrDefault(b => b.Id.Equals(id));
+    }
+
+    protected  IQueryable<Booking> CreateQuery(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query.AsNoTracking();
 
+        if (roleName is nameof(Admin))
+        {
+            query = query.Include(b => b.City)
+                .Include(b => b.Driver)
+                .ThenInclude(d => d!.AppUser)
+                .Include(b => b.Schedule)
+                .Include(b => b.Vehicle)
+                .ThenInclude(v => v!.VehicleMark)
+                .Include(v => v.Vehicle)
+                .ThenInclude(v => v!.VehicleModel)
+                .Include(b => b.VehicleType!.VehicleTypeName)
+                .ThenInclude(v => v.Translations)
+                .Include(c => c.Drive)
+                .ThenInclude(c => c!.Comment);
+            return query;
+        }
         query = query.Include(b => b.City)
             .Include(b => b.Driver)
             .ThenInclude(d => d!.AppUser)
@@ -162,7 +210,8 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
             .Include(b => b.VehicleType!.VehicleTypeName)
             .ThenInclude(v => v.Translations)
             .Include(c => c.Drive)
-            .ThenInclude(c => c!.Comment);
+            .ThenInclude(c => c!.Comment)
+            .Where(u => u.Customer!.AppUserId.Equals(userId));
         return query;
     }
 }

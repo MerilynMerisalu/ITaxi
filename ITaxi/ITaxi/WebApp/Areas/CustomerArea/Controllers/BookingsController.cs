@@ -1,6 +1,7 @@
 using App.Contracts.DAL;
 using App.Domain;
 using App.Domain.Enum;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -236,11 +237,13 @@ public class BookingsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeclineConfirmed(Guid id)
     {
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
         var booking = await _uow.Bookings.FirstOrDefaultAsync(id);
         if (booking != null)
         {
             var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id));
-            _uow.Bookings.BookingDecline(booking);
+            await _uow.Bookings.BookingDeclineAsync(booking.Id, userId, roleName);
             drive!.Booking = booking;
             _uow.Bookings.Update(booking);
             await _uow.SaveChangesAsync();
