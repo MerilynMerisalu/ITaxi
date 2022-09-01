@@ -249,7 +249,8 @@ public class BookingsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditBookingViewModel vm)
     {
-        var booking = await _uow.Bookings.GettingBookingAsync(id);
+        var roleName = User.GettingUserRoleName();
+        var booking = await _uow.Bookings.GettingBookingAsync(id, null, roleName);
         if (booking != null && id != booking.Id) return NotFound();
 
         if (ModelState.IsValid)
