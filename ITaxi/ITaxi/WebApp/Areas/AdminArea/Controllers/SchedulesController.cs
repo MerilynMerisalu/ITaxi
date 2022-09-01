@@ -48,7 +48,7 @@ public class SchedulesController : Controller
 
         var roleName = User.GettingUserRoleName();
 
-        var schedule = _uow.Schedules.GettingTheFirstSchedule(null, roleName);
+        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, null, roleName);
 
         if (schedule == null) return NotFound();
 
@@ -141,7 +141,8 @@ public class SchedulesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditScheduleViewModel vm)
     {
-        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
+        var roleName = User.GettingUserRoleName();
+        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id, null, roleName);
 
         if (schedule != null && id != schedule.Id) return NotFound();
 
@@ -189,7 +190,7 @@ public class SchedulesController : Controller
 
 
         var roleName = User.GettingUserRoleName();
-        var schedule = _uow.Schedules.GettingTheFirstSchedule(null, roleName);
+        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, null, roleName);
         if (schedule == null) return NotFound();
 
         vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;

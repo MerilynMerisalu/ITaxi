@@ -54,12 +54,18 @@ public class BookingsController : Controller
         if (id == null) return NotFound();
 
         var roleName = User.GettingUserRoleName();
-
-
         var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName);
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
+        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, null, roleName);
+
+        if (schedule != null)
+        {
+            schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
+            schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
+        }
+
         vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
         vm.City = booking.City!.CityName;
         vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
@@ -201,8 +207,7 @@ public class BookingsController : Controller
             schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
 
         }
-
-
+        
         vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
             nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
         vm.ScheduleId = booking.ScheduleId;
@@ -339,6 +344,13 @@ public class BookingsController : Controller
         var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName );
         if (booking == null) return NotFound();
         vm.Id = booking.Id;
+        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, null, roleName);
+
+        if (schedule != null)
+        {
+            schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
+            schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
+        }
         vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
         vm.City = booking.City!.CityName;
         vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;

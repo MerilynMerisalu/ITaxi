@@ -18,7 +18,7 @@ public interface IScheduleRepository : IEntityRepository<Schedule>
 
     Schedule? GetScheduleWithoutIncludes(Guid id, bool noTracking = true);
 
-    //Task<Schedule?> GettingTheFirstScheduleAsync(Guid id,Guid? userid = null, string? roleName = null, bool noTracking = true);
+    Task<Schedule?> GettingTheFirstScheduleAsync(Guid id,Guid? userid = null, string? roleName = null, bool noTracking = true);
     Schedule? GettingTheFirstSchedule(Guid? userId = null, string? roleName = null, bool noTracking = true);
 
     DateTime[] GettingStartAndEndTime(IEnumerable<Schedule> schedules, Guid? userId = null, string? roleName = null);

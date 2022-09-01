@@ -185,7 +185,9 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
                 .Include(s => s.Vehicle)
                 .ThenInclude(s => s!.VehicleModel)
                 .Include(v => v.Vehicle)
-                .ThenInclude(v => v!.VehicleType);
+                .ThenInclude(v => v!.VehicleType)
+                .ThenInclude(v => v!.VehicleTypeName)
+                .ThenInclude(v => v.Translations);
             return query;
         }
 
@@ -197,6 +199,8 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
             .ThenInclude(s => s!.VehicleModel)
             .Include(v => v.Vehicle)
             .ThenInclude(v => v!.VehicleType)
+            .ThenInclude(v => v!.VehicleTypeName)
+            .ThenInclude(v => v.Translations)
             .Where(s => s.Driver!.AppUserId.Equals(userId));
         return query;
     }
