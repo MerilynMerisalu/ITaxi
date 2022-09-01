@@ -60,14 +60,9 @@ public class BookingsController : Controller
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, null, roleName);
-
-        if (schedule != null)
-        {
-            schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
-            schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
-        }
-
+        
+        booking.Schedule!.StartDateAndTime = booking.Schedule!.StartDateAndTime.ToLocalTime();
+        booking.Schedule!.EndDateAndTime = booking.Schedule!.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
         vm.City = booking.City!.CityName;
         vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
@@ -318,6 +313,8 @@ public class BookingsController : Controller
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
+        booking.Schedule!.StartDateAndTime = booking.Schedule!.StartDateAndTime.ToLocalTime();
+        booking.Schedule!.EndDateAndTime = booking.Schedule!.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
         vm.City = booking.City!.CityName;
         vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
@@ -332,53 +329,12 @@ public class BookingsController : Controller
         vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime().ToString("g");
         vm.CreatedBy = booking.CreatedBy!;
         vm.CreatedAt = booking.CreatedAt.ToLocalTime().ToString("G");
-        vm.UpdatedBy = booking.UpdatedBy!;
+        vm.UpdatedBy = User.Identity!.Name!;
         vm.UpdatedAt = booking.UpdatedAt.ToLocalTime().ToString("G");
 
         return View(vm);
     }
-
-
-    // GET: AdminArea/Bookings/Delete/5
-    public async Task<IActionResult> Delete(Guid? id)
-    {
-        var vm = new DetailsDeleteBookingViewModel();
-        if (id == null) return NotFound();
-        var roleName = User.GettingUserRoleName();
-
-        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName );
-        if (booking == null) return NotFound();
-        vm.Id = booking.Id;
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, null, roleName);
-
-        if (schedule != null)
-        {
-            schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
-            schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
-        }
-        vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
-        vm.City = booking.City!.CityName;
-        vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
-        vm.Customer = booking.Customer!.AppUser!.LastAndFirstName;
-        vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
-        vm.AdditionalInfo = booking.AdditionalInfo;
-        vm.DestinationAddress = booking.DestinationAddress;
-        vm.PickupAddress = booking.PickupAddress;
-        vm.VehicleType = booking.VehicleType!.VehicleTypeName;
-        vm.HasAnAssistant = booking.HasAnAssistant;
-        vm.NumberOfPassengers = booking.NumberOfPassengers;
-        vm.StatusOfBooking = booking.StatusOfBooking;
-        vm.BookingDeclineDateAndTime = booking.DeclineDateAndTime.ToLocalTime().ToString("G");
-        vm.IsDeclined = booking.IsDeclined;
-        vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime().ToString("g");
-        vm.CreatedBy = booking.CreatedBy!;
-        vm.CreatedAt = booking.CreatedAt.ToLocalTime().ToString("G");
-        vm.CreatedBy = booking.UpdatedBy!;
-        vm.CreatedBy = booking.UpdatedAt.ToLocalTime().ToString("G");
-
-        return View(vm);
-    }
-
+    
     // POST: AdminArea/Bookings/Decline/5
     [HttpPost]
     [ActionName(nameof(Decline))]
@@ -439,6 +395,49 @@ public class BookingsController : Controller
         await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
+
+
+    // GET: AdminArea/Bookings/Delete/5
+    public async Task<IActionResult> Delete(Guid? id)
+    {
+        var vm = new DetailsDeleteBookingViewModel();
+        if (id == null) return NotFound();
+        var roleName = User.GettingUserRoleName();
+
+        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName );
+        if (booking == null) return NotFound();
+        vm.Id = booking.Id;
+        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, null, roleName);
+
+        if (schedule != null)
+        {
+            schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
+            schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
+        }
+        vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
+        vm.City = booking.City!.CityName;
+        vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
+        vm.Customer = booking.Customer!.AppUser!.LastAndFirstName;
+        vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
+        vm.AdditionalInfo = booking.AdditionalInfo;
+        vm.DestinationAddress = booking.DestinationAddress;
+        vm.PickupAddress = booking.PickupAddress;
+        vm.VehicleType = booking.VehicleType!.VehicleTypeName;
+        vm.HasAnAssistant = booking.HasAnAssistant;
+        vm.NumberOfPassengers = booking.NumberOfPassengers;
+        vm.StatusOfBooking = booking.StatusOfBooking;
+        vm.BookingDeclineDateAndTime = booking.DeclineDateAndTime.ToLocalTime().ToString("G");
+        vm.IsDeclined = booking.IsDeclined;
+        vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+        vm.CreatedBy = booking.CreatedBy!;
+        vm.CreatedAt = booking.CreatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedBy = User.Identity!.Name!;
+        vm.UpdatedAt = booking.UpdatedAt.ToLocalTime().ToString("G");
+
+        return View(vm);
+    }
+
+   
 
     // POST: AdminArea/Bookings/Delete/5
     [HttpPost]
