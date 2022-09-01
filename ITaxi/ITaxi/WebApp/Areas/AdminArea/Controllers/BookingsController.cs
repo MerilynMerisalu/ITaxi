@@ -274,6 +274,8 @@ public class BookingsController : Controller
                     booking.NumberOfPassengers = vm.NumberOfPassengers;
                     booking.StatusOfBooking = StatusOfBooking.Awaiting;
                     booking.PickUpDateAndTime = vm.PickUpDateAndTime.ToUniversalTime();
+                    booking.UpdatedBy = User.Identity!.Name;
+                    booking.UpdatedAt = DateTime.Now.ToUniversalTime();
 
                     _uow.Bookings.Update(booking);
                 }
