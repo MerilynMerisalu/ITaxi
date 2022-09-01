@@ -38,6 +38,8 @@ public class BookingsController : Controller
         foreach (var booking in res)
             if (booking != null)
             {
+                booking.Schedule!.StartDateAndTime = booking.Schedule!.StartDateAndTime.ToLocalTime();
+                booking.Schedule!.EndDateAndTime = booking.Schedule!.EndDateAndTime.ToLocalTime();
                 booking.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime();
                 booking.CreatedAt = booking.CreatedAt.ToLocalTime();
                 booking.UpdatedAt = booking.UpdatedAt.ToLocalTime();
@@ -197,7 +199,7 @@ public class BookingsController : Controller
         var vm = new EditBookingViewModel();
         if (id == null) return NotFound();
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.Id.Equals(id));
+        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName);
         if (booking == null) return NotFound();
         var schedules = await _uow.Schedules
             .GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
@@ -208,7 +210,7 @@ public class BookingsController : Controller
 
         }
         
-        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
+        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName),
             nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
         vm.ScheduleId = booking.ScheduleId;
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
@@ -222,7 +224,7 @@ public class BookingsController : Controller
         vm.CustomerId = booking.CustomerId;
         vm.Cities = new SelectList(await _uow.Cities.GetAllCitiesWithoutCountyAsync()
             , nameof(City.Id), nameof(City.CityName));
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(null, roleName),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
         vm.VehicleId = booking.VehicleId;
         vm.AdditionalInfo = booking.AdditionalInfo;
@@ -247,7 +249,7 @@ public class BookingsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditBookingViewModel vm)
     {
-        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.Id.Equals(id));
+        var booking = await _uow.Bookings.GettingBookingAsync(id);
         if (booking != null && id != booking.Id) return NotFound();
 
         if (ModelState.IsValid)

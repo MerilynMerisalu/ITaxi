@@ -24,6 +24,13 @@
         </th>
 
         <th>
+            @Html.DisplayNameFor(model => model.Schedule)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Customer)
+        </th>
+        
+        <th>
             @Html.DisplayNameFor(model => model.VehicleType)
         </th>
         <th>
@@ -80,6 +87,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Driver!.AppUser!.LastAndFirstName)
             </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.Schedule!.ShiftDurationTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer!.AppUser!.LastAndFirstName)
+            </td>
+            
             <td>
                 @Html.DisplayTextFor(modelItem => item.VehicleType!.VehicleTypeName)
             </td>

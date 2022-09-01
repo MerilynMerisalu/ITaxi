@@ -187,7 +187,9 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
                 .Include(b => b.VehicleType!.VehicleTypeName)
                 .ThenInclude(v => v.Translations)
                 .Include(c => c.Drive)
-                .ThenInclude(c => c!.Comment);
+                .ThenInclude(c => c!.Comment)
+                .Include(b => b.Customer)
+                .ThenInclude(c => c!.AppUser);
             return query;
         }
         query = query.Include(b => b.City)
