@@ -181,11 +181,11 @@ public class BookingsController : Controller
                     booking.Id = id;
                     booking.CityId = vm.CityId;
                     booking.CustomerId = customerId;
-                    booking.Driver = await _uow.Drivers.FirstAsync();
+                    booking.DriverId = _uow.Drivers.FirstAsync().Result!.Id;
 #warning needs fixing
-                    //booking.Schedule = await _uow.Schedules.FirstAsync();
+                    booking.ScheduleId =  _uow.Schedules.FirstAsync().Result!.Id;
 #warning needs fixing
-                    //booking.Vehicle = await _uow.Vehicles.FirstAsync();
+                    booking.VehicleId = _uow.Vehicles.FirstAsync().Result!.Id;
                     booking.AdditionalInfo = vm.AdditionalInfo;
                     booking.DestinationAddress = vm.DestinationAddress;
                     booking.PickupAddress = vm.PickupAddress;

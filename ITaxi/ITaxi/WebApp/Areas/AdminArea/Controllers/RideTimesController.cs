@@ -220,7 +220,6 @@ public class RideTimesController : Controller
     {
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
-        var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var rideTime =  await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, roleName);
         if (rideTime == null) return NotFound();
@@ -230,6 +229,8 @@ public class RideTimesController : Controller
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
         rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
 
+        vm.Driver = rideTime.Driver!.AppUser!.LastAndFirstName;
+        
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
 #warning Should it be a repository method
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
