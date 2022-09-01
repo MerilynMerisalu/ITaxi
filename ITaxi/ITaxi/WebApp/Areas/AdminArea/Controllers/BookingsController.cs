@@ -238,7 +238,7 @@ public class BookingsController : Controller
         vm.HasAnAssistant = booking.HasAnAssistant;
         vm.NumberOfPassengers = booking.NumberOfPassengers;
         vm.VehicleTypeId = booking.VehicleTypeId;
-        vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime();
+        vm.PickUpDateAndTime = Convert.ToDateTime(booking.PickUpDateAndTime.ToLocalTime().ToString("g"));
         return View(vm);
     }
 

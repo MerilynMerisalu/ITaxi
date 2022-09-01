@@ -32,6 +32,7 @@ public class EditBookingViewModel
     public SelectList? Cities { get; set; }
 
     [Display(ResourceType = typeof(Booking), Name = nameof(PickUpDateAndTime))]
+    [DisplayFormat(DataFormatString = "{0:g}")]
     public DateTime PickUpDateAndTime { get; set; }
 
     [Display(ResourceType = typeof(Booking), Name = nameof(PickupAddress))]
