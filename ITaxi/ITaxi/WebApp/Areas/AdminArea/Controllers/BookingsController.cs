@@ -85,8 +85,18 @@ public class BookingsController : Controller
     // GET: AdminArea/Bookings/Create
     public async Task<IActionResult> Create()
     {
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
         var vm = new CreateBookingViewModel();
-        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
+        var schedules = await _uow.Schedules
+            .GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
+        foreach (var schedule in schedules)
+        {
+            schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
+            schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
+
+        }
+        vm.Schedules = new SelectList(schedules,
             nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
         vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
             nameof(City.Id), nameof(City.CityName));
@@ -96,12 +106,13 @@ public class BookingsController : Controller
 #warning "Magic string" code smell, fix it
             nameof(Driver.Id),
             $"{nameof(Driver.AppUser)}.{nameof(Driver.AppUser.LastAndFirstName)}");
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
         vm.Customers = new SelectList(await _uow.Customers.GettingAllOrderedCustomersAsync(),
             nameof(Customer.Id),
 #warning "Magic string" code smell, fix it
             $"{nameof(Customer.AppUser)}.{nameof(Customer.AppUser.LastAndFirstName)}");
+        
 
         return View(vm);
     }
@@ -179,9 +190,17 @@ public class BookingsController : Controller
     {
         var vm = new EditBookingViewModel();
         if (id == null) return NotFound();
-
+        var roleName = User.GettingUserRoleName();
         var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.Id.Equals(id));
         if (booking == null) return NotFound();
+        var schedules = await _uow.Schedules
+            .GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
+        foreach (var schedule in schedules)
+        {
+            schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
+            schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
+
+        }
 
 
         vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
@@ -436,7 +455,8 @@ public class BookingsController : Controller
     [HttpPost]
     public async Task<IActionResult> SearchByCityAsync([FromForm] string search)
     {
-        var results = await _uow.Bookings.SearchByCityAsync(search);
+        var roleName = User.GettingUserRoleName();
+        var results = await _uow.Bookings.SearchByCityAsync(search, null, roleName );
         return View(nameof(Index), results);
     }
 }

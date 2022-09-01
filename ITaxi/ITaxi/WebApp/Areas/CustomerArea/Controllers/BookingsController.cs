@@ -25,7 +25,15 @@ public class BookingsController : Controller
     // GET: CustomerArea/Bookings
     public async Task<IActionResult> Index()
     {
-        return View(await _uow.Bookings.GettingAllOrderedBookingsAsync());
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var res = await _uow.Bookings.GettingAllOrderedBookingsAsync(userId, roleName);
+        foreach (var booking in res)
+        {
+            if (booking != null) booking.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime();
+        }
+        return View(res);
+        
     }
 
     // GET: CustomerArea/Bookings/Details/5
@@ -33,8 +41,10 @@ public class BookingsController : Controller
     {
         var vm = new DetailsDeleteBookingViewModel();
         if (id == null) return NotFound();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
 
-        var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value);
+        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, userId, roleName);
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
@@ -72,18 +82,20 @@ public class BookingsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateBookingViewModel vm)
     {
+        var userId = User.GettingUserId();
         var booking = new Booking();
         if (ModelState.IsValid)
         {
             booking.Id = Guid.NewGuid();
             booking.CityId = vm.CityId;
-            booking.Customer = await _uow.Customers.FirstAsync();
-            booking.Driver = await _uow.Drivers.FirstAsync();
+            booking.CustomerId = _uow.Customers
+                .SingleOrDefaultAsync(c => c!.AppUserId.Equals(userId)).Result!.Id;
+            booking.DriverId = _uow.Drivers.FirstAsync().Result!.Id;
 #warning needs fixing
-            booking.Schedule = await _uow.Schedules.FirstAsync();
+            booking.ScheduleId =  _uow.Schedules.FirstAsync().Result!.Id;
 #warning needs fixing
-            booking.Vehicle =
-                await _uow.Vehicles.FirstAsync();
+            booking.VehicleId =
+                 _uow.Vehicles.FirstAsync().Result!.Id;
             booking.AdditionalInfo = vm.AdditionalInfo;
             booking.DestinationAddress = vm.DestinationAddress;
             booking.PickupAddress = vm.PickupAddress;
@@ -122,7 +134,10 @@ public class BookingsController : Controller
         var vm = new EditBookingViewModel();
         if (id == null) return NotFound();
 
-        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.Id.Equals(id));
+        var userId = User.GettingUserId();
+        
+        var roleName = User.GettingUserRoleName();
+        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, userId, roleName);
         if (booking == null) return NotFound();
 
 
@@ -150,23 +165,27 @@ public class BookingsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditBookingViewModel vm)
     {
-        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.Id.Equals(id));
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName, false);
         if (booking != null && id != booking.Id) return NotFound();
 
         if (ModelState.IsValid)
         {
+            var customerId = _uow.Customers
+                .SingleOrDefaultAsync(c => c!.AppUserId.Equals(userId)).Result!.Id;
             try
             {
                 if (booking != null)
                 {
                     booking.Id = id;
                     booking.CityId = vm.CityId;
-                    booking.Customer = await _uow.Customers.FirstAsync();
+                    booking.CustomerId = customerId;
                     booking.Driver = await _uow.Drivers.FirstAsync();
 #warning needs fixing
-                    booking.Schedule = await _uow.Schedules.FirstAsync();
+                    //booking.Schedule = await _uow.Schedules.FirstAsync();
 #warning needs fixing
-                    booking.Vehicle = await _uow.Vehicles.FirstAsync();
+                    //booking.Vehicle = await _uow.Vehicles.FirstAsync();
                     booking.AdditionalInfo = vm.AdditionalInfo;
                     booking.DestinationAddress = vm.DestinationAddress;
                     booking.PickupAddress = vm.PickupAddress;
@@ -212,8 +231,10 @@ public class BookingsController : Controller
     {
         var vm = new DeclineBookingViewModel();
         if (id == null) return NotFound();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
 
-        var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value);
+        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, userId, roleName);
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
@@ -239,7 +260,7 @@ public class BookingsController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.FirstOrDefaultAsync(id);
+        var booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName, false);
         if (booking != null)
         {
             var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id));
@@ -260,8 +281,9 @@ public class BookingsController : Controller
     {
         var vm = new DetailsDeleteBookingViewModel();
         if (id == null) return NotFound();
-
-        var booking = await _uow.Bookings.FirstOrDefaultAsync(id.Value, false);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, userId, roleName, false);
         if (booking == null) return NotFound();
         vm.Id = booking.Id;
         vm.City = booking.City!.CityName;
@@ -284,7 +306,9 @@ public class BookingsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b != null && b.Id.Equals(id), false);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName );
         var drive = await _uow.Drives.SingleOrDefaultAsync(d => d != null && d.Booking!.Id.Equals(id), false);
         var comment =
             await _uow.Comments.SingleOrDefaultAsync(c => drive != null && c != null && c.DriveId.Equals(drive.Id),
@@ -309,7 +333,9 @@ public class BookingsController : Controller
     [HttpPost]
     public async Task<IActionResult> SearchByCityAsync([FromForm] string search)
     {
-        var results = await _uow.Bookings.SearchByCityAsync(search);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var results = await _uow.Bookings.SearchByCityAsync(search, userId, roleName);
         return View(nameof(Index), results);
     }
 }

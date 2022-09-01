@@ -104,21 +104,11 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
         return base.CreateQuery(noTracking).FirstOrDefault(b => b.Id.Equals(id));
     }
 
-    public async Task<IEnumerable<Booking?>> SearchByCityAsync(string search)
+    public async Task<List<Booking>> SearchByCityAsync(string search, Guid? userId = null,
+        string? roleName = null)
     {
-        var results =
-            await RepoDbSet.Include(b => b.City)
-                .Include(b => b.Driver)
-                .ThenInclude(d => d!.AppUser)
-                .Include(b => b.Schedule)
-                .Include(b => b.Vehicle)
-                .ThenInclude(v => v!.VehicleMark)
-                .Include(v => v.Vehicle)
-                .ThenInclude(v => v!.VehicleModel)
-                .Include(b => b.VehicleType)
-                .Include(b => b.Drive)
-                .ThenInclude(b => b!.Comment)
-                .Where(b => b.City!.CityName.Contains(search)).ToListAsync();
+        var results = await CreateQuery(userId, roleName)
+            .Where(b => b.City!.CityName.Contains(search)).ToListAsync();
         return results;
     }
 
@@ -156,15 +146,16 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
         return booking;
     }
 
-    public async Task<Booking?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null)
+    public async Task<Booking?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null,
+        bool noTracking = true)
     {
-        var booking = await FirstOrDefaultAsync(id, userId, roleName);
+        var booking = await FirstOrDefaultAsync(id, userId, roleName, noTracking);
         return booking;
     }
 
-    public Booking? GettingBooking(Guid id, Guid? userId = null, string? roleName = null)
+    public Booking? GettingBooking(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        var booking = FirstOrDefault(id, userId, roleName);
+        var booking = FirstOrDefault(id, userId, roleName, noTracking);
         return booking;
     }
 

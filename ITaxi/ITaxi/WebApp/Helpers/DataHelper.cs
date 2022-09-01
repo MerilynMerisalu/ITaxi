@@ -541,18 +541,63 @@ public static class DataHelper
                 };
                 await context.Customers.AddAsync(customer);
                 await context.SaveChangesAsync();
+                
+                appUser = new AppUser
+                {
+                    Id = new Guid(),
+                    FirstName = "Kristjan",
+                    LastName = "Suursalu",
+                    DateOfBirth = DateTime.Parse("2000-04-14"),
+                    Gender = Gender.Female,
+                    Email = "kristjan.suursalu@gmail.com",
+                    EmailConfirmed = true,
+                    PhoneNumber = "88452236"
+                };
+                appUser.UserName = appUser.Email;
+
+                result = userManager!.CreateAsync(appUser, "Kristjankoer123$").Result;
+#warning ask if this is the right way to add a claim in my app context
+                result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
+                result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
+
+
+                if (!result.Succeeded)
+                    foreach (var identityError in result.Errors)
+                        Console.WriteLine("Cant create user! Error: " + identityError.Description);
+                result = userManager.AddToRoleAsync(appUser, "Customer").Result;
+                if (!result.Succeeded)
+                    foreach (var identityError in result.Errors)
+                        Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
+
+                customer = new Customer
+                {
+                    Id = new Guid(),
+                    AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
+                        a.FirstName.Equals("Kristjan") && a.LastName.Equals("Suursalu")).Id,
+                    DisabilityTypeId = disabilityType.Id,
+                    CreatedAt = DateTime.Now.ToUniversalTime()
+                };
+                await context.Customers.AddAsync(customer);
+                await context.SaveChangesAsync();
+
 
                 var booking = new Booking
                 {
                     Id = new Guid(),
                     DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("38806237921")).Result.Id,
-                    VehicleId = vehicle.Id,
-                    CustomerId = customer.Id,
+                    VehicleId = context.Vehicles.FirstOrDefaultAsync(v => v.Driver!.PersonalIdentifier!.Equals("38806237921"))
+                        .Result!.Id,
+                    CustomerId = context.Customers.Include(c => c.AppUser)
+                        .SingleOrDefaultAsync(c => c.AppUser!.FirstName.Equals("Maarika") 
+                                                   && c.AppUser.LastName.Equals("Mätas"))
+                                                    .Result!.Id,
                     CityId = city.Id,
-                    ScheduleId = schedule.Id,
+                    ScheduleId = context.Schedules.Include(s => s.Driver)
+                        .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("38806237921"))
+                        .Result!.Id,
                     VehicleTypeId = regularVehicleType.Id,
-                    PickupAddress = "Kalamaja 5-12",
-                    DestinationAddress = "Suursõjamäe 10",
+                    PickupAddress = "Suursõjamäe 15-2",
+                    DestinationAddress = "Sõpruse pst 10",
                     PickUpDateAndTime = DateTime.Now.ToUniversalTime(),
                     NumberOfPassengers = 2,
                     HasAnAssistant = true,
@@ -574,11 +619,61 @@ public static class DataHelper
                 await context.Drives.AddAsync(drive);
                 await context.SaveChangesAsync();
 
+                booking = new Booking
+                {
+                    Id = new Guid(),
+                    DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("36605138911")).Result.Id,
+                    VehicleId = context.Vehicles.FirstOrDefaultAsync(v => v.Driver!.PersonalIdentifier!.Equals("36605138911"))
+                        .Result!.Id,
+                    CustomerId = context.Customers.Include(c => c.AppUser)
+                        .SingleOrDefaultAsync(c => c.AppUser!.FirstName.Equals("Kristjan") 
+                                                   && c.AppUser.LastName.Equals("Suursalu"))
+                                                    .Result!.Id,
+                    CityId = city.Id,
+                    ScheduleId = context.Schedules.Include(s => s.Driver)
+                        .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("36605138911"))
+                        .Result!.Id,
+                    VehicleTypeId = wheelChairVehicleType.Id,
+                    PickupAddress = "Sõpruse 13-4",
+                    DestinationAddress = "Kalamaja 10",
+                    PickUpDateAndTime = DateTime.Now.ToUniversalTime(),
+                    NumberOfPassengers = 2,
+                    HasAnAssistant = true,
+                    StatusOfBooking = StatusOfBooking.Awaiting,
+                    CreatedAt = DateTime.Now.ToUniversalTime()
+                };
+                await context.Bookings.AddAsync(booking);
+                await context.SaveChangesAsync();
+
+                 drive = new Drive
+                {
+                    Id = new Guid(),
+                    DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("36605138911")).Result
+                        .Id,
+                    Booking = context.Bookings.Include(b => b.Driver)
+                        .SingleOrDefaultAsync(b => b.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!,
+                    StatusOfDrive = StatusOfDrive.Awaiting,
+                    CreatedAt = DateTime.Now.ToUniversalTime()
+                };
+                await context.Drives.AddAsync(drive);
+                await context.SaveChangesAsync();
+
                 var comment = new Comment
                 {
                     Id = new Guid(),
                     CommentText = "Jäin teenusega rahule!",
                     Drive = drive,
+                    CreatedAt = DateTime.Now.ToUniversalTime()
+                };
+                await context.Comments.AddAsync(comment);
+                await context.SaveChangesAsync();
+                
+                 comment = new Comment
+                {
+                    Id = new Guid(),
+                    CommentText = "Takso hilines",
+                    Drive = await context.Drives.Include(d => d.Driver)
+                        .SingleOrDefaultAsync(d => d.Driver!.PersonalIdentifier!.Equals("36605138911")),
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
                 await context.Comments.AddAsync(comment);

@@ -15,13 +15,13 @@ public interface IBookingRepository : IEntityRepository<Booking>
     // IEnumerable<Booking?> GettingAllOrderedBookingsWithoutIncludes( bool? noTracking = true);
     Task<Booking?> GettingBookingWithoutIncludesByIdAsync(Guid id, bool noTracking = true);
     Booking? GettingBookingWithoutIncludesById(Guid id,  bool noTracking = true);
-    Task<IEnumerable<Booking?>> SearchByCityAsync(string search);
+    Task<List<Booking>> SearchByCityAsync(string search, Guid? userId = null, string? roleName = null);
     string PickUpDateAndTimeStrFormat(Booking booking);
     DateTime DateTimeFormatting();
 
     Task<Booking?> BookingDeclineAsync(Guid id, Guid? userId = null, string? roleName = null);
     Booking? BookingDecline(Guid id, Guid? userId = null, string? roleName = null);
-    Task<Booking?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null);
-    Booking? GettingBooking(Guid id, Guid? userId = null, string? roleName = null);
+    Task<Booking?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
+    Booking? GettingBooking(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
     
 }
