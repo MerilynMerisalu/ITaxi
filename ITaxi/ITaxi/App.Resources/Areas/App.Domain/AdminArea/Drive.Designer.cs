@@ -159,6 +159,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drives.
+        /// </summary>
+        public static string Drives {
+            get {
+                return ResourceManager.GetString("Drives", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status of Drive.
         /// </summary>
         public static string DriveStatus {

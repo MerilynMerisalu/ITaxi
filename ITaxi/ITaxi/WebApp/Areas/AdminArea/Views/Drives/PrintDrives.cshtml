@@ -1,17 +1,12 @@
-﻿@model IEnumerable<App.Domain.Drive>
+﻿@using App.Resources.Areas.App.Domain.AdminArea
+@model IEnumerable<App.Domain.Drive>
 
 
 @{
     Layout = "_PrintLayout";
 }
 
-@{
-    #warning check if getting driver name from the database is optimal
-    var name = Model.Select(d => d.Driver!.AppUser!.LastAndFirstName).FirstOrDefault();
-    <h1>Driver: @name</h1>
-
-
-}
+<h1>@Drive.Drives</h1>
 
 <table class="table">
     <thead>

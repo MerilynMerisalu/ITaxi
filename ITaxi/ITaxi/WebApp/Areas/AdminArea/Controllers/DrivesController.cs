@@ -2,6 +2,7 @@
 using App.Contracts.DAL;
 using App.Domain;
 using App.Domain.Enum;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rotativa.AspNetCore;
@@ -23,7 +24,8 @@ public class DrivesController : Controller
     // GET: AdminArea/Drives
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync();
+        var roleName = User.GettingUserRoleName();
+        var res = await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync(null, roleName);
 #warning Should this be a repo method
         foreach (var drive in res)
         {
@@ -48,11 +50,12 @@ public class DrivesController : Controller
     // GET: AdminArea/Drives/Details/5
     public async Task<IActionResult> Details(Guid? id)
     {
+        var roleName = User.GettingUserRoleName();
         var vm = new DetailsDriveViewModel();
         if (id == null) return NotFound();
 
         var drive = await _uow.Drives
-            .FirstOrDefaultAsync(id.Value);
+            .GettingFirstDriveAsync(id.Value, null, roleName);
         if (drive == null) return NotFound();
 
         vm.DriverLastAndFirstName = drive.Driver!.AppUser!.LastAndFirstName;
@@ -213,7 +216,8 @@ public class DrivesController : Controller
     [HttpPost]
     public async Task<IActionResult> SearchByDateAsync([FromForm] DateTime search)
     {
-        var drives = await _uow.Drives.SearchByDateAsync(search);
+        var roleName = User.GettingUserRoleName();
+        var drives = await _uow.Drives.SearchByDateAsync(search, null, roleName);
         return View(nameof(Index), drives);
     }
 
@@ -223,15 +227,15 @@ public class DrivesController : Controller
     /// <returns>A pdf of drives</returns>
     public async Task<IActionResult> Print()
     {
-        var driver = await _uow.Drivers.FirstAsync();
-        if (driver != null)
-        {
-            var drives = await _uow.Drives.PrintAsync(driver.Id);
+        var roleName = User.GettingUserRoleName();
+        
+        
+            var drives = await _uow.Drives.PrintAsync( null, roleName );
 
             return new ViewAsPdf("PrintDrives", drives);
-        }
+        
 
-        return new ViewAsPdf("PrintDrives");
+        
     }
 
     // GET: AdminArea/Drives/Accept/5
@@ -239,8 +243,9 @@ public class DrivesController : Controller
     {
         if (id == null) return NotFound();
 
+        var roleName = User.GettingUserRoleName();
         var vm = new DriveStateViewModel();
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id.Value);
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id.Value, null, roleName);
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
@@ -272,10 +277,11 @@ public class DrivesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AcceptConfirmed(Guid id)
     {
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        var roleName = User.GettingUserRoleName();
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id, null, roleName);
         if (drive == null) return NotFound();
 
-        drive = await _uow.Drives.AcceptingDriveAsync(id);
+        drive = await _uow.Drives.AcceptingDriveAsync(id, null, roleName);
         if (drive == null) return NotFound();
 
         drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
@@ -303,8 +309,9 @@ public class DrivesController : Controller
     {
         if (id == null) return NotFound();
 
+        var roleName = User.GettingUserRoleName();
         var vm = new DriveStateViewModel();
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id.Value);
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id.Value, null, roleName);
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
@@ -336,10 +343,11 @@ public class DrivesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeclineConfirmed(Guid id)
     {
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        var roleName = User.GettingUserRoleName();
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id, null, roleName);
         if (drive == null) return NotFound();
 
-        drive = await _uow.Drives.DecliningDriveAsync(id);
+        drive = await _uow.Drives.DecliningDriveAsync(id, null, roleName);
         if (drive == null) return NotFound();
 
         drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
@@ -366,9 +374,9 @@ public class DrivesController : Controller
     public async Task<IActionResult> StartDrive(Guid? id)
     {
         if (id == null) return NotFound();
-
+        var roleName = User.GettingUserRoleName();
         var vm = new DriveStateViewModel();
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id.Value);
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id.Value, null, roleName);
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
@@ -399,10 +407,11 @@ public class DrivesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> StartConfirmed(Guid id)
     {
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        var roleName = User.GettingUserRoleName();
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id, null, roleName);
         if (drive == null) return NotFound();
 
-        drive = await _uow.Drives.StartingDriveAsync(id);
+        drive = await _uow.Drives.StartingDriveAsync(id, null, roleName);
         if (drive == null) return NotFound();
 
         drive.DriveStartDateAndTime = DateTime.Now.ToUniversalTime();
@@ -420,8 +429,9 @@ public class DrivesController : Controller
     {
         if (id == null) return NotFound();
 
+        var roleName = User.GettingUserRoleName();
         var vm = new DriveStateViewModel();
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id.Value);
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id.Value, null, roleName);
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
@@ -453,10 +463,11 @@ public class DrivesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EndDriveConfirmed(Guid id)
     {
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        var roleName = User.GettingUserRoleName();
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id, null, roleName);
         if (drive == null) return NotFound();
 
-        drive = await _uow.Drives.EndingDriveAsync(id);
+        drive = await _uow.Drives.EndingDriveAsync(id, null, roleName);
         if (drive == null) return NotFound();
 
         drive.IsDriveFinished = true;

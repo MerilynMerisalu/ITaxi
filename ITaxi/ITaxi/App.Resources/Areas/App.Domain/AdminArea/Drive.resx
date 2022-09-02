@@ -77,4 +77,7 @@
     <data name="Accepted" xml:space="preserve">
         <value>Accepted</value>
     </data>
+    <data name="Drives" xml:space="preserve">
+        <value>Drives</value>
+    </data>
 </root>

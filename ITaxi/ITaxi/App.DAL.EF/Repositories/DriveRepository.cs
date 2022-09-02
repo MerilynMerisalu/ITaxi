@@ -12,27 +12,29 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
     {
     }
 
-    public override async Task<IEnumerable<Drive>> GetAllAsync(bool noTracking = true)
+    public  async Task<IEnumerable<Drive>> GetAllAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
-        return await CreateQuery(noTracking).ToListAsync();
+        return await CreateQuery(userId, roleName,noTracking).ToListAsync();
     }
 
-    public override IEnumerable<Drive> GetAll(bool noTracking = true)
+    public IEnumerable<Drive> GetAll(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
-        return CreateQuery(noTracking).ToList();
+        return CreateQuery(userId,roleName,noTracking).ToList();
     }
 
-    public override async Task<Drive?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
+    public async Task<Drive?> FirstOrDefaultAsync(Guid id,Guid? userId = null, string? roleName = null,
+        bool noTracking = true)
     {
-        return await CreateQuery(noTracking).FirstOrDefaultAsync(d => d.Id.Equals(id));
+        return await CreateQuery(userId, roleName,noTracking).FirstOrDefaultAsync(d => d.Id.Equals(id));
     }
 
-    public override Drive? FirstOrDefault(Guid id, bool noTracking = true)
+    public  Drive? FirstOrDefault(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return CreateQuery(noTracking).FirstOrDefault(d => d.Id.Equals(id));
+        return CreateQuery(userId, roleName,noTracking).FirstOrDefault(d => d.Id.Equals(id));
     }
 
-    public async Task<IEnumerable<Drive>> GetAllDrivesWithoutIncludesAsync(bool noTracking = true)
+    public async Task<IEnumerable<Drive>> GetAllDrivesWithoutIncludesAsync(
+        bool noTracking = true)
     {
         return await base.CreateQuery(noTracking).ToListAsync();
     }
@@ -42,9 +44,10 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return base.CreateQuery(noTracking).ToList();
     }
 
-    public async Task<IEnumerable<Drive>> GettingAllOrderedDrivesWithIncludesAsync(bool noTracking = true)
+    public async Task<IEnumerable<Drive>> GettingAllOrderedDrivesWithIncludesAsync(
+        Guid? userId = null, string? roleName = null ,bool? noTracking = true)
     {
-        return await CreateQuery(noTracking)
+        return await CreateQuery(userId,roleName)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
@@ -61,9 +64,10 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
     }
 
 
-    public IEnumerable<Drive> GettingAllOrderedDrivesWithIncludes(bool noTracking = true)
+    public IEnumerable<Drive> GettingAllOrderedDrivesWithIncludes(
+        Guid? userId = null, string? roleName = null, bool noTracking = true )
     {
-        return CreateQuery(noTracking)
+        return CreateQuery(userId, roleName,noTracking)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
@@ -90,27 +94,37 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return base.CreateQuery(noTracking).FirstOrDefault(d => d.Id.Equals(id));
     }
 
-    public async Task<IEnumerable<Drive?>> SearchByDateAsync(DateTime search)
+    public async Task<IEnumerable<Drive?>> SearchByDateAsync(DateTime search,
+        Guid? userId = null, string? roleName = null)
     {
-        var drives = await CreateQuery()
+        var drives = await CreateQuery(userId, roleName)
             .Where(d => d.Booking!.PickUpDateAndTime.Date
                 .Equals(search.Date)).ToListAsync();
         return drives;
     }
 
-    public IEnumerable<Drive?> SearchByDate(DateTime search)
+    
+
+    public IEnumerable<Drive?> SearchByDate(DateTime search, Guid? userId = null, string? roleName = null)
     {
-        var drives = CreateQuery()
+        var drives = CreateQuery(userId, roleName)
             .Where(d => d.Booking!.PickUpDateAndTime.Date
                 .Equals(search.Date)).ToList();
         return drives;
     }
 
-    public async Task<IEnumerable<Drive?>> PrintAsync(Guid id)
+    public async Task<IEnumerable<Drive?>> PrintAsync(
+        Guid? userId = null, string? roleName = null)
     {
-        var drives = await CreateQuery()
-            .Where(d => d.DriverId.Equals(id)).ToListAsync();
-        return drives;
+        
+        if (roleName is nameof(Admin))
+        {
+            var drives = await CreateQuery(null, roleName).ToListAsync();
+            return drives;
+        }
+
+        return await CreateQuery(userId, roleName).ToListAsync();
+
     }
 
     public IEnumerable<Drive?> Print(Guid id)
@@ -127,7 +141,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
                                                                        .ToShortTimeString();
     }
 
-    public async Task<IList> GettingDrivesWithoutCommentAsync(bool noTracking = true)
+    public async Task<IList> GettingDrivesWithoutCommentAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
         var res = await CreateQuery(noTracking)
             .Where(d => d.Comment!.DriveId == null)
@@ -163,7 +177,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return res;
     }
 
-    public async Task<IList> GettingAllDrivesForCommentsAsync(bool noTracking = true)
+    public async Task<IList> GettingAllDrivesForCommentsAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
 #warning add a optional parameter to CreateQuery that allows the order by to be appended in that method
         var res = await CreateQuery(noTracking)
@@ -223,9 +237,9 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
-    public async Task<Drive?> AcceptingDriveAsync(Guid id)
+    public async Task<Drive?> AcceptingDriveAsync(Guid id,Guid? userId = null, string? roleName = null,bool noTracking = true )
     {
-        var drive = await FirstOrDefaultAsync(id);
+        var drive = await FirstOrDefaultAsync(id, userId, roleName);
         if (drive != null)
         {
             drive.IsDriveAccepted = true;
@@ -248,9 +262,9 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
-    public async Task<Drive?> DecliningDriveAsync(Guid id)
+    public async Task<Drive?> DecliningDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
-        var drive = await FirstOrDefaultAsync(id);
+        var drive = await FirstOrDefaultAsync(id, userId, roleName,noTracking );
         if (drive != null)
         {
             drive.IsDriveDeclined = true;
@@ -273,9 +287,9 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
-    public async Task<Drive?> StartingDriveAsync(Guid id)
+    public async Task<Drive?> StartingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true )
     {
-        var drive = await FirstOrDefaultAsync(id);
+        var drive = await FirstOrDefaultAsync(id, userId, roleName, noTracking);
         if (drive != null)
         {
             drive.IsDriveStarted = true;
@@ -298,9 +312,9 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
-    public async Task<Drive?> EndingDriveAsync(Guid id)
+    public async Task<Drive?> EndingDriveAsync(Guid id,Guid? userId = null, string? roleName = null,bool noTracking = true )
     {
-        var drive = await FirstOrDefaultAsync(id);
+        var drive = await FirstOrDefaultAsync(id, userId, roleName, noTracking);
         if (drive != null)
         {
             drive.IsDriveFinished = true;
@@ -310,12 +324,52 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
+    public async Task<Drive?> GettingFirstDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return await CreateQuery(userId, roleName, noTracking).FirstOrDefaultAsync(d => d.Id.Equals(id));
+    }
 
-    protected override IQueryable<Drive> CreateQuery(bool noTracking = true)
+    public Drive? GettingFirstDrive(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return CreateQuery(userId, roleName, noTracking).FirstOrDefault(d => d.Id.Equals(id));
+    }
+
+
+    protected  IQueryable<Drive> CreateQuery(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query.AsNoTracking();
 
+        if (roleName is nameof(Admin))
+        {
+           return query.Include(d => d.Booking)
+               .ThenInclude(d => d!.Schedule)
+               .Include(c => c.Booking)
+               .ThenInclude(c => c!.Customer)
+               .ThenInclude(c => c!.AppUser)
+               .Include(c => c.Booking)
+               .ThenInclude(c => c!.Customer)
+               .ThenInclude(c => c!.DisabilityType)
+               .ThenInclude(c => c!.DisabilityTypeName)
+               .ThenInclude(c => c.Translations)
+               .Include(c => c.Booking)
+               .ThenInclude(c => c!.City)
+               .Include(b => b.Booking)
+               .Include(v => v.Booking)
+               .ThenInclude(v => v!.Vehicle)
+               .ThenInclude(v => v!.VehicleType)
+               .ThenInclude(c => c!.VehicleTypeName)
+               .ThenInclude(c => c.Translations)
+               .Include(v => v.Booking)
+               .ThenInclude(v => v!.Vehicle)
+               .ThenInclude(v => v!.VehicleMark)
+               .Include(v => v.Booking)
+               .ThenInclude(v => v!.Vehicle)
+               .ThenInclude(v => v!.VehicleModel)
+               .Include(c => c.Comment)
+               .Include(d => d.Driver)
+               .ThenInclude(d => d!.AppUser);
+        }
         query = query.Include(d => d.Booking)
             .ThenInclude(d => d!.Schedule)
             .Include(c => c.Booking)
@@ -342,7 +396,8 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
             .ThenInclude(v => v!.VehicleModel)
             .Include(c => c.Comment)
             .Include(d => d.Driver)
-            .ThenInclude(d => d!.AppUser);
+            .ThenInclude(d => d!.AppUser)
+            .Where(d => d.Driver!.AppUserId.Equals(userId));
         return query;
     }
 }

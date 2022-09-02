@@ -69,4 +69,7 @@
     <data name="Accepted" xml:space="preserve">
         <value>Kinnitatud</value>
     </data>
+    <data name="Drives" xml:space="preserve">
+        <value>Sõidud</value>
+    </data>
 </root>
