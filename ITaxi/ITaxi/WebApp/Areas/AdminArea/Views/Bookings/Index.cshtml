@@ -1,5 +1,6 @@
 @using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
+@using App.Domain.Enum
 @model IEnumerable<App.Domain.Booking>
 
 @{
@@ -141,12 +142,22 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.DeclineDateAndTime)
                 </td>
+                
             }
             <td>
 
             </td>
             <td>
-                <a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |
+                @if (item.StatusOfBooking == StatusOfBooking.Declined)
+                {
+                    <a hidden asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a>
+                }
+                else
+                {
+                    <p style="display:inline"><a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |</p>
+                    #warning Needs css solution
+                }
+                 
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>

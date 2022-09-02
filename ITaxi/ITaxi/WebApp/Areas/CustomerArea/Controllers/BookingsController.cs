@@ -58,7 +58,7 @@ public class BookingsController : Controller
         vm.HasAnAssistant = booking.HasAnAssistant;
         vm.NumberOfPassengers = booking.NumberOfPassengers;
         vm.StatusOfBooking = booking.StatusOfBooking;
-        vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToString("g");
+        vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime().ToString("g");
 
         return View(vm);
     }
