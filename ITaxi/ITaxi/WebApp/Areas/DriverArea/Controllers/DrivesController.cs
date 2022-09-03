@@ -1,6 +1,7 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain.Enum;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rotativa.AspNetCore;
@@ -22,33 +23,15 @@ public class DrivesController : Controller
     // GET: DriverArea/Drives
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var res = await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync(userId, roleName);
 #warning Should this be a repo method
         foreach (var drive in res)
         {
-            if (drive.IsDriveAccepted || (drive.IsDriveAccepted && drive.IsDriveDeclined))
-            {
-#warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
-                drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
-            }
-
-            if (drive.IsDriveDeclined || (drive.IsDriveAccepted && drive.IsDriveDeclined))
-            {
-#warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
-                drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
-            }
-
-            if (drive.IsDriveStarted || (drive.IsDriveAccepted && drive.IsDriveStarted))
-            {
-#warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
-                drive.DriveStartDateAndTime = drive.DriveStartDateAndTime.ToLocalTime();
-            }
-
-            if (drive.IsDriveFinished)
-            {
-#warning DriveAcceptedDateAndTime should be shown as DateAndTime without ms when shown to driver
-                drive.DriveEndDateAndTime = drive.DriveEndDateAndTime.ToLocalTime();
-            }
+            drive.Booking!.Schedule!.StartDateAndTime = drive.Booking!.Schedule!.StartDateAndTime.ToLocalTime();
+            drive.Booking!.Schedule!.EndDateAndTime = drive.Booking!.Schedule!.EndDateAndTime.ToLocalTime();
+            drive.Booking!.PickUpDateAndTime = drive.Booking!.PickUpDateAndTime.ToLocalTime();
         }
 
         return View(res);
@@ -66,7 +49,10 @@ public class DrivesController : Controller
 
 
         vm.City = drive.Booking!.City!.CityName;
+        drive.Booking.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime(); 
+        drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
+        
         if (drive.Comment?.CommentText != null) vm.CommentText = drive.Comment.CommentText;
 
         vm.DestinationAddress = drive.Booking.DestinationAddress;
@@ -83,17 +69,7 @@ public class DrivesController : Controller
         vm.IsDriveDeclined = drive.IsDriveDeclined;
         vm.IsDriveStarted = drive.IsDriveStarted;
         vm.IsDriveFinished = drive.IsDriveFinished;
-        if (drive.IsDriveAccepted)
-            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
-
-        if (drive.IsDriveDeclined)
-            vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime().ToString("G");
-
-        if (drive.IsDriveStarted)
-            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("G");
-
-        if (drive.IsDriveFinished) vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToLocalTime().ToString("G");
-
+        
         return View(vm);
     }
 
@@ -215,7 +191,9 @@ public class DrivesController : Controller
     [HttpPost]
     public async Task<IActionResult> SearchByDateAsync([FromForm] DateTime search)
     {
-        var drives = await _uow.Drives.SearchByDateAsync(search);
+        var roleName = User.GettingUserRoleName();
+        var userId = User.GettingUserId();
+        var drives = await _uow.Drives.SearchByDateAsync(search, userId, roleName);
         return View(nameof(Index), drives);
     }
 
@@ -225,15 +203,13 @@ public class DrivesController : Controller
     /// <returns>A pdf of drives</returns>
     public async Task<IActionResult> Print()
     {
-        var driver = await _uow.Drivers.FirstAsync();
-        if (driver != null)
-        {
-            var drives = await _uow.Drives.PrintAsync(driver.Id);
+        var roleName = User.GettingUserRoleName();
+        var userId = User.GettingUserId();
+        
+        var drives = await _uow.Drives.PrintAsync( userId, roleName );
 
-            return new ViewAsPdf("PrintDrives", drives);
-        }
+        return new ViewAsPdf("PrintDrives", drives);
 
-        return new ViewAsPdf("PrintDrives");
     }
 
     // GET: DriverArea/Drives/Accept/5
@@ -241,11 +217,15 @@ public class DrivesController : Controller
     {
         if (id == null) return NotFound();
 
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
         var vm = new DriveStateViewModel();
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id.Value);
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id.Value, userId, roleName);
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
+        drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime(); 
+        drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
         vm.City = drive.Booking.City!.CityName;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
@@ -268,10 +248,12 @@ public class DrivesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AcceptConfirmed(Guid id)
     {
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id,userId, roleName );
         if (drive == null) return NotFound();
 
-        drive = await _uow.Drives.AcceptingDriveAsync(id);
+        drive = await _uow.Drives.AcceptingDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
         drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
@@ -282,7 +264,7 @@ public class DrivesController : Controller
         _uow.Drives.Update(drive);
         await _uow.SaveChangesAsync();
 
-        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id));
+        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id), false);
         if (booking != null)
         {
             booking.StatusOfBooking = StatusOfBooking.Accepted;
@@ -304,6 +286,8 @@ public class DrivesController : Controller
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
+        drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime(); 
+        drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
         vm.City = drive.Booking.City!.CityName;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
@@ -358,10 +342,14 @@ public class DrivesController : Controller
         if (id == null) return NotFound();
 
         var vm = new DriveStateViewModel();
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id.Value);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id.Value, userId, roleName);
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
+        drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime(); 
+        drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
         vm.City = drive.Booking.City!.CityName;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
@@ -384,10 +372,12 @@ public class DrivesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> StartConfirmed(Guid id)
     {
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
-        drive = await _uow.Drives.StartingDriveAsync(id);
+        drive = await _uow.Drives.StartingDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
         drive.DriveStartDateAndTime = DateTime.Now.ToUniversalTime();
@@ -404,12 +394,15 @@ public class DrivesController : Controller
     public async Task<IActionResult> EndDrive(Guid? id)
     {
         if (id == null) return NotFound();
-
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
         var vm = new DriveStateViewModel();
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id.Value);
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id.Value,userId, roleName );
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
+        drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime(); 
+        drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
         vm.City = drive.Booking.City!.CityName;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
@@ -433,10 +426,12 @@ public class DrivesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EndDriveConfirmed(Guid id)
     {
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
-        drive = await _uow.Drives.EndingDriveAsync(id);
+        drive = await _uow.Drives.EndingDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
         drive.IsDriveFinished = true;

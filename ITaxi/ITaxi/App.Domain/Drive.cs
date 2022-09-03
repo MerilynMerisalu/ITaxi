@@ -19,7 +19,7 @@ public class Drive : DomainEntityMetaId
     public Comment? Comment { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "AcceptedDateAndTime")]
-
+    
     public DateTime DriveAcceptedDateAndTime { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "DeclineDateAndTime")]
@@ -27,7 +27,8 @@ public class Drive : DomainEntityMetaId
     public DateTime DriveDeclineDateAndTime { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "InProgressDateAndTime")]
-
+    
+    
     public DateTime DriveStartDateAndTime { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "DriveStatus")]

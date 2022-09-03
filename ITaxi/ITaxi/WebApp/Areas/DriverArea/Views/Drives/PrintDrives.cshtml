@@ -1,4 +1,5 @@
-﻿@model IEnumerable<App.Domain.Drive>
+﻿@using Base.Extensions
+@model IEnumerable<App.Domain.Drive>
 
 
 @{
@@ -6,8 +7,8 @@
 }
 
 @{
-    #warning check if getting driver name from the database is optimal
-    var name = Model.Select(d => d.Driver!.AppUser!.LastAndFirstName).FirstOrDefault();
+    
+    var name = User.GettingUserName();
     <h1>Driver: @name</h1>
 
 
