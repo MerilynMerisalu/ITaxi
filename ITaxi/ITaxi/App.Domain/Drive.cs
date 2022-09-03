@@ -47,4 +47,7 @@ public class Drive : DomainEntityMetaId
     
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.DriverArea.Drive), Name = "AcceptedDateAndTime")]
     public string DriveAcceptedDateTimeDriverView => $"{DriveAcceptedDateAndTime:g}";
+    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.DriverArea.Drive), Name = "DeclineDateAndTime")]
+    public string DriveDeclinedDateTimeDriverView => $"{DriveDeclineDateAndTime:g}";
 }

@@ -32,6 +32,8 @@ public class DrivesController : Controller
             drive.Booking!.Schedule!.StartDateAndTime = drive.Booking!.Schedule!.StartDateAndTime.ToLocalTime();
             drive.Booking!.Schedule!.EndDateAndTime = drive.Booking!.Schedule!.EndDateAndTime.ToLocalTime();
             drive.Booking!.PickUpDateAndTime = drive.Booking!.PickUpDateAndTime.ToLocalTime();
+            drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
+            drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
         }
 
         return View(res);
@@ -280,9 +282,11 @@ public class DrivesController : Controller
     public async Task<IActionResult> Decline(Guid? id)
     {
         if (id == null) return NotFound();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
 
         var vm = new DriveStateViewModel();
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id.Value);
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id.Value, userId, roleName);
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
@@ -310,10 +314,12 @@ public class DrivesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeclineConfirmed(Guid id)
     {
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var drive = await _uow.Drives.GettingFirstDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
-        drive = await _uow.Drives.DecliningDriveAsync(id);
+        drive = await _uow.Drives.DecliningDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
         drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
@@ -324,7 +330,7 @@ public class DrivesController : Controller
         _uow.Drives.Update(drive);
         await _uow.SaveChangesAsync();
 
-        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id));
+        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id), false);
         if (booking != null)
         {
             booking.StatusOfBooking = StatusOfBooking.Declined;
@@ -401,8 +407,8 @@ public class DrivesController : Controller
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
-        drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime(); 
-        drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
+        //drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime(); 
+        //drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
         vm.City = drive.Booking.City!.CityName;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
