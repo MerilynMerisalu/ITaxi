@@ -44,4 +44,7 @@ public class Drive : DomainEntityMetaId
     public bool IsDriveStarted { get; set; }
 
     public bool IsDriveFinished { get; set; }
+    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.DriverArea.Drive), Name = "AcceptedDateAndTime")]
+    public string DriveAcceptedDateTimeDriverView => $"{DriveAcceptedDateAndTime:g}";
 }
