@@ -1,5 +1,6 @@
 @using App.Resources.Areas.App.Domain.DriverArea
 @using Base.Resources
+@using App.Domain.Enum
 @model IEnumerable<App.Domain.Drive>
 
 @{
@@ -151,7 +152,7 @@
             @if (item.IsDriveDeclined || (item.IsDriveAccepted && item.IsDriveDeclined))
             {
                 <td>
-                    @Html.DisplayFor(modelItem => item.DriveDeclineDateAndTime)
+                    @Html.DisplayFor(modelItem => item.DriveDeclinedDateTimeDriverView)
                 </td>
             }
 
@@ -177,20 +178,23 @@
 
 
             <td>
-                @if (item.IsDriveDeclined)
+                @if (item.StatusOfDrive == StatusOfDrive.Declined)
                 {
                     <a hidden="hidden" asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
                     <a hidden="hidden" asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a>
+                    <a hidden="hidden" asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a>
+                    <a hidden="hidden" asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a>
                 }
 
                 else
                 {
-                    <a asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
-                    <a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a>
+                    <p style="display: inline"><a asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
+                        |</p>
+                    <p style="display: inline"><a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> |</p>
                 }
 
 
-                @if (item.IsDriveAccepted)
+                @if (item.StatusOfDrive == StatusOfDrive.Accepted)
                 {
                     <a asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a>
                     <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a>
