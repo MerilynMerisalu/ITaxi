@@ -196,8 +196,10 @@
 
                 @if (item.StatusOfDrive == StatusOfDrive.Accepted)
                 {
-                    <a asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a>
-                    <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a>
+                    <p style="display: inline">
+                        <a asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a> |</p>
+                    <p style="display: inline">
+                    <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a> |</p>
                 }
 
 
