@@ -172,13 +172,19 @@
             @if (item.IsDriveFinished)
             {
                 <td>
-                    @Html.DisplayFor(modelItem => item.DriveEndDateAndTime)
+                    @Html.DisplayFor(modelItem => item.DriveEndDateTimeDriverView)
                 </td>
             }
 
 
             <td>
-                @if (item.StatusOfDrive == StatusOfDrive.Declined)
+                @if (item.StatusOfDrive == StatusOfDrive.Awaiting)
+                {
+                    <p style="display: inline"><a asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
+                        |</p>
+                    <p style="display: inline"><a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> |</p>
+                }
+                @if (item.StatusOfDrive == StatusOfDrive.Declined || (item.StatusOfDrive == StatusOfDrive.Finished))
                 {
                     <a hidden="hidden" asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
                     <a hidden="hidden" asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a>
@@ -186,24 +192,22 @@
                     <a hidden="hidden" asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a>
                 }
 
-                else
-                {
-                    <p style="display: inline"><a asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
-                        |</p>
-                    <p style="display: inline"><a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> |</p>
-                }
-
-
+               
                 @if (item.StatusOfDrive == StatusOfDrive.Accepted)
                 {
+                    <a hidden="hidden" asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
+                    <p style="display: inline">
+                        <a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> |</p>
+
                     <p style="display: inline">
                         <a asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a> |</p>
-                    
+
                 }
                 @if (item.StatusOfDrive == StatusOfDrive.Started)
                 {
+                    <a hidden="hidden" asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a>
                     <p style="display: inline">
-                    <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a> |</p>
+                        <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a> |</p>
                 }
 
 

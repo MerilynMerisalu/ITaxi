@@ -53,4 +53,7 @@ public class Drive : DomainEntityMetaId
     
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.DriverArea.Drive), Name = "InProgress")]
     public string DriveStartedDateTimeDriverView => $"{DriveStartDateAndTime:g}";
+    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.DriverArea.Drive), Name = "Finished")]
+    public string DriveEndDateTimeDriverView => $"{DriveEndDateAndTime:g}";
 }

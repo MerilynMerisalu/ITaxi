@@ -35,6 +35,7 @@ public class DrivesController : Controller
             drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
             drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
             drive.DriveStartDateAndTime = drive.DriveStartDateAndTime.ToLocalTime();
+            drive.DriveEndDateAndTime = drive.DriveEndDateAndTime.ToLocalTime();
         }
 
         return View(res);
@@ -43,18 +44,22 @@ public class DrivesController : Controller
     // GET: DriverArea/Drives/Details/5
     public async Task<IActionResult> Details(Guid? id)
     {
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
         var vm = new DetailsDriveViewModel();
         if (id == null) return NotFound();
 
         var drive = await _uow.Drives
-            .FirstOrDefaultAsync(id.Value);
+            .GettingFirstDriveAsync(id.Value, userId, roleName);
         if (drive == null) return NotFound();
 
 
+        vm.Id = drive.Id;
         vm.City = drive.Booking!.City!.CityName;
         drive.Booking.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime(); 
         drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
+        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
         
         if (drive.Comment?.CommentText != null) vm.CommentText = drive.Comment.CommentText;
 
