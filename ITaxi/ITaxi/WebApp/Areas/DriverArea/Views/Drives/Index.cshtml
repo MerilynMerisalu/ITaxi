@@ -166,7 +166,7 @@
             @if (item.IsDriveStarted || (item.IsDriveAccepted && item.IsDriveStarted))
             {
                 <td>
-                    @Html.DisplayFor(modelItem => item.DriveStartDateAndTime)
+                    @Html.DisplayFor(modelItem => item.DriveStartedDateTimeDriverView)
                 </td>
             }
             @if (item.IsDriveFinished)
@@ -198,6 +198,11 @@
                 {
                     <p style="display: inline">
                         <a asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a> |</p>
+                    @*<p style="display: inline">
+                    <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a> |</p>*@
+                }
+                @if (item.StatusOfDrive == StatusOfDrive.Started)
+                {
                     <p style="display: inline">
                     <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a> |</p>
                 }

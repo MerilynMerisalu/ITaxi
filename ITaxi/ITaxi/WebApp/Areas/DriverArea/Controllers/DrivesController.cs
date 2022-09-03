@@ -34,6 +34,7 @@ public class DrivesController : Controller
             drive.Booking!.PickUpDateAndTime = drive.Booking!.PickUpDateAndTime.ToLocalTime();
             drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
             drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
+            drive.DriveStartDateAndTime = drive.DriveStartDateAndTime.ToLocalTime();
         }
 
         return View(res);
