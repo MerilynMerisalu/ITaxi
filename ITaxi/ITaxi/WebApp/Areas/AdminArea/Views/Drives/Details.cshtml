@@ -180,10 +180,10 @@
     </dl>
 </div>
 <div>
-    <a asp-action="" asp-route-id="@Model.Id">@Drive.Accept</a> |
-    <a asp-action="" asp-route-id="@Model.Id">@Drive.Decline</a> |
-    <a asp-action="" asp-route-id="@Model.Id">@Drive.InProgress</a> |
-    <a asp-action="" asp-route-id="@Model.Id">@Drive.Finished</a> |
+    <a asp-action="Accept" asp-route-id="@Model.Id">@Drive.Accept</a> |
+    <a asp-action="Decline" asp-route-id="@Model.Id">@Drive.Decline</a> |
+    <a asp-action="StartDrive" asp-route-id="@Model.Id">@Drive.InProgress</a> |
+    <a asp-action="EndDrive" asp-route-id="@Model.Id">@Drive.Finished</a> |
     @*<a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |*@
     <a asp-action="Index">@Common.BackToList</a>
 </div>

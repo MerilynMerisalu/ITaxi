@@ -16,6 +16,10 @@
         </th>
 
         <th>
+            @Html.DisplayNameFor(model => model.Booking!.Driver)
+        </th>
+        
+        <th>
             @Html.DisplayNameFor(model => model.Booking!.PickUpDateAndTime)
         </th>
         <th>
@@ -66,6 +70,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.Schedule!.ShiftDurationTime)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Driver!.AppUser!.LastAndFirstName)
+            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.PickUpDateAndTime)
             </td>
