@@ -30,7 +30,11 @@ public class BookingsController : Controller
         var res = await _uow.Bookings.GettingAllOrderedBookingsAsync(userId, roleName);
         foreach (var booking in res)
         {
-            if (booking != null) booking.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime();
+            if (booking != null)
+            {
+                booking.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime();
+                booking.DeclineDateAndTime = booking.DeclineDateAndTime.ToLocalTime();
+            }
         }
         return View(res);
         
@@ -263,8 +267,9 @@ public class BookingsController : Controller
         var booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName, false);
         if (booking != null)
         {
-            var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id));
+            var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id), false);
             await _uow.Bookings.BookingDeclineAsync(booking.Id, userId, roleName);
+            booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             drive!.Booking = booking;
             _uow.Bookings.Update(booking);
             await _uow.SaveChangesAsync();

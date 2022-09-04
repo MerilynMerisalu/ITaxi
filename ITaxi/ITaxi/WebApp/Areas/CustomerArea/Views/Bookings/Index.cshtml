@@ -55,7 +55,17 @@
         <th>
             @Html.DisplayNameFor(model => model.StatusOfBooking)
         </th>
-
+        @foreach (var i in Model)
+        {
+            if (i.StatusOfBooking == StatusOfBooking.Declined)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.DeclineDateAndTime)
+                </th>
+            }
+            
+        }
+        
         <th></th>
     </tr>
     </thead>
@@ -96,19 +106,23 @@
             <td>
                 @Html.DisplayFor(modelItem => item.StatusOfBooking)
             </td>
-
-            <td>
+            
+            @foreach (var i in Model)
+            {
                 @if (item.StatusOfBooking == StatusOfBooking.Declined)
                 {
                     <a hidden asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> 
-                }
-                else
-                {
-                    <p style="display: inline"><a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |</p>
-#warning Needs css solution                                                         
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeclineDateAndTimeCustomerView)
+                    </td>
                 }
                 
                 
+            }
+            <td>
+                
+                
+                <p style="display: inline"><a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |</p>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>

@@ -87,4 +87,6 @@ public class Booking : DomainEntityMetaId
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.Common), Name = "DeclineDateAndTime")]
     public DateTime DeclineDateAndTime { get; set; }
+
+    public string DeclineDateAndTimeCustomerView => $"{DeclineDateAndTime:g}";
 }
