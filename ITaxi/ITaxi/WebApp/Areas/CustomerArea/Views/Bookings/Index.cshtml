@@ -111,20 +111,25 @@
             {
                 @if (item.StatusOfBooking == StatusOfBooking.Declined)
                 {
-                    <a hidden asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> 
+                    
                     <td>
                         @Html.DisplayFor(modelItem => item.DeclineDateAndTimeCustomerView)
                     </td>
+                    
+                }
+                
+                
+                
+            }
+            <td>
+                @if (item.StatusOfBooking == StatusOfBooking.Declined)
+                {
+                    <a hidden asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> 
                 }
                 else
                 {
                     <p style="display: inline"><a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |</p>
                 }
-                
-                
-            }
-            <td>
-                
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
