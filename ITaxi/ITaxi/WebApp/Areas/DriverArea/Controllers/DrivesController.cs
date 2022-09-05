@@ -77,6 +77,30 @@ public class DrivesController : Controller
         vm.IsDriveDeclined = drive.IsDriveDeclined;
         vm.IsDriveStarted = drive.IsDriveStarted;
         vm.IsDriveFinished = drive.IsDriveFinished;
+        if (vm.IsDriveAccepted )
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+        }
+        if (vm.IsDriveDeclined )
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime().ToString("g");
+        }
+
+        if (vm.IsDriveStarted)
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
+        }
+
+        if (vm.IsDriveFinished)
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToLocalTime().ToString("g");
+        }
+        
+        
         
         return View(vm);
     }
@@ -246,6 +270,30 @@ public class DrivesController : Controller
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+        #warning  needs refactoring
+        if (vm.IsDriveAccepted )
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+        }
+        if (vm.IsDriveDeclined )
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime().ToString("g");
+        }
+
+        if (vm.IsDriveStarted)
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
+        }
+
+        if (vm.IsDriveFinished)
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToLocalTime().ToString("g");
+        }
+
 
         return View(vm);
     }
@@ -310,6 +358,29 @@ public class DrivesController : Controller
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+        if (vm.IsDriveAccepted )
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+        }
+        if (vm.IsDriveDeclined )
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime().ToString("g");
+        }
+
+        if (vm.IsDriveStarted)
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
+        }
+
+        if (vm.IsDriveFinished)
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToLocalTime().ToString("g");
+        }
+
 
         return View(vm);
     }
@@ -374,6 +445,28 @@ public class DrivesController : Controller
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+        if (vm.IsDriveAccepted )
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+        }
+        if (vm.IsDriveDeclined )
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime().ToString("g");
+        }
+
+        if (vm.IsDriveStarted)
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
+        }
+
+        if (vm.IsDriveFinished)
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToLocalTime().ToString("g");
+        }
 
         return View(vm);
     }
@@ -413,8 +506,8 @@ public class DrivesController : Controller
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
-        //drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime(); 
-        //drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
+        drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime(); 
+        drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
         vm.City = drive.Booking.City!.CityName;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
@@ -427,6 +520,16 @@ public class DrivesController : Controller
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+        if (drive.IsDriveAccepted)
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateTimeDriverView;
+        if (drive.IsDriveDeclined)
+            vm.DriveDeclineDateAndTime = drive.DriveDeclinedDateTimeDriverView;
+
+        if (drive.IsDriveStarted)
+            vm.DriveInProgressDateAndTime = drive.DriveStartedDateTimeDriverView;
+
+        if (drive.IsDriveFinished) 
+            vm.DriveFinishedDateAndTime = drive.DriveEndDateTimeDriverView;
 
         return View(vm);
     }

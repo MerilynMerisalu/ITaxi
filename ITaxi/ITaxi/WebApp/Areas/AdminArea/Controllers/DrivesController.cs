@@ -261,6 +261,29 @@ public class DrivesController : Controller
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
+        if (vm.IsDriveAccepted )
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
+        }
+        if (vm.IsDriveDeclined )
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
+            vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime().ToString("G");
+        }
+
+        if (vm.IsDriveStarted)
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("G");
+        }
+
+        if (vm.IsDriveFinished)
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("G");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("G");
+            vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToLocalTime().ToString("G");
+        }
+
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
         vm.CreatedBy = drive.CreatedBy!;
         vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");
@@ -292,7 +315,7 @@ public class DrivesController : Controller
         _uow.Drives.Update(drive);
         await _uow.SaveChangesAsync();
 
-        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id));
+        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id), false);
         if (booking != null)
         {
             booking.StatusOfBooking = StatusOfBooking.Accepted;
@@ -358,7 +381,8 @@ public class DrivesController : Controller
         _uow.Drives.Update(drive);
         await _uow.SaveChangesAsync();
 
-        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id));
+        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id), 
+            false);
         if (booking != null)
         {
             booking.StatusOfBooking = StatusOfBooking.Declined;

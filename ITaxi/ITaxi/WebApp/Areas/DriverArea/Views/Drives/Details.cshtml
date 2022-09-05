@@ -109,7 +109,7 @@
         @if (Model.IsDriveDeclined)
         {
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
+                @Html.DisplayNameFor(model => model.DriveAcceptedDateAndTime)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.DriveDeclineDateAndTime)
@@ -118,22 +118,13 @@
         @if (Model.IsDriveStarted)
         {
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.DriveDeclineDateAndTime)
-            </dd>
-        }
-        @if (Model.IsDriveStarted)
-        {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.DriveInProgressDateAndTime)
+                @Html.DisplayNameFor(model => model.DriveAcceptedDateAndTime)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.DriveInProgressDateAndTime)
             </dd>
         }
-
+        
         @if (Model.IsDriveFinished)
         {
             <dt class="col-sm-2">
