@@ -94,7 +94,7 @@ public class CommentsController : Controller
         vm.Id = comment.Id;
 
         vm.Drives = new SelectList(await _uow.Drives.GettingAllDrivesForCommentsAsync(), nameof(Drive.Id),
-            nameof(Drive.Booking.PickUpDateAndTime),
+            nameof(Drive.DriveDescription),
             nameof(Drive.Id));
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.DriveId = comment.Drive!.Id;
