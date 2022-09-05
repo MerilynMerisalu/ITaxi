@@ -662,7 +662,8 @@ public static class DataHelper
                 {
                     Id = new Guid(),
                     CommentText = "Jäin teenusega rahule!",
-                    Drive = drive,
+                    Drive = await context.Drives.Include(d => d.Driver)
+                        .SingleOrDefaultAsync(d => d.Driver!.PersonalIdentifier!.Equals("38806237921")),
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
                 await context.Comments.AddAsync(comment);

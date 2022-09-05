@@ -44,9 +44,9 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
     }
 
 
-    public async Task<IEnumerable<Comment>> GettingAllOrderedCommentsWithIncludesAsync(bool noTracking = true)
+    public async Task<IEnumerable<Comment>> GettingAllOrderedCommentsWithIncludesAsync(Guid? userId= null, string? roleName = null,bool noTracking = true)
     {
-        return await CreateQuery(noTracking)
+        return await CreateQuery(userId, roleName,noTracking)
             .OrderBy(c => c.Drive!.Booking!.PickUpDateAndTime.Date)
             .ThenBy(c => c.Drive!.Booking!.PickUpDateAndTime.Day)
             .ThenBy(c => c.Drive!.Booking!.PickUpDateAndTime.Month)
@@ -57,9 +57,9 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
             .ToListAsync();
     }
 
-    public IEnumerable<Comment> GettingAllOrderedCommentsWithIncludes(bool noTracking = true)
+    public IEnumerable<Comment> GettingAllOrderedCommentsWithIncludes(Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return CreateQuery(noTracking)
+        return CreateQuery(userId, roleName, noTracking)
             .OrderBy(c => c.Drive!.Booking!.PickUpDateAndTime.Date)
             .ThenBy(c => c.Drive!.Booking!.PickUpDateAndTime.Day)
             .ThenBy(c => c.Drive!.Booking!.PickUpDateAndTime.Month)
@@ -95,18 +95,45 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
         return comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
     }
 
-    protected override IQueryable<Comment> CreateQuery(bool noTracking = true)
+    public async Task<Comment?> GettingTheFirstCommentAsync(Guid id, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true)
+    {
+        return await CreateQuery(userId, roleName, noTracking)
+            .FirstOrDefaultAsync(c => c.Id.Equals(id));
+    }
+
+    public Comment? GettingTheFirstComment(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = false)
+    {
+        return CreateQuery(userId, roleName, noTracking)
+            .FirstOrDefault(c => c.Id.Equals(id));
+    }
+
+    protected  IQueryable<Comment> CreateQuery(Guid? userId= null, string? roleName = null, bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query.AsNoTracking();
 
+        if (roleName is nameof(Admin))
+        {
+            query = query.Include(c => c.Drive)
+                .ThenInclude(d => d!.Booking)
+                .ThenInclude(d => d!.Customer)
+                .ThenInclude(d => d!.AppUser)
+                .Include(d => d.Drive)
+                .ThenInclude(d => d!.Driver)
+                .ThenInclude(d => d!.AppUser);
+
+            return query;
+        }
+        
         query = query.Include(c => c.Drive)
             .ThenInclude(d => d!.Booking)
             .ThenInclude(d => d!.Customer)
             .ThenInclude(d => d!.AppUser)
             .Include(d => d.Drive)
             .ThenInclude(d => d!.Driver)
-            .ThenInclude(d => d!.AppUser);
+            .ThenInclude(d => d!.AppUser)
+            .Where(c => c.Drive!.Booking!.Customer!.AppUserId.Equals(userId));
 
         return query;
     }

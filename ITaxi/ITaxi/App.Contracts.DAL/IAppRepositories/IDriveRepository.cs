@@ -20,10 +20,10 @@ public interface IDriveRepository : IEntityRepository<Drive>
     Task<IEnumerable<Drive?>> PrintAsync( Guid? userId = null, string? roleName = null);
     IEnumerable<Drive?> Print(Guid id);
     string PickUpDateAndTimeStr(Drive drive);
-    Task<IList> GettingDrivesWithoutCommentAsync(Guid? userId = null, string? roleName = null,bool noTracking = true);
-    IList GettingDrivesWithoutComment(bool noTracking = true);
-    Task<IList> GettingAllDrivesForCommentsAsync(Guid? userId = null, string? roleName = null,bool noTracking = true);
-    IList GettingDrivesForComments(bool noTracking = true);
+    Task<IEnumerable<Drive?>> GettingDrivesWithoutCommentAsync(Guid? userId = null, string? roleName = null,bool noTracking = true);
+    IEnumerable<Drive?> GettingDrivesWithoutComment(bool noTracking = true);
+    Task<IEnumerable<Drive?>> GettingAllDrivesForCommentsAsync(Guid? userId = null, string? roleName = null,bool noTracking = true);
+    IEnumerable<Drive?> GettingDrivesForComments(bool noTracking = true);
     Drive? AcceptingDrive(Guid id);
     Task<Drive?> AcceptingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true);
     Drive? DecliningDrive(Guid id);

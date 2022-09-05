@@ -141,19 +141,15 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
                                                                        .ToShortTimeString();
     }
 
-    public async Task<IList> GettingDrivesWithoutCommentAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
+    public async Task<IEnumerable<Drive?>> GettingDrivesWithoutCommentAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
-        var res = await CreateQuery(noTracking)
+        var res = await CreateQuery(userId, roleName, noTracking)
             .Where(d => d.Comment!.DriveId == null)
-            .Select(d => new
-            {
-                PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"),
-                d.Id, d.Comment!.DriveId
-            }).ToListAsync();
+            .ToListAsync();
         return res;
     }
 
-    public IList GettingDrivesWithoutComment(bool noTracking = true)
+    public IEnumerable<Drive?> GettingDrivesWithoutComment(bool noTracking = true)
     {
         var res = CreateQuery(noTracking)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
@@ -169,18 +165,14 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
             .ThenBy(d => d.Booking!.DestinationAddress)
             .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
             .Where(d => d.Comment!.DriveId == null)
-            .Select(d => new
-            {
-                PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), d.Id,
-                d.Comment!.DriveId
-            }).ToList();
+            .ToList();
         return res;
     }
 
-    public async Task<IList> GettingAllDrivesForCommentsAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
+    public async Task<IEnumerable<Drive?>> GettingAllDrivesForCommentsAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
 #warning add a optional parameter to CreateQuery that allows the order by to be appended in that method
-        var res = await CreateQuery(noTracking)
+        var res = await CreateQuery(userId, roleName, noTracking)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
@@ -193,15 +185,11 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
             .ThenBy(d => d.Booking!.PickupAddress)
             .ThenBy(d => d.Booking!.DestinationAddress)
             .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
-            .Select(d => new
-            {
-                PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), d.Id,
-                d.Comment!.DriveId
-            }).ToListAsync();
+            .ToListAsync();
         return res;
     }
 
-    public IList GettingDrivesForComments(bool noTracking = true)
+    public IEnumerable<Drive?> GettingDrivesForComments(bool noTracking = true)
     {
         var res = CreateQuery(noTracking)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
@@ -216,11 +204,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
             .ThenBy(d => d.Booking!.PickupAddress)
             .ThenBy(d => d.Booking!.DestinationAddress)
             .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
-            .Select(d => new
-            {
-                PickUpDateAndTime = d.Booking!.PickUpDateAndTime.ToString("g"), d.Id,
-                d.Comment!.DriveId
-            }).ToList();
+            .ToList();
         return res;
     }
 
