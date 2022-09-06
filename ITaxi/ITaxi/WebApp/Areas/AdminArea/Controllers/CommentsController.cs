@@ -24,6 +24,9 @@ public class CommentsController : Controller
     // GET: AdminArea/Comments
     public async Task<IActionResult> Index()
     {
+        
+#warning Ask how to get the user role using interface
+        
         var roleName = User.GettingUserRoleName();
         var res = await _uow.Comments.GettingAllOrderedCommentsWithIncludesAsync(null, roleName);
         
