@@ -1,6 +1,7 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,20 +24,29 @@ public class CommentsController : Controller
     // GET: CustomerArea/Comments
     public async Task<IActionResult> Index()
     {
-        return View(await _uow.Comments.GettingAllOrderedCommentsWithIncludesAsync());
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserName();
+        var res = await _uow.Comments.GettingAllOrderedCommentsWithIncludesAsync(userId, roleName);
+        foreach (var comment in res)
+        {
+            comment.Drive!.Booking!.PickUpDateAndTime = comment.Drive!.Booking.PickUpDateAndTime.ToLocalTime();
+        }
+        return View(res);
     }
 
     // GET: CustomerArea/Comments/Details/5
     public async Task<IActionResult> Details(Guid? id)
     {
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserName();
         var vm = new DetailsDeleteCommentViewModel();
         if (id == null) return NotFound();
 
-        var comment = await _uow.Comments.FirstOrDefaultAsync(id.Value);
+        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id.Value, userId, roleName);
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.Drive = _uow.Comments.PickUpDateAndTimeStr(comment);
+        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
         vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
 
@@ -48,9 +58,11 @@ public class CommentsController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditCommentViewModel();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
 
-        vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(),
-            nameof(Drive.Id), nameof(Drive.Booking.PickUpDateAndTime));
+        vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(userId, roleName),
+            nameof(Drive.Id), nameof(Drive.DriveDescription));
 
         return View(vm);
     }
@@ -68,6 +80,8 @@ public class CommentsController : Controller
             comment.Id = Guid.NewGuid();
             comment.DriveId = vm.DriveId;
             comment.CommentText = vm.CommentText;
+            comment.CreatedBy = User.Identity!.Name;
+            comment.CreatedAt = DateTime.Now.ToUniversalTime();
 
             _uow.Comments.Add(comment);
             await _uow.SaveChangesAsync();
@@ -145,14 +159,13 @@ public class CommentsController : Controller
     {
         var vm = new DetailsDeleteCommentViewModel();
         if (id == null) return NotFound();
-
-        var comment = await _uow.Comments.FirstOrDefaultAsync(id.Value);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserName();
+        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id.Value, userId, roleName);
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-#warning Ask maybe can be done as a base method
-
-        vm.Drive = _uow.Comments.PickUpDateAndTimeStr(comment);
+        vm.Drive = comment.Drive!.Booking!.DriveTime;
 
         vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
@@ -167,7 +180,9 @@ public class CommentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var comment = await _uow.Comments.FirstOrDefaultAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserName();
+        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id, userId, roleName);
         if (comment != null) _uow.Comments.Remove(comment);
         await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));

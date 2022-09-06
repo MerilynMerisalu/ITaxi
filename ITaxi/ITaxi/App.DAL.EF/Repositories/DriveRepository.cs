@@ -381,7 +381,8 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
             .Include(c => c.Comment)
             .Include(d => d.Driver)
             .ThenInclude(d => d!.AppUser)
-            .Where(d => d.Driver!.AppUserId.Equals(userId));
+            .Where(d => d.Driver!.AppUserId.Equals(userId) 
+                        || d.Booking!.Customer!.AppUserId.Equals(userId));
         return query;
     }
 }
