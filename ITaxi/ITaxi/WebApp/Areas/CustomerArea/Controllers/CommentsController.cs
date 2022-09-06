@@ -46,7 +46,7 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
+        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToLocalTime().ToString("g");
         vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
 
@@ -57,11 +57,16 @@ public class CommentsController : Controller
     // GET: AdminArea/Comments/Create
     public async Task<IActionResult> Create()
     {
-        var vm = new CreateEditCommentViewModel();
+        var vm = new CreateCommentViewModel();
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
 
-        vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(userId, roleName),
+        var drives = await _uow.Drives.GettingDrivesWithoutCommentAsync(userId, roleName);
+        foreach (var drive in drives)
+        {
+            if (drive != null) drive.Booking!.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
+        }
+        vm.Drives = new SelectList(drives,
             nameof(Drive.Id), nameof(Drive.DriveDescription));
 
         return View(vm);
@@ -72,8 +77,9 @@ public class CommentsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateEditCommentViewModel vm)
-    {
+    public async Task<IActionResult> Create(CreateCommentViewModel vm)
+    {var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
         var comment = new Comment();
         if (ModelState.IsValid)
         {
@@ -88,9 +94,9 @@ public class CommentsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(),
+        vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(userId, roleName),
             nameof(Drive.Id),
-            nameof(Booking.DriveTime));
+            nameof(Drive.DriveDescription));
 
 
         return View(vm);
@@ -99,17 +105,20 @@ public class CommentsController : Controller
     // GET: AdminArea/Comments/Edit/5
     public async Task<IActionResult> Edit(Guid? id)
     {
-        var vm = new CreateEditCommentViewModel();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserName();
+        var vm = new EditCommentViewModel();
         if (id == null) return NotFound();
+        
 
-        var comment = await _uow.Comments.FirstOrDefaultAsync(id.Value);
+        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id.Value, userId, roleName);
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
+        comment.Drive!.Booking!.PickUpDateAndTime = comment.Drive.Booking.PickUpDateAndTime.ToLocalTime();
+        vm.DriveTimeAndDriver = comment.Drive!.DriveDescription;
 
-        vm.Drives = new SelectList(await _uow.Drives.GettingAllDrivesForCommentsAsync(), nameof(Drive.Id),
-            nameof(Drive.DriveDescription),
-            nameof(Drive.Id));
+        
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.DriveId = comment.Drive!.Id;
 
@@ -122,9 +131,11 @@ public class CommentsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, CreateEditCommentViewModel vm)
+    public async Task<IActionResult> Edit(Guid id, EditCommentViewModel vm)
     {
-        var comment = await _uow.Comments.FirstOrDefaultAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id, userId, roleName);
         if (comment != null && id != comment.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -135,7 +146,8 @@ public class CommentsController : Controller
                 {
                     comment.Id = id;
                     comment.CommentText = vm.CommentText;
-                    comment.UpdatedAt = DateTime.Now;
+                    comment.UpdatedBy = User.Identity!.Name;
+                    comment.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _uow.Comments.Update(comment);
                 }
 

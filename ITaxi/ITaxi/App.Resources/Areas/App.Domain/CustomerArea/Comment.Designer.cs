@@ -69,7 +69,7 @@ namespace App.Resources.Areas.App.Domain.CustomerArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Date and Time of the Drive.
+        ///   Looks up a localized string similar to Drive.
         /// </summary>
         public static string Drive {
             get {

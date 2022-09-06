@@ -19,7 +19,7 @@
         <value>Kommentaar</value>
     </data>
     <data name="Drive" xml:space="preserve">
-        <value>Sõidu toimumiskuupäev ja -kellaaeg</value>
+        <value>Sõit</value>
     </data>
     <data name="NoDrives" xml:space="preserve">
         <value>Kommenteeritavaid sõite pole</value>

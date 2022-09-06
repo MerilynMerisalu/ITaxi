@@ -1,6 +1,6 @@
 @using App.Resources.Areas.App.Domain.CustomerArea
 @using Base.Resources
-@model WebApp.Areas.CustomerArea.ViewModels.CreateEditCommentViewModel
+@model WebApp.Areas.CustomerArea.ViewModels.CreateCommentViewModel
 
 @{
     ViewData["Title"] = Common.Create;
@@ -23,7 +23,7 @@
                     }
                     else
                     {
-                        <options asp-items="@Model.Drives"/>
+                        <option>@Common.PleaseSelect</option>
                     }
                 </select>
             </div>
