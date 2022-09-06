@@ -177,7 +177,7 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.Drive = comment.Drive!.Booking!.DriveTime;
+        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToLocalTime().ToString("g");
 
         vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;

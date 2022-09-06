@@ -14,6 +14,7 @@ public class EditCommentViewModel
 
     public string? DriveTimeAndDriver { get; set; }
 
+    [Display(ResourceType = typeof(Comment), Name = nameof(Drive))]
     public Drive? Drive { get; set; }
 
     
