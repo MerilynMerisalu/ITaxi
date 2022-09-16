@@ -9,17 +9,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MailKit" Version="3.3.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.8" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.8" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.8" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.8" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8">
+        <PackageReference Include="MailKit" Version="3.4.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.9" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.9" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.9" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.8" />
-        <PackageReference Include="MimeKit" Version="3.4.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.9" />
+        <PackageReference Include="MimeKit" Version="3.4.1" />
         <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0" />
     </ItemGroup>
 
@@ -32,6 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="ApiControllers\AdminArea" />
         <Folder Include="Areas\AdminArea\Views" />
         <Folder Include="Areas\Identity" />
         <Folder Include="wwwroot\Images" />

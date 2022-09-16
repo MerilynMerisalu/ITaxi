@@ -7,12 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Base.Contracts.DAL\Base.Contracts.DAL.csproj"/>
-        <ProjectReference Include="..\Base.Contracts.Domain\Base.Contracts.Domain.csproj"/>
+        <ProjectReference Include="..\Base.Contracts.DAL\Base.Contracts.DAL.csproj" />
+        <ProjectReference Include="..\Base.Contracts.Domain\Base.Contracts.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
     </ItemGroup>
 
 </Project>
