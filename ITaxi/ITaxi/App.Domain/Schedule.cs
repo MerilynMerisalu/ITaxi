@@ -36,5 +36,7 @@ public class Schedule : DomainEntityMetaId
 
     public ICollection<RideTime>? RideTimes { get; set; }
 
+   
+
     public ICollection<Booking>? Bookings { get; set; }
 }

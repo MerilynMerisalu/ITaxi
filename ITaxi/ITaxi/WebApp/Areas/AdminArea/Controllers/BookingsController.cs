@@ -407,7 +407,7 @@ public class BookingsController : Controller
         var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName );
         if (booking == null) return NotFound();
         vm.Id = booking.Id;
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleAsync(id.Value, null, roleName);
+        var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(id.Value, null, roleName);
 
         if (schedule != null)
         {

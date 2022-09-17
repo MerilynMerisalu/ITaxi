@@ -118,7 +118,23 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
     }
 
 
-    public Schedule? GettingTheFirstSchedule(Guid? userId, string? roleName = null, bool noTracking = true)
+    public Schedule? GettingTheFirstScheduleById(Guid id,Guid? userId, string? roleName = null, bool noTracking = true)
+    {
+        return CreateQuery(userId, roleName)
+            .OrderBy(s => s.StartDateAndTime.Hour)
+            .ThenBy(s => s.StartDateAndTime.Minute)
+            .FirstOrDefault(s => s.Id.Equals(id));
+    }
+
+    public async Task<Schedule?> GettingTheFirstScheduleAsync(Guid? userid = null, string? roleName = null, bool noTracking = true)
+    {
+        return await CreateQuery(userid, roleName)
+            .OrderBy(s => s.StartDateAndTime.Hour)
+            .ThenBy(s => s.StartDateAndTime.Minute)
+            .FirstOrDefaultAsync();
+    }
+
+    public Schedule? GettingTheFirstSchedule(Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         return CreateQuery(userId, roleName)
             .OrderBy(s => s.StartDateAndTime.Hour)
@@ -143,6 +159,9 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
         return scheduleStartAndEndTime;
     }
 
+    
+
+    
 
     public async Task<Schedule?> FirstOrDefaultAsync(Guid id, Guid? userId = null,
         string? roleName = null, bool noTracking = true)
@@ -151,25 +170,14 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
     }
 
 
-    public async Task<Schedule?> GettingTheFirstScheduleAsync(Guid id, Guid? userid = null, string? roleName = null,
+    public async Task<Schedule?> GettingTheFirstScheduleByIdAsync(Guid id, Guid? userid = null, string? roleName = null,
         bool noTracking = true)
     {
         var res = await CreateQuery(userid, roleName).FirstOrDefaultAsync(s => s.Id.Equals(id));
         return res;
     }
 
-    public async Task<Guid> GettingScheduleByDriverIdAsync(Guid driverId)
-    {
-        return await RepoDbSet
-            .Where(s => s.DriverId.Equals(driverId)).Select(s => s.Id)
-            .FirstAsync();
-    }
-
-    /*public Guid GettingScheduleByDriverId(Guid driverId)
-    {
-        return RepoDbSet.Where(s => s.DriverId.Equals(driverId))
-            .Select(s => s.Id).First();
-    }*/
+    
 
     protected IQueryable<Schedule> CreateQuery(Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
