@@ -1,5 +1,9 @@
 ﻿using System.ComponentModel;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Base.Extensions;
 
@@ -80,7 +84,20 @@ public static class IdentityExtension
     public static string GettingUserName(this ClaimsPrincipal user)
     {
         return $"{user.Claims.FirstOrDefault(c => c.Type.Equals("aspnet.lastname"))?.Value ?? "???"} " +
-               $"{user.Claims.FirstOrDefault(c => c.Type.Equals("aspnet.firstname"))?.Value ?? "???"}"
-            ;
+               $"{user.Claims.FirstOrDefault(c => c.Type.Equals("aspnet.firstname"))?.Value ?? "???"}";
+    }
+
+    public static string GenerateJwt(IEnumerable<Claim> claims, 
+        string key, string issuer, string audience, DateTime expirationDateTime)
+    {
+        var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+        var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityToken(
+            issuer: issuer,
+            audience: audience,
+            claims: claims,
+            expires: expirationDateTime,
+            signingCredentials: signingCredentials);
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
