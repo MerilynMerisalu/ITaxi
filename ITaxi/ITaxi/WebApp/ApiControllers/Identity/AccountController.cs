@@ -62,7 +62,7 @@ public class AccountController : ControllerBase
          claimsPrincipal.Claims,
          key: _configuration["JWT:Key"],
          issuer: _configuration["JWT:Issuer"],
-         audience: _configuration["JWT: Issuer"],
+         audience: _configuration["JWT:Issuer"],
          expirationDateTime: DateTime.Now.AddDays(_configuration.GetValue<int>("JWT:ExpireInDays")));
 
       var res = new JwtResponse()

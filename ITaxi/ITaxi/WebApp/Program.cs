@@ -73,7 +73,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 builder.Services
-    .AddAuthentication()
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.SlidingExpiration = true;
@@ -88,7 +88,7 @@ builder.Services
             ValidIssuer = builder.Configuration["JWT:Issuer"],
             ValidAudience = builder.Configuration["JWT:Issuer"],
             #warning ask if it is the right approach
-            ValidateAudience = false,
+            //ValidateAudience = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
             ClockSkew = TimeSpan.Zero // remove delay of token when expire
         };
