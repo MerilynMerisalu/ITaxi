@@ -63,4 +63,6 @@ public class AppUser : BaseUser
 
     [Display(ResourceType = typeof(Common), Name = nameof(IsActive))]
     public bool IsActive { get; set; }
+
+    public ICollection<RefreshToken>? RefreshTokens { get; set; }
 }

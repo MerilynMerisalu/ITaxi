@@ -1,4 +1,6 @@
-﻿using System.Security.Claims;
+﻿using System.Diagnostics;
+using System.Net;
+using System.Security.Claims;
 using App.Contracts.DAL;
 using App.Domain;
 using App.Domain.DTO;
@@ -8,6 +10,7 @@ using Base.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.MSIdentity.Shared;
+using WebApp.DTO;
 using WebApp.DTO.Identity;
 
 namespace WebApp.ApiControllers.Identity;
@@ -71,7 +74,7 @@ public class AccountController : ControllerBase
          key: _configuration["JWT:Key"],
          issuer: _configuration["JWT:Issuer"],
          audience: _configuration["JWT:Issuer"],
-         expirationDateTime: DateTime.Now.AddDays(_configuration.GetValue<int>("JWT:ExpireInDays")));
+         expirationDateTime: DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")));
 
       var res = new JwtResponse()
       {
@@ -91,9 +94,22 @@ public class AccountController : ControllerBase
       {
          _logger.LogWarning("Webapi user registration failed! User with an email {} already exist!", 
             adminRegister.Email);
-         return BadRequest($"Email {adminRegister.Email} is already registered!");
+         var errorResponse = new RestErrorResponse()
+         {
+            Title = "App Error",
+            Status = HttpStatusCode.BadRequest,
+            Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+            TraceId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+         };
+         errorResponse.Errors["Email"] = new List<string>()
+         {
+            "Email already registered!"
+         };
+         return BadRequest(errorResponse);
          
       }
+
+      var refreshToken = new RefreshToken();
 
       appUser = new AppUser()
       {
@@ -104,7 +120,11 @@ public class AccountController : ControllerBase
          DateOfBirth = DateTime.Parse(adminRegister.DateOfBirth).ToUniversalTime(),
          PhoneNumber = adminRegister.PhoneNumber,
          Email = adminRegister.Email,
-         UserName = adminRegister.Email
+         UserName = adminRegister.Email,
+         RefreshTokens = new List<RefreshToken>()
+         {
+            refreshToken
+         }
       };
 
       
@@ -123,6 +143,7 @@ public class AccountController : ControllerBase
       appUser = await _userManager.FindByEmailAsync(appUser.Email);
       if (appUser == null)
       {
+         
          _logger.LogWarning("User with email {} is not found after registration", adminRegister.Email);
          return BadRequest($"User with email {adminRegister.Email} is not found after registration");
 
@@ -135,7 +156,7 @@ public class AccountController : ControllerBase
          key: _configuration["JWT:Key"],
          issuer: _configuration["JWT:Issuer"],
          audience: _configuration["JWT:Issuer"],
-         expirationDateTime: DateTime.Now.AddDays(_configuration.GetValue<int>("JWT:ExpireInDays")));
+         expirationDateTime: DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")));
 
       var admin = new Admin
       {
@@ -167,7 +188,9 @@ public class AccountController : ControllerBase
       var res = new JwtResponseAdminRegister()
       {
          Token = jwt,
-         AdminDTO = adminDto
+         AdminDTO = adminDto,
+         RefreshToken = refreshToken.Token
+         
       };
       return Ok(res);
    }

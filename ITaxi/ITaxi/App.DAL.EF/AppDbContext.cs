@@ -34,6 +34,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<Vehicle> Vehicles { get; set; } = default!;
     public DbSet<Comment> Comments { get; set; } = default!;
 
+    public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
