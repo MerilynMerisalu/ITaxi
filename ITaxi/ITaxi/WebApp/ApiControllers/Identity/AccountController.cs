@@ -158,6 +158,8 @@ public class AccountController : ControllerBase
          audience: _configuration["JWT:Issuer"],
          expirationDateTime: DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")));
 
+      await _userManager.AddToRoleAsync(appUser, "Admin");
+      
       var admin = new Admin
       {
          Id = new Guid(),
