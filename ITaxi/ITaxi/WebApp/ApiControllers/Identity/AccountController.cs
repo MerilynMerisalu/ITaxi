@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using App.Contracts.DAL;
+using App.DAL.EF;
 using App.Domain;
 using App.Domain.DTO;
 using App.Domain.Identity;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.MSIdentity.Shared;
+using Microsoft.EntityFrameworkCore;
 using WebApp.DTO;
 using WebApp.DTO.Identity;
 
@@ -26,18 +29,109 @@ public class AccountController : ControllerBase
    private readonly IConfiguration _configuration;
    private readonly ILogger<AccountController> _logger;
    private readonly Random _rand = new Random();
-   private readonly IAppUnitOfWork _uow;
-   
+   //private readonly IAppUnitOfWork _uow;
+#warning Code smell, fix it!
+   private readonly AppDbContext _context;
+
 
    public AccountController(SignInManager<AppUser> signInManager,
       UserManager<AppUser> userManager,
-      ILogger<AccountController> logger, IConfiguration configuration, IAppUnitOfWork uow)
+      ILogger<AccountController> logger, IConfiguration configuration, IAppUnitOfWork uow, AppDbContext context)
    {
       _signInManager = signInManager;
       _userManager = userManager;
       _logger = logger;
       _configuration = configuration;
-      _uow = uow;
+      //_uow = uow;
+      _context = context;
+   }
+
+   public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenModelDTO refreshTokenModelDTO)
+   {
+      JwtSecurityToken jwtToken;
+      try
+      {
+         jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(refreshTokenModelDTO.Token);
+         if (jwtToken == null)
+         {
+            return BadRequest("No token");
+         }
+
+      }
+      catch (Exception e)
+      {
+         return BadRequest($"Cannot parse the token {e.Message}");
+      }
+       #warning  Validate token signature
+
+      var userEmail = jwtToken.Claims.FirstOrDefault(e => e.Type.Equals(ClaimTypes.Email))?.Value;
+      if (userEmail == null)
+      {
+         return BadRequest("No email in jwt");
+      }
+
+      var appUser = await _userManager.FindByEmailAsync(userEmail);
+      if (appUser == null)
+      {
+         return BadRequest($"User with email ${userEmail} was not found!");
+      }
+
+      await _context.Entry(appUser).Collection(c => c.RefreshTokens!)
+         .Query().Where(t => (t.Token == refreshTokenModelDTO.RefreshToken
+                             && t.TokenExpirationDateAndTime > DateTime.UtcNow) ||
+                             t.PreviousToken == refreshTokenModelDTO.RefreshToken
+                             && t.PreviousTokenExpirationDateAndTime > DateTime.UtcNow).ToListAsync();
+      
+      if (appUser.RefreshTokens == null)
+      {
+         return Problem("Refresh token collection is null");
+      }
+
+      if (appUser.RefreshTokens.Count == 0)
+      {
+         return Problem("Refresh token collection is empty! No valid refresh tokens found!");
+      }
+      if (appUser.RefreshTokens!.Count != 1)
+      {
+         return Problem("More than one valid refresh token found");
+      }
+      var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
+
+      if (claimsPrincipal == null)
+      {
+         _logger.LogWarning("Could not get claims for user {}!", userEmail);
+         await Task.Delay(_rand.Next(100, 1000));
+         return NotFound("Username / password problem!");
+      }
+
+      var jwt = IdentityExtension.GenerateJwt(
+         claimsPrincipal.Claims,
+         key: _configuration["JWT:Key"],
+         issuer: _configuration["JWT:Issuer"],
+         audience: _configuration["JWT:Issuer"],
+         expirationDateTime: DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")));
+
+      var refreshToken = appUser.RefreshTokens.First();
+      if (refreshToken.Token == refreshTokenModelDTO.Token)
+      {
+         refreshToken.PreviousToken = refreshToken.Token;
+         refreshToken.PreviousTokenExpirationDateAndTime = DateTime.UtcNow.AddMinutes(5);
+
+         refreshToken.Token = Guid.NewGuid().ToString();
+         refreshToken.TokenExpirationDateAndTime = DateTime.UtcNow.AddDays(7);
+
+         await _context.SaveChangesAsync();
+      }
+      
+      var res = new JwtResponse()
+      {
+         Token = jwt,
+         RefreshToken = refreshToken.Token,
+         FirstName = appUser.FirstName,
+         LastName = appUser.LastName
+      };
+      
+      return Ok(res);
    }
 
    [HttpPost]
@@ -87,7 +181,7 @@ public class AccountController : ControllerBase
       return Ok(res);
    }
 
-   // Is that the right way to do in my app context?
+   #warning Is that the right way to do in my app context?
    
     [HttpPost]
     [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme )]
@@ -175,8 +269,8 @@ public class AccountController : ControllerBase
          UpdatedAt = DateTime.Now.ToUniversalTime()
 
       };
-      _uow.Admins.Add(admin);
-      await _uow.SaveChangesAsync();
+      _context.Admins.Add(admin);
+      await _context.SaveChangesAsync();
 
       var adminDto = new AdminDTO()
       {

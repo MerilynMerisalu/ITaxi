@@ -2,7 +2,7 @@
 
 namespace WebApp.DTO.Identity;
 
-public class DriverRegister : RegisterDTO
+public class DriverRegistrationDTO : RegisterDTO
 {
     #warning Should there be a common DTO for all types of registrations
     

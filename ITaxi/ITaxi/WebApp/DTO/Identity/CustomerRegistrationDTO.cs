@@ -2,7 +2,7 @@
 
 namespace WebApp.DTO.Identity;
 
-public class CustomerRegistration: RegisterDTO
+public class CustomerRegistrationDTO: RegisterDTO
 {
     #warning Should there be a common DTO for all types of registrations
     
