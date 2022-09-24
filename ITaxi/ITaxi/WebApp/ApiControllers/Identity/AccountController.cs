@@ -7,6 +7,8 @@ using App.Domain.DTO;
 using App.Domain.Identity;
 using App.Resources.Areas.Identity.Pages.Account;
 using Base.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.MSIdentity.Shared;
@@ -87,6 +89,7 @@ public class AccountController : ControllerBase
 
    
     [HttpPost]
+    [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme )]
    public async Task<ActionResult<JwtResponseAdminRegister>> RegisterAdmin(AdminRegistrationDTO adminRegister)
    {
       var appUser = await _userManager.FindByEmailAsync(adminRegister.Email);
