@@ -87,6 +87,7 @@ public class AccountController : ControllerBase
       return Ok(res);
    }
 
+   // Is that the right way to do in my app context?
    
     [HttpPost]
     [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme )]
