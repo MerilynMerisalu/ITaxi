@@ -1210,10 +1210,12 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Identity.RefreshToken", b =>
                 {
-                    b.HasOne("App.Domain.Identity.AppUser", null)
+                    b.HasOne("App.Domain.Identity.AppUser", "AppUser")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("App.Domain.Photo", b =>

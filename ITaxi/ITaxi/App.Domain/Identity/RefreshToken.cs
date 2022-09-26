@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Base.Domain;
 
 namespace App.Domain.Identity;
@@ -16,4 +17,8 @@ public class RefreshToken: DomainEntityId
 
     /* UTC */
     public DateTime? PreviousTokenExpirationDateAndTime { get; set; }
+    
+    [ForeignKey(nameof(AppUser))]
+    public Guid? AppUserId { get; set; }
+    public AppUser? AppUser { get; set; }
 }

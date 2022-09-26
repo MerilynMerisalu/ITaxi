@@ -165,6 +165,27 @@ public class AccountController : ControllerBase
          return NotFound("Username / password problem!");
       }
 
+      appUser.RefreshTokens = await _context
+         .Entry(appUser)
+         .Collection(a => a.RefreshTokens!)
+         .Query()
+         .Where(t => t.AppUserId == appUser.Id)
+         .ToListAsync();
+
+      foreach (var userRefreshToken in appUser.RefreshTokens)
+      {
+         if (userRefreshToken.TokenExpirationDateAndTime < DateTime.UtcNow &&
+             userRefreshToken.PreviousTokenExpirationDateAndTime < DateTime.UtcNow)
+         {
+            _context.RefreshTokens.Remove(userRefreshToken);
+         }
+      }
+        
+      var refreshToken = new RefreshToken();
+      refreshToken.AppUserId = appUser.Id;
+      _context.RefreshTokens.Add(refreshToken);
+
+      await _context.SaveChangesAsync();
       var jwt = IdentityExtension.GenerateJwt(
          claimsPrincipal.Claims,
          key: _configuration["JWT:Key"],
@@ -172,11 +193,13 @@ public class AccountController : ControllerBase
          audience: _configuration["JWT:Issuer"],
          expirationDateTime: DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")));
 
+      
       var res = new JwtResponse()
       {
          Token = jwt,
          FirstName = appUser.FirstName,
-         LastName = appUser.LastName
+         LastName = appUser.LastName,
+         RefreshToken = refreshToken.Token
       };
       return Ok(res);
    }

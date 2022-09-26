@@ -35,8 +35,6 @@ public class Schedule : DomainEntityMetaId
     public string ShiftDurationTime => $"{StartDateAndTime:g} - {EndDateAndTime:g}";
 
     public ICollection<RideTime>? RideTimes { get; set; }
-
-   
-
+    
     public ICollection<Booking>? Bookings { get; set; }
 }
