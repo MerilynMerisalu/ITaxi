@@ -149,6 +149,7 @@ public class AccountController : ControllerBase
         var res = new JwtResponseAdminRegister()
         {
             Token = jwt,
+            AdminDto = adminDto,
             RefreshToken = refreshToken.Token,
         };
             
