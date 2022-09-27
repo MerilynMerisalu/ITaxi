@@ -198,7 +198,8 @@ public class AccountController : ControllerBase
                 .ToUniversalTime()
             
         };
-        await _context.Entry(appUser).Collection(a => a.RefreshTokens!).Query().ToListAsync();
+        await _context.Entry(appUser)
+            .Collection(a => a.RefreshTokens!).Query().ToListAsync();
         appUser.RefreshTokens!.Add(refreshToken);
         
         await _context.SaveChangesAsync();
