@@ -191,9 +191,17 @@ public class AccountController : ControllerBase
             audience: _configuration["JWT:Issuer"],
             expirationDateTime: DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")));
         
-        var refreshToken = new RefreshToken();
-        refreshToken.TokenExpirationDateAndTime = DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")).ToUniversalTime();
-
+        
+        var refreshToken = new RefreshToken
+        {
+            TokenExpirationDateAndTime = DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes"))
+                .ToUniversalTime()
+            
+        };
+        await _context.Entry(appUser).Collection(a => a.RefreshTokens!).Query().ToListAsync();
+        appUser.RefreshTokens!.Add(refreshToken);
+        
+        await _context.SaveChangesAsync();
         var res = new JwtResponse()
         {
             Token = jwt,
