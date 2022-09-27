@@ -6,5 +6,5 @@ public class JwtResponseAdminRegister
 {
     public string Token { get; set; } = default!;
     public string RefreshToken { get; set; } = default!;
-    public AdminDTO? AdminDTO { get; set; }
+    
 }
