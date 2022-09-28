@@ -44,6 +44,116 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
+    public async Task<ActionResult<JwtResponseCustomerRegister>> RegisterCustomerDTO
+        (CustomerRegistrationDTO customerRegistrationDTO)
+    {
+         var appUser = await _userManager.FindByEmailAsync(customerRegistrationDTO.Email);
+        if (appUser != null)
+        {
+            _logger.LogWarning("Webapi user registration failed! User with an email {} already exist!",
+                customerRegistrationDTO.Email);
+            var errorResponse = new RestErrorResponse
+            {
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                Title = "App error",
+                Status = HttpStatusCode.BadRequest,
+                TraceId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                Errors =
+                {
+                    ["Email"] = new List<string>()
+                    {
+                        "Email already registered!"
+                    }
+                }
+            };
+            return BadRequest(errorResponse);
+        }
+
+        var refreshToken = new RefreshToken
+        {
+            TokenExpirationDateAndTime = DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")).ToUniversalTime()
+        };
+        appUser = new AppUser()
+        {
+            FirstName = customerRegistrationDTO.FirstName,
+            LastName = customerRegistrationDTO.LastName,
+            PhoneNumber = customerRegistrationDTO.PhoneNumber,
+            Email = customerRegistrationDTO.Email,
+            UserName = customerRegistrationDTO.Email,
+            EmailConfirmed = true,
+            RefreshTokens = new Collection<RefreshToken>()
+            {
+                refreshToken
+            }
+
+        };
+
+        var result = await _userManager.CreateAsync(appUser, customerRegistrationDTO.Password);
+        if (!result.Succeeded)
+        {
+            return BadRequest(result);
+        }
+
+        result = await _userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname",
+            appUser.FirstName));
+        result = await _userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
+
+        appUser = await _userManager.FindByEmailAsync(appUser.Email);
+
+        if (appUser == null)
+        {
+            _logger.LogWarning("User with email {} is not found after registration", customerRegistrationDTO.Email);
+            return BadRequest($"User with email {customerRegistrationDTO.Email} is not found after registration");
+
+        }
+
+        var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
+        if (claimsPrincipal == null)
+        {
+            _logger.LogWarning("Could not get claims for user {}!", customerRegistrationDTO.Email);
+            await Task.Delay(_rand.Next(100, 1000));
+            return NotFound("Username / password problem!");
+        }
+
+        var jwt = IdentityExtension.GenerateJwt(
+            claimsPrincipal.Claims,
+            key: _configuration["JWT:Key"],
+            issuer: _configuration["JWT:Issuer"],
+            audience: _configuration["JWT:Issuer"],
+            expirationDateTime: refreshToken.TokenExpirationDateAndTime
+        );
+        await _userManager.AddToRoleAsync(appUser, "Customer");
+
+        var customer = new Customer()
+        {
+            AppUserId = appUser.Id,
+            DisabilityTypeId = customerRegistrationDTO.DisabilityTypeId,
+            CreatedBy = User.Identity!.Name! ?? "",
+            CreatedAt = DateTime.Now.ToUniversalTime(),
+            UpdatedAt = DateTime.Now.ToUniversalTime(),
+            UpdatedBy = User.Identity!.Name ?? ""
+        };
+         
+        _context.Customers.Add(customer);
+        await _context.SaveChangesAsync();
+
+        var customerDto = new CustomerDTO()
+        {
+            Id = customer.Id,
+            DisabilityTypeId = customerRegistrationDTO.DisabilityTypeId
+        };
+        
+        var res = new JwtResponseCustomerRegister()
+        {
+            Token = jwt,
+            RefreshToken = refreshToken.Token,
+            CustomerDTO = customerDto
+        };
+            
+        return Ok(res);
+    }
+
+    [HttpPost]
     public async Task<ActionResult<JwtResponseAdminRegister>> RegisterAdminDTO(AdminRegistrationDTO adminRegistrationDTO)
     {
         var appUser = await _userManager.FindByEmailAsync(adminRegistrationDTO.Email);
@@ -51,23 +161,27 @@ public class AccountController : ControllerBase
         {
             _logger.LogWarning("Webapi user registration failed! User with an email {} already exist!",
                 adminRegistrationDTO.Email);
-            var errorResponse = new RestErrorResponse()
+            var errorResponse = new RestErrorResponse
             {
                 Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
                 Title = "App error",
                 Status = HttpStatusCode.BadRequest,
-                TraceId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-            };
-            errorResponse.Errors["Email"] = new List<string>()
-            {
-                "Email already registered!"
+                TraceId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                Errors =
+                {
+                    ["Email"] = new List<string>()
+                    {
+                        "Email already registered!"
+                    }
+                }
             };
             return BadRequest(errorResponse);
         }
 
-        var refreshToken = new RefreshToken();
-        refreshToken.TokenExpirationDateAndTime =
-            DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")).ToUniversalTime();
+        var refreshToken = new RefreshToken
+        {
+            TokenExpirationDateAndTime = DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")).ToUniversalTime()
+        };
         appUser = new AppUser()
         {
             FirstName = adminRegistrationDTO.FirstName,
@@ -127,7 +241,6 @@ public class AccountController : ControllerBase
             Address = adminRegistrationDTO.Address,
             CreatedAt = DateTime.Now.ToUniversalTime(),
             UpdatedAt = DateTime.Now.ToUniversalTime()
-
         };
         _context.Admins.Add(admin);
         await _context.SaveChangesAsync();
@@ -144,8 +257,6 @@ public class AccountController : ControllerBase
             UpdatedAt = admin.UpdatedAt,
             UpdatedBy = admin.UpdatedBy
         };
-
-
         var res = new JwtResponseAdminRegister()
         {
             Token = jwt,

@@ -24,7 +24,7 @@ public class DisabilityTypesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<DisabilityType>>> GetDisabilityTypes()
     {
-        return Ok(await _uow.DisabilityTypes.GetAllOrderedDisabilityTypesAsync());
+        return Ok(await _uow.DisabilityTypes.GetAllDisabilityTypeDtoAsync());
     }
 
     // GET: api/DisabilityTypes/5
