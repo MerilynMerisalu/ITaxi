@@ -77,6 +77,7 @@ public class AccountController : ControllerBase
         {
             FirstName = customerRegistrationDTO.FirstName,
             LastName = customerRegistrationDTO.LastName,
+            Gender = customerRegistrationDTO.Gender,
             DateOfBirth = DateTime.Parse(customerRegistrationDTO.DateOfBirth).ToUniversalTime(),
             PhoneNumber = customerRegistrationDTO.PhoneNumber,
             Email = customerRegistrationDTO.Email,
@@ -187,6 +188,7 @@ public class AccountController : ControllerBase
         {
             FirstName = adminRegistrationDTO.FirstName,
             LastName = adminRegistrationDTO.LastName,
+            Gender = adminRegistrationDTO.Gender,
             DateOfBirth = DateTime.Parse(adminRegistrationDTO.DateOfBirth).ToUniversalTime(),
             PhoneNumber = adminRegistrationDTO.PhoneNumber,
             Email = adminRegistrationDTO.Email,
@@ -301,8 +303,9 @@ public class AccountController : ControllerBase
         appUser = new AppUser()
         {
             FirstName = driverRegistrationDto.FirstName,
-            DateOfBirth = DateTime.Parse(driverRegistrationDto.DateOfBirth).ToUniversalTime(),
             LastName = driverRegistrationDto.LastName,
+            Gender = driverRegistrationDto.Gender,
+            DateOfBirth = DateTime.Parse(driverRegistrationDto.DateOfBirth).ToUniversalTime(),
             PhoneNumber = driverRegistrationDto.PhoneNumber,
             Email = driverRegistrationDto.Email,
             UserName = driverRegistrationDto.Email,
