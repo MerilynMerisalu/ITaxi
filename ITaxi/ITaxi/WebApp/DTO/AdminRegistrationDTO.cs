@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebApp.DTO.Identity;
 
-namespace WebApp.DTO.Identity;
+namespace WebApp.DTO;
 
 public class AdminRegistrationDTO: RegisterDTO
 {

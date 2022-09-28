@@ -77,6 +77,7 @@ public class AccountController : ControllerBase
         {
             FirstName = customerRegistrationDTO.FirstName,
             LastName = customerRegistrationDTO.LastName,
+            DateOfBirth = DateTime.Parse(customerRegistrationDTO.DateOfBirth).ToUniversalTime(),
             PhoneNumber = customerRegistrationDTO.PhoneNumber,
             Email = customerRegistrationDTO.Email,
             UserName = customerRegistrationDTO.Email,
@@ -186,6 +187,7 @@ public class AccountController : ControllerBase
         {
             FirstName = adminRegistrationDTO.FirstName,
             LastName = adminRegistrationDTO.LastName,
+            DateOfBirth = DateTime.Parse(adminRegistrationDTO.DateOfBirth).ToUniversalTime(),
             PhoneNumber = adminRegistrationDTO.PhoneNumber,
             Email = adminRegistrationDTO.Email,
             UserName = adminRegistrationDTO.Email,
@@ -267,6 +269,158 @@ public class AccountController : ControllerBase
         return Ok(res);
     }
 
+    [HttpPost]
+    public async Task<ActionResult<JwtResponseAdminRegister>> RegisterDriverDTO(DriverRegistrationDTO driverRegistrationDto)
+    {
+        var appUser = await _userManager.FindByEmailAsync(driverRegistrationDto.Email);
+        if (appUser != null)
+        {
+            _logger.LogWarning("Webapi user registration failed! User with an email {} already exist!",
+                driverRegistrationDto.Email);
+            var errorResponse = new RestErrorResponse
+            {
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                Title = "App error",
+                Status = HttpStatusCode.BadRequest,
+                TraceId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                Errors =
+                {
+                    ["Email"] = new List<string>()
+                    {
+                        "Email already registered!"
+                    }
+                }
+            };
+            return BadRequest(errorResponse);
+        }
+
+        var refreshToken = new RefreshToken
+        {
+            TokenExpirationDateAndTime = DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")).ToUniversalTime()
+        };
+        appUser = new AppUser()
+        {
+            FirstName = driverRegistrationDto.FirstName,
+            DateOfBirth = DateTime.Parse(driverRegistrationDto.DateOfBirth).ToUniversalTime(),
+            LastName = driverRegistrationDto.LastName,
+            PhoneNumber = driverRegistrationDto.PhoneNumber,
+            Email = driverRegistrationDto.Email,
+            UserName = driverRegistrationDto.Email,
+            EmailConfirmed = true,
+            RefreshTokens = new Collection<RefreshToken>()
+            {
+                refreshToken
+            }
+
+        };
+
+        var result = await _userManager.CreateAsync(appUser, driverRegistrationDto.Password);
+        if (!result.Succeeded)
+        {
+            return BadRequest(result);
+        }
+
+        result = await _userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname",
+            appUser.FirstName));
+        result = await _userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
+
+        appUser = await _userManager.FindByEmailAsync(appUser.Email);
+
+        if (appUser == null)
+        {
+            _logger.LogWarning("User with email {} is not found after registration", driverRegistrationDto.Email);
+            return BadRequest($"User with email {driverRegistrationDto.Email} is not found after registration");
+
+        }
+
+        var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
+        if (claimsPrincipal == null)
+        {
+            _logger.LogWarning("Could not get claims for user {}!", driverRegistrationDto.Email);
+            await Task.Delay(_rand.Next(100, 1000));
+            return NotFound("Username / password problem!");
+        }
+
+        var jwt = IdentityExtension.GenerateJwt(
+            claimsPrincipal.Claims,
+            key: _configuration["JWT:Key"],
+            issuer: _configuration["JWT:Issuer"],
+            audience: _configuration["JWT:Issuer"],
+            expirationDateTime: refreshToken.TokenExpirationDateAndTime
+        );
+        await _userManager.AddToRoleAsync(appUser, "Driver");
+      
+        var driver = new Driver()
+        {
+            Id = new Guid(),
+            AppUserId = appUser.Id,
+            PersonalIdentifier = driverRegistrationDto.PersonalIdentifier,
+            CityId = driverRegistrationDto.CityId,
+            Address = driverRegistrationDto.Address,
+            DriverLicenseNumber = driverRegistrationDto.DriverLicenseNumber,
+            DriverLicenseExpiryDate = DateTime.Parse(driverRegistrationDto.DriverLicenseExpiryDate).ToUniversalTime(),
+            CreatedAt = DateTime.Now.ToUniversalTime(),
+            UpdatedAt = DateTime.Now.ToUniversalTime()
+        };
+        _context.Drivers.Add(driver);
+        await _context.SaveChangesAsync();
+
+        var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory();
+
+        if (driverRegistrationDto.DriverLicenseCategories != null)
+            foreach (var driverLicenseCategoryId in driverRegistrationDto.DriverLicenseCategories)
+            { 
+                driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory()
+                {
+                    Id = new Guid(),
+                    DriverLicenseCategoryId = driverLicenseCategoryId,
+                    DriverId = driver.Id,
+                };
+
+                await _context.AddAsync(driverAndDriverLicenseCategory);
+                await _context.SaveChangesAsync();
+            }
+        var driverLicenseCategoryNames = await _context.DriverLicenseCategories
+            .Include(dl =>
+                dl.Drivers!.Where(d => d.DriverId.Equals(driver.Id)))
+            .Select(dl => dl.DriverLicenseCategoryName).ToListAsync();
+
+        var driverDto = new DriverDTO()
+        {
+            Id = driver.Id,
+            AppUserId = driver.AppUserId,
+            Address = driver.Address,
+            PersonalIdentifier = driver.PersonalIdentifier,
+            CityId = driver.CityId,
+            DriverLicenseCategories = driver.DriverLicenseCategories,
+            DriverLicenseNumber = driver.DriverLicenseNumber,
+            DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLocalTime().ToShortDateString(),
+            CreatedAt = driver.CreatedAt,
+            CreatedBy = driver.CreatedBy,
+            UpdatedAt = driver.UpdatedAt,
+            UpdatedBy = driver.UpdatedBy
+        };
+
+       
+        var driverAndDriverLicenseDto = new DriverAndDriverLicenseCategoryDTO()
+        {
+            //Id = driverAndDriverLicenseCategory.Id,
+            //DriverId = driverAndDriverLicenseCategory.DriverId,
+           // DriverLicenseCategoryId = driverAndDriverLicenseCategory.DriverLicenseCategoryId,
+            DriverLicenseCategoryNames = driverLicenseCategoryNames 
+            
+        };
+        
+        var res = new JwtResponseDriverRegister()
+        {
+            Token = jwt,
+            RefreshToken = refreshToken.Token,
+            DriverDTO = driverDto,
+            DriverAndDriverLicenseCategoryDTO = driverAndDriverLicenseDto
+        };
+            
+        return Ok(res);
+    }
     [HttpPost]
     public async Task<ActionResult<JwtResponse>> LogIn([FromBody] LoginDTO loginData)
     {
