@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using App.Domain;
 using WebApp.DTO.Identity;
 
 namespace WebApp.DTO;
@@ -18,8 +19,10 @@ public class DriverRegistrationDTO : RegisterDTO
     [DataType(DataType.Text)]
     [StringLength(72, MinimumLength = 2)]
     public string Address { get; set; } = default!;
-    
-    public ICollection<Guid>? DriverLicenseCategories { get; set; }
+
+    public Guid DriverLicenseCategoryId { get; set; }
+      
+    /*public Guid[]? DriverLicenseCategoryIds { get; set; }  */
 
     [Required()]
     [DataType(DataType.Text)]
@@ -29,6 +32,8 @@ public class DriverRegistrationDTO : RegisterDTO
     [Required()] 
     [DataType(DataType.Date)] 
     public string DriverLicenseExpiryDate { get; set; } = default!;
+
+    public List<Guid>? DriverLicenseCategories { get; set; }
 
 
 }

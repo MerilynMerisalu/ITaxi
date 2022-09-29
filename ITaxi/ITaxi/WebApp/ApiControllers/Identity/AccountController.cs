@@ -361,19 +361,20 @@ public class AccountController : ControllerBase
             CityId = driverRegistrationDto.CityId,
             Address = driverRegistrationDto.Address,
             DriverLicenseNumber = driverRegistrationDto.DriverLicenseNumber,
-            DriverLicenseExpiryDate = DateTime.Parse(driverRegistrationDto.DriverLicenseExpiryDate).ToUniversalTime(),
+            DriverLicenseExpiryDate = DateTime.Parse(driverRegistrationDto.DriverLicenseExpiryDate)
+                .ToUniversalTime(),
             CreatedAt = DateTime.Now.ToUniversalTime(),
             UpdatedAt = DateTime.Now.ToUniversalTime()
         };
         _context.Drivers.Add(driver);
         await _context.SaveChangesAsync();
 
-        var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory();
+        
 
         if (driverRegistrationDto.DriverLicenseCategories != null)
             foreach (var driverLicenseCategoryId in driverRegistrationDto.DriverLicenseCategories)
-            { 
-                driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory()
+            {
+                var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory()
                 {
                     Id = new Guid(),
                     DriverLicenseCategoryId = driverLicenseCategoryId,
@@ -381,8 +382,10 @@ public class AccountController : ControllerBase
                 };
 
                 await _context.AddAsync(driverAndDriverLicenseCategory);
-                await _context.SaveChangesAsync();
             }
+
+        await _context.SaveChangesAsync();
+
         var driverLicenseCategoryNames = await _context.DriverLicenseCategories
             .Include(dl =>
                 dl.Drivers!.Where(d => d.DriverId.Equals(driver.Id)))
@@ -405,21 +408,16 @@ public class AccountController : ControllerBase
         };
 
        
-        var driverAndDriverLicenseDto = new DriverAndDriverLicenseCategoryDTO()
-        {
-            //Id = driverAndDriverLicenseCategory.Id,
-            //DriverId = driverAndDriverLicenseCategory.DriverId,
-           // DriverLicenseCategoryId = driverAndDriverLicenseCategory.DriverLicenseCategoryId,
-            DriverLicenseCategoryNames = driverLicenseCategoryNames 
+        
             
-        };
+        
         
         var res = new JwtResponseDriverRegister()
         {
             Token = jwt,
             RefreshToken = refreshToken.Token,
             DriverDTO = driverDto,
-            DriverAndDriverLicenseCategoryDTO = driverAndDriverLicenseDto
+            
         };
             
         return Ok(res);

@@ -1,6 +1,8 @@
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using App.Contracts.DAL;
 using App.DAL.EF;
 using App.Domain.Identity;
@@ -74,71 +76,70 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.SlidingExpiration = true;
-    })
+    .AddCookie(options => { options.SlidingExpiration = true; })
     .AddJwtBearer(cfg =>
     {
         cfg.RequireHttpsMetadata = false;
         cfg.SaveToken = true;
         cfg.TokenValidationParameters = new TokenValidationParameters
         {
-            
             ValidIssuer = builder.Configuration["JWT:Issuer"],
             ValidAudience = builder.Configuration["JWT:Issuer"],
-            
+
 #warning secret key not added to the generated jwt which makes it not verified
             ValidateAudience = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
             ClockSkew = TimeSpan.Zero // remove delay of token when expire
         };
     });
-
-        builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
-        builder.Services.AddTransient<IMailService, MailService>();
+#warning temporarily solution
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+});
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
+builder.Services.AddTransient<IMailService, MailService>();
 
 var app = builder.Build();
-        Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
+Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
+Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
 
-        await DataHelper.SetupAppData(app, app.Environment, app.Configuration);
+await DataHelper.SetupAppData(app, app.Environment, app.Configuration);
 
 
 // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseMigrationsEndPoint();
-        }
-        else
-        {
-            app.UseExceptionHandler("/Home/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-        }
+if (app.Environment.IsDevelopment())
+{
+    app.UseMigrationsEndPoint();
+}
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
 
-        app.UseHttpsRedirection();
-        app.UseStaticFiles();
-        RotativaConfiguration.Setup(builder.Environment.WebRootPath);
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+RotativaConfiguration.Setup(builder.Environment.WebRootPath);
 
-        app.UseRouting();
-
-
-        var requestLocalizationOptions = ((IApplicationBuilder) app).ApplicationServices
-            .GetService<IOptions<RequestLocalizationOptions>>()?.Value;
-        if (requestLocalizationOptions != null)
-            app.UseRequestLocalization(requestLocalizationOptions);
-
-        app.UseAuthentication();
-        app.UseAuthorization();
-        app.MapControllerRoute(
-            "areas",
-            "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-        app.MapRazorPages();
-        app.MapControllerRoute(
-            "default",
-            "{controller=Home}/{action=Index}/{id?}");
+app.UseRouting();
 
 
-        app.Run();
-    
+var requestLocalizationOptions = ((IApplicationBuilder) app).ApplicationServices
+    .GetService<IOptions<RequestLocalizationOptions>>()?.Value;
+if (requestLocalizationOptions != null)
+    app.UseRequestLocalization(requestLocalizationOptions);
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllerRoute(
+    "areas",
+    "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
+app.MapControllerRoute(
+    "default",
+    "{controller=Home}/{action=Index}/{id?}");
+
+
+app.Run();
