@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebApp.ApiControllers;
+namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/[controller]")]
+[Route("api/adminArea/[controller]")]
 [ApiController]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DriverLicenseCategoriesController : ControllerBase

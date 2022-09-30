@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApp.ApiControllers;
+namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/[controller]")]
+[Route("api/AdminArea/[controller]")]
 [ApiController]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CountiesController : ControllerBase

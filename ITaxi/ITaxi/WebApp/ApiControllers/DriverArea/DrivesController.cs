@@ -4,9 +4,9 @@ using App.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebApp.ApiControllers;
+namespace WebApp.ApiControllers.DriverArea;
 
-[Route("api/[controller]")]
+[Route("api/AdminArea/[controller]")]
 [ApiController]
 public class DrivesController : ControllerBase
 {
