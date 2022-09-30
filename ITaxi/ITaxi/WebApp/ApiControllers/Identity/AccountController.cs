@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.Identity.Pages.Account;
 using WebApp.DTO;
 using WebApp.DTO.Identity;
+using DriverAndDriverLicenseCategoryDTO = WebApp.DTO.DriverAndDriverLicenseCategoryDTO;
 
 namespace WebApp.ApiControllers.Identity;
 
@@ -370,7 +371,6 @@ public class AccountController : ControllerBase
         await _context.SaveChangesAsync();
 
         
-
         if (driverRegistrationDto.DriverLicenseCategories != null)
             foreach (var driverLicenseCategoryId in driverRegistrationDto.DriverLicenseCategories)
             {
@@ -398,7 +398,8 @@ public class AccountController : ControllerBase
             Address = driver.Address,
             PersonalIdentifier = driver.PersonalIdentifier,
             CityId = driver.CityId,
-            DriverLicenseCategories = driver.DriverLicenseCategories,
+            NumberOfDriverLicenseCategories = driverRegistrationDto.DriverLicenseCategories!.Count,
+            
             DriverLicenseNumber = driver.DriverLicenseNumber,
             DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLocalTime().ToShortDateString(),
             CreatedAt = driver.CreatedAt,
@@ -417,6 +418,10 @@ public class AccountController : ControllerBase
             Token = jwt,
             RefreshToken = refreshToken.Token,
             DriverDTO = driverDto,
+            DriverAndDriverLicenseCategoryDTO = new DriverAndDriverLicenseCategoryDTO()
+            {
+                DriverLicenseCategoryNames = driverLicenseCategoryNames
+            }
             
         };
             

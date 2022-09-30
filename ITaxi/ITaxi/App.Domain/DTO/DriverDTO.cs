@@ -34,5 +34,6 @@ public class DriverDTO : DomainEntityMetaId
     public string DriverLicenseExpiryDate { get; set; } = default!;
 
     public ICollection<DriverAndDriverLicenseCategory>? DriverLicenseCategories { get; set; }
+    public int NumberOfDriverLicenseCategories { get; set; }
 
 }

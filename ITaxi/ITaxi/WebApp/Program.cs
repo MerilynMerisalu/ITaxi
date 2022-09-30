@@ -92,11 +92,7 @@ builder.Services
             ClockSkew = TimeSpan.Zero // remove delay of token when expire
         };
     });
-#warning temporarily solution
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-});
+
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
 builder.Services.AddTransient<IMailService, MailService>();
 
