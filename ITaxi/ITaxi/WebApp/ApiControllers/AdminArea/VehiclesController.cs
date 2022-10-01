@@ -21,7 +21,7 @@ public class VehiclesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
     {
-        return Ok(await _uow.Vehicles.GettingOrderedVehiclesWithoutIncludesAsync());
+        return Ok(await _uow.Vehicles.GettingOrderedVehiclesWithoutIncludesAsync(null));
     }
 
     // GET: api/Vehicles/5

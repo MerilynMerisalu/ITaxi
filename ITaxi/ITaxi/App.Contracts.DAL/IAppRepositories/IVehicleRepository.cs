@@ -11,7 +11,7 @@ public interface IVehicleRepository : IEntityRepository<Vehicle>
     IEnumerable<Vehicle> GettingOrderedVehicles(Guid? userId = null, string? roleName = null, bool noTracking = true);
     Task<IEnumerable<Vehicle>> GettingVehiclesWithoutIncludesAsync(bool noTracking = true);
     IEnumerable<Vehicle> GettingVehiclesWithoutIncludes(bool noTracking = true);
-    Task<IEnumerable<Vehicle>> GettingOrderedVehiclesWithoutIncludesAsync(bool noTracking = true);
+    Task<IEnumerable<Vehicle>> GettingOrderedVehiclesWithoutIncludesAsync(Guid? userId = null, string? roleName = null,  bool noTracking = true);
     IEnumerable<Vehicle> GettingOrderedVehiclesWithoutIncludes(bool noTracking = true);
 
     Task<Vehicle?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null,

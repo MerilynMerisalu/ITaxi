@@ -1,17 +1,23 @@
 #nullable disable
+
 using App.Contracts.DAL;
 using App.Domain;
+using Base.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.DriverArea;
-
 [Route("api/DriverArea/[controller]")]
 [ApiController]
+[Authorize(Roles = "Admin, Driver", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
 public class VehiclesController : ControllerBase
 {
     private readonly IAppUnitOfWork _uow;
 
+     
     public VehiclesController(IAppUnitOfWork context)
     {
         _uow = context;
@@ -21,7 +27,10 @@ public class VehiclesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
     {
-        return Ok(await _uow.Vehicles.GettingOrderedVehiclesWithoutIncludesAsync());
+        var userId = User.GettingUserId();
+        var userRole = User.GettingUserRoleName();
+        var res = await _uow.Vehicles.GettingOrderedVehiclesWithoutIncludesAsync(userId, userRole);
+        return Ok(res);
     }
 
     // GET: api/Vehicles/5

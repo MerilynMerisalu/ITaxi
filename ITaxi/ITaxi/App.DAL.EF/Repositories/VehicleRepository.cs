@@ -67,9 +67,17 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
         return base.CreateQuery(noTracking).ToList();
     }
 
-    public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesWithoutIncludesAsync(bool noTracking = true)
+    public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesWithoutIncludesAsync(Guid? userId = null,
+        string? roleName = null, bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking).OrderBy(v => v.ManufactureYear).ToListAsync();
+        if (userId == null)
+        {
+            return await base.CreateQuery(noTracking).OrderBy(v => v.ManufactureYear).ToListAsync();
+        } 
+        return await base.CreateQuery(noTracking)
+            .Where(d => d.Driver!.AppUserId.Equals(userId))
+            .OrderBy(v => v.ManufactureYear).ToListAsync();
+        
     }
 
     public IEnumerable<Vehicle> GettingOrderedVehiclesWithoutIncludes(bool noTracking = true)
