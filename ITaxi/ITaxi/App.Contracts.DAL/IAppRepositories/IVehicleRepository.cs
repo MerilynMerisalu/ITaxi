@@ -18,7 +18,7 @@ public interface IVehicleRepository : IEntityRepository<Vehicle>
         bool noTracking = true);
 
     Vehicle? GettingVehicleById(Guid id, bool noTracking = true);
-    Task<Vehicle?> GettingVehicleWithoutIncludesByIdAsync(Guid id, bool noTracking = true);
+    Task<Vehicle?> GettingVehicleWithoutIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
     Vehicle? GettingVehicleWithoutIncludesById(Guid id, bool noTracking = true);
     List<int> GettingManufactureYears();
     Task<Vehicle?> GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailabilityAsync(Booking booking);

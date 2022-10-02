@@ -90,7 +90,6 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
         string? roleName = null, bool noTracking = true)
     {
         var vehicle = await CreateQuery(userId, roleName, noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
-        if (vehicle == null) return null;
 
         return vehicle;
     }
@@ -100,7 +99,7 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
         return CreateQuery(noTracking).FirstOrDefault(v => v.Id.Equals(id));
     }
 
-    public async Task<Vehicle?> GettingVehicleWithoutIncludesByIdAsync(Guid id, bool noTracking = true)
+    public async Task<Vehicle?> GettingVehicleWithoutIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         return await base.CreateQuery(noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
     }

@@ -14,7 +14,6 @@ public class Vehicle : DomainEntityMetaId
     public Driver? Driver { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleType")]
-
     public Guid VehicleTypeId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleType")]
@@ -26,12 +25,10 @@ public class Vehicle : DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleMark")]
     public VehicleMark? VehicleMark { get; set; }
 
-
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleModel")]
     public Guid VehicleModelId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleModel")]
-
     public VehicleModel? VehicleModel { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]

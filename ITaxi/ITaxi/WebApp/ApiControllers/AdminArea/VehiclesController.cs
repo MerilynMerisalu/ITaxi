@@ -1,11 +1,13 @@
 #nullable disable
 using App.Contracts.DAL;
 using App.Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
-
+[Authorize(Roles = nameof(Admin), AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/AdminArea/[controller]")]
 [ApiController]
 public class VehiclesController : ControllerBase
