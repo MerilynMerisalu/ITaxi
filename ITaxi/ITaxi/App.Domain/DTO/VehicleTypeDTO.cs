@@ -4,5 +4,5 @@ namespace App.Domain.DTO;
 
 public class VehicleTypeDTO: DomainEntityMetaId
 {
-    public string VehicleTypeName { get; set; }
+    public string VehicleTypeName { get; set; } = default!;
 }

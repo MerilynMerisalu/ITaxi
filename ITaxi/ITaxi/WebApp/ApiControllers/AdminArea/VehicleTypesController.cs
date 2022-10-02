@@ -24,7 +24,7 @@ public class VehicleTypesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<VehicleType>>> GetVehicleTypes()
     {
-        return Ok(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync());
+        return Ok(await _uow.VehicleTypes.GetAllVehicleTypesDTOAsync());
     }
 
     // GET: api/VehicleTypes/5

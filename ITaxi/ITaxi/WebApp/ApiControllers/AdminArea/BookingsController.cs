@@ -1,6 +1,8 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +10,7 @@ namespace WebApp.ApiControllers.AdminArea;
 
 [Route("api/AdminArea/[controller]")]
 [ApiController]
+[Authorize(Roles = nameof(Admin), AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class BookingsController : ControllerBase
 {
     private readonly IAppUnitOfWork _uow;

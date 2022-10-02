@@ -1,4 +1,4 @@
-#nullable disable
+#nullable enable
 using App.DAL.EF;
 using App.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

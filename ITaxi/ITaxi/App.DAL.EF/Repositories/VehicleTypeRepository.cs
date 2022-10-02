@@ -1,5 +1,6 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
+using App.Domain.DTO;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,44 @@ public class VehicleTypeRepository : BaseEntityRepository<VehicleType, AppDbCont
         return CreateQuery(noTracking)
             .ToList() // Bring into memory "Materialize"
             .OrderBy(v => v.VehicleTypeName).ToList();
+    }
+
+    public async Task<IEnumerable<VehicleTypeDTO>> GetAllVehicleTypesDTOAsync(bool noTracking = true)
+    {
+        
+        var vehicleTypeDtos = new List<VehicleTypeDTO>();
+        var vehicleTypes = await CreateQuery(noTracking).ToListAsync();
+        foreach (var vehicleType  in vehicleTypes)
+        {
+            var vehicleTypeDto = new VehicleTypeDTO()
+            {
+                Id = vehicleType.Id,
+                VehicleTypeName = vehicleType.VehicleTypeName!.Translate("en")!
+
+            };
+            vehicleTypeDtos.Add(vehicleTypeDto);
+        }
+
+        return vehicleTypeDtos;
+    }
+
+    public IEnumerable<VehicleTypeDTO> GetAllVehicleTypesDTO(bool noTracking = true)
+    {
+        
+        List<VehicleTypeDTO> vehicleTypeDtos = new();
+        var vehicleTypes =  CreateQuery(noTracking).ToList();
+        foreach (var vehicleType  in vehicleTypes)
+        {
+            var vehicleTypeDto = new VehicleTypeDTO()
+            {
+                Id = vehicleType.Id,
+                VehicleTypeName = vehicleType.VehicleTypeName
+
+            };
+            vehicleTypeDtos.Add(vehicleTypeDto);
+        }
+
+        return vehicleTypeDtos;
     }
 
     protected override IQueryable<VehicleType> CreateQuery(bool noTracking = true)
