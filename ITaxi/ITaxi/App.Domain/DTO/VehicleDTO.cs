@@ -8,7 +8,7 @@ public class VehicleDTO : DomainEntityMetaId
 {
     public Guid VehicleTypeId { get; set; }
     
-    public VehicleType? VehicleType { get; set; }
+    //public VehicleType? VehicleType { get; set; }
     
     public Guid VehicleMarkId { get; set; }
     
