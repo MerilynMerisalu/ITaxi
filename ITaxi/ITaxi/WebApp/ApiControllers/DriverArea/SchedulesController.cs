@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.DriverArea;
 
-[Route("api/AdminArea/[controller]")]
+[Route("api/DriverArea/[controller]")]
 [ApiController]
 public class SchedulesController : ControllerBase
 {

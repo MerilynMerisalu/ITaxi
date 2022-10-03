@@ -62,70 +62,31 @@ public class VehiclesController : ControllerBase
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var vehicle = await _uow.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id, userId, roleName);
-        
-        if (roleName.Equals("Admin"))
+
+        if (vehicle!.Driver!.AppUserId != userId || !User.IsInRole(nameof(Admin)))
         {
-            try
-            {
-                if (vehicle != null)
-                {
-                    vehicle.ManufactureYear = vehicleDTO.ManufactureYear;
-                    vehicle.VehicleAvailability = vehicleDTO.VehicleAvailability;
-                    vehicle.VehicleMarkId = vehicleDTO.VehicleMarkId;
-                    vehicle.VehicleModelId = vehicleDTO.VehicleModelId;
-                    vehicle.VehicleTypeId = vehicleDTO.VehicleTypeId;
-                    vehicle.VehiclePlateNumber = vehicleDTO.VehiclePlateNumber;
-                    vehicle.NumberOfSeats = vehicleDTO.NumberOfSeats;
-                    vehicle.UpdatedBy = User.Identity!.Name;
-                    vehicle.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _uow.Vehicles.Update(vehicle);
-                }
-
-                await _uow.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!VehicleExists(id))
-                    return NotFound();
-                throw;
-            }
-
-            return NoContent();
+            return Forbid();
         }
-        else
+
+        try
         {
-            if (vehicle.Driver!.AppUserId != userId)
-            {
-                return Forbid();
-            }
-            else
-            {
-                try
-                {
-                    vehicle.ManufactureYear = vehicleDTO.ManufactureYear;
-                    vehicle.VehicleAvailability = vehicleDTO.VehicleAvailability;
-                    vehicle.VehicleMarkId = vehicleDTO.VehicleMarkId;
-                    vehicle.VehicleModelId = vehicleDTO.VehicleModelId;
-                    vehicle.VehicleTypeId = vehicleDTO.VehicleTypeId;
-                    vehicle.VehiclePlateNumber = vehicleDTO.VehiclePlateNumber;
-                    vehicle.NumberOfSeats = vehicleDTO.NumberOfSeats;
-                    vehicle.UpdatedBy = User.Identity!.Name;
-                    vehicle.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _uow.Vehicles.Update(vehicle);
-                    await _uow.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VehicleExists(id))
-                        return NotFound();
-                    throw;
-                }
-
-                return NoContent();
-            }
+            
+            vehicle.UpdatedBy = User.Identity!.Name;
+            vehicle.UpdatedAt = DateTime.Now.ToUniversalTime();
+            _uow.Vehicles.Update(vehicle);
+            await _uow.SaveChangesAsync();
         }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!VehicleExists(id))
+                return NotFound();
+            throw;
+        }
+
+        return NoContent();
     }
-        
+
+
 
     // POST: api/Vehicles
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

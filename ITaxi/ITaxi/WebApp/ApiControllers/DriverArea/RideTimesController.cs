@@ -1,12 +1,14 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.DriverArea;
-
-[Route("api/AdminArea/[controller]")]
+[Authorize(Roles = "Admin, Driver", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Route("api/DriverArea/[controller]")]
 [ApiController]
 public class RideTimesController : ControllerBase
 {

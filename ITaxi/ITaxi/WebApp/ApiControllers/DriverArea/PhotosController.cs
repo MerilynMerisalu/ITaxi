@@ -11,49 +11,49 @@ namespace WebApp.ApiControllers.DriverArea;
 [Route("api/DriverArea/[controller]")]
 [ApiController]
 [Authorize(Roles = "Admin, Driver", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-public class DrivesController : ControllerBase
+public class PhotosController : ControllerBase
 {
     private readonly IAppUnitOfWork _uow;
 
-    public DrivesController(IAppUnitOfWork uow)
+    public PhotosController(IAppUnitOfWork uow)
     {
         _uow = uow;
     }
 
-    // GET: api/Drives
+    // GET: api/Photos
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Drive>>> GetDrives()
+    public async Task<ActionResult<IEnumerable<Photo>>> GetPhotos()
     {
-        return Ok(await _uow.Drives.GetAllDrivesWithoutIncludesAsync());
+        return Ok(await _uow.Photos.GetAllAsync());
     }
 
-    // GET: api/Drives/5
+    // GET: api/Photos/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Drive>> GetDrive(Guid id)
+    public async Task<ActionResult<Photo>> GetPhoto(Guid id)
     {
-        var drive = await _uow.Drives.GettingDriveWithoutIncludesAsync(id);
+        var photo = await _uow.Photos.FirstOrDefaultAsync(id);
 
-        if (drive == null) return NotFound();
+        if (photo == null) return NotFound();
 
-        return drive;
+        return photo;
     }
 
-    // PUT: api/Drives/5
+    // PUT: api/Photos/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutDrive(Guid id, Drive drive)
+    public async Task<IActionResult> PutPhoto(Guid id, Photo photo)
     {
-        if (id != drive.Id) return BadRequest();
+        if (id != photo.Id) return BadRequest();
 
 
         try
         {
-            _uow.Drives.Update(drive);
+            _uow.Photos.Update(photo);
             await _uow.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!DriveExists(id))
+            if (!PhotoExists(id))
                 return NotFound();
             throw;
         }
@@ -61,32 +61,32 @@ public class DrivesController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Drives
+    // POST: api/Photos
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Drive>> PostDrive(Drive drive)
+    public async Task<ActionResult<Photo>> PostPhoto(Photo photo)
     {
-        _uow.Drives.Add(drive);
+        _uow.Photos.Add(photo);
         await _uow.SaveChangesAsync();
 
-        return CreatedAtAction("GetDrive", new {id = drive.Id}, drive);
+        return CreatedAtAction("GetPhoto", new {id = photo.Id}, photo);
     }
 
-    // DELETE: api/Drives/5
+    // DELETE: api/Photos/5
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteDrive(Guid id)
+    public async Task<IActionResult> DeletePhoto(Guid id)
     {
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
-        if (drive == null) return NotFound();
+        var photo = await _uow.Photos.FirstOrDefaultAsync(id);
+        if (photo == null) return NotFound();
 
-        _uow.Drives.Remove(drive);
+        _uow.Photos.Remove(photo);
         await _uow.SaveChangesAsync();
 
         return NoContent();
     }
 
-    private bool DriveExists(Guid id)
+    private bool PhotoExists(Guid id)
     {
-        return _uow.Drives.Exists(id);
+        return (_uow.Photos?.Exists(id)).GetValueOrDefault();
     }
 }

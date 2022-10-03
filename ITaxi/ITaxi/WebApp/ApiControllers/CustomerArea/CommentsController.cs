@@ -1,12 +1,14 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.CustomerArea;
-
-[Route("api/AdminArea/[controller]")]
+[Authorize(Roles = "Admin, Customer", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Route("api/CustomerArea/[controller]")]
 [ApiController]
 public class CommentsController : ControllerBase
 {
