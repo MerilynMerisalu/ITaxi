@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq.Expressions;
 using App.Domain;
 using Base.Contracts.DAL;
 
@@ -35,5 +36,11 @@ public interface IDriveRepository : IEntityRepository<Drive>
     Task<Drive?> EndingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true);
     Task<Drive?> GettingFirstDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
     Drive? GettingFirstDrive(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
+
+    Task<Drive?> GettingSingleOrDefaultDriveAsync(Expression<Func<Drive, bool>> filter, string? roleName = null,
+        bool noTracking = true);
+
+    Drive? GettingSingleOrDefaultDrive( Expression<Func<Drive, bool>> filter, string? roleName = null,
+        bool noTracking = true);
 
 }

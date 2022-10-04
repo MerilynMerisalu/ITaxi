@@ -138,8 +138,9 @@ public class BaseEntityRepository<TEntity, TKey, TDbContext> : IEntityRepository
         var res = await query.AsQueryable().AnyAsync(filter);
         return res;
     }
+    
 
-    public virtual async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter,
+    public virtual async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter, 
         bool noTracking = true)
     {
         var query = CreateQuery(noTracking);

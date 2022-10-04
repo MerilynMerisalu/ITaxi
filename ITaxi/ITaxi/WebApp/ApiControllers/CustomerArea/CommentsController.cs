@@ -1,6 +1,7 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,14 +24,18 @@ public class CommentsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
     {
-        return Ok(await _uow.Comments.GettingAllOrderedCommentsWithoutIncludesAsync());
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        return Ok(await _uow.Comments.GettingAllOrderedCommentsWithIncludesAsync(userId, roleName));
     }
 
     // GET: api/Comments/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Comment>> GetComment(Guid id)
     {
-        var comment = await _uow.Comments.GettingCommentWithoutIncludesAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id, userId, roleName);
 
         if (comment == null) return NotFound();
 
@@ -40,13 +45,19 @@ public class CommentsController : ControllerBase
     // PUT: api/Comments/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutComment(Guid id, Comment comment)
+    public async Task<IActionResult> PutComment(Guid id, Comment? comment)
     {
-        if (id != comment.Id) return BadRequest();
-
-
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        comment = await _uow.Comments.GettingTheFirstCommentAsync(id, userId, roleName);
+        if (comment == null)
+        {
+            return NotFound();
+        }
         try
         {
+            comment.UpdatedBy = User.Identity!.Name;
+            comment.UpdatedAt = DateTime.Now.ToUniversalTime();
             _uow.Comments.Update(comment);
             await _uow.SaveChangesAsync();
         }
@@ -65,6 +76,18 @@ public class CommentsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Comment>> PostComment(Comment comment)
     {
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        if (roleName != "Admin" || comment.Drive!.Booking!.Customer!.AppUserId != userId )
+        {
+            return Forbid();
+        }
+
+        comment.Drive.Booking.Customer.AppUserId = userId;
+        comment.CreatedBy = User.Identity!.Name;
+        comment.CreatedAt = DateTime.Now.ToUniversalTime();
+        comment.UpdatedBy = User.Identity.Name;
+        comment.UpdatedAt = DateTime.Now.ToUniversalTime();
         _uow.Comments.Add(comment);
         await _uow.SaveChangesAsync();
 
@@ -75,7 +98,9 @@ public class CommentsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteComment(Guid id)
     {
-        var comment = await _uow.Comments.GettingCommentWithoutIncludesAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id, userId, roleName);
         if (comment == null) return NotFound();
 
         _uow.Comments.Remove(comment);

@@ -11,7 +11,7 @@ public interface IBookingRepository : IEntityRepository<Booking>
     Task<IEnumerable<Booking?>> GettingAllOrderedBookingsAsync(Guid? userId = null, string? roleName = null, bool noTracking = true);
     IEnumerable<Booking?> GettingAllOrderedBookings(Guid? userId = null, string? roleName = null, bool noTracking = true);
 
-    Task<IEnumerable<Booking?>> GettingAllOrderedBookingsWithoutIncludesAsync(bool noTracking = true);
+    Task<IEnumerable<Booking?>> GettingAllOrderedBookingsWithoutIncludesAsync( bool noTracking = true);
     // IEnumerable<Booking?> GettingAllOrderedBookingsWithoutIncludes( bool? noTracking = true);
     Task<Booking?> GettingBookingWithoutIncludesByIdAsync(Guid id, bool noTracking = true);
     Booking? GettingBookingWithoutIncludesById(Guid id,  bool noTracking = true);

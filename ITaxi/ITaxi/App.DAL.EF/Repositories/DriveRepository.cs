@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq.Expressions;
 using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
 using Base.DAL.EF;
@@ -318,6 +319,29 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return CreateQuery(userId, roleName, noTracking).FirstOrDefault(d => d.Id.Equals(id));
     }
 
+    public async Task<Drive?> GettingSingleOrDefaultDriveAsync(
+        Expression<Func<Drive, bool>> filter, string? roleName = null, bool noTracking = true)
+    {
+        var drives = CreateQuery(null, roleName);
+        var drive = await drives.SingleOrDefaultAsync(filter);
+        if (drive == null)
+        {
+            return null;
+        }
+        return drive;
+    }
+
+    public Drive? GettingSingleOrDefaultDrive(Expression<Func<Drive, bool>> filter, string? roleName = null, bool noTracking = true)
+    {
+        var drives = CreateQuery(null, roleName);
+        var drive = drives.SingleOrDefault(filter);
+        if (drive == null)
+        {
+            return null;
+        }
+        return drive;
+    }
+
 
     protected  IQueryable<Drive> CreateQuery(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
@@ -385,4 +409,6 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
                         || d.Booking!.Customer!.AppUserId.Equals(userId));
         return query;
     }
+
+    
 }

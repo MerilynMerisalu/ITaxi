@@ -1,6 +1,8 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using App.Domain.DTO;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,14 +25,18 @@ public class BookingsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
     {
-        return Ok(await _uow.Bookings.GettingAllOrderedBookingsWithoutIncludesAsync());
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        return Ok(await _uow.Bookings.GettingAllOrderedBookingsAsync(userId, roleName));
     }
 
     // GET: api/Bookings/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Booking>> GetBooking(Guid id)
     {
-        var booking = await _uow.Bookings.GettingBookingWithoutIncludesByIdAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName);
 
         if (booking == null) return NotFound();
 
@@ -40,15 +46,21 @@ public class BookingsController : ControllerBase
     // PUT: api/Bookings/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutBooking(Guid id, Booking booking)
+    public async Task<IActionResult> PutBooking(Guid id, Booking? booking)
     {
-        if (id != booking.Id) return BadRequest();
-
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName);
+        if (booking == null)
+        {
+            return NotFound();
+        }
         var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.DriveId.Equals(booking.DriverId));
 
 
         try
-        {
+        { booking.UpdatedBy = User.Identity!.Name!;
+            booking.UpdatedAt = DateTime.Now.ToUniversalTime();
             _uow.Bookings.Update(booking);
             if (drive != null) _uow.Drives.Update(drive);
             await _uow.SaveChangesAsync();
@@ -68,6 +80,17 @@ public class BookingsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Booking>> PostBooking(Booking booking)
     {
+        var userId = User.GettingUserId();
+        if (booking.Customer!.AppUserId != userId)
+        {
+            return Forbid();
+        }
+        booking.Customer.AppUserId = userId;
+        
+        booking.CreatedBy = User.Identity!.Name;
+        booking.CreatedAt = DateTime.Now.ToUniversalTime();
+        booking.UpdatedBy = User.Identity!.Name;
+        booking.UpdatedAt = DateTime.Now.ToUniversalTime();
         _uow.Bookings.Add(booking);
 #warning Needs checking
         var drive = new Drive
@@ -87,10 +110,13 @@ public class BookingsController : ControllerBase
     public async Task<IActionResult> DeleteBooking(Guid id)
     {
 #warning Needs checking
-        var booking = await _uow.Bookings.GettingBookingWithoutIncludesByIdAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName);
         if (booking == null) return NotFound();
 
-        var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.DriverId.Equals(booking.DriveId));
+        var drive = await _uow.Drives.GettingSingleOrDefaultDriveAsync(d => d!.Booking!.DriverId.Equals(booking.DriveId)
+        );
 
         if (drive != null) await _uow.Drives.RemoveAsync(drive.Id);
         _uow.Bookings.Remove(booking);
