@@ -1,6 +1,7 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using App.Domain.DTO.AdminArea;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -49,19 +50,23 @@ public class CountiesController : ControllerBase
     // PUT: api/Counties/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutCounty(Guid id, County? county)
+    public async Task<IActionResult> PutCounty(Guid id, /*County? county,*/ CountyDTO countyDTO)
     {
-        county = await _uow.Counties.FirstOrDefaultAsync(id);
+        
+        var county = await _uow.Counties.FirstOrDefaultAsync(id);
         if (county == null )
         {
             return NotFound();
         }
 
+       
+        county.CountyName = countyDTO.CountyName;
         county.UpdatedBy = User.Identity!.Name;
         county.UpdatedAt = DateTime.Now.ToUniversalTime();
         _uow.Counties.Update(county);
         await _uow.SaveChangesAsync();
 
+        
 
         return NoContent();
     }
@@ -71,6 +76,7 @@ public class CountiesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<County>> PostCounty(County county)
     {
+        
         county.CreatedBy = User.Identity!.Name;
         county.CreatedAt = DateTime.Now.ToUniversalTime();
         county.UpdatedBy = User.Identity!.Name;
