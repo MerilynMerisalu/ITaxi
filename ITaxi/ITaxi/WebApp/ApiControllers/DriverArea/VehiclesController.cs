@@ -30,7 +30,7 @@ public class VehiclesController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var res = await _uow.Vehicles.GettingOrderedVehiclesWithoutIncludesAsync(userId, roleName);
+        var res = await _uow.Vehicles.GettingOrderedVehiclesAsync(userId, roleName);
         foreach (var vehicle in res)
         {
             vehicle.CreatedAt = vehicle.CreatedAt.ToLocalTime();
@@ -45,7 +45,7 @@ public class VehiclesController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id, userId, roleName);
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id, userId, roleName);
         
         if (vehicle == null) return NotFound();
 
@@ -57,7 +57,7 @@ public class VehiclesController : ControllerBase
     // PUT: api/Vehicles/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutVehicle(Guid id, VehicleDTO vehicleDTO)
+    public async Task<IActionResult> PutVehicle(Guid id)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
@@ -70,7 +70,6 @@ public class VehiclesController : ControllerBase
 
         try
         {
-            
             vehicle.UpdatedBy = User.Identity!.Name;
             vehicle.UpdatedAt = DateTime.Now.ToUniversalTime();
             _uow.Vehicles.Update(vehicle);
@@ -78,9 +77,7 @@ public class VehiclesController : ControllerBase
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!VehicleExists(id))
-                return NotFound();
-            throw;
+            
         }
 
         return NoContent();
@@ -108,11 +105,11 @@ public class VehiclesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteVehicle(Guid id)
     {
-        var vehicle = await _uow.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id);
+        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id);
         if (vehicle == null) return NotFound();
 
-        if (await _uow.Schedules.AnyAsync(s => vehicle != null && s != null && s.VehicleId.Equals(vehicle.Id))
-            || await _uow.Bookings.AnyAsync(v => vehicle != null && v != null && v.VehicleId.Equals(vehicle.Id)))
+        if (await _uow.Schedules.AnyAsync(s => s != null && s.VehicleId.Equals(vehicle.Id))
+            || await _uow.Bookings.AnyAsync(v => v != null && v.VehicleId.Equals(vehicle.Id)))
             return BadRequest("Vehicle cannot be deleted! ");
         
         _uow.Vehicles.Remove(vehicle);
@@ -121,8 +118,14 @@ public class VehiclesController : ControllerBase
         return NoContent();
     }
 
-    private bool VehicleExists(Guid id)
+    /*private bool VehicleExists(Guid id)
     {
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        if (userId != )
+        {
+            
+        }
         return _uow.Vehicles.Exists(id);
-    }
+    }*/
 }

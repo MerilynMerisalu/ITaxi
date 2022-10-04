@@ -12,33 +12,45 @@ public class PhotoRepository : BaseEntityRepository<Photo, AppDbContext>, IPhoto
     }
 
 
-    public async Task<IEnumerable<Photo?>> GetAllPhotosWithIncludesAsync(bool noTracking = true)
+    public async Task<IEnumerable<Photo?>> GetAllPhotosWithIncludesAsync(Guid? userId = null, 
+        string? roleName = null, bool noTracking = true)
     {
-        return await CreateQuery(noTracking).ToListAsync();
+        return await CreateQuery(userId,roleName,noTracking).ToListAsync();
     }
 
-    public IEnumerable<Photo?> GetAllPhotosWithIncludes(bool noTracking = true)
+    public IEnumerable<Photo?> GetAllPhotosWithIncludes(Guid? userId = null, string? roleName = null, 
+        bool noTracking = true)
     {
-        return CreateQuery(noTracking).ToList();
+        return CreateQuery(userId, roleName,noTracking).ToList();
     }
 
-    public async Task<Photo?> GetPhotoByIdAsync(Guid id, bool noTracking = true)
+    public async Task<Photo?> GetPhotoByIdAsync(Guid id, Guid? userId = null, string? roleName = null,
+        bool noTracking = true)
     {
-        return await CreateQuery(noTracking).FirstOrDefaultAsync(p => p.Id.Equals(id));
+        return await CreateQuery(userId, roleName,noTracking).FirstOrDefaultAsync(p => p.Id.Equals(id));
     }
 
-    public Photo? GetPhotoById(Guid id, bool noTracking = true)
+    public Photo? GetPhotoById(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return CreateQuery(noTracking).FirstOrDefault(p => p.Id.Equals(id));
+        return CreateQuery(userId, roleName,noTracking).FirstOrDefault(p => p.Id.Equals(id));
     }
 
 
-    protected override IQueryable<Photo> CreateQuery(bool noTracking = true)
+    protected  IQueryable<Photo> CreateQuery(Guid? userId = null, 
+        string? roleName = null,
+        bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query.AsNoTracking();
 
-        query = query.Include(c => c.AppUser);
+        if (roleName != null && roleName.Equals(nameof(Admin)))
+        {
+            
+            query = query.Include(c => c.AppUser);
+            return query;
+        }
+       
+        query = query.Include(c => c.AppUser).Where(p => p.AppUser!.Id.Equals(userId));
         return query;
     }
 }

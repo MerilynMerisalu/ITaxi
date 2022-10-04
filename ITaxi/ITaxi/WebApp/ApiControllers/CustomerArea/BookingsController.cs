@@ -27,7 +27,18 @@ public class BookingsController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        return Ok(await _uow.Bookings.GettingAllOrderedBookingsAsync(userId, roleName));
+        var res = await _uow.Bookings.GettingAllOrderedBookingsAsync(userId, roleName);
+        foreach (var booking in res)
+        {
+            if (booking != null)
+            {
+                booking.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime();
+                booking.Schedule!.StartDateAndTime = booking.Schedule.StartDateAndTime.ToLocalTime();
+                booking.Schedule!.EndDateAndTime = booking.Schedule.EndDateAndTime.ToLocalTime();
+                booking.DeclineDateAndTime = booking.DeclineDateAndTime.ToLocalTime();
+            }
+        }
+        return Ok(res);
     }
 
     // GET: api/Bookings/5
@@ -39,7 +50,11 @@ public class BookingsController : ControllerBase
         var booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName);
 
         if (booking == null) return NotFound();
-
+        
+        booking.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime();
+        booking.Schedule!.StartDateAndTime = booking.Schedule.StartDateAndTime.ToLocalTime();
+        booking.Schedule!.EndDateAndTime = booking.Schedule.EndDateAndTime.ToLocalTime();
+        booking.DeclineDateAndTime = booking.DeclineDateAndTime.ToLocalTime();
         return booking;
     }
 
@@ -86,7 +101,7 @@ public class BookingsController : ControllerBase
             return Forbid();
         }
         booking.Customer.AppUserId = userId;
-        
+        booking.PickUpDateAndTime = booking.PickUpDateAndTime.ToUniversalTime();
         booking.CreatedBy = User.Identity!.Name;
         booking.CreatedAt = DateTime.Now.ToUniversalTime();
         booking.UpdatedBy = User.Identity!.Name;
@@ -97,7 +112,11 @@ public class BookingsController : ControllerBase
         {
             Id = new Guid(),
             DriverId = booking.DriverId,
-            Booking = booking
+            Booking = booking,
+            CreatedBy = User.Identity.Name,
+            CreatedAt = DateTime.Now.ToUniversalTime(),
+            UpdatedBy = User.Identity.Name,
+            UpdatedAt = DateTime.Now.ToUniversalTime()
         };
         _uow.Drives.Add(drive);
         await _uow.SaveChangesAsync();

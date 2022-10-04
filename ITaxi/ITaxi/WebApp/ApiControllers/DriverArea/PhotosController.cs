@@ -1,6 +1,7 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,16 +25,30 @@ public class PhotosController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Photo>>> GetPhotos()
     {
-        return Ok(await _uow.Photos.GetAllAsync());
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var res = await _uow.Photos.GetAllPhotosWithIncludesAsync(userId, roleName);
+        foreach (var photo in res)
+        {
+            if (photo != null)
+            {
+                photo.CreatedAt = photo.CreatedAt.ToLocalTime();
+                photo.UpdatedAt = photo.UpdatedAt.ToLocalTime();
+            }
+        }
+        return Ok(res);
     }
 
     // GET: api/Photos/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Photo>> GetPhoto(Guid id)
     {
-        var photo = await _uow.Photos.FirstOrDefaultAsync(id);
-
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var photo = await _uow.Photos.GetPhotoByIdAsync(id, userId, roleName);
         if (photo == null) return NotFound();
+        photo.CreatedAt = photo.CreatedAt.ToLocalTime();
+        photo.UpdatedAt = photo.UpdatedAt.ToLocalTime();
 
         return photo;
     }
@@ -41,13 +56,17 @@ public class PhotosController : ControllerBase
     // PUT: api/Photos/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutPhoto(Guid id, Photo photo)
+    public async Task<IActionResult> PutPhoto(Guid id, Photo? photo)
     {
-        if (id != photo.Id) return BadRequest();
-
-
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+         photo = await _uow.Photos.GetPhotoByIdAsync(id, userId, roleName);
+        if (photo == null) return NotFound();
+        
         try
         {
+            photo.UpdatedBy = User.Identity!.Name;
+            photo.UpdatedAt = DateTime.Now.ToUniversalTime();
             _uow.Photos.Update(photo);
             await _uow.SaveChangesAsync();
         }
@@ -66,6 +85,17 @@ public class PhotosController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Photo>> PostPhoto(Photo photo)
     {
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        if (roleName != nameof(Admin) || photo.AppUserId != userId)
+        {
+            return Forbid();
+        }
+
+        photo.AppUserId = userId;
+        photo.CreatedAt = photo.CreatedAt.ToLocalTime();
+        photo.UpdatedAt = photo.UpdatedAt.ToLocalTime();
+
         _uow.Photos.Add(photo);
         await _uow.SaveChangesAsync();
 
@@ -76,7 +106,9 @@ public class PhotosController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePhoto(Guid id)
     {
-        var photo = await _uow.Photos.FirstOrDefaultAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var photo = await _uow.Photos.GetPhotoByIdAsync(id, userId, roleName);
         if (photo == null) return NotFound();
 
         _uow.Photos.Remove(photo);

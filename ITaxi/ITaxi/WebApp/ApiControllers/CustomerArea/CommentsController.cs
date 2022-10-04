@@ -26,7 +26,15 @@ public class CommentsController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        return Ok(await _uow.Comments.GettingAllOrderedCommentsWithIncludesAsync(userId, roleName));
+        var res = await _uow.Comments.GettingAllOrderedCommentsWithIncludesAsync(userId, roleName);
+        
+        foreach (var comment in res)
+        {
+            comment.Drive!.Booking!.PickUpDateAndTime = comment.Drive.Booking.PickUpDateAndTime.ToLocalTime();
+            comment.CreatedAt = comment.CreatedAt.ToLocalTime();
+            comment.UpdatedAt = comment.UpdatedAt.ToLocalTime();
+        }
+        return Ok(res);
     }
 
     // GET: api/Comments/5
@@ -38,6 +46,9 @@ public class CommentsController : ControllerBase
         var comment = await _uow.Comments.GettingTheFirstCommentAsync(id, userId, roleName);
 
         if (comment == null) return NotFound();
+        comment.Drive!.Booking!.PickUpDateAndTime = comment.Drive.Booking.PickUpDateAndTime.ToLocalTime();
+        comment.CreatedAt = comment.CreatedAt.ToLocalTime();
+        comment.UpdatedAt = comment.UpdatedAt.ToLocalTime();
 
         return comment;
     }

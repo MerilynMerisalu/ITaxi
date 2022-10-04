@@ -1,6 +1,7 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,16 +24,37 @@ public class RideTimesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<RideTime>>> GetRideTimes()
     {
-        return Ok(await _uow.RideTimes.GettingAllRideTimesWithoutIncludesAsync());
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var res = await _uow.RideTimes.GettingAllOrderedRideTimesAsync(userId, roleName);
+        foreach (var rideTime in res)
+        {
+            if (rideTime != null)
+            {
+                rideTime.Schedule!.StartDateAndTime = rideTime.Schedule!.StartDateAndTime.ToLocalTime();
+                rideTime.Schedule!.EndDateAndTime = rideTime.Schedule!.EndDateAndTime.ToLocalTime();
+                rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
+                rideTime.CreatedAt = rideTime.CreatedAt.ToLocalTime();
+                rideTime.UpdatedAt = rideTime.UpdatedAt.ToLocalTime();
+            }
+        }
+        return Ok(res);
     }
 
     // GET: api/RideTimes/5
     [HttpGet("{id}")]
     public async Task<ActionResult<RideTime>> GetRideTime(Guid id)
     {
-        var rideTime = await _uow.RideTimes.GettingRideTimeWithoutIncludesByIdAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
 
         if (rideTime == null) return NotFound();
+        rideTime.Schedule!.StartDateAndTime = rideTime.Schedule!.StartDateAndTime.ToLocalTime();
+        rideTime.Schedule!.EndDateAndTime = rideTime.Schedule!.EndDateAndTime.ToLocalTime();
+        rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
+        rideTime.CreatedAt = rideTime.CreatedAt.ToLocalTime();
+        rideTime.UpdatedAt = rideTime.UpdatedAt.ToLocalTime();
 
         return rideTime;
     }
@@ -40,13 +62,23 @@ public class RideTimesController : ControllerBase
     // PUT: api/RideTimes/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutRideTime(Guid id, RideTime rideTime)
+    public async Task<IActionResult> PutRideTime(Guid id, RideTime? rideTime)
     {
-        if (id != rideTime.Id) return BadRequest();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
+        
+        if (rideTime == null)
+        {
+            return NotFound();
+        }
 
 
         try
         {
+            rideTime.RideDateTime = rideTime.RideDateTime.ToUniversalTime();
+            rideTime.UpdatedBy = User.Identity!.Name;
+            rideTime.UpdatedAt = DateTime.Now.ToUniversalTime();
             _uow.RideTimes.Update(rideTime);
             await _uow.SaveChangesAsync();
         }
@@ -65,6 +97,13 @@ public class RideTimesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<RideTime>> PostRideTime(RideTime rideTime)
     {
+        rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToUniversalTime();
+        rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToUniversalTime();
+        rideTime.RideDateTime = rideTime.RideDateTime.ToUniversalTime();
+        rideTime.CreatedBy = User.Identity!.Name;
+        rideTime.CreatedAt = DateTime.Now.ToUniversalTime();
+        rideTime.UpdatedBy = User.Identity!.Name;
+        rideTime.UpdatedAt = DateTime.Now.ToUniversalTime();
         _uow.RideTimes.Add(rideTime);
         await _uow.SaveChangesAsync();
 
@@ -75,7 +114,9 @@ public class RideTimesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteRideTime(Guid id)
     {
-        var rideTime = await _uow.RideTimes.GettingRideTimeWithoutIncludesByIdAsync(id);
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
         if (rideTime == null) return NotFound();
 
         _uow.RideTimes.Remove(rideTime);
