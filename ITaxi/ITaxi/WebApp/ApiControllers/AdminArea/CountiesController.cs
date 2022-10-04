@@ -23,7 +23,13 @@ public class CountiesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<County>>> GetCounties()
     {
-        return Ok(await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync());
+        var res = await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync();
+        foreach (var county in res)
+        {
+            county.CreatedAt = county.CreatedAt.ToLocalTime();
+            county.UpdatedAt = county.UpdatedAt.ToLocalTime();
+        }
+        return Ok(res);
     }
 
     // GET: api/Counties/5
@@ -33,6 +39,9 @@ public class CountiesController : ControllerBase
         var county = await _uow.Counties.FirstOrDefaultAsync(id);
 
         if (county == null) return NotFound();
+        county.CreatedAt = county.CreatedAt.ToLocalTime();
+        county.UpdatedAt = county.UpdatedAt.ToLocalTime();
+        
 
         return county;
     }
@@ -40,9 +49,16 @@ public class CountiesController : ControllerBase
     // PUT: api/Counties/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutCounty(Guid id, County county)
+    public async Task<IActionResult> PutCounty(Guid id, County? county)
     {
-        if (id != county.Id) return BadRequest();
+        county = await _uow.Counties.FirstOrDefaultAsync(id);
+        if (county == null )
+        {
+            return NotFound();
+        }
+
+        county.UpdatedBy = User.Identity!.Name;
+        county.UpdatedAt = DateTime.Now.ToUniversalTime();
         _uow.Counties.Update(county);
         await _uow.SaveChangesAsync();
 
@@ -55,6 +71,10 @@ public class CountiesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<County>> PostCounty(County county)
     {
+        county.CreatedBy = User.Identity!.Name;
+        county.CreatedAt = DateTime.Now.ToUniversalTime();
+        county.UpdatedBy = User.Identity!.Name;
+        county.UpdatedAt = DateTime.Now.ToUniversalTime();
         _uow.Counties.Add(county);
         await _uow.SaveChangesAsync();
 

@@ -2,7 +2,7 @@
 using App.Domain.Identity;
 using Base.Domain;
 
-namespace App.Domain.DTO;
+namespace App.Domain.DTO.AdminArea;
 
 public class DriverDTO : DomainEntityMetaId
 {

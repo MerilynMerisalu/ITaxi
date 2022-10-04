@@ -1,4 +1,5 @@
 ﻿using App.Domain.DTO;
+using App.Domain.DTO.AdminArea;
 
 namespace WebApp.DTO.Identity;
 

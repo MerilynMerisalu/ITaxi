@@ -2,7 +2,7 @@
 using App.Domain.Enum;
 using Base.Domain;
 
-namespace App.Domain.DTO;
+namespace App.Domain.DTO.AdminArea;
 
 public class VehicleDTO : DomainEntityMetaId
 {

@@ -24,7 +24,13 @@ public class AdminsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
     {
-        return Ok(await _uow.Admins.GetAllAdminsOrderedByLastNameAsync());
+        var res = await _uow.Admins.GetAllAdminsOrderedByLastNameAsync();
+        foreach (var admin in res)
+        {
+            admin.CreatedAt = admin.CreatedAt.ToLocalTime();
+            admin.UpdatedAt = admin.UpdatedAt.ToLocalTime();
+        }
+        return Ok(res);
     }
 
     // GET: api/Admins/5
@@ -34,6 +40,9 @@ public class AdminsController : ControllerBase
         var admin = await _uow.Admins.FirstOrDefaultAsync(id);
 
         if (admin == null) return NotFound();
+        
+        admin.CreatedAt = admin.CreatedAt.ToLocalTime();
+        admin.UpdatedAt = admin.UpdatedAt.ToLocalTime();
 
         return admin;
     }

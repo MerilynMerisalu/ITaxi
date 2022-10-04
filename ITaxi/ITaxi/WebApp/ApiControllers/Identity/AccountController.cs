@@ -6,6 +6,7 @@ using System.Security.Claims;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.DTO;
+using App.Domain.DTO.AdminArea;
 using App.Domain.Identity;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

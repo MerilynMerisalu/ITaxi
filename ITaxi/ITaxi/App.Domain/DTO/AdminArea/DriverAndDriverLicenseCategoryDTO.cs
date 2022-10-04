@@ -1,4 +1,4 @@
-﻿namespace App.Domain.DTO;
+﻿namespace App.Domain.DTO.AdminArea;
 
 public class DriverAndDriverLicenseCategoryDTO
 {

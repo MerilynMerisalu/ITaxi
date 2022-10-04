@@ -1,5 +1,6 @@
 ﻿using App.Domain;
 using App.Domain.DTO;
+using App.Domain.DTO.AdminArea;
 using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
