@@ -80,12 +80,7 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
             .ToListAsync();
     }
 
-    public async Task<Booking?> GettingBookingWithoutIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null,
-        bool noTracking = true)
-    {
-        throw new NotImplementedException();
-    }
-
+    
 
     public IEnumerable<Booking?> GettingAllOrderedBookingsWithoutIncludes(bool noTracking = true)
     {
