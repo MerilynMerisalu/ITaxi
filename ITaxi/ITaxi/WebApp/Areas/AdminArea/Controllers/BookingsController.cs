@@ -363,7 +363,7 @@ public class BookingsController : Controller
 #warning Include a link to quick login to the portal to see this booking in the email content
             mailRequest.Body = $"Booking Declined: {booking.PickUpDateAndTime:g} {booking.PickupAddress}";
 
-            using (MailMessage mm = new MailMessage("testitaxi29@gmail.com", mailRequest.ToEmail))
+            using (MailMessage mm = new MailMessage("testitaxi88@gmail.com", mailRequest.ToEmail))
             {
                 mm.Subject = mailRequest.Subject;
                 mm.Body = mailRequest.Body;
@@ -374,7 +374,7 @@ public class BookingsController : Controller
                     smtp.Host = "smtp.gmail.com";
                     smtp.EnableSsl = true;
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    NetworkCredential creds = new NetworkCredential("testitaxi29@gmail.com", "okracmaewhbjmpuc");
+                    NetworkCredential creds = new NetworkCredential("testitaxi88@gmail.com", "luaxcxmsxlvggmsz");
                     smtp.UseDefaultCredentials = false;
                     smtp.Credentials = creds;
                     smtp.Port = 587;
