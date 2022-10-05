@@ -345,7 +345,7 @@ public class BookingsController : Controller
         var booking = await _uow.Bookings.GettingBookingAsync(id, null, roleName);
         if (booking != null)
         {
-            var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id));
+            var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id), false);
             await _uow.Bookings.BookingDeclineAsync(booking.Id, null, roleName );
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             booking.IsDeclined = true;
@@ -356,7 +356,7 @@ public class BookingsController : Controller
 #warning Add an EmailAddress Field to Driver with the "~Real"~address
 #warning Add a language field to Driver
             // Prepare Email Notification
-            /*var mailRequest = new MailRequest();
+            var mailRequest = new MailRequest();
 #warning Add Language Support for email templates
             mailRequest.Subject = $"Booking Declined: {booking.PickUpDateAndTime:g} {booking.PickupAddress}";
             mailRequest.ToEmail = "programmeerija88@gmail.com";
@@ -386,7 +386,7 @@ public class BookingsController : Controller
             // Send Email Notification
             //_mailService.
             var response = await _mailService.SendEmailAsync(mailRequest);
-            Trace.WriteLine(response);*/
+            Trace.WriteLine(response);
 
             await _uow.SaveChangesAsync();
             _uow.Drives.Update(drive);
