@@ -71,6 +71,8 @@ public class CountiesController : Controller
         {
             county.Id = Guid.NewGuid();
             county.CountyName = vm.CountyName;
+            county.CreatedBy = User.Identity!.Name;
+            county.CreatedAt = DateTime.Now.ToUniversalTime();
             _uow.Counties.Add(county);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -108,6 +110,8 @@ public class CountiesController : Controller
                 try
                 {
                     county.CountyName = vm.CountyName;
+                    county.UpdatedBy = User.Identity!.Name!;
+                    county.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _uow.Counties.Update(county);
                     await _uow.SaveChangesAsync();
                 }
