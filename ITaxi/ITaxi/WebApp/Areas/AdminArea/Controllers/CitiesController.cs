@@ -73,6 +73,8 @@ public class CitiesController : Controller
             city.Id = Guid.NewGuid();
             city.CountyId = vm.CountyId;
             city.CityName = vm.CityName;
+            city.CreatedBy = User.Identity!.Name;
+            city.CreatedAt = DateTime.Now.ToUniversalTime();
             _uow.Cities.Add(city);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -117,7 +119,8 @@ public class CitiesController : Controller
                 city.Id = id;
                 city.CountyId = vm.CountyId;
                 city.CityName = vm.CityName;
-                city.UpdatedAt = DateTime.UtcNow;
+                city.UpdatedBy = User.Identity!.Name;
+                city.UpdatedAt = DateTime.Now.ToUniversalTime();
                 _uow.Cities.Update(city);
                 await _uow.SaveChangesAsync();
             }
@@ -148,6 +151,8 @@ public class CitiesController : Controller
         vm.CityName = city.CityName;
         vm.CreatedAt = city.CreatedAt.ToString("G");
         vm.CreatedBy = city.CreatedBy!;
+        vm.UpdatedBy = city.UpdatedBy!;
+        vm.UpdatedAt = city.UpdatedAt.ToString("G");
 
 
         return View(vm);
@@ -155,7 +160,7 @@ public class CitiesController : Controller
 
     // POST: AdminArea/Cities/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {

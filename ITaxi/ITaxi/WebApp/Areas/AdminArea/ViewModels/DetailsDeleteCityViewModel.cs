@@ -12,4 +12,5 @@ public class DetailsDeleteCityViewModel : AdminAreaBaseViewModel
 
     [Display(ResourceType = typeof(City), Name = "CityName")]
     public string CityName { get; set; } = default!;
+    
 }
