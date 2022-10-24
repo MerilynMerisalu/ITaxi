@@ -42,7 +42,7 @@ public class DriverLicenseCategoriesController : Controller
         var driverLicenseCategory = await _uow.DriverLicenseCategories
             .FirstOrDefaultAsync(id.Value);
         if (driverLicenseCategory == null) return NotFound();
-
+        vm.Id = driverLicenseCategory.Id;
         vm.DriverLicenseCategoryName = driverLicenseCategory.DriverLicenseCategoryName;
         vm.CreatedBy = driverLicenseCategory.CreatedBy!;
         vm.CreatedAt = driverLicenseCategory.CreatedAt.ToLocalTime().ToString("G");
