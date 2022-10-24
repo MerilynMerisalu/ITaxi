@@ -46,8 +46,10 @@ public class CitiesController : Controller
         vm.Id = city.Id;
         vm.CountyName = city.County!.CountyName;
         vm.CityName = city.CityName;
-        vm.CreatedAt = city.CreatedAt.ToString("G");
+        vm.CreatedAt = city.CreatedAt.ToLocalTime().ToString("G");
         vm.CreatedBy = city.CreatedBy!;
+        vm.UpdatedBy = User.Identity!.Name!;
+        vm.UpdatedAt = DateTime.Now.ToLocalTime().ToString("G");
 
         return View(vm);
     }
@@ -97,6 +99,7 @@ public class CitiesController : Controller
             nameof(County.Id), nameof(County.CountyName));
         vm.CityName = city.CityName;
         vm.CountyId = city.CountyId;
+        
 
         return View(vm);
     }
@@ -149,10 +152,10 @@ public class CitiesController : Controller
         vm.CityName = city.CityName;
         vm.CountyName = city.County!.CountyName;
         vm.CityName = city.CityName;
-        vm.CreatedAt = city.CreatedAt.ToString("G");
+        vm.CreatedAt = city.CreatedAt.ToLocalTime().ToString("G");
         vm.CreatedBy = city.CreatedBy!;
         vm.UpdatedBy = city.UpdatedBy!;
-        vm.UpdatedAt = city.UpdatedAt.ToString("G");
+        vm.UpdatedAt = city.UpdatedAt.ToLocalTime().ToString("G");
 
 
         return View(vm);

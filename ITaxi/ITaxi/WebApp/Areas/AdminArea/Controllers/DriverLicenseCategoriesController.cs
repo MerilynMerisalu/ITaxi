@@ -71,6 +71,8 @@ public class DriverLicenseCategoriesController : Controller
         {
             driverLicenseCategory.Id = Guid.NewGuid();
             driverLicenseCategory.DriverLicenseCategoryName = vm.DriverLicenseCategoryName;
+            driverLicenseCategory.CreatedBy = User.Identity!.Name;
+            driverLicenseCategory.CreatedAt = DateTime.Now.ToUniversalTime();
             _uow.DriverLicenseCategories.Add(driverLicenseCategory);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -110,7 +112,8 @@ public class DriverLicenseCategoriesController : Controller
                 {
                     driverLicenseCategory.Id = id;
                     driverLicenseCategory.DriverLicenseCategoryName = vm.DriverLicenseCategoryName;
-                    driverLicenseCategory.UpdatedAt = DateTime.UtcNow;
+                    driverLicenseCategory.UpdatedAt = DateTime.Now.ToUniversalTime();
+                    driverLicenseCategory.UpdatedBy = User.Identity!.Name;
                     _uow.DriverLicenseCategories.Update(driverLicenseCategory);
                 }
 
@@ -148,7 +151,7 @@ public class DriverLicenseCategoriesController : Controller
 
     // POST: AdminArea/DriverLicenseCategories/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
