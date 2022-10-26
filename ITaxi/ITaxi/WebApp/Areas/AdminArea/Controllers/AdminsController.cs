@@ -113,7 +113,7 @@ public class AdminsController : Controller
         vm.FirstName = admin.AppUser!.FirstName;
         vm.LastName = admin.AppUser!.LastName;
 #warning ask if there is a better way
-        vm.DateOfBirth = admin.AppUser.DateOfBirth.Date;
+        vm.DateOfBirth = admin.AppUser.DateOfBirth;
         vm.PersonalIdentifier = admin.PersonalIdentifier;
         vm.Gender = admin.AppUser!.Gender;
         vm.CityId = admin.CityId;
@@ -134,6 +134,7 @@ public class AdminsController : Controller
     public async Task<IActionResult> Edit(Guid id, EditAdminViewModel vm)
     {
         var admin = await _uow.Admins.FirstOrDefaultAsync(id);
+        
         if (admin != null && id != admin.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -142,10 +143,17 @@ public class AdminsController : Controller
             {
                 if (admin != null)
                 {
+                    admin.AppUser!.FirstName = vm.FirstName;
+                    admin.AppUser!.LastName = vm.LastName;
+                    admin.AppUser!.Gender = vm.Gender;
+                    admin.AppUser!.DateOfBirth = DateTime.Parse(vm.DateOfBirth.ToString("d"))
+                        .ToUniversalTime();
+                    admin.AppUser!.PhoneNumber = vm.PhoneNumber;
                     admin.Address = vm.Address;
                     admin.CityId = vm.CityId;
                     admin.PersonalIdentifier = vm.PersonalIdentifier;
-                    admin.UpdatedAt = DateTime.UtcNow;
+                    admin.UpdatedBy = User.Identity!.Name!;
+                    admin.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _uow.Admins.Update(admin);
                 }
 

@@ -32,7 +32,7 @@ public class EditAdminViewModel
     [DataType(DataType.Date)]
 
 #warning Ask if itcan be refactoried to use partial view
-    public DateTime DateOfBirth { get; set; }
+    public DateTime DateOfBirth { get; set; } = default!;
 
     [StringLength(50, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
@@ -65,19 +65,7 @@ public class EditAdminViewModel
 
     public string Email { get; set; } = default!;
 
-    [Required]
-    [StringLength(100, ErrorMessageResourceType = typeof(Common),
-        ErrorMessageResourceName = "StringLengthAttributeErrorMessage",
-        MinimumLength = 6)]
-    [DataType(DataType.Password)]
-    [Display(ResourceType = typeof(Common), Name = nameof(Password))]
-    public string Password { get; set; } = default!;
-
-    [DataType(DataType.Password)]
-    [Display(ResourceType = typeof(Common), Name = "ConfirmPassword")]
-    [Compare("Password", ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ConfirmPassword")]
-    public string ConfirmPassword { get; set; } = default!;
-
+    
     [Display(ResourceType = typeof(Common), Name = nameof(IsActive))]
     public bool IsActive { get; set; }
 

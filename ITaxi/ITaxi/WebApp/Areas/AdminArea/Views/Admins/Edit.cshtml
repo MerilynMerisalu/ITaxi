@@ -30,7 +30,7 @@
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
                 <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList<Gender>()">
-                    <option>Please Select</option>
+                    <option>@Common.PleaseSelect</option>
                 </select>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
@@ -50,7 +50,7 @@
             <div class="form-group">
                 <label asp-for="CityId" class="control-label"></label>
                 <select asp-for="CityId" class="form-control" asp-items="Model.Cities">
-                    <option>Please Select</option>
+                    <option>@Common.PleaseSelect</option>
                 </select>
                 <span asp-validation-for="CityId" class="text-danger"></span>
             </div>
@@ -76,7 +76,7 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="Password"></label>
                 <input asp-for="Password" class="form-control" alt="Enter your password here."
                        placeholder="Enter your password here"/>
@@ -88,7 +88,7 @@
                 <input asp-for="ConfirmPassword" class="form-control"
                        alt="Enter your password  here to confirm." placeholder="Enter your password here to confirm"/>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
+            </div>*@
 
             <div class="form-group form-check">
                 <label class="form-check-label">
