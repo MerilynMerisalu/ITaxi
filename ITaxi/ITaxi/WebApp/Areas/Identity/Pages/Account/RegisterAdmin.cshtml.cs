@@ -122,6 +122,8 @@ public class RegisterAdminModel : PageModel
                 await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
 
+                await _userManager.AddToRoleAsync(user, "Admin");
+                await _context.SaveChangesAsync();
                 var admin = new Admin
                 {
                     AppUserId = user.Id, PersonalIdentifier = Input.PersonalIdentifier,
