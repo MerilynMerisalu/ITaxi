@@ -58,6 +58,7 @@ public class CitiesController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditCityViewModel();
+        
         vm.Counties = new SelectList(await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync(),
             nameof(County.Id), nameof(County.CountyName));
         return View(vm);

@@ -1,4 +1,4 @@
-/*#nullable disable
+#nullable disable
 using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -140,5 +140,5 @@ public class PhotosController : Controller
     {
         return _uow.Photos.Exists(id);
     }
-}*/
+}
 
