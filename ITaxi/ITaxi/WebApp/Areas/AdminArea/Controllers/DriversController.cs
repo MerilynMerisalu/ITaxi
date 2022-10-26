@@ -185,6 +185,8 @@ public class DriversController : Controller
                     driver.DriverLicenseExpiryDate = vm.DriverLicenseExpiryDate;
                     driver.CityId = vm.CityId;
                     driver.Address = vm.Address;
+                    driver.UpdatedBy = User.Identity!.Name!;
+                    driver.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _uow.Drivers.Update(driver);
                 }
 
