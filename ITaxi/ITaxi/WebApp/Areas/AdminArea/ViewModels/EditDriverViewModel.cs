@@ -71,7 +71,25 @@ public class EditDriverViewModel
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Driver), Name = "AddressOfResidence")]
     public string Address { get; set; } = default!;
+    
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [DataType(DataType.PhoneNumber)]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(Common), Name = nameof(PhoneNumber))]
+    public string PhoneNumber { get; set; } = default!;
 
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [DataType(DataType.EmailAddress)]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [StringLength(50, MinimumLength = 1)]
+    [EmailAddress(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageEmail")]
+    [Display(ResourceType = typeof(Common), Name = "Email")]
+
+    public string Email { get; set; } = default!;
+    
     [Display(ResourceType = typeof(Common), Name = nameof(IsActive))]
 
     public bool IsActive { get; set; }

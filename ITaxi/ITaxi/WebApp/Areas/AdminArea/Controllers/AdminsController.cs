@@ -31,6 +31,7 @@ public class AdminsController : Controller
 #warning Should this be a repo method
         foreach (var admin in res)
         {
+            admin.AppUser!.DateOfBirth = admin.AppUser.DateOfBirth.ToLocalTime();
             admin.CreatedAt = admin.CreatedAt.ToLocalTime();
             admin.UpdatedAt = admin.UpdatedAt.ToLocalTime();
         }
@@ -149,6 +150,7 @@ public class AdminsController : Controller
                     admin.AppUser!.DateOfBirth = DateTime.Parse(vm.DateOfBirth.ToString("d"))
                         .ToUniversalTime();
                     admin.AppUser!.PhoneNumber = vm.PhoneNumber;
+                    admin.AppUser!.Email = vm.Email;
                     admin.Address = vm.Address;
                     admin.CityId = vm.CityId;
                     admin.PersonalIdentifier = vm.PersonalIdentifier;

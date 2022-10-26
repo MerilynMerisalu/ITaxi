@@ -32,6 +32,8 @@ public class DriversController : Controller
 #warning Should this be a repo method
         foreach (var driver in res)
         {
+            driver.AppUser!.DateOfBirth = driver.AppUser.DateOfBirth.ToLocalTime();
+            driver.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLocalTime();
             driver.CreatedAt = driver.CreatedAt.ToLocalTime();
             driver.UpdatedAt = driver.UpdatedAt.ToLocalTime();
         }
@@ -141,6 +143,8 @@ public class DriversController : Controller
             vm.DriverLicenseNumber = driver.DriverLicenseNumber;
 #warning Ask if this should be a repository method
             vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
+            vm.PhoneNumber = driver!.AppUser!.PhoneNumber;
+            vm.Email = driver.AppUser!.Email;
         }
 
         return View(vm);
@@ -181,8 +185,15 @@ public class DriversController : Controller
                         }
                     }
 
+                    driver.AppUser!.FirstName = vm.FirstName;
+                    driver.AppUser!.LastName = vm.LastName;
+                    driver.AppUser!.Gender = vm.Gender;
+                    driver.AppUser!.DateOfBirth = DateTime.Parse(vm.DateOfBirth.ToString("d")).ToUniversalTime();
+                    driver.AppUser.PhoneNumber = vm.PhoneNumber;
+                    driver.AppUser.Email = vm.Email;
+                    driver.AppUser.IsActive = vm.IsActive;
                     driver.DriverLicenseNumber = vm.DriverLicenseNumber;
-                    driver.DriverLicenseExpiryDate = vm.DriverLicenseExpiryDate;
+                    driver.DriverLicenseExpiryDate = DateTime.Parse(vm.DriverLicenseExpiryDate.ToString("d")).ToUniversalTime();
                     driver.CityId = vm.CityId;
                     driver.Address = vm.Address;
                     driver.UpdatedBy = User.Identity!.Name!;
