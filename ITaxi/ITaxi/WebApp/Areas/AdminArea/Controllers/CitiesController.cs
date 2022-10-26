@@ -49,7 +49,7 @@ public class CitiesController : Controller
         vm.CreatedAt = city.CreatedAt.ToLocalTime().ToString("G");
         vm.CreatedBy = city.CreatedBy!;
         vm.UpdatedBy = User.Identity!.Name!;
-        vm.UpdatedAt = DateTime.Now.ToLocalTime().ToString("G");
+        vm.UpdatedAt = city.UpdatedAt.ToLocalTime().ToString("G");
 
         return View(vm);
     }
