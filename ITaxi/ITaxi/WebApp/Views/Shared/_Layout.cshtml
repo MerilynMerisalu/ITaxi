@@ -93,6 +93,18 @@
                 </li>
                 <li>
                     <a class="dropdown-item" asp-area="AdminArea"
+                       asp-controller="VehicleMarks" asp-action="Index">
+                        @App.Resources.Areas.WebApp.Views.Shared._Layout.VehicleMarks
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-area="AdminArea"
+                       asp-controller="VehicleModels" asp-action="Index">
+                        @App.Resources.Areas.WebApp.Views.Shared._Layout.VehicleModels
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-area="AdminArea"
                        asp-controller="Customers" asp-action="Index">
                         @App.Resources.Areas.WebApp.Views.Shared._Layout.Customers
                     </a>
@@ -113,8 +125,7 @@
                     </div>
                 </nav>
             </li>
-
-
+            
             <li>
                 <a class="dropdown-item" asp-area="AdminArea"
                    asp-controller="Vehicles" asp-action="Index">
