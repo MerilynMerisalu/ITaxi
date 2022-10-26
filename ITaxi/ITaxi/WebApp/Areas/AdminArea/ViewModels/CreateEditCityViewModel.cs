@@ -13,7 +13,7 @@ public class CreateEditCityViewModel
     [Display(ResourceType = typeof(City), Name = "CountyName")]
 
     public Guid CountyId { get; set; }
-
+    
     public SelectList? Counties { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]

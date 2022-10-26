@@ -101,7 +101,6 @@ public class CitiesController : Controller
         vm.CityName = city.CityName;
         vm.CountyId = city.CountyId;
         
-
         return View(vm);
     }
 
@@ -122,6 +121,7 @@ public class CitiesController : Controller
             {
                 city.Id = id;
                 city.CountyId = vm.CountyId;
+                city.County = await _uow.Counties.SingleOrDefaultAsync(c => c!.Id.Equals(vm.CountyId));
                 city.CityName = vm.CityName;
                 city.UpdatedBy = User.Identity!.Name;
                 city.UpdatedAt = DateTime.Now.ToUniversalTime();
