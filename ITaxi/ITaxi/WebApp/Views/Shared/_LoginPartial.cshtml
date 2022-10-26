@@ -28,12 +28,12 @@
                 @* ReSharper disable once ConditionIsAlwaysTrueOrFalse *@
                 @if (User != null)
                 {
-                    @string.Format(_LoginPartial.GreetingLoggedInUser, User.GettingUserName())
-                    // user.LastAndFirstName + "!")
+                    @string.Format(_LoginPartial.GreetingLoggedInUser, User.GettingUserName() + "!")
+                    
                 }
                 else
                 {
-                    @string.Format(_LoginPartial.GreetingAnonymousUser)
+                    @string.Format(_LoginPartial.GreetingAnonymousUser + "!")
                     ;
                 }
 
