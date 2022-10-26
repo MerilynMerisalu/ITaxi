@@ -28,6 +28,10 @@
         </th>
 
         <th>
+            @Html.DisplayNameFor(model => model.AppUser!.Gender)
+        </th>
+        
+        <th>
             @Html.DisplayNameFor(model => model.PersonalIdentifier)
         </th>
         <th>
@@ -80,6 +84,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.AppUser!.DateOfBirth)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.Gender)
+            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.PersonalIdentifier)
             </td>
