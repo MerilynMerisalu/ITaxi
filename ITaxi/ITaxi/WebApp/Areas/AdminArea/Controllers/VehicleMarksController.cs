@@ -72,6 +72,8 @@ public class VehicleMarksController : Controller
         {
             vehicleMark.Id = Guid.NewGuid();
             vehicleMark.VehicleMarkName = vm.VehicleMarkName;
+            vehicleMark.CreatedBy = User.Identity!.Name;
+            vehicleMark.CreatedAt = DateTime.Now.ToUniversalTime();
             _uow.VehicleMarks.Add(vehicleMark);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -112,6 +114,8 @@ public class VehicleMarksController : Controller
                 {
                     vehicleMark.Id = id;
                     vehicleMark.VehicleMarkName = vm.VehicleMarkName;
+                    vehicleMark.UpdatedBy = User.Identity!.Name!;
+                    vehicleMark.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _uow.VehicleMarks.Update(vehicleMark);
                     await _uow.SaveChangesAsync();
                 }
