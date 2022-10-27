@@ -75,6 +75,8 @@ public class VehicleModelsController : Controller
             vehicleModel.Id = Guid.NewGuid();
             vehicleModel.VehicleModelName = vm.VehicleModelName;
             vehicleModel.VehicleMarkId = vm.VehicleMarkId;
+            vehicleModel.CreatedBy = User.Identity!.Name;
+            vehicleModel.CreatedAt = DateTime.Now.ToUniversalTime();
             _uow.VehicleModels.Add(vehicleModel);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -105,9 +107,8 @@ public class VehicleModelsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id)
+    public async Task<IActionResult> Edit(Guid id, CreateEditVehicleModelViewModel vm)
     {
-        var vm = new CreateEditVehicleModelViewModel();
         var vehicleModel = await _uow.VehicleModels.FirstOrDefaultAsync(id);
         if (vehicleModel != null && id != vehicleModel.Id) return NotFound();
 
@@ -120,6 +121,8 @@ public class VehicleModelsController : Controller
                     vehicleModel.Id = id;
                     vehicleModel.VehicleMarkId = vm.VehicleMarkId;
                     vehicleModel.VehicleModelName = vm.VehicleModelName;
+                    vehicleModel.UpdatedBy = User.Identity!.Name;
+                    vehicleModel.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _uow.VehicleModels.Update(vehicleModel);
                     await _uow.SaveChangesAsync();
                 }
