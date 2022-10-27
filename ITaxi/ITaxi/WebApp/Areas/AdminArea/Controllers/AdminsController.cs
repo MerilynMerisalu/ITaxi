@@ -154,6 +154,7 @@ public class AdminsController : Controller
                     admin.Address = vm.Address;
                     admin.CityId = vm.CityId;
                     admin.PersonalIdentifier = vm.PersonalIdentifier;
+                    admin.AppUser!.IsActive = vm.IsActive;
                     admin.UpdatedBy = User.Identity!.Name!;
                     admin.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _uow.Admins.Update(admin);
