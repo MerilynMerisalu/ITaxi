@@ -132,7 +132,8 @@ public class RegisterDriverModel : PageModel
 
                 await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
-
+                await _userManager.AddToRoleAsync(user, "Driver");
+                await _context.SaveChangesAsync();
                 var driver = new Driver
                 {
 #warning driver's driver license expiry date needs a custom validation rule
