@@ -132,7 +132,7 @@ public class RegisterDriverModel : PageModel
 
                 await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
-                await _userManager.AddToRoleAsync(user, "Driver");
+                await _userManager.AddToRoleAsync(user, nameof(Driver));
                 await _context.SaveChangesAsync();
                 var driver = new Driver
                 {
@@ -260,7 +260,7 @@ public class RegisterDriverModel : PageModel
         [DataType(DataType.Text)]
         [StringLength(72, MinimumLength = 2, ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-        [Display(ResourceType = typeof(AdminRegister), Name = "AddressOfResidence")]
+        [Display(ResourceType = typeof(DriverRegister), Name = "AddressOfResidence")]
         public string Address { get; set; } = default!;
 
         [Required(ErrorMessageResourceType = typeof(Common),
@@ -300,6 +300,9 @@ public class RegisterDriverModel : PageModel
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
+        
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.Password)]
         [Display(ResourceType = typeof(Common), Name = nameof(ConfirmPassword))]
         [Compare(nameof(Password), ErrorMessageResourceType = typeof(Common),
