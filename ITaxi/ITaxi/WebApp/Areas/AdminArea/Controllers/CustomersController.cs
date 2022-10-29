@@ -225,7 +225,7 @@ public class CustomersController : Controller
         await _userManager.RemoveFromRoleAsync(appUser, nameof(Customer));
         _uow.Customers.Remove(customer);
         
-        #warning temporarly solution
+        #warning temporarily  solution
         var claims = await _userManager.GetClaimsAsync(appUser);
         await _userManager.RemoveClaimsAsync(appUser, claims);
         await _userManager.DeleteAsync(appUser);

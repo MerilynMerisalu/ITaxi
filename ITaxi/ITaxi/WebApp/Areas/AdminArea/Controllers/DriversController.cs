@@ -263,10 +263,13 @@ public class DriversController : Controller
         if (driver != null)
         {
             var appUser = await _userManager.FindByIdAsync(driver!.AppUserId.ToString());
-
-#warning Ask how to delete an user when using uow
             await _userManager.RemoveFromRoleAsync(appUser, nameof(Driver));
             _uow.Drivers.Remove(driver);
+            await _uow.SaveChangesAsync();
+    #warning  temporarily solution
+            var claims = await _userManager.GetClaimsAsync(appUser);
+            await _userManager.RemoveClaimsAsync(appUser, claims);
+            await _userManager.DeleteAsync(appUser);
             await _uow.SaveChangesAsync();
         }
 
