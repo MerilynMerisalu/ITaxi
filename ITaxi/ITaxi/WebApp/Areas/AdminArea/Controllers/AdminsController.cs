@@ -220,7 +220,7 @@ public class AdminsController : Controller
             await _uow.SaveChangesAsync();
             var claims = await _userManager.GetClaimsAsync(appUser);
             await _userManager.RemoveClaimsAsync(appUser, claims);
-           var result = await _userManager.DeleteAsync(appUser);
+             await _userManager.DeleteAsync(appUser);
            await _uow.SaveChangesAsync();
         }
 
