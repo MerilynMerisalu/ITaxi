@@ -147,7 +147,7 @@ public class CustomersController : Controller
     public async Task<IActionResult> Edit(Guid id, EditCustomerViewModel vm)
     {
         var customer = await _uow.Customers.FirstOrDefaultAsync(id);
-        if (customer == null || id == customer.Id) return NotFound();
+        if (customer == null || id != customer.Id) return NotFound();
 
         if (ModelState.IsValid)
         {
@@ -165,6 +165,8 @@ public class CustomersController : Controller
                 {
                     customer.Id = id;
                     customer.DisabilityTypeId = vm.DisabilityTypeId;
+                    customer.UpdatedBy = User.Identity!.Name!;
+                    customer.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _uow.Customers.Update(customer);
                 }
 
@@ -225,7 +227,7 @@ public class CustomersController : Controller
         await _userManager.RemoveFromRoleAsync(appUser, nameof(Customer));
         _uow.Customers.Remove(customer);
         
-        #warning temporarily  solution
+        #warning temporarily solution
         var claims = await _userManager.GetClaimsAsync(appUser);
         await _userManager.RemoveClaimsAsync(appUser, claims);
         await _userManager.DeleteAsync(appUser);

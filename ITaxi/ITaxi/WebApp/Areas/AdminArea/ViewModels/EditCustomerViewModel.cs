@@ -53,7 +53,7 @@ public class EditCustomerViewModel
     [Display(ResourceType = typeof(Common), Name = nameof(Email))]
     public string Email { get; set; } = default!;
 
-    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    /*[Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [StringLength(100, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageStringLengthMinMax",
         MinimumLength = 6)]
@@ -65,7 +65,7 @@ public class EditCustomerViewModel
     [Display(ResourceType = typeof(Common), Name = nameof(ConfirmPassword))]
     [Compare(nameof(Password), ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageComparePasswords")]
-    public string ConfirmPassword { get; set; } = default!;
+    public string ConfirmPassword { get; set; } = default!;*/
 
     [Display(ResourceType = typeof(Common), Name = nameof(IsActive))]
 
