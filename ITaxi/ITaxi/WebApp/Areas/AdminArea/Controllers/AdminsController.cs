@@ -1,4 +1,5 @@
 #nullable enable
+using System.Security.Claims;
 using App.Contracts.DAL;
 using App.Domain;
 using App.Domain.Identity;
@@ -209,16 +210,20 @@ public class AdminsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-#warning Try to figure out how to combine UOW pattern with users
+
         var admin = await _uow.Admins.FirstOrDefaultAsync(id);
         if (admin != null)
         {
-            var appUser = await _userManager.FindByIdAsync(admin!.AppUserId.ToString());
+            var appUser = await _userManager.FindByEmailAsync(admin.AppUser!.Email);
 
-#warning Ask how to delete an user when using uow
-            await _userManager.RemoveFromRoleAsync(appUser, nameof(admin));
+
+            await _userManager.RemoveFromRoleAsync(appUser, nameof(Admin));
             _uow.Admins.Remove(admin);
             await _uow.SaveChangesAsync();
+            var claims = await _userManager.GetClaimsAsync(appUser);
+            await _userManager.RemoveClaimsAsync(appUser, claims);
+           var result = await _userManager.DeleteAsync(appUser);
+           await _uow.SaveChangesAsync();
         }
 
         return RedirectToAction(nameof(Index));

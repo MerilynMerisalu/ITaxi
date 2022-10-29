@@ -157,10 +157,6 @@ public class RegisterDriverModel : PageModel
                         await _context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategories);
                         await _context.SaveChangesAsync();
                     }
-
-#warning temporarly solution
-                    result = await _userManager.AddToRoleAsync(user, nameof(Driver));
-                    if (!result.Succeeded) throw new ApplicationException("Cannot add an user to a role");
                 }
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
