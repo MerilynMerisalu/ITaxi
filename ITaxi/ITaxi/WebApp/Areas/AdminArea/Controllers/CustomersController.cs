@@ -222,10 +222,13 @@ public class CustomersController : Controller
             return Content("Entity cannot be deleted because it has dependent entities!");
 
         var appUser = await _userManager.FindByIdAsync(customer!.AppUserId.ToString());
-
-#warning Ask how to delete an user when using uow
         await _userManager.RemoveFromRoleAsync(appUser, nameof(Customer));
         _uow.Customers.Remove(customer);
+        
+        #warning temporarly solution
+        var claims = await _userManager.GetClaimsAsync(appUser);
+        await _userManager.RemoveClaimsAsync(appUser, claims);
+        await _userManager.DeleteAsync(appUser);
         await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
