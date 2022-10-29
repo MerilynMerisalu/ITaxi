@@ -215,8 +215,6 @@ public class AdminsController : Controller
         if (admin != null)
         {
             var appUser = await _userManager.FindByEmailAsync(admin.AppUser!.Email);
-
-
             await _userManager.RemoveFromRoleAsync(appUser, nameof(Admin));
             _uow.Admins.Remove(admin);
             await _uow.SaveChangesAsync();
