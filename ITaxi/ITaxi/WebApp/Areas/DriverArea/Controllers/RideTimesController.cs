@@ -107,7 +107,9 @@ public class RideTimesController : Controller
                             DriverId = driver.Id,
                             ScheduleId = vm.ScheduleId,
                             RideDateTime = selectedRideTime.ToUniversalTime(),
-                            IsTaken = vm.IsTaken
+                            IsTaken = vm.IsTaken,
+                            CreatedBy = User.Identity!.Name,
+                            CreatedAt = DateTime.Now.ToUniversalTime()
                         };
 
                         rideTimes.Add(rideTime);
@@ -185,6 +187,7 @@ public class RideTimesController : Controller
                 rideTime.ScheduleId = vm.ScheduleId;
                 rideTime.RideDateTime = DateTime.Parse(vm.RideTime).ToUniversalTime();
                 rideTime.IsTaken = vm.IsTaken;
+                rideTime.UpdatedBy = User.Identity!.Name;
                 rideTime.UpdatedAt = DateTime.Now.ToUniversalTime();
 
                 _uow.RideTimes.Update(rideTime);

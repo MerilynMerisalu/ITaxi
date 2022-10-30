@@ -176,7 +176,7 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query.AsNoTracking();
 
-        if (roleName is nameof(Admin))
+        if (roleName == null)
             return query = query.Include(c => c.Schedule)
                 .ThenInclude(c => c!.Driver).ThenInclude(c => c!.AppUser);
         query = query.Include(c => c.Schedule)

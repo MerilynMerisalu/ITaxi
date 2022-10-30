@@ -28,8 +28,8 @@ public class RideTimesController : Controller
     // GET: AdminArea/RideTimes
     public async Task<IActionResult> Index()
     {
-        var roleName = User.GettingUserRoleName();
-        var res = await _uow.RideTimes.GettingAllOrderedRideTimesAsync(null, roleName);
+        
+        var res = await _uow.RideTimes.GettingAllOrderedRideTimesAsync(null, null);
 #warning Should this be a repository method
         foreach (var rideTime in res)
             if (rideTime != null)
@@ -38,7 +38,6 @@ public class RideTimesController : Controller
                 rideTime.Schedule!.EndDateAndTime = rideTime.Schedule!.EndDateAndTime.ToLocalTime();
                 rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
                 rideTime.CreatedAt = rideTime.CreatedAt.ToLocalTime();
-
                 rideTime.UpdatedAt = rideTime.UpdatedAt.ToLocalTime();
             }
 
@@ -53,7 +52,7 @@ public class RideTimesController : Controller
 
 
         var roleName = User.GettingUserRoleName();
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, roleName);
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, null);
         if (rideTime == null) return NotFound();
 
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
