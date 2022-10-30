@@ -99,6 +99,8 @@ public class SchedulesController : Controller
             schedule.StartDateAndTime = DateTime.Parse(vm.StartDateAndTime).ToUniversalTime();
 #warning Should this be a repository method
             schedule.EndDateAndTime = DateTime.Parse(vm.EndDateAndTime).ToUniversalTime();
+            schedule.CreatedBy = User.Identity!.Name;
+            schedule.CreatedAt = DateTime.Now.ToUniversalTime();
             _uow.Schedules.Add(schedule);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

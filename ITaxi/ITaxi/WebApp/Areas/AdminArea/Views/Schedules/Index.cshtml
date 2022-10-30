@@ -14,17 +14,18 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Driver)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Vehicle)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.StartDateAndTime)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.EndDateAndTime)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Driver)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Vehicle)
+        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.CreatedBy)
         </th>
@@ -46,18 +47,17 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Driver!.AppUser!.LastAndFirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vehicle!.VehicleIdentifier)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.StartDateAndTime)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EndDateAndTime)
             </td>
-
+            <td>
+                @Html.DisplayFor(modelItem => item.Driver!.AppUser!.LastAndFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vehicle!.VehicleIdentifier)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
             </td>
