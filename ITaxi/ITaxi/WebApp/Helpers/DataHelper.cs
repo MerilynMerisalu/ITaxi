@@ -466,8 +466,8 @@ public static class DataHelper
                         .Id,
                     VehicleId = context.Vehicles.SingleOrDefaultAsync(v => v.VehiclePlateNumber
                         .Equals("555 XXZ")).Result!.Id,
-                    StartDateAndTime = DateTime.Now.AddHours(9),
-                    EndDateAndTime = DateTime.Now.AddHours(16),
+                    StartDateAndTime = DateTime.Now.AddHours(9).ToUniversalTime(),
+                    EndDateAndTime = DateTime.Now.AddHours(16).ToUniversalTime(),
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
@@ -498,7 +498,8 @@ public static class DataHelper
                         .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("38806237921"))
                         .Result!.Id,
                     RideDateTime = context.Schedules.FirstOrDefaultAsync(s =>
-                        s.Driver!.PersonalIdentifier!.Equals("38806237921")).Result!.StartDateAndTime,
+                        s.Driver!.PersonalIdentifier!.Equals("38806237921")).Result!
+                        .StartDateAndTime, //.ToUniversalTime(), CS: Suspect that the value is already UTC, so we don'ˇt need to translate against
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
@@ -514,8 +515,8 @@ public static class DataHelper
                         .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("36605138911"))
                         .Result!.Id,
                     RideDateTime = context.Schedules.FirstOrDefaultAsync(s =>
-                        s.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!.StartDateAndTime,
-                    CreatedBy = "System",
+                        s.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!
+                        .StartDateAndTime, //.ToUniversalTime(), CS: Suspect that the value is already UTC, so we don'ˇt need to translate against                    CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
                 await context.RideTimes.AddAsync(rideTime);

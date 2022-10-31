@@ -185,8 +185,5 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
 
         return query;
     }
-    /*public string DriveTimeFormatting(RideTime rideTime)
-    {
-        return rideTime.RideDateTime.ToString("t");
-    }*/
+   
 }

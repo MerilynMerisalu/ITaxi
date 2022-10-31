@@ -16,7 +16,7 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="DriverId" class="control-label"></label>
-                <select asp-for="DriverId" class="form-control" asp-items="Model.Drivers">
+                <select asp-for="DriverId" class="form-control" asp-items="Model.Drivers" onchange="driverIdChanged(this.value)">
                     <option>@Common.PleaseSelect</option>
                 </select>
                 <span asp-validation-for="DriverId" class="text-danger"></span>
@@ -52,6 +52,42 @@
     <a asp-action="Index">@Common.BackToList</a>
 </div>
 
+<script type="text/javascript">
+
+     
+    function driverIdChanged (value) {
+        //let id = this.attr("id");
+        let response = fetch('@Url.Action("SetDropDownList")', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: `{ "type": "DriverId", "value": "${value}" }`
+        });
+        response.json().then(data => {
+            PopulateDropDown("#ScheduleId", data.Schedules);
+            PopulateDropDown("#RideTime", data.RideTimes);
+        });
+    }
+    function PopulateDropDown(dropDownId, list) {
+        document.getElementById(dropDownId);
+        alert('Change the drop down');
+        //$(dropDownId).empty();
+        //$(dropDownId).append("<option>Please select</option>");
+        //$.each(list, function (index, row) {
+        //    if (index == 0) {
+        //        $(dropDownId).append("<option value='" + row.Value + "' selected='selected'>" + row.Text + "</option>");
+        //    }
+        //    else {
+        //        $(dropDownId).append("<option value='" + row.Value + "'>" + row.Text + "</option>");
+        //    }
+        //});
+    }
+</script>
+
 @section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

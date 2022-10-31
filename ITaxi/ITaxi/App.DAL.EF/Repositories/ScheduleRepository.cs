@@ -142,6 +142,21 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
             .FirstOrDefault();
     }
 
+    /// <summary>
+    /// Select the Schedules for the specified <paramref name="driverId"/>
+    /// </summary>
+    /// <param name="driverId">The Driver to filter the Schedules to</param>
+    /// <param name="userId">The current user context</param>
+    /// <param name="roleName">The current User's Role</param>
+    /// <param name="noTracking">Flag to disable tracking of the returned entities</param>
+    /// <returns>List of Schedules with the default includes</returns>
+    public async Task<IEnumerable<Schedule>> GettingTheScheduleByDriverId(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return await CreateQuery(userId, roleName, noTracking)
+            .Where(x => x.DriverId == driverId)
+            .OrderBy(x => x.StartDateAndTime)
+            .ToListAsync();
+    }
     public DateTime[] GettingStartAndEndTime(IEnumerable<Schedule> schedules, Guid? userId = null,
         string? roleName = null)
     {
@@ -184,7 +199,7 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query.AsNoTracking();
 
-        if (roleName is nameof(Admin))
+        if (roleName == null)
         {
             query = query.Include(c => c.Driver)
                 .ThenInclude(a => a!.AppUser)

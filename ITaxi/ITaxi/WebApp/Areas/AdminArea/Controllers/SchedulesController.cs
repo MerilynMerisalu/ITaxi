@@ -26,9 +26,8 @@ public class SchedulesController : Controller
     {
 #warning Ask if this is the right way to get the user name of a logged in user
 #warning Ask how to get the user role using interface
-        var roleName = User.GettingUserRoleName();
 #warning Should this be a repository method
-        var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
+        var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, null);
         foreach (var s in res)
         {
             s.StartDateAndTime = s.StartDateAndTime.ToLocalTime();

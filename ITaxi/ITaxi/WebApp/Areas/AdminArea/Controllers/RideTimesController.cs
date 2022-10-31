@@ -49,10 +49,8 @@ public class RideTimesController : Controller
     {
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
-
-
-        var roleName = User.GettingUserRoleName();
         var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, null);
+        
         if (rideTime == null) return NotFound();
 
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
@@ -142,14 +140,78 @@ public class RideTimesController : Controller
         return View(vm);
     }
 
+    /// <summary>
+    /// Generic method that will update the VM to reflect the new SelectLists if any need to be changed
+    /// </summary>
+    /// <param name="listType">the dropdownlist that has been changed</param>
+    /// <param name="value">The currently selected item value</param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<JsonResult> SetDropDownList(string listType, string value)
+    {
+        // Use the EditRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
+        var vm = new EditRideTimeViewModel();
+        IEnumerable<Schedule> schedules = null;
+        Guid id = Guid.Parse(value);
+
+        if (listType == nameof(RideTime.DriverId))
+        {
+            // refresh the list of schedules for the selected driver
+            // the value, represents the current DriverId
+            var driverId = id;
+
+            var driver = await _uow.Drivers.FirstOrDefaultAsync(driverId);
+            schedules = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(driver.AppUserId, null);
+            foreach (var schedule in schedules)
+            {
+                schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
+                schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
+            }
+
+            vm.Schedules = new SelectList(
+                schedules,
+                nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
+
+            // For now select the first schedule, later you might want to pick the schedule that is closest or overlaps with the previous selection
+            vm.ScheduleId = schedules.FirstOrDefault().Id;
+        }
+        else if (listType == nameof(RideTime.ScheduleId))
+        {
+            vm.ScheduleId = id;
+            
+            // reload the schedules, but just the current one so we can rebuild the ride times
+            schedules = new[] { await _uow.Schedules.GettingTheFirstScheduleByIdAsync(id, null) }!;
+            foreach (var schedule in schedules)
+            {
+                schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
+                schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
+            }
+            
+            // NOTE: we do not need to rebuild the SelectList for schedules, only the RideTimes
+        }
+
+        // Always refresh the RideTimes, if the DriverId or the ScheduleId are changed
+        // => because the ScheduleId is ALWAYS changed when the DriverId is changed.
+        // Select the RideTimes form the currently selected schedule, for the current driver
+        var currentSchedule = schedules.Where(x => x.Id == vm.ScheduleId).ToArray();
+        var rideTimes = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime(currentSchedule));
+        // the times in schedules have already been converted!
+        vm.RideTimes = new SelectList(rideTimes, nameof(vm.RideTime));
+        
+        // we need to select one of these!
+        #warning: like with the selection of the ScheduleId when the driver is change, you might want to select a specific ride time, not just the first one
+        vm.RideTime = rideTimes.First();
+        
+        return Json(vm);
+    }
+
     // GET: AdminArea/RideTimes/Edit/5
     public async Task<IActionResult> Edit(Guid? id)
     {
-        var roleName = User.GettingUserRoleName();
         var vm = new EditRideTimeViewModel();
         if (id == null) return NotFound();
 
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, roleName);
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, null);
         if (rideTime == null) return NotFound();
 
         vm.Id = rideTime.Id;
@@ -157,20 +219,31 @@ public class RideTimesController : Controller
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
             nameof(Driver.Id), "AppUser.LastAndFirstName");
+
+        vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
+        
+        var schedules = await _uow.Schedules.GettingTheScheduleByDriverId(rideTime.DriverId, null, null);
+        foreach (var schedule in schedules)
+        {
+            schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
+            schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
+        }
+
         vm.Schedules = new SelectList(
-            await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName),
+            schedules,
             nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
-        var schedules = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
+        
         vm.IsTaken = rideTime.IsTaken;
 #warning Ridetimes should be hidden and reappearing based on whether IsTaken is true or not
-        var rideTimes = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime(schedules));
+        // Select the RideTimes form the currently selected schedule, for the current driver
+        var currentSchedule = schedules.Where(x => x.Id == rideTime.ScheduleId).ToArray();
+        var rideTimes = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime(currentSchedule));
 #warning Ask if there is a better way to implement this
         var rideTimeList = new List<string>();
-        foreach (var rideTimeLocal in rideTimes) rideTimeList.Add(DateTime.Parse(rideTimeLocal).ToShortTimeString());
-        vm.RideTimes = new SelectList(rideTimeList);
+        // the times in schedules have already been converted!
+        vm.RideTimes = new SelectList(rideTimes, nameof(vm.RideTime));
         vm.ScheduleId = rideTime.ScheduleId;
-#warning Should it be a repository method
-        vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
+       
         return View(vm);
     }
 
@@ -179,18 +252,21 @@ public class RideTimesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, EditRideTimeViewModel vm)
+    public async Task<IActionResult> Edit(Guid? id, EditRideTimeViewModel vm)
     {
-        var roleName = User.GettingUserRoleName();
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id, null, roleName);
-
-        if (id != rideTime!.Id) return NotFound();
+        
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id!.Value, null, null);
+        
+        if (rideTime == null)
+        {
+            return NotFound();
+        }
 
         if (ModelState.IsValid)
         {
             try
             {
-                rideTime.Id = id;
+                rideTime.Id = id.Value;
                 rideTime.DriverId = vm.DriverId;
                 rideTime.ScheduleId = vm.ScheduleId;
                 rideTime.RideDateTime = DateTime.Parse(vm.RideTime).ToUniversalTime();
@@ -219,8 +295,8 @@ public class RideTimesController : Controller
     {
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
-        var roleName = User.GettingUserRoleName();
-        var rideTime =  await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, roleName);
+        
+        var rideTime =  await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, null);
         if (rideTime == null) return NotFound();
 
         
