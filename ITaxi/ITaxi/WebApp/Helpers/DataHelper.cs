@@ -516,7 +516,8 @@ public static class DataHelper
                         .Result!.Id,
                     RideDateTime = context.Schedules.FirstOrDefaultAsync(s =>
                         s.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!
-                        .StartDateAndTime, //.ToUniversalTime(), CS: Suspect that the value is already UTC, so we don'ˇt need to translate against                    CreatedBy = "System",
+                        .StartDateAndTime, //.ToUniversalTime(), CS: Suspect that the value is already UTC, so we don'ˇt need to translate again
+                    CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
                 await context.RideTimes.AddAsync(rideTime);

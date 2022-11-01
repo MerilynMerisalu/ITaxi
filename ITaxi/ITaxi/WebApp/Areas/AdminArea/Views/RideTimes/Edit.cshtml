@@ -24,7 +24,7 @@
 
             <div class="form-group">
                 <label asp-for="ScheduleId" class="control-label"></label>
-                <select asp-for="ScheduleId" class="form-control" asp-items="Model.Schedules">
+                <select asp-for="ScheduleId" class="form-control" asp-items="Model.Schedules" onchange="scheduleIdChanged(this.value)">
                     <option>@Common.PleaseSelect</option>
                 </select>
                 <span asp-validation-for="ScheduleId" class="text-danger"></span>
@@ -52,37 +52,72 @@
     <a asp-action="Index">@Common.BackToList</a>
 </div>
 
-<script type="text/javascript">
-
+<script>
      
     function driverIdChanged (value) {
-        //let id = this.attr("id");
-        let response = fetch('@Url.Action("SetDropDownList")', {
+
+        let content = { 
+            listType: 'DriverId',
+            value: value.toString()
+        }
+        
+        fetch('@Url.Action("SetDropDownList")', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json; charset=UTF-8'
             },
-            body: `{ "type": "DriverId", "value": "${value}" }`
-        });
-        response.json().then(data => {
-            PopulateDropDown("#ScheduleId", data.Schedules);
-            PopulateDropDown("#RideTime", data.RideTimes);
+            body: JSON.stringify(content)
+        }).then(response => {
+            response.json().then(data => {
+                   PopulateDropDown("ScheduleId", data.schedules);
+                PopulateDropDown("RideTime", data.rideTimes);
+            });
         });
     }
+    
+    function scheduleIdChanged (value) {
+        if (!value) return;
+        
+            let content = { 
+                listType: 'ScheduleId',
+                value: value.toString()
+            }
+            
+            fetch('@Url.Action("SetDropDownList")', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify(content)
+            }).then(response => {
+                response.json().then(data => {
+                    PopulateDropDown("RideTime", data.rideTimes);
+                });
+            });
+        }
+   
     function PopulateDropDown(dropDownId, list) {
-        document.getElementById(dropDownId);
-        alert('Change the drop down');
-        //$(dropDownId).empty();
-        //$(dropDownId).append("<option>Please select</option>");
-        //$.each(list, function (index, row) {
-        //    if (index == 0) {
-        //        $(dropDownId).append("<option value='" + row.Value + "' selected='selected'>" + row.Text + "</option>");
-        //    }
-        //    else {
-        //        $(dropDownId).append("<option value='" + row.Value + "'>" + row.Text + "</option>");
-        //    }
-        //});
+        let ddl = document.getElementById(dropDownId);
+        
+        // clear all the items, except the "Please select" Option
+        while (ddl.length > 1)
+        {
+            ddl.remove(1);
+        }
+        if (dropDownId === 'RideTime')
+        {
+            ddl.remove(0);
+        }
+       
+        list.forEach(item => {
+            let opt = new Option(item.text, item.value);
+            if (ddl.length === 0) {
+                opt.selected = 'selected';
+            }
+            ddl.add(opt);
+        });
     }
 </script>
 

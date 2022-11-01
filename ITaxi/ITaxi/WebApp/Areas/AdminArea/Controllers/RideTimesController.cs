@@ -140,6 +140,11 @@ public class RideTimesController : Controller
         return View(vm);
     }
 
+    public class SetDropDownListRequest
+    {
+        public string ListType { get; set; }
+        public string Value { get; set; }
+    }
     /// <summary>
     /// Generic method that will update the VM to reflect the new SelectLists if any need to be changed
     /// </summary>
@@ -147,21 +152,20 @@ public class RideTimesController : Controller
     /// <param name="value">The currently selected item value</param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<JsonResult> SetDropDownList(string listType, string value)
+    public async Task<IActionResult> SetDropDownList([FromBody]SetDropDownListRequest parameters)
     {
         // Use the EditRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
         var vm = new EditRideTimeViewModel();
         IEnumerable<Schedule> schedules = null;
-        Guid id = Guid.Parse(value);
+        //Guid id = Guid.Parse(value);
 
-        if (listType == nameof(RideTime.DriverId))
+        if (parameters.ListType == nameof(RideTime.DriverId))
         {
             // refresh the list of schedules for the selected driver
             // the value, represents the current DriverId
-            var driverId = id;
+            var driverId = Guid.Parse(parameters.Value);
 
-            var driver = await _uow.Drivers.FirstOrDefaultAsync(driverId);
-            schedules = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(driver.AppUserId, null);
+            schedules = await _uow.Schedules.GettingTheScheduleByDriverId(driverId, null);
             foreach (var schedule in schedules)
             {
                 schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
@@ -175,12 +179,12 @@ public class RideTimesController : Controller
             // For now select the first schedule, later you might want to pick the schedule that is closest or overlaps with the previous selection
             vm.ScheduleId = schedules.FirstOrDefault().Id;
         }
-        else if (listType == nameof(RideTime.ScheduleId))
+        else if (parameters.ListType == nameof(RideTime.ScheduleId))
         {
-            vm.ScheduleId = id;
+            vm.ScheduleId = Guid.Parse(parameters.Value);
             
             // reload the schedules, but just the current one so we can rebuild the ride times
-            schedules = new[] { await _uow.Schedules.GettingTheFirstScheduleByIdAsync(id, null) }!;
+            schedules = new[] { await _uow.Schedules.GettingTheFirstScheduleByIdAsync(vm.ScheduleId, null) }!;
             foreach (var schedule in schedules)
             {
                 schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
@@ -196,13 +200,13 @@ public class RideTimesController : Controller
         var currentSchedule = schedules.Where(x => x.Id == vm.ScheduleId).ToArray();
         var rideTimes = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime(currentSchedule));
         // the times in schedules have already been converted!
-        vm.RideTimes = new SelectList(rideTimes, nameof(vm.RideTime));
-        
+        vm.RideTimes = new SelectList(rideTimes.Select(x => new { RideTime = x }), nameof(vm.RideTime), nameof(vm.RideTime));
+
         // we need to select one of these!
         #warning: like with the selection of the ScheduleId when the driver is change, you might want to select a specific ride time, not just the first one
         vm.RideTime = rideTimes.First();
         
-        return Json(vm);
+        return Ok(vm);
     }
 
     // GET: AdminArea/RideTimes/Edit/5
@@ -241,7 +245,7 @@ public class RideTimesController : Controller
 #warning Ask if there is a better way to implement this
         var rideTimeList = new List<string>();
         // the times in schedules have already been converted!
-        vm.RideTimes = new SelectList(rideTimes, nameof(vm.RideTime));
+        vm.RideTimes = new SelectList(rideTimes.Select(x => new { RideTime = x }), nameof(vm.RideTime), nameof(vm.RideTime));
         vm.ScheduleId = rideTime.ScheduleId;
        
         return View(vm);
