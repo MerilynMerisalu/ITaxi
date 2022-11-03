@@ -11,12 +11,15 @@ public class CreateEditVehicleViewModel
 {
     public Guid Id { get; set; }
 
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Display(ResourceType = typeof(Vehicle), Name = "VehicleType")]
     public Guid VehicleTypeId { get; set; }
 
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Display(ResourceType = typeof(Vehicle), Name = "VehicleMark")]
     public Guid VehicleMarkId { get; set; }
 
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Display(ResourceType = typeof(Vehicle), Name = "VehicleModel")]
     public Guid VehicleModelId { get; set; }
 
@@ -30,6 +33,7 @@ public class CreateEditVehicleViewModel
     [Display(ResourceType = typeof(Vehicle), Name = "VehiclePlateNumber")]
     public string VehiclePlateNumber { get; set; } = default!;
 
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Display(ResourceType = typeof(Vehicle), Name = "ManufactureYear")]
     public int ManufactureYear { get; set; }
 
@@ -41,9 +45,11 @@ public class CreateEditVehicleViewModel
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     public int NumberOfSeats { get; set; }
 
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Display(ResourceType = typeof(Vehicle), Name = "VehicleAvailability")]
     public VehicleAvailability VehicleAvailability { get; set; }
 
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Display(ResourceType = typeof(Vehicle), Name = "Driver")]
     public Guid DriverId { get; set; }
 

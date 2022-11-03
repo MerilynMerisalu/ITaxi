@@ -200,7 +200,8 @@ public class RideTimesController : Controller
         var currentSchedule = schedules.Where(x => x.Id == vm.ScheduleId).ToArray();
         var rideTimes = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime(currentSchedule));
         // the times in schedules have already been converted!
-        vm.RideTimes = new SelectList(rideTimes.Select(x => new { RideTime = x }), nameof(vm.RideTime), nameof(vm.RideTime));
+        vm.RideTimes = new SelectList(rideTimes.Select(x => new { RideTime = x }), 
+            nameof(vm.RideTime), nameof(vm.RideTime));
 
         // we need to select one of these!
         #warning: like with the selection of the ScheduleId when the driver is change, you might want to select a specific ride time, not just the first one

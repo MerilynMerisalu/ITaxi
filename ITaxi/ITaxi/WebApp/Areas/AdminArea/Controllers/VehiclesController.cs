@@ -63,6 +63,21 @@ public class VehiclesController : Controller
         return View(vm);
     }
 
+    [HttpPost]
+    public async Task<IActionResult> SetDropDownList(Guid id)
+    {
+        // Use the EditRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
+        var vm = new CreateEditVehicleViewModel();
+       
+        // Select the VehicleMarks for the currently selected VehicleMarkId
+        
+        var vehicleModels = await _uow.VehicleModels.GettingVehicleModelsByMarkIdAsync(id);
+        vm.VehicleModels = new SelectList(vehicleModels, 
+            nameof(VehicleModel.Id), nameof(VehicleModel.VehicleModelName));
+        
+        return Ok(vm);
+    }
+
     // GET: AdminArea/Vehicles/Create
     public async Task<IActionResult> Create()
     {
@@ -74,7 +89,7 @@ public class VehiclesController : Controller
         vm.ManufactureYears = new SelectList(_uow.Vehicles.GettingManufactureYears());
         vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync()
             , nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
-        vm.VehicleModels = new SelectList(await _uow.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
+        vm.VehicleModels = new SelectList(new VehicleModel[0], // Deliberately empty until the user selects a Mark
             nameof(VehicleModel.Id), nameof(VehicleModel.VehicleModelName));
         vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleType.Id),
@@ -147,7 +162,7 @@ public class VehiclesController : Controller
             nameof(VehicleMark.VehicleMarkName));
 
         vm.VehicleModels = new SelectList(await _uow.VehicleModels
-                .GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
+                .GettingVehicleModelsByMarkIdAsync(vehicle.VehicleMarkId),
             nameof(VehicleModel.Id),
             nameof(VehicleModel.VehicleModelName));
 

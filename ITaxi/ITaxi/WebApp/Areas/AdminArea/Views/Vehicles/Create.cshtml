@@ -27,6 +27,43 @@
     <a asp-action="Index">@Common.BackToList</a>
 </div>
 
+<script>
+function VehicleMarkIdChanged (value) {
+                if (!value) return;
+                
+                                       
+                    fetch('@Url.Action("SetDropDownList")/' + value.toString(), {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json; charset=UTF-8'
+                        },                       
+                    }).then(response => {
+                        response.json().then(data => {
+                            PopulateDropDown("VehicleModelId", data.vehicleModels);
+                        });
+                    });
+                }
+function PopulateDropDown(dropDownId, list) {
+        let ddl = document.getElementById(dropDownId);
+        
+        // clear all the items, except the "Please select" Option
+        while (ddl.length > 1)
+        {
+            ddl.remove(1);
+        }
+       
+        list.forEach(item => {
+            let opt = new Option(item.text, item.value);
+            if (ddl.length === 0) {
+                opt.selected = 'selected';
+            }
+            ddl.add(opt);
+        });
+    }
+</script>
+
+
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
