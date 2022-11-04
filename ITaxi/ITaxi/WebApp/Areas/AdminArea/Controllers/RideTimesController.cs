@@ -165,7 +165,7 @@ public class RideTimesController : Controller
             // the value, represents the current DriverId
             var driverId = Guid.Parse(parameters.Value);
 
-            schedules = await _uow.Schedules.GettingTheScheduleByDriverId(driverId, null);
+            schedules = await _uow.Schedules.GettingTheScheduleByDriverIdAsync(driverId, null);
             foreach (var schedule in schedules)
             {
                 schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
@@ -227,7 +227,7 @@ public class RideTimesController : Controller
 
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
         
-        var schedules = await _uow.Schedules.GettingTheScheduleByDriverId(rideTime.DriverId, null, null);
+        var schedules = await _uow.Schedules.GettingTheScheduleByDriverIdAsync(rideTime.DriverId, null, null);
         foreach (var schedule in schedules)
         {
             schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();

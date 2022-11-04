@@ -13,4 +13,5 @@ public interface IVehicleModelRepository : IEntityRepository<VehicleModel>
     IEnumerable<VehicleModel> GetAllVehicleModelsOrderedByVehicleMarkName(bool noTracking = true);
 
     Task<List<VehicleModel>> GettingVehicleModelsByMarkIdAsync(Guid markId, bool noTracking = true);
+    List<VehicleModel> GettingVehicleModels(Guid markId, bool noTracking = true);
 }

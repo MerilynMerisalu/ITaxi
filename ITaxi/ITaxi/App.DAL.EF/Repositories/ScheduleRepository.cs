@@ -150,13 +150,23 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
     /// <param name="roleName">The current User's Role</param>
     /// <param name="noTracking">Flag to disable tracking of the returned entities</param>
     /// <returns>List of Schedules with the default includes</returns>
-    public async Task<IEnumerable<Schedule>> GettingTheScheduleByDriverId(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<IEnumerable<Schedule>> GettingTheScheduleByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         return await CreateQuery(userId, roleName, noTracking)
             .Where(x => x.DriverId == driverId)
             .OrderBy(x => x.StartDateAndTime)
             .ToListAsync();
     }
+
+    public IEnumerable<Schedule> GettingTheScheduleByDriverId(Guid driverId, Guid? userId = null, string? roleName = null,
+        bool noTracking = true)
+    {
+        return CreateQuery(userId, roleName, noTracking)
+            .Where(x => x.DriverId == driverId)
+            .OrderBy(x => x.StartDateAndTime)
+            .ToList();
+    }
+
     public DateTime[] GettingStartAndEndTime(IEnumerable<Schedule> schedules, Guid? userId = null,
         string? roleName = null)
     {

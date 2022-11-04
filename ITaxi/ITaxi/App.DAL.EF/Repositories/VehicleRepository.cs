@@ -134,9 +134,20 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
 
     public Vehicle? GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailability(Booking booking)
     {
-        return RepoDbSet
+        return CreateQuery()
             .First(v => v.DriverId.Equals(booking.DriverId)
                         && v.VehicleAvailability == VehicleAvailability.Available);
+    }
+
+    public async Task<List<Vehicle>> GettingVehiclesByDriverIdAsync(Guid driverId, bool noTracking = true)
+    {
+         return await CreateQuery(noTracking).Where(v => v.DriverId.Equals(driverId)).ToListAsync();
+    }
+    
+
+    public List<Vehicle> GettingVehiclesByDriverId(Guid driverId, bool noTracking = true)
+    {
+        return CreateQuery(noTracking).Where(v => v.DriverId.Equals(driverId)).ToList();
     }
 
     public async Task<Vehicle?> GettingVehicleByIdAsync(Guid id, Guid? userId = null, string? roleName = null,

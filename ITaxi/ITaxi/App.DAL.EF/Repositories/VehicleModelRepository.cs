@@ -51,6 +51,12 @@ public class VehicleModelRepository : BaseEntityRepository<VehicleModel, AppDbCo
             .OrderBy(v => v.VehicleMark!.VehicleMarkName).ToListAsync();
     }
 
+    public List<VehicleModel> GettingVehicleModels(Guid markId, bool noTracking = true)
+    {
+        return CreateQuery(noTracking).Where(v => v.VehicleMarkId.Equals(markId))
+            .OrderBy(v => v.VehicleMark!.VehicleMarkName).ToList();
+    }
+
     protected override IQueryable<VehicleModel> CreateQuery(bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
