@@ -65,6 +65,17 @@ public class SchedulesController : Controller
 
         return View(vm);
     }
+    
+    [HttpPost]
+    public async Task<IActionResult> SetDropDownList([FromBody] Guid id)
+    {
+        var vm = new CreateScheduleViewModel();
+        var vehicles = await _uow.Vehicles.GettingVehiclesByDriverIdAsync(id);
+        vm.Vehicles = new SelectList(vehicles, nameof(Vehicle.Id),
+            nameof(Vehicle.VehicleIdentifier));
+        return Ok(vm);
+
+    }
 
     // GET: AdminArea/Schedules/Create
     public async Task<IActionResult> Create()
@@ -74,7 +85,7 @@ public class SchedulesController : Controller
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
             nameof(Driver.Id), $"{nameof(Driver.AppUser)}.{nameof(Driver.AppUser.LastAndFirstName)}");
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(null, roleName),
+        vm.Vehicles = new SelectList(new Vehicle[0],
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
 #warning Schedule StartDateAndTime needs a custom validation
 

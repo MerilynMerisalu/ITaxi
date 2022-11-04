@@ -50,13 +50,13 @@ function PopulateDropDown(dropDownId, list) {
         // clear all the items, except the "Please select" Option
         while (ddl.length > 1)
         {
-            ddl.remove(1);
+            ddl.remove();
         }
        
         list.forEach(item => {
             let opt = new Option(item.text, item.value);
             if (ddl.length === 0) {
-                opt.selected = 'selected';
+                opt.selected = true;
             }
             ddl.add(opt);
         });

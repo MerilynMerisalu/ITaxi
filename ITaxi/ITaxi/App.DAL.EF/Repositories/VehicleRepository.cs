@@ -147,7 +147,8 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
 
     public List<Vehicle> GettingVehiclesByDriverId(Guid driverId, bool noTracking = true)
     {
-        return CreateQuery(noTracking).Where(v => v.DriverId.Equals(driverId)).ToList();
+        var vehicles = CreateQuery(noTracking).Where(v => v.DriverId.Equals(driverId)).ToList();
+        return vehicles;
     }
 
     public async Task<Vehicle?> GettingVehicleByIdAsync(Guid id, Guid? userId = null, string? roleName = null,
