@@ -16,13 +16,12 @@ public interface IVehicleRepository : IEntityRepository<Vehicle>
 
     Task<Vehicle?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null,
         bool noTracking = true);
-
-    Vehicle? GettingVehicleById(Guid id, bool noTracking = true);
+    
     Task<Vehicle?> GettingVehicleWithoutIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
     Vehicle? GettingVehicleWithoutIncludesById(Guid id, bool noTracking = true);
     List<int> GettingManufactureYears();
     Task<Vehicle?> GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailabilityAsync(Booking booking);
     Vehicle? GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailability(Booking booking);
-    Task<List<Vehicle>> GettingVehiclesByDriverIdAsync(Guid driverId, bool noTracking = true);
+    Task<List<Vehicle>> GettingVehiclesByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true);
     List<Vehicle> GettingVehiclesByDriverId(Guid driverId, bool noTracking = true);
 }

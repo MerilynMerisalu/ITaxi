@@ -48,41 +48,27 @@
 <div>
     <a asp-action="Index">@Common.BackToList</a>
 </div>
-<script type="text/javascript">
 
-function DriverIdChanged(value) {
-  if (!value) {
-      return;
-      }
-  fetch('@Url.Action("SetDropDownList")/' + value.toString(), {
-      method: "POST",
-      headers: {
-          'Accept': "application/json",
-          'Content-Type': 'application/json, charset=UTF-8'
-          },
-  }).then(response => {
-      response.json().then(data => {
-          PopulateDropDownList("VehicleId", data.vehicles)
-      })
-  })
-}
 
-function PopulateDropDownList(dropdownId, list) {
-  let ddl = document.getElementById(dropdownId);
-  while (ddl.length > 1) 
-  {
-      ddl.remove();
-  }
-  list.forEach(item => {
-      let opt = new Option(item.text, item.value);
-      if (ddl.length === 0) {
-          opt.selected = true;
-          
-      }
-      list.add(opt)
-  })
-}
-</script>
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    
+    <script>
+    function DriverIdChanged(value) {
+        if (!value) {
+            return;
+        }
+        fetch('@Url.Action("SetDropDownList")/' + value.toString(), {
+            method: "POST",
+            headers: {
+                'Accept': "application/json",
+                'Content-Type': 'application/json, charset=UTF-8'
+            },
+        }).then(response => {
+            response.json().then(data => {
+                PopulateDropDownList("VehicleId", data.vehicles, false)
+            })
+        })
+    }
+    </script>
 }

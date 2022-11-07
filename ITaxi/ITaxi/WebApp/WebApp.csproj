@@ -136,4 +136,8 @@
         <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Index.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Areas\AdminArea\Views\Schedules\_schedules.js" />
+    </ItemGroup>
+
 </Project>

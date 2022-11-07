@@ -14,22 +14,22 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
 
     public override async Task<IEnumerable<Vehicle>> GetAllAsync(bool noTracking = true)
     {
-        return await CreateQuery(noTracking).ToListAsync();
+        return await CreateQuery(null, null, noTracking).ToListAsync();
     }
 
     public override IEnumerable<Vehicle> GetAll(bool noTracking = true)
     {
-        return CreateQuery(noTracking).ToList();
+        return CreateQuery(null, null,noTracking).ToList();
     }
 
     public override Task<Vehicle?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
     {
-        return CreateQuery(noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
+        return CreateQuery(null, null, noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
     }
 
     public override Vehicle? FirstOrDefault(Guid id, bool noTracking = true)
     {
-        return CreateQuery(noTracking).FirstOrDefault(v => v.Id.Equals(id));
+        return CreateQuery(null, null, noTracking).FirstOrDefault(v => v.Id.Equals(id));
     }
 
     public async Task<IEnumerable<Vehicle>> GettingOrderedVehiclesAsync(Guid? userId, string? roleName =
@@ -94,11 +94,6 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
         return vehicle;
     }
 
-    public Vehicle? GettingVehicleById(Guid id, bool noTracking = true)
-    {
-        return CreateQuery(noTracking).FirstOrDefault(v => v.Id.Equals(id));
-    }
-
     public async Task<Vehicle?> GettingVehicleWithoutIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         return await base.CreateQuery(noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
@@ -139,9 +134,9 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
                         && v.VehicleAvailability == VehicleAvailability.Available);
     }
 
-    public async Task<List<Vehicle>> GettingVehiclesByDriverIdAsync(Guid driverId, bool noTracking = true)
+    public async Task<List<Vehicle>> GettingVehiclesByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-         return await CreateQuery(noTracking).Where(v => v.DriverId.Equals(driverId)).ToListAsync();
+         return await CreateQuery(userId, roleName, noTracking).Where(v => v.DriverId.Equals(driverId)).ToListAsync();
     }
     
 
@@ -162,7 +157,7 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query.AsNoTracking();
 
-        if (roleName is nameof(Admin))
+        if (roleName == null)
         {
             query = query.Include(c => c.Driver)
                 .ThenInclude(d => d!.AppUser)
@@ -170,7 +165,8 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
                 .Include(v => v.VehicleModel)
                 .Include(v => v.VehicleType)
                 .ThenInclude(v => v!.VehicleTypeName)
-                .ThenInclude(v => v.Translations);
+                .ThenInclude(v => v.Translations)
+                .AsSplitQuery();
             return query;
         }
 

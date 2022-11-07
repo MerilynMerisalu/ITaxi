@@ -70,8 +70,8 @@
             body: JSON.stringify(content)
         }).then(response => {
             response.json().then(data => {
-                   PopulateDropDown("ScheduleId", data.schedules);
-                PopulateDropDown("RideTime", data.rideTimes);
+                PopulateDropDownList("ScheduleId", data.schedules, false);
+                PopulateDropDownList("RideTime", data.rideTimes, true);
             });
         });
     }
@@ -93,32 +93,12 @@
                 body: JSON.stringify(content)
             }).then(response => {
                 response.json().then(data => {
-                    PopulateDropDown("RideTime", data.rideTimes);
+                    PopulateDropDownList("RideTime", data.rideTimes, true);
                 });
             });
         }
    
-    function PopulateDropDown(dropDownId, list) {
-        let ddl = document.getElementById(dropDownId);
-        
-        // clear all the items, except the "Please select" Option
-        while (ddl.length > 1)
-        {
-            ddl.remove(1);
-        }
-        if (dropDownId === 'RideTime')
-        {
-            ddl.remove(0);
-        }
-       
-        list.forEach(item => {
-            let opt = new Option(item.text, item.value);
-            if (ddl.length === 0) {
-                opt.selected = 'selected';
-            }
-            ddl.add(opt);
-        });
-    }
+
 </script>
 
 @section Scripts {

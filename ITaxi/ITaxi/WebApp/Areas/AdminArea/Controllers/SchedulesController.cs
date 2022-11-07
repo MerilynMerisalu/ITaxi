@@ -67,7 +67,7 @@ public class SchedulesController : Controller
     }
     
     [HttpPost]
-    public async Task<IActionResult> SetDropDownList([FromBody] Guid id)
+    public async Task<IActionResult> SetDropDownList(Guid id)
     {
         var vm = new CreateScheduleViewModel();
         var vehicles = await _uow.Vehicles.GettingVehiclesByDriverIdAsync(id);
