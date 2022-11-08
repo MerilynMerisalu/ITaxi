@@ -26,5 +26,49 @@
 </div>
 
 @section Scripts {
+    <script>
+        function pickupDateAndTimeChanged (value) {
+    
+            let content = { 
+                listType: 'PickUpDateAndTime',
+                value: value.toString(),
+                vehicleTypeId: document.getElementById('VehicleTypeId').value.toString(),
+                cityId: document.getElementById('CityId').value.toString()
+            };
+            
+            if (content.vehicleTypeId.length === 0 || content.vehicleTypeId === 'Please Select') {
+                alert('You must select the Vehicle Type first');
+            }
+            else if( content.cityId.length === 0 || content.cityId === 'Please Select') {
+                 alert('You must select the City first');
+            }
+            else {
+                fetch('@Url.Action("SetDropDownList")', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    },
+                    body: JSON.stringify(content)
+                }).then(response => {
+                    response.json().then(data => {
+                        
+                        if (data.scheduleId) {
+                            PopulateDropDownList("ScheduleId", data.schedules, false, data.scheduleId);
+                            PopulateDropDownList("DriverId", data.drivers, false, data.driverId);
+                            PopulateDropDownList("VehicleId", data.vehicles, false, data.vehicleId);
+                        }
+                        else {
+                            alert('No drivers are available at this time, please select another time.');
+                        }
+                    });
+                });
+            }
+        }
+        
+      
+    
+    </script>
+
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

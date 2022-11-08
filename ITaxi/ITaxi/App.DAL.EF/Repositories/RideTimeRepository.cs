@@ -149,6 +149,38 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
         return times;
     }
 
+    public async Task<RideTime?> GettingBestAvailableRideTimeAsync(DateTime pickUpDateAndTime, Guid cityId,
+        Guid? userId = null, string? roleName = null,
+        bool noTracking = true  )
+    {
+        var minTime = pickUpDateAndTime.AddMinutes(-60);
+        var maxTime = pickUpDateAndTime.AddMinutes(60);
+        var rideTimes = await CreateQuery(userId, roleName).Where(rt => rt.IsTaken == false)
+            .Where(rt => rt.Driver!.CityId.Equals(cityId))
+            .Where(rt => rt.RideDateTime >= minTime && rt.RideDateTime <= maxTime)
+            .ToListAsync();
+        var closestRideTime = rideTimes.OrderBy(x => Math.Abs(pickUpDateAndTime.Subtract(x.RideDateTime.Date).TotalMinutes))
+            .FirstOrDefault();
+            
+        return closestRideTime;
+    }
+
+    public RideTime? GettingBestAvailableRideTime(DateTime pickUpDateAndTime, Guid cityId,
+        Guid? userId = null, string? roleName = null,
+        bool noTracking = true )
+    {
+        var minTime = pickUpDateAndTime.AddMinutes(-60);
+        var maxTime = pickUpDateAndTime.AddMinutes(60);
+        var rideTimes = CreateQuery(userId, roleName).Where(rt => rt.IsTaken == false)
+            .Where(rt => rt.Driver!.CityId.Equals(cityId))
+            .Where(rt => rt.RideDateTime >= minTime && rt.RideDateTime <= maxTime)
+            .ToList();
+        var closestRideTime = rideTimes.OrderBy(x => Math.Abs(pickUpDateAndTime.Subtract(x.RideDateTime.Date).TotalMinutes))
+            .FirstOrDefault();
+            
+        return closestRideTime;
+    }
+
     public async Task<IEnumerable<RideTime>> GetAllAsync(Guid? userId = null, string? roleName = null,
         bool noTracking = true)
     {
@@ -178,10 +210,22 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
 
         if (roleName == null)
             return query = query.Include(c => c.Schedule)
-                .ThenInclude(c => c!.Driver).ThenInclude(c => c!.AppUser);
+                .ThenInclude(c => c!.Driver).ThenInclude(c => c!.AppUser)
+                .Include(c => c.Schedule)
+                .ThenInclude(s => s!.Vehicle)
+                .ThenInclude(v => v!.VehicleMark)
+                .Include(s => s.Schedule)
+                .ThenInclude(s => s!.Vehicle)
+                .ThenInclude(v => v!.VehicleModel);
         query = query.Include(c => c.Schedule)
             .ThenInclude(c => c!.Driver).ThenInclude(c => c!.AppUser)
-            .Where(u => u.Driver!.AppUserId.Equals(userId));
+            .Where(u => u.Driver!.AppUserId.Equals(userId))
+            .Include(c => c.Schedule)
+            .ThenInclude(s => s!.Vehicle)
+            .ThenInclude(v => v!.VehicleMark)
+            .Include(s => s.Schedule)
+            .ThenInclude(s => s!.Vehicle)
+            .ThenInclude(v => v!.VehicleModel);
 
         return query;
     }

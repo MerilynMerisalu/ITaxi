@@ -12,8 +12,9 @@
  * @param clearAllItems {boolean} Flag to indicate that all items, even the first item (please select) 
  * should be removed when we clear the list of previous entries. Set this to 'true' if the 
  * drop down list you ate targeting does not have a 'Please Select' or default first option.
+ * @param selectedValue {any} [Optional] The specific value to select in the list, otherwise the first item will be selected by default
  */
-function PopulateDropDownList(dropdownId, dataList, clearAllItems) {
+function PopulateDropDownList(dropdownId, dataList, clearAllItems, selectedValue) {
     let ddlElement = document.getElementById(dropdownId);
     while (ddlElement.length > 1)
     {
@@ -25,7 +26,10 @@ function PopulateDropDownList(dropdownId, dataList, clearAllItems) {
     
     dataList.forEach(item => {
         let opt = new Option(item.text, item.value);
-        if (ddlElement.length === 0) {
+        if (selectedValue) {
+            if (opt.value === selectedValue)
+                opt.selected = true;
+        } else if (ddlElement.length === 0) {
             opt.selected = true;
         }
         ddlElement.add(opt)

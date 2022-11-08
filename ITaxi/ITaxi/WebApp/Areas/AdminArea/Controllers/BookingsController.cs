@@ -84,6 +84,58 @@ public class BookingsController : Controller
 
         return View(vm);
     }
+    
+    public class BookingSetDropDownListRequest
+    {
+        public string ListType { get; set; }
+        public string Value { get; set; }
+        
+        public Guid VehicleTypeId { get; set; }
+        public Guid CityId { get; set; }
+        public DateTime PickupDateAndTime { get; set; } 
+    }
+    /// <summary>
+    /// Generic method that will update the VM to reflect the new SelectLists if any need to be changed
+    /// </summary>
+    /// <param name="listType">the dropdownlist that has been changed</param>
+    /// <param name="value">The currently selected item value</param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<IActionResult> SetDropDownList([FromBody]BookingSetDropDownListRequest parameters)
+    {
+        // Use the EditRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
+        var vm = new CreateBookingViewModel();
+        IEnumerable<Schedule> schedules = null;
+        //Guid id = Guid.Parse(value);
+
+        if (parameters.ListType == nameof(Booking.PickUpDateAndTime))
+        {
+            // Value in this case IS the pickupDateAndTime
+            parameters.PickupDateAndTime = DateTime.Parse(parameters.Value).ToUniversalTime();
+            
+            // We want to find the nearest available ride date and time
+            // First we get a list of the available ride times
+            var bestTime = await _uow.RideTimes.GettingBestAvailableRideTimeAsync(parameters.PickupDateAndTime, parameters.CityId);
+            if (bestTime != null)
+            {
+                vm.Schedules = new SelectList(new[] {bestTime.Schedule}, nameof(Schedule.Id),
+                    nameof(Schedule.ShiftDurationTime));
+                vm.ScheduleId = bestTime.ScheduleId;
+                vm.Drivers = new SelectList(new[] {bestTime.Driver}, nameof(Driver.Id),
+                    "AppUser.LastAndFirstName");
+                vm.DriverId = bestTime.DriverId;
+                vm.Vehicles = new SelectList(new[] {bestTime.Schedule!.Vehicle }, nameof(Vehicle.Id),
+                    nameof(Vehicle.VehicleIdentifier));
+                vm.VehicleId = bestTime.Schedule!.VehicleId;
+            }
+        }
+
+
+
+
+        
+        return Ok(vm);
+    }
 
     // GET: AdminArea/Bookings/Create
     public async Task<IActionResult> Create()

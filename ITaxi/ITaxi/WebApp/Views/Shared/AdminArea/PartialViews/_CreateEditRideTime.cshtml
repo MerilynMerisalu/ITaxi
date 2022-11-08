@@ -3,19 +3,19 @@
 
 <div class="form-group">
     <label asp-for="DriverId" class="control-label"></label>
-    <select asp-for="DriverId" class="form-control" asp-items="Model.Drivers">
+    <select asp-for="DriverId" class="form-control" asp-items="Model.Drivers" onchange="driverIdChanged(this.value)">
         <option>@Common.PleaseSelect</option>
     </select>
 </div>
 <div class="form-group">
     <label asp-for="ScheduleId" class="control-label"></label>
-    <select asp-for="ScheduleId" class="form-control" asp-items="Model.Schedules">
+    <select asp-for="ScheduleId" class="form-control" asp-items="Model.Schedules" onchange="scheduleIdChanged(this.value)">
         <option>@Common.PleaseSelect</option>
     </select>
 </div>
 <div class="form-group">
     <label asp-for="RideTimes" class="control-label"></label>
-    <select asp-for="SelectedRideTimes" multiple="multiple" class="form-control" asp-items="Model.RideTimes">
+    <select asp-for="SelectedRideTimes" multiple="multiple" class="form-control" asp-items="Model.RideTimes" readonly="true">
     </select>
     <span asp-validation-for="SelectedRideTimes" class="text-danger"></span>
 </div>

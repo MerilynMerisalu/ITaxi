@@ -78,20 +78,10 @@ public class RideTimesController : Controller
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
             nameof(Driver.Id), "AppUser.LastAndFirstName");
-        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName)
+        vm.Schedules = new SelectList(new Schedule[0]
             , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
-        var schedules = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
-        foreach (var schedule in schedules)
-        {
-            schedule.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToLocalTime().ToString("g"));
-            schedule.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToLocalTime().ToString("g"));
-        }
-
-        var scheduleStartAndEndTime = _uow.Schedules.GettingStartAndEndTime(schedules);
-        var rideTimes = _uow.RideTimes.CalculatingRideTimes(scheduleStartAndEndTime);
-        vm.RideTimes = new SelectList(rideTimes);
-
-
+        vm.RideTimes = new SelectList(new string[0]);
+    
         return View(vm);
     }
 

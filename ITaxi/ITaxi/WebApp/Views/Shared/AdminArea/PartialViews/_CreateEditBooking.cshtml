@@ -41,7 +41,7 @@
 
 <div class="form-group">
     <label asp-for="PickUpDateAndTime" class="control-label"></label>
-    <input asp-for="PickUpDateAndTime" class="form-control"/>
+    <input asp-for="PickUpDateAndTime" class="form-control" onchange="pickupDateAndTimeChanged(this.value)"/>
     <span asp-validation-for="PickUpDateAndTime" class="text-danger"></span>
 </div>
 <div class="form-group">

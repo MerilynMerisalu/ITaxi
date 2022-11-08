@@ -30,4 +30,53 @@
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+<script>
+     
+    function driverIdChanged (value) {
+
+        let content = { 
+            listType: 'DriverId',
+            value: value.toString()
+        }
+        
+        fetch('@Url.Action("SetDropDownList")', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify(content)
+        }).then(response => {
+            response.json().then(data => {
+                PopulateDropDownList("ScheduleId", data.schedules, false);
+                PopulateDropDownList("SelectedRideTimes", data.rideTimes, true);
+            });
+        });
+    }
+    
+    function scheduleIdChanged (value) {
+        if (!value) return;
+        
+            let content = { 
+                listType: 'ScheduleId',
+                value: value.toString()
+            }
+            
+            fetch('@Url.Action("SetDropDownList")', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json; charset=UTF-8'
+                },
+                body: JSON.stringify(content)
+            }).then(response => {
+                response.json().then(data => {
+                    PopulateDropDownList("SelectedRideTimes", data.rideTimes, true);
+                });
+            });
+        }
+   
+
+</script>
 }

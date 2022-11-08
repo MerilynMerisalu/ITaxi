@@ -172,7 +172,7 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
     {
 #warning needs improving
         var scheduleStartAndEndTime = new DateTime[2];
-        var schedule = schedules.First();
+        var schedule = schedules.FirstOrDefault();
         if (schedule != null)
         {
             scheduleStartAndEndTime[0] = schedule.StartDateAndTime;

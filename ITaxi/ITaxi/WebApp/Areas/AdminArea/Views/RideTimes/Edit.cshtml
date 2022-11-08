@@ -52,35 +52,17 @@
     <a asp-action="Index">@Common.BackToList</a>
 </div>
 
-<script>
-     
-    function driverIdChanged (value) {
-
-        let content = { 
-            listType: 'DriverId',
-            value: value.toString()
-        }
-        
-        fetch('@Url.Action("SetDropDownList")', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json; charset=UTF-8'
-            },
-            body: JSON.stringify(content)
-        }).then(response => {
-            response.json().then(data => {
-                PopulateDropDownList("ScheduleId", data.schedules, false);
-                PopulateDropDownList("RideTime", data.rideTimes, true);
-            });
-        });
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     
-    function scheduleIdChanged (value) {
-        if (!value) return;
-        
+    <script>
+         
+        function driverIdChanged (value) {
+    
             let content = { 
-                listType: 'ScheduleId',
+                listType: 'DriverId',
                 value: value.toString()
             }
             
@@ -93,16 +75,34 @@
                 body: JSON.stringify(content)
             }).then(response => {
                 response.json().then(data => {
+                    PopulateDropDownList("ScheduleId", data.schedules, false);
                     PopulateDropDownList("RideTime", data.rideTimes, true);
                 });
             });
         }
-   
-
-</script>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+        
+        function scheduleIdChanged (value) {
+            if (!value) return;
+            
+                let content = { 
+                    listType: 'ScheduleId',
+                    value: value.toString()
+                }
+                
+                fetch('@Url.Action("SetDropDownList")', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    },
+                    body: JSON.stringify(content)
+                }).then(response => {
+                    response.json().then(data => {
+                        PopulateDropDownList("RideTime", data.rideTimes, true);
+                    });
+                });
+            }
+       
+    
+    </script>
 }
