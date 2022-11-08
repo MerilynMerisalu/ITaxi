@@ -27,7 +27,7 @@ public class VehiclesController : Controller
     public async Task<IActionResult> Index()
     {
         var role = User.GettingUserRoleName();
-        var res = await _uow.Vehicles.GettingOrderedVehiclesAsync(null, role);
+        var res = await _uow.Vehicles.GettingOrderedVehiclesAsync();
         foreach (var vehicle in res)
         {
             vehicle.CreatedAt = vehicle.CreatedAt.ToLocalTime();

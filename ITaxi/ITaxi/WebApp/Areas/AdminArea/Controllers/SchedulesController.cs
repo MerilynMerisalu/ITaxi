@@ -132,7 +132,7 @@ public class SchedulesController : Controller
         vm.Id = schedule.Id;
 
         vm.DriverId = schedule.DriverId;
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(null, roleName),
+        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingVehiclesByDriverIdAsync(vm.DriverId),
             nameof(Vehicle.Id),
             nameof(Vehicle.VehicleIdentifier));
         vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g")).ToLocalTime();
