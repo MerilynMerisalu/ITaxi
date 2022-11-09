@@ -33,7 +33,8 @@
                 listType: 'PickUpDateAndTime',
                 value: value.toString(),
                 vehicleTypeId: document.getElementById('VehicleTypeId').value.toString(),
-                cityId: document.getElementById('CityId').value.toString()
+                cityId: document.getElementById('CityId').value.toString(),
+                numberOfPassengers: document.getElementById('NumberOfPassengers').value.toString()
             };
             
             if (content.vehicleTypeId.length === 0 || content.vehicleTypeId === 'Please Select') {
@@ -41,6 +42,9 @@
             }
             else if( content.cityId.length === 0 || content.cityId === 'Please Select') {
                  alert('You must select the City first');
+            }
+            else if (content.numberOfPassengers === 0) {
+                alert("You must enter number of passengers first!")
             }
             else {
                 fetch('@Url.Action("SetDropDownList")', {
@@ -57,6 +61,8 @@
                             PopulateDropDownList("ScheduleId", data.schedules, false, data.scheduleId);
                             PopulateDropDownList("DriverId", data.drivers, false, data.driverId);
                             PopulateDropDownList("VehicleId", data.vehicles, false, data.vehicleId);
+                            
+                            
                         }
                         else {
                             alert('No drivers are available at this time, please select another time.');

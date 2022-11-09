@@ -149,14 +149,18 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
         return times;
     }
 
-    public async Task<RideTime?> GettingBestAvailableRideTimeAsync(DateTime pickUpDateAndTime, Guid cityId,
+    public async Task<RideTime?> GettingBestAvailableRideTimeAsync(DateTime pickUpDateAndTime,
+        Guid cityId,
+        int numberOfPassengers,
         Guid? userId = null, string? roleName = null,
         bool noTracking = true  )
     {
         var minTime = pickUpDateAndTime.AddMinutes(-60);
         var maxTime = pickUpDateAndTime.AddMinutes(60);
-        var rideTimes = await CreateQuery(userId, roleName).Where(rt => rt.IsTaken == false)
+        var rideTimes = await CreateQuery(userId, roleName)
+            .Where(rt => rt.IsTaken == false)
             .Where(rt => rt.Driver!.CityId.Equals(cityId))
+            .Where(rt => rt.Schedule!.Vehicle!.NumberOfSeats > numberOfPassengers)
             .Where(rt => rt.RideDateTime >= minTime && rt.RideDateTime <= maxTime)
             .ToListAsync();
         var closestRideTime = rideTimes.OrderBy(x => Math.Abs(pickUpDateAndTime.Subtract(x.RideDateTime.Date).TotalMinutes))
@@ -165,14 +169,17 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
         return closestRideTime;
     }
 
-    public RideTime? GettingBestAvailableRideTime(DateTime pickUpDateAndTime, Guid cityId,
+    public RideTime? GettingBestAvailableRideTime(DateTime pickUpDateAndTime,
+        Guid cityId, int numberOfPassengers,
         Guid? userId = null, string? roleName = null,
         bool noTracking = true )
     {
         var minTime = pickUpDateAndTime.AddMinutes(-60);
         var maxTime = pickUpDateAndTime.AddMinutes(60);
-        var rideTimes = CreateQuery(userId, roleName).Where(rt => rt.IsTaken == false)
+        var rideTimes = CreateQuery(userId, roleName)
+            .Where(rt => rt.IsTaken == false)
             .Where(rt => rt.Driver!.CityId.Equals(cityId))
+            .Where(rt => rt.Schedule!.Vehicle!.NumberOfSeats > numberOfPassengers)
             .Where(rt => rt.RideDateTime >= minTime && rt.RideDateTime <= maxTime)
             .ToList();
         var closestRideTime = rideTimes.OrderBy(x => Math.Abs(pickUpDateAndTime.Subtract(x.RideDateTime.Date).TotalMinutes))

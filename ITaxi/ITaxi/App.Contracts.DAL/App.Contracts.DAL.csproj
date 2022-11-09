@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\App.Domain\App.Domain.csproj"/>
-        <ProjectReference Include="..\Base.Contracts.DAL\Base.Contracts.DAL.csproj"/>
+        <ProjectReference Include="..\App.Domain\App.Domain.csproj" />
+        <ProjectReference Include="..\Base.Contracts.DAL\Base.Contracts.DAL.csproj" />
     </ItemGroup>
 
 </Project>
