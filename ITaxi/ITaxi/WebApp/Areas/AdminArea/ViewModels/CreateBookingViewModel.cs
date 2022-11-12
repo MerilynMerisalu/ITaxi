@@ -8,7 +8,7 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 public class CreateBookingViewModel
 {
     [Display(ResourceType = typeof(Booking), Name = "Schedule")]
-    public Guid ScheduleId { get; set; }
+    public Guid? ScheduleId { get; set; }
 
     [Display(ResourceType = typeof(Booking), Name = "Driver")]
     public Guid DriverId { get; set; }

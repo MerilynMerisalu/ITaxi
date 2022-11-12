@@ -38,6 +38,11 @@
         <option>@Common.PleaseSelect</option>
     </select>
 </div>
+<div class="form-group">
+    <label asp-for="NumberOfPassengers" class="control-label"></label>
+    <input asp-for="NumberOfPassengers" class="form-control" min="1" max="5"/>
+    <span asp-validation-for="NumberOfPassengers" class="text-danger"></span>
+</div>
 
 <div class="form-group">
     <label asp-for="PickUpDateAndTime" class="control-label"></label>
@@ -54,11 +59,7 @@
     <input asp-for="DestinationAddress" class="form-control"/>
     <span asp-validation-for="DestinationAddress" class="text-danger"></span>
 </div>
-<div class="form-group">
-    <label asp-for="NumberOfPassengers" class="control-label"></label>
-    <input asp-for="NumberOfPassengers" class="form-control" min="1" max="5"/>
-    <span asp-validation-for="NumberOfPassengers" class="text-danger"></span>
-</div>
+
 <div class="form-group form-check">
     <label class="form-check-label">
         <input class="form-check-input" asp-for="HasAnAssistant"/> @Html.DisplayNameFor(model => model.HasAnAssistant)

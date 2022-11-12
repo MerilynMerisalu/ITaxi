@@ -118,8 +118,8 @@ public class BookingsController : Controller
             
             // We want to find the nearest available ride date and time
             // First we get a list of the available ride times
-            var bestTime = await _uow.RideTimes.GettingBestAvailableRideTimeAsync(parameters.PickupDateAndTime, 
-                parameters.CityId, parameters.NumberOfPassengers);
+            var bestTime = await _uow.RideTimes.GettingBestAvailableRideTimeAsync(parameters.PickupDateAndTime,
+                parameters.CityId, 0);//parameters.NumberOfPassengers);
             if (bestTime != null)
             {
                 vm.Schedules = new SelectList(new[] {bestTime.Schedule}, nameof(Schedule.Id),
@@ -192,7 +192,7 @@ public class BookingsController : Controller
             booking.CustomerId = vm.CustomerId;
             booking.DriverId = vm.DriverId;
 
-            booking.ScheduleId = vm.ScheduleId;
+            booking.ScheduleId = vm.ScheduleId!.Value;
 
             booking.VehicleId = vm.VehicleId;
             booking.AdditionalInfo = vm.AdditionalInfo;
