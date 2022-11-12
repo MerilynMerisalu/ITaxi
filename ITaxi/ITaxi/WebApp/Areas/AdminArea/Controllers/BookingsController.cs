@@ -252,18 +252,16 @@ public class BookingsController : Controller
         var roleName = User.GettingUserRoleName();
         var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName);
         if (booking == null) return NotFound();
-        var schedules = await _uow.Schedules
-            .GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
-        foreach (var schedule in schedules)
-        {
-            schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
-            schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
-
-        }
         
-        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, roleName),
+        // For edit, only load 1 item into each drop down list
+        var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(booking.ScheduleId);
+        schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
+        schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
+        vm.Schedules = new SelectList(new [] {schedule},
             nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
         vm.ScheduleId = booking.ScheduleId;
+        #warning Change this to Get just 1 driver by Id from the uow
+        //var driver = _
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
             nameof(Driver.Id),
