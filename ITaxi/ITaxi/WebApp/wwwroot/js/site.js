@@ -35,3 +35,31 @@ function PopulateDropDownList(dropdownId, dataList, clearAllItems, selectedValue
         ddlElement.add(opt)
     })
 }
+
+/**
+ * Display a Validation message from a javascript (client-side) block of logic
+ * If you send an empty string, this will clear any existing error messages
+ * in the provided element container
+ * @param message {string} Message to display to the user
+ * @param validationElementId {string} Id of the HTML Element (container) 
+ * that you want to display the message within 
+ */
+function showClientErrorMessage(message, validationElementId) {
+    let validationElement = document.getElementById(validationElementId);
+    validationElement.className = "";
+    if (message && message.length > 0){
+        validationElement.className = 'text-danger field-validation-valid';
+        validationElement.textContent = message;
+    }
+    else
+        validationElement.textContent = '';
+}
+
+/**
+ * Clear the custom error message from a javascript validation display element
+ * @param validationElementId {string} Id of the HTML Element (container)
+ * that you want to clear the message from
+ */
+function clearClientErrorMessage(validationElementId) {
+    showClientErrorMessage('',validationElementId);
+}
