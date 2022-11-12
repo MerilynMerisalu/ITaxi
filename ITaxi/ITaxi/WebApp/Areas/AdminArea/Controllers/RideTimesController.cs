@@ -94,7 +94,7 @@ public class RideTimesController : Controller
     {
         if (ModelState.IsValid)
         {
-            if (vm.SelectedRideTimes != null)
+            if (vm.SelectedRideTimes != null && vm.SelectedRideTimes.Any())
             {
                 foreach (var selectedRideTime in vm.SelectedRideTimes)
                 {
@@ -114,19 +114,51 @@ public class RideTimesController : Controller
 
                 await _uow.RideTimes.AddRangeAsync(rideTimes);
                 await _uow.SaveChangesAsync();
+                
+                return RedirectToAction(nameof(Index));
             }
-#warning Needs custom validation to check that at least one ride time is chosen
-
-            return RedirectToAction(nameof(Index));
+            // custom validation to check that at least one ride time is chosen
+            // This logic has been replicated in RequiredAtLeastOneSelectionAttribute
+            // But we leave this code here just in case the attribute is not in place.
+            else
+            {
+                #warning replace this string literal with a language resource
+                ModelState.AddModelError(nameof(vm.SelectedRideTimes), "Please select at least 1 time");
+            }
         }
 
+        // After a Model Error, the VM is reset, so we need to rebuild the 
+        // lists so that the user can continue to complete the form
+        vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+#warning "Magic string" code smell, fix it
+            nameof(Driver.Id), "AppUser.LastAndFirstName");
 
-#warning Selectlist of schedules must be recreated when something goes wrong with creating the record
-        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
-            nameof(Schedule.Id),
-            nameof(Schedule.ShiftDurationTime));
-#warning Selectable ride times must be recreated when something goes wrong with creating the record
-#warning Selected ride times remain so when something goes wrong with creating the record
+        if (vm.DriverId != Guid.Empty)
+        {
+            // we can only set the schedules after the driver has been selected.
+            var schedules = await _uow.Schedules.GettingTheScheduleByDriverIdAsync(vm.DriverId, null, null);
+            foreach (var schedule in schedules)
+            {
+                schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
+                schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
+            }
+
+            vm.Schedules = new SelectList(
+                schedules,
+                nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
+
+            if (vm.ScheduleId != Guid.Empty)
+            {
+                // Select the RideTimes form the currently selected schedule, for the current driver
+                var currentSchedule = schedules.Where(x => x.Id == vm.ScheduleId).ToArray();
+                var rideTimesList = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime(currentSchedule));
+#warning Ask if there is a better way to implement this
+                
+                // the times in schedules have already been converted!
+                vm.RideTimes = new SelectList(rideTimesList.Select(x => new { RideTime = x }), "RideTime", "RideTime");
+            }
+        }
+        
         return View(vm);
     }
 
