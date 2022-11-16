@@ -49,7 +49,7 @@ public class RideTimesController : Controller
     {
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, null);
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value);
         
         if (rideTime == null) return NotFound();
 
@@ -238,7 +238,7 @@ public class RideTimesController : Controller
         var vm = new EditRideTimeViewModel();
         if (id == null) return NotFound();
 
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, null);
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value);
         if (rideTime == null) return NotFound();
 
         vm.Id = rideTime.Id;
@@ -282,7 +282,7 @@ public class RideTimesController : Controller
     public async Task<IActionResult> Edit(Guid? id, EditRideTimeViewModel vm)
     {
         
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id!.Value, null, null);
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id!.Value);
         
         if (rideTime == null)
         {
@@ -323,7 +323,7 @@ public class RideTimesController : Controller
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
         
-        var rideTime =  await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, null, null);
+        var rideTime =  await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value);
         if (rideTime == null) return NotFound();
 
         
@@ -352,8 +352,8 @@ public class RideTimesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var roleName = User.GettingUserRoleName();
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id, null, roleName);
+        
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id);
         if (rideTime != null) _uow.RideTimes.Remove(rideTime);
         await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
