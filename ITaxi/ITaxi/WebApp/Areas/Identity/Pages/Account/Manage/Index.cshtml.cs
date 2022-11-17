@@ -185,7 +185,7 @@ public class IndexModel : PageModel
 
         await _signInManager.RefreshSignInAsync(user);
 
-        StatusMessage = "Your profile has been updated";
+        StatusMessage = Base.Resources.Identity.Pages.Account.Manage.Index.ProfileUpdated;
 
         return RedirectToPage();
     }
@@ -251,6 +251,7 @@ public class IndexModel : PageModel
         [Display(ResourceType = typeof(Index), Name = "DateOfBirth")]
         public DateTime DateOfBirth { get; set; }
 
+        [Display(ResourceType = typeof(Index), Name = "PersonalIdentifier")]
         public string? PersonalIdentifier { get; set; }
 
         [Display(ResourceType = typeof(Index), Name = "ProfileImage")]
