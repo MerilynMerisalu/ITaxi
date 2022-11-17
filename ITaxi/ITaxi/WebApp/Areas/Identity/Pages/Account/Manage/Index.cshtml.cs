@@ -178,7 +178,16 @@ public class IndexModel : PageModel
             await _context.SaveChangesAsync();
         }
 
-        
+        if (driver != null)
+        {
+            if (Input.PersonalIdentifier != driver.PersonalIdentifier)
+            {
+                driver.PersonalIdentifier = Input.PersonalIdentifier!;
+            }
+
+            _context.Drivers.Update(driver);
+            await _context.SaveChangesAsync();
+        }
 
         await _context.SaveChangesAsync();
         _context.Users.Update(user);
