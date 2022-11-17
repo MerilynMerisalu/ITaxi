@@ -96,6 +96,7 @@ public class IndexModel : PageModel
                     PersonalIdentifier = admin.PersonalIdentifier!,
                     ImageFile = user.ProfileImage
                 };
+            #warning Ask if there is a better way to implement it
             else if (driver != null)
             {
                 Input = new InputModel
