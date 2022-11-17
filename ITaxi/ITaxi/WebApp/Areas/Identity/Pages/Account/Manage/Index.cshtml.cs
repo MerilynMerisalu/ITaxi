@@ -62,8 +62,6 @@ public class IndexModel : PageModel
         var userName = await _userManager.GetUserNameAsync(user);
         var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
         var admin = await _context.Admins.SingleOrDefaultAsync(a => a.AppUserId.Equals(user.Id));
-
-
         var driver = await _context.Drivers.SingleOrDefaultAsync(d => d.AppUserId.Equals(user.Id));
         var customer = await _context.Customers.SingleOrDefaultAsync(c => c.AppUserId.Equals(user.Id));
 
@@ -76,11 +74,7 @@ public class IndexModel : PageModel
         var dateOfBirth = user.DateOfBirth.Date;
 
 
-        /*if (User.IsInRole(nameof(Customer)))
-        {
-            
-        }*/
-
+        
 
         Username = userName!;
 
@@ -131,6 +125,7 @@ public class IndexModel : PageModel
     public async Task<IActionResult> OnPostAsync()
     {
         var user = await _userManager.GetUserAsync(User);
+        
         if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
         if (!ModelState.IsValid)
@@ -140,6 +135,10 @@ public class IndexModel : PageModel
         }
 
         if (Input.ImageFile != null) await SavingImage();
+        
+        var admin = await _context.Admins.SingleOrDefaultAsync(a => a.AppUserId.Equals(user.Id));
+        var driver = await _context.Drivers.SingleOrDefaultAsync(d => d.AppUserId.Equals(user.Id));
+        var customer = await _context.Customers.SingleOrDefaultAsync(c => c.AppUserId.Equals(user.Id));
 
         var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
         if (Input.PhoneNumber != phoneNumber)
@@ -168,6 +167,18 @@ public class IndexModel : PageModel
         if (Input.LastName != user.LastName) user.LastName = Input.LastName;
 
         if (Input.Gender != user.Gender) user.Gender = Input.Gender;
+        if (admin != null)
+        {
+            if (Input.PersonalIdentifier != admin.PersonalIdentifier)
+            {
+                admin.PersonalIdentifier = Input.PersonalIdentifier!;
+            }
+
+            _context.Admins.Update(admin);
+            await _context.SaveChangesAsync();
+        }
+
+        
 
         await _context.SaveChangesAsync();
         _context.Users.Update(user);
