@@ -96,6 +96,15 @@ namespace App.Resources.Areas.Identity.Pages.Account.Manage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Personal Identifier.
+        /// </summary>
+        public static string PersonalIdentifier {
+            get {
+                return ResourceManager.GetString("PersonalIdentifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Phone Number.
         /// </summary>
         public static string PhoneNumber {

@@ -52,7 +52,11 @@
 
             @if (User.IsInRole(nameof(Admin)) || User.IsInRole(nameof(Driver)))
             {
-                
+                <div class="form-floating">
+                    <input asp-for="Input.PersonalIdentifier" class="form-control"/>
+                    <label asp-for="Input.PersonalIdentifier" class="form-label"></label>
+                    <span asp-validation-for="Input.PersonalIdentifier" class="text-danger"></span>
+                </div>
             }
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">@Base.Resources.Common.Save</button>
         </form>

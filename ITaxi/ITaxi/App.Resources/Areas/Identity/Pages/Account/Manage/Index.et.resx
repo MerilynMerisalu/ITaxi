@@ -32,4 +32,7 @@
     <data name="ProfileImage" xml:space="preserve">
         <value>Profiilipilt</value>
     </data>
+    <data name="PersonalIdentifier" xml:space="preserve">
+        <value>Isikukood</value>
+    </data>
 </root>

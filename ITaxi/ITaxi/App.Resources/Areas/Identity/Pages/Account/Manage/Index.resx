@@ -39,4 +39,7 @@
     <data name="ProfileImage" xml:space="preserve">
         <value>Profile Image</value>
     </data>
+    <data name="PersonalIdentifier" xml:space="preserve">
+        <value>Personal Identifier</value>
+    </data>
 </root>
