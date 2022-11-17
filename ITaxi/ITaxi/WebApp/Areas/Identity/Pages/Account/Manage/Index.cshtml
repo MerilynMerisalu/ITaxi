@@ -29,7 +29,7 @@
             </div>
             <div class="form-floating">
                 <select asp-for="Input.Gender" class="form-control" asp-items="Html.GetEnumSelectList<Gender>()">
-                    <option value="">Please Select</option>
+                    <option value="">@Base.Resources.Common.PleaseSelect</option>
                 </select>
                 <label asp-for="Input.Gender" class="form-label"></label>
                 <span asp-validation-for="Input.Gender" class="text-danger"></span>
@@ -52,17 +52,13 @@
 
             @if (User.IsInRole(nameof(Admin)) || User.IsInRole(nameof(Driver)))
             {
-                @*<div class="form-floating">
-                    <input asp-for="Input.LastName" class="form-control" />
-                    <label asp-for="Input.LastName" class="form-label"></label>
-                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
-                </div>*@
+                
             }
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">@Base.Resources.Common.Save</button>
         </form>
     </div>
     <div class="col-md-6">
-        <img alt="profile image" src="@Model.Input.PhotoPath" height="300" width="300"/>
+        <img alt="@App.Resources.Areas.Identity.Pages.Account.Manage.Index.ProfileImage" src="@Model.Input.PhotoPath" height="300" width="300"/>
     </div>
 </div>
 

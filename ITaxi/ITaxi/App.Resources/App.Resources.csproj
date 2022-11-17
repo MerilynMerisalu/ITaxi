@@ -135,6 +135,10 @@
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Photo.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Areas\Identity\Pages\Account\Manage\Index.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Index.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -297,6 +301,11 @@
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>Photo.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\Index.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Index.resx</DependentUpon>
         </Compile>
     </ItemGroup>
 

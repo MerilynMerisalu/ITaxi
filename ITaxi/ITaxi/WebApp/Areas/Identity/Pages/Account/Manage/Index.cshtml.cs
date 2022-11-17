@@ -36,6 +36,9 @@ public class IndexModel : PageModel
     ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
     ///     directly from your code. This API may change or be removed in future releases.
     /// </summary>
+    
+    [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Manage.Index),
+        Name = "UserName")]
     public string Username { get; set; } = default!;
 
     /// <summary>
@@ -196,31 +199,35 @@ public class IndexModel : PageModel
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [Phone]
-        [Display(Name = "Phone number")]
+        [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Manage.Index), Name = nameof(PhoneNumber))]
         public string PhoneNumber { get; set; } = default!;
 
         [StringLength(50, MinimumLength = 1)]
         [DataType(DataType.Text)]
-        [Display(Name = "First Name")]
+        [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Manage.Index),
+            Name = nameof(FirstName))]
         public string FirstName { get; set; } = default!;
 
         [StringLength(50, MinimumLength = 1)]
         [DataType(DataType.Text)]
-        [Display(Name = "Last Name")]
+        [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Manage.Index),
+            Name = nameof(LastName))]
         public string LastName { get; set; } = default!;
 
 
         [EnumDataType(typeof(Gender))]
-        [DisplayName(nameof(App.Domain.Enum.Gender))]
+        [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Manage.Index), 
+            Name = nameof(Gender))]
         public Gender Gender { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayName("Date of Birth")]
+        [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Manage.Index), Name = "DateOfBirth")]
         public DateTime DateOfBirth { get; set; }
-
-
+        
+        [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Manage.Index), Name = "ProfileImage")]
         public IFormFile? ImageFile { get; set; }
-
+        
+        [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Manage.Index), Name = "ProfileImage")]
         public string PhotoPath { get; set; } = "icons8-selfies-50.png";
     }
 }
