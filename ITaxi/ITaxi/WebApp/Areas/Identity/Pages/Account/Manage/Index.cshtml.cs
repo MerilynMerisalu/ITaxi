@@ -106,6 +106,8 @@ public class IndexModel : PageModel
                     Gender = gender,
                     DateOfBirth = dateOfBirth,
                     PersonalIdentifier = driver.PersonalIdentifier!,
+                    CityId = driver.CityId,
+                    
                     ImageFile = user.ProfileImage
                 };
             }
