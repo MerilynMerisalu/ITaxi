@@ -174,6 +174,9 @@ public class IndexModel : PageModel
                 admin.PersonalIdentifier = Input.PersonalIdentifier!;
             }
 
+            admin.UpdatedBy = User.Identity!.Name;
+            admin.UpdatedAt = DateTime.Now.ToUniversalTime();
+
             _context.Admins.Update(admin);
             await _context.SaveChangesAsync();
         }
@@ -184,11 +187,15 @@ public class IndexModel : PageModel
             {
                 driver.PersonalIdentifier = Input.PersonalIdentifier!;
             }
+            
+            driver.UpdatedBy = User.Identity!.Name;
+            driver.UpdatedAt = DateTime.Now.ToUniversalTime();
+
 
             _context.Drivers.Update(driver);
             await _context.SaveChangesAsync();
         }
-
+        
         await _context.SaveChangesAsync();
         _context.Users.Update(user);
 
