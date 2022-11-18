@@ -91,8 +91,9 @@ public class IndexModel : PageModel
                     LastName = lastName,
                     Gender = gender,
                     DateOfBirth = dateOfBirth,
-                    PersonalIdentifier = admin.PersonalIdentifier!,
+                    PersonalIdentifier = admin.PersonalIdentifier,
                     CityId = admin.CityId,
+                    AddressOfResidence = admin.Address,
                     ImageFile = user.ProfileImage
                 };
             #warning Ask if there is a better way to implement it
@@ -105,9 +106,9 @@ public class IndexModel : PageModel
                     LastName = lastName,
                     Gender = gender,
                     DateOfBirth = dateOfBirth,
-                    PersonalIdentifier = driver.PersonalIdentifier!,
+                    PersonalIdentifier = driver.PersonalIdentifier,
                     CityId = driver.CityId,
-                    
+                    AddressOfResidence = driver.Address,
                     ImageFile = user.ProfileImage
                 };
             }
@@ -179,10 +180,15 @@ public class IndexModel : PageModel
             if (Input.PersonalIdentifier != admin.PersonalIdentifier)
             {
                 admin.PersonalIdentifier = Input.PersonalIdentifier!;
-            }
-            else if (Input.CityId != admin.CityId)
+            } 
+            if (Input.CityId != admin.CityId)
             {
                 admin.CityId = Input.CityId;
+            }
+
+            if (Input.AddressOfResidence != admin.Address)
+            {
+                admin.Address = Input.AddressOfResidence;
             }
 
             admin.UpdatedBy = User.Identity!.Name;
@@ -203,7 +209,10 @@ public class IndexModel : PageModel
             {
                 driver.CityId = Input.CityId;
             }
-            
+            if (Input.AddressOfResidence != driver.Address)
+            {
+                driver.Address = Input.AddressOfResidence;
+            }
             driver.UpdatedBy = User.Identity!.Name;
             driver.UpdatedAt = DateTime.Now.ToUniversalTime();
 
@@ -283,11 +292,16 @@ public class IndexModel : PageModel
         [Display(ResourceType = typeof(Index), Name = "DateOfBirth")]
         public DateTime DateOfBirth { get; set; }
 
+        [StringLength(50, MinimumLength = 1)]
         [Display(ResourceType = typeof(Index), Name = "PersonalIdentifier")]
         public string? PersonalIdentifier { get; set; }
 
-        [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Manage.Index), Name = "City")]
+        [Display(ResourceType = typeof(Index), Name = "City")]
         public Guid CityId { get; set; }
+
+        [StringLength(50, MinimumLength = 1)]
+        [Display(ResourceType = typeof(Index), Name = "AddressOfResidence")]
+        public string AddressOfResidence { get; set; } = default!;
 
         [Display(ResourceType = typeof(Index), Name = "ProfileImage")]
         public IFormFile? ImageFile { get; set; }
