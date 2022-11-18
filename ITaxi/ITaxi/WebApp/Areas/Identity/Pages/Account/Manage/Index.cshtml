@@ -1,6 +1,7 @@
 ﻿@page
 @using App.Domain
 @using App.Domain.Enum
+@using Base.Resources
 @model IndexModel
 @{
     ViewData["Title"] = "Profile";
@@ -56,6 +57,13 @@
                     <input asp-for="Input.PersonalIdentifier" class="form-control"/>
                     <label asp-for="Input.PersonalIdentifier" class="form-label"></label>
                     <span asp-validation-for="Input.PersonalIdentifier" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.CityId"></label>
+                    <select asp-for="Input.CityId" class="form-control" asp-items="Model.Cities">
+                        <option>@Common.PleaseSelect</option>
+                    </select>
+                    <span asp-validation-for="Input.CityId" class="text-danger"></span>
                 </div>
             }
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">@Base.Resources.Common.Save</button>

@@ -11,6 +11,7 @@ using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Index = App.Resources.Areas.Identity.Pages.Account.Manage.Index;
 
@@ -56,7 +57,7 @@ public class IndexModel : PageModel
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; } = default!;
-
+    public SelectList? Cities { get; set; }
     private async Task LoadAsync(AppUser user)
     {
         var userName = await _userManager.GetUserNameAsync(user);
@@ -72,8 +73,11 @@ public class IndexModel : PageModel
         var lastName = user.LastName;
         var gender = user.Gender;
         var dateOfBirth = user.DateOfBirth.Date;
-
-
+        Cities = new SelectList(await _context.Cities
+            .OrderBy(c => c.CityName)
+            .Select(c => new {c.Id, c.CityName})
+            .ToListAsync(), nameof(City.Id), 
+            nameof(City.CityName));
         
 
         Username = userName!;
@@ -88,6 +92,7 @@ public class IndexModel : PageModel
                     Gender = gender,
                     DateOfBirth = dateOfBirth,
                     PersonalIdentifier = admin.PersonalIdentifier!,
+                    CityId = admin.CityId,
                     ImageFile = user.ProfileImage
                 };
             #warning Ask if there is a better way to implement it
@@ -173,6 +178,10 @@ public class IndexModel : PageModel
             {
                 admin.PersonalIdentifier = Input.PersonalIdentifier!;
             }
+            else if (Input.CityId != admin.CityId)
+            {
+                admin.CityId = Input.CityId;
+            }
 
             admin.UpdatedBy = User.Identity!.Name;
             admin.UpdatedAt = DateTime.Now.ToUniversalTime();
@@ -186,6 +195,11 @@ public class IndexModel : PageModel
             if (Input.PersonalIdentifier != driver.PersonalIdentifier)
             {
                 driver.PersonalIdentifier = Input.PersonalIdentifier!;
+            }
+
+            if (Input.CityId != driver.CityId )
+            {
+                driver.CityId = Input.CityId;
             }
             
             driver.UpdatedBy = User.Identity!.Name;
@@ -269,6 +283,9 @@ public class IndexModel : PageModel
 
         [Display(ResourceType = typeof(Index), Name = "PersonalIdentifier")]
         public string? PersonalIdentifier { get; set; }
+
+        [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Manage.Index), Name = "City")]
+        public Guid CityId { get; set; }
 
         [Display(ResourceType = typeof(Index), Name = "ProfileImage")]
         public IFormFile? ImageFile { get; set; }

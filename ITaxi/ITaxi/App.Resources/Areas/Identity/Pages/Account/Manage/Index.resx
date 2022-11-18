@@ -42,4 +42,10 @@
     <data name="PersonalIdentifier" xml:space="preserve">
         <value>Personal Identifier</value>
     </data>
+    <data name="AddressOfResidence" xml:space="preserve">
+        <value>Address of Residence</value>
+    </data>
+    <data name="City" xml:space="preserve">
+        <value>City</value>
+    </data>
 </root>

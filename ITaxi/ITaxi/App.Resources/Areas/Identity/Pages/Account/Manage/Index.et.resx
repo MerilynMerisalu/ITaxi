@@ -35,4 +35,10 @@
     <data name="PersonalIdentifier" xml:space="preserve">
         <value>Isikukood</value>
     </data>
+    <data name="AddressOfResidence" xml:space="preserve">
+        <value>Elukoha aadress</value>
+    </data>
+    <data name="City" xml:space="preserve">
+        <value>Linn</value>
+    </data>
 </root>
