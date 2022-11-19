@@ -8,6 +8,7 @@ using App.DAL.EF;
 using App.Domain;
 using App.Domain.Enum;
 using App.Domain.Identity;
+using Base.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -117,6 +118,7 @@ public class IndexModel : PageModel
                     PersonalIdentifier = driver.PersonalIdentifier,
                     CityId = driver.CityId,
                     AddressOfResidence = driver.Address,
+                    DriverLicenseNumber = driver.DriverLicenseNumber,
                     ImageFile = user.ProfileImage
                 };
             }
@@ -137,6 +139,7 @@ public class IndexModel : PageModel
                 };
             }
         }
+        
         if (user.ProfilePhoto != null)
             Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
         else
@@ -236,6 +239,11 @@ public class IndexModel : PageModel
             if (Input.AddressOfResidence != driver.Address)
             {
                 if (Input.AddressOfResidence != null) driver.Address = Input.AddressOfResidence;
+            }
+
+            if (Input.DriverLicenseNumber != driver.DriverLicenseNumber)
+            {
+                if (Input.DriverLicenseNumber != null) driver.DriverLicenseNumber = Input.DriverLicenseNumber;
             }
 
             driver.UpdatedBy = User.Identity!.Name;
@@ -345,6 +353,14 @@ public class IndexModel : PageModel
         [Display(ResourceType = typeof(Index), Name = "DisabilityType")]
         
         public Guid? DisabilityId { get; set; }
+        
+        [MaxLength(15, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+        [MinLength(2, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMinLength")]
+        [StringLength(15, MinimumLength = 2, ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+        [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseNumber")]
+        public string? DriverLicenseNumber { get; set; } 
+
         
         [Display(ResourceType = typeof(Index), Name = "ProfileImage")]
         public IFormFile? ImageFile { get; set; }

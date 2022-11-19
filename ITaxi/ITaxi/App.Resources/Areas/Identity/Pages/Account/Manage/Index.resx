@@ -51,4 +51,7 @@
     <data name="DisabilityType" xml:space="preserve">
         <value>Disability Type</value>
     </data>
+    <data name="DriverLicenseNumber" xml:space="preserve">
+        <value>Driver License Number</value>
+    </data>
 </root>

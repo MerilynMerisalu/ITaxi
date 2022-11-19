@@ -44,4 +44,7 @@
     <data name="DisabilityType" xml:space="preserve">
         <value>Puudeliik</value>
     </data>
+    <data name="DriverLicenseNumber" xml:space="preserve">
+        <value>Juhiloa number</value>
+    </data>
 </root>

@@ -96,6 +96,15 @@ namespace App.Resources.Areas.Identity.Pages.Account.Manage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Driver License Number.
+        /// </summary>
+        public static string DriverLicenseNumber {
+            get {
+                return ResourceManager.GetString("DriverLicenseNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name.
         /// </summary>
         public static string FirstName {

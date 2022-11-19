@@ -72,6 +72,14 @@
                     <span asp-validation-for="Input.AddressOfResidence" class="text-danger"></span>
                 </div>
             }
+            @if (User.IsInRole(nameof(Driver)))
+            {
+                <div class="form-floating">
+                <input asp-for="Input.DriverLicenseNumber" class="form-control"/>
+                <label asp-for="Input.DriverLicenseNumber" class="form-label"></label>
+                <span asp-validation-for="Input.DriverLicenseNumber" class="text-danger"></span>
+                </div>
+            }
             @if (User.IsInRole(nameof(Customer)))
             {
                 <div class="form-group">
