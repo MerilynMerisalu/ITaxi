@@ -41,4 +41,7 @@
     <data name="City" xml:space="preserve">
         <value>Linn</value>
     </data>
+    <data name="DisabilityType" xml:space="preserve">
+        <value>Puudeliik</value>
+    </data>
 </root>

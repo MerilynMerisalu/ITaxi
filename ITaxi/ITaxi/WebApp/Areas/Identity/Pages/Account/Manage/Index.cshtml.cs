@@ -58,6 +58,8 @@ public class IndexModel : PageModel
     [BindProperty]
     public InputModel Input { get; set; } = default!;
     public SelectList? Cities { get; set; }
+
+    public SelectList? DisabilityTypes { get; set; }
     private async Task LoadAsync(AppUser user)
     {
         var userName = await _userManager.GetUserNameAsync(user);
@@ -78,6 +80,12 @@ public class IndexModel : PageModel
             .Select(c => new {c.Id, c.CityName})
             .ToListAsync(), nameof(City.Id), 
             nameof(City.CityName));
+        DisabilityTypes = new SelectList(await _context.DisabilityTypes.Include(t => t.DisabilityTypeName)
+                .ThenInclude(t => t.Translations)
+                .OrderBy(c => c.DisabilityTypeName)
+                .Select(c => new {c.Id, c.DisabilityTypeName})
+                .ToListAsync(), nameof(DisabilityType.Id),
+            nameof(DisabilityType.DisabilityTypeName));
         
 
         Username = userName!;
@@ -112,8 +120,23 @@ public class IndexModel : PageModel
                     ImageFile = user.ProfileImage
                 };
             }
-        
-        
+
+        if (User.IsInRole(nameof(Customer)))
+        {
+            if (customer != null)
+            {
+                Input = new InputModel
+                {
+                    PhoneNumber = phoneNumber!,
+                    FirstName = firstname,
+                    LastName = lastName,
+                    Gender = gender,
+                    DateOfBirth = dateOfBirth,
+                    DisabilityId = customer.DisabilityTypeId,
+                    ImageFile = user.ProfileImage
+                };
+            }
+        }
         if (user.ProfilePhoto != null)
             Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
         else
@@ -183,12 +206,12 @@ public class IndexModel : PageModel
             } 
             if (Input.CityId != admin.CityId)
             {
-                admin.CityId = Input.CityId;
+                if (Input.CityId != null) admin.CityId = Input.CityId.Value;
             }
 
             if (Input.AddressOfResidence != admin.Address)
             {
-                admin.Address = Input.AddressOfResidence;
+                if (Input.AddressOfResidence != null) admin.Address = Input.AddressOfResidence;
             }
 
             admin.UpdatedBy = User.Identity!.Name;
@@ -205,19 +228,35 @@ public class IndexModel : PageModel
                 driver.PersonalIdentifier = Input.PersonalIdentifier!;
             }
 
-            if (Input.CityId != driver.CityId )
+            if (Input.CityId != driver.CityId)
             {
-                driver.CityId = Input.CityId;
+                if (Input.CityId != null) driver.CityId = Input.CityId.Value;
             }
+
             if (Input.AddressOfResidence != driver.Address)
             {
-                driver.Address = Input.AddressOfResidence;
+                if (Input.AddressOfResidence != null) driver.Address = Input.AddressOfResidence;
             }
+
             driver.UpdatedBy = User.Identity!.Name;
             driver.UpdatedAt = DateTime.Now.ToUniversalTime();
 
 
             _context.Drivers.Update(driver);
+            await _context.SaveChangesAsync();
+
+        }
+
+        if (customer != null )
+        {
+            if (customer.DisabilityTypeId != Input.DisabilityId)
+            {
+                customer.DisabilityTypeId = Input.DisabilityId!.Value;
+            }
+            customer.UpdatedBy = User.Identity!.Name;
+            customer.UpdatedAt = DateTime.Now.ToUniversalTime();
+                
+            _context.Customers.Update(customer);
             await _context.SaveChangesAsync();
         }
         
@@ -297,12 +336,16 @@ public class IndexModel : PageModel
         public string? PersonalIdentifier { get; set; }
 
         [Display(ResourceType = typeof(Index), Name = "City")]
-        public Guid CityId { get; set; }
+        public Guid? CityId { get; set; }
 
         [StringLength(50, MinimumLength = 1)]
         [Display(ResourceType = typeof(Index), Name = "AddressOfResidence")]
-        public string AddressOfResidence { get; set; } = default!;
-
+        public string? AddressOfResidence { get; set; } 
+        
+        [Display(ResourceType = typeof(Index), Name = "DisabilityType")]
+        
+        public Guid? DisabilityId { get; set; }
+        
         [Display(ResourceType = typeof(Index), Name = "ProfileImage")]
         public IFormFile? ImageFile { get; set; }
 

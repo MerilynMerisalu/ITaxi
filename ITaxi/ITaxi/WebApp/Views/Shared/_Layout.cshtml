@@ -119,7 +119,12 @@
                         @App.Resources.Areas.WebApp.Views.Shared._Layout.VehicleModels
                     </a>
                 </li>
-                
+                <li>
+                    <a class="dropdown-item" asp-area="AdminArea"
+                       asp-controller="DisabilityTypes" asp-action="Index">
+                        @App.Resources.Areas.WebApp.Views.Shared._Layout.DisabilityTypes
+                    </a>
+                </li>
                 <li>
                     <a class="dropdown-item" asp-area="AdminArea"
                        asp-controller="Customers" asp-action="Index">
@@ -202,6 +207,8 @@
                     @App.Resources.Areas.WebApp.Views.Shared._Layout.Comments
                 </a>
             </li>
+            
+            
         </ul>
     </li>
 }

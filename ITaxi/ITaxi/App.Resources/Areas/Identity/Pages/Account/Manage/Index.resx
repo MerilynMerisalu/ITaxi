@@ -48,4 +48,7 @@
     <data name="City" xml:space="preserve">
         <value>City</value>
     </data>
+    <data name="DisabilityType" xml:space="preserve">
+        <value>Disability Type</value>
+    </data>
 </root>

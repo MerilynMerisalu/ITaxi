@@ -87,6 +87,15 @@ namespace App.Resources.Areas.Identity.Pages.Account.Manage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disability Type.
+        /// </summary>
+        public static string DisabilityType {
+            get {
+                return ResourceManager.GetString("DisabilityType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name.
         /// </summary>
         public static string FirstName {

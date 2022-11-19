@@ -72,6 +72,16 @@
                     <span asp-validation-for="Input.AddressOfResidence" class="text-danger"></span>
                 </div>
             }
+            @if (User.IsInRole(nameof(Customer)))
+            {
+                <div class="form-group">
+                    <label asp-for="Input.DisabilityId"></label>
+                    <select asp-for="Input.DisabilityId" class="form-control" asp-items="Model.DisabilityTypes">
+                        <option>@Common.PleaseSelect</option>
+                    </select>
+                    <span asp-validation-for="Input.DisabilityId" class="text-danger"></span>
+                </div>
+            }
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">@Common.Save</button>
         </form>
     </div>
