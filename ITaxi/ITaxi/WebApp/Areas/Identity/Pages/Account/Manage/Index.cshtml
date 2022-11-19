@@ -4,7 +4,7 @@
 @using Base.Resources
 @model IndexModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = App.Resources.Areas.Identity.Pages.Account.Manage.Index.Profile;
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
@@ -44,12 +44,7 @@
                 <label asp-for="Input.PhoneNumber" class="form-label"></label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
-            <div class="form-floating">
-                <input asp-for="Input.ImageFile" class="form-control"/>
-                <label asp-for="Input.ImageFile" accept="image\png, image\jpeg" class="form-label"></label>
-                <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
 
-            </div>
 
             @if (User.IsInRole(nameof(Admin)) || User.IsInRole(nameof(Driver)))
             {
@@ -65,7 +60,7 @@
                     </select>
                     <span asp-validation-for="Input.CityId" class="text-danger"></span>
                 </div>
-                
+
                 <div class="form-floating">
                     <input asp-for="Input.AddressOfResidence" class="form-control"/>
                     <label asp-for="Input.AddressOfResidence" class="form-label"></label>
@@ -75,9 +70,14 @@
             @if (User.IsInRole(nameof(Driver)))
             {
                 <div class="form-floating">
-                <input asp-for="Input.DriverLicenseNumber" class="form-control"/>
-                <label asp-for="Input.DriverLicenseNumber" class="form-label"></label>
-                <span asp-validation-for="Input.DriverLicenseNumber" class="text-danger"></span>
+                    <input asp-for="Input.DriverLicenseNumber" class="form-control"/>
+                    <label asp-for="Input.DriverLicenseNumber" class="form-label"></label>
+                    <span asp-validation-for="Input.DriverLicenseNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating">
+                    <input asp-for="Input.DriverLicenseExpiryDate" class="form-control"/>
+                    <label asp-for="Input.DriverLicenseExpiryDate" class="form-label"></label>
                 </div>
             }
             @if (User.IsInRole(nameof(Customer)))
@@ -90,6 +90,11 @@
                     <span asp-validation-for="Input.DisabilityId" class="text-danger"></span>
                 </div>
             }
+            <div class="form-floating">
+                <input asp-for="Input.ImageFile" class="form-control"/>
+                <label asp-for="Input.ImageFile" accept="image\png, image\jpeg" class="form-label"></label>
+                <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
+            </div>
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">@Common.Save</button>
         </form>
     </div>

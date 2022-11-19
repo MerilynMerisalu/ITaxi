@@ -119,6 +119,7 @@ public class IndexModel : PageModel
                     CityId = driver.CityId,
                     AddressOfResidence = driver.Address,
                     DriverLicenseNumber = driver.DriverLicenseNumber,
+                    DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.Date,
                     ImageFile = user.ProfileImage
                 };
             }
@@ -246,6 +247,11 @@ public class IndexModel : PageModel
                 if (Input.DriverLicenseNumber != null) driver.DriverLicenseNumber = Input.DriverLicenseNumber;
             }
 
+            if (Input.DriverLicenseExpiryDate.Date != driver.DriverLicenseExpiryDate.Date)
+            {
+                driver.DriverLicenseExpiryDate = Input.DriverLicenseExpiryDate;
+            }
+
             driver.UpdatedBy = User.Identity!.Name;
             driver.UpdatedAt = DateTime.Now.ToUniversalTime();
 
@@ -358,8 +364,12 @@ public class IndexModel : PageModel
         [MinLength(2, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMinLength")]
         [StringLength(15, MinimumLength = 2, ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-        [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseNumber")]
+        [Display(ResourceType = typeof(Index), Name = "DriverLicenseNumber")]
         public string? DriverLicenseNumber { get; set; } 
+        
+        [DataType(DataType.Date)]
+        [Display(ResourceType = typeof(Index), Name = "DriverLicenseExpiryDate")]
+        public DateTime DriverLicenseExpiryDate { get; set; }
 
         
         [Display(ResourceType = typeof(Index), Name = "ProfileImage")]

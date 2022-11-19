@@ -96,6 +96,15 @@ namespace App.Resources.Areas.Identity.Pages.Account.Manage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Driver License Expiry Date.
+        /// </summary>
+        public static string DriverLicenseExpiryDate {
+            get {
+                return ResourceManager.GetString("DriverLicenseExpiryDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Driver License Number.
         /// </summary>
         public static string DriverLicenseNumber {
@@ -146,6 +155,15 @@ namespace App.Resources.Areas.Identity.Pages.Account.Manage {
         public static string PhoneNumber {
             get {
                 return ResourceManager.GetString("PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        public static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
             }
         }
         

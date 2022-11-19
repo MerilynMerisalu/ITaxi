@@ -47,4 +47,10 @@
     <data name="DriverLicenseNumber" xml:space="preserve">
         <value>Juhiloa number</value>
     </data>
+    <data name="DriverLicenseExpiryDate" xml:space="preserve">
+        <value>Juhiloa aegumiskuupäev</value>
+    </data>
+    <data name="Profile" xml:space="preserve">
+        <value>Profiil</value>
+    </data>
 </root>

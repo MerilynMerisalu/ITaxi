@@ -54,4 +54,10 @@
     <data name="DriverLicenseNumber" xml:space="preserve">
         <value>Driver License Number</value>
     </data>
+    <data name="DriverLicenseExpiryDate" xml:space="preserve">
+        <value>Driver License Expiry Date</value>
+    </data>
+    <data name="Profile" xml:space="preserve">
+        <value>Profile</value>
+    </data>
 </root>
