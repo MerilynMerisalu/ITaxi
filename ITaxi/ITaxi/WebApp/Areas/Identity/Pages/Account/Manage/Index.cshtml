@@ -87,7 +87,21 @@
                     </select>
                     <span asp-validation-for="Input.DriverLicenseCategories" class="text-danger"></span>
                 </div>
+                <a id="addingDriverLicenseCategories" style="color: #0dcaf0; " onclick="ShowingTextBox()">Add more</a> 
             }
+            
+            <div class="form-group">
+                <label id="licenseCategoriesLabel" asp-for="Input.DriverLicenseCategories" hidden="hidden"></label>
+                <select id="licenseCategories" multiple="multiple" asp-for="Input.DriverLicenseCategories" class="form-control" 
+                        hidden="hidden"
+                        asp-items="Model.DriverLicenseCategories">
+                </select>
+                
+                <span asp-validation-for="Input.DriverLicenseCategories" class="text-danger"></span>
+                
+            </div>
+            
+            
             @if (User.IsInRole(nameof(Customer)))
             {
                 <div class="form-group">
@@ -112,5 +126,17 @@
 </div>
 
 @section Scripts {
+    <script type="text/javascript">
+    function ShowingTextBox() {
+      let linklabel = document.getElementById("licenseCategoriesLabel")
+     let addingTextBox = document.getElementById("licenseCategories")
+     let linkHref = document.getElementById("addingDriverLicenseCategories");
+     linklabel.hidden = false;
+     addingTextBox.hidden = false;
+     linkHref.hidden = true;
+     
+    }
+     
+    </script>
     <partial name="_ValidationScriptsPartial"/>
 }
