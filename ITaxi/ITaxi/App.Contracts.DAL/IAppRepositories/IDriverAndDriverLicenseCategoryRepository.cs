@@ -9,4 +9,7 @@ public interface IDriverAndDriverLicenseCategoryRepository : IEntityRepository<D
     string GetAllDriverLicenseCategoriesBelongingToTheDriver(Guid id, string separator = ", ");
 
     Task<List<DriverAndDriverLicenseCategory?>> RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(Guid id);
+    
+    
+    
 }

@@ -60,6 +60,7 @@ public class IndexModel : PageModel
     public InputModel Input { get; set; } = default!;
     public SelectList? Cities { get; set; }
 
+    public SelectList? DriverLicenseCategories { get; set; }
     public SelectList? DisabilityTypes { get; set; }
     private async Task LoadAsync(AppUser user)
     {
@@ -76,12 +77,27 @@ public class IndexModel : PageModel
         var lastName = user.LastName;
         var gender = user.Gender;
         var dateOfBirth = user.DateOfBirth.Date;
+        
         Cities = new SelectList(await _context.Cities
             .OrderBy(c => c.CityName)
             .Select(c => new {c.Id, c.CityName})
             .ToListAsync(), nameof(City.Id), 
             nameof(City.CityName));
-        DisabilityTypes = new SelectList(await _context.DisabilityTypes.Include(t => t.DisabilityTypeName)
+        DriverLicenseCategories = new SelectList(await
+                _context.DriverAndDriverLicenseCategories
+                    .Include(d => d.Driver)
+                    .Include(dlc => dlc.DriverLicenseCategory)
+                    
+                    .Where(dlc => dlc.DriverId.Equals(driver!.Id))
+                    .Select(dlc => new DriverLicenseCategory
+                    {
+                        Id = dlc.DriverLicenseCategoryId,
+                        DriverLicenseCategoryName = dlc.DriverLicenseCategory!.DriverLicenseCategoryName
+                    }).ToListAsync(), nameof(DriverLicenseCategory.Id), 
+                nameof(DriverLicenseCategory.DriverLicenseCategoryName));
+
+            DisabilityTypes = new SelectList(await _context.DisabilityTypes
+                .Include(t => t.DisabilityTypeName)
                 .ThenInclude(t => t.Translations)
                 .OrderBy(c => c.DisabilityTypeName)
                 .Select(c => new {c.Id, c.DisabilityTypeName})
@@ -120,6 +136,7 @@ public class IndexModel : PageModel
                     AddressOfResidence = driver.Address,
                     DriverLicenseNumber = driver.DriverLicenseNumber,
                     DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.Date,
+                    
                     ImageFile = user.ProfileImage
                 };
             }
@@ -360,12 +377,15 @@ public class IndexModel : PageModel
         
         public Guid? DisabilityId { get; set; }
         
+        
         [MaxLength(15, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
         [MinLength(2, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMinLength")]
         [StringLength(15, MinimumLength = 2, ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
         [Display(ResourceType = typeof(Index), Name = "DriverLicenseNumber")]
-        public string? DriverLicenseNumber { get; set; } 
+        public string? DriverLicenseNumber { get; set; }
+
+        public SelectList DriverLicenseCategories { get; set; }
         
         [DataType(DataType.Date)]
         [Display(ResourceType = typeof(Index), Name = "DriverLicenseExpiryDate")]

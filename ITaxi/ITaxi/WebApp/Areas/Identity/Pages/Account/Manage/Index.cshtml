@@ -79,6 +79,14 @@
                     <input asp-for="Input.DriverLicenseExpiryDate" class="form-control"/>
                     <label asp-for="Input.DriverLicenseExpiryDate" class="form-label"></label>
                 </div>
+                
+                <div class="form-group">
+                    <label asp-for="Input.DriverLicenseCategories"></label>
+                    <select multiple="multiple" asp-for="Input.DriverLicenseCategories" class="form-control"
+                            asp-items="Model.DriverLicenseCategories">
+                    </select>
+                    <span asp-validation-for="Input.DriverLicenseCategories" class="text-danger"></span>
+                </div>
             }
             @if (User.IsInRole(nameof(Customer)))
             {

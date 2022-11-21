@@ -45,6 +45,10 @@ public class DriverAndDriverLicenseCategoryRepository :
         return RemoveAll(driverAndDriverLicenseCategories)!;
     }
 
+    
+
+    
+
     protected override IQueryable<DriverAndDriverLicenseCategory> CreateQuery(bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
