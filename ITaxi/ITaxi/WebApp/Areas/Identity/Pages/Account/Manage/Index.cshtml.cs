@@ -83,6 +83,7 @@ public class IndexModel : PageModel
             .Select(c => new {c.Id, c.CityName})
             .ToListAsync(), nameof(City.Id), 
             nameof(City.CityName));
+        #warning add the ability to change the list of driver license categories with js
         DriverLicenseCategories = new SelectList(await
                 _context.DriverAndDriverLicenseCategories
                     .Include(d => d.Driver)
@@ -104,6 +105,7 @@ public class IndexModel : PageModel
                 .ToListAsync(), nameof(DisabilityType.Id),
             nameof(DisabilityType.DisabilityTypeName));
         
+            
 
         Username = userName!;
 
