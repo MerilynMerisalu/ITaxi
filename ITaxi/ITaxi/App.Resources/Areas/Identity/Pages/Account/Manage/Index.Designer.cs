@@ -96,6 +96,15 @@ namespace App.Resources.Areas.Identity.Pages.Account.Manage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Driver License Categories.
+        /// </summary>
+        public static string DriverLicenseCategories {
+            get {
+                return ResourceManager.GetString("DriverLicenseCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Driver License Expiry Date.
         /// </summary>
         public static string DriverLicenseExpiryDate {

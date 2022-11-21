@@ -60,6 +60,7 @@ public class IndexModel : PageModel
     public InputModel Input { get; set; } = default!;
     public SelectList? Cities { get; set; }
 
+    
     public SelectList? DriverLicenseCategories { get; set; }
     public SelectList? DisabilityTypes { get; set; }
     private async Task LoadAsync(AppUser user)
@@ -387,7 +388,8 @@ public class IndexModel : PageModel
         [Display(ResourceType = typeof(Index), Name = "DriverLicenseNumber")]
         public string? DriverLicenseNumber { get; set; }
 
-        public SelectList DriverLicenseCategories { get; set; }
+        [Display(ResourceType = typeof(Index), Name = "DriverLicenseCategories")]
+        public SelectList? DriverLicenseCategories { get; set; }
         
         [DataType(DataType.Date)]
         [Display(ResourceType = typeof(Index), Name = "DriverLicenseExpiryDate")]

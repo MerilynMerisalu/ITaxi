@@ -60,4 +60,7 @@
     <data name="Profile" xml:space="preserve">
         <value>Profile</value>
     </data>
+    <data name="DriverLicenseCategories" xml:space="preserve">
+        <value>Driver License Categories</value>
+    </data>
 </root>
