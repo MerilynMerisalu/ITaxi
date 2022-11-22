@@ -66,4 +66,10 @@
     <data name="SelectedDriverLicenseCategories" xml:space="preserve">
         <value>Selected Driver License Categories</value>
     </data>
+    <data name="Hide" xml:space="preserve">
+        <value>Hide</value>
+    </data>
+    <data name="AddNew" xml:space="preserve">
+        <value>Add New</value>
+    </data>
 </root>

@@ -2,6 +2,7 @@
 @using App.Domain
 @using App.Domain.Enum
 @using Base.Resources
+@using Index = App.Resources.Areas.Identity.Pages.Account.Manage.Index
 @model IndexModel
 @{
     ViewData["Title"] = App.Resources.Areas.Identity.Pages.Account.Manage.Index.Profile;
@@ -87,7 +88,7 @@
                     </select>
                     <span asp-validation-for="Input.SelectedDriverLicenseCategories" class="text-danger"></span>
                 </div>
-                <a id="addingDriverLicenseCategories" style="color: #0dcaf0; " onclick="ShowingTextBox()">Add more</a> 
+                <a id="addingDriverLicenseCategories" style="color: #0dcaf0; " onclick="ShowingTextBox()">@Index.AddNew</a> 
             }
             
             <div class="form-group">
@@ -100,7 +101,7 @@
                 <span asp-validation-for="Input.DriverLicenseCategories" class="text-danger"></span>
                 
             </div>
-            <a id="hideLink" style="color: #0dcaf0; " onclick="HidingTextBox()" hidden="hidden">Hide</a> 
+            <a id="hideLink" style="color: #0dcaf0; " onclick="HidingTextBox()" hidden="hidden">@Index.Hide</a> 
             
             @if (User.IsInRole(nameof(Customer)))
             {
