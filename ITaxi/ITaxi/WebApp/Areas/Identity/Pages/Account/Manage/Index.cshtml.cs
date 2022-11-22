@@ -60,6 +60,7 @@ public class IndexModel : PageModel
     public InputModel Input { get; set; } = default!;
     public SelectList? Cities { get; set; }
 
+    public ICollection<Guid>? ChangedDriverLicenseCategoriesList { get; set; }
     public SelectList? SelectedDriverLicenseCategories { get; set; }
     public SelectList? DriverLicenseCategories { get; set; }
     public SelectList? DisabilityTypes { get; set; }
@@ -276,6 +277,24 @@ public class IndexModel : PageModel
                 driver.DriverLicenseExpiryDate = Input.DriverLicenseExpiryDate;
             }
 
+            if (Input.ChangedDriverLicenseCategoriesList != null)
+            {
+                foreach (var driverAndDriverLicenseCategory in Input.ChangedDriverLicenseCategoriesList!)
+                {
+                    var driverAndDriverLicenseCategoryEntity = new DriverAndDriverLicenseCategory()
+                    {
+                        Id = new Guid(),
+                        DriverId = driver.Id,
+                        DriverLicenseCategoryId = driverAndDriverLicenseCategory
+                    };
+                    await _context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategoryEntity);
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
+            
+
             driver.UpdatedBy = User.Identity!.Name;
             driver.UpdatedAt = DateTime.Now.ToUniversalTime();
 
@@ -397,6 +416,8 @@ public class IndexModel : PageModel
 
         [Display(ResourceType = typeof(Index), Name = "DriverLicenseCategories")]
         public SelectList? DriverLicenseCategories { get; set; }
+
+        public List<Guid>? ChangedDriverLicenseCategoriesList  { get; set; }
         
         [DataType(DataType.Date)]
         [Display(ResourceType = typeof(Index), Name = "DriverLicenseExpiryDate")]
