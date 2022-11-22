@@ -60,7 +60,7 @@ public class IndexModel : PageModel
     public InputModel Input { get; set; } = default!;
     public SelectList? Cities { get; set; }
 
-    
+    public SelectList? SelectedDriverLicenseCategories { get; set; }
     public SelectList? DriverLicenseCategories { get; set; }
     public SelectList? DisabilityTypes { get; set; }
     private async Task LoadAsync(AppUser user)
@@ -85,7 +85,7 @@ public class IndexModel : PageModel
             .ToListAsync(), nameof(City.Id), 
             nameof(City.CityName));
         #warning add the ability to change the list of driver license categories with js
-        DriverLicenseCategories = new SelectList(await
+        SelectedDriverLicenseCategories = new SelectList(await
                 _context.DriverAndDriverLicenseCategories
                     .Include(d => d.Driver)
                     .Include(dlc => dlc.DriverLicenseCategory)
@@ -97,6 +97,10 @@ public class IndexModel : PageModel
                         DriverLicenseCategoryName = dlc.DriverLicenseCategory!.DriverLicenseCategoryName
                     }).ToListAsync(), nameof(DriverLicenseCategory.Id), 
                 nameof(DriverLicenseCategory.DriverLicenseCategoryName));
+        DriverLicenseCategories = new SelectList(await _context.DriverLicenseCategories
+                .OrderBy(dlc => dlc.DriverLicenseCategoryName).ToListAsync(),
+            nameof(DriverLicenseCategory.Id),
+            nameof(DriverLicenseCategory.DriverLicenseCategoryName));
 
             DisabilityTypes = new SelectList(await _context.DisabilityTypes
                 .Include(t => t.DisabilityTypeName)
@@ -387,6 +391,9 @@ public class IndexModel : PageModel
             ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
         [Display(ResourceType = typeof(Index), Name = "DriverLicenseNumber")]
         public string? DriverLicenseNumber { get; set; }
+
+        [Display(ResourceType = typeof(Index), Name = "SelectedDriverLicenseCategories")]
+        public SelectList? SelectedDriverLicenseCategories { get; set; }
 
         [Display(ResourceType = typeof(Index), Name = "DriverLicenseCategories")]
         public SelectList? DriverLicenseCategories { get; set; }

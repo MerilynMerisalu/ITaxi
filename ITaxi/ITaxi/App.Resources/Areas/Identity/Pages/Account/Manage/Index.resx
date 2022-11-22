@@ -63,4 +63,7 @@
     <data name="DriverLicenseCategories" xml:space="preserve">
         <value>Driver License Categories</value>
     </data>
+    <data name="SelectedDriverLicenseCategories" xml:space="preserve">
+        <value>Selected Driver License Categories</value>
+    </data>
 </root>

@@ -186,6 +186,15 @@ namespace App.Resources.Areas.Identity.Pages.Account.Manage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selected Driver License Categories.
+        /// </summary>
+        public static string SelectedDriverLicenseCategories {
+            get {
+                return ResourceManager.GetString("SelectedDriverLicenseCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Name.
         /// </summary>
         public static string UserName {

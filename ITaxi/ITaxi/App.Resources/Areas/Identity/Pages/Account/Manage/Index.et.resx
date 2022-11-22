@@ -56,4 +56,7 @@
     <data name="DriverLicenseCategories" xml:space="preserve">
         <value>Juhiloa kategooriad</value>
     </data>
+    <data name="SelectedDriverLicenseCategories" xml:space="preserve">
+        <value>Valitud juhiloa kategooriad</value>
+    </data>
 </root>

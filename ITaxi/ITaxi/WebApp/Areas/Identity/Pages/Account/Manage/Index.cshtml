@@ -81,11 +81,11 @@
                 </div>
                 
                 <div class="form-group">
-                    <label asp-for="Input.DriverLicenseCategories"></label>
-                    <select multiple="multiple" asp-for="Input.DriverLicenseCategories" class="form-control"
-                            asp-items="Model.DriverLicenseCategories">
+                    <label asp-for="Input.SelectedDriverLicenseCategories"></label>
+                    <select multiple="multiple" asp-for="Input.SelectedDriverLicenseCategories" class="form-control"
+                            asp-items="Model.SelectedDriverLicenseCategories">
                     </select>
-                    <span asp-validation-for="Input.DriverLicenseCategories" class="text-danger"></span>
+                    <span asp-validation-for="Input.SelectedDriverLicenseCategories" class="text-danger"></span>
                 </div>
                 <a id="addingDriverLicenseCategories" style="color: #0dcaf0; " onclick="ShowingTextBox()">Add more</a> 
             }
