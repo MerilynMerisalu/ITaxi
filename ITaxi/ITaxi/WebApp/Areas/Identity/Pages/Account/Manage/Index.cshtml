@@ -100,7 +100,7 @@
                 <span asp-validation-for="Input.DriverLicenseCategories" class="text-danger"></span>
                 
             </div>
-            
+            <a id="hideLink" style="color: #0dcaf0; " onclick="" hidden="hidden">Hide</a> 
             
             @if (User.IsInRole(nameof(Customer)))
             {
@@ -131,8 +131,11 @@
       let linklabel = document.getElementById("licenseCategoriesLabel")
      let addingTextBox = document.getElementById("licenseCategories")
      let linkHref = document.getElementById("addingDriverLicenseCategories");
+     let hideLink = document.getElementById("hideLink");
+      
      linklabel.hidden = false;
      addingTextBox.hidden = false;
+     hideLink.hidden = false;
      linkHref.hidden = true;
      
     }
