@@ -294,9 +294,7 @@ public class IndexModel : PageModel
 
                 await _context.SaveChangesAsync();
             }
-
             
-
             driver.UpdatedBy = User.Identity!.Name;
             driver.UpdatedAt = DateTime.Now.ToUniversalTime();
 
