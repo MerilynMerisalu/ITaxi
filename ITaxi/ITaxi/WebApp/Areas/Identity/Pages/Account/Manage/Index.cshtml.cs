@@ -276,6 +276,8 @@ public class IndexModel : PageModel
             {
                 driver.DriverLicenseExpiryDate = Input.DriverLicenseExpiryDate;
             }
+            
+            
 
             if (Input.ChangedDriverLicenseCategoriesList != null)
             {
