@@ -568,7 +568,7 @@ public static class DataHelper
                     FirstName = "Kristjan",
                     LastName = "Suursalu",
                     DateOfBirth = DateTime.Parse("2000-04-14"),
-                    Gender = Gender.Female,
+                    Gender = Gender.Male,
                     Email = "kristjan.suursalu@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "88452236"

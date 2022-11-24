@@ -85,23 +85,7 @@ public class IndexModel : PageModel
             .Select(c => new {c.Id, c.CityName})
             .ToListAsync(), nameof(City.Id), 
             nameof(City.CityName));
-        #warning add the ability to change the list of driver license categories with js
-        SelectedDriverLicenseCategories = new SelectList(await
-                _context.DriverAndDriverLicenseCategories
-                    .Include(d => d.Driver)
-                    .Include(dlc => dlc.DriverLicenseCategory)
-                    
-                    .Where(dlc => dlc.DriverId.Equals(driver!.Id))
-                    .Select(dlc => new DriverLicenseCategory
-                    {
-                        Id = dlc.DriverLicenseCategoryId,
-                        DriverLicenseCategoryName = dlc.DriverLicenseCategory!.DriverLicenseCategoryName
-                    }).ToListAsync(), nameof(DriverLicenseCategory.Id), 
-                nameof(DriverLicenseCategory.DriverLicenseCategoryName));
-        DriverLicenseCategories = new SelectList(await _context.DriverLicenseCategories
-                .OrderBy(dlc => dlc.DriverLicenseCategoryName).ToListAsync(),
-            nameof(DriverLicenseCategory.Id),
-            nameof(DriverLicenseCategory.DriverLicenseCategoryName));
+        
 
             DisabilityTypes = new SelectList(await _context.DisabilityTypes
                 .Include(t => t.DisabilityTypeName)
@@ -132,6 +116,23 @@ public class IndexModel : PageModel
             #warning Ask if there is a better way to implement it
             else if (driver != null)
             {
+#warning add the ability to change the list of driver license categories with js
+                SelectedDriverLicenseCategories = new SelectList(await
+                        _context.DriverAndDriverLicenseCategories
+                            .Include(d => d.Driver)
+                            .Include(dlc => dlc.DriverLicenseCategory)
+                            .OrderBy(dlc => dlc.DriverLicenseCategory!.DriverLicenseCategoryName)
+                            .Where(dlc => dlc.DriverId.Equals(driver!.Id))
+                            .Select(dlc => new DriverLicenseCategory
+                            {
+                                Id = dlc.DriverLicenseCategoryId,
+                                DriverLicenseCategoryName = dlc.DriverLicenseCategory!.DriverLicenseCategoryName
+                            }).ToListAsync(), nameof(DriverLicenseCategory.Id), 
+                    nameof(DriverLicenseCategory.DriverLicenseCategoryName));
+                DriverLicenseCategories = new SelectList(await _context.DriverLicenseCategories
+                        .OrderBy(dlc => dlc.DriverLicenseCategoryName).ToListAsync(),
+                    nameof(DriverLicenseCategory.Id),
+                    nameof(DriverLicenseCategory.DriverLicenseCategoryName));
                 Input = new InputModel
                 {
                     PhoneNumber = phoneNumber!,
