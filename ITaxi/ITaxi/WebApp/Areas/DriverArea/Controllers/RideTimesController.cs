@@ -55,6 +55,7 @@ public class RideTimesController : Controller
 
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
 #warning Should it be a repository method
+        #warning Ridetime needs fixing
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
         vm.IsTaken = rideTime.IsTaken;
 
@@ -157,7 +158,8 @@ public class RideTimesController : Controller
         var rideTimes = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime(schedules));
 #warning Ask if there is a better way to implement this
         var rideTimeList = new List<string>();
-        foreach (var rideTimeLocal in rideTimes) rideTimeList.Add(DateTime.Parse(rideTimeLocal).ToShortTimeString());
+        foreach (var rideTimeLocal in rideTimes) 
+            rideTimeList.Add(DateTime.Parse(rideTimeLocal).ToString("t"));
 
         vm.RideTimes = new SelectList(rideTimeList);
         vm.ScheduleId = rideTime.ScheduleId;
@@ -185,7 +187,7 @@ public class RideTimesController : Controller
             {
                 rideTime.Id = id;
                 rideTime.ScheduleId = vm.ScheduleId;
-                rideTime.RideDateTime = DateTime.Parse(vm.RideTime).ToUniversalTime();
+                if (vm.RideTime != null) rideTime.RideDateTime = DateTime.Parse(vm.RideTime).ToUniversalTime();
                 rideTime.IsTaken = vm.IsTaken;
                 rideTime.UpdatedBy = User.Identity!.Name;
                 rideTime.UpdatedAt = DateTime.Now.ToUniversalTime();

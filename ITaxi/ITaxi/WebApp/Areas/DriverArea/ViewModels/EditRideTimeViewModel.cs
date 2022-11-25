@@ -16,8 +16,9 @@ public class EditRideTimeViewModel
 
 
     [Display(ResourceType = typeof(RideTime), Name = "RideDateAndTime")]
-
-    public string RideTime { get; set; } = default!;
+    [DataType(DataType.DateTime)]
+    [DisplayFormat(DataFormatString = "{0:t}")]
+    public string RideTime { get; set; } = default!; 
 
     [Display(ResourceType = typeof(RideTime), Name = "RideTimeSelectListName")]
     public SelectList? RideTimes { get; set; }
