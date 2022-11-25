@@ -23,11 +23,14 @@ public class VehicleTypesController : Controller
     public async Task<IActionResult> Index()
     {
         var res = await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync();
+        
 #warning Should this be a repo method
         foreach (var vehicleType in res)
         {
             vehicleType.CreatedAt = vehicleType.CreatedAt.ToLocalTime();
             vehicleType.UpdatedAt = vehicleType.UpdatedAt.ToLocalTime();
+            vehicleType.CreatedBy = vehicleType.CreatedBy;
+            vehicleType.UpdatedBy = vehicleType.UpdatedBy;
         }
 
         return View(res);
@@ -70,6 +73,8 @@ public class VehicleTypesController : Controller
             var vehicleType = new VehicleType();
             vehicleType.Id = Guid.NewGuid();
             vehicleType.VehicleTypeName = vm.VehicleTypeName;
+            vehicleType.CreatedBy = User.Identity!.Name;
+            vehicleType.CreatedAt = DateTime.Now.ToUniversalTime();
             _uow.VehicleTypes.Add(vehicleType);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -116,6 +121,8 @@ public class VehicleTypesController : Controller
                     vehicleType.VehicleTypeName.SetTranslation(vm.VehicleTypeName);
 #warning Need to fix the implicit conversion operator to use the existing translation, if there is one
                     //vehicleType.VehicleTypeName = vm.VehicleTypeName;
+                    vehicleType.UpdatedBy = User.Identity!.Name;
+                    vehicleType.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _uow.VehicleTypes.Update(vehicleType);
                     await _uow.SaveChangesAsync();
                 }
