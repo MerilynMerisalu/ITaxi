@@ -130,6 +130,8 @@ public class IndexModel : PageModel
                             }).ToListAsync(), nameof(DriverLicenseCategory.Id), 
                     nameof(DriverLicenseCategory.DriverLicenseCategoryName));
                 DriverLicenseCategories = new SelectList(await _context.DriverLicenseCategories
+                        .Include(d => d.Drivers)
+                        .Where(dlc => !dlc.Drivers!.Any(d => d.DriverId.Equals(driver.Id)))
                         .OrderBy(dlc => dlc.DriverLicenseCategoryName).ToListAsync(),
                     nameof(DriverLicenseCategory.Id),
                     nameof(DriverLicenseCategory.DriverLicenseCategoryName));
