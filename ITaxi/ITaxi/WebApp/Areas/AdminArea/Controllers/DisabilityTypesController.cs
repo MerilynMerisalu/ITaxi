@@ -66,6 +66,8 @@ public class DisabilityTypesController : Controller
         {
             disabilityType.Id = Guid.NewGuid();
             disabilityType.DisabilityTypeName = vm.DisabilityTypeName;
+            disabilityType.CreatedBy = User.Identity!.Name;
+            disabilityType.CreatedAt = DateTime.Now.ToUniversalTime();
             _uow.DisabilityTypes.Add(disabilityType);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -104,12 +106,14 @@ public class DisabilityTypesController : Controller
                 if (disabilityType != null)
                 {
                     disabilityType.Id = id;
-                    //disabilityType.DisabilityTypeName = vm.DisabilityTypeName;
                     disabilityType.DisabilityTypeName.SetTranslation(vm.DisabilityTypeName);
+                    disabilityType.UpdatedBy = User.Identity!.Name;
+                    disabilityType.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _uow.DisabilityTypes.Update(disabilityType);
+                    await _uow.SaveChangesAsync();
                 }
 
-                await _uow.SaveChangesAsync();
+                
             }
             catch (DbUpdateConcurrencyException)
             {

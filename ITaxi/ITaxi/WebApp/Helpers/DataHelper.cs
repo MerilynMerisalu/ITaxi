@@ -104,6 +104,7 @@ public static class DataHelper
                 {
                     Id = Guid.NewGuid(),
                     VehicleTypeName = App.Resources.Areas.App.Domain.AdminArea.VehicleType.Regular,
+                    CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
                 regularVehicleType.VehicleTypeName.SetTranslation("Tava", "et-EE");
@@ -112,6 +113,7 @@ public static class DataHelper
                 {
                     Id = Guid.NewGuid(),
                     VehicleTypeName = App.Resources.Areas.App.Domain.AdminArea.VehicleType.Wheelchair,
+                    CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
                 wheelChairVehicleType.VehicleTypeName.SetTranslation("Inva", "et-EE");
@@ -125,7 +127,8 @@ public static class DataHelper
                 {
                     Id = Guid.NewGuid(),
                     DisabilityTypeName = "None",
-                    CreatedAt = DateTime.Now.ToUniversalTime()
+                    CreatedAt = DateTime.Now.ToUniversalTime(),
+                    CreatedBy = "System",
                 };
                 disabilityType.DisabilityTypeName.SetTranslation("Puudub", "et-EE");
                 await context.DisabilityTypes.AddAsync(disabilityType);
