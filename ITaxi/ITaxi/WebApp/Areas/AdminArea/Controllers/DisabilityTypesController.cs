@@ -43,6 +43,10 @@ public class DisabilityTypesController : Controller
 
         vm.Id = disabilityType.Id;
         vm.DisabilityType = disabilityType.DisabilityTypeName;
+        vm.CreatedBy = disabilityType.CreatedBy!;
+        vm.CreatedAt = disabilityType.CreatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedBy = disabilityType.UpdatedBy!;
+        vm.UpdatedAt = disabilityType.UpdatedAt.ToLocalTime().ToString("G");
 
         return View(vm);
     }
@@ -84,7 +88,7 @@ public class DisabilityTypesController : Controller
 
         var disabilityType = await _uow.DisabilityTypes.FirstOrDefaultAsync(id.Value);
         if (disabilityType == null) return NotFound();
-
+        
         vm.DisabilityTypeName = disabilityType.DisabilityTypeName;
         return View(vm);
     }
@@ -139,6 +143,11 @@ public class DisabilityTypesController : Controller
         if (disabilityType == null) return NotFound();
 
         vm.DisabilityType = disabilityType.DisabilityTypeName;
+        vm.CreatedBy = disabilityType.CreatedBy!;
+        vm.CreatedAt = disabilityType.CreatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedBy = disabilityType.UpdatedBy!;
+        vm.UpdatedAt = disabilityType.UpdatedAt.ToLocalTime().ToString("G");
+
 
         return View(vm);
     }

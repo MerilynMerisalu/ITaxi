@@ -162,7 +162,7 @@ public class VehicleTypesController : Controller
 
     // POST: AdminArea/VehicleTypes/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
