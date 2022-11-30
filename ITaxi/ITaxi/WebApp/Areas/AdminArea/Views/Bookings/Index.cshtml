@@ -19,18 +19,18 @@
 <table class="table">
     <thead>
     <tr>
-
         <th>
-            @Html.DisplayNameFor(model => model.Driver)
+            @Html.DisplayNameFor(model => model.Customer)
         </th>
 
         <th>
             @Html.DisplayNameFor(model => model.Schedule)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Customer)
-        </th>
         
+        <th>
+            @Html.DisplayNameFor(model => model.Driver)
+        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.VehicleType)
         </th>
@@ -85,16 +85,16 @@
     @foreach (var item in Model)
     {
         <tr>
+            
             <td>
-                @Html.DisplayFor(modelItem => item.Driver!.AppUser!.LastAndFirstName)
+                @Html.DisplayFor(modelItem => item.Customer!.AppUser!.LastAndFirstName)
             </td>
             <td>
                 @Html.DisplayTextFor(modelItem => item.Schedule!.ShiftDurationTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Customer!.AppUser!.LastAndFirstName)
+                @Html.DisplayFor(modelItem => item.Driver!.AppUser!.LastAndFirstName)
             </td>
-            
             <td>
                 @Html.DisplayTextFor(modelItem => item.VehicleType!.VehicleTypeName)
             </td>
@@ -142,7 +142,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.DeclineDateAndTime)
                 </td>
-                
+
             }
             <td>
 
@@ -155,9 +155,9 @@
                 else
                 {
                     <p style="display:inline"><a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |</p>
-                    #warning Needs css solution
+#warning Needs css solution
                 }
-                 
+
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>

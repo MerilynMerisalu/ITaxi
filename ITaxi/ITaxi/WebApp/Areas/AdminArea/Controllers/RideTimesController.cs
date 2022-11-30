@@ -94,16 +94,18 @@ public class RideTimesController : Controller
     {
         if (ModelState.IsValid)
         {
+            var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(vm.ScheduleId);
             if (vm.SelectedRideTimes != null && vm.SelectedRideTimes.Any())
             {
                 foreach (var selectedRideTime in vm.SelectedRideTimes)
                 {
+                    var rideDateAndTime = schedule.StartDateAndTime.Date.Add(selectedRideTime.TimeOfDay);
                     var rideTime = new RideTime
                     {
                         Id = new Guid(),
                         DriverId = vm.DriverId,
                         ScheduleId = vm.ScheduleId,
-                        RideDateTime = selectedRideTime.ToUniversalTime(),
+                        RideDateTime = rideDateAndTime.ToUniversalTime(),
                         IsTaken = vm.IsTaken,
                         CreatedBy = User.Identity!.Name,
                         CreatedAt = DateTime.Now.ToUniversalTime()

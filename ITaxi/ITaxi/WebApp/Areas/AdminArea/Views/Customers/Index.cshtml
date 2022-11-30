@@ -17,10 +17,10 @@
             @Html.DisplayNameFor(model => model.AppUser!.LastAndFirstName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AppUser!.FirstName)
+            @Html.DisplayNameFor(model => model.AppUser!.LastName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AppUser!.LastName)
+            @Html.DisplayNameFor(model => model.AppUser!.FirstName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DisabilityType)
@@ -65,16 +65,14 @@
                 @Html.DisplayFor(modelItem => item.AppUser!.LastAndFirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AppUser!.FirstName)
+                @Html.DisplayFor(modelItem => item.AppUser!.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AppUser!.LastName)
+                @Html.DisplayFor(modelItem => item.AppUser!.FirstName)
             </td>
             <td>
                 @Html.DisplayTextFor(modelItem => item.DisabilityType!.DisabilityTypeName)
             </td>
-
-
             <td>
                 @Html.DisplayFor(modelItem => item.AppUser!.DateOfBirth)
             </td>
