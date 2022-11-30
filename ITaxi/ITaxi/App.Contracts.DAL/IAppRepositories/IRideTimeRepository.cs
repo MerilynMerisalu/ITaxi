@@ -30,8 +30,10 @@ public interface IRideTimeRepository : IEntityRepository<RideTime>
 
     List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime);
     //string DriveTimeFormatting(RideTime rideTime);
-    Task<RideTime?> GettingBestAvailableRideTimeAsync(DateTime pickUpDateAndTime, Guid cityId,
+    Task<IList<RideTime>> GettingBestAvailableRideTimeAsync(DateTime pickUpDateAndTime, Guid cityId,
         int numberOfPassengers,
+        Guid vehicleType,
+        bool defaultToNextAvailable,
         Guid? userId = null, string? roleName = null,
         bool noTracking = true );
     RideTime? GettingBestAvailableRideTime(DateTime pickUpDateAndTime, Guid cityId,

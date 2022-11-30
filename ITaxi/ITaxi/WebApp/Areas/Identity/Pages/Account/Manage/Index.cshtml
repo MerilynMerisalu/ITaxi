@@ -88,7 +88,7 @@
                     </select>
                     <span asp-validation-for="Input.SelectedDriverLicenseCategories" class="text-danger"></span>
                 </div>
-                <a id="addingDriverLicenseCategories" style="color: #0dcaf0; " onclick="ShowingTextBox()">@Index.AddNew</a> 
+                <a id="addingDriverLicenseCategories" style="color: #0dcaf0; " onclick="ToggleTextBoxVisibility(true)">@Index.AddNew</a> 
             }
             
             <div class="form-group">
@@ -101,7 +101,7 @@
                 <span asp-validation-for="Input.DriverLicenseCategories" class="text-danger"></span>
                 
             </div>
-            <a id="hideLink" style="color: #0dcaf0; " onclick="HidingTextBox()" hidden="hidden">@Index.Hide</a> 
+            <a id="hideLink" style="color: #0dcaf0; " onclick="ToggleTextBoxVisibility(false)" hidden="hidden">@Index.Hide</a> 
             
             @if (User.IsInRole(nameof(Customer)))
             {
@@ -127,7 +127,23 @@
 </div>
 
 @section Scripts {
-    <script type="text/javascript">
+    <script>
+    
+    /** 
+    * Show or Hide the Text Box
+    * param visible {boolean} flag that sets the visibility
+    */
+    function ToggleTextBoxVisibility(visible) {
+          let linklabel = document.getElementById("licenseCategoriesLabel")
+         let addingTextBox = document.getElementById("licenseCategories")
+         let linkHref = document.getElementById("addingDriverLicenseCategories");
+         let hideLink = document.getElementById("hideLink");
+          
+         linklabel.hidden = !visible;
+         addingTextBox.hidden = !visible;
+         hideLink.hidden = !visible;
+         linkHref.hidden = visible;
+    }
     function ShowingTextBox() {
       let linklabel = document.getElementById("licenseCategoriesLabel")
      let addingTextBox = document.getElementById("licenseCategories")

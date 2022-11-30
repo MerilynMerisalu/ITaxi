@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
+using System.Runtime.Serialization;
 using App.Contracts.DAL;
 using App.Domain;
 using App.Domain.Enum;
@@ -114,29 +115,70 @@ public class BookingsController : Controller
         if (parameters.ListType == nameof(Booking.PickUpDateAndTime))
         {
             // Value in this case IS the pickupDateAndTime
-            parameters.PickupDateAndTime = DateTime.Parse(parameters.Value).ToUniversalTime();
-            
-            // We want to find the nearest available ride date and time
-            // First we get a list of the available ride times
-            var bestTime = await _uow.RideTimes.GettingBestAvailableRideTimeAsync(parameters.PickupDateAndTime,
-                parameters.CityId, 0);//parameters.NumberOfPassengers);
-            if (bestTime != null)
+            parameters.PickupDateAndTime = DateTime.Parse(parameters.Value);
+            if (parameters.PickupDateAndTime == DateTime.MinValue)
             {
-                vm.Schedules = new SelectList(new[] {bestTime.Schedule}, nameof(Schedule.Id),
-                    nameof(Schedule.ShiftDurationTime));
-                vm.ScheduleId = bestTime.ScheduleId;
-                vm.Drivers = new SelectList(new[] {bestTime.Driver}, nameof(Driver.Id),
-                    "AppUser.LastAndFirstName");
-                vm.DriverId = bestTime.DriverId;
-                vm.Vehicles = new SelectList(new[] {bestTime.Schedule!.Vehicle }, nameof(Vehicle.Id),
-                    nameof(Vehicle.VehicleIdentifier));
-                vm.VehicleId = bestTime.Schedule!.VehicleId;
+                // Do nothing, this will show the message to re-select the time entry
+            }
+            else
+            {
+                parameters.PickupDateAndTime = parameters.PickupDateAndTime.ToUniversalTime();
+
+                // We want to find the nearest available ride date and time
+                // First we get a list of the available ride times
+                var bestTimes = await _uow.RideTimes.GettingBestAvailableRideTimeAsync(parameters.PickupDateAndTime,
+                    parameters.CityId, parameters.NumberOfPassengers, parameters.VehicleTypeId, true);
+                if (bestTimes.Any())
+                {
+                    if (bestTimes.Count == 1)
+                    {
+                        var bestTime = bestTimes.First();
+
+                        vm.Schedules = new SelectList(new[] {bestTime.Schedule}, nameof(Schedule.Id),
+                            nameof(Schedule.ShiftDurationTime));
+                        vm.ScheduleId = bestTime.ScheduleId;
+                        vm.Drivers = new SelectList(new[] {bestTime.Driver}, nameof(Driver.Id),
+                            "AppUser.LastAndFirstName");
+                        vm.DriverId = bestTime.DriverId;
+                        vm.Vehicles = new SelectList(new[] {bestTime.Schedule!.Vehicle}, nameof(Vehicle.Id),
+                            nameof(Vehicle.VehicleIdentifier));
+                        vm.VehicleId = bestTime.Schedule!.VehicleId;
+                    }
+                    else
+                    {
+                        var min = DateTime.UtcNow.AddHours(-24);
+                        var max = parameters.PickupDateAndTime.AddHours(24);
+                        var timesForDisplay = bestTimes
+                            .Where(x => x.RideDateTime > min && x.RideDateTime < max)
+                            .Select(x => new
+                            {
+                                Value = x.RideDateTime.ToLocalTime().ToString("yyyy-MM-ddThh:mm"),
+                                Text = x.RideDateTime.ToLocalTime().ToString("g")
+                            })
+                            .ToList();
+                        if (timesForDisplay.Any())
+                            vm.RideTimes = new SelectList(timesForDisplay, "Value", "Text");
+                    }
+                }
             }
         }
 
-
-
-
+        if (parameters.ListType == "RideTimeId")
+        {
+            var rideTimeId = Guid.Parse(parameters.Value);
+            var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(rideTimeId);
+            
+            vm.RideTimeId = rideTimeId;
+            vm.Schedules = new SelectList(new[] {rideTime.Schedule}, nameof(Schedule.Id),
+                nameof(Schedule.ShiftDurationTime));
+            vm.ScheduleId = rideTime.ScheduleId;
+            vm.Drivers = new SelectList(new[] {rideTime.Driver}, nameof(Driver.Id),
+                "AppUser.LastAndFirstName");
+            vm.DriverId = rideTime.DriverId;
+            vm.Vehicles = new SelectList(new[] {rideTime.Schedule!.Vehicle }, nameof(Vehicle.Id),
+                nameof(Vehicle.VehicleIdentifier));
+            vm.VehicleId = rideTime.Schedule!.VehicleId;
+        }
         
         return Ok(vm);
     }

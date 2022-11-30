@@ -27,6 +27,12 @@
 
 @section Scripts {
     <script>
+    
+        function setPickupTime (value) {
+            document.getElementById('PickUpDateAndTime').value = value;
+            pickupDateAndTimeChanged(value);
+        }
+        
         function pickupDateAndTimeChanged (value) {
     
             let content = { 
@@ -71,17 +77,36 @@
                             PopulateDropDownList("DriverId", data.drivers, false, data.driverId);
                             PopulateDropDownList("VehicleId", data.vehicles, false, data.vehicleId);
                         }
+                        else if (data.rideTimes) {
+                            console.log('Multiple RideTimes were found, user to select');
+                            var message = 'We are unable to match you to your preferred pickup time, please choose another pickup time, ';
+                            if (data.rideTimes.length > 1)
+                                message += 'the closest times available are: ';
+                            else
+                                message += 'the closes time available is: ';
+                            message += ` <a onclick='setPickupTime("${data.rideTimes[0].value}")'>${data.rideTimes[0].text}</span>`;
+                            if (data.rideTimes.length > 1)
+                                message += ` and <a onclick='setPickupTime("${data.rideTimes[1].value}")'>${data.rideTimes[1].text}</span>`;
+                            showClientErrorMessage(message, 'PickupValidationSpan', true);
+                            
+                            // clear the previous selections (if any)
+                            PopulateDropDownList("ScheduleId", [], false, undefined);
+                            PopulateDropDownList("DriverId", [], false, undefined);
+                            PopulateDropDownList("VehicleId", [], false, undefined);
+                        }
                         else {
                             console.log('No drivers are available at this time, please select another time.');
                             showClientErrorMessage('No drivers are available at this time, please select another time.', 'PickupValidationSpan');
+                            // clear the previous selections (if any)
+                            PopulateDropDownList("ScheduleId", [], false, undefined);
+                            PopulateDropDownList("DriverId", [], false, undefined);
+                            PopulateDropDownList("VehicleId", [], false, undefined);
                         }
                     });
                 });
             }
         }
         
-
-    
     </script>
 
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }

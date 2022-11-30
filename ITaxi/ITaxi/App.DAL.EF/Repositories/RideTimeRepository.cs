@@ -149,24 +149,62 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
         return times;
     }
 
-    public async Task<RideTime?> GettingBestAvailableRideTimeAsync(DateTime pickUpDateAndTime,
+    /// <summary>
+    /// Return the nearest available ride time that matches the <paramref name="cityId"/> and <paramref name="vehicleType"/>
+    /// and has the required number of seats available, from all ride times
+    /// if there is no match within 1 hour (either side) of the requested ride time, then return the previous and the next ride time in the future. 
+    /// </summary>
+    /// <param name="pickUpDateAndTime">Expected Pickup Time</param>
+    /// <param name="cityId">City to filter the ride times by</param>
+    /// <param name="numberOfPassengers">number of passengers that are travelling, vehicle needs this many available seats (+ the dirver)</param>
+    /// <param name="vehicleType">Type of vehicle to filter the results by</param>
+    /// <param name="defaultToNextAvailable">Flag to indicate if the "next" available ride time should be returned if there is no match within 1 hour of the request.</param>
+    /// <param name="userId">Id of the caller, or NULL if this is an Admin request</param>
+    /// <param name="roleName">Security Role of the caller, or NULL if this is an Admin request</param>
+    /// <param name="noTracking">Flag to indicate if the DbContext should track this data for changes</param>
+    /// <returns>Nearest time if one is available, or if <paramref name="defaultToNextAvailable"/> is true, then return 2, one before and one after</returns>
+    public async Task<IList<RideTime>> GettingBestAvailableRideTimeAsync(DateTime pickUpDateAndTime,
         Guid cityId,
         int numberOfPassengers,
+        Guid vehicleType,
+        bool defaultToNextAvailable,
         Guid? userId = null, string? roleName = null,
         bool noTracking = true  )
     {
         var minTime = pickUpDateAndTime.AddMinutes(-60);
         var maxTime = pickUpDateAndTime.AddMinutes(60);
-        var rideTimes = await CreateQuery(userId, roleName)
+        var rideTimesQuery = CreateQuery(userId, roleName)
             .Where(rt => rt.IsTaken == false)
             .Where(rt => rt.Driver!.CityId.Equals(cityId))
-            .Where(rt => rt.Schedule!.Vehicle!.NumberOfSeats > numberOfPassengers)
+            .Where(rt => rt.Schedule!.Vehicle!.VehicleTypeId.Equals(vehicleType))
+            .Where(rt => rt.Schedule!.Vehicle!.NumberOfSeats > numberOfPassengers);
+        
+        var closestRideTimes = await rideTimesQuery
             .Where(rt => rt.RideDateTime >= minTime && rt.RideDateTime <= maxTime)
             .ToListAsync();
-        var closestRideTime = rideTimes.OrderBy(x => Math.Abs(pickUpDateAndTime.Subtract(x.RideDateTime.Date).TotalMinutes))
-            .FirstOrDefault();
+        closestRideTimes = closestRideTimes   
+            .OrderBy(x => Math.Abs(pickUpDateAndTime.Subtract(x.RideDateTime.Date).TotalMinutes))
+            .Take(1)
+            .ToList();
+
+        if (!closestRideTimes.Any() && defaultToNextAvailable)
+        {
+            var previous = await rideTimesQuery
+                .Where(rt => rt.RideDateTime <= minTime)
+                .OrderByDescending(x => x.RideDateTime)
+                .FirstOrDefaultAsync();
             
-        return closestRideTime;
+            var next = await rideTimesQuery
+                .Where(rt => rt.RideDateTime > maxTime)
+                .OrderBy(x => x.RideDateTime)
+                .FirstOrDefaultAsync();
+
+            closestRideTimes = new List<RideTime>();
+            closestRideTimes.Add(previous ?? new RideTime { RideDateTime = DateTime.MinValue });
+            closestRideTimes.Add(next ?? new RideTime { RideDateTime = DateTime.MaxValue });
+        }
+        
+        return closestRideTimes;
     }
 
     public RideTime? GettingBestAvailableRideTime(DateTime pickUpDateAndTime,

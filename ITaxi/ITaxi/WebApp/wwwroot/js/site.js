@@ -42,14 +42,18 @@ function PopulateDropDownList(dropdownId, dataList, clearAllItems, selectedValue
  * in the provided element container
  * @param message {string} Message to display to the user
  * @param validationElementId {string} Id of the HTML Element (container) 
+ * @param isHtml {boolean} Flag to indicate that the message is raw HTML that needs to be injected
  * that you want to display the message within 
  */
-function showClientErrorMessage(message, validationElementId) {
+function showClientErrorMessage(message, validationElementId, isHtml) {
     let validationElement = document.getElementById(validationElementId);
     validationElement.className = "";
     if (message && message.length > 0){
         validationElement.className = 'text-danger field-validation-valid';
-        validationElement.textContent = message;
+        if(isHtml)
+            validationElement.innerHTML = message;
+        else
+            validationElement.textContent = message;
     }
     else
         validationElement.textContent = '';

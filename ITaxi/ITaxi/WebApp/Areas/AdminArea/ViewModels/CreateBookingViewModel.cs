@@ -2,6 +2,7 @@
 using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Resources;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RideTime = App.Domain.RideTime;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
@@ -65,4 +66,13 @@ public class CreateBookingViewModel
 
     public SelectList? Customers { get; set; }
     public SelectList? Vehicles { get; set; }
+    /// <summary>
+    /// List of available RideTimes for the user to select from
+    /// </summary>
+    public SelectList? RideTimes { get; set; }
+    
+    /// <summary>
+    /// Selected Ride Time
+    /// </summary>
+    public Guid RideTimeId { get; set; }
 }
