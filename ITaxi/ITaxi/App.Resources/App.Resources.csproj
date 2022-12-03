@@ -143,6 +143,10 @@
           <Generator>PublicResXFileCodeGenerator</Generator>
           <LastGenOutput>PDF.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\PDF.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>PDF.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -312,6 +316,11 @@
           <DependentUpon>Index.resx</DependentUpon>
         </Compile>
         <Compile Update="Areas\App.Domain\DriverArea\PDF.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>PDF.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\PDF.Designer.cs">
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
           <DependentUpon>PDF.resx</DependentUpon>
