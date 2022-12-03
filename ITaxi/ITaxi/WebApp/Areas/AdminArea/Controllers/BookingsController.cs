@@ -503,14 +503,9 @@ public class BookingsController : Controller
         var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName );
         if (booking == null) return NotFound();
         vm.Id = booking.Id;
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(id.Value, null, roleName);
-
-        if (schedule != null)
-        {
-            schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
-            schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
-        }
-        vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
+        booking.Schedule!.StartDateAndTime = booking.Schedule.StartDateAndTime.ToLocalTime();
+        booking.Schedule.EndDateAndTime = booking.Schedule.EndDateAndTime.ToLocalTime();
+        vm.ShiftDurationTime = booking.Schedule.ShiftDurationTime ;
         vm.City = booking.City!.CityName;
         vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
         vm.Customer = booking.Customer!.AppUser!.LastAndFirstName;
