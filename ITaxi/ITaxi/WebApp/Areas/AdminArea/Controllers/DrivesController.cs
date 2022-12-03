@@ -29,6 +29,10 @@ public class DrivesController : Controller
 #warning Should this be a repo method
         foreach (var drive in res)
         {
+            drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime();
+            drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
+            drive.Booking.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
+            
             if (drive.IsDriveAccepted || (drive.IsDriveAccepted && drive.IsDriveDeclined))
                 drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
 
@@ -60,6 +64,8 @@ public class DrivesController : Controller
 
         vm.DriverLastAndFirstName = drive.Driver!.AppUser!.LastAndFirstName;
         vm.City = drive.Booking!.City!.CityName;
+        drive.Booking.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime();
+        drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
         if (drive.Comment?.CommentText != null) vm.CommentText = drive.Comment.CommentText;
 
@@ -70,7 +76,8 @@ public class DrivesController : Controller
         vm.HasAnAssistant = drive.Booking.HasAnAssistant;
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
-        vm.PickupDateAndTime = _uow.Drives.PickUpDateAndTimeStr(drive);
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("G");
+        
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.IsDriveAccepted = drive.IsDriveAccepted;
@@ -231,6 +238,15 @@ public class DrivesController : Controller
         
         
             var drives = await _uow.Drives.PrintAsync( null, roleName );
+            foreach (var drive in drives)
+            {
+                if (drive != null)
+                {
+                    drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime();
+                    drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
+                    drive.Booking.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
+                }
+            }
 
             return new ViewAsPdf("PrintDrives", drives);
         
@@ -249,12 +265,15 @@ public class DrivesController : Controller
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
+        drive.Booking!.Schedule!.StartDateAndTime = drive.Booking!.Schedule!.StartDateAndTime.ToLocalTime();
+        drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
         vm.City = drive.Booking.City!.CityName;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
         vm.DriverLastAndFirstName = drive.Driver!.AppUser!.LastAndFirstName;
         vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
         vm.DestinationAddress = drive.Booking.DestinationAddress;
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("G");
         vm.PickupAddress = drive.Booking.PickupAddress;
         vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
         vm.HasAnAssistant = drive.Booking.HasAnAssistant;
@@ -350,7 +369,7 @@ public class DrivesController : Controller
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
-        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("G");
         vm.CreatedBy = drive.CreatedBy!;
         vm.CreatedAt = drive.CreatedAt.ToLocalTime().ToString("G");
         vm.UpdatedBy = drive.UpdatedBy!;
