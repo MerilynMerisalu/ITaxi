@@ -357,6 +357,8 @@ public class DrivesController : Controller
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
+        drive.Booking!.Schedule!.StartDateAndTime = drive.Booking!.Schedule!.StartDateAndTime.ToLocalTime();
+        drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
         vm.City = drive.Booking.City!.CityName;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
