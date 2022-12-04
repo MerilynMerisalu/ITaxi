@@ -133,7 +133,7 @@ public class BookingsController : Controller
     }
 
     // GET: AdminArea/Bookings/Edit/5
-    public async Task<IActionResult> Edit(Guid? id)
+    /*public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new EditBookingViewModel();
         if (id == null) return NotFound();
@@ -161,11 +161,13 @@ public class BookingsController : Controller
         vm.PickUpDateAndTime = booking.PickUpDateAndTime;
         return View(vm);
     }
+    */
 
     // POST: AdminArea/Bookings/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
+    
+    /*[HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditBookingViewModel vm)
     {
@@ -228,7 +230,7 @@ public class BookingsController : Controller
         }
 
         return View(vm);
-    }
+    }*/
 
     // GET: CustomerArea/Bookings/Decline/5
     public async Task<IActionResult> Decline(Guid? id)
