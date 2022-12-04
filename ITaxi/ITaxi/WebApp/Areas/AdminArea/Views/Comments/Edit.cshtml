@@ -1,6 +1,6 @@
 @using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
-@model WebApp.Areas.AdminArea.ViewModels.CreateEditCommentViewModel
+@model WebApp.Areas.AdminArea.ViewModels.EditCommentViewModel
 
 @{
     ViewData["Title"] = Common.Edit;
@@ -15,10 +15,9 @@
         <form asp-action="Edit">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="DriveId" class="control-label"></label>
-                <select asp-for="DriveId" class="form-control" asp-items="Model.Drives">
-                    <option>@Common.PleaseSelect</option>
-                </select>
+                <label asp-for="Drive" class="control-label"></label>
+                <input asp-for="DriveTimeAndDriver" class="form-control"
+                       disabled="disabled">
                 <span asp-validation-for="DriveId" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -56,6 +56,12 @@ public class Drive : DomainEntityMetaId
     
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.DriverArea.Drive), Name = "Finished")]
     public string DriveEndDateTimeDriverView => $"{DriveEndDateAndTime:g}";
-    public string DriveDescription => $"{Booking!.PickUpDateAndTime:g} " +
-                                              $"- {Driver!.AppUser!.LastAndFirstName}";
+    public string DriveDescription
+    {
+        get =>
+            $"{Booking!.PickUpDateAndTime:g} " +
+            $"- {Driver!.AppUser!.LastAndFirstName}";
+
+       
+    }
 }

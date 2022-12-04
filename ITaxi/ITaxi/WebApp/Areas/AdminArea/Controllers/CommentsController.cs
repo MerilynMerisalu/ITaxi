@@ -51,7 +51,7 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToLocalTime().ToString("G");
+        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToLocalTime().ToString("g");
         vm.CustomerName = comment.Drive!.Booking!.Customer!.AppUser!.LastAndFirstName;
         vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
@@ -67,11 +67,15 @@ public class CommentsController : Controller
     // GET: AdminArea/Comments/Create
     public async Task<IActionResult> Create()
     {
-        var vm = new CreateEditCommentViewModel();
+        var vm = new CreateCommentViewModel();
 
         var roleName = User.GettingUserRoleName();
-
-        vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(null, roleName),
+        var drives = await _uow.Drives.GettingDrivesWithoutCommentAsync(null, roleName);
+        foreach (var drive in drives)
+        {
+            if (drive != null) drive.Booking!.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
+        }
+        vm.Drives = new SelectList(drives,
             nameof(Drive.Id), nameof(Drive.DriveDescription));
 
         return View(vm);
@@ -82,7 +86,7 @@ public class CommentsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateEditCommentViewModel vm)
+    public async Task<IActionResult> Create(CreateCommentViewModel vm)
     {
         var roleName = User.GettingUserRoleName();
         var comment = new Comment();
@@ -111,20 +115,19 @@ public class CommentsController : Controller
     public async Task<IActionResult> Edit(Guid? id)
     {
         var roleName = User.GettingUserRoleName();
-        var vm = new CreateEditCommentViewModel();
+        var vm = new EditCommentViewModel();
         if (id == null) return NotFound();
 
         var comment = await _uow.Comments.GettingTheFirstCommentAsync(id.Value, null, roleName);
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-
-        vm.Drives = new SelectList(await _uow.Drives.GettingAllDrivesForCommentsAsync(null, roleName),
-            nameof(Drive.Id),
-            nameof(Drive.DriveDescription));
+        vm.Id = comment.Id;
+        comment.Drive!.Booking!.PickUpDateAndTime = comment.Drive.Booking.PickUpDateAndTime.ToLocalTime();
+        
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.DriveId = comment.Drive!.Id;
-
+        vm.DriveTimeAndDriver = comment.Drive.DriveDescription;
 
         return View(vm);
     }
@@ -134,7 +137,7 @@ public class CommentsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, CreateEditCommentViewModel vm)
+    public async Task<IActionResult> Edit(Guid id, EditCommentViewModel vm)
     {
         var roleName = User.GettingUserRoleName();
         var comment = await _uow.Comments.GettingTheFirstCommentAsync(id, null, roleName);
@@ -147,7 +150,6 @@ public class CommentsController : Controller
                 if (comment != null)
                 {
                     comment.Id = id;
-                    comment.DriveId = vm.DriveId;
                     comment.CommentText = vm.CommentText;
                     comment.UpdatedBy = User.Identity!.Name;
                     comment.UpdatedAt = DateTime.Now.ToUniversalTime();
@@ -182,7 +184,7 @@ public class CommentsController : Controller
         vm.Id = comment.Id;
 #warning Ask maybe can be done as a base method
 
-        vm.Drive = _uow.Comments.PickUpDateAndTimeStr(comment);
+        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToLocalTime().ToString("g");
         vm.CustomerName = comment.Drive!.Booking!.Customer!.AppUser!.LastAndFirstName;
         vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;

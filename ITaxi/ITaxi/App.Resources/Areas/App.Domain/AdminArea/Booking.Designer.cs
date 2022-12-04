@@ -123,6 +123,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accepted By.
+        /// </summary>
+        public static string ConfirmedBy {
+            get {
+                return ResourceManager.GetString("ConfirmedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customer.
         /// </summary>
         public static string Customer {
@@ -146,6 +155,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string Declined {
             get {
                 return ResourceManager.GetString("Declined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Declined By.
+        /// </summary>
+        public static string DeclinedBy {
+            get {
+                return ResourceManager.GetString("DeclinedBy", resourceCulture);
             }
         }
         

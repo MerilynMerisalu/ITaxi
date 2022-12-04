@@ -75,4 +75,10 @@
     <data name="BookingDeclineDateAndTime" xml:space="preserve">
         <value>Broneeningu tühistamiskuupäev ja -kellaaeg</value>
     </data>
+    <data name="ConfirmedBy" xml:space="preserve">
+        <value>Kinnitaja</value>
+    </data>
+    <data name="DeclinedBy" xml:space="preserve">
+        <value>Tühistaja</value>
+    </data>
 </root>

@@ -85,4 +85,10 @@
     <data name="BookingDeclineDateAndTime" xml:space="preserve">
         <value>Booking Decline Date and Time</value>
     </data>
+    <data name="ConfirmedBy" xml:space="preserve">
+        <value>Accepted By</value>
+    </data>
+    <data name="DeclinedBy" xml:space="preserve">
+        <value>Declined By</value>
+    </data>
 </root>
