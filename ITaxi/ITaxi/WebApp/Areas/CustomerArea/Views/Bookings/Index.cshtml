@@ -130,7 +130,7 @@
                 {
                     <p style="display: inline"><a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |</p>
                 }
-                <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
+                @*<a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |*@
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
             </td>

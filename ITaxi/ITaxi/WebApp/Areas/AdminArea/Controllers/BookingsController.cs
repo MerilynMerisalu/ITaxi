@@ -287,7 +287,7 @@ public class BookingsController : Controller
     }
 
     // GET: AdminArea/Bookings/Edit/5
-    public async Task<IActionResult> Edit(Guid? id)
+    /*public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new EditBookingViewModel();
         if (id == null) return NotFound();
@@ -332,6 +332,7 @@ public class BookingsController : Controller
         vm.PickUpDateAndTime = Convert.ToDateTime(booking.PickUpDateAndTime.ToLocalTime().ToString("g"));
         return View(vm);
     }
+    */
 
     // POST: AdminArea/Bookings/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
