@@ -397,6 +397,7 @@ public class DrivesController : Controller
         drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
         drive.StatusOfDrive = StatusOfDrive.Declined;
         drive.IsDriveDeclined = true;
+        drive.UpdatedBy = User.Identity!.Name;
         drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
         _uow.Drives.Update(drive);
