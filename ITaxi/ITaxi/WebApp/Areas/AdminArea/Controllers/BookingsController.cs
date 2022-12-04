@@ -446,8 +446,12 @@ public class BookingsController : Controller
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             booking.IsDeclined = true;
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
+            booking.UpdatedBy = User.Identity!.Name;
+            booking.UpdatedAt = DateTime.Now.ToUniversalTime();
             drive!.Booking = booking;
             _uow.Bookings.Update(booking);
+            drive.UpdatedBy = User.Identity!.Name;
+            drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 #warning refactor into a common service for bookings
 #warning Add an EmailAddress Field to Driver with the "~Real"~address
 #warning Add a language field to Driver
