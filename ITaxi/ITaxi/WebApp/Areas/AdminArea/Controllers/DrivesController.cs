@@ -338,6 +338,10 @@ public class DrivesController : Controller
         if (booking != null)
         {
             booking.StatusOfBooking = StatusOfBooking.Accepted;
+            var bestRideTime = await _uow.RideTimes.GettingBestAvailableRideTimeAsync(booking.PickUpDateAndTime, booking.CityId, booking.NumberOfPassengers, booking.VehicleTypeId, false, null, null, false);
+            //bestRideTime.Single().IsTaken = true;
+            
+                
             booking.UpdatedAt = DateTime.Now.ToUniversalTime();
             _uow.Bookings.Update(booking);
             await _uow.SaveChangesAsync();

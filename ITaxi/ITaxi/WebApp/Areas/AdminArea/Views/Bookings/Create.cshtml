@@ -84,9 +84,9 @@
                                 message += 'the closest times available are: ';
                             else
                                 message += 'the closes time available is: ';
-                            message += ` <a onclick='setPickupTime("${data.rideTimes[0].value}")'>${data.rideTimes[0].text}</span>`;
+                            message += ` <a onclick='setPickupTime("${data.rideTimes[0].value}")' style='text-decoration:underline;'>${data.rideTimes[0].text}</span>`;
                             if (data.rideTimes.length > 1)
-                                message += ` and <a onclick='setPickupTime("${data.rideTimes[1].value}")'>${data.rideTimes[1].text}</span>`;
+                                message += ` and <a style='text-decoration:underline;' onclick='setPickupTime("${data.rideTimes[1].value}")'>${data.rideTimes[1].text}</span>`;
                             showClientErrorMessage(message, 'PickupValidationSpan', true);
                             
                             // clear the previous selections (if any)

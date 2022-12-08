@@ -461,10 +461,10 @@ public class BookingsController : Controller
             // Prepare Email Notification
             var mailRequest = new MailRequest();
 #warning Add Language Support for email templates
-            mailRequest.Subject = $"Booking Declined: {booking.PickUpDateAndTime:g} {booking.PickupAddress}";
+            mailRequest.Subject = $"Booking Declined: {booking.PickUpDateAndTime.ToLocalTime():g} {booking.PickupAddress}";
             mailRequest.ToEmail = "programmeerija88@gmail.com";
 #warning Include a link to quick login to the portal to see this booking in the email content
-            mailRequest.Body = $"Booking Declined: {booking.PickUpDateAndTime:g} {booking.PickupAddress}";
+            mailRequest.Body = $"Booking Declined: {booking.PickUpDateAndTime.ToLocalTime():g} {booking.PickupAddress}";
 
             using (MailMessage mm = new MailMessage("testitaxi88@gmail.com", mailRequest.ToEmail))
             {
@@ -485,11 +485,6 @@ public class BookingsController : Controller
                 }
             }
             
-
-            // Send Email Notification
-            //_mailService.
-            var response = await _mailService.SendEmailAsync(mailRequest);
-            Trace.WriteLine(response);
 
             await _uow.SaveChangesAsync();
             _uow.Drives.Update(drive);
