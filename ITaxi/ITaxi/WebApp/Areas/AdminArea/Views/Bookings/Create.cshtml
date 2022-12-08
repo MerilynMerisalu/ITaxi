@@ -83,7 +83,7 @@
                             if (data.rideTimes.length > 1)
                                 message += 'the closest times available are: ';
                             else
-                                message += 'the closes time available is: ';
+                                message += 'the closest time available is: ';
                             message += ` <a onclick='setPickupTime("${data.rideTimes[0].value}")' style='text-decoration:underline;'>${data.rideTimes[0].text}</span>`;
                             if (data.rideTimes.length > 1)
                                 message += ` and <a style='text-decoration:underline;' onclick='setPickupTime("${data.rideTimes[1].value}")'>${data.rideTimes[1].text}</span>`;
