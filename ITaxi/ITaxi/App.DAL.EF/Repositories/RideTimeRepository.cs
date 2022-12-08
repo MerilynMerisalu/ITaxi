@@ -171,8 +171,10 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
         Guid? userId = null, string? roleName = null,
         bool noTracking = true  )
     {
-        var minTime = pickUpDateAndTime.AddMinutes(-60);
-        var maxTime = pickUpDateAndTime.AddMinutes(60);
+        var minTime = pickUpDateAndTime.AddMinutes(-5);
+        var maxTime = pickUpDateAndTime.AddMinutes(5);
+        var timeMinusOne = pickUpDateAndTime.AddMinutes(-1);
+        var timePlusOne = pickUpDateAndTime.AddMinutes(1);
         var rideTimesQuery = CreateQuery(userId, roleName)
             .Where(rt => rt.IsTaken == false)
             .Where(rt => rt.Driver!.CityId.Equals(cityId))
@@ -180,7 +182,10 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
             .Where(rt => rt.Schedule!.Vehicle!.NumberOfSeats > numberOfPassengers);
         
         var closestRideTimes = await rideTimesQuery
-            .Where(rt => rt.RideDateTime >= minTime && rt.RideDateTime <= maxTime)
+            .Where(rt => rt.Schedule!.StartDateAndTime <= timePlusOne 
+                             && rt.Schedule.EndDateAndTime >= timeMinusOne
+                             && rt.RideDateTime >= minTime 
+                             && rt.RideDateTime <= maxTime)
             .ToListAsync();
         closestRideTimes = closestRideTimes   
             .OrderBy(x => Math.Abs(pickUpDateAndTime.Subtract(x.RideDateTime.Date).TotalMinutes))

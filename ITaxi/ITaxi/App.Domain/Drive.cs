@@ -39,6 +39,8 @@ public class Drive : DomainEntityMetaId
 
     public bool IsDriveAccepted { get; set; }
 
+    public string? AcceptedBy { get; set; }
+
     public bool IsDriveDeclined { get; set; }
 
     public bool IsDriveStarted { get; set; }
@@ -64,4 +66,6 @@ public class Drive : DomainEntityMetaId
 
        
     }
+
+    public string? DriveAcceptInformation => $"{StatusOfDrive} {AcceptedBy} {DriveAcceptedDateAndTime}";
 }

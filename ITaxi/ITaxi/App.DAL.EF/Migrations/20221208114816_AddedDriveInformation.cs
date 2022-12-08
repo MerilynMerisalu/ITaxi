@@ -5,20 +5,14 @@
 namespace App.DAL.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedConfirmedByAndDeclinedByPropertiesToBooking : Migration
+    public partial class AddedDriveInformation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "ConfirmedBy",
-                table: "Bookings",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "DeclinedBy",
-                table: "Bookings",
+                name: "AcceptedBy",
+                table: "Drives",
                 type: "nvarchar(max)",
                 nullable: true);
         }
@@ -27,12 +21,8 @@ namespace App.DAL.EF.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ConfirmedBy",
-                table: "Bookings");
-
-            migrationBuilder.DropColumn(
-                name: "DeclinedBy",
-                table: "Bookings");
+                name: "AcceptedBy",
+                table: "Drives");
         }
     }
 }

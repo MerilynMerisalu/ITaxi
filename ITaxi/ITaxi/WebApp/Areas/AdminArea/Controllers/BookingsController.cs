@@ -133,6 +133,8 @@ public class BookingsController : Controller
                     if (bestTimes.Count == 1)
                     {
                         var bestTime = bestTimes.First();
+                        bestTime.Schedule!.StartDateAndTime = bestTime.Schedule.StartDateAndTime.ToLocalTime();
+                        bestTime.Schedule.EndDateAndTime = bestTime.Schedule.EndDateAndTime.ToLocalTime();
 
                         vm.Schedules = new SelectList(new[] {bestTime.Schedule}, nameof(Schedule.Id),
                             nameof(Schedule.ShiftDurationTime));
@@ -152,7 +154,7 @@ public class BookingsController : Controller
                             .Where(x => x.RideDateTime > min && x.RideDateTime < max)
                             .Select(x => new
                             {
-                                Value = x.RideDateTime.ToLocalTime().ToString("yyyy-MM-ddThh:mm"),
+                                Value = x.RideDateTime.ToLocalTime().ToString("yyyy-MM-ddTHH:mm"),
                                 Text = x.RideDateTime.ToLocalTime().ToString("g")
                             })
                             .ToList();

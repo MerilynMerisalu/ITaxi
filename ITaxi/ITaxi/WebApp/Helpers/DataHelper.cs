@@ -639,6 +639,7 @@ public static class DataHelper
                         .Id,
                     Booking = booking,
                     StatusOfDrive = StatusOfDrive.Awaiting,
+                    
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };

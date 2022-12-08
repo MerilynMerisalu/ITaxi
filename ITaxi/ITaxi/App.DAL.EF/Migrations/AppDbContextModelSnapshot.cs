@@ -77,9 +77,6 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("CityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ConfirmedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -91,9 +88,6 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<DateTime>("DeclineDateAndTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("DeclinedBy")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DestinationAddress")
                         .IsRequired()
@@ -323,6 +317,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AcceptedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");

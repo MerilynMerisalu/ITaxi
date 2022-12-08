@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221204195336_AddedConfirmedByAndDeclinedByPropertiesToBooking")]
-    partial class AddedConfirmedByAndDeclinedByPropertiesToBooking
+    [Migration("20221208114816_AddedDriveInformation")]
+    partial class AddedDriveInformation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,9 +80,6 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("CityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ConfirmedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -94,9 +91,6 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<DateTime>("DeclineDateAndTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("DeclinedBy")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DestinationAddress")
                         .IsRequired()
@@ -326,6 +320,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AcceptedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
