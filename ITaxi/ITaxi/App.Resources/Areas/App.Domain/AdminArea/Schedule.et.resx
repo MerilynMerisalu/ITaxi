@@ -33,4 +33,10 @@
     <data name="ScheduleName" xml:space="preserve">
         <value>Vahetus</value>
     </data>
+    <data name="NumberOfRideTimesPerSchedule" xml:space="preserve">
+        <value>Sõiduaegade arv graafiku kohta</value>
+    </data>
+    <data name="NumberOfTakenRideTimesPerSchedule" xml:space="preserve">
+        <value>Võetud sõiduaegade arv graafiku kohta</value>
+    </data>
 </root>

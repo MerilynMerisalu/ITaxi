@@ -184,9 +184,20 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
         return scheduleStartAndEndTime;
     }
 
-    
+    public async Task<int> NumberOfRideTimesAsync(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        var rideTimesPerSchedule = await CreateQuery(userId, roleName, noTracking)
+            .Select(d => d.RideTimes).ToListAsync();
+        return rideTimesPerSchedule.Count;
+    }
 
-    
+    public int NumberOfRideTimes(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        var rideTimesPerSchedule = CreateQuery(userId, roleName, noTracking)
+            .Select(d => d.RideTimes).ToList();
+        return rideTimesPerSchedule.Count;
+    }
+
 
     public async Task<Schedule?> FirstOrDefaultAsync(Guid id, Guid? userId = null,
         string? roleName = null, bool noTracking = true)

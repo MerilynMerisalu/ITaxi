@@ -39,4 +39,10 @@
     <data name="ScheduleName" xml:space="preserve">
         <value>Schedule</value>
     </data>
+    <data name="NumberOfRideTimesPerSchedule" xml:space="preserve">
+        <value>Number of Ride Times Per Schedule</value>
+    </data>
+    <data name="NumberOfTakenRideTimesPerSchedule" xml:space="preserve">
+        <value>Number of Taken Ride Times Per Schedule</value>
+    </data>
 </root>

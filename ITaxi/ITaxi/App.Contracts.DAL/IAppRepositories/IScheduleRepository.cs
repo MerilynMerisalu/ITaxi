@@ -34,4 +34,9 @@ public interface IScheduleRepository : IEntityRepository<Schedule>
         string? roleName = null, bool noTracking = true);
 
     DateTime[] GettingStartAndEndTime(IEnumerable<Schedule> schedules, Guid? userId = null, string? roleName = null);
+
+    Task<int> NumberOfRideTimesAsync(Guid driverId, Guid? userId = null,
+        string? roleName = null, bool noTracking = true);
+    int NumberOfRideTimes(Guid driverId, Guid? userId = null,
+        string? roleName = null, bool noTracking = true);
 }

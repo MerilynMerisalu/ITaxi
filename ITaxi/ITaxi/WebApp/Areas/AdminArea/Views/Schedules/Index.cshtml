@@ -12,70 +12,87 @@
 </p>
 <table class="table">
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.StartDateAndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndDateAndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Driver)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Vehicle)
-        </th>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDateAndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDateAndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Driver)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vehicle)
+            </th>
 
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfRideTimes)
+            </th>
 
-        <th></th>
-    </tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfTakenRideTimes)
+            </th>
+            
+
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDateAndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDateAndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Driver!.AppUser!.LastAndFirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vehicle!.VehicleIdentifier)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
-            </td>
-        </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDateAndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDateAndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Driver!.AppUser!.LastAndFirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vehicle!.VehicleIdentifier)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfRideTimes)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfTakenRideTimes)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedAt)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

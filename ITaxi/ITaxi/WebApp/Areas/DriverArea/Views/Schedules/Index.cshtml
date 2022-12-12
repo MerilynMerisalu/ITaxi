@@ -24,6 +24,10 @@
             @Html.DisplayNameFor(model => model.EndDateAndTime)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.NumberOfRideTimes)
+        </th>
+        
+        <th>
         </th>
     </tr>
     </thead>
@@ -41,7 +45,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EndDateAndTime)
             </td>
-
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfRideTimes)
+            </td>
+            
 
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |

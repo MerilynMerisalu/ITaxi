@@ -34,6 +34,7 @@ public class SchedulesController : Controller
             s.CreatedAt = s.CreatedAt.ToLocalTime();
             s.EndDateAndTime = s.EndDateAndTime.ToLocalTime();
             s.UpdatedAt = s.UpdatedAt.ToLocalTime();
+            
         }
 
         return View(res);
