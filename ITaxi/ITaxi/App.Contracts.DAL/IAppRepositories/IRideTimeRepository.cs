@@ -28,6 +28,11 @@ public interface IRideTimeRepository : IEntityRepository<RideTime>
     RideTime? GettingFirstRideTimeById(Guid id, Guid? userId = null, string? roleName = null,
         bool noTracking = true);
 
+    Task<RideTime?> GettingFirstRideTimeByBookingIdAsync(Guid id, Guid? userId = null, string? roleName = null,
+    bool noTracking = true);
+
+    RideTime? GettingFirstRideTimeByBookingId(Guid id, Guid? userId = null, string? roleName = null,
+        bool noTracking = true);
     List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime);
     //string DriveTimeFormatting(RideTime rideTime);
     Task<IList<RideTime>> GettingBestAvailableRideTimeAsync(DateTime pickUpDateAndTime, Guid cityId,

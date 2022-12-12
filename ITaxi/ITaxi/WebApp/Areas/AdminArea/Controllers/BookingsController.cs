@@ -97,6 +97,7 @@ public class BookingsController : Controller
         public int NumberOfPassengers { get; set; }
         
         public DateTime PickupDateAndTime { get; set; } 
+        public Guid? RideTimeId { get; set; }
     }
     /// <summary>
     /// Generic method that will update the VM to reflect the new SelectLists if any need to be changed
@@ -114,6 +115,17 @@ public class BookingsController : Controller
 
         if (parameters.ListType == nameof(Booking.PickUpDateAndTime))
         {
+            // If the UI provides a RideTimeId, then we need to clear or release this time first
+            if (parameters.RideTimeId.HasValue)
+            {
+                var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(parameters.RideTimeId.Value, null, null, false);
+                if (rideTime != null)
+                {
+                    rideTime.ExpiryTime = null;
+                    await _uow.SaveChangesAsync();
+                }
+            }
+
             // Value in this case IS the pickupDateAndTime
             parameters.PickupDateAndTime = DateTime.Parse(parameters.Value);
             if (parameters.PickupDateAndTime == DateTime.MinValue)
@@ -136,6 +148,7 @@ public class BookingsController : Controller
                         bestTime.Schedule!.StartDateAndTime = bestTime.Schedule.StartDateAndTime.ToLocalTime();
                         bestTime.Schedule.EndDateAndTime = bestTime.Schedule.EndDateAndTime.ToLocalTime();
 
+                        vm.RideTimeId = bestTime.Id;
                         vm.Schedules = new SelectList(new[] {bestTime.Schedule}, nameof(Schedule.Id),
                             nameof(Schedule.ShiftDurationTime));
                         vm.ScheduleId = bestTime.ScheduleId;
@@ -165,6 +178,9 @@ public class BookingsController : Controller
             }
         }
 
+        // This is not currently in use, this is theoretically what we would do if the user was
+        // forced to select a specific RideTime, we have changed this and instead
+        // the user is forced to enter a Pickup Date Time that matches an existing Ride Time
         if (parameters.ListType == "RideTimeId")
         {
             var rideTimeId = Guid.Parse(parameters.Value);
@@ -249,7 +265,7 @@ public class BookingsController : Controller
 #warning Booking PickUpDateAndTime needs a custom validation
             booking.PickUpDateAndTime = DateTime.Parse(vm.PickUpDateAndTime).ToUniversalTime();
             _uow.Bookings.Add(booking);
-
+                
             var drive = new Drive
             {
                 Id = new Guid(),
@@ -257,8 +273,15 @@ public class BookingsController : Controller
                 DriverId = booking.DriverId,
                 StatusOfDrive = StatusOfDrive.Awaiting
             };
-
             _uow.Drives.Add(drive);
+
+            var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(vm.RideTimeId, null, null, false);
+            if (rideTime != null)
+            {
+                rideTime.BookingId = booking.Id;
+                rideTime.IsTaken = true;
+                _uow.RideTimes.Update(rideTime);
+            }
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -453,6 +476,9 @@ public class BookingsController : Controller
             booking.UpdatedAt = DateTime.Now.ToUniversalTime();
             drive!.Booking = booking;
             _uow.Bookings.Update(booking);
+            drive.IsDriveDeclined = true;
+            drive.StatusOfDrive = StatusOfDrive.Declined;
+            drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
             drive.UpdatedBy = User.Identity!.Name;
             drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 #warning refactor into a common service for bookings
@@ -484,7 +510,16 @@ public class BookingsController : Controller
                     smtp.Send(mm);
                 }
             }
-            
+
+            // Release the RideTime
+            var rideTime = await _uow.RideTimes.GettingFirstRideTimeByBookingIdAsync(booking.Id, null, null, false);
+            if (rideTime != null)
+            {
+                rideTime.BookingId = null;
+                rideTime.ExpiryTime = null;
+                rideTime.IsTaken = false;
+                _uow.RideTimes.Update(rideTime);
+            }
 
             await _uow.SaveChangesAsync();
             _uow.Drives.Update(drive);
@@ -541,11 +576,20 @@ public class BookingsController : Controller
         var roleName = User.GettingUserRoleName();
         var booking = await _uow.Bookings.GettingBookingAsync(id, null,roleName );
         var drive = await _uow.Drives.SingleOrDefaultAsync(d => d != null && d.Booking!.Id.Equals(id), false);
+        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByBookingIdAsync(id, null, null, false);
         var comment =
             await _uow.Comments.SingleOrDefaultAsync(c => drive != null && c != null && c.DriveId.Equals(drive.Id),
                 false);
         if (comment != null) _uow.Comments.Remove(comment);
         if (drive != null) _uow.Drives.Remove(drive);
+        if (rideTime != null)
+        {
+            rideTime.BookingId = null;
+            rideTime.ExpiryTime = null;
+            rideTime.IsTaken = false;
+            _uow.RideTimes.Update(rideTime);
+        }
+
         if (booking != null) _uow.Bookings.Remove(booking);
         await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));

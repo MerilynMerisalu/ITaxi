@@ -100,6 +100,9 @@ public class RideTimesController : Controller
                 foreach (var selectedRideTime in vm.SelectedRideTimes)
                 {
                     var rideDateAndTime = schedule.StartDateAndTime.Date.Add(selectedRideTime.TimeOfDay);
+                    if (selectedRideTime.TimeOfDay < schedule.StartDateAndTime.TimeOfDay)
+                        rideDateAndTime = rideDateAndTime.AddDays(1);
+
                     var rideTime = new RideTime
                     {
                         Id = new Guid(),
@@ -154,8 +157,17 @@ public class RideTimesController : Controller
                 // Select the RideTimes form the currently selected schedule, for the current driver
                 var currentSchedule = schedules.Where(x => x.Id == vm.ScheduleId).ToArray();
                 var rideTimesList = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime(currentSchedule));
-#warning Ask if there is a better way to implement this
-                
+
+                // Need to remove the times that have already been issued:
+                var s = currentSchedule.FirstOrDefault();
+                if (s.RideTimes!.Any())
+                {
+                    foreach (var time in s.RideTimes)
+                    {
+                        rideTimesList.Remove(time.RideDateTime.ToLocalTime().ToString("t"));
+                    }
+                }
+
                 // the times in schedules have already been converted!
                 vm.RideTimes = new SelectList(rideTimesList.Select(x => new { RideTime = x }), "RideTime", "RideTime");
             }
@@ -223,6 +235,16 @@ public class RideTimesController : Controller
         // Select the RideTimes form the currently selected schedule, for the current driver
         var currentSchedule = schedules.Where(x => x.Id == vm.ScheduleId).ToArray();
         var rideTimes = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime(currentSchedule));
+
+        // Need to remove the times that have already been issued:
+        var s = currentSchedule.FirstOrDefault();
+        if (s.RideTimes.Any())
+        {
+            foreach (var time in s.RideTimes)
+            {
+                rideTimes.Remove(time.RideDateTime.ToLocalTime().ToString("t"));
+            }
+        }
         // the times in schedules have already been converted!
         vm.RideTimes = new SelectList(rideTimes.Select(x => new { RideTime = x }), 
             nameof(vm.RideTime), nameof(vm.RideTime));

@@ -66,35 +66,23 @@
         <th>
             @Html.DisplayNameFor(model => model.Comment)
         </th>
-        @foreach (var i in Model)
-        {
-            if (i.IsDriveDeclined || (i.IsDriveAccepted && i.IsDriveDeclined))
-            {
+        
+            
                 <th>
                     @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
                 </th>
-            }
-            if (i.IsDriveAccepted)
-            {
+            
                 <th>
                     @Html.DisplayNameFor(model => model.DriveAcceptedDateTimeDriverView)
                 </th>
-            }
-
-            if (i.IsDriveStarted || (i.IsDriveAccepted && i.IsDriveStarted))
-            {
                 <th>
                     @Html.DisplayNameFor(model => model.DriveStartDateAndTime)
                 </th>
-            }
-
-            if (i.IsDriveFinished)
-            {
                 <th>
                     @Html.DisplayNameFor(model => model.DriveEndDateAndTime)
                 </th>
-            }
-        }
+            
+        
 
 
         <th></th>
@@ -149,32 +137,31 @@
                 @Html.DisplayFor(modelItem => item.Booking!.Drive!.Comment!.CommentText)
             </td>
 
+
+            <td>
             @if (item.IsDriveDeclined || (item.IsDriveAccepted && item.IsDriveDeclined))
             {
-                <td>
-                    @Html.DisplayFor(modelItem => item.DriveDeclinedDateTimeDriverView)
-                </td>
+                @Html.DisplayFor(modelItem => item.DriveDeclinedDateTimeDriverView)
             }
-
-            @if (item.IsDriveAccepted)
-            {
-                <td>
+            </td>
+            <td>
+                @if (item.IsDriveAccepted)
+                {
                     @Html.DisplayFor(modelItem => item.DriveAcceptedDateTimeDriverView)
-                </td>
-            }
-
+                }
+            </td>
+            <td>
             @if (item.IsDriveStarted || (item.IsDriveAccepted && item.IsDriveStarted))
             {
-                <td>
-                    @Html.DisplayFor(modelItem => item.DriveStartedDateTimeDriverView)
-                </td>
+                @Html.DisplayFor(modelItem => item.DriveStartedDateTimeDriverView)
             }
+            </td>
+            <td>
             @if (item.IsDriveFinished)
             {
-                <td>
-                    @Html.DisplayFor(modelItem => item.DriveEndDateTimeDriverView)
-                </td>
+                @Html.DisplayFor(modelItem => item.DriveEndDateTimeDriverView)
             }
+            </td>
 
 
             <td>

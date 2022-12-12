@@ -70,9 +70,10 @@ public class CreateBookingViewModel
     /// List of available RideTimes for the user to select from
     /// </summary>
     public SelectList? RideTimes { get; set; }
-    
+
     /// <summary>
     /// Selected Ride Time
     /// </summary>
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     public Guid RideTimeId { get; set; }
 }

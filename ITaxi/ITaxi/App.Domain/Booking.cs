@@ -90,13 +90,13 @@ public class Booking : DomainEntityMetaId
 
     public string DeclineDateAndTimeCustomerView => $"{DeclineDateAndTime:g}";
 
-    //[Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(ConfirmedBy))]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(ConfirmedBy))]
     
-#warning Database update not working. Maybe the problem is Dotnet 7?
-    //public string? ConfirmedBy { get; set; }
+    public string? ConfirmedBy { get; set; }
     
-    //[Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(DeclinedBy))]
-    #warning Database update not working. Maybe the problem is Dotnet 7?
-    //public string? DeclinedBy { get; set; }
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(DeclinedBy))]
     
+    public string? DeclinedBy { get; set; }
+
+   
 }

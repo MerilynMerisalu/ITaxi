@@ -493,7 +493,22 @@ public static class DataHelper
                 await context.SaveChangesAsync();
 
 
-                var rideTime = new RideTime
+                var rideTime1 = new RideTime
+                {
+                    DriverId = context.Drivers.SingleOrDefaultAsync(d =>
+                        d.PersonalIdentifier!.Equals("38806237921")).Result!.Id,
+                    ScheduleId = context.Schedules
+                        .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("38806237921"))
+                        .Result!.Id,
+                    RideDateTime = context.Schedules.FirstOrDefaultAsync(s =>
+                        s.Driver!.PersonalIdentifier!.Equals("38806237921")).Result!
+                        .StartDateAndTime.AddMinutes(45), //.ToUniversalTime(), CS: Suspect that the value is already UTC, so we don'ˇt need to translate against
+                    CreatedBy = "System",
+                    CreatedAt = DateTime.Now.ToUniversalTime()
+                };
+                await context.RideTimes.AddAsync(rideTime1);
+
+                rideTime1 = new RideTime
                 {
                     DriverId = context.Drivers.SingleOrDefaultAsync(d =>
                         d.PersonalIdentifier!.Equals("38806237921")).Result!.Id,
@@ -506,11 +521,11 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
-                await context.RideTimes.AddAsync(rideTime);
+                await context.RideTimes.AddAsync(rideTime1);
                 await context.SaveChangesAsync();
 
 
-                rideTime = new RideTime
+                var rideTime2 = new RideTime
                 {
                     DriverId = context.Drivers.SingleOrDefaultAsync(d =>
                         d.PersonalIdentifier!.Equals("36605138911")).Result!.Id,
@@ -519,11 +534,26 @@ public static class DataHelper
                         .Result!.Id,
                     RideDateTime = context.Schedules.FirstOrDefaultAsync(s =>
                         s.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!
-                        .StartDateAndTime, //.ToUniversalTime(), CS: Suspect that the value is already UTC, so we don'ˇt need to translate again
+                        .StartDateAndTime.AddMinutes(90), //.ToUniversalTime(), CS: the value is already UTC, so we don't need to translate again
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
-                await context.RideTimes.AddAsync(rideTime);
+                await context.RideTimes.AddAsync(rideTime2);
+
+                rideTime2 = new RideTime
+                {
+                    DriverId = context.Drivers.SingleOrDefaultAsync(d =>
+                        d.PersonalIdentifier!.Equals("36605138911")).Result!.Id,
+                    ScheduleId = context.Schedules
+                        .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("36605138911"))
+                        .Result!.Id,
+                    RideDateTime = context.Schedules.FirstOrDefaultAsync(s =>
+                        s.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!
+                        .StartDateAndTime, //.ToUniversalTime(), CS: the value is already UTC, so we don't need to translate again
+                    CreatedBy = "System",
+                    CreatedAt = DateTime.Now.ToUniversalTime()
+                };
+                await context.RideTimes.AddAsync(rideTime2);
                 await context.SaveChangesAsync();
 
                 appUser = new AppUser
@@ -629,6 +659,11 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
+
+                rideTime1.Booking = booking;
+                rideTime1.IsTaken = true;
+                booking.PickUpDateAndTime = rideTime1.RideDateTime;
+
                 await context.Bookings.AddAsync(booking);
                 await context.SaveChangesAsync();
 
@@ -670,6 +705,11 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
+
+                rideTime2.Booking = booking;
+                rideTime2.IsTaken = true;
+                booking.PickUpDateAndTime = rideTime2.RideDateTime;
+
                 await context.Bookings.AddAsync(booking);
                 await context.SaveChangesAsync();
 

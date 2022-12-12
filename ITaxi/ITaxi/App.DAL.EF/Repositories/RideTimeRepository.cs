@@ -131,6 +131,18 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
     {
         return CreateQuery(userId, roleName, noTracking).FirstOrDefault(r => r.Id.Equals(id));
     }
+    public async Task<RideTime?> GettingFirstRideTimeByBookingIdAsync(Guid id, Guid? userId = null, string? roleName = null,
+        bool noTracking = true)
+    {
+        return await CreateQuery(userId, roleName, noTracking)
+            .FirstOrDefaultAsync(r => r.BookingId.Equals(id));
+    }
+
+    public RideTime? GettingFirstRideTimeByBookingId(Guid id, Guid? userId = null, string? roleName = null,
+        bool noTracking = true)
+    {
+        return CreateQuery(userId, roleName, noTracking).FirstOrDefault(r => r.BookingId.Equals(id));
+    }
 
     public List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime)
     {
@@ -171,16 +183,24 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
         Guid? userId = null, string? roleName = null,
         bool noTracking = true  )
     {
-        var minTime = pickUpDateAndTime.AddMinutes(-5);
-        var maxTime = pickUpDateAndTime.AddMinutes(5);
+        // Change this to 5 to make the match time +- 5minutes of a ride time
+        int closestTimeRangeMinutes = 1;
+        var minTime = pickUpDateAndTime.AddMinutes(-closestTimeRangeMinutes);
+        var maxTime = pickUpDateAndTime.AddMinutes(closestTimeRangeMinutes);
+        var utcNow = DateTime.UtcNow;
         var timeMinusOne = pickUpDateAndTime.AddMinutes(-1);
         var timePlusOne = pickUpDateAndTime.AddMinutes(1);
-        var rideTimesQuery = CreateQuery(userId, roleName)
+        var rideTimesQuery = CreateQuery(userId, roleName, false) // overwrite the user, we need tracking
             .Where(rt => rt.IsTaken == false)
+            .Where(rt => rt.ExpiryTime == null || rt.ExpiryTime < utcNow)
             .Where(rt => rt.Driver!.CityId.Equals(cityId))
             .Where(rt => rt.Schedule!.Vehicle!.VehicleTypeId.Equals(vehicleType))
             .Where(rt => rt.Schedule!.Vehicle!.NumberOfSeats > numberOfPassengers);
-        
+
+        //var testScheduleValidation = rideTimesQuery.Where(rt => rt.Schedule!.StartDateAndTime <= timePlusOne
+        //                     && rt.Schedule.EndDateAndTime >= timeMinusOne).ToList();
+        //var testMinMax = rideTimesQuery.Where(rt => rt.RideDateTime >= minTime
+        //                     && rt.RideDateTime <= maxTime).ToList();
         var closestRideTimes = await rideTimesQuery
             .Where(rt => rt.Schedule!.StartDateAndTime <= timePlusOne 
                              && rt.Schedule.EndDateAndTime >= timeMinusOne
@@ -194,6 +214,10 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
 
         if (!closestRideTimes.Any() && defaultToNextAvailable)
         {
+            // we can respect the caller's no tracking now
+            if (noTracking)
+                rideTimesQuery = rideTimesQuery.AsNoTracking();
+
             var previous = await rideTimesQuery
                 .Where(rt => rt.RideDateTime <= minTime)
                 .OrderByDescending(x => x.RideDateTime)
@@ -207,6 +231,14 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
             closestRideTimes = new List<RideTime>();
             closestRideTimes.Add(previous ?? new RideTime { RideDateTime = DateTime.MinValue });
             closestRideTimes.Add(next ?? new RideTime { RideDateTime = DateTime.MaxValue });
+        }
+        else if(closestRideTimes.Count == 1)
+        {
+            // we need to set the expiry time X Minutes into the future, so that this RideTime is not 
+            // available to other operators, but it will automatically become available even if the 
+            // user's session  becomes dormont
+            closestRideTimes[0].ExpiryTime = utcNow.AddMinutes(9);
+            await RepoDbContext.SaveChangesAsync();
         }
         
         return closestRideTimes;

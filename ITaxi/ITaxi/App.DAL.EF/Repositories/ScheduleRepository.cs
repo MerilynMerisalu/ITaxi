@@ -220,7 +220,8 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
                 .Include(v => v.Vehicle)
                 .ThenInclude(v => v!.VehicleType)
                 .ThenInclude(v => v!.VehicleTypeName)
-                .ThenInclude(v => v.Translations);
+                .ThenInclude(v => v.Translations)
+                .Include(s => s.RideTimes);
             return query;
         }
 
@@ -234,6 +235,7 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
             .ThenInclude(v => v!.VehicleType)
             .ThenInclude(v => v!.VehicleTypeName)
             .ThenInclude(v => v.Translations)
+            .Include(s => s.RideTimes)
             .Where(s => s.Driver!.AppUserId.Equals(userId));
         return query;
     }

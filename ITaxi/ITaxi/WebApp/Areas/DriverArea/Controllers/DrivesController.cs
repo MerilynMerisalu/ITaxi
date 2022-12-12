@@ -419,6 +419,9 @@ public class DrivesController : Controller
         if (booking != null)
         {
             booking.StatusOfBooking = StatusOfBooking.Declined;
+            booking.DeclineDateAndTime = DateTime.UtcNow;
+            booking.IsDeclined = true;
+            
             booking.UpdatedAt = DateTime.Now.ToUniversalTime();
             _uow.Bookings.Update(booking);
             await _uow.SaveChangesAsync();

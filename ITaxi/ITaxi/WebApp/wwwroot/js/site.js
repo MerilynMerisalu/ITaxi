@@ -67,3 +67,16 @@ function showClientErrorMessage(message, validationElementId, isHtml) {
 function clearClientErrorMessage(validationElementId) {
     showClientErrorMessage('',validationElementId);
 }
+
+/**
+ * Set a field value from javascript, useful for hidden field access
+ * @param elementId {string} Id of the HTML element in the DOM that you want to set the value for
+ * @param value {any} The value to set into the HTML element, please try to use primitive types only!
+ */
+function SetFieldValue(elementId, value) {
+    let element = document.getElementById(elementId);
+    if(value)
+        element.value = value;
+    else
+        element.value = null;
+}

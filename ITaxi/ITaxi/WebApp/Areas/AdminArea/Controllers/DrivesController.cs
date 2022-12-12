@@ -414,6 +414,16 @@ public class DrivesController : Controller
             booking.StatusOfBooking = StatusOfBooking.Declined;
             booking.UpdatedAt = DateTime.Now.ToUniversalTime();
             _uow.Bookings.Update(booking);
+            
+            var rideTime = await _uow.RideTimes.GettingFirstRideTimeByBookingIdAsync(booking.Id, null, null, false);
+            if (rideTime != null)
+            {
+                rideTime.BookingId = null;
+                rideTime.ExpiryTime = null;
+                rideTime.IsTaken = false;
+                _uow.RideTimes.Update(rideTime);
+            }
+
             await _uow.SaveChangesAsync();
         }
 
