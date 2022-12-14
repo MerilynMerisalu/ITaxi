@@ -17,12 +17,12 @@ public static class IdentityExtension
 
     public static TKeyType GettingUserId<TKeyType>(this ClaimsPrincipal user)
     {
-        /*if (typeof(TKeyType) != typeof(Guid) 
-            || typeof(TKeyType) != typeof(string)
-            || typeof(TKeyType) != typeof(int))
+        if (typeof(TKeyType) != typeof(Guid) 
+            && typeof(TKeyType) != typeof(string)
+            && typeof(TKeyType) != typeof(int))
         {
-            throw new ApplicationException($"This type of user id {} is not supported!");
-        }*/
+            throw new ApplicationException($"This type of user id {typeof(TKeyType).Name} is not supported!");
+        }
 
         var claimId = user.Claims.FirstOrDefault(u => u.Type.Equals(ClaimTypes.NameIdentifier));
         if (claimId == null) throw new NullReferenceException("Name identifier claim not found!");

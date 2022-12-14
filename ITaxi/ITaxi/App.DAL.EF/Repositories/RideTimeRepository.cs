@@ -197,10 +197,7 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
             .Where(rt => rt.Schedule!.Vehicle!.VehicleTypeId.Equals(vehicleType))
             .Where(rt => rt.Schedule!.Vehicle!.NumberOfSeats > numberOfPassengers);
 
-        //var testScheduleValidation = rideTimesQuery.Where(rt => rt.Schedule!.StartDateAndTime <= timePlusOne
-        //                     && rt.Schedule.EndDateAndTime >= timeMinusOne).ToList();
-        //var testMinMax = rideTimesQuery.Where(rt => rt.RideDateTime >= minTime
-        //                     && rt.RideDateTime <= maxTime).ToList();
+        
         var closestRideTimes = await rideTimesQuery
             .Where(rt => rt.Schedule!.StartDateAndTime <= timePlusOne 
                              && rt.Schedule.EndDateAndTime >= timeMinusOne
@@ -262,6 +259,8 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
             
         return closestRideTime;
     }
+
+    
 
     public async Task<IEnumerable<RideTime>> GetAllAsync(Guid? userId = null, string? roleName = null,
         bool noTracking = true)

@@ -34,7 +34,10 @@ public class SchedulesController : Controller
             s.CreatedAt = s.CreatedAt.ToLocalTime();
             s.EndDateAndTime = s.EndDateAndTime.ToLocalTime();
             s.UpdatedAt = s.UpdatedAt.ToLocalTime();
-            
+            /*s.NumberOfRideTimes = _uow.Schedules.NumberOfRideTimes();
+            s.NumberOfTakenRideTimes = _uow.Schedules.NumberOfTakenRideTimes();
+            */
+
         }
 
         return View(res);
