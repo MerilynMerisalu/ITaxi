@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Base.Contracts;
 using Base.Contracts.DAL;
 using Base.Contracts.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -11,13 +12,14 @@ public class BaseEntityRepository<TAppEntity, TDalEntity, TDbContext> :
     where TDalEntity : class, IDomainEntityId<Guid>
     where TDbContext : DbContext
 {
-    public BaseEntityRepository(TDbContext dbContext) : base(dbContext )
+    public BaseEntityRepository(TDbContext dbContext, IMapper<TAppEntity, TDalEntity> mapper) 
+        : base(dbContext, mapper )
     {
     }
 }
 
 public class BaseEntityRepository<TAppEntity, TDalEntity, TKey, TDbContext> : 
-    IEntityRepository<TAppEntity, TDalEntity, TKey>
+    IEntityRepository<TAppEntity, TKey>
     where TAppEntity : class, IDomainEntityId<TKey>
     where TDalEntity: class, IDomainEntityId<TKey>
     where TKey : IEquatable<TKey>
@@ -25,33 +27,42 @@ public class BaseEntityRepository<TAppEntity, TDalEntity, TKey, TDbContext> :
 {
     protected readonly TDbContext RepoDbContext;
     protected readonly DbSet<TDalEntity> RepoDbSet;
-
-    public BaseEntityRepository(TDbContext dbContext)
+    protected readonly IMapper<TAppEntity, TDalEntity> Mapper;
+    
+    
+    public BaseEntityRepository(TDbContext dbContext, IMapper<TAppEntity, TDalEntity> mapper)
     {
         RepoDbContext = dbContext;
+        Mapper = mapper;
         RepoDbSet = dbContext.Set<TDalEntity>();
     }
 
 
     public virtual TAppEntity Add(TAppEntity entity)
     {
-        return RepoDbSet.Add(entity).Entity;
+        var dalEntity = Mapper.Map(entity);
+        return Mapper.Map(RepoDbSet.Add(dalEntity!).Entity)!;
     }
 
     public async Task<List<TAppEntity>> AddRangeAsync(List<TAppEntity> entities)
     {
-        await RepoDbSet.AddRangeAsync(entities);
+        List<TDalEntity> dalEntities = new List<TDalEntity>();
+        foreach (var appEntity in entities)
+        {
+            dalEntities.Add(Mapper.Map(appEntity)!);
+        }
+        await RepoDbSet.AddRangeAsync(dalEntities);
         return entities;
     }
 
     public virtual TAppEntity Update(TAppEntity entity)
     {
-        return RepoDbSet.Update(entity).Entity;
+        return Mapper.Map(RepoDbSet.Update(Mapper.Map(entity)!).Entity)!;
     }
 
     public virtual TAppEntity Remove(TAppEntity entity)
     {
-        return RepoDbSet.Remove(entity).Entity;
+        return Mapper.Map(RepoDbSet.Remove(Mapper.Map(entity)!).Entity)!;
     }
 
     public virtual TAppEntity Remove(TKey id)
@@ -65,18 +76,24 @@ public class BaseEntityRepository<TAppEntity, TDalEntity, TKey, TDbContext> :
 
     public virtual List<TAppEntity> RemoveAll(List<TAppEntity> entities)
     {
-        RepoDbSet.RemoveRange(entities);
+        List<TDalEntity> dalEntities = new List<TDalEntity>();
+        foreach (var entity in entities)
+        {
+            dalEntities.Add(Mapper.Map(entity)!);
+        }
+        RepoDbSet.RemoveRange(dalEntities);
         return entities.ToList();
     }
 
     public virtual TAppEntity? FirstOrDefault(TKey id, bool noTracking = true)
     {
-        return CreateQuery(noTracking).FirstOrDefault(e => e.Id.Equals(id));
+        return Mapper.Map(CreateQuery(noTracking)
+            .FirstOrDefault(e =>e.Id.Equals(id)));
     }
 
     public virtual IEnumerable<TAppEntity> GetAll(bool noTracking = true)
     {
-        return CreateQuery(noTracking).ToList();
+        return CreateQuery(noTracking).Select(e => Mapper.Map(e)).ToList()!;
     }
 
     public virtual bool Exists(TKey id)
@@ -84,42 +101,62 @@ public class BaseEntityRepository<TAppEntity, TDalEntity, TKey, TDbContext> :
         return RepoDbSet.Any(a => a.Id.Equals(id));
     }
 
-    public virtual bool Any(Expression<Func<TAppEntity?, bool>> filter, bool noTracking = true)
+    public bool Any(Expression<Func<TAppEntity?, bool>> filter, bool noTracking = true)
+    {
+        return CreateQuery(noTracking)
+            .Select(e => Mapper.Map(e)).Any(filter);
+        
+    }
+
+    public TAppEntity? SingleOrDefault(Expression<Func<TAppEntity?, bool>> filter, bool noTracking = true)
+    {
+        return CreateQuery(noTracking).Select(e => Mapper.Map(e)).SingleOrDefault(filter);
+        
+        
+    }
+
+    /*public virtual bool Any(Func<TDalEntity, bool> filter, bool noTracking = true)
     {
         var query = CreateQuery(noTracking);
         var res = query.AsQueryable().Any(filter);
         return res;
-    }
+    }*/
 
-    public virtual TAppEntity? SingleOrDefault(Expression<Func<TAppEntity?, bool>> filter, bool noTracking = true)
+    public virtual TAppEntity? SingleOrDefault(Func<TDalEntity, bool> filter, bool noTracking = true)
     {
         var query = CreateQuery(noTracking);
         var result = query.Select(d => d).SingleOrDefault(filter);
-        return result;
+        return Mapper.Map(result);
     }
 
     public TAppEntity? First(bool noTracking = true)
     {
         var query = CreateQuery(noTracking);
         var result = query.First();
-        return result;
+        return Mapper.Map(result);
     }
 
     public List<TAppEntity> AddRange(List<TAppEntity> entities)
     {
-        RepoDbSet.AddRange(entities);
+        var dalEntities = new List<TDalEntity>();
+        foreach (var entity in entities)
+        {
+            dalEntities.Add(Mapper.Map(entity)!);
+        }
+        RepoDbSet.AddRange(dalEntities);
         return entities;
     }
 
 
     public virtual async Task<TAppEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true)
     {
-        return await CreateQuery(noTracking).FirstOrDefaultAsync(e => e.Id.Equals(id));
+        var dalEntity = await CreateQuery(noTracking).FirstOrDefaultAsync(e => e.Id.Equals(id));
+        return Mapper.Map(dalEntity);
     }
 
     public virtual async Task<IEnumerable<TAppEntity>> GetAllAsync(bool noTracking = true)
     {
-        return await CreateQuery(noTracking).ToListAsync();
+        return (await CreateQuery(noTracking).Select(e => Mapper.Map(e)).ToListAsync())!;
     }
 
     public virtual async Task<bool> ExistsAsync(TKey id)
@@ -138,28 +175,25 @@ public class BaseEntityRepository<TAppEntity, TDalEntity, TKey, TDbContext> :
 
     public virtual async Task<bool> AnyAsync(Expression<Func<TAppEntity?, bool>> filter, bool noTracking = true)
     {
-        var query = CreateQuery(noTracking);
-        var res = await query.AsQueryable().AnyAsync(filter);
-        return res;
+        return  await CreateQuery(noTracking).Select(e => Mapper.Map(e)).AnyAsync(filter);
+        
+        
     }
     
 
     public virtual async Task<TAppEntity?> SingleOrDefaultAsync(Expression<Func<TAppEntity?, bool>> filter, 
         bool noTracking = true)
     {
-        var query = CreateQuery(noTracking);
-        var result = await query.Select(d => d).SingleOrDefaultAsync(filter);
-        return result;
+        return await CreateQuery(noTracking)
+            .Select(e => Mapper.Map(e)).SingleOrDefaultAsync(filter);
     }
 
     public virtual async Task<TAppEntity?> FirstAsync(bool noTracking = true)
     {
-        var query = CreateQuery(noTracking);
-        var result = await query.FirstAsync();
-        return result;
+        return Mapper.Map(await CreateQuery(noTracking).FirstAsync());
     }
 
-    protected virtual IQueryable<TAppEntity> CreateQuery(bool noTracking = true)
+    protected virtual IQueryable<TDalEntity> CreateQuery(bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking)

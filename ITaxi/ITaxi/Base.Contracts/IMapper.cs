@@ -2,6 +2,6 @@
 
 public interface IMapper<TOut, TIn>
 {
-    TOut Map(TIn entity);
-    TIn Map(TOut entity);
+    TOut? Map(TIn? entity);
+    TIn? Map(TOut? entity);
 }
