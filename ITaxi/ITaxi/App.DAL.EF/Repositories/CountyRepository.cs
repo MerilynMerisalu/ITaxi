@@ -1,38 +1,41 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
+using App.DAL.EF.Mappers;
 using App.Domain;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class CountyRepository : BaseEntityRepository<County, AppDbContext>, ICountyRepository
+public class CountyRepository : BaseEntityRepository<App.DTO.AdminArea.CountyDTO,App.Domain.County, AppDbContext>, ICountyRepository
 {
-    public CountyRepository(AppDbContext dbContext) : base(dbContext)
+    public CountyRepository(AppDbContext dbContext) : base(dbContext, new CountyMapper())
     {
     }
 
-    public override async Task<IEnumerable<County>> GetAllAsync(bool noTracking = true)
+    public override async Task<IEnumerable<App.DTO.AdminArea.CountyDTO>> GetAllAsync(bool noTracking = true)
     {
-        return await CreateQuery(noTracking).ToListAsync();
+        return (await CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public override IEnumerable<County> GetAll(bool noTracking = true)
+    public override IEnumerable<App.DTO.AdminArea.CountyDTO> GetAll(bool noTracking = true)
     {
-        return CreateQuery(noTracking).ToList();
+        return CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<County>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true)
+    public async Task<IEnumerable<App.DTO.AdminArea.CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true)
     {
-        return await CreateQuery(noTracking).OrderBy(c => c.CountyName).ToListAsync();
+        return (await CreateQuery(noTracking).OrderBy(c => c.CountyName).ToListAsync())
+            .Select(e => Mapper.Map(e)!);
     }
 
-    public IEnumerable<County> GetAllCountiesOrderedByCountyName(bool noTracking = true)
+    public IEnumerable<App.DTO.AdminArea.CountyDTO> GetAllCountiesOrderedByCountyName(bool noTracking = true)
     {
-        return CreateQuery(noTracking).OrderBy(c => c.CountyName).ToList();
+        return (CreateQuery(noTracking).OrderBy(c => c.CountyName).ToList()
+            .Select(e => Mapper.Map(e))!);
     }
 
 
-    protected override IQueryable<County> CreateQuery(bool noTracking = true)
+    protected override IQueryable<App.Domain.County> CreateQuery(bool noTracking = true)
     {
         var query = RepoDbSet.OrderBy(c => c.CountyName).AsQueryable();
         if (noTracking) query.AsNoTracking();

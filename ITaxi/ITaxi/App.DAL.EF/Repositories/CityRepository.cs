@@ -1,46 +1,52 @@
 ﻿using System.Linq.Expressions;
 using App.Contracts.DAL.IAppRepositories;
+using App.DAL.EF.Mappers;
 using App.Domain;
+using App.DTO.AdminArea;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class CityRepository : BaseEntityRepository<City, AppDbContext>, ICityRepository
+public class CityRepository : BaseEntityRepository<CityDTO,City, AppDbContext>, ICityRepository
 {
-    public CityRepository(AppDbContext dbContext) : base(dbContext)
+    public CityRepository(AppDbContext dbContext) : base(dbContext, new CityMapper())
     {
     }
 
-    public virtual async Task<IEnumerable<City>> GetAllCitiesWithoutCountyAsync()
+    public virtual async Task<IEnumerable<CityDTO>> GetAllCitiesWithoutCountyAsync()
     {
-        var res = await base.CreateQuery().ToListAsync();
-        return res;
+        var res = (await base.CreateQuery().ToListAsync()).Select(e => Mapper.Map(e));
+        return res!;
     }
 
-    public async Task<IEnumerable<City>> GetAllOrderedCitiesWithoutCountyAsync()
+    public async Task<IEnumerable<CityDTO>> GetAllOrderedCitiesWithoutCountyAsync()
     {
-        var res = await base.CreateQuery().OrderBy(c => c.CityName).ToListAsync();
-        return res;
+        var res = (await base.CreateQuery().OrderBy(c => c.CityName).ToListAsync()).
+            Select(e => Mapper.Map(e));
+        return res!;
     }
 
-    public async Task<IEnumerable<City>> GetAllOrderedCitiesAsync()
+    public async Task<IEnumerable<CityDTO>> GetAllOrderedCitiesAsync()
     {
-        return await CreateQuery().OrderBy(c => c.County!.CountyName)
-            .ThenBy(c => c.CityName).ToListAsync();
+        return (await CreateQuery().OrderBy(c => c.County!.CountyName)
+            .ThenBy(c => c.CityName).ToListAsync())
+            .Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<City?> FirstOrDefaultCityWithoutCountyAsync(Guid id)
+    public async Task<CityDTO?> FirstOrDefaultCityWithoutCountyAsync(Guid id)
     {
-        return await base.CreateQuery().FirstOrDefaultAsync(c => c.Id.Equals(id));
+        var res =await base.CreateQuery().FirstOrDefaultAsync(c => c.Id.Equals(id));
+        return Mapper.Map(res);
     }
 
-    public IEnumerable<City> GetAllOrderedCitiesWithoutCounty()
+    public IEnumerable<CityDTO> GetAllOrderedCitiesWithoutCounty()
     {
-        return base.CreateQuery().OrderBy(c => c.CityName).ToList();
+        return base.CreateQuery().OrderBy(c => c.CityName).ToList()
+            .Select(e => Mapper.Map(e))!;
     }
 
-    public override async Task<City?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
+    public override async Task<CityDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
@@ -49,23 +55,23 @@ public class CityRepository : BaseEntityRepository<City, AppDbContext>, ICityRep
 
         var res = await query.FirstOrDefaultAsync(c => c.Id == id);
 
-        return res;
+        return Mapper.Map(res);
     }
 
 
-    public override City? FirstOrDefault(Guid id, bool noTracking = true)
+    public override CityDTO? FirstOrDefault(Guid id, bool noTracking = true)
     {
-        return CreateQuery().FirstOrDefault(c => c.Id.Equals(id));
+        return Mapper.Map(CreateQuery().FirstOrDefault(c => c.Id.Equals(id)));
     }
 
-    public override Task<City?> SingleOrDefaultAsync(Expression<Func<City?, bool>> filter, bool noTracking = true)
+    public async /*override */ Task<CityDTO?> SingleOrDefaultAsync(Expression<Func<City?, bool>> filter, bool noTracking = true)
     {
-        return CreateQuery().SingleOrDefaultAsync(c => c.Id.Equals(filter));
+        return Mapper.Map(await CreateQuery().SingleOrDefaultAsync(c => c.Id.Equals(filter)));
     }
 
-    public override City? SingleOrDefault(Expression<Func<City?, bool>> filter, bool noTracking = true)
+    public /*override */ CityDTO? SingleOrDefault(Expression<Func<City?, bool>> filter, bool noTracking = true)
     {
-        return CreateQuery().SingleOrDefault(e => e.Id.Equals(filter));
+        return Mapper.Map(CreateQuery().SingleOrDefault(e => e.Id.Equals(filter)));
     }
 
 

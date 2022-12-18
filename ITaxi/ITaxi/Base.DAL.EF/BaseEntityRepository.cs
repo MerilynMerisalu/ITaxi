@@ -5,7 +5,7 @@ using Base.Contracts.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Base.DAL.EF;
-
+#warning do not fetch unnecessary data on every request
 public class BaseEntityRepository<TAppEntity, TDalEntity, TDbContext> : 
     BaseEntityRepository<TAppEntity, TDalEntity, Guid, TDbContext>
     where TAppEntity : class, IDomainEntityId<Guid>
@@ -93,7 +93,7 @@ public class BaseEntityRepository<TAppEntity, TDalEntity, TKey, TDbContext> :
 
     public virtual IEnumerable<TAppEntity> GetAll(bool noTracking = true)
     {
-        return CreateQuery(noTracking).Select(e => Mapper.Map(e)).ToList()!;
+        return CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e)!);
     }
 
     public virtual bool Exists(TKey id)
@@ -111,7 +111,6 @@ public class BaseEntityRepository<TAppEntity, TDalEntity, TKey, TDbContext> :
     public TAppEntity? SingleOrDefault(Expression<Func<TAppEntity?, bool>> filter, bool noTracking = true)
     {
         return CreateQuery(noTracking).Select(e => Mapper.Map(e)).SingleOrDefault(filter);
-        
         
     }
 

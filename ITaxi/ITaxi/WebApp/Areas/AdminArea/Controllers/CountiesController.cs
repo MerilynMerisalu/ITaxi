@@ -24,11 +24,11 @@ public class CountiesController : Controller
     {
 #warning Should this be a repo method
         var res = await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync();
-        foreach (var county in res)
+        /*foreach (var county in res)
         {
             county.CreatedAt = county.CreatedAt.ToLocalTime();
             county.UpdatedAt = county.UpdatedAt.ToLocalTime();
-        }
+        }*/
 
         return View(res);
     }
@@ -43,10 +43,10 @@ public class CountiesController : Controller
         if (county == null) return NotFound();
 
         vm.CountyName = county.CountyName;
-        vm.CreatedAt = county.CreatedAt.ToLocalTime().ToString("G");
+        /*vm.CreatedAt = county.CreatedAt.ToLocalTime().ToString("G");
         vm.CreatedBy = county.CreatedBy!;
         vm.UpdatedAt = county.UpdatedAt.ToLocalTime().ToString("G");
-        vm.UpdatedBy = county.UpdatedBy!;
+        vm.UpdatedBy = county.UpdatedBy!;*/
         vm.Id = county.Id;
 
         return View(vm);
@@ -110,8 +110,8 @@ public class CountiesController : Controller
                 try
                 {
                     county.CountyName = vm.CountyName;
-                    county.UpdatedBy = User.Identity!.Name!;
-                    county.UpdatedAt = DateTime.Now.ToUniversalTime();
+                    /*county.UpdatedBy = User.Identity!.Name!;
+                    county.UpdatedAt = DateTime.Now.ToUniversalTime();*/
                     _uow.Counties.Update(county);
                     await _uow.SaveChangesAsync();
                 }
@@ -138,10 +138,10 @@ public class CountiesController : Controller
         if (county == null) return NotFound();
 
         vm.CountyName = county.CountyName;
-        vm.CreatedAt = county.CreatedAt.ToLocalTime().ToString("G");
+        /*vm.CreatedAt = county.CreatedAt.ToLocalTime().ToString("G");
         vm.CreatedBy = county.CreatedBy ?? "";
         vm.UpdatedAt = county.UpdatedAt.ToLocalTime().ToString("G");
-        vm.UpdatedBy = county.UpdatedBy ?? "";
+        vm.UpdatedBy = county.UpdatedBy ?? "";*/
 
         return View(vm);
     }
