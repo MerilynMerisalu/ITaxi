@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Authorization;
@@ -169,4 +169,4 @@ public class DriverLicenseCategoriesController : Controller
     {
         return _uow.DriverLicenseCategories.Exists(id);
     }
-}
+}*/

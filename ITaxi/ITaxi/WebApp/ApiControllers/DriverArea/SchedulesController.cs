@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain;
 using Base.Extensions;
@@ -125,5 +125,5 @@ public class SchedulesController : ControllerBase
     /*private bool ScheduleExists(Guid id)
     {
         return _uow.Schedules.Exists(id);
-    }*/
-}
+    }#1#
+}*/

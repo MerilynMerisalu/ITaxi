@@ -1,18 +1,11 @@
-﻿using App.Domain;
-using App.DTO.AdminArea;
-using Base.Contracts;
+﻿using AutoMapper;
+using Base.DAL;
 
 namespace App.DAL.EF.Mappers;
 
-public class CountyMapper:IMapper<CountyDTO, County>
+public class CountyMapper:BaseMapper<App.DTO.AdminArea.CountyDTO,App.Domain.County>
 {
-    public CountyDTO? Map(County? entity)
+    public CountyMapper(IMapper mapper) : base(mapper)
     {
-        throw new NotImplementedException();
-    }
-
-    public County? Map(CountyDTO? entity)
-    {
-        throw new NotImplementedException();
     }
 }

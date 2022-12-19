@@ -1,4 +1,4 @@
-﻿using App.Contracts.DAL.IAppRepositories;
+﻿/*using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -58,4 +58,4 @@ public class DriverAndDriverLicenseCategoryRepository :
             .Include(c => c.Driver);
         return query;
     }
-}
+}*/

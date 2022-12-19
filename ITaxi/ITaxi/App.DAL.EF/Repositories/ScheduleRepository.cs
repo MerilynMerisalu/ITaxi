@@ -1,4 +1,4 @@
-﻿using App.Contracts.DAL.IAppRepositories;
+﻿/*using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -252,4 +252,4 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
             .Where(s => s.Driver!.AppUserId.Equals(userId));
         return query;
     }
-}
+}*/

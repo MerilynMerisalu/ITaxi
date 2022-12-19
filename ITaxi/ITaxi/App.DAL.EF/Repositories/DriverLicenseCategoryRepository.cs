@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class DriverLicenseCategoryRepository : BaseEntityRepository<DriverLicenseCategory, AppDbContext>,
+/*public class DriverLicenseCategoryRepository : BaseEntityRepository<DriverLicenseCategory, AppDbContext>,
     IDriverLicenseCategoryRepository
 {
     public DriverLicenseCategoryRepository(AppDbContext dbContext) : base(dbContext)
@@ -24,4 +24,4 @@ public class DriverLicenseCategoryRepository : BaseEntityRepository<DriverLicens
         return CreateQuery(noTracking)
             .OrderBy(c => c.DriverLicenseCategoryName).ToList();
     }
-}
+}*/

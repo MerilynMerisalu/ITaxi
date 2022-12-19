@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 
 using App.Contracts.DAL;
 using App.Domain;
@@ -387,4 +387,4 @@ public class RideTimesController : Controller
     {
         return _uow.RideTimes.Exists(id);
     }
-}
+}*/

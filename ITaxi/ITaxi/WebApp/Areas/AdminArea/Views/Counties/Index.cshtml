@@ -1,5 +1,5 @@
 @using Base.Resources
-@model IEnumerable<App.Domain.County>
+@model IEnumerable<App.DTO.AdminArea.CountyDTO>
 
 @{
     ViewData["Title"] = Common.Index;
@@ -16,7 +16,7 @@
         <th>
             @Html.DisplayNameFor(model => model.CountyName)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.CreatedBy)
         </th>
         <th>
@@ -27,7 +27,7 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.UpdatedAt)
-        </th>
+        </th>*@
 
 
         <th></th>
@@ -40,7 +40,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CountyName)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
             </td>
             <td>
@@ -52,6 +52,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
+            *@
 
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |

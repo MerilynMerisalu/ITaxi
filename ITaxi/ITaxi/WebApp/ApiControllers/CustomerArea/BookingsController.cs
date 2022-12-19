@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain;
 using App.Domain.DTO;
@@ -148,4 +148,4 @@ public class BookingsController : ControllerBase
     {
         return _uow.Bookings.Exists(id);
     }
-}
+}*/

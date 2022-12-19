@@ -1,4 +1,4 @@
-﻿using App.Contracts.DAL.IAppRepositories;
+﻿/*using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
 using App.Domain.Enum;
 using Base.DAL.EF;
@@ -209,4 +209,4 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
             .Where(u => u.Customer!.AppUserId.Equals(userId));
         return query;
     }
-}
+}*/

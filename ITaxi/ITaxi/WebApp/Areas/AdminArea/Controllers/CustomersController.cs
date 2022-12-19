@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain;
 using App.Domain.Identity;
@@ -239,4 +239,4 @@ public class CustomersController : Controller
     {
         return _uow.Customers.Exists(id);
     }
-}
+}*/

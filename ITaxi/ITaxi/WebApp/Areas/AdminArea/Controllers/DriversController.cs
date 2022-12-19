@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain;
 using App.Domain.Identity;
@@ -281,4 +281,4 @@ public class DriversController : Controller
     {
         return _uow.Drivers.Exists(id);
     }
-}
+}*/

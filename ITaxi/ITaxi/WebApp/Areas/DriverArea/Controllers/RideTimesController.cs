@@ -1,4 +1,4 @@
-using App.Contracts.DAL;
+/*using App.Contracts.DAL;
 using App.Domain;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -248,4 +248,4 @@ public class RideTimesController : Controller
     {
         return _uow.RideTimes.Exists(id);
     }
-}
+}*/

@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using App.Contracts.DAL;
 using App.DAL.EF;
 using App.Domain.Identity;
+using App.DTO.AdminArea;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -74,6 +75,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     };
 });
 
+builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddCookie(options => { options.SlidingExpiration = true; })

@@ -11,7 +11,7 @@ public class CityDTO: DomainEntityId
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.City),
         Name = "CountyName")]
-    public County? County { get; set; }
+    public CountyDTO? County { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]

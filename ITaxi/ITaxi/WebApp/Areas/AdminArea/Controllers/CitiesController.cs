@@ -1,6 +1,7 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using App.DTO.AdminArea;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -70,15 +71,15 @@ public class CitiesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateEditCityViewModel vm, City city)
+    public async Task<IActionResult> Create(CreateEditCityViewModel vm, CityDTO city)
     {
         if (ModelState.IsValid)
         {
             city.Id = Guid.NewGuid();
             city.CountyId = vm.CountyId;
             city.CityName = vm.CityName;
-            city.CreatedBy = User.Identity!.Name;
-            city.CreatedAt = DateTime.Now.ToUniversalTime();
+            /*city.CreatedBy = User.Identity!.Name;
+            city.CreatedAt = DateTime.Now.ToUniversalTime();*/
             _uow.Cities.Add(city);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -171,10 +172,10 @@ public class CitiesController : Controller
     {
 #warning Ask if that can be improved
         var city = await _uow.Cities.FirstOrDefaultAsync(id);
-        if (await _uow.Admins.AnyAsync(c => c != null && c.CityId.Equals(id)) ||
+        /*if (await _uow.Admins.AnyAsync(c => c != null && c.CityId.Equals(id)) ||
             await _uow.Bookings.AnyAsync(c => c != null && c.CityId.Equals(id)) ||
             await _uow.Drivers.AnyAsync(c => c != null && c.CityId.Equals(id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");
+            return Content("Entity cannot be deleted because it has dependent entities!");*/
 
         if (city != null)
         {

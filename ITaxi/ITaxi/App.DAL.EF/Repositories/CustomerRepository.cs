@@ -1,4 +1,4 @@
-﻿using App.Contracts.DAL.IAppRepositories;
+﻿/*using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -79,4 +79,4 @@ public class CustomerRepository : BaseEntityRepository<Customer, AppDbContext>, 
             .ThenInclude(a => a.Translations);
         return query;
     }
-}
+}*/

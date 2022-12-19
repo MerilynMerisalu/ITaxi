@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain.Enum;
 using Base.Extensions;
@@ -213,7 +213,7 @@ public class DrivesController : Controller
         await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-    */
+    #1#
 
     /// <summary>
     ///     Search drives by inserted date
@@ -570,4 +570,4 @@ public class DrivesController : Controller
 
         return RedirectToAction(nameof(Index));
     }
-}
+}*/

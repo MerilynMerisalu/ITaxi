@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class AdminRepository : BaseEntityRepository<Admin, AppDbContext>, IAdminRepository
+/*public class AdminRepository : BaseEntityRepository<Admin, AppDbContext>, IAdminRepository
 {
     public AdminRepository(AppDbContext dbContext) : base(dbContext)
     {
@@ -55,4 +55,4 @@ public class AdminRepository : BaseEntityRepository<Admin, AppDbContext>, IAdmin
             .Include(a => a.City);
         return query;
     }
-}
+}*/

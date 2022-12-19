@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain;
 using Base.Extensions;
@@ -110,5 +110,5 @@ public class DrivesController : ControllerBase
     private bool DriveExists(Guid id)
     {
         return _uow.Drives.Exists(id);
-    }*/
-}
+    }#1#
+}*/

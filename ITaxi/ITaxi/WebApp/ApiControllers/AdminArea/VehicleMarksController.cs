@@ -1,5 +1,5 @@
 #nullable enable
-using App.Contracts.DAL;
+/*using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -88,4 +88,4 @@ public class VehicleMarksController : ControllerBase
     {
         return _uow.VehicleMarks.Exists(id);
     }
-}
+}*/

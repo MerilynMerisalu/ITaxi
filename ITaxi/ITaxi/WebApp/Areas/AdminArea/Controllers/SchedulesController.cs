@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain;
 using Base.Extensions;
@@ -36,7 +36,7 @@ public class SchedulesController : Controller
             s.UpdatedAt = s.UpdatedAt.ToLocalTime();
             /*s.NumberOfRideTimes = _uow.Schedules.NumberOfRideTimes();
             s.NumberOfTakenRideTimes = _uow.Schedules.NumberOfTakenRideTimes();
-            */
+            #1#
 
         }
 
@@ -242,4 +242,4 @@ public class SchedulesController : Controller
     {
         return _uow.Schedules.Exists(id);
     }
-}
+}*/

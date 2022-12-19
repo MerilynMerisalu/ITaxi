@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Authorization;
@@ -183,4 +183,4 @@ public class VehicleModelsController : Controller
     {
         return _uow.VehicleModels.Exists(id);
     }
-}
+}*/

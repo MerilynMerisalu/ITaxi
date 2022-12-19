@@ -1,4 +1,4 @@
-@using App.Resources.Areas.App.Domain.AdminArea
+@*@using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
 @using App.Domain.Enum
 @model IEnumerable<App.Domain.Booking>
@@ -12,10 +12,10 @@
 <p>
     <a asp-action="Create">@Common.CreateNew</a>
 </p>
-<form action="@Url.Action("SearchByCity")" method="post">
+$1$<form action="@Url.Action("SearchByCity")" method="post">
     <input type="text" name="search"/>
     <input type="submit" value="@Common.Search"/>
-</form>
+</form>#1#
 <table class="table">
     <thead>
     <tr>
@@ -144,10 +144,10 @@
                 </td>
 
             }
-            <td>
+            $1$<td>
 
-            </td>
-            <td>
+            </td>#1#
+            $1$<td>
                 @if (item.StatusOfBooking == StatusOfBooking.Declined)
                 {
                     <a hidden asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a>
@@ -157,12 +157,13 @@
                     <p style="display:inline"><a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |</p>
 #warning Needs css solution
                 }
+                #1#
 
-                @*<a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |*@
+                $1$<a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |#1#
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
             </td>
         </tr>
     }
     </tbody>
-</table>
+</table>*@

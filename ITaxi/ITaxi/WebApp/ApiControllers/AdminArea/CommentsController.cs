@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -89,4 +89,4 @@ public class CommentsController : ControllerBase
     {
         return _uow.Comments.Exists(id);
     }
-}
+}*/

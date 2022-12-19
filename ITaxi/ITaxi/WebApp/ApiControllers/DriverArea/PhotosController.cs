@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain;
 using Base.Extensions;
@@ -121,4 +121,4 @@ public class PhotosController : ControllerBase
     {
         return (_uow.Photos?.Exists(id)).GetValueOrDefault();
     }
-}
+}*/

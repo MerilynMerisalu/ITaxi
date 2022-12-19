@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -173,4 +173,4 @@ public class DisabilityTypesController : Controller
     {
         return _uow.DisabilityTypes.Exists(id);
     }
-}
+}*/

@@ -1,4 +1,4 @@
-﻿using App.Contracts.DAL.IAppRepositories;
+﻿/*using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -137,4 +137,4 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
 
         return query;
     }
-}
+}*/

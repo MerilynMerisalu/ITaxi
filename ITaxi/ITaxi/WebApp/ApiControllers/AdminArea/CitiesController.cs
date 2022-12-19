@@ -1,6 +1,7 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using App.DTO.AdminArea;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,7 @@ public class CitiesController : ControllerBase
 
     // GET: api/Cities/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<City>> GetCity(Guid id)
+    public async Task<ActionResult<CityDTO>> GetCity(Guid id)
     {
         var city = await _uow.Cities.FirstOrDefaultCityWithoutCountyAsync(id);
 
@@ -42,7 +43,7 @@ public class CitiesController : ControllerBase
     // PUT: api/Cities/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutCity(Guid id, City city)
+    public async Task<IActionResult> PutCity(Guid id, CityDTO city)
     {
         if (id != city.Id) return BadRequest();
 
@@ -64,7 +65,7 @@ public class CitiesController : ControllerBase
     // POST: api/Cities
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<City>> PostCity(City city)
+    public async Task<ActionResult<City>> PostCity(CityDTO city)
     {
         _uow.Cities.Add(city);
         await _uow.SaveChangesAsync();

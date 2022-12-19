@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain;
 using Base.Extensions;
@@ -124,4 +124,4 @@ public class CommentsController : ControllerBase
     {
         return _uow.Comments.Exists(id);
     }
-}
+}*/

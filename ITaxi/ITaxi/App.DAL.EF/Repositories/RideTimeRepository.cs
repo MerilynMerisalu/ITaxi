@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
+/*
 public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, IRideTimeRepository
 {
     public RideTimeRepository(AppDbContext dbContext) : base(dbContext)
@@ -311,4 +312,5 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
         return query;
     }
    
-}
+*/
+//}

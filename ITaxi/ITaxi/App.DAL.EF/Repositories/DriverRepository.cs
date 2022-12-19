@@ -1,4 +1,4 @@
-﻿using App.Contracts.DAL.IAppRepositories;
+﻿/*using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -45,4 +45,4 @@ public class DriverRepository : BaseEntityRepository<Driver, AppDbContext>, IDri
             .Include(a => a.City);
         return query;
     }
-}
+}*/

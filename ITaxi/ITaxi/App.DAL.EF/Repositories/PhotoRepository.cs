@@ -1,4 +1,4 @@
-﻿using App.Contracts.DAL.IAppRepositories;
+﻿/*using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -53,4 +53,4 @@ public class PhotoRepository : BaseEntityRepository<Photo, AppDbContext>, IPhoto
         query = query.Include(c => c.AppUser).Where(p => p.AppUser!.Id.Equals(userId));
         return query;
     }
-}
+}*/

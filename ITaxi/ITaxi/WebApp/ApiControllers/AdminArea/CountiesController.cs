@@ -2,6 +2,7 @@
 using App.Contracts.DAL;
 using App.Domain;
 using App.Domain.DTO.AdminArea;
+using App.DTO.AdminArea;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,26 +23,27 @@ public class CountiesController : ControllerBase
 
     // GET: api/Counties
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<County>>> GetCounties()
+    public async Task<ActionResult<IEnumerable<CountyDTO>>> GetCounties()
     {
         var res = await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync();
         foreach (var county in res)
         {
-            county.CreatedAt = county.CreatedAt.ToLocalTime();
-            county.UpdatedAt = county.UpdatedAt.ToLocalTime();
+            /*county.CreatedAt = county.CreatedAt.ToLocalTime();
+            county.UpdatedAt = county.UpdatedAt.ToLocalTime();*/
         }
         return Ok(res);
     }
 
     // GET: api/Counties/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<County>> GetCounty(Guid id)
+    public async Task<ActionResult<CountyDTO>> GetCounty(Guid id)
     {
         var county = await _uow.Counties.FirstOrDefaultAsync(id);
 
         if (county == null) return NotFound();
-        county.CreatedAt = county.CreatedAt.ToLocalTime();
+        /*county.CreatedAt = county.CreatedAt.ToLocalTime();
         county.UpdatedAt = county.UpdatedAt.ToLocalTime();
+        */
         
 
         return county;
@@ -61,8 +63,8 @@ public class CountiesController : ControllerBase
 
        
         county.CountyName = countyDTO.CountyName;
-        county.UpdatedBy = User.Identity!.Name;
-        county.UpdatedAt = DateTime.Now.ToUniversalTime();
+        /*county.UpdatedBy = User.Identity!.Name;
+        county.UpdatedAt = DateTime.Now.ToUniversalTime();*/
         _uow.Counties.Update(county);
         await _uow.SaveChangesAsync();
 
@@ -74,13 +76,13 @@ public class CountiesController : ControllerBase
     // POST: api/Counties
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<County>> PostCounty(County county)
+    public async Task<ActionResult<County>> PostCounty(CountyDTO county)
     {
         
-        county.CreatedBy = User.Identity!.Name;
+        /*county.CreatedBy = User.Identity!.Name;
         county.CreatedAt = DateTime.Now.ToUniversalTime();
         county.UpdatedBy = User.Identity!.Name;
-        county.UpdatedAt = DateTime.Now.ToUniversalTime();
+        county.UpdatedAt = DateTime.Now.ToUniversalTime();*/
         _uow.Counties.Add(county);
         await _uow.SaveChangesAsync();
 

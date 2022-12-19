@@ -1,4 +1,4 @@
-using App.Contracts.DAL;
+/*using App.Contracts.DAL;
 using App.Domain;
 using App.Domain.Enum;
 using Base.Extensions;
@@ -161,7 +161,7 @@ public class BookingsController : Controller
         vm.PickUpDateAndTime = booking.PickUpDateAndTime;
         return View(vm);
     }
-    */
+    #1#
 
     // POST: AdminArea/Bookings/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -230,7 +230,7 @@ public class BookingsController : Controller
         }
 
         return View(vm);
-    }*/
+    }#1#
 
     // GET: CustomerArea/Bookings/Decline/5
     public async Task<IActionResult> Decline(Guid? id)
@@ -345,4 +345,4 @@ public class BookingsController : Controller
         var results = await _uow.Bookings.SearchByCityAsync(search, userId, roleName);
         return View(nameof(Index), results);
     }
-}
+}*/

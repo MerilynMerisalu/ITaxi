@@ -1,6 +1,7 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
 using App.DAL.EF.Mappers;
 using App.Domain;
+using Base.Contracts;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +9,8 @@ namespace App.DAL.EF.Repositories;
 
 public class CountyRepository : BaseEntityRepository<App.DTO.AdminArea.CountyDTO,App.Domain.County, AppDbContext>, ICountyRepository
 {
-    public CountyRepository(AppDbContext dbContext) : base(dbContext, new CountyMapper())
+    public CountyRepository(AppDbContext dbContext, IMapper<App.DTO.AdminArea.CountyDTO, App.Domain.County> mapper) :
+        base(dbContext, mapper)
     {
     }
 

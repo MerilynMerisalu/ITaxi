@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 
 using App.Contracts.DAL;
 using App.Domain;
@@ -127,5 +127,5 @@ public class VehiclesController : ControllerBase
             
         }
         return _uow.Vehicles.Exists(id);
-    }*/
-}
+    }#1#
+}*/

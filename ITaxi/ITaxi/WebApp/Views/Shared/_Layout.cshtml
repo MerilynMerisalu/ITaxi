@@ -61,12 +61,13 @@
                         <span class="navbar-brand mb-0 h1">@App.Resources.Areas.WebApp.Views.Shared._Layout.AdminSection</span>
                     </div>
                 </nav>
-                <li>
+                @*<li>
                     <a class="dropdown-item" asp-area="AdminArea"
                        asp-controller="Admins" asp-action="Index">
                         @App.Resources.Areas.WebApp.Views.Shared._Layout.Admins
                     </a>
                 </li>
+                *@
                 
                 <li>
                     <a class="dropdown-item" asp-area="AdminArea"
@@ -83,7 +84,7 @@
                     </a>
                 </li>
                 
-                <li>
+                @*<li>
                     <a class="dropdown-item" asp-area="AdminArea"
                        asp-controller="DriverLicenseCategories"
                        asp-action="Index">
@@ -130,7 +131,7 @@
                        asp-controller="Customers" asp-action="Index">
                         @App.Resources.Areas.WebApp.Views.Shared._Layout.Customers
                     </a>
-                </li>
+                </li>*@
                 
                 <li>
                     <a class="dropdown-item" asp-area="AdminArea"
@@ -149,12 +150,13 @@
                 </nav>
             </li>
             
-            <li>
+            @*<li>
                 <a class="dropdown-item" asp-area="AdminArea"
                    asp-controller="Vehicles" asp-action="Index">
                     @App.Resources.Areas.WebApp.Views.Shared._Layout.Vehicles
                 </a>
             </li>
+            *@
             
             <li>
                 <a class="dropdown-item" asp-area="AdminArea"
@@ -163,7 +165,7 @@
                 </a>
             </li>
             
-            <li>
+            @*<li>
                 <a class="dropdown-item" asp-area="AdminArea"
                    asp-controller="Schedules" asp-action="Index">
                     @App.Resources.Areas.WebApp.Views.Shared._Layout.Schedules
@@ -183,6 +185,7 @@
                     @App.Resources.Areas.WebApp.Views.Shared._Layout.Drives
                 </a>
             </li>
+            *@
             
             <li>
                 <nav class="navbar navbar-light bg-light">
@@ -194,7 +197,7 @@
                 </nav>
             </li>
 
-            <li>
+            @*<li>
                 <a class="dropdown-item" asp-area="AdminArea"
                    asp-controller="Bookings" asp-action="Index">
                     @App.Resources.Areas.WebApp.Views.Shared._Layout.Bookings
@@ -206,7 +209,7 @@
                    asp-controller="Comments" asp-action="Index">
                     @App.Resources.Areas.WebApp.Views.Shared._Layout.Comments
                 </a>
-            </li>
+            </li>*@
             
             
         </ul>
@@ -221,7 +224,7 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-            <li>
+            @*<li>
                 <a class="dropdown-item" asp-area="DriverArea"
                    asp-controller="Vehicles" asp-action="Index">
                     @App.Resources.Areas.WebApp.Views.Shared._Layout.Vehicles
@@ -234,8 +237,9 @@
                     @App.Resources.Areas.WebApp.Views.Shared._Layout.Schedules
                 </a>
             </li>
+            *@
 
-            <li>
+            @*<li>
                 <a class="dropdown-item" asp-area="DriverArea"
                    asp-controller="RideTimes" asp-action="Index">
                     @App.Resources.Areas.WebApp.Views.Shared._Layout.RideTimes
@@ -247,7 +251,7 @@
                    asp-controller="Drives" asp-action="Index">
                     @App.Resources.Areas.WebApp.Views.Shared._Layout.Drives
                 </a>
-            </li>
+            </li>*@
             
             <li>
                 <a class="dropdown-item" asp-area="AdminArea"
@@ -268,19 +272,20 @@
             @App.Resources.Areas.WebApp.Views.Shared._Layout.CustomerArea
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li>
+            @*<li>
                 <a class="dropdown-item" asp-area="CustomerArea"
                    asp-controller="Bookings" asp-action="Index">
                     @App.Resources.Areas.WebApp.Views.Shared._Layout.Bookings
                 </a>
             </li>
+            *@
             
-            <li>
+            @*<li>
                 <a class="dropdown-item" asp-area="CustomerArea"
                    asp-controller="Comments" asp-action="Index">
                     @App.Resources.Areas.WebApp.Views.Shared._Layout.Comments
                 </a>
-            </li>
+            </li>*@
 
         </ul>
     </li>

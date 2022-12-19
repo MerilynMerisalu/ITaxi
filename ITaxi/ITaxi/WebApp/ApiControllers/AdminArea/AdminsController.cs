@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -98,4 +98,4 @@ public class AdminsController : ControllerBase
     {
         return _uow.Admins.Exists(id);
     }
-}
+}*/

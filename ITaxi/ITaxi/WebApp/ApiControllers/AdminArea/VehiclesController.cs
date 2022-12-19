@@ -1,4 +1,4 @@
-#nullable disable
+/*#nullable disable
 using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -87,4 +87,4 @@ public class VehiclesController : ControllerBase
     {
         return _uow.Vehicles.Exists(id);
     }
-}
+}*/

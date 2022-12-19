@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using System.Security.Claims;
 using App.Contracts.DAL;
 using App.Domain;
@@ -232,4 +232,4 @@ public class AdminsController : Controller
     {
         return _uow.Admins.Exists(id);
     }
-}
+}*/

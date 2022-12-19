@@ -5,7 +5,7 @@ using App.Domain.DTO.AdminArea;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
-namespace App.DAL.EF.Repositories;
+/*namespace App.DAL.EF.Repositories;
 
 public class DisabilityTypeRepository : BaseEntityRepository<DisabilityType, AppDbContext>,
     IDisabilityTypeRepository
@@ -67,4 +67,4 @@ public class DisabilityTypeRepository : BaseEntityRepository<DisabilityType, App
             .ThenInclude(c => c.Translations);
         return query;
     }
-}
+}*/

@@ -1,6 +1,7 @@
 #nullable enable
 using App.Contracts.DAL;
 using App.Domain;
+using App.DTO.AdminArea;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -65,14 +66,14 @@ public class CountiesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateEditCountyViewModel vm, County county)
+    public async Task<IActionResult> Create(CreateEditCountyViewModel vm, CountyDTO county)
     {
         if (ModelState.IsValid)
         {
             county.Id = Guid.NewGuid();
             county.CountyName = vm.CountyName;
-            county.CreatedBy = User.Identity!.Name;
-            county.CreatedAt = DateTime.Now.ToUniversalTime();
+            /*county.CreatedBy = User.Identity!.Name;
+            county.CreatedAt = DateTime.Now.ToUniversalTime();*/
             _uow.Counties.Add(county);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

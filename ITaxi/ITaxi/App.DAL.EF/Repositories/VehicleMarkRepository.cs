@@ -1,4 +1,4 @@
-﻿using App.Contracts.DAL.IAppRepositories;
+﻿/*using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -20,4 +20,4 @@ public class VehicleMarkRepository : BaseEntityRepository<VehicleMark, AppDbCont
     {
         return base.CreateQuery(noTracking).OrderBy(v => v.VehicleMarkName).ToList();
     }
-}
+}*/

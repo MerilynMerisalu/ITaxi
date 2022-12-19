@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
@@ -357,7 +357,7 @@ public class BookingsController : Controller
         vm.PickUpDateAndTime = Convert.ToDateTime(booking.PickUpDateAndTime.ToLocalTime().ToString("g"));
         return View(vm);
     }
-    */
+    #1#
 
     // POST: AdminArea/Bookings/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -422,7 +422,7 @@ public class BookingsController : Controller
         }
 
         return View(vm);
-    } */
+    } #1#
 
     // GET: AdminArea/Bookings/Decline/5
     public async Task<IActionResult> Decline(Guid? id)
@@ -612,4 +612,4 @@ public class BookingsController : Controller
         var results = await _uow.Bookings.SearchByCityAsync(search, null, roleName );
         return View(nameof(Index), results);
     }
-}
+}*/

@@ -1,3 +1,4 @@
+/*
 #nullable disable
 using App.Contracts.DAL;
 using App.Domain;
@@ -141,4 +142,5 @@ public class PhotosController : Controller
         return _uow.Photos.Exists(id);
     }
 }
+*/
 

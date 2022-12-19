@@ -1,4 +1,4 @@
-﻿using App.Contracts.DAL.IAppRepositories;
+﻿/*using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
 using App.Domain.Enum;
 using Base.DAL.EF;
@@ -179,4 +179,4 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
             .ThenInclude(v => v.Translations).Where(u => u.Driver!.AppUserId.Equals(userId));
         return query;
     }
-}
+}*/
