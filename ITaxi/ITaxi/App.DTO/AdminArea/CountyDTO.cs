@@ -5,7 +5,7 @@ using Base.Resources;
 
 namespace App.DTO.AdminArea;
 
-public class CountyDTO: DomainEntityId
+public class CountyDTO: DomainEntityMetaId
 {
     [Required(ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "RequiredAttributeErrorMessage")]

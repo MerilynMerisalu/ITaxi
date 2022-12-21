@@ -6,8 +6,14 @@ public class AutoMapperConfig: Profile
 {
     public AutoMapperConfig()
     {
-        CreateMap(typeof(App.DTO.AdminArea.CountyDTO), typeof(App.Domain.County)).ReverseMap();
-        CreateMap(typeof(App.DTO.AdminArea.CityDTO), typeof(App.Domain.City)).ReverseMap();
-        CreateMap(typeof(App.DTO.Identity.AppUser), typeof(App.Domain.Identity.AppUser)).ReverseMap();
+        CreateMap<App.DTO.AdminArea.CountyDTO, App.Domain.County>()
+            .ReverseMap()
+            .ForMember(dto => dto.CreatedAt, m => m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt, m => m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
+        CreateMap<App.DTO.AdminArea.CityDTO, App.Domain.City>()
+            .ReverseMap();
+            //.ForMember(dto => dto.CreatedAt, m => m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            //.ForMember(dto => dto.UpdatedAt, m => m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
+        CreateMap<App.DTO.Identity.AppUser, App.Domain.Identity.AppUser>().ReverseMap();
     }
 }

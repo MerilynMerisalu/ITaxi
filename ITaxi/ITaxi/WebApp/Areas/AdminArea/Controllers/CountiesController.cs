@@ -22,15 +22,8 @@ public class CountiesController : Controller
 
     // GET: AdminArea/Counties
     public async Task<IActionResult> Index()
-    {
-#warning Should this be a repo method
-        var res = await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync();
-        /*foreach (var county in res)
-        {
-            county.CreatedAt = county.CreatedAt.ToLocalTime();
-            county.UpdatedAt = county.UpdatedAt.ToLocalTime();
-        }*/
-
+   { 
+       var res = await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync();
         return View(res);
     }
 

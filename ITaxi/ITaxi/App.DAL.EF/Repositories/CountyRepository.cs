@@ -27,7 +27,8 @@ public class CountyRepository : BaseEntityRepository<App.DTO.AdminArea.CountyDTO
     public async Task<IEnumerable<App.DTO.AdminArea.CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true)
     {
         return (await CreateQuery(noTracking).OrderBy(c => c.CountyName).ToListAsync())
-            .Select(e => Mapper.Map(e)!);
+            .Select(e => Mapper.Map(e)!)
+            ;//.ToList();
     }
 
     public IEnumerable<App.DTO.AdminArea.CountyDTO> GetAllCountiesOrderedByCountyName(bool noTracking = true)

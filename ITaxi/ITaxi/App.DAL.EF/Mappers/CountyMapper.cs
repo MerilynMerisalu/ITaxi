@@ -7,5 +7,6 @@ public class CountyMapper:BaseMapper<App.DTO.AdminArea.CountyDTO,App.Domain.Coun
 {
     public CountyMapper(IMapper mapper) : base(mapper)
     {
+        
     }
 }
