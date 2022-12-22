@@ -92,12 +92,12 @@ public class BaseEntityService<TBllEntity, TDalEntity,TRepository, TKey>:
 
     public TBllEntity? FirstOrDefault(TKey id, bool noTracking = true)
     {
-        return Mapper.Map(Repository.FirstOrDefault(id));
+        return Mapper.Map(Repository.FirstOrDefault(id, noTracking));
     }
 
     public IEnumerable<TBllEntity> GetAll(bool noTracking = true)
     {
-        return Repository.GetAll().Select(e => Mapper.Map(e))!;
+        return Repository.GetAll(noTracking).Select(e => Mapper.Map(e))!;
     }
 
     public bool Exists(TKey id)
@@ -118,7 +118,7 @@ public class BaseEntityService<TBllEntity, TDalEntity,TRepository, TKey>:
 
     public TBllEntity? First(bool noTracking = true)
     {
-        return Mapper.Map(Repository.First());
+        return Mapper.Map(Repository.First(noTracking));
     }
 
     public List<TBllEntity> AddRange(List<TBllEntity> entities)
@@ -135,13 +135,13 @@ public class BaseEntityService<TBllEntity, TDalEntity,TRepository, TKey>:
 
     public async Task<TBllEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true)
     {
-        var dalEntity = await Repository.FirstOrDefaultAsync(id);
+        var dalEntity = await Repository.FirstOrDefaultAsync(id, noTracking);
         return Mapper.Map(dalEntity);
     }
 
     public async Task<IEnumerable<TBllEntity>> GetAllAsync(bool noTracking = true)
     {
-        return (await Repository.GetAllAsync()).Select(e => Mapper.Map(e))!;
+        return (await Repository.GetAllAsync(noTracking)).Select(e => Mapper.Map(e))!;
     }
 
     public async Task<bool> ExistsAsync(TKey id)
@@ -167,6 +167,6 @@ public class BaseEntityService<TBllEntity, TDalEntity,TRepository, TKey>:
 
     public async Task<TBllEntity?> FirstAsync(bool noTracking = true)
     {
-        return Mapper.Map(await Repository.FirstAsync());
+        return Mapper.Map(await Repository.FirstAsync(noTracking));
     }
 }
