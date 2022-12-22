@@ -37,10 +37,10 @@ public class CountiesController : Controller
         if (county == null) return NotFound();
 
         vm.CountyName = county.CountyName;
-        /*vm.CreatedAt = county.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = county.CreatedAt.ToLocalTime().ToString("G");
         vm.CreatedBy = county.CreatedBy!;
         vm.UpdatedAt = county.UpdatedAt.ToLocalTime().ToString("G");
-        vm.UpdatedBy = county.UpdatedBy!;*/
+        vm.UpdatedBy = county.UpdatedBy!;
         vm.Id = county.Id;
 
         return View(vm);
@@ -65,8 +65,8 @@ public class CountiesController : Controller
         {
             county.Id = Guid.NewGuid();
             county.CountyName = vm.CountyName;
-            /*county.CreatedBy = User.Identity!.Name;
-            county.CreatedAt = DateTime.Now.ToUniversalTime();*/
+            county.CreatedBy = User.Identity!.Name;
+            county.CreatedAt = DateTime.Now.ToUniversalTime();
             _uow.Counties.Add(county);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -104,8 +104,8 @@ public class CountiesController : Controller
                 try
                 {
                     county.CountyName = vm.CountyName;
-                    /*county.UpdatedBy = User.Identity!.Name!;
-                    county.UpdatedAt = DateTime.Now.ToUniversalTime();*/
+                    county.UpdatedBy = User.Identity!.Name!;
+                    county.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _uow.Counties.Update(county);
                     await _uow.SaveChangesAsync();
                 }
@@ -132,10 +132,10 @@ public class CountiesController : Controller
         if (county == null) return NotFound();
 
         vm.CountyName = county.CountyName;
-        /*vm.CreatedAt = county.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = county.CreatedAt.ToLocalTime().ToString("G");
         vm.CreatedBy = county.CreatedBy ?? "";
         vm.UpdatedAt = county.UpdatedAt.ToLocalTime().ToString("G");
-        vm.UpdatedBy = county.UpdatedBy ?? "";*/
+        vm.UpdatedBy = county.UpdatedBy ?? "";
 
         return View(vm);
     }
@@ -146,11 +146,11 @@ public class CountiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var county = await _uow.Counties.FirstOrDefaultAsync(id);
+        var county = await _uow.Counties.RemoveAsync(id);
         if (await _uow.Cities.AnyAsync(c => c!.CountyId.Equals(id)))
             return Content("Entity cannot be deleted because it has dependent entities!");
 
-        if (county != null)
+        if (true)
         {
             _uow.Counties.Remove(county);
             await _uow.SaveChangesAsync();

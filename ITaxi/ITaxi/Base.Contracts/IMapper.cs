@@ -1,4 +1,6 @@
-﻿namespace Base.Contracts;
+﻿using System.Linq.Expressions;
+
+namespace Base.Contracts;
 
 public interface IMapper<TOut, TIn>
 {

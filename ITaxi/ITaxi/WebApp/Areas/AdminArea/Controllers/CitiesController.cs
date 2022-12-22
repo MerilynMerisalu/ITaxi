@@ -171,13 +171,13 @@ public class CitiesController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
 #warning Ask if that can be improved
-        var city = await _uow.Cities.FirstOrDefaultAsync(id);
+        var city = await _uow.Cities.RemoveAsync(id);
         /*if (await _uow.Admins.AnyAsync(c => c != null && c.CityId.Equals(id)) ||
             await _uow.Bookings.AnyAsync(c => c != null && c.CityId.Equals(id)) ||
             await _uow.Drivers.AnyAsync(c => c != null && c.CityId.Equals(id)))
             return Content("Entity cannot be deleted because it has dependent entities!");*/
 
-        if (city != null)
+        if (true)
         {
             _uow.Cities.Remove(city);
             await _uow.SaveChangesAsync();
