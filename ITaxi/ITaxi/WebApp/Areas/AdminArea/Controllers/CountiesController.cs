@@ -146,16 +146,12 @@ public class CountiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var county = await _uow.Counties.RemoveAsync(id);
-        if (await _uow.Cities.AnyAsync(c => c!.CountyId.Equals(id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");
-
-        if (true)
-        {
-            _uow.Counties.Remove(county);
-            await _uow.SaveChangesAsync();
-        }
-
+        //if (await _uow.Counties.HasCities(id))
+        //    return Content("Entity cannot be deleted because it has dependent entities!");
+        
+        await _uow.Counties.RemoveAsync(id);
+        await _uow.SaveChangesAsync();
+       
         return RedirectToAction(nameof(Index));
     }
 

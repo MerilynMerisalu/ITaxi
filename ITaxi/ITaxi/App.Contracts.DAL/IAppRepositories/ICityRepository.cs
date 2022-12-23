@@ -11,4 +11,5 @@ public interface ICityRepository : IEntityRepository<CityDTO>
     Task<IEnumerable<CityDTO>> GetAllOrderedCitiesAsync();
     Task<CityDTO?> FirstOrDefaultCityWithoutCountyAsync(Guid id);
     IEnumerable<CityDTO> GetAllOrderedCitiesWithoutCounty();
+   
 }

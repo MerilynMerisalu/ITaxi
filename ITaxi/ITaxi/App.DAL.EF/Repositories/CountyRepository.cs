@@ -1,6 +1,7 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
 using App.DAL.EF.Mappers;
 using App.Domain;
+using App.DTO.AdminArea;
 using Base.Contracts;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -24,13 +25,18 @@ public class CountyRepository : BaseEntityRepository<App.DTO.AdminArea.CountyDTO
         return CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<App.DTO.AdminArea.CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true)
+    public async Task<IEnumerable<App.DTO.AdminArea.CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(
+        bool noTracking = true)
     {
         return (await CreateQuery(noTracking).OrderBy(c => c.CountyName).ToListAsync())
             .Select(e => Mapper.Map(e)!)
-            ;//.ToList();
+            ; //.ToList();
     }
 
+    public async Task<bool> HasCities(Guid countyId)
+    {
+        return await RepoDbContext.Cities.AnyAsync(x => x.CountyId == countyId);
+    }
     public IEnumerable<App.DTO.AdminArea.CountyDTO> GetAllCountiesOrderedByCountyName(bool noTracking = true)
     {
         return (CreateQuery(noTracking).OrderBy(c => c.CountyName).ToList()

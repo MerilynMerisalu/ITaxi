@@ -21,4 +21,14 @@ public class BaseMapper<TOut, TIn>: IMapper<TOut,TIn>
     {
         return Mapper.Map<TIn>(entity);
     }
+    
+    //public IQueryable<TOut> MapQuery(IQueryable<TIn> entityQuery)
+    //{
+    //    return Mapper.ProjectTo<TOut>(entityQuery);
+    //}
+    //
+    //public IQueryable<TIn> MapQuery(IQueryable<TOut> entityQuery)
+    //{
+    //    return Mapper.ProjectTo<TIn>(entityQuery);
+    //}
 }

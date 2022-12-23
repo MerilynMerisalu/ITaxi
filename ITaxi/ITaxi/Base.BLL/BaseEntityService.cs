@@ -108,8 +108,13 @@ public class BaseEntityService<TBllEntity, TDalEntity,TRepository, TKey>:
     public bool Any(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
     {
         throw new NotImplementedException();
-
+        //return Repository.CreateQuery(noTracking).Any(filter, noTracking);
     }
+    
+    //public Task<bool> AnyAsync(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
+    //{
+    //    return Repository.AnyAsync(filter, noTracking);
+    //}
 #warning Ask about this
     public TBllEntity? SingleOrDefault(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
     {

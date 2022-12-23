@@ -62,7 +62,18 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
 
     public virtual TDalEntity Remove(TDalEntity entity)
     {
+        /*
+        TDomainEntity domainEntity = Mapper.Map(entity)!;
+        //TDomainEntity removeResponse = RepoDbSet.Remove(domainEntity).Entity;
+        var entry = RepoDbSet.Entry(domainEntity);
+        entry.State = EntityState.Deleted;
+        RepoDbContext.SaveChanges();
+        
+        return Mapper.Map(entry.Entity)!;
+        */
+        
         return Mapper.Map(RepoDbSet.Remove(Mapper.Map(entity)!).Entity)!;
+        //return Mapper.Map(RepoDbContext.Remove(Mapper.Map(entity)!).Entity)!;
     }
 
     public virtual TDalEntity Remove(TKey id)
@@ -174,12 +185,9 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
 
     public virtual async Task<bool> AnyAsync(Expression<Func<TDalEntity?, bool>> filter, bool noTracking = true)
     {
-        return  await CreateQuery(noTracking).Select(e => Mapper.Map(e)).AnyAsync(filter);
-        
-        
+        return await CreateQuery(noTracking).Select(x => Mapper.Map(x)).Where(filter).AnyAsync();
     }
     
-
     public virtual async Task<TDalEntity?> SingleOrDefaultAsync(Expression<Func<TDalEntity?, bool>> filter, 
         bool noTracking = true)
     {
