@@ -29,8 +29,7 @@ public class CountyRepository : BaseEntityRepository<App.DTO.AdminArea.CountyDTO
         bool noTracking = true)
     {
         return (await CreateQuery(noTracking).OrderBy(c => c.CountyName).ToListAsync())
-            .Select(e => Mapper.Map(e)!)
-            ; //.ToList();
+            .Select(e => Mapper.Map(e)!); 
     }
 
     public async Task<bool> HasCities(Guid countyId)

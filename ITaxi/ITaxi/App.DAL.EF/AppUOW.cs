@@ -35,9 +35,9 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
         _mapper = mapper;
     }
 
-    public ICountyRepository Counties => _counties ?? new CountyRepository(UOWDbContext
+    public virtual ICountyRepository Counties => _counties ?? new CountyRepository(UOWDbContext
     , new CountyMapper(_mapper));
-    public ICityRepository Cities => _cities ?? new CityRepository(UOWDbContext,
+    public virtual ICityRepository Cities => _cities ?? new CityRepository(UOWDbContext,
         new CityMapper(_mapper));
     /*public IAdminRepository Admins => _admins ?? new AdminRepository(UOWDbContext);*/
     //public IBookingRepository Bookings => _bookings ?? new BookingRepository(UOWDbContext);

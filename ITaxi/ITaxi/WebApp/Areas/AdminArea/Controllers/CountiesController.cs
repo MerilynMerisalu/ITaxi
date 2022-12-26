@@ -24,6 +24,7 @@ public class CountiesController : Controller
     public async Task<IActionResult> Index()
    { 
        var res = await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync();
+       
         return View(res);
     }
 
@@ -142,7 +143,7 @@ public class CountiesController : Controller
 
     // POST: AdminArea/Counties/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {

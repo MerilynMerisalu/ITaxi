@@ -14,5 +14,6 @@ public class CountyDTO: DomainEntityMetaId
         , Name = nameof(CountyName))]
     public string CountyName { get; set; } = default!;
 
-    public ICollection<City>? Cities { get; set; }
+    //public ICollection<City>? Cities { get; set; }
+    public int NumberOfCities { get; set; }
 }
