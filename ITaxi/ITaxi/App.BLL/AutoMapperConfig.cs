@@ -1,21 +1,20 @@
 ﻿using App.DAL.DTO.AdminArea;
-using App.DAL.DTO.Identity;
 using AutoMapper;
 
-namespace App.DAL.EF;
+namespace App.BLL;
 
 public class AutoMapperConfig: Profile
 {
     public AutoMapperConfig()
     {
-        CreateMap<CountyDTO, App.Domain.County>()
+        CreateMap<App.BLL.DTO.AdminArea.CountyDTO, App.DAL.DTO.AdminArea.CountyDTO>()
             .ReverseMap()
             .ForMember(dto => dto.CreatedAt, m => m.MapFrom(x => x.CreatedAt.ToLocalTime()))
             .ForMember(dto => dto.UpdatedAt, m => m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
-        CreateMap<CityDTO, App.Domain.City>()
+        CreateMap<App.BLL.DTO.AdminArea.CityDTO, App.DAL.DTO.AdminArea.CityDTO>()
             .ReverseMap();
             //.ForMember(dto => dto.CreatedAt, m => m.MapFrom(x => x.CreatedAt.ToLocalTime()))
             //.ForMember(dto => dto.UpdatedAt, m => m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
-        CreateMap<AppUser, App.Domain.Identity.AppUser>().ReverseMap();
+        CreateMap<App.BLL.DTO.Identity.AppUser, App.DAL.DTO.Identity.AppUser>().ReverseMap();
     }
 }

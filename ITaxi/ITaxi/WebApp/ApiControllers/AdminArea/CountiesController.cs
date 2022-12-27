@@ -1,8 +1,8 @@
 #nullable enable
 using App.Contracts.DAL;
+using App.DAL.DTO.AdminArea;
 using App.Domain;
 using App.Domain.DTO.AdminArea;
-using App.DTO.AdminArea;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 using App.Contracts.DAL.IAppRepositories;
+using App.DAL.DTO.AdminArea;
 using App.DAL.EF.Mappers;
 using App.Domain;
-using App.DTO.AdminArea;
 using Base.Contracts;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,7 @@ namespace App.DAL.EF.Repositories;
 
 public class CityRepository : BaseEntityRepository<CityDTO,City, AppDbContext>, ICityRepository
 {
-    public CityRepository(AppDbContext dbContext, IMapper<App.DTO.AdminArea.CityDTO, App.Domain.City> mapper) : 
+    public CityRepository(AppDbContext dbContext, IMapper<CityDTO, App.Domain.City> mapper) : 
         base(dbContext, mapper)
     {
     }

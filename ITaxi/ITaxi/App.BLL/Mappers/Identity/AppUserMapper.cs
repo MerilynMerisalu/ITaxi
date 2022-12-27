@@ -1,7 +1,7 @@
 ﻿using App.DAL.DTO.Identity;
 using Base.Contracts;
 
-namespace App.DAL.EF.Mappers.Identity;
+namespace App.BLL.Mappers.Identity;
 
 public class AppUserMapper: IMapper<AppUser, App.Domain.Identity.AppUser>
 {

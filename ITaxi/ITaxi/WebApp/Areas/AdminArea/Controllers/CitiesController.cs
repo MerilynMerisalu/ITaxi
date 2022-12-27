@@ -1,7 +1,7 @@
 #nullable enable
-using App.Contracts.DAL;
-using App.Domain;
-using App.DTO.AdminArea;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,20 +11,20 @@ using WebApp.Areas.AdminArea.ViewModels;
 namespace WebApp.Areas.AdminArea.Controllers;
 
 [Area(nameof(AdminArea))]
-[Authorize(Roles = nameof(Admin))]
+[Authorize(Roles = "Admin")]
 public class CitiesController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public CitiesController(IAppUnitOfWork uow)
+    public CitiesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: AdminArea/Cities
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.Cities.GetAllOrderedCitiesAsync();
+        var res = await _appBLL.Cities.GetAllOrderedCitiesAsync();
 #warning Should this be a repo method
         /*foreach (var city in res)
         {
@@ -41,7 +41,7 @@ public class CitiesController : Controller
         if (id == null) return NotFound();
 
         var vm = new DetailsDeleteCityViewModel();
-        var city = await _uow.Cities.FirstOrDefaultAsync(id.Value);
+        var city = await _appBLL.Cities.FirstOrDefaultAsync(id.Value);
         if (city == null) return NotFound();
 
         vm.Id = city.Id;
@@ -61,8 +61,8 @@ public class CitiesController : Controller
     {
         var vm = new CreateEditCityViewModel();
         
-        vm.Counties = new SelectList(await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync(),
-            nameof(County.Id), nameof(County.CountyName));
+        vm.Counties = new SelectList(await _appBLL.Counties.GetAllAsync(),
+            nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
         return View(vm);
     }
 
@@ -78,10 +78,10 @@ public class CitiesController : Controller
             city.Id = Guid.NewGuid();
             city.CountyId = vm.CountyId;
             city.CityName = vm.CityName;
-            /*city.CreatedBy = User.Identity!.Name;
-            city.CreatedAt = DateTime.Now.ToUniversalTime();*/
-            _uow.Cities.Add(city);
-            await _uow.SaveChangesAsync();
+            //city.CreatedBy = User.Identity!.Name;
+            //city.CreatedAt = DateTime.Now.ToUniversalTime();*/
+            _appBLL.Cities.Add(city);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -95,11 +95,11 @@ public class CitiesController : Controller
         var vm = new CreateEditCityViewModel();
         if (id == null) return NotFound();
 
-        var city = await _uow.Cities.FirstOrDefaultAsync(id.Value);
+        var city = await _appBLL.Cities.FirstOrDefaultAsync(id.Value);
         if (city == null) return NotFound();
 
-        vm.Counties = new SelectList(await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync(),
-            nameof(County.Id), nameof(County.CountyName));
+        vm.Counties = new SelectList(await _appBLL.Counties.GetAllAsync(),
+            nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
         vm.CityName = city.CityName;
         vm.CountyId = city.CountyId;
         
@@ -113,7 +113,7 @@ public class CitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditCityViewModel vm)
     {
-        var city = await _uow.Cities.FirstOrDefaultAsync(id);
+        var city = await _appBLL.Cities.FirstOrDefaultAsync(id);
 
         if (id != city!.Id) return NotFound();
 
@@ -123,12 +123,12 @@ public class CitiesController : Controller
             {
                 city.Id = id;
                 city.CountyId = vm.CountyId;
-                city.County = await _uow.Counties.SingleOrDefaultAsync(c => c!.Id.Equals(vm.CountyId));
+                city.County = await _appBLL.Counties.SingleOrDefaultAsync(c => c!.Id.Equals(vm.CountyId));
                 city.CityName = vm.CityName;
                 /*city.UpdatedBy = User.Identity!.Name;
                 city.UpdatedAt = DateTime.Now.ToUniversalTime()*/;
-                _uow.Cities.Update(city);
-                await _uow.SaveChangesAsync();
+                _appBLL.Cities.Update(city);
+                await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -149,7 +149,7 @@ public class CitiesController : Controller
         var vm = new DetailsDeleteCityViewModel();
         if (id == null) return NotFound();
 
-        var city = await _uow.Cities.FirstOrDefaultAsync(id.Value);
+        var city = await _appBLL.Cities.FirstOrDefaultAsync(id.Value);
         if (city == null) return NotFound();
 
         vm.CityName = city.CityName;
@@ -171,7 +171,7 @@ public class CitiesController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
 #warning Ask if that can be improved
-        var city = await _uow.Cities.RemoveAsync(id);
+        var city = await _appBLL.Cities.RemoveAsync(id);
         /*if (await _uow.Admins.AnyAsync(c => c != null && c.CityId.Equals(id)) ||
             await _uow.Bookings.AnyAsync(c => c != null && c.CityId.Equals(id)) ||
             await _uow.Drivers.AnyAsync(c => c != null && c.CityId.Equals(id)))
@@ -179,8 +179,8 @@ public class CitiesController : Controller
 
         if (true)
         {
-            _uow.Cities.Remove(city);
-            await _uow.SaveChangesAsync();
+            _appBLL.Cities.Remove(city);
+            await _appBLL.SaveChangesAsync();
         }
 
         return RedirectToAction(nameof(Index));
@@ -188,6 +188,6 @@ public class CitiesController : Controller
 
     private bool CityExists(Guid id)
     {
-        return _uow.Cities.Exists(id);
+        return _appBLL.Cities.Exists(id);
     }
 }

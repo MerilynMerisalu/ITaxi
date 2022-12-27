@@ -1,7 +1,8 @@
 #nullable enable
-using App.Contracts.DAL;
-using App.Domain;
-using App.DTO.AdminArea;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
+
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,20 +11,21 @@ using WebApp.Areas.AdminArea.ViewModels;
 namespace WebApp.Areas.AdminArea.Controllers;
 
 [Area(nameof(AdminArea))]
-[Authorize(Roles = nameof(Admin))]
+[Authorize(Roles = "Admin")]
 public class CountiesController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public CountiesController(IAppUnitOfWork uow)
+    public CountiesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: AdminArea/Counties
     public async Task<IActionResult> Index()
-   { 
-       var res = await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync();
+    {
+        var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
+        
        
         return View(res);
     }
@@ -34,7 +36,7 @@ public class CountiesController : Controller
         var vm = new DetailsDeleteCountyViewModel();
         if (id == null) return NotFound();
 
-        var county = await _uow.Counties.FirstOrDefaultAsync(id.Value);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value);
         if (county == null) return NotFound();
 
         vm.CountyName = county.CountyName;
@@ -68,8 +70,8 @@ public class CountiesController : Controller
             county.CountyName = vm.CountyName;
             county.CreatedBy = User.Identity!.Name;
             county.CreatedAt = DateTime.Now.ToUniversalTime();
-            _uow.Counties.Add(county);
-            await _uow.SaveChangesAsync();
+            _appBLL.Counties.Add(county);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -82,7 +84,7 @@ public class CountiesController : Controller
         var vm = new CreateEditCountyViewModel();
         if (id == null) return NotFound();
 
-        var county = await _uow.Counties.FirstOrDefaultAsync(id.Value);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value);
 
         if (county == null) return NotFound();
 
@@ -98,7 +100,7 @@ public class CountiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditCountyViewModel vm)
     {
-        var county = await _uow.Counties.FirstOrDefaultAsync(id);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
         if (ModelState.IsValid)
             if (county != null && county.Id.Equals(id))
             {
@@ -107,8 +109,8 @@ public class CountiesController : Controller
                     county.CountyName = vm.CountyName;
                     county.UpdatedBy = User.Identity!.Name!;
                     county.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _uow.Counties.Update(county);
-                    await _uow.SaveChangesAsync();
+                    _appBLL.Counties.Update(county);
+                    await _appBLL.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -129,7 +131,7 @@ public class CountiesController : Controller
         var vm = new DetailsDeleteCountyViewModel();
         if (id == null) return NotFound();
 
-        var county = await _uow.Counties.FirstOrDefaultAsync(id.Value);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value);
         if (county == null) return NotFound();
 
         vm.CountyName = county.CountyName;
@@ -150,14 +152,14 @@ public class CountiesController : Controller
         //if (await _uow.Counties.HasCities(id))
         //    return Content("Entity cannot be deleted because it has dependent entities!");
         
-        await _uow.Counties.RemoveAsync(id);
-        await _uow.SaveChangesAsync();
+        await _appBLL.Counties.RemoveAsync(id);
+        await _appBLL.SaveChangesAsync();
        
         return RedirectToAction(nameof(Index));
     }
 
     private bool CountyExists(Guid id)
     {
-        return _uow.Counties.Exists(id);
+        return _appBLL.Counties.Exists(id);
     }
 }

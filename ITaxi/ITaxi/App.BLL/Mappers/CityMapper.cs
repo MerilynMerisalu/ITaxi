@@ -2,9 +2,9 @@
 using AutoMapper;
 using Base.DAL;
 
-namespace App.DAL.EF.Mappers;
+namespace App.BLL.Mappers;
 
-public class CityMapper: BaseMapper<CityDTO, App.Domain.City>
+public class CityMapper: BaseMapper<App.BLL.DTO.AdminArea.CityDTO, App.DAL.DTO.AdminArea.CityDTO>
 {
     public CityMapper(IMapper mapper) : base(mapper)
     {

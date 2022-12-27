@@ -5,7 +5,7 @@ using Base.Domain;
 using Base.Resources;
 using Microsoft.AspNetCore.Http;
 
-namespace App.DTO.Identity;
+namespace App.DAL.DTO.Identity;
 
 public class AppUser: DomainEntityId
 {

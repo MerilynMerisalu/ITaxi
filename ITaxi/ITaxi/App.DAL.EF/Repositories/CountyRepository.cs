@@ -1,31 +1,31 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
+using App.DAL.DTO.AdminArea;
 using App.DAL.EF.Mappers;
 using App.Domain;
-using App.DTO.AdminArea;
 using Base.Contracts;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class CountyRepository : BaseEntityRepository<App.DTO.AdminArea.CountyDTO,App.Domain.County, AppDbContext>, ICountyRepository
+public class CountyRepository : BaseEntityRepository<CountyDTO,App.Domain.County, AppDbContext>, ICountyRepository
 {
-    public CountyRepository(AppDbContext dbContext, IMapper<App.DTO.AdminArea.CountyDTO, App.Domain.County> mapper) :
+    public CountyRepository(AppDbContext dbContext, IMapper<CountyDTO, App.Domain.County> mapper) :
         base(dbContext, mapper)
     {
     }
 
-    public override async Task<IEnumerable<App.DTO.AdminArea.CountyDTO>> GetAllAsync(bool noTracking = true)
+    public override async Task<IEnumerable<CountyDTO>> GetAllAsync(bool noTracking = true)
     {
         return (await CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public override IEnumerable<App.DTO.AdminArea.CountyDTO> GetAll(bool noTracking = true)
+    public override IEnumerable<CountyDTO> GetAll(bool noTracking = true)
     {
         return CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<App.DTO.AdminArea.CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(
+    public async Task<IEnumerable<CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(
         bool noTracking = true)
     {
         return (await CreateQuery(noTracking).OrderBy(c => c.CountyName).ToListAsync())
@@ -36,7 +36,7 @@ public class CountyRepository : BaseEntityRepository<App.DTO.AdminArea.CountyDTO
     {
         return await RepoDbContext.Cities.AnyAsync(x => x.CountyId == countyId);
     }
-    public IEnumerable<App.DTO.AdminArea.CountyDTO> GetAllCountiesOrderedByCountyName(bool noTracking = true)
+    public IEnumerable<CountyDTO> GetAllCountiesOrderedByCountyName(bool noTracking = true)
     {
         return (CreateQuery(noTracking).OrderBy(c => c.CountyName).ToList()
             .Select(e => Mapper.Map(e))!);

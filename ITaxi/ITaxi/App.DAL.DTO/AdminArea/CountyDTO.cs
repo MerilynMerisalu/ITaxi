@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain;
 using Base.Domain;
 using Base.Resources;
 
-namespace App.DTO.AdminArea;
+namespace App.DAL.DTO.AdminArea;
 
 public class CountyDTO: DomainEntityMetaId
 {

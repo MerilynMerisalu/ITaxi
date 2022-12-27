@@ -1,7 +1,7 @@
 #nullable enable
 using App.Contracts.DAL;
+using App.DAL.DTO.AdminArea;
 using App.Domain;
-using App.DTO.AdminArea;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +25,7 @@ public class CitiesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<City>>> GetCities()
     {
-        var cities = await _uow.Cities.GetAllOrderedCitiesWithoutCountyAsync();
+        var cities = await _uow.Cities.GetAllAsync();
         return Ok(cities);
     }
 
@@ -33,7 +33,7 @@ public class CitiesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<CityDTO>> GetCity(Guid id)
     {
-        var city = await _uow.Cities.FirstOrDefaultCityWithoutCountyAsync(id);
+        var city = await _uow.Cities.FirstOrDefaultAsync(id);
 
         if (city == null) return NotFound();
 

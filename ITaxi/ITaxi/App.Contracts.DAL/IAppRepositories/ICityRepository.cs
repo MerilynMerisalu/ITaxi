@@ -1,15 +1,21 @@
 ﻿
-using App.DTO.AdminArea;
+
+using App.DAL.DTO.AdminArea;
 using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface ICityRepository : IEntityRepository<CityDTO>
+public interface ICityRepository : IEntityRepository<CityDTO>, ICityRepositoryCustom<CityDTO>
 {
-    Task<IEnumerable<CityDTO>> GetAllCitiesWithoutCountyAsync();
-    Task<IEnumerable<CityDTO>> GetAllOrderedCitiesWithoutCountyAsync();
-    Task<IEnumerable<CityDTO>> GetAllOrderedCitiesAsync();
-    Task<CityDTO?> FirstOrDefaultCityWithoutCountyAsync(Guid id);
-    IEnumerable<CityDTO> GetAllOrderedCitiesWithoutCounty();
+    
+}
+
+public interface ICityRepositoryCustom<TEntity>
+{
+    Task<IEnumerable<TEntity>> GetAllCitiesWithoutCountyAsync();
+    Task<IEnumerable<TEntity>> GetAllOrderedCitiesWithoutCountyAsync();
+    Task<IEnumerable<TEntity>> GetAllOrderedCitiesAsync();
+    Task<TEntity?> FirstOrDefaultCityWithoutCountyAsync(Guid id);
+    IEnumerable<TEntity> GetAllOrderedCitiesWithoutCounty();
    
 }
