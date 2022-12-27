@@ -3,6 +3,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using App.BLL;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.DAL.EF;
 using App.Domain.Identity;
@@ -23,6 +25,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IAppUnitOfWork, AppUOW>();
+builder.Services.AddScoped<IAppBLL, AppBLL>();
 /*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<AppDbContext>();*/
 builder.Services.AddIdentity<AppUser, AppRole>(

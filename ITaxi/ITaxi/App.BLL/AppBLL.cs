@@ -29,8 +29,8 @@ public class AppBLL:BaseBLL<IAppUnitOfWork>, IAppBLL
         return UnitOfWork.SaveChanges();
     }
 
-    public ICountyService Counties => _counties ?? (ICountyService) new CountyService(UnitOfWork.Counties, new CountyMapper(_mapper));
-    public ICityService Cities => _cities ?? (ICityService) new CityService(UnitOfWork.Cities, new CityMapper(_mapper));
+    public ICountyService Counties => _counties ??  new CountyService(UnitOfWork.Counties, new CountyMapper(_mapper));
+    public ICityService Cities => _cities ?? new CityService(UnitOfWork.Cities, new CityMapper(_mapper));
     
     private ICountyService? _counties;
     private ICityService? _cities;
