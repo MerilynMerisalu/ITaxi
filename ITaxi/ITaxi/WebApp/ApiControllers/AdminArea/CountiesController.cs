@@ -1,8 +1,6 @@
 #nullable enable
-using App.Contracts.DAL;
-using App.DAL.DTO.AdminArea;
-using App.Domain;
-using App.Domain.DTO.AdminArea;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,23 +12,20 @@ namespace WebApp.ApiControllers.AdminArea;
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CountiesController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public CountiesController(IAppUnitOfWork uow)
+    public CountiesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: api/Counties
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CountyDTO>>> GetCounties()
     {
-        var res = await _uow.Counties.GetAllCountiesOrderedByCountyNameAsync();
-        foreach (var county in res)
-        {
-            /*county.CreatedAt = county.CreatedAt.ToLocalTime();
-            county.UpdatedAt = county.UpdatedAt.ToLocalTime();*/
-        }
+        var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
+        
+            
         return Ok(res);
     }
 
@@ -38,12 +33,12 @@ public class CountiesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<CountyDTO>> GetCounty(Guid id)
     {
-        var county = await _uow.Counties.FirstOrDefaultAsync(id);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
 
         if (county == null) return NotFound();
-        /*county.CreatedAt = county.CreatedAt.ToLocalTime();
+        county.CreatedAt = county.CreatedAt.ToLocalTime();
         county.UpdatedAt = county.UpdatedAt.ToLocalTime();
-        */
+        
 
 
         return county;
@@ -55,7 +50,7 @@ public class CountiesController : ControllerBase
     public async Task<IActionResult> PutCounty(Guid id, /*County? county,*/ CountyDTO countyDTO)
     {
 
-        var county = await _uow.Counties.FirstOrDefaultAsync(id);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
         if (county == null)
         {
             return NotFound();
@@ -63,10 +58,10 @@ public class CountiesController : ControllerBase
 
 
         county.CountyName = countyDTO.CountyName;
-        /*county.UpdatedBy = User.Identity!.Name;
-        county.UpdatedAt = DateTime.Now.ToUniversalTime();*/
-        _uow.Counties.Update(county);
-        await _uow.SaveChangesAsync();
+        county.UpdatedBy = User.Identity!.Name;
+        county.UpdatedAt = DateTime.Now.ToUniversalTime();
+        _appBLL.Counties.Update(county);
+        await _appBLL.SaveChangesAsync();
 
 
 
@@ -76,15 +71,16 @@ public class CountiesController : ControllerBase
     // POST: api/Counties
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<County>> PostCounty(CountyDTO county)
+    public async Task<ActionResult<CountyDTO>> PostCounty(CountyDTO county)
     {
 
-        /*county.CreatedBy = User.Identity!.Name;
+        county.Id = Guid.NewGuid();
+        county.CreatedBy = User.Identity!.Name;
         county.CreatedAt = DateTime.Now.ToUniversalTime();
         county.UpdatedBy = User.Identity!.Name;
-        county.UpdatedAt = DateTime.Now.ToUniversalTime();*/
-        _uow.Counties.Add(county);
-        await _uow.SaveChangesAsync();
+        county.UpdatedAt = DateTime.Now.ToUniversalTime();
+        _appBLL.Counties.Add(county);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetCounty", new { id = county.Id }, county);
     }
@@ -93,17 +89,19 @@ public class CountiesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCounty(Guid id)
     {
-        var county = await _uow.Counties.FirstOrDefaultAsync(id);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
         if (county == null) return NotFound();
+        
+        #warning ask how about it
 
-        _uow.Counties.Remove(county);
-        await _uow.SaveChangesAsync();
+        _appBLL.Counties.Remove(county);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool CountyExists(Guid id)
     {
-        return _uow.Counties.Exists(id);
+        return _appBLL.Counties.Exists(id);
     }
 }
