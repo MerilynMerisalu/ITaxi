@@ -60,7 +60,7 @@ public class CitiesController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditCityViewModel();
-        
+
         vm.Counties = new SelectList(await _appBLL.Counties.GetAllAsync(),
             nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
         return View(vm);
@@ -102,7 +102,7 @@ public class CitiesController : Controller
             nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
         vm.CityName = city.CityName;
         vm.CountyId = city.CountyId;
-        
+
         return View(vm);
     }
 
@@ -126,7 +126,8 @@ public class CitiesController : Controller
                 city.County = await _appBLL.Counties.SingleOrDefaultAsync(c => c!.Id.Equals(vm.CountyId));
                 city.CityName = vm.CityName;
                 /*city.UpdatedBy = User.Identity!.Name;
-                city.UpdatedAt = DateTime.Now.ToUniversalTime()*/;
+                city.UpdatedAt = DateTime.Now.ToUniversalTime()*/
+                ;
                 _appBLL.Cities.Update(city);
                 await _appBLL.SaveChangesAsync();
             }
@@ -172,10 +173,10 @@ public class CitiesController : Controller
     {
 #warning Ask if that can be improved
         var city = await _appBLL.Cities.FirstOrDefaultAsync(id);
-        /*if (await _uow.Admins.AnyAsync(c => c != null && c.CityId.Equals(id)) ||
-            await _uow.Bookings.AnyAsync(c => c != null && c.CityId.Equals(id)) ||
-            await _uow.Drivers.AnyAsync(c => c != null && c.CityId.Equals(id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");*/
+        //if (await _appBLL.Admins.HasAnyByCityIdAsync(id) ||
+        //    await _appBLL.Bookings.HasAnyByCityIdAsync(id) ||
+        //    await _appBLL.Drivers.HasAnyByCityIdAsync(id)
+        //    return Content("Entity cannot be deleted because it has dependent entities!");
 
         if (city != null)
         {
@@ -183,8 +184,8 @@ public class CitiesController : Controller
             await _appBLL.SaveChangesAsync();
         }
 
-        
-        
+
+
 
         return RedirectToAction(nameof(Index));
     }

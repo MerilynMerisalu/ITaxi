@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class CountyRepository : BaseEntityRepository<CountyDTO,App.Domain.County, AppDbContext>, ICountyRepository
+public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.County, AppDbContext>, ICountyRepository
 {
     public CountyRepository(AppDbContext dbContext, IMapper<CountyDTO, App.Domain.County> mapper) :
         base(dbContext, mapper)
@@ -29,7 +29,7 @@ public class CountyRepository : BaseEntityRepository<CountyDTO,App.Domain.County
         bool noTracking = true)
     {
         return (await CreateQuery(noTracking).OrderBy(c => c.CountyName).ToListAsync())
-            .Select(e => Mapper.Map(e)!); 
+            .Select(e => Mapper.Map(e)!);
     }
 
     public async Task<bool> HasCities(Guid countyId)
@@ -45,7 +45,7 @@ public class CountyRepository : BaseEntityRepository<CountyDTO,App.Domain.County
 
     protected override IQueryable<App.Domain.County> CreateQuery(bool noTracking = true)
     {
-        var query = RepoDbSet.OrderBy(c => c.CountyName).AsQueryable();
+        var query = RepoDbSet.OrderBy(c => c.CountyName).Include(x => x.Cities).AsQueryable();
         if (noTracking) query = query.AsNoTracking();
 
         return query;

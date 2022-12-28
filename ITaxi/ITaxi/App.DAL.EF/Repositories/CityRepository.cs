@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class CityRepository : BaseEntityRepository<CityDTO,City, AppDbContext>, ICityRepository
+public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>, ICityRepository
 {
-    public CityRepository(AppDbContext dbContext, IMapper<CityDTO, App.Domain.City> mapper) : 
+    public CityRepository(AppDbContext dbContext, IMapper<CityDTO, App.Domain.City> mapper) :
         base(dbContext, mapper)
     {
     }
@@ -38,7 +38,7 @@ public class CityRepository : BaseEntityRepository<CityDTO,City, AppDbContext>, 
 
     public async Task<CityDTO?> FirstOrDefaultCityWithoutCountyAsync(Guid id)
     {
-        var res =await base.CreateQuery().FirstOrDefaultAsync(c => c.Id.Equals(id));
+        var res = await base.CreateQuery().FirstOrDefaultAsync(c => c.Id.Equals(id));
         return Mapper.Map(res);
     }
 
@@ -68,19 +68,18 @@ public class CityRepository : BaseEntityRepository<CityDTO,City, AppDbContext>, 
 
     public override CityDTO? FirstOrDefault(Guid id, bool noTracking = true)
     {
-        return Mapper.Map(CreateQuery().FirstOrDefault(c => c.Id.Equals(id)));
+        return Mapper.Map(CreateQuery(noTracking).FirstOrDefault(c => c.Id.Equals(id)));
     }
 
     public async /*override */ Task<CityDTO?> SingleOrDefaultAsync(Expression<Func<City?, bool>> filter, bool noTracking = true)
     {
-        return Mapper.Map(await CreateQuery().SingleOrDefaultAsync(c => c.Id.Equals(filter)));
+        return Mapper.Map(await CreateQuery(noTracking).SingleOrDefaultAsync(c => c.Id.Equals(filter)));
     }
 
     public /*override */ CityDTO? SingleOrDefault(Expression<Func<City?, bool>> filter, bool noTracking = true)
     {
-        return Mapper.Map(CreateQuery().SingleOrDefault(e => e.Id.Equals(filter)));
+        return Mapper.Map(CreateQuery(noTracking).SingleOrDefault(e => e.Id.Equals(filter)));
     }
-
 
     protected override IQueryable<City> CreateQuery(bool noTracking = true)
     {

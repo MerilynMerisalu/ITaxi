@@ -25,8 +25,8 @@ public class CountiesController : Controller
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
-        
-       
+
+
         return View(res);
     }
 

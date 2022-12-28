@@ -4,7 +4,7 @@ using Base.Resources;
 
 namespace App.BLL.DTO.AdminArea;
 
-public class CountyDTO: DomainEntityMetaId
+public class CountyDTO : DomainEntityMetaId
 {
     [Required(ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
@@ -13,6 +13,6 @@ public class CountyDTO: DomainEntityMetaId
         , Name = nameof(CountyName))]
     public string CountyName { get; set; } = default!;
 
-    //public ICollection<City>? Cities { get; set; }
+    //public ICollection<CityDTO>? Cities { get; set; }
     public int NumberOfCities { get; set; }
 }

@@ -44,7 +44,7 @@ public class CountiesController : ControllerBase
         /*county.CreatedAt = county.CreatedAt.ToLocalTime();
         county.UpdatedAt = county.UpdatedAt.ToLocalTime();
         */
-        
+
 
         return county;
     }
@@ -54,21 +54,21 @@ public class CountiesController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> PutCounty(Guid id, /*County? county,*/ CountyDTO countyDTO)
     {
-        
+
         var county = await _uow.Counties.FirstOrDefaultAsync(id);
-        if (county == null )
+        if (county == null)
         {
             return NotFound();
         }
 
-       
+
         county.CountyName = countyDTO.CountyName;
         /*county.UpdatedBy = User.Identity!.Name;
         county.UpdatedAt = DateTime.Now.ToUniversalTime();*/
         _uow.Counties.Update(county);
         await _uow.SaveChangesAsync();
 
-        
+
 
         return NoContent();
     }
@@ -78,7 +78,7 @@ public class CountiesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<County>> PostCounty(CountyDTO county)
     {
-        
+
         /*county.CreatedBy = User.Identity!.Name;
         county.CreatedAt = DateTime.Now.ToUniversalTime();
         county.UpdatedBy = User.Identity!.Name;
@@ -86,7 +86,7 @@ public class CountiesController : ControllerBase
         _uow.Counties.Add(county);
         await _uow.SaveChangesAsync();
 
-        return CreatedAtAction("GetCounty", new {id = county.Id}, county);
+        return CreatedAtAction("GetCounty", new { id = county.Id }, county);
     }
 
     // DELETE: api/Counties/5
