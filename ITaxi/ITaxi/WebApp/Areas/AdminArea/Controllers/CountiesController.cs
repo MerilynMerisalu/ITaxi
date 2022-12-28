@@ -100,7 +100,7 @@ public class CountiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditCountyViewModel vm)
     {
-        var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id, true);
         if (ModelState.IsValid)
             if (county != null && county.Id.Equals(id))
             {
@@ -149,12 +149,20 @@ public class CountiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        //if (await _uow.Counties.HasCities(id))
-        //    return Content("Entity cannot be deleted because it has dependent entities!");
-        
-        await _appBLL.Counties.RemoveAsync(id);
-        await _appBLL.SaveChangesAsync();
-       
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
+        if (county != null)
+        {
+            if (county.NumberOfCities > 0)
+                return Content("Entity cannot be deleted because it has dependent entities!");
+            //if (county.Cities.Any())
+            //    return Content("Entity cannot be deleted because it has dependent entities!");
+            //if (await _appBLL.Counties.HasCities(id))
+            //    return Content("Entity cannot be deleted because it has dependent entities!");
+
+            _appBLL.Counties.Remove(county);
+            await _appBLL.SaveChangesAsync();
+        }
+
         return RedirectToAction(nameof(Index));
     }
 

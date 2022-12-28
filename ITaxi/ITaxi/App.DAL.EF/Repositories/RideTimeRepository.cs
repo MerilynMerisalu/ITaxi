@@ -288,7 +288,7 @@ public class RideTimeRepository : BaseEntityRepository<RideTime, AppDbContext>, 
     protected IQueryable<RideTime> CreateQuery(Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
-        if (noTracking) query.AsNoTracking();
+        if (noTracking) query = query.AsNoTracking();
 
         if (roleName == null)
             return query = query.Include(c => c.Schedule)

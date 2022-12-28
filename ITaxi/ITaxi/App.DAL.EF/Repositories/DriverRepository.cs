@@ -39,7 +39,7 @@ public class DriverRepository : BaseEntityRepository<Driver, AppDbContext>, IDri
     protected override IQueryable<Driver> CreateQuery(bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
-        if (noTracking) query.AsNoTracking();
+        if (noTracking) query = query.AsNoTracking();
 
         query = query.Include(a => a.AppUser)
             .Include(a => a.City);

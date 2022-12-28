@@ -155,7 +155,7 @@ public class VehicleRepository : BaseEntityRepository<Vehicle, AppDbContext>, IV
     protected IQueryable<Vehicle> CreateQuery(Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
-        if (noTracking) query.AsNoTracking();
+        if (noTracking) query = query.AsNoTracking();
 
         if (roleName == null)
         {

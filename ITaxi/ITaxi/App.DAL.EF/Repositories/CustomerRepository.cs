@@ -72,7 +72,7 @@ public class CustomerRepository : BaseEntityRepository<Customer, AppDbContext>, 
     protected override IQueryable<Customer> CreateQuery(bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
-        if (noTracking) query.AsNoTracking();
+        if (noTracking) query = query.AsNoTracking();
 
         query = query.Include(a => a.AppUser)
             .Include(a => a.DisabilityType).ThenInclude(a => a!.DisabilityTypeName)

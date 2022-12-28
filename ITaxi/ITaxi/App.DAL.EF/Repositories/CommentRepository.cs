@@ -111,7 +111,7 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
     protected  IQueryable<Comment> CreateQuery(Guid? userId= null, string? roleName = null, bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
-        if (noTracking) query.AsNoTracking();
+        if (noTracking) query = query.AsNoTracking();
 
         if (roleName is nameof(Admin))
         {

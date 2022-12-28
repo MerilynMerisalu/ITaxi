@@ -41,7 +41,7 @@ public class PhotoRepository : BaseEntityRepository<Photo, AppDbContext>, IPhoto
         bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
-        if (noTracking) query.AsNoTracking();
+        if (noTracking) query = query.AsNoTracking();
 
         if (roleName != null && roleName.Equals(nameof(Admin)))
         {

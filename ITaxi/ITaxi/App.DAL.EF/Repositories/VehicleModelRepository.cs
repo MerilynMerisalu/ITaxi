@@ -60,7 +60,7 @@ public class VehicleModelRepository : BaseEntityRepository<VehicleModel, AppDbCo
     protected override IQueryable<VehicleModel> CreateQuery(bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
-        if (noTracking) query.AsNoTracking();
+        if (noTracking) query = query.AsNoTracking();
 
         query = query.Include(c => c.VehicleMark);
         return query;

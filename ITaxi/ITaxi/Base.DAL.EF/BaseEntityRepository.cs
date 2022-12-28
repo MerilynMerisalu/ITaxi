@@ -6,30 +6,30 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Base.DAL.EF;
 #warning do not fetch unnecessary data on every request
-public class BaseEntityRepository<TDalEntity, TDomainEntity, TDbContext> : 
+public class BaseEntityRepository<TDalEntity, TDomainEntity, TDbContext> :
     BaseEntityRepository<TDalEntity, TDomainEntity, Guid, TDbContext>
     where TDalEntity : class, IDomainEntityId<Guid>
     where TDomainEntity : class, IDomainEntityId<Guid>
     where TDbContext : DbContext
 {
-    public BaseEntityRepository(TDbContext dbContext, IMapper<TDalEntity, TDomainEntity> mapper) 
-        : base(dbContext, mapper )
+    public BaseEntityRepository(TDbContext dbContext, IMapper<TDalEntity, TDomainEntity> mapper)
+        : base(dbContext, mapper)
     {
     }
 }
 
-public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> : 
+public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
     IEntityRepository<TDalEntity, TKey>
     where TDalEntity : class, IDomainEntityId<TKey>
-    where TDomainEntity: class, IDomainEntityId<TKey>
+    where TDomainEntity : class, IDomainEntityId<TKey>
     where TKey : IEquatable<TKey>
     where TDbContext : DbContext
 {
     protected readonly TDbContext RepoDbContext;
     protected readonly DbSet<TDomainEntity> RepoDbSet;
     protected readonly IMapper<TDalEntity, TDomainEntity> Mapper;
-    
-    
+
+
     public BaseEntityRepository(TDbContext dbContext, IMapper<TDalEntity, TDomainEntity> mapper)
     {
         RepoDbContext = dbContext;
@@ -62,18 +62,7 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
 
     public virtual TDalEntity Remove(TDalEntity entity)
     {
-        /*
-        TDomainEntity domainEntity = Mapper.Map(entity)!;
-        //TDomainEntity removeResponse = RepoDbSet.Remove(domainEntity).Entity;
-        var entry = RepoDbSet.Entry(domainEntity);
-        entry.State = EntityState.Deleted;
-        RepoDbContext.SaveChanges();
-        
-        return Mapper.Map(entry.Entity)!;
-        */
-        
         return Mapper.Map(RepoDbSet.Remove(Mapper.Map(entity)!).Entity)!;
-        //return Mapper.Map(RepoDbContext.Remove(Mapper.Map(entity)!).Entity)!;
     }
 
     public virtual TDalEntity Remove(TKey id)
@@ -99,7 +88,7 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
     public virtual TDalEntity? FirstOrDefault(TKey id, bool noTracking = true)
     {
         return Mapper.Map(CreateQuery(noTracking)
-            .FirstOrDefault(e =>e.Id.Equals(id)));
+            .FirstOrDefault(e => e.Id.Equals(id)));
     }
 
     public virtual IEnumerable<TDalEntity> GetAll(bool noTracking = true)
@@ -116,13 +105,13 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
     {
         return CreateQuery(noTracking)
             .Select(e => Mapper.Map(e)).Any(filter);
-        
+
     }
 
     public TDalEntity? SingleOrDefault(Expression<Func<TDalEntity?, bool>> filter, bool noTracking = true)
     {
         return CreateQuery(noTracking).Select(e => Mapper.Map(e)).SingleOrDefault(filter);
-        
+
     }
 
     /*public virtual bool Any(Func<TDalEntity, bool> filter, bool noTracking = true)
@@ -187,8 +176,8 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
     {
         return await CreateQuery(noTracking).Select(x => Mapper.Map(x)).Where(filter).AnyAsync();
     }
-    
-    public virtual async Task<TDalEntity?> SingleOrDefaultAsync(Expression<Func<TDalEntity?, bool>> filter, 
+
+    public virtual async Task<TDalEntity?> SingleOrDefaultAsync(Expression<Func<TDalEntity?, bool>> filter,
         bool noTracking = true)
     {
         return await CreateQuery(noTracking)
@@ -205,7 +194,7 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         var query = RepoDbSet.AsQueryable();
         if (noTracking)
         {
-            query = query.AsQueryable().AsNoTracking();
+            query = query.AsNoTracking();
             return query;
         }
 
