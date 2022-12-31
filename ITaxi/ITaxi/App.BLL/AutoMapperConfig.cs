@@ -10,11 +10,14 @@ public class AutoMapperConfig: Profile
         CreateMap<App.BLL.DTO.AdminArea.CountyDTO, App.DAL.DTO.AdminArea.CountyDTO>()
             .ReverseMap()
             .ForMember(dto => dto.CreatedAt, m => m.MapFrom(x => x.CreatedAt.ToLocalTime()))
-            .ForMember(dto => dto.UpdatedAt, m => m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
+            .ForMember(dto => dto.UpdatedAt, m => 
+                m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
         CreateMap<App.BLL.DTO.AdminArea.CityDTO, App.DAL.DTO.AdminArea.CityDTO>()
-            .ReverseMap();
-            //.ForMember(dto => dto.CreatedAt, m => m.MapFrom(x => x.CreatedAt.ToLocalTime()))
-            //.ForMember(dto => dto.UpdatedAt, m => m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
+            .ReverseMap()
+            .ForMember(dto => dto.CreatedAt, m
+                => m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt, m
+                => m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
         CreateMap<App.BLL.DTO.Identity.AppUser, App.DAL.DTO.Identity.AppUser>().ReverseMap();
     }
 }

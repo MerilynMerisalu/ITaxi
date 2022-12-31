@@ -4,7 +4,7 @@ using Base.Resources;
 
 namespace App.BLL.DTO.AdminArea;
 
-public class CityDTO: DomainEntityId
+public class CityDTO: DomainEntityMetaId
 {
     public Guid CountyId { get; set; }
 

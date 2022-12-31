@@ -26,11 +26,7 @@ public class CitiesController : Controller
     {
         var res = await _appBLL.Cities.GetAllOrderedCitiesAsync();
 #warning Should this be a repo method
-        /*foreach (var city in res)
-        {
-            city.CreatedAt = city.CreatedAt.ToLocalTime();
-            city.UpdatedAt = city.UpdatedAt.ToLocalTime();
-        }*/
+        
 
         return View(res);
     }
@@ -47,11 +43,11 @@ public class CitiesController : Controller
         vm.Id = city.Id;
         vm.CountyName = city.County!.CountyName;
         vm.CityName = city.CityName;
-        /*vm.CreatedAt = city.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = city.CreatedAt;
         vm.CreatedBy = city.CreatedBy!;
         vm.UpdatedBy = User.Identity!.Name!;
-        vm.UpdatedAt = city.UpdatedAt.ToLocalTime().ToString("G");
-        */
+        vm.UpdatedAt = city.UpdatedAt;
+        
 
         return View(vm);
     }
@@ -78,8 +74,8 @@ public class CitiesController : Controller
             city.Id = Guid.NewGuid();
             city.CountyId = vm.CountyId;
             city.CityName = vm.CityName;
-            //city.CreatedBy = User.Identity!.Name;
-            //city.CreatedAt = DateTime.Now.ToUniversalTime();*/
+            city.CreatedBy = User.Identity!.Name;
+            city.CreatedAt = DateTime.Now.ToUniversalTime();
             _appBLL.Cities.Add(city);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -123,11 +119,10 @@ public class CitiesController : Controller
             {
                 city.Id = id;
                 city.CountyId = vm.CountyId;
-                city.County = await _appBLL.Counties.SingleOrDefaultAsync(c => c!.Id.Equals(vm.CountyId));
+                city.County = await _appBLL.Counties.FirstOrDefaultAsync(vm.CountyId);
                 city.CityName = vm.CityName;
-                /*city.UpdatedBy = User.Identity!.Name;
-                city.UpdatedAt = DateTime.Now.ToUniversalTime()*/
-                ;
+                city.UpdatedBy = User.Identity!.Name;
+                city.UpdatedAt = DateTime.Now.ToUniversalTime();
                 _appBLL.Cities.Update(city);
                 await _appBLL.SaveChangesAsync();
             }
@@ -156,10 +151,10 @@ public class CitiesController : Controller
         vm.CityName = city.CityName;
         vm.CountyName = city.County!.CountyName;
         vm.CityName = city.CityName;
-        /*vm.CreatedAt = city.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = city.CreatedAt;
         vm.CreatedBy = city.CreatedBy!;
         vm.UpdatedBy = city.UpdatedBy!;
-        vm.UpdatedAt = city.UpdatedAt.ToLocalTime().ToString("G");*/
+        vm.UpdatedAt = city.UpdatedAt;
 
 
         return View(vm);

@@ -40,9 +40,9 @@ public class CountiesController : Controller
         if (county == null) return NotFound();
 
         vm.CountyName = county.CountyName;
-        vm.CreatedAt = county.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = county.CreatedAt;
         vm.CreatedBy = county.CreatedBy!;
-        vm.UpdatedAt = county.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = county.UpdatedAt;
         vm.UpdatedBy = county.UpdatedBy!;
         vm.Id = county.Id;
 
@@ -135,9 +135,9 @@ public class CountiesController : Controller
         if (county == null) return NotFound();
 
         vm.CountyName = county.CountyName;
-        vm.CreatedAt = county.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = county.CreatedAt;
         vm.CreatedBy = county.CreatedBy ?? "";
-        vm.UpdatedAt = county.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = county.UpdatedAt;
         vm.UpdatedBy = county.UpdatedBy ?? "";
 
         return View(vm);
