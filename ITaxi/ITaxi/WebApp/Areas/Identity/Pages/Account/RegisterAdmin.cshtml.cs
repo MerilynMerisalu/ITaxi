@@ -7,6 +7,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Enum;
@@ -25,7 +27,8 @@ namespace WebApp.Areas.Identity.Pages.Account;
 
 public class RegisterAdminModel : PageModel
 {
-    private readonly AppDbContext _context;
+    //private readonly AppDbContext _appBLL;
+    private readonly IAppBLL _appBLL;
     private readonly IEmailSender _emailSender;
     private readonly IUserEmailStore<AppUser> _emailStore;
     private readonly ILogger<RegisterAdminModel> _logger;
@@ -38,7 +41,7 @@ public class RegisterAdminModel : PageModel
         IUserStore<AppUser> userStore,
         SignInManager<AppUser> signInManager,
         ILogger<RegisterAdminModel> logger,
-        IEmailSender emailSender, AppDbContext context)
+        IEmailSender emailSender, IAppBLL appBLL)
     {
         _userManager = userManager;
         _userStore = userStore;
@@ -46,11 +49,9 @@ public class RegisterAdminModel : PageModel
         _signInManager = signInManager;
         _logger = logger;
         _emailSender = emailSender;
-        _context = context;
-        Cities = new SelectList(_context.Cities
-                .OrderBy(c => c.CityName)
-                .Select(c => new {c.Id, c.CityName}).ToList(),
-            nameof(City.Id), nameof(City.CityName));
+        _appBLL = appBLL;
+        Cities = new SelectList( _appBLL.Cities.GetAllOrderedCities(),
+        nameof(CityDTO.Id), nameof(CityDTO.CityName));
     }
 
     public SelectList? Cities { get; set; }
@@ -123,14 +124,14 @@ public class RegisterAdminModel : PageModel
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
 
                 await _userManager.AddToRoleAsync(user, nameof(Admin));
-                await _context.SaveChangesAsync();
-                var admin = new Admin
+                await _appBLL.SaveChangesAsync();
+                var admin = new AdminDTO()
                 {
                     AppUserId = user.Id, PersonalIdentifier = Input.PersonalIdentifier,
                     Address = Input.Address, CityId = Input.CityId
                 };
-                await _context.Admins.AddAsync(admin);
-                await _context.SaveChangesAsync();
+                 _appBLL.Admins.Add(admin);
+                await _appBLL.SaveChangesAsync();
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl});
 

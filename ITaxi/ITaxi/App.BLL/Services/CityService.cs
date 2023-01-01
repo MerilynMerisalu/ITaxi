@@ -36,4 +36,9 @@ public class CityService: BaseEntityService<App.BLL.DTO.AdminArea.CityDTO, DAL.D
     {
         return Repository.GetAllOrderedCitiesWithoutCounty().Select(e => Mapper.Map(e))!;
     }
+
+    public IEnumerable<CityDTO> GetAllOrderedCities(bool noTracking = true)
+    {
+        return Repository.GetAllOrderedCities(noTracking).Select(e => Mapper.Map(e))!;
+    }
 }

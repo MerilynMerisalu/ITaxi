@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain.Identity;
+using App.DAL.DTO.Identity;
 using Base.Domain;
 using Base.Resources;
 
-namespace App.Domain;
+namespace App.DAL.DTO.AdminArea;
 
-public class Admin : DomainEntityMetaId
+public class AdminDTO: DomainEntityMetaId
 {
     public Guid AppUserId { get; set; }
     public AppUser? AppUser { get; set; }
@@ -15,10 +15,13 @@ public class Admin : DomainEntityMetaId
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     
     public string? PersonalIdentifier { get; set; }
+
     
     public Guid CityId { get; set; }
 
-    public City? City { get; set; }
+    
+
+    public CityDTO? City { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]

@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain;
+using App.DAL.DTO.AdminArea;
 using App.Domain.Enum;
+using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Resources;
-using Admin = App.Resources.Areas.App.Domain.AdminArea.Admin;
+
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
@@ -35,7 +36,7 @@ public class DetailsDeleteAdminViewModel : AdminAreaBaseViewModel
 
     [Display(ResourceType = typeof(Admin), Name = nameof(City))]
 
-    public City? City { get; set; }
+    public string City { get; set; }
 
     [Display(ResourceType = typeof(Admin), Name = "AddressOfResidence")]
     public string Address { get; set; } = default!;

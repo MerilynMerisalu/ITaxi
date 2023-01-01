@@ -1,7 +1,10 @@
-/*#nullable enable
+#nullable enable
 using System.Security.Claims;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
-using App.Domain;
+
+
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,32 +13,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
 
+
 namespace WebApp.Areas.AdminArea.Controllers;
 
-[Authorize(Roles = nameof(Admin))]
+[Authorize(Roles = "Admin")]
 [Area(nameof(AdminArea))]
 public class AdminsController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
     private readonly UserManager<AppUser> _userManager;
 
-    public AdminsController(IAppUnitOfWork uow, UserManager<AppUser> userManager)
+    public AdminsController(UserManager<AppUser> userManager, IAppBLL appBLL)
     {
-        _uow = uow;
         _userManager = userManager;
+        _appBLL = appBLL;
     }
 
     // GET: AdminArea/Admins
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.Admins.GetAllAdminsOrderedByLastNameAsync();
-#warning Should this be a repo method
-        foreach (var admin in res)
-        {
-            admin.AppUser!.DateOfBirth = admin.AppUser.DateOfBirth.ToLocalTime();
-            admin.CreatedAt = admin.CreatedAt.ToLocalTime();
-            admin.UpdatedAt = admin.UpdatedAt.ToLocalTime();
-        }
+        var res = await _appBLL.Admins.GetAllAdminsOrderedByLastNameAsync();
+
 
         return View(res);
     }
@@ -46,7 +44,7 @@ public class AdminsController : Controller
         var vm = new DetailsDeleteAdminViewModel();
         if (id == null) return NotFound();
 
-        var admin = await _uow.Admins.FirstOrDefaultAsync(id.Value);
+        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id.Value);
         if (admin == null) return NotFound();
 
 
@@ -56,7 +54,7 @@ public class AdminsController : Controller
         vm.Gender = admin.AppUser!.Gender;
         vm.DateOfBirth = admin.AppUser!.DateOfBirth;
         vm.Address = admin.Address;
-        vm.City = admin.City;
+        vm.City = admin.City!.CityName;
         vm.PhoneNumber = admin.AppUser!.PhoneNumber;
         vm.Email = admin.AppUser!.Email;
         vm.IsActive = admin.AppUser!.IsActive;
@@ -64,9 +62,9 @@ public class AdminsController : Controller
 
         vm.Id = admin.Id;
         vm.CreatedBy = admin.CreatedBy!;
-        vm.CreatedAt = admin.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = admin.CreatedAt;
         vm.UpdatedBy = admin.UpdatedBy!;
-        vm.UpdatedAt = admin.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = admin.UpdatedAt;
 
         return View(vm);
     }
@@ -76,8 +74,8 @@ public class AdminsController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateAdminViewModel();
-        vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
-            nameof(City.Id), nameof(City.CityName));
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
+            nameof(CityDTO.Id), nameof(App.BLL.DTO.AdminArea.CityDTO.CityName));
 
         return View(vm);
     }
@@ -87,18 +85,18 @@ public class AdminsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateAdminViewModel vm, Admin admin)
+    public async Task<IActionResult> Create(CreateAdminViewModel vm, AdminDTO admin)
     {
         if (ModelState.IsValid)
         {
             admin.Id = Guid.NewGuid();
-            _uow.Admins.Add(admin);
-            await _uow.SaveChangesAsync();
+            _appBLL.Admins.Add(admin);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(), nameof(City.Id),
-            nameof(City.CityName), nameof(vm.CityId));
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(), nameof(CityDTO.Id),
+            nameof(CityDTO.CityName), nameof(vm.CityId));
         return View(vm);
     }
 
@@ -109,7 +107,7 @@ public class AdminsController : Controller
         var vm = new EditAdminViewModel();
         if (id == null) return NotFound();
 
-        var admin = await _uow.Admins.FirstOrDefaultAsync(id.Value);
+        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id.Value);
         if (admin == null) return NotFound();
 
         vm.FirstName = admin.AppUser!.FirstName;
@@ -123,8 +121,8 @@ public class AdminsController : Controller
         vm.PhoneNumber = admin.AppUser!.PhoneNumber;
         vm.Email = admin.AppUser.Email;
         vm.IsActive = admin.AppUser!.IsActive;
-        vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
-            nameof(City.Id), nameof(City.CityName));
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
+            nameof(CityDTO.Id), nameof(CityDTO.CityName));
         return View(vm);
     }
 
@@ -135,7 +133,7 @@ public class AdminsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditAdminViewModel vm)
     {
-        var admin = await _uow.Admins.FirstOrDefaultAsync(id);
+        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id);
         
         if (admin != null && id != admin.Id) return NotFound();
 
@@ -158,10 +156,10 @@ public class AdminsController : Controller
                     admin.AppUser!.IsActive = vm.IsActive;
                     admin.UpdatedBy = User.Identity!.Name!;
                     admin.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _uow.Admins.Update(admin);
+                    _appBLL.Admins.Update(admin);
                 }
 
-                await _uow.SaveChangesAsync();
+                await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -181,7 +179,7 @@ public class AdminsController : Controller
     {
         if (id == null) return NotFound();
 
-        var admin = await _uow.Admins.FirstOrDefaultAsync(id.Value);
+        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id.Value);
         if (admin == null) return NotFound();
 
         vm.FirstName = admin.AppUser!.FirstName;
@@ -190,16 +188,16 @@ public class AdminsController : Controller
         vm.Gender = admin.AppUser!.Gender;
         vm.DateOfBirth = admin.AppUser!.DateOfBirth;
         vm.Address = admin.Address;
-        vm.City = admin.City;
+        vm.City = admin.City!.CityName;
         vm.PhoneNumber = admin.AppUser!.PhoneNumber;
         vm.Email = admin.AppUser.Email;
         vm.IsActive = admin.AppUser!.IsActive;
         if (admin.PersonalIdentifier != null) vm.PersonalIdentifier = admin.PersonalIdentifier;
 
         vm.CreatedBy = admin.CreatedBy!;
-        vm.CreatedAt = admin.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = admin.CreatedAt;
         vm.UpdatedBy = admin.UpdatedBy!;
-        vm.UpdatedAt = admin.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = admin.UpdatedAt;
 
         return View(vm);
     }
@@ -211,18 +209,18 @@ public class AdminsController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
 
-        var admin = await _uow.Admins.FirstOrDefaultAsync(id);
+        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id);
         if (admin != null)
         {
             var appUser = await _userManager.FindByEmailAsync(admin.AppUser!.Email);
-            await _userManager.RemoveFromRoleAsync(appUser, nameof(Admin));
-            _uow.Admins.Remove(admin);
-            await _uow.SaveChangesAsync();
+            await _userManager.RemoveFromRoleAsync(appUser, "Admin");
+            _appBLL.Admins.Remove(admin);
+            await _appBLL.SaveChangesAsync();
             #warning temporarily solution
             var claims = await _userManager.GetClaimsAsync(appUser);
             await _userManager.RemoveClaimsAsync(appUser, claims);
             await _userManager.DeleteAsync(appUser);
-           await _uow.SaveChangesAsync();
+           await _appBLL.SaveChangesAsync();
         }
 
         return RedirectToAction(nameof(Index));
@@ -230,6 +228,6 @@ public class AdminsController : Controller
 
     private bool AdminExists(Guid id)
     {
-        return _uow.Admins.Exists(id);
+        return _appBLL.Admins.Exists(id);
     }
-}*/
+}

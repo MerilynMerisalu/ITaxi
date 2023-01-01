@@ -1,11 +1,16 @@
 ﻿
-using App.Domain;
+
+using App.DAL.DTO.AdminArea;
 using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface IAdminRepository : IEntityRepository<Admin>
+public interface IAdminRepository : IEntityRepository<AdminDTO>, IAdminRepositoryCustom<AdminDTO>
 {
-    Task<IEnumerable<Admin>> GetAllAdminsOrderedByLastNameAsync(bool noTracking = true);
-    IEnumerable<Admin> GetAllAdminsOrderedByLastName(bool noTracking = true);
+   
+}
+public interface IAdminRepositoryCustom<TEntity> 
+{
+    Task<IEnumerable<TEntity>> GetAllAdminsOrderedByLastNameAsync(bool noTracking = true);
+    IEnumerable<TEntity> GetAllAdminsOrderedByLastName(bool noTracking = true);
 }

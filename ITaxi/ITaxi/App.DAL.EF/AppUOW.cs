@@ -10,7 +10,7 @@ namespace App.DAL.EF;
 public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
 {
     private readonly IMapper _mapper;
-    //private IAdminRepository? _admins;
+    private IAdminRepository? _admins;
     //private IBookingRepository? _bookings;
     private ICityRepository? _cities;
    // private ICommentRepository _comments;
@@ -39,7 +39,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     , new CountyMapper(_mapper));
     public virtual ICityRepository Cities => _cities ?? new CityRepository(UOWDbContext,
         new CityMapper(_mapper));
-    /*public IAdminRepository Admins => _admins ?? new AdminRepository(UOWDbContext);*/
+    public IAdminRepository Admins => _admins ?? new AdminRepository(UOWDbContext, new AdminMapper(_mapper));
     //public IBookingRepository Bookings => _bookings ?? new BookingRepository(UOWDbContext);
     //public IDriverRepository Drivers => _drivers ?? new DriverRepository(UOWDbContext);
 

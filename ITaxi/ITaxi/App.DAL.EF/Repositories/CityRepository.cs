@@ -48,6 +48,11 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
             .Select(e => Mapper.Map(e))!;
     }
 
+    public IEnumerable<CityDTO> GetAllOrderedCities(bool noTracking =true)
+    {
+        return CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e))!;
+    }
+
     public async Task<IEnumerable<CityDTO>> GettingByCountyIdAsync(Guid countyId)
     {
         return (await CreateQuery().Where(x => x.CountyId == countyId).ToListAsync()).Select(x => Mapper.Map(x))!;

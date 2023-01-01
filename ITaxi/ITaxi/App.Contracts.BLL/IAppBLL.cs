@@ -7,4 +7,5 @@ public interface IAppBLL: IBLL
 {
     ICountyService Counties { get; }
     ICityService Cities { get; }
+    IAdminService Admins { get; }
 }
