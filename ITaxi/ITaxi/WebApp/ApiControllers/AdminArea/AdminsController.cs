@@ -1,6 +1,6 @@
-/*#nullable enable
-using App.Contracts.DAL;
-using App.Domain;
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,52 +13,45 @@ namespace WebApp.ApiControllers.AdminArea;
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class AdminsController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public AdminsController(IAppUnitOfWork uow)
+    public AdminsController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: api/Admins
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
+    public async Task<ActionResult<IEnumerable<AdminDTO>>> GetAdmins()
     {
-        var res = await _uow.Admins.GetAllAdminsOrderedByLastNameAsync();
-        foreach (var admin in res)
-        {
-            admin.CreatedAt = admin.CreatedAt.ToLocalTime();
-            admin.UpdatedAt = admin.UpdatedAt.ToLocalTime();
-        }
+        var res = await _appBLL.Admins.GetAllAdminsOrderedByLastNameAsync();
+        
         return Ok(res);
     }
 
     // GET: api/Admins/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Admin>> GetAdmin(Guid id)
+    public async Task<ActionResult<AdminDTO>> GetAdmin(Guid id)
     {
-        var admin = await _uow.Admins.FirstOrDefaultAsync(id);
+        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id);
 
         if (admin == null) return NotFound();
         
-        admin.CreatedAt = admin.CreatedAt.ToLocalTime();
-        admin.UpdatedAt = admin.UpdatedAt.ToLocalTime();
-
+        
         return admin;
     }
 
     // PUT: api/Admins/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutAdmin(Guid id, Admin admin)
+    public async Task<IActionResult> PutAdmin(Guid id, AdminDTO adminDTO)
     {
-        if (id != admin.Id) return BadRequest();
-
+        if (id != adminDTO.Id) return BadRequest();
 
         try
         {
-            _uow.Admins.Update(admin);
-            await _uow.SaveChangesAsync();
+            _appBLL.Admins.Update(adminDTO);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -73,29 +66,29 @@ public class AdminsController : ControllerBase
     // POST: api/Admins
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
+    public async Task<ActionResult<AdminDTO>> PostAdmin(AdminDTO adminDTO)
     {
-        _uow.Admins.Add(admin);
-        await _uow.SaveChangesAsync();
+        _appBLL.Admins.Add(adminDTO);
+        await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetAdmin", new {id = admin.Id}, admin);
+        return CreatedAtAction("GetAdmin", new {id = adminDTO.Id}, adminDTO);
     }
 
     // DELETE: api/Admins/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAdmin(Guid id)
     {
-        var admin = await _uow.Admins.FirstOrDefaultAsync(id);
+        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id);
         if (admin == null) return NotFound();
 
-        _uow.Admins.Remove(admin);
-        await _uow.SaveChangesAsync();
+        _appBLL.Admins.Remove(admin);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool AdminExists(Guid id)
     {
-        return _uow.Admins.Exists(id);
+        return _appBLL.Admins.Exists(id);
     }
-}*/
+}
