@@ -33,7 +33,13 @@ public class AppBLL:BaseBLL<IAppUnitOfWork>, IAppBLL
     public virtual ICityService Cities => _cities ?? new CityService(UnitOfWork.Cities, new CityMapper(_mapper));
     public virtual IAdminService Admins => _admins ?? new AdminService(UnitOfWork.Admins, new AdminMapper(_mapper));
 
+    public virtual IDriverLicenseCategoryService DriverLicenseCategories =>
+        _driverLicenseCategories ?? new DriverLicenseCategoryService(UnitOfWork.DriverLicenseCategories,
+            new DriverLicenseCategoryMapper(_mapper));
+   
+
     private ICountyService? _counties;
     private ICityService? _cities;
     private IAdminService? _admins;
+    private IDriverLicenseCategoryService? _driverLicenseCategories;
 }

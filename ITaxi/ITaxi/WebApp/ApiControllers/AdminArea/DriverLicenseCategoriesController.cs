@@ -1,4 +1,6 @@
-/*#nullable enable
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,25 +15,25 @@ namespace WebApp.ApiControllers.AdminArea;
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DriverLicenseCategoriesController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public DriverLicenseCategoriesController(IAppUnitOfWork uow)
+    public DriverLicenseCategoriesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: api/DriverLicenseCategories
     [HttpGet]
     public async Task<ActionResult<IEnumerable<DriverLicenseCategory>>> GetDriverLicenseCategories()
     {
-        return Ok(await _uow.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync());
+        return Ok(await _appBLL.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync());
     }
 
     // GET: api/DriverLicenseCategories/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<DriverLicenseCategory>> GetDriverLicenseCategory(Guid id)
+    public async Task<ActionResult<DriverLicenseCategoryDTO>> GetDriverLicenseCategory(Guid id)
     {
-        var driverLicenseCategory = await _uow.DriverLicenseCategories.FirstOrDefaultAsync(id);
+        var driverLicenseCategory = await _appBLL.DriverLicenseCategories.FirstOrDefaultAsync(id);
 
         if (driverLicenseCategory == null) return NotFound();
 
@@ -41,15 +43,15 @@ public class DriverLicenseCategoriesController : ControllerBase
     // PUT: api/DriverLicenseCategories/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutDriverLicenseCategory(Guid id, DriverLicenseCategory driverLicenseCategory)
+    public async Task<IActionResult> PutDriverLicenseCategory(Guid id, DriverLicenseCategoryDTO driverLicenseCategory)
     {
         if (id != driverLicenseCategory.Id) return BadRequest();
 
 
         try
         {
-            _uow.DriverLicenseCategories.Update(driverLicenseCategory);
-            await _uow.SaveChangesAsync();
+            _appBLL.DriverLicenseCategories.Update(driverLicenseCategory);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -65,10 +67,10 @@ public class DriverLicenseCategoriesController : ControllerBase
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<DriverLicenseCategory>> PostDriverLicenseCategory(
-        DriverLicenseCategory driverLicenseCategory)
+        DriverLicenseCategoryDTO driverLicenseCategory)
     {
-        _uow.DriverLicenseCategories.Add(driverLicenseCategory);
-        await _uow.SaveChangesAsync();
+        _appBLL.DriverLicenseCategories.Add(driverLicenseCategory);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetDriverLicenseCategory", new {id = driverLicenseCategory.Id}, driverLicenseCategory);
     }
@@ -77,17 +79,17 @@ public class DriverLicenseCategoriesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDriverLicenseCategory(Guid id)
     {
-        var driverLicenseCategory = await _uow.DriverLicenseCategories.FirstOrDefaultAsync(id);
+        var driverLicenseCategory = await _appBLL.DriverLicenseCategories.FirstOrDefaultAsync(id);
         if (driverLicenseCategory == null) return NotFound();
 
-        _uow.DriverLicenseCategories.Remove(driverLicenseCategory);
-        await _uow.SaveChangesAsync();
+        _appBLL.DriverLicenseCategories.Remove(driverLicenseCategory);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool DriverLicenseCategoryExists(Guid id)
     {
-        return _uow.DriverLicenseCategories.Exists(id);
+        return _appBLL.DriverLicenseCategories.Exists(id);
     }
-}*/
+}

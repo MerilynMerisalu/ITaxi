@@ -3,7 +3,7 @@ using App.Domain;
 using Base.Domain;
 using Base.Resources;
 
-namespace App.DAL.DTO.AdminArea;
+namespace App.BLL.DTO.AdminArea;
 
 public class DriverLicenseCategoryDTO: DomainEntityMetaId
 {
@@ -11,6 +11,8 @@ public class DriverLicenseCategoryDTO: DomainEntityMetaId
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageStringLengthMinMax")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.DriverLicenseCategory),
+        Name = "DriverLicenseCategoryName")]
     public string DriverLicenseCategoryName { get; set; } = default!;
 
     public ICollection<DriverAndDriverLicenseCategory>? Drivers { get; set; }

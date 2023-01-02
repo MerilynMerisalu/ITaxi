@@ -4,8 +4,13 @@ using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface IDriverLicenseCategoryRepository : IEntityRepository<DriverLicenseCategoryDTO>
+public interface IDriverLicenseCategoryRepository : IEntityRepository<DriverLicenseCategoryDTO>, IDriverLicenseCategoryRepositoryCustom<DriverLicenseCategoryDTO>
 {
-    Task<IEnumerable<DriverLicenseCategoryDTO>> GetAllDriverLicenseCategoriesOrderedAsync(bool noTracking = true);
-    IEnumerable<DriverLicenseCategoryDTO> GetAllDriverLicenseCategoriesOrdered(bool noTracking = true);
+    
+}
+
+public interface IDriverLicenseCategoryRepositoryCustom<TEntity>
+{
+    Task<IEnumerable<TEntity>> GetAllDriverLicenseCategoriesOrderedAsync(bool noTracking = true);
+    IEnumerable<TEntity> GetAllDriverLicenseCategoriesOrdered(bool noTracking = true);
 }
