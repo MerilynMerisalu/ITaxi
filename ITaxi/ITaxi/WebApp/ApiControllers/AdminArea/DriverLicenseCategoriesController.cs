@@ -1,8 +1,6 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
-using App.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +22,7 @@ public class DriverLicenseCategoriesController : ControllerBase
 
     // GET: api/DriverLicenseCategories
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<DriverLicenseCategory>>> GetDriverLicenseCategories()
+    public async Task<ActionResult<IEnumerable<DriverLicenseCategoryDTO>>> GetDriverLicenseCategories()
     {
         return Ok(await _appBLL.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync());
     }
@@ -66,7 +64,7 @@ public class DriverLicenseCategoriesController : ControllerBase
     // POST: api/DriverLicenseCategories
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<DriverLicenseCategory>> PostDriverLicenseCategory(
+    public async Task<ActionResult<DriverLicenseCategoryDTO>> PostDriverLicenseCategory(
         DriverLicenseCategoryDTO driverLicenseCategory)
     {
         _appBLL.DriverLicenseCategories.Add(driverLicenseCategory);
