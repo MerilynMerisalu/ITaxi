@@ -1,5 +1,6 @@
-/*#nullable enable
+#nullable enable
 using App.Contracts.DAL;
+using App.DAL.DTO.AdminArea;
 using App.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ using WebApp.Areas.AdminArea.ViewModels;
 namespace WebApp.Areas.AdminArea.Controllers;
 
 [Area(nameof(AdminArea))]
-[Authorize(Roles = nameof(Admin))]
+[Authorize(Roles = "Admin")]
 public class DriverLicenseCategoriesController : Controller
 {
     private readonly IAppUnitOfWork _uow;
@@ -23,12 +24,7 @@ public class DriverLicenseCategoriesController : Controller
     public async Task<IActionResult> Index()
     {
         var res = await _uow.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync();
-#warning Should this be a repo method
-        foreach (var driverLicenseCategory in res)
-        {
-            driverLicenseCategory.CreatedAt = driverLicenseCategory.CreatedAt.ToLocalTime();
-            driverLicenseCategory.UpdatedAt = driverLicenseCategory.UpdatedAt.ToLocalTime();
-        }
+
 
         return View(res);
     }
@@ -45,9 +41,9 @@ public class DriverLicenseCategoriesController : Controller
         vm.Id = driverLicenseCategory.Id;
         vm.DriverLicenseCategoryName = driverLicenseCategory.DriverLicenseCategoryName;
         vm.CreatedBy = driverLicenseCategory.CreatedBy!;
-        vm.CreatedAt = driverLicenseCategory.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = driverLicenseCategory.CreatedAt;
         vm.UpdatedBy = driverLicenseCategory.UpdatedBy!;
-        vm.UpdatedAt = driverLicenseCategory.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = driverLicenseCategory.UpdatedAt;
 
         return View(vm);
     }
@@ -65,7 +61,7 @@ public class DriverLicenseCategoriesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateEditDriverLicenseCategoryViewModel vm,
-        DriverLicenseCategory driverLicenseCategory)
+        DriverLicenseCategoryDTO driverLicenseCategory)
     {
         if (ModelState.IsValid)
         {
@@ -143,9 +139,9 @@ public class DriverLicenseCategoriesController : Controller
 
         vm.DriverLicenseCategoryName = driverLicenseCategory.DriverLicenseCategoryName;
         vm.CreatedBy = driverLicenseCategory.CreatedBy!;
-        vm.CreatedAt = driverLicenseCategory.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = driverLicenseCategory.CreatedAt;
         vm.UpdatedBy = driverLicenseCategory.UpdatedBy!;
-        vm.UpdatedAt = driverLicenseCategory.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = driverLicenseCategory.UpdatedAt;
         return View(vm);
     }
 
@@ -157,9 +153,9 @@ public class DriverLicenseCategoriesController : Controller
     {
         var driverLicenseCategory = await _uow.DriverLicenseCategories.FirstOrDefaultAsync(id);
 #warning Ask if this could be improved
-        if (await _uow.DriverAndDriverLicenseCategories
+        /*if (await _uow.DriverAndDriverLicenseCategories
                 .AnyAsync(c => c != null && c.DriverLicenseCategoryId.Equals(id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");
+            return Content("Entity cannot be deleted because it has dependent entities!");*/
         if (driverLicenseCategory != null) _uow.DriverLicenseCategories.Remove(driverLicenseCategory);
         await _uow.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
@@ -169,4 +165,4 @@ public class DriverLicenseCategoriesController : Controller
     {
         return _uow.DriverLicenseCategories.Exists(id);
     }
-}*/
+}

@@ -1,10 +1,11 @@
-﻿using App.Domain;
+﻿
+using App.DAL.DTO.AdminArea;
 using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface IDriverLicenseCategoryRepository : IEntityRepository<DriverLicenseCategory>
+public interface IDriverLicenseCategoryRepository : IEntityRepository<DriverLicenseCategoryDTO>
 {
-    Task<IEnumerable<DriverLicenseCategory>> GetAllDriverLicenseCategoriesOrderedAsync(bool noTracking = true);
-    IEnumerable<DriverLicenseCategory> GetAllDriverLicenseCategoriesOrdered(bool noTracking = true);
+    Task<IEnumerable<DriverLicenseCategoryDTO>> GetAllDriverLicenseCategoriesOrderedAsync(bool noTracking = true);
+    IEnumerable<DriverLicenseCategoryDTO> GetAllDriverLicenseCategoriesOrdered(bool noTracking = true);
 }

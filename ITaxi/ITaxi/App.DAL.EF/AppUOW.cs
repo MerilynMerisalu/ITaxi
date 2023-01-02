@@ -19,7 +19,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     //private ICustomerRepository _customers;
     //private IDisabilityTypeRepository _disabilityTypes;
     //private IDriverAndDriverLicenseCategoryRepository _driverAndDriverLicenseCategories;
-    //private IDriverLicenseCategoryRepository _driverLicenseCategories;
+    private IDriverLicenseCategoryRepository? _driverLicenseCategories;
     /*private IDriverRepository? _drivers;
     private IDriveRepository _drives;
     private IPhotoRepository _photos;
@@ -39,12 +39,12 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     , new CountyMapper(_mapper));
     public virtual ICityRepository Cities => _cities ?? new CityRepository(UOWDbContext,
         new CityMapper(_mapper));
-    public IAdminRepository Admins => _admins ?? new AdminRepository(UOWDbContext, new AdminMapper(_mapper));
+    public virtual IAdminRepository Admins => _admins ?? new AdminRepository(UOWDbContext, new AdminMapper(_mapper));
     //public IBookingRepository Bookings => _bookings ?? new BookingRepository(UOWDbContext);
     //public IDriverRepository Drivers => _drivers ?? new DriverRepository(UOWDbContext);
 
-    /*public IDriverLicenseCategoryRepository DriverLicenseCategories =>
-        _driverLicenseCategories ?? new DriverLicenseCategoryRepository(UOWDbContext);*/
+    public virtual IDriverLicenseCategoryRepository DriverLicenseCategories =>
+        _driverLicenseCategories ?? new DriverLicenseCategoryRepository(UOWDbContext, new DriverLicenseCategoryMapper(_mapper));
 
     /*public IDriverAndDriverLicenseCategoryRepository DriverAndDriverLicenseCategories
         => _driverAndDriverLicenseCategories ?? new DriverAndDriverLicenseCategoryRepository(UOWDbContext);
