@@ -1,13 +1,11 @@
 #nullable enable
+using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
-using App.DAL.DTO.AdminArea;
-using App.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
-using DriverLicenseCategoryDTO = App.BLL.DTO.AdminArea.DriverLicenseCategoryDTO;
+
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
