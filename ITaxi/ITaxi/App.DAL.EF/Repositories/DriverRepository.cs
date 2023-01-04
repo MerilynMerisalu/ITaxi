@@ -1,39 +1,42 @@
-﻿/*using App.Contracts.DAL.IAppRepositories;
+﻿using App.Contracts.DAL.IAppRepositories;
+using App.DAL.DTO.AdminArea;
 using App.Domain;
+using Base.Contracts;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class DriverRepository : BaseEntityRepository<Driver, AppDbContext>, IDriverRepository
+public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Driver, AppDbContext>, IDriverRepository
 {
-    public DriverRepository(AppDbContext dbContext) : base(dbContext)
+    public DriverRepository(AppDbContext dbContext, IMapper<App.DAL.DTO.AdminArea.DriverDTO, App.Domain.Driver> mapper) 
+        : base(dbContext, mapper)
     {
     }
 
-    public override Task<Driver?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
+    public override async Task<DriverDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
     {
-        return CreateQuery(noTracking).FirstOrDefaultAsync(d => d.Id.Equals(id));
+        return Mapper.Map(await CreateQuery(noTracking).FirstOrDefaultAsync(d => d.Id.Equals(id)));
     }
 
-    public override Driver? FirstOrDefault(Guid id, bool noTracking = true)
+    public override DriverDTO? FirstOrDefault(Guid id, bool noTracking = true)
     {
-        return CreateQuery(noTracking).FirstOrDefault(d => d.Id.Equals(id));
+        return Mapper.Map(CreateQuery(noTracking).FirstOrDefault(d => d.Id.Equals(id)));
     }
 
-    public async Task<IEnumerable<Driver>> GetAllDriversOrderedByLastNameAsync(bool noTracking = true)
+    public async Task<IEnumerable<DriverDTO>> GetAllDriversOrderedByLastNameAsync(bool noTracking = true)
     {
         var res = await CreateQuery(noTracking).OrderBy(d => d.AppUser!.LastName)
             .ThenBy(d => d.AppUser!.FirstName).ToListAsync();
 
-        return res;
+        return res.Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<Driver> GetAllDriversOrderedByLastName(bool noTracking = true)
+    public IEnumerable<DriverDTO> GetAllDriversOrderedByLastName(bool noTracking = true)
     {
         return CreateQuery(noTracking).OrderBy(d => d.AppUser!.LastName)
             .ThenBy(d => d.AppUser!.FirstName)
-            .ToList();
+            .ToList().Select(e => Mapper.Map(e))!;
     }
 
     protected override IQueryable<Driver> CreateQuery(bool noTracking = true)
@@ -45,4 +48,4 @@ public class DriverRepository : BaseEntityRepository<Driver, AppDbContext>, IDri
             .Include(a => a.City);
         return query;
     }
-}*/
+}

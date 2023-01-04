@@ -9,4 +9,5 @@ public interface IAppBLL: IBLL
     ICityService Cities { get; }
     IAdminService Admins { get; }
     IDriverLicenseCategoryService DriverLicenseCategories { get; }
+    IDriverService Drivers { get; }
 }

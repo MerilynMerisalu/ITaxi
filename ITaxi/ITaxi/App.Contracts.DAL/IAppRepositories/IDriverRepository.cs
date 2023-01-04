@@ -1,10 +1,16 @@
-﻿using App.Domain;
+﻿using App.DAL.DTO.AdminArea;
+
 using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface IDriverRepository : IEntityRepository<Driver>
+public interface IDriverRepository : IEntityRepository<DriverDTO>, IDriverRepositoryCustom<DriverDTO>
 {
-    Task<IEnumerable<Driver>> GetAllDriversOrderedByLastNameAsync(bool noTracking = true);
-    IEnumerable<Driver> GetAllDriversOrderedByLastName(bool noTracking = true);
+    
+}
+
+public interface IDriverRepositoryCustom<TEntity>
+{
+    Task<IEnumerable<TEntity>> GetAllDriversOrderedByLastNameAsync(bool noTracking = true);
+    IEnumerable<TEntity> GetAllDriversOrderedByLastName(bool noTracking = true);
 }

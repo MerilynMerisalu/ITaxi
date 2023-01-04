@@ -9,7 +9,7 @@ public interface IAppUnitOfWork : IUnitOfWork
     ICityRepository Cities { get; }
     IAdminRepository Admins { get; }
     //IBookingRepository Bookings { get; }
-    //IDriverRepository Drivers { get; }
+    IDriverRepository Drivers { get; }
     IDriverLicenseCategoryRepository DriverLicenseCategories { get; }
     //IDriverAndDriverLicenseCategoryRepository DriverAndDriverLicenseCategories { get; }
     /*IVehicleTypeRepository VehicleTypes { get; }

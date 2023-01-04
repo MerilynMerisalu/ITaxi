@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain.Identity;
+using App.DAL.DTO.Identity;
+using App.Domain;
 using Base.Domain;
 using Base.Resources;
 
-namespace App.Domain;
+namespace App.DAL.DTO.AdminArea;
 
-public class Driver : DomainEntityMetaId
+public class DriverDTO: DomainEntityMetaId
 {
     public Guid AppUserId { get; set; }
     public AppUser? AppUser { get; set; }
@@ -23,19 +24,20 @@ public class Driver : DomainEntityMetaId
     [MinLength(2, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMinLength")]
     [StringLength(15, MinimumLength = 2, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseNumber")]
     public string DriverLicenseNumber { get; set; } = default!;
 
 
     [DataType(DataType.DateTime)]
     
+#warning DateTime input control does not support user changing the language yet.
     public DateTime DriverLicenseExpiryDate { get; set; }
 
-
+    public int NumberOfDriverLicenseCategories { get; set; }
     public Guid CityId { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "City")]
-    public City? City { get; set; }
+    
+    public CityDTO? City { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(30, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]

@@ -1,5 +1,4 @@
-﻿using App.Domain.DTO;
-using App.Domain.DTO.AdminArea;
+﻿using App.DAL.DTO.AdminArea;
 
 namespace WebApp.DTO;
 

@@ -2,11 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 #nullable enable
-
+using App.BLL.DTO.AdminArea;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
+using App.Contracts.BLL;
+using App.DAL.DTO.AdminArea;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Enum;
@@ -21,11 +23,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 
+
+
 namespace WebApp.Areas.Identity.Pages.Account;
 
 public class RegisterDriverModel : PageModel
 {
     private readonly AppDbContext _context;
+    private readonly IAppBLL _appBLL;
     private readonly IEmailSender _emailSender;
     private readonly IUserEmailStore<AppUser> _emailStore;
     private readonly ILogger<RegisterDriverModel> _logger;
@@ -39,8 +44,7 @@ public class RegisterDriverModel : PageModel
         IUserStore<AppUser> userStore,
         SignInManager<AppUser> signInManager,
         ILogger<RegisterDriverModel> logger,
-        IEmailSender emailSender, AppDbContext context
-    )
+        IEmailSender emailSender, IAppBLL appBLL, AppDbContext context)
     {
         _userManager = userManager;
         _userStore = userStore;
@@ -48,15 +52,16 @@ public class RegisterDriverModel : PageModel
         _signInManager = signInManager;
         _logger = logger;
         _emailSender = emailSender;
+        _appBLL = appBLL;
         _context = context;
-        Cities = new SelectList(_context.Cities
-                .OrderBy(c => c.CityName)
-                .Select(c => new {c.Id, c.CityName}).ToList(),
-            nameof(City.Id), nameof(City.CityName));
-        DriverLicenseCategories = new SelectList(_context.DriverLicenseCategories
-                .OrderBy(d => d.DriverLicenseCategoryName)
-                .Select(d => new {d.Id, d.DriverLicenseCategoryName}).ToList(),
-            nameof(DriverLicenseCategory.Id), nameof(DriverLicenseCategory.DriverLicenseCategoryName));
+
+        Cities = new SelectList(_appBLL!.Cities.GetAllOrderedCities(),
+        nameof(App.BLL.DTO.AdminArea.CityDTO.Id), nameof(App.BLL.DTO.AdminArea.CityDTO.CityName));
+        DriverLicenseCategories = new SelectList(_appBLL.DriverLicenseCategories
+            .GetAllDriverLicenseCategoriesOrdered(),
+                
+            nameof(App.BLL.DTO.AdminArea.DriverLicenseCategoryDTO.Id), nameof(
+                App.BLL.DTO.AdminArea.DriverLicenseCategoryDTO.DriverLicenseCategoryName));
     }
 
 
@@ -132,9 +137,9 @@ public class RegisterDriverModel : PageModel
 
                 await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
-                await _userManager.AddToRoleAsync(user, nameof(Driver));
-                await _context.SaveChangesAsync();
-                var driver = new Driver
+                await _userManager.AddToRoleAsync(user, "Driver");
+                await _appBLL.SaveChangesAsync();
+                var driver = new App.BLL.DTO.AdminArea.DriverDTO()
                 {
 #warning driver's driver license expiry date needs a custom validation rule
                     AppUserId = user.Id, PersonalIdentifier = Input.PersonalIdentifier,
@@ -142,7 +147,7 @@ public class RegisterDriverModel : PageModel
                     DriverLicenseNumber = Input.DriverLicenseNumber,
                     DriverLicenseExpiryDate = Input.ExpiryDate
                 };
-                await _context.Drivers.AddAsync(driver);
+                 _appBLL.Drivers.Add(driver);
                 if (Input.DriverAndDriverLicenseCategories != null)
                 {
 #warning Adding driver and driver license categories needs a custom validation rule

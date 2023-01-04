@@ -36,5 +36,14 @@ public class AutoMapperConfig: Profile
             .ForMember(dto => dto.UpdatedAt, 
                 m => 
                     m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
+        CreateMap<App.BLL.DTO.AdminArea.DriverDTO, App.DAL.DTO.AdminArea.DriverDTO>()
+            .ReverseMap()
+            .ForMember(dto => dto.CreatedAt, 
+                m => 
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt, 
+                m => 
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
     }
+    
 }

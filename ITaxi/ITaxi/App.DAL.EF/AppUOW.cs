@@ -20,8 +20,8 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     //private IDisabilityTypeRepository _disabilityTypes;
     //private IDriverAndDriverLicenseCategoryRepository _driverAndDriverLicenseCategories;
     private IDriverLicenseCategoryRepository? _driverLicenseCategories;
-    /*private IDriverRepository? _drivers;
-    private IDriveRepository _drives;
+    private IDriverRepository? _drivers;
+   /* private IDriveRepository _drives;
     private IPhotoRepository _photos;
     private IRideTimeRepository _rideTimes;
     private IScheduleRepository _schedules;
@@ -41,7 +41,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
         new CityMapper(_mapper));
     public virtual IAdminRepository Admins => _admins ?? new AdminRepository(UOWDbContext, new AdminMapper(_mapper));
     //public IBookingRepository Bookings => _bookings ?? new BookingRepository(UOWDbContext);
-    //public IDriverRepository Drivers => _drivers ?? new DriverRepository(UOWDbContext);
+    public IDriverRepository Drivers => _drivers ?? new DriverRepository(UOWDbContext, new DriverMapper(_mapper));
 
     public virtual IDriverLicenseCategoryRepository DriverLicenseCategories =>
         _driverLicenseCategories ?? new DriverLicenseCategoryRepository(UOWDbContext, new DriverLicenseCategoryMapper(_mapper));

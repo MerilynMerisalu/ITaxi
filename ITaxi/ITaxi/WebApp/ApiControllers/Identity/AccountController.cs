@@ -403,7 +403,7 @@ public class AccountController : ControllerBase
             NumberOfDriverLicenseCategories = driverRegistrationDto.DriverLicenseCategories!.Count,
             
             DriverLicenseNumber = driver.DriverLicenseNumber,
-            DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLocalTime().ToShortDateString(),
+            DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate,
             CreatedAt = driver.CreatedAt,
             CreatedBy = driver.CreatedBy,
             UpdatedAt = driver.UpdatedAt,
