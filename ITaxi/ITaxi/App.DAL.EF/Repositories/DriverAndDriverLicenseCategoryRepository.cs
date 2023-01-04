@@ -1,16 +1,19 @@
-﻿/*using App.Contracts.DAL.IAppRepositories;
+﻿using App.Contracts.DAL.IAppRepositories;
+using App.DAL.DTO.AdminArea;
 using App.Domain;
+using Base.Contracts;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
 public class DriverAndDriverLicenseCategoryRepository :
-    BaseEntityRepository<DriverAndDriverLicenseCategory, AppDbContext>,
+    BaseEntityRepository<DriverAndDriverLicenseCategoryDTO, App.Domain.DriverAndDriverLicenseCategory, AppDbContext>,
     IDriverAndDriverLicenseCategoryRepository
 
 {
-    public DriverAndDriverLicenseCategoryRepository(AppDbContext dbContext) : base(dbContext)
+    public DriverAndDriverLicenseCategoryRepository(AppDbContext dbContext, IMapper<App.DAL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO,
+    App.Domain.DriverAndDriverLicenseCategory> mapper) : base(dbContext, mapper)
     {
     }
 
@@ -34,15 +37,16 @@ public class DriverAndDriverLicenseCategoryRepository :
         return string.Join(separator, driverLicenseCategoryNamesAsList);
     }
 
-    public async Task<List<DriverAndDriverLicenseCategory?>>
+    public async Task<List<DriverAndDriverLicenseCategoryDTO?>>
         RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(Guid id)
     {
         var driverAndDriverLicenseCategories =
             await CreateQuery()
                 .Where(dl => dl.DriverId.Equals(id))
                 .Select(dl => dl).ToListAsync();
+        
 
-        return RemoveAll(driverAndDriverLicenseCategories)!;
+        return RemoveAll((driverAndDriverLicenseCategories.Select(e => Mapper.Map(e)) as List<DriverAndDriverLicenseCategoryDTO>)!)!;
     }
 
     
@@ -58,4 +62,4 @@ public class DriverAndDriverLicenseCategoryRepository :
             .Include(c => c.Driver);
         return query;
     }
-}*/
+}

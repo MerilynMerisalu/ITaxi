@@ -1,10 +1,7 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
+using App.BLL.DTO.Identity;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
-
-
-using App.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

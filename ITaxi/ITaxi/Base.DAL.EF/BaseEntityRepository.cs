@@ -76,12 +76,12 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
 
     public virtual List<TDalEntity> RemoveAll(List<TDalEntity> entities)
     {
-        List<TDomainEntity> dalEntities = new List<TDomainEntity>();
+        List<TDomainEntity> domainEntities = new List<TDomainEntity>();
         foreach (var entity in entities)
         {
-            dalEntities.Add(Mapper.Map(entity)!);
+            domainEntities.Add(Mapper.Map(entity)!);
         }
-        RepoDbSet.RemoveRange(dalEntities);
+        RepoDbSet.RemoveRange(domainEntities);
         return entities.ToList();
     }
 

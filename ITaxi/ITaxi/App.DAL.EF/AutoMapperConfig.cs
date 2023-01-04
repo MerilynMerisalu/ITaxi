@@ -49,6 +49,8 @@ public class AutoMapperConfig : Profile
             .ForMember(dto => dto.UpdatedAt, 
                 m => 
                     m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
+        CreateMap<DriverAndDriverLicenseCategoryDTO, App.Domain.DriverAndDriverLicenseCategory>()
+            .ReverseMap();
         CreateMap<AppUser, App.Domain.Identity.AppUser>().ReverseMap();
     }
 }
