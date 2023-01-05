@@ -1,6 +1,6 @@
-/*#nullable enable
-using App.Contracts.DAL;
-using App.Domain;
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,25 +13,25 @@ namespace WebApp.ApiControllers.AdminArea;
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DriversController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public DriversController(IAppUnitOfWork uow)
+    public DriversController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: api/Drivers
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Driver>>> GetDrivers()
+    public async Task<ActionResult<IEnumerable<DriverDTO>>> GetDrivers()
     {
-        return Ok(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync());
+        return Ok(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync());
     }
 
     // GET: api/Drivers/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Driver>> GetDriver(Guid id)
+    public async Task<ActionResult<DriverDTO>> GetDriver(Guid id)
     {
-        var driver = await _uow.Drivers.FirstOrDefaultAsync(id);
+        var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id);
 
         if (driver == null) return NotFound();
 
@@ -41,14 +41,14 @@ public class DriversController : ControllerBase
     // PUT: api/Drivers/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutDriver(Guid id, Driver driver)
+    public async Task<IActionResult> PutDriver(Guid id, DriverDTO driver)
     {
         if (id != driver.Id) return BadRequest();
 
         try
         {
-            _uow.Drivers.Update(driver);
-            await _uow.SaveChangesAsync();
+            _appBLL.Drivers.Update(driver);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -63,10 +63,10 @@ public class DriversController : ControllerBase
     // POST: api/Drivers
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Driver>> PostDriver(Driver driver)
+    public async Task<ActionResult<DriverDTO>> PostDriver(DriverDTO driver)
     {
-        _uow.Drivers.Add(driver);
-        await _uow.SaveChangesAsync();
+        _appBLL.Drivers.Add(driver);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetDriver", new {id = driver.Id}, driver);
     }
@@ -75,17 +75,17 @@ public class DriversController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDriver(Guid id)
     {
-        var driver = await _uow.Drivers.FirstOrDefaultAsync(id);
+        var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id);
         if (driver == null) return NotFound();
 
-        _uow.Drivers.Remove(driver);
-        await _uow.SaveChangesAsync();
+        _appBLL.Drivers.Remove(driver);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool DriverExists(Guid id)
     {
-        return _uow.Drivers.Exists(id);
+        return _appBLL.Drivers.Exists(id);
     }
-}*/
+}

@@ -48,8 +48,8 @@ public class DriverDTO: DomainEntityMetaId
     public string Address { get; set; } = default!;
 
 
-    public ICollection<Vehicle>? Vehicles { get; set; }
-    public ICollection<Drive>? Drives { get; set; }
-    public ICollection<Schedule>? Schedules { get; set; }
-    public ICollection<RideTime>? RideTimes { get; set; }
+    public ICollection<VehicleDTO>? Vehicles { get; set; }
+    public ICollection<DriveDTO>? Drives { get; set; }
+    public ICollection<ScheduleDTO>? Schedules { get; set; }
+    public ICollection<RideTimeDTO>? RideTimes { get; set; }
 }

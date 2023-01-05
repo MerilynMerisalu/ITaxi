@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain;
 using Base.Domain;
 using Base.Resources;
 
@@ -13,5 +12,5 @@ public class DriverLicenseCategoryDTO: DomainEntityMetaId
         ErrorMessageResourceName = "ErrorMessageStringLengthMinMax")]
     public string DriverLicenseCategoryName { get; set; } = default!;
 
-    public ICollection<DriverAndDriverLicenseCategory>? Drivers { get; set; }
+    public ICollection<DriverAndDriverLicenseCategoryDTO>? Drivers { get; set; }
 }
