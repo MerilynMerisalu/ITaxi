@@ -29,7 +29,7 @@ namespace WebApp.Areas.Identity.Pages.Account;
 
 public class RegisterDriverModel : PageModel
 {
-    private readonly AppDbContext _context;
+    
     private readonly IAppBLL _appBLL;
     private readonly IEmailSender _emailSender;
     private readonly IUserEmailStore<AppUser> _emailStore;
@@ -53,7 +53,6 @@ public class RegisterDriverModel : PageModel
         _logger = logger;
         _emailSender = emailSender;
         _appBLL = appBLL;
-        _context = context;
 
         Cities = new SelectList(_appBLL!.Cities.GetAllOrderedCities(),
         nameof(App.BLL.DTO.AdminArea.CityDTO.Id), nameof(App.BLL.DTO.AdminArea.CityDTO.CityName));
@@ -141,6 +140,7 @@ public class RegisterDriverModel : PageModel
                 await _appBLL.SaveChangesAsync();
                 var driver = new App.BLL.DTO.AdminArea.DriverDTO()
                 {
+                    Id = Guid.NewGuid(),
 #warning driver's driver license expiry date needs a custom validation rule
                     AppUserId = user.Id, PersonalIdentifier = Input.PersonalIdentifier,
                     Address = Input.Address, CityId = Input.CityId,
@@ -154,13 +154,13 @@ public class RegisterDriverModel : PageModel
 
                     foreach (var driverLicenseCategoryId in Input.DriverAndDriverLicenseCategories)
                     {
-                        var driverAndDriverLicenseCategories = new DriverAndDriverLicenseCategory
+                        var driverAndDriverLicenseCategories = new App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO()
                         {
                             DriverId = driver.Id,
                             DriverLicenseCategoryId = driverLicenseCategoryId
                         };
-                        await _context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategories);
-                        await _context.SaveChangesAsync();
+                         _appBLL.DriverAndDriverLicenseCategories.Add(driverAndDriverLicenseCategories);
+                        await _appBLL.SaveChangesAsync();
                     }
                 }
 

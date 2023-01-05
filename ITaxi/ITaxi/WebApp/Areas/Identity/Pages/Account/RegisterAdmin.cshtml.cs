@@ -27,7 +27,7 @@ namespace WebApp.Areas.Identity.Pages.Account;
 
 public class RegisterAdminModel : PageModel
 {
-    //private readonly AppDbContext _appBLL;
+    //private readonly AppDbContext _context;
     private readonly IAppBLL _appBLL;
     private readonly IEmailSender _emailSender;
     private readonly IUserEmailStore<AppUser> _emailStore;

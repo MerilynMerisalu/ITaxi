@@ -18,10 +18,11 @@ namespace WebApp.Areas.AdminArea.Controllers;
 public class DriversController : Controller
 {
     private readonly IAppBLL _appBLL;
-    private readonly UserManager<AppUser> _userManager;
+    #warning ask about it
+    private readonly UserManager<App.Domain.Identity.AppUser> _userManager;
 
 
-    public DriversController(UserManager<AppUser> userManager, IAppBLL appBLL)
+    public DriversController(UserManager<App.Domain.Identity.AppUser> userManager, IAppBLL appBLL)
     {
         
         _userManager = userManager;
@@ -51,8 +52,8 @@ public class DriversController : Controller
             vm.LastAndFirstName = driver.AppUser!.LastAndFirstName;
             vm.Gender = driver.AppUser!.Gender;
             vm.DateOfBirth = driver.AppUser!.DateOfBirth;
-            //vm.DriverLicenseCategoryNames = await _appBLL.DriverAndDriverLicenseCategories
-                //.GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
+            vm.DriverLicenseCategoryNames = await _appBLL.DriverAndDriverLicenseCategories
+                .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
             vm.PersonalIdentifier = driver.PersonalIdentifier;
             vm.CityName = driver.City!.CityName;
             vm.DriverLicenseNumber = driver.DriverLicenseNumber;
@@ -169,19 +170,19 @@ public class DriversController : Controller
                     driver.PersonalIdentifier = vm.PersonalIdentifier;
                     if (vm.DriverAndDriverLicenseCategories != null)
                     {
-                        /*await _appBLL.DriverAndDriverLicenseCategories
+                        await _appBLL.DriverAndDriverLicenseCategories
                             .RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(driver.Id);
 
                         foreach (var selectedDriverLicenseCategory in vm.DriverAndDriverLicenseCategories)
                         {
-                            var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory
+                            var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategoryDTO()
                             {
                                 DriverId = driver.Id,
                                 DriverLicenseCategoryId = selectedDriverLicenseCategory
                             };
                             _appBLL.DriverAndDriverLicenseCategories.Add(driverAndDriverLicenseCategory);
                         }
-                        */
+                        
                     }
                     
 
@@ -231,8 +232,8 @@ public class DriversController : Controller
         vm.LastAndFirstName = driver.AppUser!.LastAndFirstName;
         vm.Gender = driver.AppUser!.Gender;
         vm.DateOfBirth = driver.AppUser!.DateOfBirth;
-        //vm.DriverLicenseCategoryNames = await _appBLL.DriverAndDriverLicenseCategories
-            //.GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
+        vm.DriverLicenseCategoryNames = await _appBLL.DriverAndDriverLicenseCategories
+            .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
         vm.PersonalIdentifier = driver.PersonalIdentifier;
         vm.CityName = driver.City!.CityName;
         vm.DriverLicenseNumber = driver.DriverLicenseNumber;
@@ -253,7 +254,7 @@ public class DriversController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var driver = await _appBLL.Drivers.SingleOrDefaultAsync(d => d != null && d.Id.Equals(id));
+        var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id);
         /*if (await _appBLL.Schedules.AnyAsync(d => driver != null && d != null && d.DriverId.Equals(driver.Id))
             || await _appBLL.Bookings.AnyAsync(d => driver != null && d != null && d.DriverId.Equals(driver.Id)))
             return Content("Entity cannot be deleted because it has dependent entities!");
