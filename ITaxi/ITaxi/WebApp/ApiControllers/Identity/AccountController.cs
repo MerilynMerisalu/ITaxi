@@ -3,7 +3,8 @@ using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
-using App.DAL.DTO.AdminArea;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.DTO;
@@ -18,7 +19,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.Identity.Pages.Account;
 using WebApp.DTO;
 using WebApp.DTO.Identity;
-using DriverAndDriverLicenseCategoryDTO = WebApp.DTO.DriverAndDriverLicenseCategoryDTO;
+
 
 namespace WebApp.ApiControllers.Identity;
 
@@ -33,17 +34,19 @@ public class AccountController : ControllerBase
     private readonly ILogger<AccountController> _logger;
     private readonly Random _rand = new Random();
     private readonly AppDbContext _context;
+    private readonly IAppBLL _appBLL;
 
     public AccountController(SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
         IConfiguration configuration,
-        ILogger<AccountController> logger, AppDbContext context)
+        ILogger<AccountController> logger, AppDbContext context, IAppBLL appBLL)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _configuration = configuration;
         _logger = logger;
         _context = context;
+        _appBLL = appBLL;
     }
 
     [HttpPost]
@@ -239,7 +242,7 @@ public class AccountController : ControllerBase
         );
         await _userManager.AddToRoleAsync(appUser, "Admin");
       
-        var admin = new Admin
+        var admin = new App.BLL.DTO.AdminArea.AdminDTO()
         {
             Id = new Guid(),
             AppUserId = appUser.Id,
@@ -249,8 +252,8 @@ public class AccountController : ControllerBase
             CreatedAt = DateTime.Now.ToUniversalTime(),
             UpdatedAt = DateTime.Now.ToUniversalTime()
         };
-        _context.Admins.Add(admin);
-        await _context.SaveChangesAsync();
+        _appBLL.Admins.Add(admin);
+        await _appBLL.SaveChangesAsync();
 
         var adminDto = new AdminDTO()
         {
@@ -356,7 +359,7 @@ public class AccountController : ControllerBase
         );
         await _userManager.AddToRoleAsync(appUser, "Driver");
       
-        var driver = new Driver()
+        var driver = new App.BLL.DTO.AdminArea.DriverDTO()
         {
             Id = new Guid(),
             AppUserId = appUser.Id,
@@ -369,31 +372,31 @@ public class AccountController : ControllerBase
             CreatedAt = DateTime.Now.ToUniversalTime(),
             UpdatedAt = DateTime.Now.ToUniversalTime()
         };
-        _context.Drivers.Add(driver);
-        await _context.SaveChangesAsync();
+        _appBLL.Drivers.Add(driver);
+        await _appBLL.SaveChangesAsync();
 
         
         if (driverRegistrationDto.DriverLicenseCategories != null)
             foreach (var driverLicenseCategoryId in driverRegistrationDto.DriverLicenseCategories)
             {
-                var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory()
+                var driverAndDriverLicenseCategory = new App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO()
                 {
                     Id = new Guid(),
                     DriverLicenseCategoryId = driverLicenseCategoryId,
                     DriverId = driver.Id,
                 };
 
-                await _context.AddAsync(driverAndDriverLicenseCategory);
+                 _appBLL.DriverAndDriverLicenseCategories.Add(driverAndDriverLicenseCategory);
             }
 
-        await _context.SaveChangesAsync();
+        await _appBLL.SaveChangesAsync();
 
-        var driverLicenseCategoryNames = await _context.DriverLicenseCategories
-            .Include(dl =>
-                dl.Drivers!.Where(d => d.DriverId.Equals(driver.Id)))
-            .Select(dl => dl.DriverLicenseCategoryName).ToListAsync();
+        var driverLicenseCategoryNames =
+            await _appBLL.DriverAndDriverLicenseCategories
+                .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver.Id);
+            
 
-        var driverDto = new DriverDTO()
+        var driverDto = new App.BLL.DTO.AdminArea.DriverDTO()
         {
             Id = driver.Id,
             AppUserId = driver.AppUserId,
@@ -420,7 +423,7 @@ public class AccountController : ControllerBase
             Token = jwt,
             RefreshToken = refreshToken.Token,
             DriverDTO = driverDto,
-            DriverAndDriverLicenseCategoryDTO = new DriverAndDriverLicenseCategoryDTO()
+            DriverAndDriverLicenseCategoryDTO = new App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO()
             {
                 DriverLicenseCategoryNames = driverLicenseCategoryNames
             }

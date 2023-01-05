@@ -11,4 +11,5 @@ public class DriverAndDriverLicenseCategoryDTO: DomainEntityId
     public Guid DriverLicenseCategoryId { get; set; }
 
     public DriverLicenseCategoryDTO? DriverLicenseCategory { get; set; }
+    public string DriverLicenseCategoryNames { get; set; } = default!;
 }

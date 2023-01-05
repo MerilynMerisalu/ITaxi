@@ -1,6 +1,7 @@
 ﻿using App.DAL.DTO.AdminArea;
 using App.Domain.DTO;
 using App.Domain.DTO.AdminArea;
+using AdminDTO = App.BLL.DTO.AdminArea.AdminDTO;
 
 namespace WebApp.DTO.Identity;
 
@@ -9,5 +10,5 @@ public class JwtResponseAdminRegister
     public string Token { get; set; } = default!;
     public string RefreshToken { get; set; } = default!;
 
-    public AdminDTO? AdminDto { get; set; } 
+    public AdminDTO AdminDto { get; set; } 
 }
