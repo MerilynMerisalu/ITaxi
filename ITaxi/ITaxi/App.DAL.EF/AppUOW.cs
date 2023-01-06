@@ -26,7 +26,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     //private IRideTimeRepository _rideTimes;
     //private IScheduleRepository _schedules;
     private IVehicleMarkRepository? _vehicleMarks;
-    //private IVehicleModelRepository _vehicleModels;
+    private IVehicleModelRepository? _vehicleModels;
     //private IVehicleRepository _vehicles;
     private IVehicleTypeRepository? _vehicleTypes;
 
@@ -56,13 +56,13 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     public IVehicleMarkRepository VehicleMarks => _vehicleMarks ?? new VehicleMarkRepository(UOWDbContext, 
         new VehicleMarkMapper(_mapper));
 
-    /*public IVehicleModelRepository VehicleModels => _vehicleModels ?? new VehicleModelRepository(UOWDbContext);
-    public IVehicleRepository Vehicles => _vehicles ?? new VehicleRepository(UOWDbContext);
-    public IScheduleRepository Schedules => _schedules ?? new ScheduleRepository(UOWDbContext);
-    public IRideTimeRepository RideTimes => _rideTimes ?? new RideTimeRepository(UOWDbContext);
-    /*public IDisabilityTypeRepository DisabilityTypes => _disabilityTypes ?? new DisabilityTypeRepository(UOWDbContext);#1#
-    /*public ICustomerRepository Customers => _customers ?? new CustomerRepository(UOWDbContext);#1#
+    public IVehicleModelRepository VehicleModels => _vehicleModels ?? new VehicleModelRepository(UOWDbContext, new VehicleModelMapper(_mapper));
+    //public IVehicleRepository Vehicles => _vehicles ?? new VehicleRepository(UOWDbContext);
+    //public IScheduleRepository Schedules => _schedules ?? new ScheduleRepository(UOWDbContext);
+    //public IRideTimeRepository RideTimes => _rideTimes ?? new RideTimeRepository(UOWDbContext);
+    //public IDisabilityTypeRepository DisabilityTypes => _disabilityTypes ?? new DisabilityTypeRepository(UOWDbContext);
+    //public ICustomerRepository Customers => _customers ?? new CustomerRepository(UOWDbContext);
     //public IDriveRepository Drives => _drives ?? new DriveRepository(UOWDbContext);
     //public ICommentRepository Comments => _comments ?? new CommentRepository(UOWDbContext);
-    /*public IPhotoRepository Photos => _photos ?? new PhotoRepository(UOWDbContext);*/
+    //public IPhotoRepository Photos => _photos ?? new PhotoRepository(UOWDbContext);
 }

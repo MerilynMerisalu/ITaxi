@@ -1,4 +1,5 @@
-/*#nullable enable
+#nullable enable
+using App.BLL.DTO.AdminArea;
 using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
+using VehicleModelDTO = App.DAL.DTO.AdminArea.VehicleModelDTO;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
@@ -24,12 +26,6 @@ public class VehicleModelsController : Controller
     public async Task<IActionResult> Index()
     {
         var res = await _uow.VehicleModels.GetAllAsync();
-#warning Should this be a repo method
-        foreach (var admin in res)
-        {
-            admin.CreatedAt = admin.CreatedAt.ToLocalTime();
-            admin.UpdatedAt = admin.UpdatedAt.ToLocalTime();
-        }
 
         return View(res);
     }
@@ -47,9 +43,9 @@ public class VehicleModelsController : Controller
         vm.Id = vehicleModel.Id;
         vm.VehicleMarkName = vehicleModel.VehicleMark!.VehicleMarkName;
         vm.CreatedBy = vehicleModel.CreatedBy!;
-        vm.CreatedAt = vehicleModel.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = vehicleModel.CreatedAt;
         vm.UpdatedBy = vehicleModel.UpdatedBy!;
-        vm.UpdatedAt = vehicleModel.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = vehicleModel.UpdatedAt;
         return View(vm);
     }
 
@@ -59,7 +55,7 @@ public class VehicleModelsController : Controller
         var vm = new CreateEditVehicleModelViewModel();
         vm.VehicleMarks = new SelectList(
             await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
-            nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
+            nameof(VehicleMarkDTO.Id), nameof(VehicleMarkDTO.VehicleMarkName));
         return View(vm);
     }
 
@@ -68,7 +64,7 @@ public class VehicleModelsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateEditVehicleModelViewModel vm, VehicleModel vehicleModel)
+    public async Task<IActionResult> Create(CreateEditVehicleModelViewModel vm, VehicleModelDTO vehicleModel)
     {
         if (ModelState.IsValid)
         {
@@ -98,7 +94,7 @@ public class VehicleModelsController : Controller
         vm.Id = vehicleModel.Id;
         vm.VehicleModelName = vehicleModel.VehicleModelName;
         vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
-            nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
+            nameof(VehicleMarkDTO.Id), nameof(VehicleMarkDTO.VehicleMarkName));
         return View(vm);
     }
 
@@ -153,9 +149,9 @@ public class VehicleModelsController : Controller
         vm.VehicleMarkName = vehicleModel.VehicleMark!.VehicleMarkName;
         vm.VehicleModelName = vehicleModel.VehicleModelName;
         vm.CreatedBy = vehicleModel.CreatedBy!;
-        vm.CreatedAt = vehicleModel.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = vehicleModel.CreatedAt;
         vm.UpdatedBy = vehicleModel.UpdatedBy!;
-        vm.UpdatedAt = vehicleModel.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = vehicleModel.UpdatedAt;
         return View(vm);
     }
 
@@ -167,8 +163,8 @@ public class VehicleModelsController : Controller
     {
         var vehicleModel = await _uow.VehicleModels
             .FirstOrDefaultAsync(id);
-        if (await _uow.Vehicles.AnyAsync(v => vehicleModel != null && v!.VehicleModelId.Equals(vehicleModel.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");
+        /*if (await _uow.Vehicles.AnyAsync(v => vehicleModel != null && v!.VehicleModelId.Equals(vehicleModel.Id)))
+            return Content("Entity cannot be deleted because it has dependent entities!");*/
 
         if (vehicleModel != null)
         {
@@ -183,4 +179,4 @@ public class VehicleModelsController : Controller
     {
         return _uow.VehicleModels.Exists(id);
     }
-}*/
+}

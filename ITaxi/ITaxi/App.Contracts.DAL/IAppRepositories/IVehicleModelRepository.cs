@@ -1,17 +1,18 @@
-﻿using App.Domain;
+﻿using App.DAL.DTO.AdminArea;
+using App.Domain;
 using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface IVehicleModelRepository : IEntityRepository<VehicleModel>
+public interface IVehicleModelRepository : IEntityRepository<VehicleModelDTO>
 {
-    Task<IEnumerable<VehicleModel>> GetAllVehicleModelsWithoutVehicleMarksAsync(bool noTracking = true);
-    IEnumerable<VehicleModel> GetAllVehicleModelsWithoutVehicleMarks(bool noTracking = true);
-    Task<VehicleModel?> FirstOrDefaultVehicleModelWithoutVehicleMarkAsync(Guid id, bool noTracking = true);
-    VehicleModel? FirstOrDefaultVehicleModelWithoutVehicleMark(Guid id, bool noTracking = true);
-    Task<IEnumerable<VehicleModel>> GetAllVehicleModelsOrderedByVehicleMarkNameAsync(bool noTracking = true);
-    IEnumerable<VehicleModel> GetAllVehicleModelsOrderedByVehicleMarkName(bool noTracking = true);
+    Task<IEnumerable<VehicleModelDTO>> GetAllVehicleModelsWithoutVehicleMarksAsync(bool noTracking = true);
+    IEnumerable<VehicleModelDTO> GetAllVehicleModelsWithoutVehicleMarks(bool noTracking = true);
+    Task<VehicleModelDTO?> FirstOrDefaultVehicleModelWithoutVehicleMarkAsync(Guid id, bool noTracking = true);
+    VehicleModelDTO? FirstOrDefaultVehicleModelWithoutVehicleMark(Guid id, bool noTracking = true);
+    Task<IEnumerable<VehicleModelDTO>> GetAllVehicleModelsOrderedByVehicleMarkNameAsync(bool noTracking = true);
+    IEnumerable<VehicleModelDTO> GetAllVehicleModelsOrderedByVehicleMarkName(bool noTracking = true);
 
-    Task<List<VehicleModel>> GettingVehicleModelsByMarkIdAsync(Guid markId, bool noTracking = true);
-    List<VehicleModel> GettingVehicleModels(Guid markId, bool noTracking = true);
+    Task<List<VehicleModelDTO>> GettingVehicleModelsByMarkIdAsync(Guid markId, bool noTracking = true);
+    List<VehicleModelDTO> GettingVehicleModels(Guid markId, bool noTracking = true);
 }
