@@ -49,11 +49,19 @@ public class AutoMapperConfig: Profile
             .ReverseMap();
         CreateMap<App.BLL.DTO.AdminArea.VehicleTypeDTO, App.DAL.DTO.AdminArea.VehicleTypeDTO>()
             .ReverseMap()
-            .ForMember(dto => dto.CreatedAt, 
-                m => 
+            .ForMember(dto => dto.CreatedAt,
+                m =>
                     m.MapFrom(x => x.CreatedAt.ToLocalTime()))
-            .ForMember(dto => dto.UpdatedAt, 
-                m => 
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
+        CreateMap<App.BLL.DTO.AdminArea.VehicleMarkDTO, App.DAL.DTO.AdminArea.VehicleMarkDTO>()
+            .ReverseMap()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
                     m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
     }
     

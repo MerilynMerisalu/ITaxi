@@ -6,7 +6,8 @@ using Base.Contracts;
 
 namespace App.BLL.Services;
 
-public class CityService: BaseEntityService<App.BLL.DTO.AdminArea.CityDTO, DAL.DTO.AdminArea.CityDTO, ICityRepository>, ICityService
+public class CityService: BaseEntityService<App.BLL.DTO.AdminArea.CityDTO, DAL.DTO.AdminArea.CityDTO, 
+    ICityRepository>, ICityService
 {
     public CityService(ICityRepository repository, IMapper<CityDTO, DAL.DTO.AdminArea.CityDTO> mapper) : base(repository, mapper)
     {

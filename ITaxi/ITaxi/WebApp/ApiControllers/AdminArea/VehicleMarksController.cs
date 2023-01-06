@@ -1,5 +1,7 @@
 #nullable enable
-/*using App.Contracts.DAL;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
+using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -13,25 +15,25 @@ namespace WebApp.ApiControllers.AdminArea;
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class VehicleMarksController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public VehicleMarksController(IAppUnitOfWork uow)
+    public VehicleMarksController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: api/VehicleMarks
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<VehicleMark>>> GetVehicleMarks()
+    public async Task<ActionResult<IEnumerable<VehicleMarkDTO>>> GetVehicleMarks()
     {
-        return Ok(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync());
+        return Ok(await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync());
     }
 
     // GET: api/VehicleMarks/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<VehicleMark>> GetVehicleMark(Guid id)
+    public async Task<ActionResult<VehicleMarkDTO>> GetVehicleMark(Guid id)
     {
-        var vehicleMark = await _uow.VehicleMarks.FirstOrDefaultAsync(id);
+        var vehicleMark = await _appBLL.VehicleMarks.FirstOrDefaultAsync(id);
 
         if (vehicleMark == null) return NotFound();
 
@@ -41,14 +43,14 @@ public class VehicleMarksController : ControllerBase
     // PUT: api/VehicleMarks/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutVehicleMark(Guid id, VehicleMark vehicleMark)
+    public async Task<IActionResult> PutVehicleMark(Guid id, VehicleMarkDTO vehicleMark)
     {
         if (id != vehicleMark.Id) return BadRequest();
 
         try
         {
-            _uow.VehicleMarks.Update(vehicleMark);
-            await _uow.SaveChangesAsync();
+            _appBLL.VehicleMarks.Update(vehicleMark);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -63,10 +65,10 @@ public class VehicleMarksController : ControllerBase
     // POST: api/VehicleMarks
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<VehicleMark>> PostVehicleMark(VehicleMark vehicleMark)
+    public async Task<ActionResult<VehicleMarkDTO>> PostVehicleMark(VehicleMarkDTO vehicleMark)
     {
-        _uow.VehicleMarks.Add(vehicleMark);
-        await _uow.SaveChangesAsync();
+        _appBLL.VehicleMarks.Add(vehicleMark);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetVehicleMark", new {id = vehicleMark.Id}, vehicleMark);
     }
@@ -75,17 +77,17 @@ public class VehicleMarksController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteVehicleMark(Guid id)
     {
-        var vehicleMark = await _uow.VehicleMarks.FirstOrDefaultAsync(id);
+        var vehicleMark = await _appBLL.VehicleMarks.FirstOrDefaultAsync(id);
         if (vehicleMark == null) return NotFound();
 
-        _uow.VehicleMarks.Remove(vehicleMark);
-        await _uow.SaveChangesAsync();
+        _appBLL.VehicleMarks.Remove(vehicleMark);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool VehicleMarkExists(Guid id)
     {
-        return _uow.VehicleMarks.Exists(id);
+        return _appBLL.VehicleMarks.Exists(id);
     }
-}*/
+}

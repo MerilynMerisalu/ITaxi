@@ -1,4 +1,6 @@
-/*#nullable enable
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Authorization;
@@ -9,28 +11,20 @@ using WebApp.Areas.AdminArea.ViewModels;
 namespace WebApp.Areas.AdminArea.Controllers;
 
 [Area(nameof(AdminArea))]
-[Authorize(Roles = nameof(Admin))]
+[Authorize(Roles = "Admin")]
 public class VehicleMarksController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public VehicleMarksController(IAppUnitOfWork uow)
+    public VehicleMarksController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: AdminArea/VehicleMarks
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync();
-
-#warning Should this be a repo method
-        foreach (var vehicleMark in res)
-        {
-            vehicleMark.CreatedAt = vehicleMark.CreatedAt.ToLocalTime();
-            vehicleMark.UpdatedAt = vehicleMark.UpdatedAt.ToLocalTime();
-        }
-
+        var res = await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync();
         return View(res);
     }
 
@@ -40,16 +34,16 @@ public class VehicleMarksController : Controller
         var vm = new DetailsDeleteVehicleMarkViewModel();
         if (id == null) return NotFound();
 
-        var vehicleMark = await _uow.VehicleMarks
+        var vehicleMark = await _appBLL.VehicleMarks
             .FirstOrDefaultAsync(id.Value);
         if (vehicleMark == null) return NotFound();
 
         vm.VehicleMarkName = vehicleMark.VehicleMarkName;
         vm.Id = vehicleMark.Id;
         vm.CreatedBy = vehicleMark.CreatedBy!;
-        vm.CreatedAt = vehicleMark.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = vehicleMark.CreatedAt;
         vm.UpdatedBy = vehicleMark.UpdatedBy!;
-        vm.UpdatedAt = vehicleMark.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = vehicleMark.UpdatedAt;
 
         return View(vm);
     }
@@ -66,7 +60,7 @@ public class VehicleMarksController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateEditVehicleMarkViewModel vm, VehicleMark vehicleMark)
+    public async Task<IActionResult> Create(CreateEditVehicleMarkViewModel vm, VehicleMarkDTO vehicleMark)
     {
         if (ModelState.IsValid)
         {
@@ -74,8 +68,8 @@ public class VehicleMarksController : Controller
             vehicleMark.VehicleMarkName = vm.VehicleMarkName;
             vehicleMark.CreatedBy = User.Identity!.Name;
             vehicleMark.CreatedAt = DateTime.Now.ToUniversalTime();
-            _uow.VehicleMarks.Add(vehicleMark);
-            await _uow.SaveChangesAsync();
+            _appBLL.VehicleMarks.Add(vehicleMark);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -88,7 +82,7 @@ public class VehicleMarksController : Controller
         var vm = new CreateEditVehicleMarkViewModel();
         if (id == null) return NotFound();
 
-        var vehicleMark = await _uow.VehicleMarks.FirstOrDefaultAsync(id.Value);
+        var vehicleMark = await _appBLL.VehicleMarks.FirstOrDefaultAsync(id.Value);
         if (vehicleMark?.VehicleMarkName != null) vm.VehicleMarkName = vehicleMark.VehicleMarkName;
 
 
@@ -102,7 +96,7 @@ public class VehicleMarksController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleMarkViewModel vm)
     {
-        var vehicleMark = await _uow.VehicleMarks
+        var vehicleMark = await _appBLL.VehicleMarks
             .FirstOrDefaultAsync(id);
         if (vehicleMark != null && id != vehicleMark.Id) return NotFound();
 
@@ -116,8 +110,8 @@ public class VehicleMarksController : Controller
                     vehicleMark.VehicleMarkName = vm.VehicleMarkName;
                     vehicleMark.UpdatedBy = User.Identity!.Name!;
                     vehicleMark.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _uow.VehicleMarks.Update(vehicleMark);
-                    await _uow.SaveChangesAsync();
+                    _appBLL.VehicleMarks.Update(vehicleMark);
+                    await _appBLL.SaveChangesAsync();
                 }
             }
             catch (DbUpdateConcurrencyException)
@@ -139,16 +133,16 @@ public class VehicleMarksController : Controller
         var vm = new DetailsDeleteVehicleMarkViewModel();
         if (id == null) return NotFound();
 
-        var vehicleMark = await _uow.VehicleMarks
+        var vehicleMark = await _appBLL.VehicleMarks
             .FirstOrDefaultAsync(id.Value);
         if (vehicleMark == null) return NotFound();
 
         vm.Id = vehicleMark.Id;
         vm.VehicleMarkName = vehicleMark.VehicleMarkName;
         vm.CreatedBy = vehicleMark.CreatedBy!;
-        vm.CreatedAt = vehicleMark.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = vehicleMark.CreatedAt;
         vm.UpdatedBy = vehicleMark.UpdatedBy!;
-        vm.UpdatedAt = vehicleMark.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = vehicleMark.UpdatedAt;
 
 
         return View(vm);
@@ -156,20 +150,20 @@ public class VehicleMarksController : Controller
 
     // POST: AdminArea/VehicleMarks/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var vehicleMark = await _uow.VehicleMarks
+        var vehicleMark = await _appBLL.VehicleMarks
             .FirstOrDefaultAsync(id);
-        if (await _uow.VehicleModels.AnyAsync(v =>
+        /*if (await _appBLL.VehicleModels.AnyAsync(v =>
                 vehicleMark != null && v != null && v.VehicleMarkId.Equals(vehicleMark.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");
+            return Content("Entity cannot be deleted because it has dependent entities!");*/
 
         if (vehicleMark != null)
         {
-            _uow.VehicleMarks.Remove(vehicleMark);
-            await _uow.SaveChangesAsync();
+            _appBLL.VehicleMarks.Remove(vehicleMark);
+            await _appBLL.SaveChangesAsync();
         }
 
         return RedirectToAction(nameof(Index));
@@ -177,6 +171,6 @@ public class VehicleMarksController : Controller
 
     private bool VehicleMarkExists(Guid id)
     {
-        return _uow.VehicleMarks.Exists(id);
+        return _appBLL.VehicleMarks.Exists(id);
     }
-}*/
+}

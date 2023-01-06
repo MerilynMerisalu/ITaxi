@@ -21,13 +21,13 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     private IDriverAndDriverLicenseCategoryRepository? _driverAndDriverLicenseCategories;
     private IDriverLicenseCategoryRepository? _driverLicenseCategories;
     private IDriverRepository? _drivers;
-    /*private IDriveRepository _drives;
-    private IPhotoRepository _photos;
-    private IRideTimeRepository _rideTimes;
-    private IScheduleRepository _schedules;
-    private IVehicleMarkRepository _vehicleMarks;
-    private IVehicleModelRepository _vehicleModels;
-    private IVehicleRepository _vehicles;*/
+    //private IDriveRepository _drives;
+    //private IPhotoRepository _photos;
+    //private IRideTimeRepository _rideTimes;
+    //private IScheduleRepository _schedules;
+    private IVehicleMarkRepository? _vehicleMarks;
+    //private IVehicleModelRepository _vehicleModels;
+    //private IVehicleRepository _vehicles;
     private IVehicleTypeRepository? _vehicleTypes;
 
     public AppUOW(AppDbContext dbContext, IMapper mapper) : base(dbContext)
@@ -53,9 +53,10 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     public IVehicleTypeRepository VehicleTypes
         => _vehicleTypes ?? new VehicleTypeRepository(UOWDbContext, new VehicleTypeMapper(_mapper));
 
-    /*public IVehicleMarkRepository VehicleMarks => _vehicleMarks ?? new VehicleMarkRepository(UOWDbContext);
+    public IVehicleMarkRepository VehicleMarks => _vehicleMarks ?? new VehicleMarkRepository(UOWDbContext, 
+        new VehicleMarkMapper(_mapper));
 
-    public IVehicleModelRepository VehicleModels => _vehicleModels ?? new VehicleModelRepository(UOWDbContext);
+    /*public IVehicleModelRepository VehicleModels => _vehicleModels ?? new VehicleModelRepository(UOWDbContext);
     public IVehicleRepository Vehicles => _vehicles ?? new VehicleRepository(UOWDbContext);
     public IScheduleRepository Schedules => _schedules ?? new ScheduleRepository(UOWDbContext);
     public IRideTimeRepository RideTimes => _rideTimes ?? new RideTimeRepository(UOWDbContext);

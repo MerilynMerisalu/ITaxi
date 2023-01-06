@@ -1,10 +1,15 @@
-﻿using App.Domain;
+﻿using App.DAL.DTO.AdminArea;
 using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface IVehicleMarkRepository : IEntityRepository<VehicleMark>
+public interface IVehicleMarkRepository : IEntityRepository<VehicleMarkDTO>, IVehicleMarkRepositoryCustom<VehicleMarkDTO>
 {
-    Task<IEnumerable<VehicleMark>> GetAllVehicleMarkOrderedAsync(bool noTracking = true);
-    IEnumerable<VehicleMark> GetAllVehicleMarkOrdered(bool noTracking = true);
+    
+}
+
+public interface IVehicleMarkRepositoryCustom<TEntity>
+{
+    Task<IEnumerable<TEntity>> GetAllVehicleMarkOrderedAsync(bool noTracking = true);
+    IEnumerable<TEntity> GetAllVehicleMarkOrdered(bool noTracking = true);
 }
