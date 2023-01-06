@@ -1,31 +1,29 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
-using App.Contracts.DAL;
-using App.Domain;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
-using VehicleModelDTO = App.DAL.DTO.AdminArea.VehicleModelDTO;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
 [Area(nameof(AdminArea))]
-[Authorize(Roles = nameof(Admin))]
+[Authorize(Roles = "Admin")]
 public class VehicleModelsController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public VehicleModelsController(IAppUnitOfWork uow)
+    public VehicleModelsController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: AdminArea/VehicleModels
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.VehicleModels.GetAllAsync();
+        var res = await _appBLL.VehicleModels.GetAllAsync();
 
         return View(res);
     }
@@ -36,7 +34,7 @@ public class VehicleModelsController : Controller
         var vm = new DetailsDeleteVehicleModelViewModel();
         if (id == null) return NotFound();
 
-        var vehicleModel = await _uow.VehicleModels.FirstOrDefaultAsync(id.Value);
+        var vehicleModel = await _appBLL.VehicleModels.FirstOrDefaultAsync(id.Value);
         if (vehicleModel == null) return NotFound();
 
         vm.VehicleModelName = vehicleModel.VehicleModelName;
@@ -54,7 +52,7 @@ public class VehicleModelsController : Controller
     {
         var vm = new CreateEditVehicleModelViewModel();
         vm.VehicleMarks = new SelectList(
-            await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
+            await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
             nameof(VehicleMarkDTO.Id), nameof(VehicleMarkDTO.VehicleMarkName));
         return View(vm);
     }
@@ -73,8 +71,8 @@ public class VehicleModelsController : Controller
             vehicleModel.VehicleMarkId = vm.VehicleMarkId;
             vehicleModel.CreatedBy = User.Identity!.Name;
             vehicleModel.CreatedAt = DateTime.Now.ToUniversalTime();
-            _uow.VehicleModels.Add(vehicleModel);
-            await _uow.SaveChangesAsync();
+            _appBLL.VehicleModels.Add(vehicleModel);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -87,13 +85,13 @@ public class VehicleModelsController : Controller
         var vm = new CreateEditVehicleModelViewModel();
         if (id == null) return NotFound();
 
-        var vehicleModel = await _uow.VehicleModels.FirstOrDefaultAsync(id.Value);
+        var vehicleModel = await _appBLL.VehicleModels.FirstOrDefaultAsync(id.Value);
         if (vehicleModel == null) return NotFound();
 
         vm.VehicleMarkId = vehicleModel.VehicleMark!.Id;
         vm.Id = vehicleModel.Id;
         vm.VehicleModelName = vehicleModel.VehicleModelName;
-        vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
+        vm.VehicleMarks = new SelectList(await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
             nameof(VehicleMarkDTO.Id), nameof(VehicleMarkDTO.VehicleMarkName));
         return View(vm);
     }
@@ -105,7 +103,7 @@ public class VehicleModelsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleModelViewModel vm)
     {
-        var vehicleModel = await _uow.VehicleModels.FirstOrDefaultAsync(id);
+        var vehicleModel = await _appBLL.VehicleModels.FirstOrDefaultAsync(id);
         if (vehicleModel != null && id != vehicleModel.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -119,8 +117,8 @@ public class VehicleModelsController : Controller
                     vehicleModel.VehicleModelName = vm.VehicleModelName;
                     vehicleModel.UpdatedBy = User.Identity!.Name;
                     vehicleModel.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _uow.VehicleModels.Update(vehicleModel);
-                    await _uow.SaveChangesAsync();
+                    _appBLL.VehicleModels.Update(vehicleModel);
+                    await _appBLL.SaveChangesAsync();
                 }
             }
             catch (DbUpdateConcurrencyException)
@@ -142,7 +140,7 @@ public class VehicleModelsController : Controller
         var vm = new DetailsDeleteVehicleModelViewModel();
         if (id == null) return NotFound();
 
-        var vehicleModel = await _uow.VehicleModels.FirstOrDefaultAsync(id.Value);
+        var vehicleModel = await _appBLL.VehicleModels.FirstOrDefaultAsync(id.Value);
         if (vehicleModel == null) return NotFound();
 
         vm.Id = vehicleModel.Id;
@@ -161,15 +159,15 @@ public class VehicleModelsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var vehicleModel = await _uow.VehicleModels
+        var vehicleModel = await _appBLL.VehicleModels
             .FirstOrDefaultAsync(id);
-        /*if (await _uow.Vehicles.AnyAsync(v => vehicleModel != null && v!.VehicleModelId.Equals(vehicleModel.Id)))
+        /*if (await _appBLL.Vehicles.AnyAsync(v => vehicleModel != null && v!.VehicleModelId.Equals(vehicleModel.Id)))
             return Content("Entity cannot be deleted because it has dependent entities!");*/
 
         if (vehicleModel != null)
         {
-            _uow.VehicleModels.Remove(vehicleModel);
-            await _uow.SaveChangesAsync();
+            _appBLL.VehicleModels.Remove(vehicleModel);
+            await _appBLL.SaveChangesAsync();
         }
 
         return RedirectToAction(nameof(Index));
@@ -177,6 +175,6 @@ public class VehicleModelsController : Controller
 
     private bool VehicleModelExists(Guid id)
     {
-        return _uow.VehicleModels.Exists(id);
+        return _appBLL.VehicleModels.Exists(id);
     }
 }

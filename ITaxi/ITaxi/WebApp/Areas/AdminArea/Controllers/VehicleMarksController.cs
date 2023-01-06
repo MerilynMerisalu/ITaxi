@@ -156,9 +156,10 @@ public class VehicleMarksController : Controller
     {
         var vehicleMark = await _appBLL.VehicleMarks
             .FirstOrDefaultAsync(id);
-        /*if (await _appBLL.VehicleModels.AnyAsync(v =>
+        
+        if (await _appBLL.VehicleModels.AnyAsync(v =>
                 vehicleMark != null && v != null && v.VehicleMarkId.Equals(vehicleMark.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");*/
+            return Content("Entity cannot be deleted because it has dependent entities!");
 
         if (vehicleMark != null)
         {
