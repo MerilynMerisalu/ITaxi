@@ -12,4 +12,5 @@ public interface IAppBLL: IBLL
     IDriverLicenseCategoryService DriverLicenseCategories { get; }
     IDriverService Drivers { get; }
     IDriverAndDriverLicenseCategoryService DriverAndDriverLicenseCategories { get; }
+    IVehicleTypeService VehicleTypes { get; }
 }

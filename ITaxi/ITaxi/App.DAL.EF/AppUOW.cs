@@ -21,14 +21,14 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     private IDriverAndDriverLicenseCategoryRepository? _driverAndDriverLicenseCategories;
     private IDriverLicenseCategoryRepository? _driverLicenseCategories;
     private IDriverRepository? _drivers;
-   /* private IDriveRepository _drives;
+    /*private IDriveRepository _drives;
     private IPhotoRepository _photos;
     private IRideTimeRepository _rideTimes;
     private IScheduleRepository _schedules;
     private IVehicleMarkRepository _vehicleMarks;
     private IVehicleModelRepository _vehicleModels;
-    private IVehicleRepository _vehicles;
-    private IVehicleTypeRepository _vehicleTypes;*/
+    private IVehicleRepository _vehicles;*/
+    private IVehicleTypeRepository? _vehicleTypes;
 
     public AppUOW(AppDbContext dbContext, IMapper mapper) : base(dbContext)
     {
@@ -50,17 +50,17 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
         => _driverAndDriverLicenseCategories ?? new DriverAndDriverLicenseCategoryRepository(UOWDbContext, new DriverAndDriverLicenseCategoryMapper(_mapper));
         
 
-    /*public IVehicleTypeRepository VehicleTypes
-        => _vehicleTypes ?? new VehicleTypeRepository(UOWDbContext);
+    public IVehicleTypeRepository VehicleTypes
+        => _vehicleTypes ?? new VehicleTypeRepository(UOWDbContext, new VehicleTypeMapper(_mapper));
 
-    public IVehicleMarkRepository VehicleMarks => _vehicleMarks ?? new VehicleMarkRepository(UOWDbContext);
+    /*public IVehicleMarkRepository VehicleMarks => _vehicleMarks ?? new VehicleMarkRepository(UOWDbContext);
 
     public IVehicleModelRepository VehicleModels => _vehicleModels ?? new VehicleModelRepository(UOWDbContext);
     public IVehicleRepository Vehicles => _vehicles ?? new VehicleRepository(UOWDbContext);
     public IScheduleRepository Schedules => _schedules ?? new ScheduleRepository(UOWDbContext);
-    public IRideTimeRepository RideTimes => _rideTimes ?? new RideTimeRepository(UOWDbContext);*/
-    /*public IDisabilityTypeRepository DisabilityTypes => _disabilityTypes ?? new DisabilityTypeRepository(UOWDbContext);*/
-    /*public ICustomerRepository Customers => _customers ?? new CustomerRepository(UOWDbContext);*/
+    public IRideTimeRepository RideTimes => _rideTimes ?? new RideTimeRepository(UOWDbContext);
+    /*public IDisabilityTypeRepository DisabilityTypes => _disabilityTypes ?? new DisabilityTypeRepository(UOWDbContext);#1#
+    /*public ICustomerRepository Customers => _customers ?? new CustomerRepository(UOWDbContext);#1#
     //public IDriveRepository Drives => _drives ?? new DriveRepository(UOWDbContext);
     //public ICommentRepository Comments => _comments ?? new CommentRepository(UOWDbContext);
     /*public IPhotoRepository Photos => _photos ?? new PhotoRepository(UOWDbContext);*/

@@ -36,9 +36,7 @@ public class CountiesController : ControllerBase
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
 
         if (county == null) return NotFound();
-        county.CreatedAt = county.CreatedAt.ToLocalTime();
-        county.UpdatedAt = county.UpdatedAt.ToLocalTime();
-        
+       
 
 
         return county;

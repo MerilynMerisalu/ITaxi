@@ -12,8 +12,8 @@ public interface IAppUnitOfWork : IUnitOfWork
     IDriverRepository Drivers { get; }
     IDriverLicenseCategoryRepository DriverLicenseCategories { get; }
     IDriverAndDriverLicenseCategoryRepository DriverAndDriverLicenseCategories { get; }
-    /*IVehicleTypeRepository VehicleTypes { get; }
-    IVehicleMarkRepository VehicleMarks { get; }
+    IVehicleTypeRepository VehicleTypes { get; }
+    /*IVehicleMarkRepository VehicleMarks { get; }
     IVehicleModelRepository VehicleModels { get; }
     IVehicleRepository Vehicles { get; }
     IScheduleRepository Schedules { get; }

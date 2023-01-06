@@ -1,32 +1,35 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
-/*using App.Domain;
+using App.Domain;
 using App.Domain.DTO;
 using App.Domain.DTO.AdminArea;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
+using App.DAL.DTO.AdminArea;
+using Base.Contracts;
 
 namespace App.DAL.EF.Repositories;
 
-public class VehicleTypeRepository : BaseEntityRepository<VehicleType, AppDbContext>, IVehicleTypeRepository
+public class VehicleTypeRepository : BaseEntityRepository<VehicleTypeDTO, VehicleType, AppDbContext>, IVehicleTypeRepository
 {
-    public VehicleTypeRepository(AppDbContext dbContext) : base(dbContext)
+    public VehicleTypeRepository(AppDbContext dbContext, IMapper<VehicleTypeDTO, App.Domain.VehicleType> mapper) : 
+        base(dbContext, mapper)
     {
     }
 
 
-    public async Task<IEnumerable<VehicleType>> GetAllVehicleTypesOrderedAsync(bool noTracking = true)
+    public async Task<IEnumerable<VehicleTypeDTO>> GetAllVehicleTypesOrderedAsync(bool noTracking = true)
     {
 #warning: special handling of OrderBy to account for language transalation
         var res = await CreateQuery(noTracking).ToListAsync();
-        return res.OrderBy(x => (string) x.VehicleTypeName).ToList();
+        return res.OrderBy(x => (string) x.VehicleTypeName).ToList().Select(e=> Mapper.Map(e))!;
     }
 
-    public IEnumerable<VehicleType> GetAllVehicleTypesOrdered(bool noTracking = true)
+    public IEnumerable<VehicleTypeDTO> GetAllVehicleTypesOrdered(bool noTracking = true)
     {
 #warning: special handling of OrderBy to account for language transalation
         return CreateQuery(noTracking)
             .ToList() // Bring into memory "Materialize"
-            .OrderBy(v => v.VehicleTypeName).ToList();
+            .OrderBy(v => v.VehicleTypeName).ToList().Select(e=> Mapper.Map(e))!;
     }
 
     public async Task<IEnumerable<VehicleTypeDTO>> GetAllVehicleTypesDTOAsync(bool noTracking = true)
@@ -72,4 +75,4 @@ public class VehicleTypeRepository : BaseEntityRepository<VehicleType, AppDbCont
         return base.CreateQuery(noTracking).Include(t => t.VehicleTypeName)
             .ThenInclude(t => t.Translations);
     }
-}*/
+}

@@ -1,38 +1,30 @@
-/*#nullable enable
-using App.Contracts.DAL;
-using App.Domain;
+#nullable enable
+using App.Contracts.BLL;
+using App.BLL.DTO.AdminArea;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
 
+
 namespace WebApp.Areas.AdminArea.Controllers;
 
-[Authorize(Roles = nameof(Admin))]
+[Authorize(Roles = "Admin")]
 [Area(nameof(AdminArea))]
 public class VehicleTypesController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public VehicleTypesController(IAppUnitOfWork uow)
+    public VehicleTypesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: AdminArea/VehicleTypes
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync();
+        var res = await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync();
         
-#warning Should this be a repo method
-        foreach (var vehicleType in res)
-        {
-            vehicleType.CreatedAt = vehicleType.CreatedAt.ToLocalTime();
-            vehicleType.UpdatedAt = vehicleType.UpdatedAt.ToLocalTime();
-            vehicleType.CreatedBy = vehicleType.CreatedBy;
-            vehicleType.UpdatedBy = vehicleType.UpdatedBy;
-        }
-
         return View(res);
     }
 
@@ -42,15 +34,15 @@ public class VehicleTypesController : Controller
         var vm = new DetailsDeleteVehicleTypeViewModel();
         if (id == null) return NotFound();
 
-        var vehicleType = await _uow.VehicleTypes.FirstOrDefaultAsync(id.Value);
+        var vehicleType = await _appBLL.VehicleTypes.FirstOrDefaultAsync(id.Value);
         if (vehicleType == null) return NotFound();
 
         vm.VehicleTypeName = vehicleType.VehicleTypeName;
         vm.Id = vehicleType.Id;
         vm.CreatedBy = vehicleType.CreatedBy!;
-        vm.CreatedAt = vehicleType.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = vehicleType.CreatedAt;
         vm.UpdatedBy = vehicleType.UpdatedBy!;
-        vm.UpdatedAt = vehicleType.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = vehicleType.UpdatedAt;
         return View(vm);
     }
 
@@ -70,13 +62,13 @@ public class VehicleTypesController : Controller
     {
         if (ModelState.IsValid)
         {
-            var vehicleType = new VehicleType();
+            var vehicleType = new VehicleTypeDTO();
             vehicleType.Id = Guid.NewGuid();
             vehicleType.VehicleTypeName = vm.VehicleTypeName;
             vehicleType.CreatedBy = User.Identity!.Name;
             vehicleType.CreatedAt = DateTime.Now.ToUniversalTime();
-            _uow.VehicleTypes.Add(vehicleType);
-            await _uow.SaveChangesAsync();
+            _appBLL.VehicleTypes.Add(vehicleType);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -90,7 +82,7 @@ public class VehicleTypesController : Controller
 
         if (id == null) return NotFound();
 
-        var vehicleType = await _uow.VehicleTypes.FirstOrDefaultAsync(id.Value);
+        var vehicleType = await _appBLL.VehicleTypes.FirstOrDefaultAsync(id.Value);
         if (vehicleType != null)
         {
             vm.VehicleTypeName = vehicleType.VehicleTypeName;
@@ -107,7 +99,7 @@ public class VehicleTypesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleTypeViewModel vm)
     {
-        var vehicleType = await _uow.VehicleTypes.FirstOrDefaultAsync(id);
+        var vehicleType = await _appBLL.VehicleTypes.FirstOrDefaultAsync(id);
 
         if (vehicleType != null && id != vehicleType.Id) return NotFound();
 
@@ -123,8 +115,8 @@ public class VehicleTypesController : Controller
                     //vehicleType.VehicleTypeName = vm.VehicleTypeName;
                     vehicleType.UpdatedBy = User.Identity!.Name;
                     vehicleType.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _uow.VehicleTypes.Update(vehicleType);
-                    await _uow.SaveChangesAsync();
+                    _appBLL.VehicleTypes.Update(vehicleType);
+                    await _appBLL.SaveChangesAsync();
                 }
             }
             catch (DbUpdateConcurrencyException)
@@ -146,16 +138,15 @@ public class VehicleTypesController : Controller
         var vm = new DetailsDeleteVehicleTypeViewModel();
         if (id == null) return NotFound();
 
-        var vehicleType = await _uow.VehicleTypes
-            .SingleOrDefaultAsync(m => m != null && m.Id == id);
+        var vehicleType = await _appBLL.VehicleTypes.FirstOrDefaultAsync(id.Value);
         if (vehicleType == null) return NotFound();
 
         vm.Id = vehicleType.Id;
         vm.VehicleTypeName = vehicleType.VehicleTypeName;
         vm.CreatedBy = vehicleType.CreatedBy!;
-        vm.CreatedAt = vehicleType.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = vehicleType.CreatedAt;
         vm.UpdatedBy = vehicleType.UpdatedBy!;
-        vm.UpdatedAt = vehicleType.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = vehicleType.UpdatedAt;
 
         return View(vm);
     }
@@ -166,17 +157,17 @@ public class VehicleTypesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var vehicleType = await _uow.VehicleTypes.FirstOrDefaultAsync(id);
-        if (await _uow.Vehicles.AnyAsync(v =>
+        var vehicleType = await _appBLL.VehicleTypes.FirstOrDefaultAsync(id);
+        /*if (await _appBLL.Vehicles.AnyAsync(v =>
                 vehicleType != null && v != null && v.VehicleType != null && v.VehicleType.Id.Equals(vehicleType.Id))
-            || await _uow.Bookings.AnyAsync(b =>
+            || await _appBLL.Bookings.AnyAsync(b =>
                 vehicleType != null && b != null && b.VehicleTypeId.Equals(vehicleType.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");
+            return Content("Entity cannot be deleted because it has dependent entities!");*/
 
         if (vehicleType != null)
         {
-            _uow.VehicleTypes.Remove(vehicleType);
-            await _uow.SaveChangesAsync();
+            _appBLL.VehicleTypes.Remove(vehicleType);
+            await _appBLL.SaveChangesAsync();
         }
 
         return RedirectToAction(nameof(Index));
@@ -184,6 +175,6 @@ public class VehicleTypesController : Controller
 
     private bool VehicleTypeExists(Guid id)
     {
-        return _uow.VehicleTypes.Exists(id);
+        return _appBLL.VehicleTypes.Exists(id);
     }
-}*/
+}

@@ -1,4 +1,4 @@
-﻿using App.DAL.DTO.AdminArea;
+﻿
 using AutoMapper;
 
 namespace App.BLL;
@@ -47,6 +47,14 @@ public class AutoMapperConfig: Profile
         CreateMap<App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO,
                 App.DAL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO>()
             .ReverseMap();
+        CreateMap<App.BLL.DTO.AdminArea.VehicleTypeDTO, App.DAL.DTO.AdminArea.VehicleTypeDTO>()
+            .ReverseMap()
+            .ForMember(dto => dto.CreatedAt, 
+                m => 
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt, 
+                m => 
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
     }
     
 }

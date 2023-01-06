@@ -1,16 +1,21 @@
-﻿using App.Domain;
+﻿using App.DAL.DTO.AdminArea;
+using App.Domain;
 using App.Domain.DTO;
 using App.Domain.DTO.AdminArea;
 using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-/*public interface IVehicleTypeRepository : IEntityRepository<VehicleType>
+public interface IVehicleTypeRepository : IEntityRepository<VehicleTypeDTO>, IVehicleTypeRepositoryCustom<VehicleTypeDTO>
 {
-    Task<IEnumerable<VehicleType>> GetAllVehicleTypesOrderedAsync(bool noTracking = true);
-    IEnumerable<VehicleType> GetAllVehicleTypesOrdered(bool noTracking = true);
+    
 
-    Task<IEnumerable<VehicleTypeDTO>> GetAllVehicleTypesDTOAsync(bool noTracking = true);
-    IEnumerable<VehicleTypeDTO> GetAllVehicleTypesDTO(bool noTracking = true);
+}
 
-}*/
+public interface IVehicleTypeRepositoryCustom<TEntity>
+{
+    Task<IEnumerable<TEntity>> GetAllVehicleTypesOrderedAsync(bool noTracking = true);
+    IEnumerable<TEntity> GetAllVehicleTypesOrdered(bool noTracking = true);
+    Task<IEnumerable<TEntity>> GetAllVehicleTypesDTOAsync(bool noTracking = true);
+    IEnumerable<TEntity> GetAllVehicleTypesDTO(bool noTracking = true);
+}

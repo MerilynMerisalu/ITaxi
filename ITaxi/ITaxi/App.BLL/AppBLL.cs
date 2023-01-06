@@ -42,10 +42,14 @@ public class AppBLL:BaseBLL<IAppUnitOfWork>, IAppBLL
         => _driverAndDriverLicenseCategories ?? new DriverAndDriverLicenseCategoryService(
             UnitOfWork.DriverAndDriverLicenseCategories, new DriverAndDriverLicenseCategoryMapper(_mapper));
 
+    public virtual IVehicleTypeService VehicleTypes => _vehicleTypes ?? new VehicleTypeService(UnitOfWork.VehicleTypes,
+        new VehicleTypeMapper(_mapper));
+
     private ICountyService? _counties;
     private ICityService? _cities;
     private IAdminService? _admins;
     private IDriverLicenseCategoryService? _driverLicenseCategories;
     private IDriverService? _drivers;
     private IDriverAndDriverLicenseCategoryService? _driverAndDriverLicenseCategories;
+    private IVehicleTypeService? _vehicleTypes;
 }
