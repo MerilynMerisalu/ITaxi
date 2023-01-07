@@ -52,6 +52,10 @@ public class AppBLL:BaseBLL<IAppUnitOfWork>, IAppBLL
                                                          new VehicleModelService(UnitOfWork.VehicleModels,
                                                              new VehicleModelMapper(_mapper));
 
+    public virtual IVehicleService Vehicles => _vehicles ??
+                                               new VehicleService(UnitOfWork.Vehicles,
+                                                   new VehicleMapper(_mapper));
+    
     private ICountyService? _counties;
     private ICityService? _cities;
     private IAdminService? _admins;
@@ -61,4 +65,5 @@ public class AppBLL:BaseBLL<IAppUnitOfWork>, IAppBLL
     private IVehicleTypeService? _vehicleTypes;
     private IVehicleMarkService? _vehicleMarks;
     private IVehicleModelService? _vehicleModels;
+    private IVehicleService? _vehicles;
 }

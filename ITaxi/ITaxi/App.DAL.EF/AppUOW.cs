@@ -27,7 +27,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     //private IScheduleRepository _schedules;
     private IVehicleMarkRepository? _vehicleMarks;
     private IVehicleModelRepository? _vehicleModels;
-    //private IVehicleRepository _vehicles;
+    private IVehicleRepository? _vehicles;
     private IVehicleTypeRepository? _vehicleTypes;
 
     public AppUOW(AppDbContext dbContext, IMapper mapper) : base(dbContext)
@@ -57,7 +57,8 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
         new VehicleMarkMapper(_mapper));
 
     public IVehicleModelRepository VehicleModels => _vehicleModels ?? new VehicleModelRepository(UOWDbContext, new VehicleModelMapper(_mapper));
-    //public IVehicleRepository Vehicles => _vehicles ?? new VehicleRepository(UOWDbContext);
+    public IVehicleRepository Vehicles => _vehicles ?? new VehicleRepository(UOWDbContext, 
+        new VehicleMapper(_mapper));
     //public IScheduleRepository Schedules => _schedules ?? new ScheduleRepository(UOWDbContext);
     //public IRideTimeRepository RideTimes => _rideTimes ?? new RideTimeRepository(UOWDbContext);
     //public IDisabilityTypeRepository DisabilityTypes => _disabilityTypes ?? new DisabilityTypeRepository(UOWDbContext);

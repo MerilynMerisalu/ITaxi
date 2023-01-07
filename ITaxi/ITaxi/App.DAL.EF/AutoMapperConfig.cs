@@ -84,6 +84,15 @@ public class AutoMapperConfig : Profile
                 m =>
                     m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
         
+        CreateMap<VehicleDTO, App.Domain.Vehicle>()
+            .ReverseMap()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
+        
         CreateMap<AppUser, App.Domain.Identity.AppUser>().ReverseMap();
     }
 }

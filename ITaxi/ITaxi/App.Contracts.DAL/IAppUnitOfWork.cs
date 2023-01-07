@@ -15,12 +15,12 @@ public interface IAppUnitOfWork : IUnitOfWork
     IVehicleTypeRepository VehicleTypes { get; }
     IVehicleMarkRepository VehicleMarks { get; }
     IVehicleModelRepository VehicleModels { get; }
-    /*IVehicleRepository Vehicles { get; }
-    IScheduleRepository Schedules { get; }
-    IRideTimeRepository RideTimes { get; }
-    IDisabilityTypeRepository DisabilityTypes { get; }
-    ICustomerRepository Customers { get; }
-    IDriveRepository Drives { get; }
-    ICommentRepository Comments { get; }
-    IPhotoRepository Photos { get; }*/
+    IVehicleRepository Vehicles { get; }
+    //IScheduleRepository Schedules { get; }
+    //IRideTimeRepository RideTimes { get; }
+    //IDisabilityTypeRepository DisabilityTypes { get; }
+    //ICustomerRepository Customers { get; }
+    //IDriveRepository Drives { get; }
+    //ICommentRepository Comments { get; }
+    //IPhotoRepository Photos { get; }
 }

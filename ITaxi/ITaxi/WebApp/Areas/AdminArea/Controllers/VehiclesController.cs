@@ -1,4 +1,6 @@
-/*#nullable enable
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.Domain;
 using Base.Extensions;
@@ -11,14 +13,14 @@ using WebApp.Areas.AdminArea.ViewModels;
 namespace WebApp.Areas.AdminArea.Controllers;
 
 [Area(nameof(AdminArea))]
-[Authorize(Roles = nameof(Admin))]
+[Authorize(Roles = "Admin")]
 public class VehiclesController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public VehiclesController(IAppUnitOfWork uow)
+    public VehiclesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     private string UserEmail => User.Identity!.Name!;
@@ -27,13 +29,8 @@ public class VehiclesController : Controller
     public async Task<IActionResult> Index()
     {
         
-        var res = await _uow.Vehicles.GettingOrderedVehiclesAsync();
-        foreach (var vehicle in res)
-        {
-            vehicle.CreatedAt = vehicle.CreatedAt.ToLocalTime();
-            vehicle.UpdatedAt = vehicle.UpdatedAt.ToLocalTime();
-        }
-
+        var res = await _appBLL.Vehicles.GettingOrderedVehiclesAsync();
+        
         return View(res);
     }
 
@@ -43,7 +40,7 @@ public class VehiclesController : Controller
         if (id == null) return NotFound();
         
         var vm = new DetailsDeleteVehicleViewModel();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value);
         if (vehicle == null) return NotFound();
         vm.DriverFullName = vehicle.Driver!.AppUser!.FirstAndLastName;
         vm.Id = id;
@@ -55,14 +52,14 @@ public class VehiclesController : Controller
         vm.NumberOfSeats = vehicle.NumberOfSeats;
         vm.VehiclePlateNumber = vehicle.VehiclePlateNumber;
         vm.CreatedBy = vehicle.CreatedBy = UserEmail;
-        vm.CreatedAt = vehicle.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = vehicle.CreatedAt;
         vm.UpdatedBy = vehicle.UpdatedBy = UserEmail;
-        vm.UpdatedAt = vehicle.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = vehicle.UpdatedAt;
 
         return View(vm);
     }
 
-    [HttpPost]
+    /*[HttpPost]
     public async Task<IActionResult> SetDropDownList(Guid id)
     {
         // Use the EditRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
@@ -70,29 +67,30 @@ public class VehiclesController : Controller
        
         // Select the VehicleMarks for the currently selected VehicleMarkId
         
-        var vehicleModels = await _uow.VehicleModels.GettingVehicleModelsByMarkIdAsync(id);
+        var vehicleModels = await _appBLL.VehicleModels.GettingVehicleModelsByMarkIdAsync(id);
         vm.VehicleModels = new SelectList(vehicleModels, 
-            nameof(VehicleModel.Id), nameof(VehicleModel.VehicleModelName));
+            nameof(VehicleModelDTO.Id), nameof(VehicleModelDTO.VehicleModelName));
         
         return Ok(vm);
-    }
+    }*/
 
     // GET: AdminArea/Vehicles/Create
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditVehicleViewModel();
 
-        vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+        vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
-            nameof(Driver.Id), "AppUser.LastAndFirstName");
-        vm.ManufactureYears = new SelectList(_uow.Vehicles.GettingManufactureYears());
-        vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync()
-            , nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
-        vm.VehicleModels = new SelectList(new VehicleModel[0], // Deliberately empty until the user selects a Mark
-            nameof(VehicleModel.Id), nameof(VehicleModel.VehicleModelName));
-        vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
-            nameof(VehicleType.Id),
-            nameof(VehicleType.VehicleTypeName));
+            nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
+        vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears());
+        vm.VehicleMarks = new SelectList(await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync()
+            , nameof(VehicleMarkDTO.Id), nameof(VehicleMarkDTO.VehicleMarkName));
+        vm.VehicleModels = new SelectList( await _appBLL.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
+            //new VehicleModelDTO[0], // Deliberately empty until the user selects a Mark
+            nameof(VehicleModelDTO.Id), nameof(VehicleModelDTO.VehicleModelName));
+        vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+            nameof(VehicleTypeDTO.Id),
+            nameof(VehicleTypeDTO.VehicleTypeName));
         return View(vm);
     }
 
@@ -101,7 +99,7 @@ public class VehiclesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateEditVehicleViewModel vm, Vehicle vehicle)
+    public async Task<IActionResult> Create(CreateEditVehicleViewModel vm, VehicleDTO vehicle)
     {
         if (ModelState.IsValid)
         {
@@ -118,22 +116,23 @@ public class VehiclesController : Controller
             vehicle.VehiclePlateNumber = vm.VehiclePlateNumber;
             vehicle.CreatedBy = User.Identity!.Name;
             vehicle.CreatedAt = DateTime.Now.ToUniversalTime();
-            _uow.Vehicles.Add(vehicle);
-            await _uow.SaveChangesAsync();
+            _appBLL.Vehicles.Add(vehicle);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
 #warning ManufactureYears needs checking
 
-        vm.ManufactureYears = new SelectList(_uow.Vehicles.GettingManufactureYears(), nameof(Vehicle.ManufactureYear));
-        vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
-            nameof(VehicleType.Id),
-            nameof(VehicleType.VehicleTypeName), nameof(vehicle.VehicleTypeId));
-        vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
-            nameof(VehicleMark.Id),
-            nameof(VehicleMark.VehicleMarkName), nameof(vehicle.VehicleMarkId));
-        vm.VehicleModels = new SelectList(await _uow.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
-            nameof(VehicleModel.VehicleModelName), nameof(VehicleModel.Id));
+        vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears(), 
+            nameof(VehicleDTO.ManufactureYear));
+        vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+            nameof(VehicleTypeDTO.Id),
+            nameof(VehicleTypeDTO.VehicleTypeName), nameof(vehicle.VehicleTypeId));
+        vm.VehicleMarks = new SelectList(await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
+            nameof(VehicleMarkDTO.Id),
+            nameof(VehicleMarkDTO.VehicleMarkName), nameof(vehicle.VehicleMarkId));
+        vm.VehicleModels = new SelectList(await _appBLL.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
+            nameof(VehicleModelDTO.VehicleModelName), nameof(VehicleModelDTO.Id));
 
         return View(vm);
     }
@@ -145,28 +144,30 @@ public class VehiclesController : Controller
         if (id == null) return NotFound();
 
         
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value);
         if (vehicle == null) return NotFound();
 
-        vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+        vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
-            nameof(Driver.Id), "AppUser.LastAndFirstName");
+            nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
 
-        vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
-            nameof(VehicleType.Id),
-            nameof(VehicleType.VehicleTypeName));
-        vm.VehicleMarks = new SelectList(await _uow.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
-            nameof(VehicleMark.Id),
-            nameof(VehicleMark.VehicleMarkName));
+        vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+            nameof(VehicleTypeDTO.Id),
+            nameof(VehicleTypeDTO.VehicleTypeName));
+        
+        vm.VehicleMarks = new SelectList(await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
+            nameof(VehicleMarkDTO.Id),
+            nameof(VehicleMarkDTO.VehicleMarkName));
 
-        vm.VehicleModels = new SelectList(await _uow.VehicleModels
-                .GettingVehicleModelsByMarkIdAsync(vehicle.VehicleMarkId),
-            nameof(VehicleModel.Id),
-            nameof(VehicleModel.VehicleModelName));
+        vm.VehicleModels = new SelectList(await
+                _appBLL.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
+            // .GettingVehicleModelsByMarkIdAsync(vehicle.VehicleMarkId),
+            nameof(VehicleModelDTO.Id),
+            nameof(VehicleModelDTO.VehicleModelName));
 
 
         vm.Id = vehicle.Id;
-        vm.ManufactureYears = new SelectList(_uow.Vehicles.GettingManufactureYears());
+        vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears());
         vm.ManufactureYear = vehicle.ManufactureYear;
         vm.VehicleAvailability = vehicle.VehicleAvailability;
         vm.NumberOfSeats = vehicle.NumberOfSeats;
@@ -186,7 +187,7 @@ public class VehiclesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleViewModel vm)
     {
-        var vehicle = await _uow.Vehicles.FirstOrDefaultAsync(id);
+        var vehicle = await _appBLL.Vehicles.FirstOrDefaultAsync(id);
         if (vehicle != null && id != vehicle.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -206,8 +207,8 @@ public class VehiclesController : Controller
                     vehicle.NumberOfSeats = vm.NumberOfSeats;
                     vehicle.UpdatedBy = User.Identity!.Name;
                     vehicle.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _uow.Vehicles.Update(vehicle);
-                    await _uow.SaveChangesAsync();
+                    _appBLL.Vehicles.Update(vehicle);
+                    await _appBLL.SaveChangesAsync();
                 }
             }
             catch (DbUpdateConcurrencyException)
@@ -220,7 +221,6 @@ public class VehiclesController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-
         return View(vm);
     }
 
@@ -230,7 +230,7 @@ public class VehiclesController : Controller
         if (id == null) return NotFound();
         
         var vm = new DetailsDeleteVehicleViewModel();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value);
         if (vehicle == null) return NotFound();
         vm.DriverFullName = vehicle.Driver!.AppUser!.FirstAndLastName;
         vm.Id = id;
@@ -242,10 +242,9 @@ public class VehiclesController : Controller
         vm.NumberOfSeats = vehicle.NumberOfSeats;
         vm.VehiclePlateNumber = vehicle.VehiclePlateNumber;
         vm.CreatedBy = vehicle.CreatedBy!;
-        vm.CreatedAt = vehicle.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = vehicle.CreatedAt;
         vm.UpdatedBy = vehicle.UpdatedBy!;
-        vm.UpdatedAt = vehicle.UpdatedAt.ToLocalTime().ToString("G");
-
+        vm.UpdatedAt = vehicle.UpdatedAt;
 
         return View(vm);
     }
@@ -256,15 +255,15 @@ public class VehiclesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var vehicle = await _uow.Vehicles.SingleOrDefaultAsync(v => v != null && v.Id.Equals(id));
-        if (await _uow.Schedules.AnyAsync(s => vehicle != null && s != null && s.VehicleId.Equals(vehicle.Id))
-            || await _uow.Bookings.AnyAsync(v => vehicle != null && v != null && v.VehicleId.Equals(vehicle.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");
+        var vehicle = await _appBLL.Vehicles.FirstOrDefaultAsync(id);
+        /*if (await _appBLL.Schedules.AnyAsync(s => vehicle != null && s != null && s.VehicleId.Equals(vehicle.Id))
+            || await _appBLL.Bookings.AnyAsync(v => vehicle != null && v != null && v.VehicleId.Equals(vehicle.Id)))
+            return Content("Entity cannot be deleted because it has dependent entities!");*/
 
         if (vehicle != null)
         {
-            _uow.Vehicles.Remove(vehicle);
-            await _uow.SaveChangesAsync();
+            _appBLL.Vehicles.Remove(vehicle);
+            await _appBLL.SaveChangesAsync();
         }
 
         return RedirectToAction(nameof(Index));
@@ -272,7 +271,7 @@ public class VehiclesController : Controller
 
     private bool VehicleExists(Guid id)
     {
-        return _uow.Vehicles.Exists(id);
+        return _appBLL.Vehicles.Exists(id);
     }
 
     // GET: AdminArea/Vehicle/Gallery/5
@@ -282,7 +281,7 @@ public class VehiclesController : Controller
 
         var vm = new GalleryViewModel();
         
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value);
         if (vehicle == null) return NotFound();
 
         vm.VehicleIdentifier = vehicle.VehicleIdentifier;
@@ -290,4 +289,4 @@ public class VehiclesController : Controller
 
         return View(vm);
     }
-}*/
+}

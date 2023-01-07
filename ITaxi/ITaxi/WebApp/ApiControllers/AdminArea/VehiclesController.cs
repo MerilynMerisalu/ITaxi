@@ -1,4 +1,6 @@
-/*#nullable disable
+#nullable disable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,30 +9,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
-[Authorize(Roles = nameof(Admin), AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/AdminArea/[controller]")]
 [ApiController]
 public class VehiclesController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public VehiclesController(IAppUnitOfWork context)
+    public VehiclesController(IAppBLL appBLL)
     {
-        _uow = context;
+        _appBLL = appBLL;
     }
 
     // GET: api/Vehicles
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
+    public async Task<ActionResult<IEnumerable<VehicleDTO>>> GetVehicles()
     {
-        return Ok(await _uow.Vehicles.GettingOrderedVehiclesWithoutIncludesAsync());
+        return Ok(await _appBLL.Vehicles.GettingOrderedVehiclesWithoutIncludesAsync());
     }
 
     // GET: api/Vehicles/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Vehicle>> GetVehicle(Guid id)
+    public async Task<ActionResult<VehicleDTO>> GetVehicle(Guid id)
     {
-        var vehicle = await _uow.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id);
 
         if (vehicle == null) return NotFound();
 
@@ -40,14 +42,14 @@ public class VehiclesController : ControllerBase
     // PUT: api/Vehicles/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutVehicle(Guid id, Vehicle vehicle)
+    public async Task<IActionResult> PutVehicle(Guid id, VehicleDTO vehicle)
     {
         if (id != vehicle.Id) return BadRequest();
 
         try
         {
-            _uow.Vehicles.Update(vehicle);
-            await _uow.SaveChangesAsync();
+            _appBLL.Vehicles.Update(vehicle);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -62,10 +64,10 @@ public class VehiclesController : ControllerBase
     // POST: api/Vehicles
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Vehicle>> PostVehicle(Vehicle vehicle)
+    public async Task<ActionResult<VehicleDTO>> PostVehicle(VehicleDTO vehicle)
     {
-        _uow.Vehicles.Add(vehicle);
-        await _uow.SaveChangesAsync();
+        _appBLL.Vehicles.Add(vehicle);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetVehicle", new {id = vehicle.Id}, vehicle);
     }
@@ -74,17 +76,17 @@ public class VehiclesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteVehicle(Guid id)
     {
-        var vehicle = await _uow.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id);
         if (vehicle == null) return NotFound();
 
-        _uow.Vehicles.Remove(vehicle);
-        await _uow.SaveChangesAsync();
+        _appBLL.Vehicles.Remove(vehicle);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool VehicleExists(Guid id)
     {
-        return _uow.Vehicles.Exists(id);
+        return _appBLL.Vehicles.Exists(id);
     }
-}*/
+}
