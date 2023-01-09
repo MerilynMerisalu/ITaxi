@@ -1,6 +1,7 @@
 #nullable enable
-using App.DAL.EF;
-using App.Domain;
+using App.BLL;
+using App.BLL.DTO.AdminArea;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,25 +14,26 @@ namespace WebApp.ApiControllers.AdminArea;
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DriverAndDriverLicenseCategoriesController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly AppBLL _appBLL;
 
-    public DriverAndDriverLicenseCategoriesController(AppDbContext context)
+    public DriverAndDriverLicenseCategoriesController( AppBLL appBLL)
     {
-        _context = context;
+        _appBLL = appBLL;
+        
     }
 
     // GET: api/DriverAndDriverLicenseCategories
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<DriverAndDriverLicenseCategory>>> GetDriverAndDriverLicenseCategories()
+    public async Task<IEnumerable<DriverAndDriverLicenseCategoryDTO>> GetDriverAndDriverLicenseCategories()
     {
-        return await _context.DriverAndDriverLicenseCategories.ToListAsync();
+        return await _appBLL.DriverAndDriverLicenseCategories.GetAllAsync();
     }
 
     // GET: api/DriverAndDriverLicenseCategories/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<DriverAndDriverLicenseCategory>> GetDriverAndDriverLicenseCategory(Guid id)
+    public async Task<ActionResult<DriverAndDriverLicenseCategoryDTO>> GetDriverAndDriverLicenseCategory(Guid id)
     {
-        var driverAndDriverLicenseCategory = await _context.DriverAndDriverLicenseCategories.FindAsync(id);
+        var driverAndDriverLicenseCategory = await _appBLL.DriverAndDriverLicenseCategories.FirstOrDefaultAsync(id);
 
         if (driverAndDriverLicenseCategory == null) return NotFound();
 
@@ -42,15 +44,16 @@ public class DriverAndDriverLicenseCategoriesController : ControllerBase
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     public async Task<IActionResult> PutDriverAndDriverLicenseCategory(Guid id,
-        DriverAndDriverLicenseCategory driverAndDriverLicenseCategory)
+        DriverAndDriverLicenseCategoryDTO driverAndDriverLicenseCategory)
     {
         if (id != driverAndDriverLicenseCategory.Id) return BadRequest();
 
-        _context.Entry(driverAndDriverLicenseCategory).State = EntityState.Modified;
+        
 
         try
         {
-            await _context.SaveChangesAsync();
+            _appBLL.DriverAndDriverLicenseCategories.Update(driverAndDriverLicenseCategory);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -65,11 +68,11 @@ public class DriverAndDriverLicenseCategoriesController : ControllerBase
     // POST: api/DriverAndDriverLicenseCategories
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<DriverAndDriverLicenseCategory>> PostDriverAndDriverLicenseCategory(
-        DriverAndDriverLicenseCategory driverAndDriverLicenseCategory)
+    public async Task<ActionResult<DriverAndDriverLicenseCategoryDTO>> PostDriverAndDriverLicenseCategory(
+        DriverAndDriverLicenseCategoryDTO driverAndDriverLicenseCategory)
     {
-        _context.DriverAndDriverLicenseCategories.Add(driverAndDriverLicenseCategory);
-        await _context.SaveChangesAsync();
+        _appBLL.DriverAndDriverLicenseCategories.Add(driverAndDriverLicenseCategory);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetDriverAndDriverLicenseCategory", new {id = driverAndDriverLicenseCategory.Id},
             driverAndDriverLicenseCategory);
@@ -79,17 +82,17 @@ public class DriverAndDriverLicenseCategoriesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDriverAndDriverLicenseCategory(Guid id)
     {
-        var driverAndDriverLicenseCategory = await _context.DriverAndDriverLicenseCategories.FindAsync(id);
+        var driverAndDriverLicenseCategory = await _appBLL.DriverAndDriverLicenseCategories.FirstOrDefaultAsync(id);
         if (driverAndDriverLicenseCategory == null) return NotFound();
 
-        _context.DriverAndDriverLicenseCategories.Remove(driverAndDriverLicenseCategory);
-        await _context.SaveChangesAsync();
+        _appBLL.DriverAndDriverLicenseCategories.Remove(driverAndDriverLicenseCategory);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool DriverAndDriverLicenseCategoryExists(Guid id)
     {
-        return _context.DriverAndDriverLicenseCategories.Any(e => e.Id == id);
+        return _appBLL.DriverAndDriverLicenseCategories.Any(e => e.Id == id);
     }
 }
