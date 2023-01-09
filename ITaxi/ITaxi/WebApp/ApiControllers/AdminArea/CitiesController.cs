@@ -1,7 +1,6 @@
 #nullable enable
-using App.Contracts.DAL;
-using App.DAL.DTO.AdminArea;
-using App.Domain;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,18 +13,19 @@ namespace WebApp.ApiControllers.AdminArea;
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CitiesController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public CitiesController(IAppUnitOfWork uow)
+    public CitiesController( IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
+        
     }
 
     // GET: api/Cities
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<City>>> GetCities()
+    public async Task<ActionResult<IEnumerable<CityDTO>>> GetCities()
     {
-        var cities = await _uow.Cities.GetAllAsync();
+        var cities = await _appBLL.Cities.GetAllOrderedCitiesWithoutCountyAsync();
         return Ok(cities);
     }
 
@@ -33,7 +33,7 @@ public class CitiesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<CityDTO>> GetCity(Guid id)
     {
-        var city = await _uow.Cities.FirstOrDefaultAsync(id);
+        var city = await _appBLL.Cities.FirstOrDefaultCityWithoutCountyAsync(id);
 
         if (city == null) return NotFound();
 
@@ -49,8 +49,8 @@ public class CitiesController : ControllerBase
 
         try
         {
-            _uow.Cities.Update(city);
-            await _uow.SaveChangesAsync();
+            _appBLL.Cities.Update(city);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -65,10 +65,10 @@ public class CitiesController : ControllerBase
     // POST: api/Cities
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<City>> PostCity(CityDTO city)
+    public async Task<ActionResult<CityDTO>> PostCity(CityDTO city)
     {
-        _uow.Cities.Add(city);
-        await _uow.SaveChangesAsync();
+        _appBLL.Cities.Add(city);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetCity", new {id = city.Id}, city);
     }
@@ -77,17 +77,17 @@ public class CitiesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCity(Guid id)
     {
-        var city = await _uow.Cities.FirstOrDefaultAsync(id);
+        var city = await _appBLL.Cities.FirstOrDefaultCityWithoutCountyAsync(id);
         if (city == null) return NotFound();
 
-        _uow.Cities.Remove(city);
-        await _uow.SaveChangesAsync();
+        _appBLL.Cities.Remove(city);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool CityExists(Guid id)
     {
-        return _uow.Cities.Exists(id);
+        return _appBLL.Cities.Exists(id);
     }
 }
