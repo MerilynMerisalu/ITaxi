@@ -16,4 +16,5 @@ public interface IAppBLL: IBLL
     IVehicleMarkService VehicleMarks { get; }
     IVehicleModelService VehicleModels { get; }
     IVehicleService Vehicles { get; }
+    IDisabilityTypeService DisabilityTypes { get; }
 }

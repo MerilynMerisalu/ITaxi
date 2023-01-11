@@ -1,27 +1,29 @@
 #nullable enable
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.DAL.DTO.AdminArea;
 using App.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
+using DisabilityTypeDTO = App.BLL.DTO.AdminArea.DisabilityTypeDTO;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
 [Area(nameof(AdminArea))]
 public class DisabilityTypesController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public DisabilityTypesController(IAppUnitOfWork uow)
+    public DisabilityTypesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: AdminArea/DisabilityTypes
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.DisabilityTypes.GetAllOrderedDisabilityTypesAsync();
+        var res = await _appBLL.DisabilityTypes.GetAllOrderedDisabilityTypesAsync();
 
 
         return View(res);
@@ -33,7 +35,7 @@ public class DisabilityTypesController : Controller
         var vm = new DetailsDeleteDisabilityTypeViewModel();
         if (id == null) return NotFound();
 
-        var disabilityType = await _uow.DisabilityTypes
+        var disabilityType = await _appBLL.DisabilityTypes
             .FirstOrDefaultAsync(id.Value);
         if (disabilityType == null) return NotFound();
 
@@ -68,8 +70,8 @@ public class DisabilityTypesController : Controller
             disabilityType.DisabilityTypeName = vm.DisabilityTypeName;
             disabilityType.CreatedBy = User.Identity!.Name;
             disabilityType.CreatedAt = DateTime.Now;
-            _uow.DisabilityTypes.Add(disabilityType);
-            await _uow.SaveChangesAsync();
+            _appBLL.DisabilityTypes.Add(disabilityType);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -82,7 +84,7 @@ public class DisabilityTypesController : Controller
         var vm = new CreateEditDisabilityTypeViewModel();
         if (id == null) return NotFound();
 
-        var disabilityType = await _uow.DisabilityTypes.FirstOrDefaultAsync(id.Value);
+        var disabilityType = await _appBLL.DisabilityTypes.FirstOrDefaultAsync(id.Value);
         if (disabilityType == null) return NotFound();
         
         vm.DisabilityTypeName = disabilityType.DisabilityTypeName;
@@ -96,7 +98,7 @@ public class DisabilityTypesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditDisabilityTypeViewModel vm)
     {
-        var disabilityType = await _uow.DisabilityTypes.FirstOrDefaultAsync(id);
+        var disabilityType = await _appBLL.DisabilityTypes.FirstOrDefaultAsync(id);
         if (disabilityType != null && id != disabilityType.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -109,8 +111,8 @@ public class DisabilityTypesController : Controller
                     disabilityType.DisabilityTypeName.SetTranslation(vm.DisabilityTypeName);
                     disabilityType.UpdatedBy = User.Identity!.Name;
                     disabilityType.UpdatedAt = DateTime.Now;
-                    _uow.DisabilityTypes.Update(disabilityType);
-                    await _uow.SaveChangesAsync();
+                    _appBLL.DisabilityTypes.Update(disabilityType);
+                    await _appBLL.SaveChangesAsync();
                 }
 
                 
@@ -134,7 +136,7 @@ public class DisabilityTypesController : Controller
         var vm = new DetailsDeleteDisabilityTypeViewModel();
         if (id == null) return NotFound();
 
-        var disabilityType = await _uow.DisabilityTypes
+        var disabilityType = await _appBLL.DisabilityTypes
             .FirstOrDefaultAsync(id.Value);
         if (disabilityType == null) return NotFound();
 
@@ -154,19 +156,19 @@ public class DisabilityTypesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var disabilityType = await _uow.DisabilityTypes
+        var disabilityType = await _appBLL.DisabilityTypes
             .FirstOrDefaultAsync(id);
-        /*if (await _uow.Customers.AnyAsync(d =>
+        /*if (await _appBLL.Customers.AnyAsync(d =>
                 disabilityType != null && d!.DisabilityTypeId.Equals(disabilityType.Id)))
             return Content("Entity cannot be deleted because it has dependent entities!");*/
 
-        if (disabilityType != null) _uow.DisabilityTypes.Remove(disabilityType);
-        await _uow.SaveChangesAsync();
+        if (disabilityType != null) _appBLL.DisabilityTypes.Remove(disabilityType);
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     private bool DisabilityTypeExists(Guid id)
     {
-        return _uow.DisabilityTypes.Exists(id);
+        return _appBLL.DisabilityTypes.Exists(id);
     }
 }

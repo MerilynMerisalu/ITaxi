@@ -1,6 +1,8 @@
-/*#nullable enable
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
-using App.Domain;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,25 +15,26 @@ namespace WebApp.ApiControllers.AdminArea;
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DisabilityTypesController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public DisabilityTypesController(IAppUnitOfWork uow)
+    public DisabilityTypesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
+        ;
     }
 
     // GET: api/DisabilityTypes
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<DisabilityType>>> GetDisabilityTypes()
+    public async Task<ActionResult<IEnumerable<DisabilityTypeDTO>>> GetDisabilityTypes()
     {
-        return Ok(await _uow.DisabilityTypes.GetAllDisabilityTypeDtoAsync());
+        return Ok(await _appBLL.DisabilityTypes.GetAllDisabilityTypeDtoAsync());
     }
 
     // GET: api/DisabilityTypes/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<DisabilityType>> GetDisabilityType(Guid id)
+    public async Task<ActionResult<DisabilityTypeDTO>> GetDisabilityType(Guid id)
     {
-        var disabilityType = await _uow.DisabilityTypes.FirstOrDefaultAsync(id);
+        var disabilityType = await _appBLL.DisabilityTypes.FirstOrDefaultAsync(id);
 
         if (disabilityType == null) return NotFound();
 
@@ -41,15 +44,15 @@ public class DisabilityTypesController : ControllerBase
     // PUT: api/DisabilityTypes/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutDisabilityType(Guid id, DisabilityType disabilityType)
+    public async Task<IActionResult> PutDisabilityType(Guid id, DisabilityTypeDTO disabilityType)
     {
         if (id != disabilityType.Id) return BadRequest();
 
 
         try
         {
-            _uow.DisabilityTypes.Update(disabilityType);
-            await _uow.SaveChangesAsync();
+            _appBLL.DisabilityTypes.Update(disabilityType);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -64,10 +67,10 @@ public class DisabilityTypesController : ControllerBase
     // POST: api/DisabilityTypes
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<DisabilityType>> PostDisabilityType(DisabilityType disabilityType)
+    public async Task<ActionResult<DisabilityTypeDTO>> PostDisabilityType(DisabilityTypeDTO disabilityType)
     {
-        _uow.DisabilityTypes.Add(disabilityType);
-        await _uow.SaveChangesAsync();
+        _appBLL.DisabilityTypes.Add(disabilityType);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetDisabilityType", new {id = disabilityType.Id}, disabilityType);
     }
@@ -76,17 +79,17 @@ public class DisabilityTypesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDisabilityType(Guid id)
     {
-        var disabilityType = await _uow.DisabilityTypes.FirstOrDefaultAsync(id);
+        var disabilityType = await _appBLL.DisabilityTypes.FirstOrDefaultAsync(id);
         if (disabilityType == null) return NotFound();
 
-        _uow.DisabilityTypes.Remove(disabilityType);
-        await _uow.SaveChangesAsync();
+        _appBLL.DisabilityTypes.Remove(disabilityType);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool DisabilityTypeExists(Guid id)
     {
-        return _uow.DisabilityTypes.Exists(id);
+        return _appBLL.DisabilityTypes.Exists(id);
     }
-}*/
+}
