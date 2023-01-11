@@ -8,7 +8,7 @@ public class DisabilityType : DomainEntityMetaId
 {
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(80, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.DisabilityType),
-        Name = nameof(DisabilityTypeName))]
+    //[Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.DisabilityType),
+        //Name = nameof(DisabilityTypeName))]
     public LangStr DisabilityTypeName { get; set; } = default!;
 }

@@ -162,7 +162,24 @@ public class AutoMapperConfig : Profile
             ;       
        
         #endregion Vehicle Mapping
-        
+        // Convert from EF => DTO: Convert to Local Time
+        CreateMap<App.Domain.DisabilityType, DisabilityTypeDTO>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
+            ;
+        // DTO => EF: Convert to Universal Time
+        CreateMap<DisabilityTypeDTO, App.Domain.DisabilityType>()
+            .ForMember(db => db.CreatedAt,
+                dto =>
+                    dto.MapFrom(x => x.CreatedAt.ToUniversalTime()))
+            .ForMember(db => db.UpdatedAt,
+                dto =>
+                    dto.MapFrom(x => x.UpdatedAt.ToUniversalTime()))
+            ;
         
         CreateMap<AppUser, App.Domain.Identity.AppUser>().ReverseMap();
     }

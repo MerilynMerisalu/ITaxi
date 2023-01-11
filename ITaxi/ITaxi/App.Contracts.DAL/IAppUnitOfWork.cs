@@ -18,7 +18,7 @@ public interface IAppUnitOfWork : IUnitOfWork
     IVehicleRepository Vehicles { get; }
     //IScheduleRepository Schedules { get; }
     //IRideTimeRepository RideTimes { get; }
-    //IDisabilityTypeRepository DisabilityTypes { get; }
+    IDisabilityTypeRepository DisabilityTypes { get; }
     //ICustomerRepository Customers { get; }
     //IDriveRepository Drives { get; }
     //ICommentRepository Comments { get; }

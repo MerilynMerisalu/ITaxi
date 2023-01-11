@@ -17,7 +17,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
 
     private ICountyRepository? _counties;
     //private ICustomerRepository _customers;
-    //private IDisabilityTypeRepository _disabilityTypes;
+    private IDisabilityTypeRepository? _disabilityTypes;
     private IDriverAndDriverLicenseCategoryRepository? _driverAndDriverLicenseCategories;
     private IDriverLicenseCategoryRepository? _driverLicenseCategories;
     private IDriverRepository? _drivers;
@@ -61,7 +61,9 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
         new VehicleMapper(_mapper));
     //public IScheduleRepository Schedules => _schedules ?? new ScheduleRepository(UOWDbContext);
     //public IRideTimeRepository RideTimes => _rideTimes ?? new RideTimeRepository(UOWDbContext);
-    //public IDisabilityTypeRepository DisabilityTypes => _disabilityTypes ?? new DisabilityTypeRepository(UOWDbContext);
+    public IDisabilityTypeRepository DisabilityTypes => _disabilityTypes ?? 
+                                                        new DisabilityTypeRepository(UOWDbContext, 
+                                                            new DisabilityTypeMapper(_mapper));
     //public ICustomerRepository Customers => _customers ?? new CustomerRepository(UOWDbContext);
     //public IDriveRepository Drives => _drives ?? new DriveRepository(UOWDbContext);
     //public ICommentRepository Comments => _comments ?? new CommentRepository(UOWDbContext);

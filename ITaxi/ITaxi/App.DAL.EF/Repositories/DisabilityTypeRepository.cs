@@ -1,16 +1,17 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
+using App.DAL.DTO.AdminArea;
 using App.Domain;
-using App.Domain.DTO;
-using App.Domain.DTO.AdminArea;
+using Base.Contracts;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
-/*namespace App.DAL.EF.Repositories;
+namespace App.DAL.EF.Repositories;
 
-public class DisabilityTypeRepository : BaseEntityRepository<DisabilityType, AppDbContext>,
+public class DisabilityTypeRepository : BaseEntityRepository<DisabilityTypeDTO, App.Domain.DisabilityType, AppDbContext>,
     IDisabilityTypeRepository
 {
-    public DisabilityTypeRepository(AppDbContext dbContext) : base(dbContext)
+    public DisabilityTypeRepository(AppDbContext dbContext, IMapper<DAL.DTO.AdminArea.DisabilityTypeDTO,
+        App.Domain.DisabilityType> mapper) : base(dbContext, mapper)
     {
     }
 
@@ -48,14 +49,18 @@ public class DisabilityTypeRepository : BaseEntityRepository<DisabilityType, App
         return disabilityTypeDtoList;
     }
 
-    public async Task<IEnumerable<DisabilityType>> GetAllOrderedDisabilityTypesAsync(bool noTracking = true)
+    public async Task<IEnumerable<DisabilityTypeDTO>> GetAllOrderedDisabilityTypesAsync(bool noTracking = true)
     {
-        return await CreateQuery(noTracking).OrderBy(d => d.DisabilityTypeName).ToListAsync();
+        return (await CreateQuery(noTracking)
+                .OrderBy(d => d.DisabilityTypeName).ToListAsync())
+            .Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<DisabilityType> GetAllOrderedDisabilityTypes(bool noTracking = true)
+    public IEnumerable<DisabilityTypeDTO> GetAllOrderedDisabilityTypes(bool noTracking = true)
     {
-        return CreateQuery(noTracking).OrderBy(d => d.DisabilityTypeName).ToList();
+        return CreateQuery(noTracking).OrderBy(d => d.DisabilityTypeName)
+                .ToList().Select(e => Mapper.Map(e))!
+            ;
     }
 
     protected override IQueryable<DisabilityType> CreateQuery(bool noTracking = true)
@@ -67,4 +72,4 @@ public class DisabilityTypeRepository : BaseEntityRepository<DisabilityType, App
             .ThenInclude(c => c.Translations);
         return query;
     }
-}*/
+}

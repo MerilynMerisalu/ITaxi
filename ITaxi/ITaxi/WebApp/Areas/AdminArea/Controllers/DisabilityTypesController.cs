@@ -1,5 +1,6 @@
-/*#nullable enable
+#nullable enable
 using App.Contracts.DAL;
+using App.DAL.DTO.AdminArea;
 using App.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,12 +22,7 @@ public class DisabilityTypesController : Controller
     public async Task<IActionResult> Index()
     {
         var res = await _uow.DisabilityTypes.GetAllOrderedDisabilityTypesAsync();
-#warning Should this be a repo method
-        foreach (var disabilityType in res)
-        {
-            disabilityType.CreatedAt = disabilityType.CreatedAt.ToLocalTime();
-            disabilityType.UpdatedAt = disabilityType.UpdatedAt.ToLocalTime();
-        }
+
 
         return View(res);
     }
@@ -44,9 +40,9 @@ public class DisabilityTypesController : Controller
         vm.Id = disabilityType.Id;
         vm.DisabilityType = disabilityType.DisabilityTypeName;
         vm.CreatedBy = disabilityType.CreatedBy!;
-        vm.CreatedAt = disabilityType.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = disabilityType.CreatedAt;
         vm.UpdatedBy = disabilityType.UpdatedBy!;
-        vm.UpdatedAt = disabilityType.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = disabilityType.UpdatedAt;
 
         return View(vm);
     }
@@ -65,13 +61,13 @@ public class DisabilityTypesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateEditDisabilityTypeViewModel vm)
     {
-        var disabilityType = new DisabilityType();
+        var disabilityType = new DisabilityTypeDTO();
         if (ModelState.IsValid)
         {
             disabilityType.Id = Guid.NewGuid();
             disabilityType.DisabilityTypeName = vm.DisabilityTypeName;
             disabilityType.CreatedBy = User.Identity!.Name;
-            disabilityType.CreatedAt = DateTime.Now.ToUniversalTime();
+            disabilityType.CreatedAt = DateTime.Now;
             _uow.DisabilityTypes.Add(disabilityType);
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -112,7 +108,7 @@ public class DisabilityTypesController : Controller
                     disabilityType.Id = id;
                     disabilityType.DisabilityTypeName.SetTranslation(vm.DisabilityTypeName);
                     disabilityType.UpdatedBy = User.Identity!.Name;
-                    disabilityType.UpdatedAt = DateTime.Now.ToUniversalTime();
+                    disabilityType.UpdatedAt = DateTime.Now;
                     _uow.DisabilityTypes.Update(disabilityType);
                     await _uow.SaveChangesAsync();
                 }
@@ -144,9 +140,9 @@ public class DisabilityTypesController : Controller
 
         vm.DisabilityType = disabilityType.DisabilityTypeName;
         vm.CreatedBy = disabilityType.CreatedBy!;
-        vm.CreatedAt = disabilityType.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = disabilityType.CreatedAt;
         vm.UpdatedBy = disabilityType.UpdatedBy!;
-        vm.UpdatedAt = disabilityType.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = disabilityType.UpdatedAt;
 
 
         return View(vm);
@@ -160,9 +156,9 @@ public class DisabilityTypesController : Controller
     {
         var disabilityType = await _uow.DisabilityTypes
             .FirstOrDefaultAsync(id);
-        if (await _uow.Customers.AnyAsync(d =>
+        /*if (await _uow.Customers.AnyAsync(d =>
                 disabilityType != null && d!.DisabilityTypeId.Equals(disabilityType.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");
+            return Content("Entity cannot be deleted because it has dependent entities!");*/
 
         if (disabilityType != null) _uow.DisabilityTypes.Remove(disabilityType);
         await _uow.SaveChangesAsync();
@@ -173,4 +169,4 @@ public class DisabilityTypesController : Controller
     {
         return _uow.DisabilityTypes.Exists(id);
     }
-}*/
+}
