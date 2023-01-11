@@ -1,6 +1,7 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,10 @@ public class CountiesController : ControllerBase
     public CountiesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
+        
     }
 
-    // GET: api/Counties
+    // GET: api/RideTimes
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CountyDTO>>> GetCounties()
     {
@@ -45,7 +47,7 @@ public class CountiesController : ControllerBase
     // PUT: api/Counties/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutCounty(Guid id, /*County? county,*/ CountyDTO countyDTO)
+    public async Task<IActionResult> PutCounty(Guid id, CountyDTO countyDTO)
     {
 
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
