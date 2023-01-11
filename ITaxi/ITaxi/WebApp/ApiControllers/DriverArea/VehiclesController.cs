@@ -1,8 +1,6 @@
 /*#nullable enable
 
-using App.Contracts.DAL;
-using App.Domain;
-using App.Domain.DTO;
+using App.Contracts.BLL;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -16,26 +14,22 @@ namespace WebApp.ApiControllers.DriverArea;
 
 public class VehiclesController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
      
-    public VehiclesController(IAppUnitOfWork context)
+    public VehiclesController(IAppBLL appBLL)
     {
-        _uow = context;
+        _appBLL = appBLL;
     }
 
     // GET: api/Vehicles
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
+    public async Task<ActionResult<IEnumerable<VehicleDTO>>> GetVehicles()
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var res = await _uow.Vehicles.GettingOrderedVehiclesAsync(userId, roleName);
-        foreach (var vehicle in res)
-        {
-            vehicle.CreatedAt = vehicle.CreatedAt.ToLocalTime();
-            vehicle.UpdatedAt = vehicle.UpdatedAt.ToLocalTime();
-        }
+        var res = await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId, roleName);
+        
         return Ok(res);
     }
 
@@ -45,7 +39,7 @@ public class VehiclesController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id, userId, roleName);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, userId, roleName);
         
         if (vehicle == null) return NotFound();
 
@@ -61,7 +55,7 @@ public class VehiclesController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var vehicle = await _uow.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id, userId, roleName);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id, userId, roleName);
 
         if (vehicle!.Driver!.AppUserId != userId || !User.IsInRole(nameof(Admin)))
         {
@@ -72,8 +66,8 @@ public class VehiclesController : ControllerBase
         {
             vehicle.UpdatedBy = User.Identity!.Name;
             vehicle.UpdatedAt = DateTime.Now.ToUniversalTime();
-            _uow.Vehicles.Update(vehicle);
-            await _uow.SaveChangesAsync();
+            _appBLL.Vehicles.Update(vehicle);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -95,8 +89,8 @@ public class VehiclesController : ControllerBase
         vehicle.CreatedAt = DateTime.Now.ToUniversalTime();
         vehicle.UpdatedBy = User.Identity!.Name;
         vehicle.UpdatedAt = DateTime.Now.ToUniversalTime();
-        _uow.Vehicles.Add(vehicle);
-        await _uow.SaveChangesAsync();
+        _appBLL.Vehicles.Add(vehicle);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetVehicle", new {id = vehicle.Id}, vehicle);
     }
@@ -105,15 +99,15 @@ public class VehiclesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteVehicle(Guid id)
     {
-        var vehicle = await _uow.Vehicles.GettingVehicleWithIncludesByIdAsync(id);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id);
         if (vehicle == null) return NotFound();
 
-        if (await _uow.Schedules.AnyAsync(s => s != null && s.VehicleId.Equals(vehicle.Id))
-            || await _uow.Bookings.AnyAsync(v => v != null && v.VehicleId.Equals(vehicle.Id)))
+        if (await _appBLL.Schedules.AnyAsync(s => s != null && s.VehicleId.Equals(vehicle.Id))
+            || await _appBLL.Bookings.AnyAsync(v => v != null && v.VehicleId.Equals(vehicle.Id)))
             return BadRequest("Vehicle cannot be deleted! ");
         
-        _uow.Vehicles.Remove(vehicle);
-        await _uow.SaveChangesAsync();
+        _appBLL.Vehicles.Remove(vehicle);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
@@ -126,6 +120,6 @@ public class VehiclesController : ControllerBase
         {
             
         }
-        return _uow.Vehicles.Exists(id);
-    }#1#
-}*/
+        return _appBLL.Vehicles.Exists(id);
+    }#2#
+}#1#*/

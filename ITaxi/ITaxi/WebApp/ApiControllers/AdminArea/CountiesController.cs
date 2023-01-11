@@ -57,7 +57,7 @@ public class CountiesController : ControllerBase
 
         county.CountyName = countyDTO.CountyName;
         county.UpdatedBy = User.Identity!.Name;
-        county.UpdatedAt = DateTime.Now.ToUniversalTime();
+        county.UpdatedAt = DateTime.Now;
         _appBLL.Counties.Update(county);
         await _appBLL.SaveChangesAsync();
 

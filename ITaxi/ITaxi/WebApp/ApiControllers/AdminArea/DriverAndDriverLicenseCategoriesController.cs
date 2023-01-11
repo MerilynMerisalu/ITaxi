@@ -1,7 +1,6 @@
 #nullable enable
 using App.BLL;
 using App.BLL.DTO.AdminArea;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

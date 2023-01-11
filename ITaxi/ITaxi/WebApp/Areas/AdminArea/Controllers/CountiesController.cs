@@ -108,7 +108,7 @@ public class CountiesController : Controller
                 {
                     county.CountyName = vm.CountyName;
                     county.UpdatedBy = User.Identity!.Name!;
-                    county.UpdatedAt = DateTime.Now.ToUniversalTime();
+                    county.UpdatedAt = DateTime.Now;
                     _appBLL.Counties.Update(county);
                     await _appBLL.SaveChangesAsync();
                 }

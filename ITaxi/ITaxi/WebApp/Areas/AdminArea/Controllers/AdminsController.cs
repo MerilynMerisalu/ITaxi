@@ -143,6 +143,7 @@ public class AdminsController : Controller
             {
                 if (admin != null)
                 {
+                    /*
                     admin.AppUser!.FirstName = vm.FirstName;
                     admin.AppUser!.LastName = vm.LastName;
                     admin.AppUser!.Gender = vm.Gender;
@@ -150,12 +151,14 @@ public class AdminsController : Controller
                         .ToUniversalTime();
                     admin.AppUser!.PhoneNumber = vm.PhoneNumber;
                     admin.AppUser!.Email = vm.Email;
+                    //_a
+                    */
                     admin.Address = vm.Address;
                     admin.CityId = vm.CityId;
                     admin.PersonalIdentifier = vm.PersonalIdentifier;
-                    admin.AppUser!.IsActive = vm.IsActive;
+                    //admin.AppUser!.IsActive = vm.IsActive;
                     admin.UpdatedBy = User.Identity!.Name!;
-                    admin.UpdatedAt = DateTime.Now.ToUniversalTime();
+                    admin.UpdatedAt = DateTime.Now;
                     _appBLL.Admins.Update(admin);
                 }
 

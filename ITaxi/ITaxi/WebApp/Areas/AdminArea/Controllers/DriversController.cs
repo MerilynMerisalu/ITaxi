@@ -185,14 +185,14 @@ public class DriversController : Controller
                         
                     }
                     
-
+/*
                     driver.AppUser!.FirstName = vm.FirstName;
                     driver.AppUser!.LastName = vm.LastName;
                     driver.AppUser!.Gender = vm.Gender;
                     driver.AppUser!.DateOfBirth = DateTime.Parse(vm.DateOfBirth.ToString("d")).ToUniversalTime();
                     driver.AppUser.PhoneNumber = vm.PhoneNumber;
                     driver.AppUser.Email = vm.Email;
-                    driver.AppUser.IsActive = vm.IsActive;
+                    driver.AppUser.IsActive = vm.IsActive;*/
                     driver.DriverLicenseNumber = vm.DriverLicenseNumber;
                     driver.DriverLicenseExpiryDate = DateTime.Parse(vm.DriverLicenseExpiryDate.ToString("d")).ToUniversalTime();
                     driver.CityId = vm.CityId;
