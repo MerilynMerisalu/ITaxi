@@ -1,15 +1,13 @@
 #nullable enable
+using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
-using App.DAL.DTO.AdminArea;
-using App.Domain;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.DriverArea.ViewModels;
-using VehicleDTO = App.BLL.DTO.AdminArea.VehicleDTO;
+
 
 namespace WebApp.Areas.DriverArea.Controllers;
 
@@ -31,7 +29,8 @@ public class VehiclesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        return View(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId, roleName));
+        var res = await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId, roleName);
+        return View(res);
     }
 
     // GET: AdminArea/Vehicles/Details/5
@@ -64,12 +63,12 @@ public class VehiclesController : Controller
 
         vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears());
         vm.VehicleMarks = new SelectList(await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync()
-            , nameof(VehicleMark.Id), nameof(VehicleMark.VehicleMarkName));
+            , nameof(VehicleMarkDTO.Id), nameof(VehicleMarkDTO.VehicleMarkName));
         vm.VehicleModels = new SelectList(await _appBLL.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
-            nameof(VehicleModel.Id), nameof(VehicleModel.VehicleModelName));
+            nameof(VehicleModelDTO.Id), nameof(VehicleModelDTO.VehicleModelName));
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
-            nameof(VehicleType.Id),
-            nameof(VehicleType.VehicleTypeName));
+            nameof(VehicleTypeDTO.Id),
+            nameof(VehicleTypeDTO.VehicleTypeName));
         return View(vm);
     }
 
@@ -83,8 +82,7 @@ public class VehiclesController : Controller
         if (ModelState.IsValid)
         {
             var userId = User.GettingUserId();
-            var driver = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(userId);
-            if (driver == null) return NotFound();
+            var driver = await _appBLL.Drivers.GettingDriverByVehicleAsync(userId);
 
             vehicle.Id = Guid.NewGuid();
             vehicle.DriverId = driver.Id;
@@ -104,15 +102,16 @@ public class VehiclesController : Controller
 
 #warning ManufactureYears needs checking
 
-        vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears(), nameof(Vehicle.ManufactureYear));
+        vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears(), 
+            nameof(VehicleDTO.ManufactureYear));
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
-            nameof(VehicleType.Id),
-            nameof(VehicleType.VehicleTypeName), nameof(vehicle.VehicleTypeId));
+            nameof(VehicleTypeDTO.Id),
+            nameof(VehicleTypeDTO.VehicleTypeName), nameof(vehicle.VehicleTypeId));
         vm.VehicleMarks = new SelectList(await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
-            nameof(VehicleMark.Id),
-            nameof(VehicleMark.VehicleMarkName), nameof(vehicle.VehicleMarkId));
+            nameof(VehicleMarkDTO.Id),
+            nameof(VehicleMarkDTO.VehicleMarkName), nameof(vehicle.VehicleMarkId));
         vm.VehicleModels = new SelectList(await _appBLL.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
-            nameof(VehicleModel.VehicleModelName), nameof(VehicleModel.Id));
+            nameof(VehicleModelDTO.VehicleModelName), nameof(VehicleModelDTO.Id));
 
         return View(vm);
     }
@@ -129,16 +128,16 @@ public class VehiclesController : Controller
         if (vehicle == null) return NotFound();
 
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
-            nameof(VehicleType.Id),
-            nameof(VehicleType.VehicleTypeName));
+            nameof(VehicleTypeDTO.Id),
+            nameof(VehicleTypeDTO.VehicleTypeName));
         vm.VehicleMarks = new SelectList(await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
-            nameof(VehicleMark.Id),
-            nameof(VehicleMark.VehicleMarkName));
+            nameof(VehicleMarkDTO.Id),
+            nameof(VehicleMarkDTO.VehicleMarkName));
 
         vm.VehicleModels = new SelectList(await _appBLL.VehicleModels
                 .GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
-            nameof(VehicleModel.Id),
-            nameof(VehicleModel.VehicleModelName));
+            nameof(VehicleModelDTO.Id),
+            nameof(VehicleModelDTO.VehicleModelName));
 
         vm.Id = vehicle.Id;
         vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears());
@@ -172,8 +171,7 @@ public class VehiclesController : Controller
                 {
                     vehicle.Id = id;
 
-                    var driver = _appBLL.Drivers.SingleOrDefaultAsync(d => d!.AppUserId.Equals(userId)).Result;
-                    if (driver == null) return NotFound();
+                    var driver = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(vehicle.Driver!.AppUserId);
 
                     vehicle.VehiclePlateNumber = vm.VehiclePlateNumber;
                     vehicle.ManufactureYear = vm.ManufactureYear;

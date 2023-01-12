@@ -10,19 +10,20 @@ namespace App.DAL.EF.Repositories;
 
 public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDbContext>, IVehicleRepository
 {
-    public VehicleRepository(AppDbContext dbContext, IMapper<VehicleDTO, App.Domain.Vehicle> mapper) : base(dbContext, mapper)
+    public VehicleRepository(AppDbContext dbContext, IMapper<VehicleDTO, App.Domain.Vehicle> mapper) : base(dbContext,
+        mapper)
     {
     }
 
     public override async Task<IEnumerable<VehicleDTO>> GetAllAsync(bool noTracking = true)
     {
         return (await CreateQuery(null, null, noTracking).ToListAsync())
-            .Select(e=> Mapper.Map(e))!;
+            .Select(e => Mapper.Map(e))!;
     }
 
     public override IEnumerable<VehicleDTO> GetAll(bool noTracking = true)
     {
-        return CreateQuery(null, null,noTracking).ToList().Select(e=> Mapper.Map(e))!;
+        return CreateQuery(null, null, noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
     public override async Task<VehicleDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
@@ -46,7 +47,7 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
             .ToListAsync();
 
 
-        return res.Select(e=> Mapper.Map(e))!;
+        return res.Select(e => Mapper.Map(e))!;
     }
 
     public IEnumerable<VehicleDTO> GettingOrderedVehicles(Guid? userId = null, string? roleName = null,
@@ -57,18 +58,18 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
             .ThenBy(v => v.VehicleMark!.VehicleMarkName)
             .ThenBy(v => v.VehicleModel!.VehicleModelName)
             .ThenBy(v => v.ManufactureYear).ToList()
-            .Select(e=> Mapper.Map(e))!;
+            .Select(e => Mapper.Map(e))!;
     }
 
     public async Task<IEnumerable<VehicleDTO>> GettingVehiclesWithoutIncludesAsync(
         bool noTracking = true)
     {
-        return (await base.CreateQuery(noTracking).ToListAsync()).Select(e=> Mapper.Map(e))!;
+        return (await base.CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
     public IEnumerable<VehicleDTO> GettingVehiclesWithoutIncludes(bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).ToList().Select(e=> Mapper.Map(e))!;
+        return base.CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
     public async Task<IEnumerable<VehicleDTO>> GettingOrderedVehiclesWithoutIncludesAsync(Guid? userId = null,
@@ -77,20 +78,21 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
         if (userId == null)
         {
             return (await CreateQuery(noTracking).OrderBy(v => v.ManufactureYear).ToListAsync())
-                .Select(e=> Mapper.Map(e))!;
-        } 
+                .Select(e => Mapper.Map(e))!;
+        }
+
         return (await CreateQuery(noTracking)
-            .Where(d => d.Driver!.AppUserId.Equals(userId))
-            .OrderBy(v => v.ManufactureYear).ToListAsync())
-            .Select(e=> Mapper.Map(e))!;
-        
+                .Where(d => d.Driver!.AppUserId.Equals(userId))
+                .OrderBy(v => v.ManufactureYear).ToListAsync())
+            .Select(e => Mapper.Map(e))!;
+
     }
 
     public IEnumerable<VehicleDTO> GettingOrderedVehiclesWithoutIncludes(bool noTracking = true)
     {
         return CreateQuery(noTracking)
             .OrderBy(v => v.ManufactureYear).ToList()
-            .Select(e=> Mapper.Map(e))!;
+            .Select(e => Mapper.Map(e))!;
     }
 
     public async Task<VehicleDTO?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null,
@@ -101,7 +103,8 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
         return Mapper.Map(vehicle);
     }
 
-    public async Task<VehicleDTO?> GettingVehicleWithoutIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<VehicleDTO?> GettingVehicleWithoutIncludesByIdAsync(Guid id, Guid? userId = null,
+        string? roleName = null, bool noTracking = true)
     {
         return Mapper.Map(await CreateQuery(noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id)));
     }
@@ -141,18 +144,22 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
                         && v.VehicleAvailability == VehicleAvailability.Available));
     }
 
-    public async Task<List<VehicleDTO>> GettingVehiclesByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<List<VehicleDTO>> GettingVehiclesByDriverIdAsync(Guid driverId, Guid? userId = null,
+        string? roleName = null, bool noTracking = true)
     {
-         return ((await CreateQuery(userId, roleName, noTracking).Where(v => v.DriverId.Equals(driverId)).ToListAsync())
-             .Select(e=> Mapper.Map(e)) as List<VehicleDTO>)!;
+        return ((await CreateQuery(userId, roleName, noTracking).Where(v => v.DriverId.Equals(driverId)).ToListAsync())
+            .Select(e => Mapper.Map(e)) as List<VehicleDTO>)!;
     }
-    
+
 
     public List<VehicleDTO> GettingVehiclesByDriverId(Guid driverId, bool noTracking = true)
     {
         var vehicles = CreateQuery(noTracking).Where(v => v.DriverId.Equals(driverId)).ToList();
-        return (vehicles.Select(e=> Mapper.Map(e)) as List<VehicleDTO>)!;
+        return (vehicles.Select(e => Mapper.Map(e)) as List<VehicleDTO>)!;
     }
+
+    
+
 
     public async Task<Vehicle?> GettingVehicleByIdAsync(Guid id, Guid? userId = null, string? roleName = null,
         bool noTracking = true)
@@ -178,13 +185,19 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
             return query;
         }
 
-        query = query.Include(c => c.Driver)
-            .ThenInclude(d => d!.AppUser)
-            .Include(v => v.VehicleMark)
-            .Include(v => v.VehicleModel)
-            .Include(v => v.VehicleType)
-            .ThenInclude(v => v!.VehicleTypeName)
-            .ThenInclude(v => v.Translations).Where(u => u.Driver!.AppUserId.Equals(userId));
+        if (roleName.Equals("Driver"))
+        {
+            query = query.Include(c => c.Driver)
+                .ThenInclude(d => d!.AppUser)
+                .Include(v => v.VehicleMark)
+                .Include(v => v.VehicleModel)
+                .Include(v => v.VehicleType)
+                .ThenInclude(v => v!.VehicleTypeName)
+                .ThenInclude(v => v.Translations).Where(u => u.Driver!.AppUserId.Equals(userId));
+            return query;
+        }
+
         return query;
+
     }
 }

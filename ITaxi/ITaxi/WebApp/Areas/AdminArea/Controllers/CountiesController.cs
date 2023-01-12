@@ -152,12 +152,16 @@ public class CountiesController : Controller
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
         if (county != null)
         {
-            if (county.NumberOfCities > 0)
-                return Content("Entity cannot be deleted because it has dependent entities!");
+            /*if (county.NumberOfCities > 0)
+                return Content("Entity cannot be deleted because it has dependent entities!");*/
             //if (county.Cities.Any())
             //    return Content("Entity cannot be deleted because it has dependent entities!");
             //if (await _appBLL.Counties.HasCities(id))
             //    return Content("Entity cannot be deleted because it has dependent entities!");
+            if (await _appBLL.Cities.HasAnyCitiesAsync(county.Id))
+            {
+                return Content("Entity cannot be deleted because it has dependent entities!");
+            }
 
             _appBLL.Counties.Remove(county);
             await _appBLL.SaveChangesAsync();

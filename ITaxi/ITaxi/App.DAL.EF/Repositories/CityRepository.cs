@@ -53,6 +53,12 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
         return CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
+    public async Task<bool> HasAnyCitiesAsync(Guid id, bool noTracking = true)
+    {
+        #warning violating of the DRY pattern
+        return await CreateQuery(noTracking).AnyAsync(c => c.CountyId.Equals(id));
+    }
+
     public async Task<IEnumerable<CityDTO>> GettingByCountyIdAsync(Guid countyId)
     {
         return (await CreateQuery().Where(x => x.CountyId == countyId).ToListAsync()).Select(x => Mapper.Map(x))!;

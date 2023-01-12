@@ -25,6 +25,11 @@ public class DriverService: BaseEntityService<App.BLL.DTO.AdminArea.DriverDTO, A
         return Repository.GetAllDriversOrderedByLastName(noTracking).Select(e => Mapper.Map(e))!;
     }
 
+    public async Task<DriverDTO> GettingDriverByVehicleAsync(Guid driverAppUserId, bool noTracking = true)
+    {
+        return Mapper.Map(await Repository.GettingDriverByVehicleAsync(driverAppUserId, noTracking))!;
+    }
+
     public async Task<DriverDTO> GettingDriverByAppUserIdAsync(Guid userId)
     {
         return Mapper.Map(await Repository.SingleOrDefaultAsync(d => d!.AppUserId.Equals(userId)))!;

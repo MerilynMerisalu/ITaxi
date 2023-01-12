@@ -14,9 +14,11 @@ public class VehicleService : BaseEntityService<App.BLL.DTO.AdminArea.VehicleDTO
     {
     }
 
-    public async Task<IEnumerable<VehicleDTO>> GettingOrderedVehiclesAsync(Guid? userId = null, string? roleNames = null, bool noTracking = true)
+    public async Task<IEnumerable<VehicleDTO>> GettingOrderedVehiclesAsync(Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return (await Repository.GettingOrderedVehiclesAsync(userId, roleNames, noTracking)).Select(e=> Mapper.Map(e))!;
+        var res =
+            await Repository.GettingOrderedVehiclesAsync(userId, roleName, noTracking);
+        return res.Select(e => Mapper.Map(e))!;
     }
 
     public IEnumerable<VehicleDTO> GettingOrderedVehicles(Guid? userId = null, string? roleName = null, bool noTracking = true)

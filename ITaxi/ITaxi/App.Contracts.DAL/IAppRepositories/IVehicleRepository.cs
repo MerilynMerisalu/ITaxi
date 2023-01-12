@@ -27,4 +27,5 @@ public interface IVehicleRepositoryCustom<TEntity>
     TEntity? GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailability(Booking booking);
     Task<List<TEntity>> GettingVehiclesByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true);
     List<TEntity> GettingVehiclesByDriverId(Guid driverId, bool noTracking = true);
+    
 }

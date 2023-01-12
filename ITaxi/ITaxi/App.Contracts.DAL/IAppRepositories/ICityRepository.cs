@@ -18,4 +18,5 @@ public interface ICityRepositoryCustom<TEntity>
     Task<TEntity?> FirstOrDefaultCityWithoutCountyAsync(Guid id);
     IEnumerable<TEntity> GetAllOrderedCitiesWithoutCounty();
     IEnumerable<TEntity> GetAllOrderedCities(bool noTracking = true);
+    Task<bool> HasAnyCitiesAsync(Guid id, bool noTracking = true);
 }
