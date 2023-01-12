@@ -30,4 +30,9 @@ public class DriverAndDriverLicenseCategoryService: BaseEntityService<App.BLL.DT
                 await Repository.RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(id))
             .Select(e => Mapper.Map(e)) as List<DriverAndDriverLicenseCategoryDTO?>)!;
     }
+
+    public async Task<bool> HasAnyDriversAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return await Repository.HasAnyDriversAsync(id, userId, roleName, noTracking);
+    }
 }

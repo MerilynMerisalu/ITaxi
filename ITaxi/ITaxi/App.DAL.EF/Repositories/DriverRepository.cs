@@ -45,6 +45,12 @@ public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Drive
             .SingleOrDefaultAsync(d => d.AppUserId.Equals(driverAppUserId)))!;
     }
 
+    public async Task<bool> HasAnyDriversAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return await CreateQuery(noTracking)
+            .AnyAsync(d => d.DriverLicenseCategories!.Any(dl => dl.DriverId.Equals(id)));
+    }
+
 
     protected override IQueryable<Driver> CreateQuery(bool noTracking = true)
     {

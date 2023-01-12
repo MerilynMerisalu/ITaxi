@@ -153,9 +153,11 @@ public class DriverLicenseCategoriesController : Controller
     {
         var driverLicenseCategory = await _appBLL.DriverLicenseCategories.FirstOrDefaultAsync(id);
 #warning Ask if this could be improved
-        /*if (await _appBLL.DriverAndDriverLicenseCategories
-                .AnyAsync(c => c != null && c.DriverLicenseCategoryId.Equals(id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");*/
+        if (await _appBLL.DriverAndDriverLicenseCategories.HasAnyDriversAsync(id))
+        {
+            return Content("Entity cannot be deleted because it has dependent entities!");
+        }
+        
         if (driverLicenseCategory != null) _appBLL.DriverLicenseCategories.Remove(driverLicenseCategory);
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));

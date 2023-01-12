@@ -16,7 +16,7 @@ public interface IDriverAndDriverLicenseCategoryRepositoryCustom<TEntity>
     string GetAllDriverLicenseCategoriesBelongingToTheDriver(Guid id, string separator = ", ");
 
     Task<List<TEntity?>> RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(Guid id);
-    
-    
-    
+    Task<bool> HasAnyDriversAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
+
+
 }

@@ -218,7 +218,7 @@ public class AdminsController : Controller
             var appUser = await _userManager.FindByEmailAsync(admin.AppUser!.Email);
             await _userManager.RemoveFromRoleAsync(appUser, "Admin");
             _appBLL.Admins.Remove(admin);
-            await _appBLL.SaveChangesAsync();
+            //await _appBLL.SaveChangesAsync();
             #warning temporarily solution
             var claims = await _userManager.GetClaimsAsync(appUser);
             await _userManager.RemoveClaimsAsync(appUser, claims);

@@ -14,4 +14,6 @@ public interface IDriverRepositoryCustom<TEntity>
     Task<IEnumerable<TEntity>> GetAllDriversOrderedByLastNameAsync(bool noTracking = true);
     IEnumerable<TEntity> GetAllDriversOrderedByLastName(bool noTracking = true);
     Task<TEntity> GettingDriverByVehicleAsync(Guid driverAppUserId, bool noTracking = true);
+   
+
 }

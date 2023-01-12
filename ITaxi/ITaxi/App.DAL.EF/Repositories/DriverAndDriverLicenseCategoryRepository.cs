@@ -49,9 +49,11 @@ public class DriverAndDriverLicenseCategoryRepository :
         return RemoveAll((driverAndDriverLicenseCategories.Select(e => Mapper.Map(e)) as List<DriverAndDriverLicenseCategoryDTO>)!)!;
     }
 
-    
+    public async Task<bool> HasAnyDriversAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return await CreateQuery().AnyAsync(dlc => dlc.DriverLicenseCategoryId.Equals(id));
+    }
 
-    
 
     protected override IQueryable<DriverAndDriverLicenseCategory> CreateQuery(bool noTracking = true)
     {
