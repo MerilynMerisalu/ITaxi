@@ -47,4 +47,9 @@ public class CityService: BaseEntityService<App.BLL.DTO.AdminArea.CityDTO, DAL.D
     {
        return await Repository.HasAnyCitiesAsync(id, noTracking);
     }
+
+    public bool HasAnyCities(Guid id, bool noTracking = true)
+    {
+        return Repository.HasAnyCities(id, noTracking);
+    }
 }

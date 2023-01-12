@@ -6,10 +6,11 @@ using Base.Contracts;
 
 namespace App.BLL.Services;
 
-public class VehicleModelService : BaseEntityService<App.BLL.DTO.AdminArea.VehicleModelDTO, 
+public class VehicleModelService : BaseEntityService<App.BLL.DTO.AdminArea.VehicleModelDTO,
     App.DAL.DTO.AdminArea.VehicleModelDTO, IVehicleModelRepository>, IVehicleModelService
 {
-    public VehicleModelService(IVehicleModelRepository repository, IMapper<VehicleModelDTO, DAL.DTO.AdminArea.VehicleModelDTO> mapper) : base(repository, mapper)
+    public VehicleModelService(IVehicleModelRepository repository,
+        IMapper<VehicleModelDTO, DAL.DTO.AdminArea.VehicleModelDTO> mapper) : base(repository, mapper)
     {
     }
 
@@ -25,7 +26,8 @@ public class VehicleModelService : BaseEntityService<App.BLL.DTO.AdminArea.Vehic
             .Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<VehicleModelDTO?> FirstOrDefaultVehicleModelWithoutVehicleMarkAsync(Guid id, bool noTracking = true)
+    public async Task<VehicleModelDTO?> FirstOrDefaultVehicleModelWithoutVehicleMarkAsync(Guid id,
+        bool noTracking = true)
     {
         return Mapper.Map(await Repository.FirstOrDefaultVehicleModelWithoutVehicleMarkAsync(id, noTracking));
     }
@@ -35,7 +37,8 @@ public class VehicleModelService : BaseEntityService<App.BLL.DTO.AdminArea.Vehic
         return Mapper.Map(Repository.FirstOrDefaultVehicleModelWithoutVehicleMark(id, noTracking));
     }
 
-    public async Task<IEnumerable<VehicleModelDTO>> GetAllVehicleModelsOrderedByVehicleMarkNameAsync(bool noTracking = true)
+    public async Task<IEnumerable<VehicleModelDTO>> GetAllVehicleModelsOrderedByVehicleMarkNameAsync(
+        bool noTracking = true)
     {
         return (await Repository.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(noTracking))
             .Select(e => Mapper.Map(e))!;
@@ -58,4 +61,15 @@ public class VehicleModelService : BaseEntityService<App.BLL.DTO.AdminArea.Vehic
         return (Repository.GettingVehicleModels(markId, noTracking)
             .Select(e => Mapper.Map(e)) as List<VehicleModelDTO>)!;
     }
+
+    public async Task<bool> HasAnyVehicleMarksAsync(Guid markId, bool noTracking = true)
+    {
+        return await Repository.HasAnyVehicleMarksAsync(markId, noTracking);
+    }
+
+    public bool HasAnyVehicleMarks(Guid markId, bool noTracking = true)
+    {
+        return Repository.HasAnyVehicleMarks(markId, noTracking);
+    }
 }
+    

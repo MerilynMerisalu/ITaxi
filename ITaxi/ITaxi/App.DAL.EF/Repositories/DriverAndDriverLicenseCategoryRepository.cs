@@ -54,6 +54,11 @@ public class DriverAndDriverLicenseCategoryRepository :
         return await CreateQuery().AnyAsync(dlc => dlc.DriverLicenseCategoryId.Equals(id));
     }
 
+    public bool HasAnyDrivers(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return CreateQuery().Any(dlc => dlc.DriverLicenseCategoryId.Equals(id));
+    }
+
 
     protected override IQueryable<DriverAndDriverLicenseCategory> CreateQuery(bool noTracking = true)
     {

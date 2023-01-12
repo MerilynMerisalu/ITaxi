@@ -155,15 +155,16 @@ public class VehicleModelsController : Controller
 
     // POST: AdminArea/VehicleModels/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var vehicleModel = await _appBLL.VehicleModels
             .FirstOrDefaultAsync(id);
-        /*if (await _appBLL.Vehicles.AnyAsync(v => vehicleModel != null && v!.VehicleModelId.Equals(vehicleModel.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");*/
-
+        
+        if (await _appBLL.Vehicles.HasAnyVehicleModelsAnyAsync(id))
+            return Content("Entity cannot be deleted because it has dependent entities!");
+        
         if (vehicleModel != null)
         {
             _appBLL.VehicleModels.Remove(vehicleModel);

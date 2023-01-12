@@ -35,4 +35,9 @@ public class DriverAndDriverLicenseCategoryService: BaseEntityService<App.BLL.DT
     {
         return await Repository.HasAnyDriversAsync(id, userId, roleName, noTracking);
     }
+
+    public bool HasAnyDrivers(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return Repository.HasAnyDrivers(id, userId, roleName, noTracking);
+    }
 }

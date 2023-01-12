@@ -59,6 +59,21 @@ public class VehicleModelRepository : BaseEntityRepository<App.DAL.DTO.AdminArea
             .OrderBy(v => v.VehicleMark!.VehicleMarkName).ToList().Select(e=> Mapper.Map(e)) as List<VehicleModelDTO>)!;
     }
 
+    public async Task<bool> HasAnyVehicleMarksAsync(Guid markId, bool noTracking = true)
+    {
+        return await CreateQuery(noTracking).AnyAsync(mo => mo.VehicleMarkId.Equals(markId));
+    }
+
+    public bool HasAnyVehicleMarks(Guid markId, bool noTracking = true)
+    {
+        return CreateQuery(noTracking).Any(mo => mo.VehicleMarkId.Equals(markId));
+    }
+
+    public async Task<bool> HasAnyModelsAsync(Guid markId, bool noTracking = true)
+    {
+        return await CreateQuery(noTracking).AnyAsync(v => v.VehicleMarkId.Equals(markId));
+    }
+
     protected override IQueryable<VehicleModel> CreateQuery(bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();

@@ -89,4 +89,9 @@ public class VehicleService : BaseEntityService<App.BLL.DTO.AdminArea.VehicleDTO
     {
         return (Repository.GettingVehiclesByDriverId(driverId, noTracking).Select(e => Mapper.Map(e)) as List<VehicleDTO>)!;
     }
+
+    public async Task<bool> HasAnyVehicleModelsAnyAsync(Guid vehicleModelId, bool noTracking)
+    {
+        return await Repository.HasAnyVehicleModelsAnyAsync(vehicleModelId, noTracking);
+    }
 }
