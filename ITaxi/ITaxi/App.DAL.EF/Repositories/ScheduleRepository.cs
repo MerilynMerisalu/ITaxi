@@ -170,7 +170,8 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
             .ToList().Select(e => Mapper.Map(e))!;
     }
 
-    public DateTime[] GettingStartAndEndTime(IEnumerable<Schedule> schedules, Guid? userId = null,
+    
+    public DateTime[] GettingStartAndEndTime(IEnumerable<ScheduleDTO> schedules, Guid? userId = null,
         string? roleName = null)
     {
 #warning needs improving
