@@ -178,8 +178,43 @@ public class AutoMapperConfig : Profile
                     dto.MapFrom(x => x.CreatedAt.ToUniversalTime()))
             .ForMember(db => db.UpdatedAt,
                 dto =>
+                    dto.MapFrom(x => x.UpdatedAt.ToUniversalTime()));
+
+        // Convert from EF => DTO: Convert to Local Time
+        CreateMap<App.Domain.Schedule, ScheduleDTO>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
+            .ForMember(dto => dto.StartDateAndTime,
+                m =>
+                    m.MapFrom(x => x.StartDateAndTime.ToLocalTime()))
+            .ForMember(dto => dto.EndDateAndTime,
+                m => 
+                    m.MapFrom(x => x.EndDateAndTime.ToLocalTime() ));
+        
+        
+        
+        // DTO => EF: Convert to Universal Time
+        CreateMap<ScheduleDTO, App.Domain.Schedule>()
+            .ForMember(db => db.CreatedAt,
+                dto =>
+                    dto.MapFrom(x => x.CreatedAt.ToUniversalTime()))
+            .ForMember(db => db.UpdatedAt,
+                dto =>
                     dto.MapFrom(x => x.UpdatedAt.ToUniversalTime()))
-            ;
+            .ForMember(dto => dto.StartDateAndTime,
+                dto => dto
+                    .MapFrom(x => x.StartDateAndTime.ToUniversalTime()))
+            .ForMember(dto => dto.EndDateAndTime,
+                dto => dto
+                    .MapFrom(x => x.EndDateAndTime.ToUniversalTime()));
+        // Convert from EF => DTO: Convert to Local Time
+        
+        /*CreateMap<ScheduleDTO, App.Domain.Schedule>()
+            .ReverseMap();*/
         
         CreateMap<AppUser, App.Domain.Identity.AppUser>().ReverseMap();
     }

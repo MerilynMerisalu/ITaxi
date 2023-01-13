@@ -1,38 +1,40 @@
-﻿/*using App.Contracts.DAL.IAppRepositories;
+﻿using App.Contracts.DAL.IAppRepositories;
+using App.DAL.DTO.AdminArea;
 using App.Domain;
+using Base.Contracts;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, IScheduleRepository
+public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.Schedule, AppDbContext>, IScheduleRepository
 {
-    public ScheduleRepository(AppDbContext dbContext) : base(dbContext)
+    public ScheduleRepository(AppDbContext dbContext, IMapper<App.DAL.DTO.AdminArea.ScheduleDTO, App.Domain.Schedule> mapper) : base(dbContext, mapper)
     {
     }
 
-    public override async Task<IEnumerable<Schedule>> GetAllAsync(bool noTracking = true)
+    public override async Task<IEnumerable<ScheduleDTO>> GetAllAsync(bool noTracking = true)
     {
-        return await CreateQuery(noTracking).ToListAsync();
+        return (await CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public override IEnumerable<Schedule> GetAll(bool noTracking = true)
+    public override IEnumerable<ScheduleDTO> GetAll(bool noTracking = true)
     {
-        return CreateQuery(noTracking).ToList();
+        return CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<Schedule>> GetAllSchedulesWithoutIncludesAsync(bool noTracking = true)
+    public async Task<IEnumerable<ScheduleDTO>> GetAllSchedulesWithoutIncludesAsync(bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking).ToListAsync();
+        return (await base.CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<Schedule> GetAllSchedulesWithoutIncludes(bool noTracking = true)
+    public IEnumerable<ScheduleDTO> GetAllSchedulesWithoutIncludes(bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).ToList();
+        return base.CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
 
-    public async Task<IEnumerable<Schedule>> GettingAllOrderedSchedulesWithIncludesAsync
+    public async Task<IEnumerable<ScheduleDTO>> GettingAllOrderedSchedulesWithIncludesAsync
         (Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         var res = await CreateQuery(userId, roleName, noTracking)
@@ -49,10 +51,10 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
             .ThenBy(s => s.EndDateAndTime.Hour)
             .ThenBy(s => s.EndDateAndTime.Minute)
             .ToListAsync();
-        return res;
+        return res.Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<Schedule> GettingAllOrderedSchedulesWithIncludes(bool noTracking = true)
+    public IEnumerable<ScheduleDTO> GettingAllOrderedSchedulesWithIncludes(bool noTracking = true)
     {
         return RepoDbSet
             .OrderBy(s => s.StartDateAndTime.Date)
@@ -67,12 +69,12 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
             .ThenBy(s => s.EndDateAndTime.Day)
             .ThenBy(s => s.EndDateAndTime.Hour)
             .ThenBy(s => s.EndDateAndTime.Minute)
-            .ToList();
+            .ToList().Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<Schedule>> GettingAllOrderedSchedulesWithoutIncludesAsync(bool noTracking = true)
+    public async Task<IEnumerable<ScheduleDTO>> GettingAllOrderedSchedulesWithoutIncludesAsync(bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking)
+        return (await base.CreateQuery(noTracking)
             .OrderBy(s => s.StartDateAndTime.Date)
             .ThenBy(s => s.StartDateAndTime.Year)
             .ThenBy(s => s.StartDateAndTime.Month)
@@ -85,10 +87,10 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
             .ThenBy(s => s.EndDateAndTime.Day)
             .ThenBy(s => s.EndDateAndTime.Hour)
             .ThenBy(s => s.EndDateAndTime.Minute)
-            .ToListAsync();
+            .ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<Schedule> GettingAllOrderedSchedulesWithoutIncludes(bool noTracking = true)
+    public IEnumerable<ScheduleDTO> GettingAllOrderedSchedulesWithoutIncludes(bool noTracking = true)
     {
         return base.CreateQuery(noTracking).OrderBy(s => s.StartDateAndTime.Date)
             .ThenBy(s => s.StartDateAndTime.Year)
@@ -102,48 +104,47 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
             .ThenBy(s => s.EndDateAndTime.Day)
             .ThenBy(s => s.EndDateAndTime.Hour)
             .ThenBy(s => s.EndDateAndTime.Minute)
-            .ToList();
+            .ToList().Select(e => Mapper.Map(e))!;
     }
 
 
-    public async Task<Schedule?> GettingScheduleWithoutIncludesAsync(Guid id, bool noTracking = true)
+    public async Task<ScheduleDTO?> GettingScheduleWithoutIncludesAsync(Guid id, bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking)
-            .FirstOrDefaultAsync(s => s.Id.Equals(id));
+        return Mapper.Map(await base.CreateQuery(noTracking)
+            .FirstOrDefaultAsync(s => s.Id.Equals(id)));
     }
 
-    public Schedule? GetScheduleWithoutIncludes(Guid id, bool noTracking = true)
+    public ScheduleDTO? GetScheduleWithoutIncludes(Guid id, bool noTracking = true)
     {
-        return CreateQuery(noTracking).FirstOrDefault(s => s.Id.Equals(id));
+        return Mapper.Map(CreateQuery(noTracking).FirstOrDefault(s => s.Id.Equals(id)));
     }
 
 
-    public Schedule? GettingTheFirstScheduleById(Guid id,Guid? userId, string? roleName = null, bool noTracking = true)
+    public ScheduleDTO? GettingTheFirstScheduleById(Guid id,Guid? userId, string? roleName = null, bool noTracking = true)
     {
-        return CreateQuery(userId, roleName)
+        return Mapper.Map(CreateQuery(userId, roleName)
             .OrderBy(s => s.StartDateAndTime.Hour)
             .ThenBy(s => s.StartDateAndTime.Minute)
-            .FirstOrDefault(s => s.Id.Equals(id));
+            .FirstOrDefault(s => s.Id.Equals(id)));
     }
 
-    public async Task<Schedule?> GettingTheFirstScheduleAsync(Guid? userid = null, string? roleName = null, bool noTracking = true)
+    public async Task<ScheduleDTO?> GettingTheFirstScheduleAsync(Guid? userid = null, string? roleName = null, bool noTracking = true)
     {
-        return await CreateQuery(userid, roleName)
+        return Mapper.Map(await CreateQuery(userid, roleName)
             .OrderBy(s => s.StartDateAndTime.Hour)
             .ThenBy(s => s.StartDateAndTime.Minute)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync());
     }
 
-    public Schedule? GettingTheFirstSchedule(Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public ScheduleDTO? GettingTheFirstSchedule(Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return CreateQuery(userId, roleName)
+        return Mapper.Map(CreateQuery(userId, roleName)
             .OrderBy(s => s.StartDateAndTime.Hour)
             .ThenBy(s => s.StartDateAndTime.Minute)
-            .FirstOrDefault();
+            .FirstOrDefault());
     }
 
     
-
     /// <summary>
     /// Select the Schedules for the specified <paramref name="driverId"/>
     /// </summary>
@@ -152,21 +153,21 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
     /// <param name="roleName">The current User's Role</param>
     /// <param name="noTracking">Flag to disable tracking of the returned entities</param>
     /// <returns>List of Schedules with the default includes</returns>
-    public async Task<IEnumerable<Schedule>> GettingTheScheduleByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<IEnumerable<ScheduleDTO>> GettingTheScheduleByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return await CreateQuery(userId, roleName, noTracking)
+        return (await CreateQuery(userId, roleName, noTracking)
             .Where(x => x.DriverId == driverId)
             .OrderBy(x => x.StartDateAndTime)
-            .ToListAsync();
+            .ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<Schedule> GettingTheScheduleByDriverId(Guid driverId, Guid? userId = null, string? roleName = null,
+    public IEnumerable<ScheduleDTO> GettingTheScheduleByDriverId(Guid driverId, Guid? userId = null, string? roleName = null,
         bool noTracking = true)
     {
         return CreateQuery(userId, roleName, noTracking)
             .Where(x => x.DriverId == driverId)
             .OrderBy(x => x.StartDateAndTime)
-            .ToList();
+            .ToList().Select(e => Mapper.Map(e))!;
     }
 
     public DateTime[] GettingStartAndEndTime(IEnumerable<Schedule> schedules, Guid? userId = null,
@@ -185,34 +186,27 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
 
         return scheduleStartAndEndTime;
     }
-
     
-    
-    
-
-    
-
-
-    public int NumberOfTakenRideTimes(Guid? driverId = null, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    /*public int NumberOfTakenRideTimes(Guid? driverId = null, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         var numberOfRideTimesTaken = CreateQuery(userId, roleName, noTracking)
             .Select(d => d.RideTimes!.Where(rt => rt.IsTaken == true)).Count();
         return numberOfRideTimesTaken;
-    }
+    }*/
 
 
-    public async Task<Schedule?> FirstOrDefaultAsync(Guid id, Guid? userId = null,
+    public async Task<ScheduleDTO?> FirstOrDefaultAsync(Guid id, Guid? userId = null,
         string? roleName = null, bool noTracking = true)
     {
-        return await CreateQuery(userId, roleName, noTracking).FirstOrDefaultAsync(s => s.Id.Equals(id));
+        return Mapper.Map(await CreateQuery(userId, roleName, noTracking).FirstOrDefaultAsync(s => s.Id.Equals(id)));
     }
 
 
-    public async Task<Schedule?> GettingTheFirstScheduleByIdAsync(Guid id, Guid? userid = null, string? roleName = null,
+    public async Task<ScheduleDTO?> GettingTheFirstScheduleByIdAsync(Guid id, Guid? userid = null, string? roleName = null,
         bool noTracking = true)
     {
         var res = await CreateQuery(userid, roleName).FirstOrDefaultAsync(s => s.Id.Equals(id));
-        return res;
+        return Mapper.Map(res);
     }
 
     
@@ -252,4 +246,4 @@ public class ScheduleRepository : BaseEntityRepository<Schedule, AppDbContext>, 
             .Where(s => s.Driver!.AppUserId.Equals(userId));
         return query;
     }
-}*/
+}

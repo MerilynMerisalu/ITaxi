@@ -29,8 +29,8 @@ public class VehicleDTO : DomainEntityMetaId
     
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     public int NumberOfSeats { get; set; }
-    /*public string VehicleIdentifier => $"{VehicleMark?.VehicleMarkName} {VehicleModel?.VehicleModelName} " +
-                                       $"{VehiclePlateNumber} {VehicleType?.VehicleTypeName}";*/
+    public string VehicleIdentifier => $"{VehicleMark?.VehicleMarkName} {VehicleModel?.VehicleModelName} " +
+                                       $"{VehiclePlateNumber} {VehicleType?.VehicleTypeName}";
     public VehicleAvailability VehicleAvailability { get; set; }
 
     public ICollection<ScheduleDTO>? Schedules { get; set; }

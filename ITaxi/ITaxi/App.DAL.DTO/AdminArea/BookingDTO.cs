@@ -1,6 +1,6 @@
 ﻿using Base.Domain;
 
-namespace App.Domain.DTO.AdminArea;
+namespace App.DAL.DTO.AdminArea;
 
 public class BookingDTO: DomainEntityMetaId
 {

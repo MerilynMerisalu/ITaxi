@@ -1,6 +1,7 @@
-/*#nullable enable
+#nullable enable
+
+using App.BLL.DTO.AdminArea;
 using App.Contracts.DAL;
-using App.Domain;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +9,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
 
+
 namespace WebApp.Areas.AdminArea.Controllers;
 
 [Area(nameof(AdminArea))]
-[Authorize(Roles = nameof(Admin))]
+[Authorize(Roles = "Admin")]
 public class SchedulesController : Controller
 {
     private readonly IAppUnitOfWork _uow;
@@ -24,22 +26,9 @@ public class SchedulesController : Controller
     // GET: AdminArea/Schedules
     public async Task<IActionResult> Index()
     {
-#warning Ask if this is the right way to get the user name of a logged in user
-#warning Ask how to get the user role using interface
-#warning Should this be a repository method
+
         var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, null);
-        foreach (var s in res)
-        {
-            s.StartDateAndTime = s.StartDateAndTime.ToLocalTime();
-            s.CreatedAt = s.CreatedAt.ToLocalTime();
-            s.EndDateAndTime = s.EndDateAndTime.ToLocalTime();
-            s.UpdatedAt = s.UpdatedAt.ToLocalTime();
-            /*s.NumberOfRideTimes = _uow.Schedules.NumberOfRideTimes();
-            s.NumberOfTakenRideTimes = _uow.Schedules.NumberOfTakenRideTimes();
-            #1#
-
-        }
-
+        
         return View(res);
     }
 
@@ -59,13 +48,13 @@ public class SchedulesController : Controller
         vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
         vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
 #warning Should this be a repository method
-        vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
+        vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
 #warning Should this be a repository method
-        vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
+        vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
         vm.CreatedBy = schedule.CreatedBy!;
-        vm.CreatedAt = schedule.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = schedule.CreatedAt;
         vm.UpdatedBy = schedule.UpdatedBy!;
-        vm.UpdatedAt = schedule.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = schedule.UpdatedAt;
 
         return View(vm);
     }
@@ -75,8 +64,8 @@ public class SchedulesController : Controller
     {
         var vm = new CreateScheduleViewModel();
         var vehicles = await _uow.Vehicles.GettingVehiclesByDriverIdAsync(id);
-        vm.Vehicles = new SelectList(vehicles, nameof(Vehicle.Id),
-            nameof(Vehicle.VehicleIdentifier));
+        vm.Vehicles = new SelectList(vehicles, nameof(VehicleDTO.Id),
+            nameof(VehicleDTO.VehicleIdentifier));
         return Ok(vm);
 
     }
@@ -88,9 +77,11 @@ public class SchedulesController : Controller
         var roleName = User.GettingUserRoleName();
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
-            nameof(Driver.Id), $"{nameof(Driver.AppUser)}.{nameof(Driver.AppUser.LastAndFirstName)}");
-        vm.Vehicles = new SelectList(new Vehicle[0],
-            nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
+            nameof(DriverDTO.Id), $"{nameof(DriverDTO.AppUser)}.{nameof(DriverDTO.AppUser.LastAndFirstName)}");
+        /*vm.Vehicles = new SelectList(new VehicleDTO[0],
+            nameof(VehicleDTO.Id), nameof(VehicleDTO.VehicleIdentifier));*/
+        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+            nameof(VehicleDTO.Id), nameof(VehicleDTO.VehicleIdentifier));
 #warning Schedule StartDateAndTime needs a custom validation
 
 #warning Schedule EndDateAndTime needs a custom validation
@@ -103,7 +94,7 @@ public class SchedulesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateScheduleViewModel vm, Schedule schedule)
+    public async Task<IActionResult> Create(CreateScheduleViewModel vm, App.DAL.DTO.AdminArea.ScheduleDTO schedule)
     {
         if (ModelState.IsValid)
         {
@@ -136,16 +127,17 @@ public class SchedulesController : Controller
         vm.Id = schedule.Id;
 
         vm.DriverId = schedule.DriverId;
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingVehiclesByDriverIdAsync(vm.DriverId),
-            nameof(Vehicle.Id),
-            nameof(Vehicle.VehicleIdentifier));
-        vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g")).ToLocalTime();
-        vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"))
-            .ToLocalTime();
+        /*vm.Vehicles = new SelectList(await _uow.Vehicles.GettingVehiclesByDriverIdAsync(vm.DriverId),
+            nameof(VehicleDTO.Id),
+            nameof(VehicleDTO.VehicleIdentifier));*/
+        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+            nameof(VehicleDTO.Id), nameof(VehicleDTO.VehicleIdentifier));
+        vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g"));
+        vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"));
         vm.VehicleId = schedule.VehicleId;
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
-            nameof(Driver.Id), "AppUser.LastAndFirstName");
+            nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
 
         return View(vm);
     }
@@ -174,10 +166,10 @@ public class SchedulesController : Controller
                     schedule.DriverId = vm.DriverId;
                     schedule.VehicleId = vm.VehicleId;
 #warning Should this be a repository method
-                    schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
+                    schedule.StartDateAndTime = vm.StartDateAndTime;
 #warning Should this be a repository method
-                    schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
-                    schedule.UpdatedAt = DateTime.Now.ToUniversalTime();
+                    schedule.EndDateAndTime = vm.EndDateAndTime;
+                    schedule.UpdatedAt = DateTime.Now;
                     schedule.UpdatedBy = User.Identity!.Name;
 
 
@@ -210,13 +202,13 @@ public class SchedulesController : Controller
         vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
         vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
 #warning Should this be a repository method
-        vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
+        vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
 #warning Should this be a repository method
-        vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
+        vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
         vm.CreatedBy = schedule.CreatedBy!;
-        vm.CreatedAt = schedule.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = schedule.CreatedAt;
         vm.UpdatedBy = schedule.UpdatedBy!;
-        vm.UpdatedAt = schedule.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = schedule.UpdatedAt;
 
 
         return View(vm);
@@ -229,9 +221,9 @@ public class SchedulesController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
-        if (await _uow.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
+        /*if (await _uow.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
             || await _uow.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");
+            return Content("Entity cannot be deleted because it has dependent entities!");*/
 
         if (schedule != null) _uow.Schedules.Remove(schedule);
         await _uow.SaveChangesAsync();
@@ -242,4 +234,4 @@ public class SchedulesController : Controller
     {
         return _uow.Schedules.Exists(id);
     }
-}*/
+}
