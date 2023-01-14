@@ -1,6 +1,6 @@
-/*#nullable enable
-using App.Contracts.DAL;
-using App.Domain;
+#nullable enable
+using App.BLL;
+using App.BLL.DTO.AdminArea;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,28 +10,28 @@ namespace WebApp.ApiControllers.AdminArea;
 
 [Route("api/AdminArea/[controller]")]
 [ApiController]
-[Authorize(Roles = nameof(Admin), AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class SchedulesController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly AppBLL _appBLL;
 
-    public SchedulesController(IAppUnitOfWork uow)
+    public SchedulesController(AppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: api/Schedules
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules()
+    public async Task<ActionResult<IEnumerable<ScheduleDTO>>> GetSchedules()
     {
-        return Ok(await _uow.Schedules.GettingAllOrderedSchedulesWithoutIncludesAsync());
+        return Ok(await _appBLL.Schedules.GettingAllOrderedSchedulesWithoutIncludesAsync());
     }
 
     // GET: api/Schedules/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Schedule>> GetSchedule(Guid id)
+    public async Task<ActionResult<ScheduleDTO>> GetSchedule(Guid id)
     {
-        var schedule = await _uow.Schedules.GettingScheduleWithoutIncludesAsync(id);
+        var schedule = await _appBLL.Schedules.GettingScheduleWithoutIncludesAsync(id);
 
         if (schedule == null) return NotFound();
 
@@ -41,15 +41,14 @@ public class SchedulesController : ControllerBase
     // PUT: api/Schedules/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutSchedule(Guid id, Schedule schedule)
+    public async Task<IActionResult> PutSchedule(Guid id, ScheduleDTO schedule)
     {
         if (id != schedule.Id) return BadRequest();
-
-
+        
         try
         {
-            _uow.Schedules.Update(schedule);
-            await _uow.SaveChangesAsync();
+            _appBLL.Schedules.Update(schedule);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -64,10 +63,10 @@ public class SchedulesController : ControllerBase
     // POST: api/Schedules
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Schedule>> PostSchedule(Schedule schedule)
+    public async Task<ActionResult<ScheduleDTO>> PostSchedule(ScheduleDTO schedule)
     {
-        _uow.Schedules.Add(schedule);
-        await _uow.SaveChangesAsync();
+        _appBLL.Schedules.Add(schedule);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetSchedule", new {id = schedule.Id}, schedule);
     }
@@ -76,17 +75,17 @@ public class SchedulesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSchedule(Guid id)
     {
-        var schedule = await _uow.Schedules.GettingScheduleWithoutIncludesAsync(id);
+        var schedule = await _appBLL.Schedules.GettingScheduleWithoutIncludesAsync(id);
         if (schedule == null) return NotFound();
 
-        _uow.Schedules.Remove(schedule);
-        await _uow.SaveChangesAsync();
+        _appBLL.Schedules.Remove(schedule);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool ScheduleExists(Guid id)
     {
-        return _uow.Schedules.Exists(id);
+        return _appBLL.Schedules.Exists(id);
     }
-}*/
+}

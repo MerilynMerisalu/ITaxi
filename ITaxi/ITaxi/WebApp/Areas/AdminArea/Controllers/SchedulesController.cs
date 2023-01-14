@@ -1,6 +1,6 @@
 #nullable enable
-
 using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -16,18 +16,18 @@ namespace WebApp.Areas.AdminArea.Controllers;
 [Authorize(Roles = "Admin")]
 public class SchedulesController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public SchedulesController(IAppUnitOfWork uow)
+    public SchedulesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: AdminArea/Schedules
     public async Task<IActionResult> Index()
     {
 
-        var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, null);
+        var res = await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, null);
         
         return View(res);
     }
@@ -40,7 +40,7 @@ public class SchedulesController : Controller
 
         var roleName = User.GettingUserRoleName();
 
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(id.Value );
+        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id.Value );
 
         if (schedule == null) return NotFound();
 
@@ -63,7 +63,7 @@ public class SchedulesController : Controller
     public async Task<IActionResult> SetDropDownList(Guid id)
     {
         var vm = new CreateScheduleViewModel();
-        var vehicles = await _uow.Vehicles.GettingVehiclesByDriverIdAsync(id);
+        var vehicles = await _appBLL.Vehicles.GettingVehiclesByDriverIdAsync(id);
         vm.Vehicles = new SelectList(vehicles, nameof(VehicleDTO.Id),
             nameof(VehicleDTO.VehicleIdentifier));
         return Ok(vm);
@@ -75,12 +75,12 @@ public class SchedulesController : Controller
     {
         var vm = new CreateScheduleViewModel();
         var roleName = User.GettingUserRoleName();
-        vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+        vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
             nameof(DriverDTO.Id), $"{nameof(DriverDTO.AppUser)}.{nameof(DriverDTO.AppUser.LastAndFirstName)}");
         /*vm.Vehicles = new SelectList(new VehicleDTO[0],
             nameof(VehicleDTO.Id), nameof(VehicleDTO.VehicleIdentifier));*/
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(),
             nameof(VehicleDTO.Id), nameof(VehicleDTO.VehicleIdentifier));
 #warning Schedule StartDateAndTime needs a custom validation
 
@@ -94,7 +94,7 @@ public class SchedulesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateScheduleViewModel vm, App.DAL.DTO.AdminArea.ScheduleDTO schedule)
+    public async Task<IActionResult> Create(CreateScheduleViewModel vm, ScheduleDTO schedule)
     {
         if (ModelState.IsValid)
         {
@@ -106,8 +106,8 @@ public class SchedulesController : Controller
             schedule.EndDateAndTime = DateTime.Parse(vm.EndDateAndTime).ToUniversalTime();
             schedule.CreatedBy = User.Identity!.Name;
             schedule.CreatedAt = DateTime.Now.ToUniversalTime();
-            _uow.Schedules.Add(schedule);
-            await _uow.SaveChangesAsync();
+            _appBLL.Schedules.Add(schedule);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -121,21 +121,21 @@ public class SchedulesController : Controller
         var vm = new EditScheduleViewModel();
         if (id == null) return NotFound();
 
-        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id.Value);
+        var schedule = await _appBLL.Schedules.FirstOrDefaultAsync(id.Value);
         if (schedule == null) return NotFound();
 
         vm.Id = schedule.Id;
 
         vm.DriverId = schedule.DriverId;
-        /*vm.Vehicles = new SelectList(await _uow.Vehicles.GettingVehiclesByDriverIdAsync(vm.DriverId),
+        /*vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingVehiclesByDriverIdAsync(vm.DriverId),
             nameof(VehicleDTO.Id),
             nameof(VehicleDTO.VehicleIdentifier));*/
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(),
             nameof(VehicleDTO.Id), nameof(VehicleDTO.VehicleIdentifier));
         vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g"));
         vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"));
         vm.VehicleId = schedule.VehicleId;
-        vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+        vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
             nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
 
@@ -150,7 +150,7 @@ public class SchedulesController : Controller
     public async Task<IActionResult> Edit(Guid id, EditScheduleViewModel vm)
     {
         
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(id);
+        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id);
 
         if (schedule != null && id != schedule.Id) return NotFound();
 
@@ -173,8 +173,8 @@ public class SchedulesController : Controller
                     schedule.UpdatedBy = User.Identity!.Name;
 
 
-                    _uow.Schedules.Update(schedule);
-                    await _uow.SaveChangesAsync();
+                    _appBLL.Schedules.Update(schedule);
+                    await _appBLL.SaveChangesAsync();
                 }
             }
             catch (DbUpdateConcurrencyException)
@@ -196,7 +196,7 @@ public class SchedulesController : Controller
         var vm = new DetailsDeleteScheduleViewModel();
         if (id == null) return NotFound();
         
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(id.Value);
+        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id.Value);
         if (schedule == null) return NotFound();
 
         vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
@@ -220,18 +220,18 @@ public class SchedulesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var schedule = await _uow.Schedules.FirstOrDefaultAsync(id);
-        /*if (await _uow.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
-            || await _uow.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
+        var schedule = await _appBLL.Schedules.FirstOrDefaultAsync(id);
+        /*if (await _appBLL.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
+            || await _appBLL.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
             return Content("Entity cannot be deleted because it has dependent entities!");*/
 
-        if (schedule != null) _uow.Schedules.Remove(schedule);
-        await _uow.SaveChangesAsync();
+        if (schedule != null) _appBLL.Schedules.Remove(schedule);
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     private bool ScheduleExists(Guid id)
     {
-        return _uow.Schedules.Exists(id);
+        return _appBLL.Schedules.Exists(id);
     }
 }

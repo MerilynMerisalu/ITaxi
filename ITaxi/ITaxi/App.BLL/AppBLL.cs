@@ -9,7 +9,7 @@ using Base.BLL;
 
 namespace App.BLL;
 
-public class AppBLL:BaseBLL<IAppUnitOfWork>, IAppBLL
+public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
 {
     private readonly AutoMapper.IMapper _mapper;
     protected IAppUnitOfWork UnitOfWork;
@@ -56,6 +56,10 @@ public class AppBLL:BaseBLL<IAppUnitOfWork>, IAppBLL
                                                new VehicleService(UnitOfWork.Vehicles,
                                                    new VehicleMapper(_mapper));
 
+    public virtual IScheduleService Schedules => _schedules ?? 
+                                                 new ScheduleService(UnitOfWork.Schedules,
+                                                    new ScheduleMapper(_mapper));
+
     public virtual IDisabilityTypeService DisabilityTypes => _disabilityTypes ?? new DisabilityTypeService(
         UnitOfWork.DisabilityTypes,
         new DisabilityTypeMapper(_mapper));
@@ -70,5 +74,6 @@ public class AppBLL:BaseBLL<IAppUnitOfWork>, IAppBLL
     private IVehicleMarkService? _vehicleMarks;
     private IVehicleModelService? _vehicleModels;
     private IVehicleService? _vehicles;
+    private IScheduleService? _schedules;
     private IDisabilityTypeService? _disabilityTypes;
 }
