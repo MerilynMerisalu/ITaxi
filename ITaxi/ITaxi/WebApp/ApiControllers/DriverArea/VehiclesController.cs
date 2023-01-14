@@ -1,5 +1,5 @@
-/*#nullable enable
-
+#nullable enable
+using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -35,7 +35,7 @@ public class VehiclesController : ControllerBase
 
     // GET: api/Vehicles/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Vehicle>> GetVehicle(Guid id)
+    public async Task<ActionResult<VehicleDTO>> GetVehicle(Guid id)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
@@ -43,8 +43,8 @@ public class VehiclesController : ControllerBase
         
         if (vehicle == null) return NotFound();
 
-        vehicle.CreatedAt = vehicle.CreatedAt.ToLocalTime();
-        vehicle.UpdatedAt = vehicle.UpdatedAt.ToLocalTime();
+        vehicle.CreatedAt = vehicle.CreatedAt;
+        vehicle.UpdatedAt = vehicle.UpdatedAt;
         return vehicle;
     }
 
@@ -57,7 +57,7 @@ public class VehiclesController : ControllerBase
         var roleName = User.GettingUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id, userId, roleName);
 
-        if (vehicle!.Driver!.AppUserId != userId || !User.IsInRole(nameof(Admin)))
+        if (vehicle!.Driver!.AppUserId != userId || !User.IsInRole("Admin"))
         {
             return Forbid();
         }
@@ -65,7 +65,7 @@ public class VehiclesController : ControllerBase
         try
         {
             vehicle.UpdatedBy = User.Identity!.Name;
-            vehicle.UpdatedAt = DateTime.Now.ToUniversalTime();
+            vehicle.UpdatedAt = DateTime.Now;
             _appBLL.Vehicles.Update(vehicle);
             await _appBLL.SaveChangesAsync();
         }
@@ -82,13 +82,13 @@ public class VehiclesController : ControllerBase
     // POST: api/Vehicles
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Vehicle>> PostVehicle(Vehicle vehicle)
+    public async Task<ActionResult<VehicleDTO>> PostVehicle(VehicleDTO vehicle)
     {
         vehicle.Driver!.AppUserId = User.GettingUserId();
         vehicle.CreatedBy = User.Identity!.Name;
-        vehicle.CreatedAt = DateTime.Now.ToUniversalTime();
+        vehicle.CreatedAt = DateTime.Now;
         vehicle.UpdatedBy = User.Identity!.Name;
-        vehicle.UpdatedAt = DateTime.Now.ToUniversalTime();
+        vehicle.UpdatedAt = DateTime.Now;
         _appBLL.Vehicles.Add(vehicle);
         await _appBLL.SaveChangesAsync();
 
@@ -102,9 +102,9 @@ public class VehiclesController : ControllerBase
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id);
         if (vehicle == null) return NotFound();
 
-        if (await _appBLL.Schedules.AnyAsync(s => s != null && s.VehicleId.Equals(vehicle.Id))
+        /*if (await _appBLL.Schedules.AnyAsync(s => s != null && s.VehicleId.Equals(vehicle.Id))
             || await _appBLL.Bookings.AnyAsync(v => v != null && v.VehicleId.Equals(vehicle.Id)))
-            return BadRequest("Vehicle cannot be deleted! ");
+            return BadRequest("Vehicle cannot be deleted! ");*/
         
         _appBLL.Vehicles.Remove(vehicle);
         await _appBLL.SaveChangesAsync();
@@ -112,14 +112,10 @@ public class VehiclesController : ControllerBase
         return NoContent();
     }
 
-    /*private bool VehicleExists(Guid id)
-    {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
-        if (userId != )
-        {
-            
-        }
+    private bool VehicleExists(Guid id)
+    { 
+        /*var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();*/
         return _appBLL.Vehicles.Exists(id);
-    }#2#
-}#1#*/
+    }
+}
