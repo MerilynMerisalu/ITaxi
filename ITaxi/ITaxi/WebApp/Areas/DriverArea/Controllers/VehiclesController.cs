@@ -171,7 +171,7 @@ public class VehiclesController : Controller
                 {
                     vehicle.Id = id;
 
-                    var driver = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(vehicle.Driver!.AppUserId);
+                    var driver = await _appBLL.Drivers.GettingDriverByVehicleAsync(userId);
 
                     vehicle.VehiclePlateNumber = vm.VehiclePlateNumber;
                     vehicle.ManufactureYear = vm.ManufactureYear;

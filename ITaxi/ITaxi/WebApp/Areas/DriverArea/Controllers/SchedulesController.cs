@@ -1,4 +1,6 @@
-/*using App.Contracts.DAL;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
+using App.Contracts.DAL;
 using App.Domain;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -13,11 +15,11 @@ namespace WebApp.Areas.DriverArea.Controllers;
 [Authorize(Roles = "Admin, Driver")]
 public class SchedulesController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public SchedulesController(IAppUnitOfWork uow)
+    public SchedulesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: DriverArea/Schedules
@@ -27,14 +29,8 @@ public class SchedulesController : Controller
 
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var res = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
-        foreach (var s in res)
-        {
-            s.StartDateAndTime = s.StartDateAndTime.ToLocalTime();
-            s.EndDateAndTime = s.EndDateAndTime.ToLocalTime();
-            s.CreatedAt = s.CreatedAt.ToLocalTime();
-            s.UpdatedAt = s.UpdatedAt.ToLocalTime();
-        }
+        var res = await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
+        
 
         return View(res);
     }
@@ -48,7 +44,7 @@ public class SchedulesController : Controller
 
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(id.Value,userId, roleName);
+        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id.Value,userId, roleName);
 
         if (schedule == null) return NotFound();
 
@@ -70,7 +66,7 @@ public class SchedulesController : Controller
         var vm = new CreateScheduleViewModel();
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
+        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
 #warning Schedule StartDateAndTime needs a custom validation
 
@@ -84,26 +80,25 @@ public class SchedulesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateScheduleViewModel vm, Schedule schedule)
+    public async Task<IActionResult> Create(CreateScheduleViewModel vm, ScheduleDTO schedule)
     {
         if (ModelState.IsValid)
         {
             var userId = User.GettingUserId();
-            var driverId = _uow.Drivers
-                .SingleOrDefaultAsync(d => d!.AppUserId.Equals(userId)).Result!.Id;
+            var driverId = await _appBLL.Drivers.GettingDriverByVehicleAsync(userId);
             schedule.Id = Guid.NewGuid();
-            schedule.DriverId = driverId;
+            schedule.DriverId = driverId.Id;
             schedule.VehicleId = vm.VehicleId;
-            schedule.StartDateAndTime = DateTime.Parse(vm.StartDateAndTime).ToUniversalTime();
-            schedule.EndDateAndTime = DateTime.Parse(vm.EndDateAndTime).ToUniversalTime();
+            schedule.StartDateAndTime = DateTime.Parse(vm.StartDateAndTime);
+            schedule.EndDateAndTime = DateTime.Parse(vm.EndDateAndTime);
             schedule.CreatedBy = User.Identity!.Name;
             schedule.CreatedAt = DateTime.Now.ToUniversalTime();
-            _uow.Schedules.Add(schedule);
-            await _uow.SaveChangesAsync();
+            _appBLL.Schedules.Add(schedule);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier),
             nameof(schedule.VehicleId));
 
@@ -118,12 +113,12 @@ public class SchedulesController : Controller
         var vm = new EditScheduleViewModel();
         if (id == null) return NotFound();
 
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(id.Value,userId, roleName);
+        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id.Value,userId, roleName);
         if (schedule == null) return NotFound();
 
         vm.Id = schedule.Id;
 
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
+        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
             nameof(Vehicle.Id),
             nameof(Vehicle.VehicleIdentifier));
         vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g")).ToLocalTime();
@@ -143,7 +138,7 @@ public class SchedulesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(id, userId, roleName );
+        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id, userId, roleName );
         if (schedule == null || schedule.Id != id) return NotFound();
         if (ModelState.IsValid)
         {
@@ -155,8 +150,8 @@ public class SchedulesController : Controller
                 schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
                 schedule.UpdatedBy = User.Identity!.Name;
                 schedule.UpdatedAt = DateTime.Now.ToUniversalTime();
-                _uow.Schedules.Update(schedule);
-                await _uow.SaveChangesAsync();
+                _appBLL.Schedules.Update(schedule);
+                await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -168,7 +163,7 @@ public class SchedulesController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(),
             nameof(schedule.Vehicle.Id), nameof(schedule.Vehicle.VehicleIdentifier),
             nameof(schedule.VehicleId));
         return View(vm);
@@ -183,7 +178,7 @@ public class SchedulesController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
 
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(id.Value,userId, roleName);
+        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id.Value,userId, roleName);
         if (schedule == null) return NotFound();
 
         vm.Id = schedule.Id;
@@ -202,15 +197,15 @@ public class SchedulesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(id, userId, roleName);
-        if (await _uow.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
-            || await _uow.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");
+        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id, userId, roleName);
+        /*if (await _appBLL.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
+            || await _appBLL.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
+            return Content("Entity cannot be deleted because it has dependent entities!");*/
 
         if (schedule != null)
         {
-            _uow.Schedules.Remove(schedule);
-            await _uow.SaveChangesAsync();
+            _appBLL.Schedules.Remove(schedule);
+            await _appBLL.SaveChangesAsync();
         }
 
         return RedirectToAction(nameof(Index));
@@ -218,6 +213,6 @@ public class SchedulesController : Controller
 
     private bool ScheduleExists(Guid id)
     {
-        return _uow.Schedules.Exists(id);
+        return _appBLL.Schedules.Exists(id);
     }
-}*/
+}

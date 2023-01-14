@@ -1,5 +1,5 @@
 @using Base.Resources
-@model IEnumerable<App.Domain.Schedule>
+@model IEnumerable<App.BLL.DTO.AdminArea.ScheduleDTO>
 
 @{
     ViewData["Title"] = Common.Index;
@@ -23,9 +23,9 @@
         <th>
             @Html.DisplayNameFor(model => model.EndDateAndTime)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.NumberOfRideTimes)
-        </th>
+        </th>*@
         
         <th>
         </th>
@@ -45,9 +45,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EndDateAndTime)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.NumberOfRideTimes)
-            </td>
+            </td>*@
             
 
             <td>

@@ -194,9 +194,7 @@ public class AutoMapperConfig : Profile
             .ForMember(dto => dto.EndDateAndTime,
                 m => 
                     m.MapFrom(x => x.EndDateAndTime.ToLocalTime() ));
-        
-        
-        
+
         // DTO => EF: Convert to Universal Time
         CreateMap<ScheduleDTO, App.Domain.Schedule>()
             .ForMember(db => db.CreatedAt,
@@ -211,11 +209,45 @@ public class AutoMapperConfig : Profile
             .ForMember(dto => dto.EndDateAndTime,
                 dto => dto
                     .MapFrom(x => x.EndDateAndTime.ToUniversalTime()));
+        
         // Convert from EF => DTO: Convert to Local Time
+        CreateMap<App.Domain.RideTime, RideTimeDTO>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
+            .ForMember(dto => dto.Schedule!.StartDateAndTime,
+                m =>
+                    m.MapFrom(x => x.Schedule!.StartDateAndTime.ToLocalTime()))
+            .ForMember(dto => dto.Schedule!.EndDateAndTime,
+                dto => dto
+                    .MapFrom(x => x.Schedule!.EndDateAndTime.ToLocalTime()))
+            .ForMember(dto => dto.RideDateTime,
+                dto => dto
+                    .MapFrom(x => x.RideDateTime.ToLocalTime()));
         
-        /*CreateMap<ScheduleDTO, App.Domain.Schedule>()
-            .ReverseMap();*/
+        // DTO => EF: Convert to Universal Time
+        CreateMap<RideTimeDTO, App.Domain.RideTime>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToUniversalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToUniversalTime()))
+            .ForMember(dto => dto.Schedule!.StartDateAndTime,
+                m =>
+                    m.MapFrom(x => x.Schedule!.StartDateAndTime.ToUniversalTime()))
+            .ForMember(dto => dto.Schedule!.EndDateAndTime,
+                dto => dto
+                    .MapFrom(x => x.Schedule!.EndDateAndTime.ToUniversalTime()))
+            .ForMember(dto => dto.RideDateTime,
+                dto => dto
+                    .MapFrom(x => x.RideDateTime.ToUniversalTime()));
         
+        
+
         CreateMap<AppUser, App.Domain.Identity.AppUser>().ReverseMap();
     }
 }
