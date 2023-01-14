@@ -187,13 +187,20 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
 
         return scheduleStartAndEndTime;
     }
-    
-    /*public int NumberOfTakenRideTimes(Guid? driverId = null, Guid? userId = null, string? roleName = null, bool noTracking = true)
+
+    public int NumberOfRideTimes(Guid? driverId = null, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        var numberOfRideTimes =
+            CreateQuery(userId, roleName, noTracking).Where(d => d.DriverId.Equals(driverId)).Select(rt => rt.RideTimes).Count();
+        return numberOfRideTimes;
+    }
+
+    public int NumberOfTakenRideTimes(Guid? driverId = null, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         var numberOfRideTimesTaken = CreateQuery(userId, roleName, noTracking)
             .Select(d => d.RideTimes!.Where(rt => rt.IsTaken == true)).Count();
         return numberOfRideTimesTaken;
-    }*/
+    }
 
 
     public async Task<ScheduleDTO?> FirstOrDefaultAsync(Guid id, Guid? userId = null,

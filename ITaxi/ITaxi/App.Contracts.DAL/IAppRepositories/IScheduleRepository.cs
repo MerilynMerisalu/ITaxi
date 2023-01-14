@@ -44,9 +44,9 @@ public interface IScheduleRepositoryCustom<TEntity>
     DateTime[] GettingStartAndEndTime(IEnumerable<ScheduleDTO> schedules, Guid? userId = null, string? roleName = null);
 
 
-    /*int NumberOfRideTimes(Guid? driverId = null, Guid? userId = null,
+    int NumberOfRideTimes(Guid? driverId = null, Guid? userId = null,
         string? roleName = null, bool noTracking = true);
     int NumberOfTakenRideTimes(Guid? driverId = null, Guid? userId = null,
         string? roleName = null, bool noTracking = true);
-        */
+        
 }
