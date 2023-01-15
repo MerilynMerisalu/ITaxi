@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
+using DriverDTO = App.BLL.DTO.AdminArea.DriverDTO;
+using ScheduleDTO = App.BLL.DTO.AdminArea.ScheduleDTO;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
@@ -49,7 +51,7 @@ public class RideTimesController : Controller
         rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime;
 
         vm.Id = rideTime.Id;
-        vm.Driver = rideTime.Driver!.AppUser!.LastAndFirstName;
+        vm.Driver = rideTime.Schedule.Driver!.AppUser!.LastAndFirstName;
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
 #warning Should it be a repository method
         vm.RideTime = rideTime.RideDateTime.ToString("t");
@@ -69,10 +71,15 @@ public class RideTimesController : Controller
         var vm = new CreateRideTimeViewModel();
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
-            nameof(Driver.Id), "AppUser.LastAndFirstName");
-        vm.Schedules = new SelectList(new Schedule[0]
+            nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
+        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
+            nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime));
+        var scheduleStartAndEndTime = _uow.Schedules.GettingStartAndEndTime(await
+            _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync());
+        vm.RideTimes = new SelectList(_uow.RideTimes.CalculatingRideTimes(scheduleStartAndEndTime));
+        /*vm.Schedules = new SelectList(new Schedule[0]
             , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
-        vm.RideTimes = new SelectList(new string[0]);
+        vm.RideTimes = new SelectList(new string[0]);*/
     
         return View(vm);
     }
@@ -86,24 +93,26 @@ public class RideTimesController : Controller
     {
         if (ModelState.IsValid)
         {
-            var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(vm.ScheduleId);
+            //var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(vm.ScheduleId);
             if (vm.SelectedRideTimes != null && vm.SelectedRideTimes.Any())
             {
                 foreach (var selectedRideTime in vm.SelectedRideTimes)
                 {
-                    var rideDateAndTime = schedule.StartDateAndTime.Date.Add(selectedRideTime.TimeOfDay);
+                    /*var rideDateAndTime = schedule.StartDateAndTime.Date.Add(selectedRideTime.TimeOfDay);
                     if (selectedRideTime.TimeOfDay < schedule.StartDateAndTime.TimeOfDay)
-                        rideDateAndTime = rideDateAndTime.AddDays(1);
+                        rideDateAndTime = rideDateAndTime.AddDays(1);*/
 
                     var rideTime = new RideTimeDTO()
                     {
                         Id = new Guid(),
                         DriverId = vm.DriverId,
                         ScheduleId = vm.ScheduleId,
-                        RideDateTime = rideDateAndTime.ToUniversalTime(),
+                        
+                        RideDateTime = //rideDateAndTime.ToUniversalTime(),
+                            selectedRideTime,
                         IsTaken = vm.IsTaken,
                         CreatedBy = User.Identity!.Name,
-                        CreatedAt = DateTime.Now.ToUniversalTime()
+                        CreatedAt = DateTime.Now
                     };
 
                     rideTimes.Add(rideTime);
@@ -267,7 +276,7 @@ public class RideTimesController : Controller
         vm.DriverId = rideTime.DriverId;
         vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
-            nameof(Driver.Id), "AppUser.LastAndFirstName");
+            nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
 
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
         
@@ -280,7 +289,7 @@ public class RideTimesController : Controller
 
         vm.Schedules = new SelectList(
             schedules,
-            nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
+            nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime));
         
         vm.IsTaken = rideTime.IsTaken;
 #warning Ridetimes should be hidden and reappearing based on whether IsTaken is true or not
@@ -353,7 +362,7 @@ public class RideTimesController : Controller
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
         rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
 
-        vm.Driver = rideTime.Driver!.AppUser!.LastAndFirstName;
+        vm.Driver = rideTime.Schedule.Driver!.AppUser!.LastAndFirstName;
         
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
 #warning Should it be a repository method
