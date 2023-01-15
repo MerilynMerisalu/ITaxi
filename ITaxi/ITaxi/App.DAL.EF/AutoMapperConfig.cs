@@ -218,12 +218,7 @@ public class AutoMapperConfig : Profile
             .ForMember(dto => dto.UpdatedAt,
                 m =>
                     m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
-            .ForMember(dto => dto.Schedule!.StartDateAndTime,
-                m =>
-                    m.MapFrom(x => x.Schedule!.StartDateAndTime.ToLocalTime()))
-            .ForMember(dto => dto.Schedule!.EndDateAndTime,
-                dto => dto
-                    .MapFrom(x => x.Schedule!.EndDateAndTime.ToLocalTime()))
+            
             .ForMember(dto => dto.RideDateTime,
                 dto => dto
                     .MapFrom(x => x.RideDateTime.ToLocalTime()));
@@ -236,12 +231,6 @@ public class AutoMapperConfig : Profile
             .ForMember(dto => dto.UpdatedAt,
                 m =>
                     m.MapFrom(x => x.UpdatedAt.ToUniversalTime()))
-            .ForMember(dto => dto.Schedule!.StartDateAndTime,
-                m =>
-                    m.MapFrom(x => x.Schedule!.StartDateAndTime.ToUniversalTime()))
-            .ForMember(dto => dto.Schedule!.EndDateAndTime,
-                dto => dto
-                    .MapFrom(x => x.Schedule!.EndDateAndTime.ToUniversalTime()))
             .ForMember(dto => dto.RideDateTime,
                 dto => dto
                     .MapFrom(x => x.RideDateTime.ToUniversalTime()));

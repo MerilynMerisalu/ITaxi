@@ -1,6 +1,7 @@
-/*#nullable enable
+#nullable enable
 
 using App.Contracts.DAL;
+using App.DAL.DTO.AdminArea;
 using App.Domain;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,7 @@ using WebApp.Areas.AdminArea.ViewModels;
 namespace WebApp.Areas.AdminArea.Controllers;
 
 [Area(nameof(AdminArea))]
-[Authorize(Roles = nameof(Admin))]
+[Authorize(Roles = "Admin")]
 public class RideTimesController : Controller
 {
     private readonly IAppUnitOfWork _uow;
@@ -31,16 +32,7 @@ public class RideTimesController : Controller
         
         var res = await _uow.RideTimes.GettingAllOrderedRideTimesAsync(null, null);
 #warning Should this be a repository method
-        foreach (var rideTime in res)
-            if (rideTime != null)
-            {
-                rideTime.Schedule!.StartDateAndTime = rideTime.Schedule!.StartDateAndTime.ToLocalTime();
-                rideTime.Schedule!.EndDateAndTime = rideTime.Schedule!.EndDateAndTime.ToLocalTime();
-                rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
-                rideTime.CreatedAt = rideTime.CreatedAt.ToLocalTime();
-                rideTime.UpdatedAt = rideTime.UpdatedAt.ToLocalTime();
-            }
-
+        
         return View(res);
     }
 
@@ -53,18 +45,18 @@ public class RideTimesController : Controller
         
         if (rideTime == null) return NotFound();
 
-        rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
-        rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
+        rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime;
+        rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime;
 
         vm.Id = rideTime.Id;
         vm.Driver = rideTime.Driver!.AppUser!.LastAndFirstName;
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
 #warning Should it be a repository method
-        vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
+        vm.RideTime = rideTime.RideDateTime.ToString("t");
         vm.IsTaken = rideTime.IsTaken;
-        vm.CreatedAt = rideTime.CreatedAt.ToString("G");
+        vm.CreatedAt = rideTime.CreatedAt;
         vm.CreatedBy = rideTime.CreatedBy!;
-        vm.UpdatedAt = rideTime.UpdatedAt.ToString("G");
+        vm.UpdatedAt = rideTime.UpdatedAt;
         vm.CreatedBy = rideTime.CreatedBy!;
 
         return View(vm);
@@ -90,7 +82,7 @@ public class RideTimesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateRideTimeViewModel vm, List<RideTime> rideTimes)
+    public async Task<IActionResult> Create(CreateRideTimeViewModel vm, List<RideTimeDTO> rideTimes)
     {
         if (ModelState.IsValid)
         {
@@ -103,7 +95,7 @@ public class RideTimesController : Controller
                     if (selectedRideTime.TimeOfDay < schedule.StartDateAndTime.TimeOfDay)
                         rideDateAndTime = rideDateAndTime.AddDays(1);
 
-                    var rideTime = new RideTime
+                    var rideTime = new RideTimeDTO()
                     {
                         Id = new Guid(),
                         DriverId = vm.DriverId,
@@ -119,13 +111,13 @@ public class RideTimesController : Controller
 
                 await _uow.RideTimes.AddRangeAsync(rideTimes);
                 await _uow.SaveChangesAsync();
-                
+
                 return RedirectToAction(nameof(Index));
             }
             // custom validation to check that at least one ride time is chosen
             // This logic has been replicated in RequiredAtLeastOneSelectionAttribute
             // But we leave this code here just in case the attribute is not in place.
-            else
+            /*else
             {
                 #warning replace this string literal with a language resource
                 ModelState.AddModelError(nameof(vm.SelectedRideTimes), "Please select at least 1 time");
@@ -160,7 +152,7 @@ public class RideTimesController : Controller
 
                 // Need to remove the times that have already been issued:
                 var s = currentSchedule.FirstOrDefault();
-                if (s.RideTimes!.Any())
+                if (s.R!.Any())
                 {
                     foreach (var time in s.RideTimes)
                     {
@@ -172,11 +164,15 @@ public class RideTimesController : Controller
                 vm.RideTimes = new SelectList(rideTimesList.Select(x => new { RideTime = x }), "RideTime", "RideTime");
             }
         }
-        
-        return View(vm);
-    }
+        */
 
-    public class SetDropDownListRequest
+            
+        }
+        return View(vm);
+    
+}
+
+    /*public class SetDropDownListRequest
     {
         public string ListType { get; set; }
         public string Value { get; set; }
@@ -253,8 +249,10 @@ public class RideTimesController : Controller
         #warning: like with the selection of the ScheduleId when the driver is change, you might want to select a specific ride time, not just the first one
         vm.RideTime = rideTimes.First();
         
+        
         return Ok(vm);
     }
+    */
 
     // GET: AdminArea/RideTimes/Edit/5
     public async Task<IActionResult> Edit(Guid? id)
@@ -361,9 +359,9 @@ public class RideTimesController : Controller
 #warning Should it be a repository method
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
         vm.IsTaken = rideTime.IsTaken;
-        vm.CreatedAt = rideTime.CreatedAt.ToString("G");
+        vm.CreatedAt = rideTime.CreatedAt;
         vm.CreatedBy = rideTime.CreatedBy!;
-        vm.UpdatedAt = rideTime.UpdatedAt.ToString("G");
+        vm.UpdatedAt = rideTime.UpdatedAt;
         vm.CreatedBy = rideTime.CreatedBy!;
 
 
@@ -387,4 +385,4 @@ public class RideTimesController : Controller
     {
         return _uow.RideTimes.Exists(id);
     }
-}*/
+}
