@@ -49,6 +49,8 @@ public class AutoMapperConfig: Profile
         CreateMap<App.BLL.DTO.AdminArea.ScheduleDTO, App.DAL.DTO.AdminArea.ScheduleDTO>()
             .ReverseMap()
             ;
+        CreateMap<App.BLL.DTO.AdminArea.RideTimeDTO, App.DAL.DTO.AdminArea.RideTimeDTO>()
+            .ReverseMap();
         CreateMap<App.BLL.DTO.AdminArea.DisabilityTypeDTO, App.DAL.DTO.AdminArea.DisabilityTypeDTO>()
             .ReverseMap()
             ;
