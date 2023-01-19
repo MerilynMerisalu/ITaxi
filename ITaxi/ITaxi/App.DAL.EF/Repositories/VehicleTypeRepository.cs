@@ -11,7 +11,7 @@ namespace App.DAL.EF.Repositories;
 
 public class VehicleTypeRepository : BaseEntityRepository<VehicleTypeDTO, VehicleType, AppDbContext>, IVehicleTypeRepository
 {
-    public VehicleTypeRepository(AppDbContext dbContext, IMapper<VehicleTypeDTO, App.Domain.VehicleType> mapper) : 
+    public VehicleTypeRepository(AppDbContext dbContext, IMapper<VehicleTypeDTO, App.Domain.VehicleType> mapper) :
         base(dbContext, mapper)
     {
     }
@@ -21,7 +21,7 @@ public class VehicleTypeRepository : BaseEntityRepository<VehicleTypeDTO, Vehicl
     {
 #warning: special handling of OrderBy to account for language transalation
         var res = await CreateQuery(noTracking).ToListAsync();
-        return res.OrderBy(x => (string) x.VehicleTypeName).ToList().Select(e=> Mapper.Map(e))!;
+        return res.OrderBy(x => (string)x.VehicleTypeName).ToList().Select(e => Mapper.Map(e))!;
     }
 
     public IEnumerable<VehicleTypeDTO> GetAllVehicleTypesOrdered(bool noTracking = true)
@@ -29,15 +29,15 @@ public class VehicleTypeRepository : BaseEntityRepository<VehicleTypeDTO, Vehicl
 #warning: special handling of OrderBy to account for language transalation
         return CreateQuery(noTracking)
             .ToList() // Bring into memory "Materialize"
-            .OrderBy(v => v.VehicleTypeName).ToList().Select(e=> Mapper.Map(e))!;
+            .OrderBy(v => v.VehicleTypeName).ToList().Select(e => Mapper.Map(e))!;
     }
 
     public async Task<IEnumerable<VehicleTypeDTO>> GetAllVehicleTypesDTOAsync(bool noTracking = true)
     {
-        
+
         var vehicleTypeDtos = new List<VehicleTypeDTO>();
         var vehicleTypes = await CreateQuery(noTracking).ToListAsync();
-        foreach (var vehicleType  in vehicleTypes)
+        foreach (var vehicleType in vehicleTypes)
         {
             var vehicleTypeDto = new VehicleTypeDTO()
             {
@@ -53,10 +53,10 @@ public class VehicleTypeRepository : BaseEntityRepository<VehicleTypeDTO, Vehicl
 
     public IEnumerable<VehicleTypeDTO> GetAllVehicleTypesDTO(bool noTracking = true)
     {
-        
+
         List<VehicleTypeDTO> vehicleTypeDtos = new();
-        var vehicleTypes =  CreateQuery(noTracking).ToList();
-        foreach (var vehicleType  in vehicleTypes)
+        var vehicleTypes = CreateQuery(noTracking).ToList();
+        foreach (var vehicleType in vehicleTypes)
         {
             var vehicleTypeDto = new VehicleTypeDTO()
             {
@@ -70,9 +70,12 @@ public class VehicleTypeRepository : BaseEntityRepository<VehicleTypeDTO, Vehicl
         return vehicleTypeDtos;
     }
 
-    protected override IQueryable<VehicleType> CreateQuery(bool noTracking = true)
+    protected override IQueryable<VehicleType> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
-        return base.CreateQuery(noTracking).Include(t => t.VehicleTypeName)
-            .ThenInclude(t => t.Translations);
+        var query = base.CreateQuery(noTracking, noIncludes);
+        if (!noIncludes)
+            query = query.Include(t => t.VehicleTypeName)
+                         .ThenInclude(t => t.Translations);
+        return query;
     }
 }

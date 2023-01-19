@@ -44,7 +44,7 @@ public class DriverAndDriverLicenseCategoryRepository :
             await CreateQuery()
                 .Where(dl => dl.DriverId.Equals(id))
                 .Select(dl => dl).ToListAsync();
-        
+
 
         return RemoveAll((driverAndDriverLicenseCategories.Select(e => Mapper.Map(e)) as List<DriverAndDriverLicenseCategoryDTO>)!)!;
     }
@@ -60,13 +60,13 @@ public class DriverAndDriverLicenseCategoryRepository :
     }
 
 
-    protected override IQueryable<DriverAndDriverLicenseCategory> CreateQuery(bool noTracking = true)
+    protected override IQueryable<DriverAndDriverLicenseCategory> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
-
-        query = query.Include(c => c.DriverLicenseCategory)
-            .Include(c => c.Driver);
+        if (!noIncludes)
+            query = query.Include(c => c.DriverLicenseCategory)
+                         .Include(c => c.Driver);
         return query;
     }
 }

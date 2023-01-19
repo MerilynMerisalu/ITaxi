@@ -100,4 +100,17 @@ public static class IdentityExtension
             signingCredentials: signingCredentials);
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+    
+    public static string GettingUserEmail(this ClaimsPrincipal user)
+    {
+        // role: "Admin,User"
+        // role: "Driver"
+        var claimEmail = user.Claims.FirstOrDefault(u => u.Type.Equals(ClaimTypes.Email));
+        if (claimEmail == null) throw new NullReferenceException("Role identifier claim not found!");
+
+        /*var res = (TKeyType) TypeDescriptor.GetConverter(typeof(TKeyType))
+            .ConvertFromInvariantString(claimRole.Value)!;
+        return res;*/
+        return claimEmail.Value;
+    }
 }

@@ -9,19 +9,19 @@ namespace App.DAL.EF.Repositories;
 
 public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Driver, AppDbContext>, IDriverRepository
 {
-    public DriverRepository(AppDbContext dbContext, IMapper<App.DAL.DTO.AdminArea.DriverDTO, App.Domain.Driver> mapper) 
+    public DriverRepository(AppDbContext dbContext, IMapper<App.DAL.DTO.AdminArea.DriverDTO, App.Domain.Driver> mapper)
         : base(dbContext, mapper)
     {
     }
 
-    public override async Task<DriverDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
+    public override async Task<DriverDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await CreateQuery(noTracking).FirstOrDefaultAsync(d => d.Id.Equals(id)));
+        return Mapper.Map(await CreateQuery(noTracking, noIncludes).FirstOrDefaultAsync(d => d.Id.Equals(id)));
     }
 
-    public override DriverDTO? FirstOrDefault(Guid id, bool noTracking = true)
+    public override DriverDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(CreateQuery(noTracking).FirstOrDefault(d => d.Id.Equals(id)));
+        return Mapper.Map(CreateQuery(noTracking, noIncludes).FirstOrDefault(d => d.Id.Equals(id)));
     }
 
     public async Task<IEnumerable<DriverDTO>> GetAllDriversOrderedByLastNameAsync(bool noTracking = true)
@@ -52,13 +52,13 @@ public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Drive
     }
 
 
-    protected override IQueryable<Driver> CreateQuery(bool noTracking = true)
+    protected override IQueryable<Driver> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
-
-        query = query.Include(a => a.AppUser)
-            .Include(a => a.City);
+        if (!noIncludes)
+            query = query.Include(a => a.AppUser)
+                         .Include(a => a.City);
         return query;
     }
 }

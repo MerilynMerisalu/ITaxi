@@ -28,9 +28,10 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
         return UnitOfWork.SaveChanges();
     }
 
-    public virtual ICountyService Counties => _counties ??  new CountyService(UnitOfWork.Counties, new CountyMapper(_mapper));
+    public virtual ICountyService Counties => _counties ?? new CountyService(UnitOfWork.Counties, new CountyMapper(_mapper));
     public virtual ICityService Cities => _cities ?? new CityService(UnitOfWork.Cities, new CityMapper(_mapper));
     public virtual IAdminService Admins => _admins ?? new AdminService(UnitOfWork.Admins, new AdminMapper(_mapper));
+    public virtual IAppUserService AppUsers => _appUsers ?? new AppUserService(UnitOfWork.AppUsers, new AppUserMapper(_mapper));
 
     public virtual IDriverService Drivers => _drivers ?? new DriverService(UnitOfWork.Drivers, new
         DriverMapper(_mapper));
@@ -56,17 +57,18 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
                                                new VehicleService(UnitOfWork.Vehicles,
                                                    new VehicleMapper(_mapper));
 
-    public virtual IScheduleService Schedules => _schedules ?? 
+    public virtual IScheduleService Schedules => _schedules ??
                                                  new ScheduleService(UnitOfWork.Schedules,
                                                     new ScheduleMapper(_mapper));
 
     public virtual IDisabilityTypeService DisabilityTypes => _disabilityTypes ?? new DisabilityTypeService(
         UnitOfWork.DisabilityTypes,
         new DisabilityTypeMapper(_mapper));
-    
+
     private ICountyService? _counties;
     private ICityService? _cities;
     private IAdminService? _admins;
+    private IAppUserService? _appUsers;
     private IDriverLicenseCategoryService? _driverLicenseCategories;
     private IDriverService? _drivers;
     private IDriverAndDriverLicenseCategoryService? _driverAndDriverLicenseCategories;

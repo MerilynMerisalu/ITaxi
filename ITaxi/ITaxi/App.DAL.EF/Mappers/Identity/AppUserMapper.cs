@@ -1,17 +1,13 @@
 ﻿using App.DAL.DTO.Identity;
+using AutoMapper;
 using Base.Contracts;
+using Base.DAL;
 
 namespace App.DAL.EF.Mappers.Identity;
 
-public class AppUserMapper: IMapper<AppUser, App.Domain.Identity.AppUser>
+public class AppUserMapper : BaseMapper<App.DAL.DTO.Identity.AppUser, App.Domain.Identity.AppUser>
 {
-    public AppUser? Map(Domain.Identity.AppUser? entity)
+    public AppUserMapper(IMapper mapper) : base(mapper)
     {
-        throw new NotImplementedException();
-    }
-
-    public Domain.Identity.AppUser? Map(AppUser? entity)
-    {
-        throw new NotImplementedException();
     }
 }

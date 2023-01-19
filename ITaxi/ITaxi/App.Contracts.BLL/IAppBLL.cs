@@ -4,11 +4,12 @@ using Base.Contracts.BLL;
 
 namespace App.Contracts.BLL;
 
-public interface IAppBLL: IBLL
+public interface IAppBLL : IBLL
 {
     ICountyService Counties { get; }
     ICityService Cities { get; }
     IAdminService Admins { get; }
+    IAppUserService AppUsers { get; }
     IDriverLicenseCategoryService DriverLicenseCategories { get; }
     IDriverService Drivers { get; }
     IDriverAndDriverLicenseCategoryService DriverAndDriverLicenseCategories { get; }

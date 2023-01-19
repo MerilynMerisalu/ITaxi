@@ -85,9 +85,9 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         return entities.ToList();
     }
 
-    public virtual TDalEntity? FirstOrDefault(TKey id, bool noTracking = true)
+    public virtual TDalEntity? FirstOrDefault(TKey id, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(CreateQuery(noTracking)
+        return Mapper.Map(CreateQuery(noTracking, noIncludes)
             .FirstOrDefault(e => e.Id.Equals(id)));
     }
 
@@ -128,9 +128,9 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         return Mapper.Map(result);
     }
 
-    public TDalEntity? First(bool noTracking = true)
+    public TDalEntity? First(bool noTracking = true, bool noIncludes = false)
     {
-        var query = CreateQuery(noTracking);
+        var query = CreateQuery(noTracking, noIncludes);
         var result = query.First();
         return Mapper.Map(result);
     }
@@ -147,9 +147,9 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
     }
 
 
-    public virtual async Task<TDalEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true)
+    public virtual async Task<TDalEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false)
     {
-        var dalEntity = await CreateQuery(noTracking).FirstOrDefaultAsync(e => e.Id.Equals(id));
+        var dalEntity = await CreateQuery(noTracking, noIncludes).FirstOrDefaultAsync(e => e.Id.Equals(id));
         return Mapper.Map(dalEntity);
     }
 
@@ -184,19 +184,18 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
             .Select(e => Mapper.Map(e)).SingleOrDefaultAsync(filter);
     }
 
-    public virtual async Task<TDalEntity?> FirstAsync(bool noTracking = true)
+    public virtual async Task<TDalEntity?> FirstAsync(bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await CreateQuery(noTracking).FirstAsync());
+        return Mapper.Map(await CreateQuery(noTracking, noIncludes).FirstAsync());
     }
 
-    protected virtual IQueryable<TDomainEntity> CreateQuery(bool noTracking = true)
+    protected virtual IQueryable<TDomainEntity> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking)
-        {
             query = query.AsNoTracking();
-            return query;
-        }
+        if (noIncludes)
+            query = query.IgnoreAutoIncludes();
 
         return query;
     }

@@ -35,12 +35,12 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
 
     public async Task<IEnumerable<Comment>> GetAllCommentsWithoutIncludesAsync(bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking).ToListAsync();
+        return await base.CreateQuery(noTracking, noIncludes: true).ToListAsync();
     }
 
     public IEnumerable<Comment> GetAllCommentsWithoutIncludes(bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).ToList();
+        return base.CreateQuery(noTracking, noIncludes: true).ToList();
     }
 
 
@@ -72,22 +72,22 @@ public class CommentRepository : BaseEntityRepository<Comment, AppDbContext>, IC
 
     public async Task<IEnumerable<Comment>> GettingAllOrderedCommentsWithoutIncludesAsync(bool noTracking = true)
     {
-        return await CreateQuery(noTracking).OrderBy(c => c.CommentText).ToListAsync();
+        return await CreateQuery(noTracking, noIncludes: true).OrderBy(c => c.CommentText).ToListAsync();
     }
 
     public IEnumerable<Comment> GettingAllOrderedCommentsWithoutIncludes(bool noTracking = true)
     {
-        return CreateQuery(noTracking).OrderBy(c => c.CommentText).ToList();
+        return CreateQuery(noTracking, noIncludes: true).OrderBy(c => c.CommentText).ToList();
     }
 
     public async Task<Comment?> GettingCommentWithoutIncludesAsync(Guid id, bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking).FirstOrDefaultAsync(c => c.Id.Equals(id));
+        return await base.CreateQuery(noTracking, noIncludes: true).FirstOrDefaultAsync(c => c.Id.Equals(id));
     }
 
     public Comment? GettingCommentWithoutIncludes(Guid id, bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).FirstOrDefault(c => c.Id.Equals(id));
+        return base.CreateQuery(noTracking, noIncludes: true).FirstOrDefault(c => c.Id.Equals(id));
     }
 
     public string PickUpDateAndTimeStr(Comment comment)

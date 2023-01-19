@@ -9,7 +9,7 @@ namespace App.DAL.EF.Repositories;
 
 public class AdminRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.AdminDTO, App.Domain.Admin, AppDbContext>, IAdminRepository
 {
-    public AdminRepository(AppDbContext dbContext, IMapper<App.DAL.DTO.AdminArea.AdminDTO, App.Domain.Admin> mapper) 
+    public AdminRepository(AppDbContext dbContext, IMapper<App.DAL.DTO.AdminArea.AdminDTO, App.Domain.Admin> mapper)
         : base(dbContext, mapper)
     {
     }
@@ -24,14 +24,14 @@ public class AdminRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.AdminD
         return (await CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public override async Task<AdminDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
+    public override async Task<AdminDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await CreateQuery(noTracking).FirstOrDefaultAsync(e => e.Id.Equals(id)));
+        return Mapper.Map(await CreateQuery(noTracking, noIncludes).FirstOrDefaultAsync(e => e.Id.Equals(id)));
     }
 
-    public override AdminDTO? FirstOrDefault(Guid id, bool noTracking = true)
+    public override AdminDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(CreateQuery(noTracking).FirstOrDefault(a => a.Id.Equals(id)));
+        return Mapper.Map(CreateQuery(noTracking, noIncludes).FirstOrDefault(a => a.Id.Equals(id)));
     }
 
     public async Task<IEnumerable<AdminDTO>> GetAllAdminsOrderedByLastNameAsync(bool noTracking = true)
@@ -46,13 +46,13 @@ public class AdminRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.AdminD
             .ThenBy(a => a.AppUser!.FirstName).ToList().Select(e => Mapper.Map(e))!;
     }
 
-    protected override IQueryable<Admin> CreateQuery(bool noTracking = true)
+    protected override IQueryable<Admin> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
-
-        query = query.Include(a => a.AppUser)
-            .Include(a => a.City);
+        if (!noIncludes)
+            query = query.Include(a => a.AppUser)
+                         .Include(a => a.City);
         return query;
     }
 }

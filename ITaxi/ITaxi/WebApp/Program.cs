@@ -127,7 +127,7 @@ RotativaConfiguration.Setup(builder.Environment.WebRootPath);
 app.UseRouting();
 
 
-var requestLocalizationOptions = ((IApplicationBuilder) app).ApplicationServices
+var requestLocalizationOptions = ((IApplicationBuilder)app).ApplicationServices
     .GetService<IOptions<RequestLocalizationOptions>>()?.Value;
 if (requestLocalizationOptions != null)
     app.UseRequestLocalization(requestLocalizationOptions);

@@ -7,10 +7,10 @@ using Base.Contracts.Domain;
 
 namespace Base.BLL;
 
-public class BaseEntityService<TBllEntity, TDalEntity, TRepository>: 
-    BaseEntityService<TBllEntity, TDalEntity,TRepository, Guid>, IEntityService<TBllEntity>
-    where TDalEntity : class, IDomainEntityId 
-    where TBllEntity : class, IDomainEntityId 
+public class BaseEntityService<TBllEntity, TDalEntity, TRepository> :
+    BaseEntityService<TBllEntity, TDalEntity, TRepository, Guid>, IEntityService<TBllEntity>
+    where TDalEntity : class, IDomainEntityId
+    where TBllEntity : class, IDomainEntityId
     where TRepository : IEntityRepository<TDalEntity>
 {
     public BaseEntityService(TRepository repository, IMapper<TBllEntity, TDalEntity> mapper) : base(repository, mapper)
@@ -18,12 +18,12 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository>:
     }
 }
 
-public class BaseEntityService<TBllEntity, TDalEntity,TRepository, TKey>: 
+public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
     IEntityService<TBllEntity, TKey>
-    where TDalEntity : class, IDomainEntityId, IDomainEntityId<TKey> 
-    where TKey : IEquatable<TKey> 
+    where TDalEntity : class, IDomainEntityId, IDomainEntityId<TKey>
+    where TKey : IEquatable<TKey>
     where TBllEntity : class, IDomainEntityId, IDomainEntityId<TKey>
-    where TRepository: IEntityRepository<TDalEntity, TKey>
+    where TRepository : IEntityRepository<TDalEntity, TKey>
 {
     protected TRepository Repository;
     protected IMapper<TBllEntity, TDalEntity> Mapper;
@@ -35,6 +35,7 @@ public class BaseEntityService<TBllEntity, TDalEntity,TRepository, TKey>:
     }
     public TBllEntity Add(TBllEntity entity)
     {
+
         return Mapper.Map(Repository.Add(Mapper.Map(entity)!))!;
     }
 
@@ -79,20 +80,20 @@ public class BaseEntityService<TBllEntity, TDalEntity,TRepository, TKey>:
         }
 
         var tBllEntities = new List<TBllEntity>();
-        
+
         Repository.RemoveAll(dalEntities);
         foreach (var dalEntity in dalEntities)
         {
             tBllEntities.Add(Mapper.Map(dalEntity)!);
         }
-        
+
 
         return tBllEntities;
     }
 
-    public TBllEntity? FirstOrDefault(TKey id, bool noTracking = true)
+    public TBllEntity? FirstOrDefault(TKey id, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(Repository.FirstOrDefault(id, noTracking));
+        return Mapper.Map(Repository.FirstOrDefault(id, noTracking, noIncludes));
     }
 
     public IEnumerable<TBllEntity> GetAll(bool noTracking = true)
@@ -104,13 +105,13 @@ public class BaseEntityService<TBllEntity, TDalEntity,TRepository, TKey>:
     {
         return Repository.Exists(id);
     }
-    #warning Ask about this
+#warning Ask about this
     public bool Any(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
     {
         throw new NotImplementedException();
         //return Repository.CreateQuery(noTracking).Any(filter, noTracking);
     }
-    
+
     //public Task<bool> AnyAsync(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
     //{
     //    return Repository.AnyAsync(filter, noTracking);
@@ -121,9 +122,9 @@ public class BaseEntityService<TBllEntity, TDalEntity,TRepository, TKey>:
         throw new NotImplementedException();
     }
 
-    public TBllEntity? First(bool noTracking = true)
+    public TBllEntity? First(bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(Repository.First(noTracking));
+        return Mapper.Map(Repository.First(noTracking, noIncludes));
     }
 
     public List<TBllEntity> AddRange(List<TBllEntity> entities)
@@ -138,9 +139,9 @@ public class BaseEntityService<TBllEntity, TDalEntity,TRepository, TKey>:
         return entities;
     }
 
-    public async Task<TBllEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true)
+    public async Task<TBllEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false)
     {
-        var dalEntity = await Repository.FirstOrDefaultAsync(id, noTracking);
+        var dalEntity = await Repository.FirstOrDefaultAsync(id, noTracking, noIncludes);
         return Mapper.Map(dalEntity);
     }
 
@@ -159,7 +160,7 @@ public class BaseEntityService<TBllEntity, TDalEntity,TRepository, TKey>:
         var t = Repository.Remove(id);
         return Task.FromResult(Mapper.Map(t)!);
     }
-    
+
 #warning Ask about this
     public async Task<bool> AnyAsync(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
     {
@@ -171,8 +172,8 @@ public class BaseEntityService<TBllEntity, TDalEntity,TRepository, TKey>:
         throw new NotImplementedException();
     }
 
-    public async Task<TBllEntity?> FirstAsync(bool noTracking = true)
+    public async Task<TBllEntity?> FirstAsync(bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await Repository.FirstAsync(noTracking));
+        return Mapper.Map(await Repository.FirstAsync(noTracking, noIncludes));
     }
 }

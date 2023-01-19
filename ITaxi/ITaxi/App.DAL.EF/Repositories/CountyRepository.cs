@@ -43,9 +43,10 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
     }
 
 
-    protected override IQueryable<App.Domain.County> CreateQuery(bool noTracking = true)
+    protected override IQueryable<App.Domain.County> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
-        var query = RepoDbSet.OrderBy(c => c.CountyName).Include(x => x.Cities).AsQueryable();
+        var query = RepoDbSet.OrderBy(c => c.CountyName).AsQueryable();
+        if (!noIncludes) query = query.Include(x => x.Cities);
         if (noTracking) query = query.AsNoTracking();
 
         return query;

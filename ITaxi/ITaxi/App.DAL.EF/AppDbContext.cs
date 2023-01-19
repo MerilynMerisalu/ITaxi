@@ -11,6 +11,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
+        this.ChangeTracker.LazyLoadingEnabled = false;
     }
 
     public DbSet<LangStr> LangStrings { get; set; } = default!;

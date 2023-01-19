@@ -62,14 +62,14 @@ public class CountiesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateEditCountyViewModel vm, CountyDTO county)
+    public async Task<IActionResult> Create(CreateEditCountyViewModel vm)
     {
         if (ModelState.IsValid)
         {
+            var county = new CountyDTO();
             county.Id = Guid.NewGuid();
             county.CountyName = vm.CountyName;
-            county.CreatedBy = User.Identity!.Name;
-            county.CreatedAt = DateTime.Now.ToUniversalTime();
+            county.CreatedBy = User.GettingUserEmail();
             _appBLL.Counties.Add(county);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -107,7 +107,7 @@ public class CountiesController : Controller
                 try
                 {
                     county.CountyName = vm.CountyName;
-                    county.UpdatedBy = User.Identity!.Name!;
+                    county.UpdatedBy = User.GettingUserEmail();
                     county.UpdatedAt = DateTime.Now;
                     _appBLL.Counties.Update(county);
                     await _appBLL.SaveChangesAsync();

@@ -1,5 +1,6 @@
 #nullable enable
 using System.Security.Claims;
+using App.BLL;
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Contracts.DAL;
@@ -133,8 +134,8 @@ public class AdminsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditAdminViewModel vm)
     {
-        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id);
-        
+        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id, noIncludes: true);
+
         if (admin != null && id != admin.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -143,16 +144,18 @@ public class AdminsController : Controller
             {
                 if (admin != null)
                 {
-                    /*
-                    admin.AppUser!.FirstName = vm.FirstName;
-                    admin.AppUser!.LastName = vm.LastName;
-                    admin.AppUser!.Gender = vm.Gender;
-                    admin.AppUser!.DateOfBirth = DateTime.Parse(vm.DateOfBirth.ToString("d"))
-                        .ToUniversalTime();
-                    admin.AppUser!.PhoneNumber = vm.PhoneNumber;
-                    admin.AppUser!.Email = vm.Email;
-                    //_a
-                    */
+                    #warning Updating the AppUser is trying to set ALL of the fields, we need to remove the password and other critical fields from that DTO
+                    // var adminAppUser = await _appBLL.AppUsers.FirstOrDefaultAsync(admin.AppUserId, noIncludes: true);
+                    // adminAppUser!.FirstName = vm.FirstName;
+                    // adminAppUser.LastName = vm.LastName;
+                    // adminAppUser.Gender = vm.Gender;
+                    // adminAppUser.DateOfBirth = vm.DateOfBirth.Date;
+                    // adminAppUser.PhoneNumber = vm.PhoneNumber;
+                    // adminAppUser.Email = vm.Email;
+                    //// adminAppUser.UpdatedBy = User.Identity!.Name!;
+                    //// adminAppUser.UpdatedAt = DateTime.Now;
+                    // _appBLL.AppUsers.Update(adminAppUser);
+
                     admin.Address = vm.Address;
                     admin.CityId = vm.CityId;
                     admin.PersonalIdentifier = vm.PersonalIdentifier;
@@ -161,6 +164,7 @@ public class AdminsController : Controller
                     admin.UpdatedAt = DateTime.Now;
                     _appBLL.Admins.Update(admin);
                 }
+
 
                 await _appBLL.SaveChangesAsync();
             }
@@ -219,11 +223,11 @@ public class AdminsController : Controller
             await _userManager.RemoveFromRoleAsync(appUser, "Admin");
             _appBLL.Admins.Remove(admin);
             //await _appBLL.SaveChangesAsync();
-            #warning temporarily solution
+#warning temporarily solution
             var claims = await _userManager.GetClaimsAsync(appUser);
             await _userManager.RemoveClaimsAsync(appUser, claims);
             await _userManager.DeleteAsync(appUser);
-           await _appBLL.SaveChangesAsync();
+            await _appBLL.SaveChangesAsync();
         }
 
         return RedirectToAction(nameof(Index));

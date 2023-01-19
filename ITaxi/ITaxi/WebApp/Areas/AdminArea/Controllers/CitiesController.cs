@@ -25,7 +25,7 @@ public class CitiesController : Controller
     {
         var res = await _appBLL.Cities.GetAllOrderedCitiesAsync();
 #warning Should this be a repo method
-        
+
 
         return View(res);
     }
@@ -46,7 +46,7 @@ public class CitiesController : Controller
         vm.CreatedBy = city.CreatedBy!;
         vm.UpdatedBy = User.Identity!.Name!;
         vm.UpdatedAt = city.UpdatedAt;
-        
+
 
         return View(vm);
     }
@@ -108,7 +108,7 @@ public class CitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditCityViewModel vm)
     {
-        var city = await _appBLL.Cities.FirstOrDefaultAsync(id);
+        var city = await _appBLL.Cities.FirstOrDefaultCityWithoutCountyAsync(id);
 
         if (id != city!.Id) return NotFound();
 
@@ -118,7 +118,7 @@ public class CitiesController : Controller
             {
                 city.Id = id;
                 city.CountyId = vm.CountyId;
-                city.County = await _appBLL.Counties.FirstOrDefaultAsync(vm.CountyId);
+                //city.County = await _appBLL.Counties.FirstOrDefaultAsync(vm.CountyId);
                 city.CityName = vm.CityName;
                 city.UpdatedBy = User.Identity!.Name;
                 city.UpdatedAt = DateTime.Now;
@@ -167,14 +167,16 @@ public class CitiesController : Controller
     {
 #warning Ask if that can be improved
         var city = await _appBLL.Cities.FirstOrDefaultAsync(id);
-        //if (await _appBLL.Admins.HasAnyByCityIdAsync(id) ||
-        //    await _appBLL.Bookings.HasAnyByCityIdAsync(id) ||
-        //    await _appBLL.Drivers.HasAnyByCityIdAsync(id)
-        //    return Content("Entity cannot be deleted because it has dependent entities!");
-
         if (city != null)
         {
-            _appBLL.Cities.Remove(city);
+            try
+            {
+                _appBLL.Cities.Remove(city);
+            }
+            catch (ApplicationException e)
+            {
+                return Content(e.Message);
+            }
             await _appBLL.SaveChangesAsync();
         }
 

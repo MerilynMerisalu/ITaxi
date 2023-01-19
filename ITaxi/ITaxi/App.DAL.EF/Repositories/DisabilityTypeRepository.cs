@@ -35,7 +35,7 @@ public class DisabilityTypeRepository : BaseEntityRepository<DisabilityTypeDTO, 
     public IEnumerable<DisabilityTypeDTO> GetAllDisabilityTypeDto(string? roleName = null, bool noTracking = true)
     {
         List<DisabilityTypeDTO> disabilityTypeDtoList = new();
-        var disabilityTypes =  CreateQuery().ToList();
+        var disabilityTypes = CreateQuery().ToList();
         foreach (var disabilityType in disabilityTypes)
         {
             var disabilityTypeDto = new DisabilityTypeDTO()
@@ -63,13 +63,13 @@ public class DisabilityTypeRepository : BaseEntityRepository<DisabilityTypeDTO, 
             ;
     }
 
-    protected override IQueryable<DisabilityType> CreateQuery(bool noTracking = true)
+    protected override IQueryable<DisabilityType> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
-
-        query = query.Include(c => c.DisabilityTypeName)
-            .ThenInclude(c => c.Translations);
+        if (!noIncludes)
+            query = query.Include(c => c.DisabilityTypeName)
+                .ThenInclude(c => c.Translations);
         return query;
     }
 }

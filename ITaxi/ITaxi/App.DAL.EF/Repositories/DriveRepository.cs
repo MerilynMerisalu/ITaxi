@@ -37,12 +37,12 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
     public async Task<IEnumerable<Drive>> GetAllDrivesWithoutIncludesAsync(
         bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking).ToListAsync();
+        return await base.CreateQuery(noTracking, noIncludes: true).ToListAsync();
     }
 
     public IEnumerable<Drive> GetAllDrivesWithoutIncludes(bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).ToList();
+        return base.CreateQuery(noTracking, noIncludes: true).ToList();
     }
 
     public async Task<IEnumerable<Drive>> GettingAllOrderedDrivesWithIncludesAsync(
@@ -87,12 +87,12 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
 
     public async Task<Drive?> GettingDriveWithoutIncludesAsync(Guid id, bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking).FirstOrDefaultAsync(d => d.Id.Equals(id));
+        return await base.CreateQuery(noTracking, noIncludes: true).FirstOrDefaultAsync(d => d.Id.Equals(id));
     }
 
     public Drive? GetDriveWithoutIncludes(Guid id, bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).FirstOrDefault(d => d.Id.Equals(id));
+        return base.CreateQuery(noTracking, noIncludes: true).FirstOrDefault(d => d.Id.Equals(id));
     }
 
     public async Task<IEnumerable<Drive?>> SearchByDateAsync(DateTime search,

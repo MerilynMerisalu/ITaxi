@@ -18,22 +18,22 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
 
     public async Task<IEnumerable<RideTimeDTO?>> GettingAllRideTimesWithoutIncludesAsync(bool noTracking = true)
     {
-        return (await base.CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e));
+        return (await base.CreateQuery(noTracking, noIncludes: true).ToListAsync()).Select(e => Mapper.Map(e));
     }
 
     public IEnumerable<RideTimeDTO?> GettingAllRideTimesWithoutIncludes(bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e));
+        return base.CreateQuery(noTracking, noIncludes: true).ToList().Select(e => Mapper.Map(e));
     }
 
     public async Task<RideTimeDTO?> GettingRideTimeWithoutIncludesByIdAsync(Guid id, bool noTracking = true)
     {
-        return Mapper.Map(await base.CreateQuery(noTracking).FirstOrDefaultAsync(r => r.ScheduleId.Equals(id)));
+        return Mapper.Map(await base.CreateQuery(noTracking, noIncludes: true).FirstOrDefaultAsync(r => r.ScheduleId.Equals(id)));
     }
 
     public RideTimeDTO? GettingRideTimeWithoutIncludesById(Guid id, bool noTracking = true)
     {
-        return Mapper.Map(base.CreateQuery(noTracking).FirstOrDefault(r => r.ScheduleId.Equals(id)));
+        return Mapper.Map(base.CreateQuery(noTracking, noIncludes: true).FirstOrDefault(r => r.ScheduleId.Equals(id)));
     }
 
     public async Task<IEnumerable<RideTimeDTO?>> GettingAllOrderedRideTimesAsync(Guid? userId = null,
@@ -86,7 +86,7 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
 
     public async Task<IEnumerable<RideTimeDTO?>> GettingAllOrderedRideTimesWithoutIncludesAsync(bool noTracking = true)
     {
-        return (await CreateQuery(noTracking)
+        return (await CreateQuery(noTracking, noIncludes: true)
             .OrderBy(r => r.RideDateTime.Date)
             .ThenBy(r => r.RideDateTime.Day)
             .ThenBy(r => r.RideDateTime.Month)
@@ -98,7 +98,7 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
 
     public IEnumerable<RideTimeDTO?> GettingAllOrderedRideTimesWithoutIncludes(bool noTracking = true)
     {
-        return CreateQuery(noTracking)
+        return CreateQuery(noTracking, noIncludes: true)
             .OrderBy(r => r.RideDateTime.Date)
             .ThenBy(r => r.RideDateTime.Day)
             .ThenBy(r => r.RideDateTime.Month)
@@ -190,7 +190,7 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
         Guid vehicleType,
         bool defaultToNextAvailable,
         Guid? userId = null, string? roleName = null,
-        bool noTracking = true  )
+        bool noTracking = true)
     {
         // Change this to 5 to make the match time +- 5minutes of a ride time
         int closestTimeRangeMinutes = 1;
@@ -206,14 +206,14 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
             .Where(rt => rt.Schedule!.Vehicle!.VehicleTypeId.Equals(vehicleType))
             .Where(rt => rt.Schedule!.Vehicle!.NumberOfSeats > numberOfPassengers);
 
-        
+
         var closestRideTimes = await rideTimesQuery
-            .Where(rt => rt.Schedule!.StartDateAndTime <= timePlusOne 
+            .Where(rt => rt.Schedule!.StartDateAndTime <= timePlusOne
                              && rt.Schedule.EndDateAndTime >= timeMinusOne
-                             && rt.RideDateTime >= minTime 
+                             && rt.RideDateTime >= minTime
                              && rt.RideDateTime <= maxTime)
             .ToListAsync();
-        closestRideTimes = closestRideTimes   
+        closestRideTimes = closestRideTimes
             .OrderBy(x => Math.Abs(pickUpDateAndTime.Subtract(x.RideDateTime.Date).TotalMinutes))
             .Take(1)
             .ToList();
@@ -228,7 +228,7 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
                 .Where(rt => rt.RideDateTime <= minTime)
                 .OrderByDescending(x => x.RideDateTime)
                 .FirstOrDefaultAsync();
-            
+
             var next = await rideTimesQuery
                 .Where(rt => rt.RideDateTime > maxTime)
                 .OrderBy(x => x.RideDateTime)
@@ -238,7 +238,7 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
             closestRideTimes.Add(previous ?? new RideTime { RideDateTime = DateTime.MinValue });
             closestRideTimes.Add(next ?? new RideTime { RideDateTime = DateTime.MaxValue });
         }
-        else if(closestRideTimes.Count == 1)
+        else if (closestRideTimes.Count == 1)
         {
             // we need to set the expiry time X Minutes into the future, so that this RideTime is not 
             // available to other operators, but it will automatically become available even if the 
@@ -246,14 +246,14 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
             closestRideTimes[0].ExpiryTime = utcNow.AddMinutes(9);
             await RepoDbContext.SaveChangesAsync();
         }
-        
+
         return (closestRideTimes.Select(e => Mapper.Map(e)) as IList<RideTimeDTO>)!;
     }
 
     public RideTimeDTO? GettingBestAvailableRideTime(DateTime pickUpDateAndTime,
         Guid cityId, int numberOfPassengers,
         Guid? userId = null, string? roleName = null,
-        bool noTracking = true )
+        bool noTracking = true)
     {
         var minTime = pickUpDateAndTime.AddMinutes(-60);
         var maxTime = pickUpDateAndTime.AddMinutes(60);
@@ -265,7 +265,7 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
             .ToList();
         var closestRideTime = rideTimes.OrderBy(x => Math.Abs(pickUpDateAndTime.Subtract(x.RideDateTime.Date).TotalMinutes))
             .FirstOrDefault();
-            
+
         return Mapper.Map(closestRideTime);
     }
 

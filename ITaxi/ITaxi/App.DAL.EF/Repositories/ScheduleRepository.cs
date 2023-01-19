@@ -25,12 +25,12 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
 
     public async Task<IEnumerable<ScheduleDTO>> GetAllSchedulesWithoutIncludesAsync(bool noTracking = true)
     {
-        return (await base.CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;
+        return (await base.CreateQuery(noTracking, noIncludes: true).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
     public IEnumerable<ScheduleDTO> GetAllSchedulesWithoutIncludes(bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e))!;
+        return base.CreateQuery(noTracking, noIncludes: true).ToList().Select(e => Mapper.Map(e))!;
     }
 
 
@@ -74,7 +74,7 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
 
     public async Task<IEnumerable<ScheduleDTO>> GettingAllOrderedSchedulesWithoutIncludesAsync(bool noTracking = true)
     {
-        return (await base.CreateQuery(noTracking)
+        return (await base.CreateQuery(noTracking, noIncludes: true)
             .OrderBy(s => s.StartDateAndTime.Date)
             .ThenBy(s => s.StartDateAndTime.Year)
             .ThenBy(s => s.StartDateAndTime.Month)
@@ -92,7 +92,7 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
 
     public IEnumerable<ScheduleDTO> GettingAllOrderedSchedulesWithoutIncludes(bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).OrderBy(s => s.StartDateAndTime.Date)
+        return base.CreateQuery(noTracking, noIncludes: true).OrderBy(s => s.StartDateAndTime.Date)
             .ThenBy(s => s.StartDateAndTime.Year)
             .ThenBy(s => s.StartDateAndTime.Month)
             .ThenBy(s => s.StartDateAndTime.Day)
@@ -110,17 +110,17 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
 
     public async Task<ScheduleDTO?> GettingScheduleWithoutIncludesAsync(Guid id, bool noTracking = true)
     {
-        return Mapper.Map(await base.CreateQuery(noTracking)
+        return Mapper.Map(await base.CreateQuery(noTracking, noIncludes: true)
             .FirstOrDefaultAsync(s => s.Id.Equals(id)));
     }
 
     public ScheduleDTO? GetScheduleWithoutIncludes(Guid id, bool noTracking = true)
     {
-        return Mapper.Map(CreateQuery(noTracking).FirstOrDefault(s => s.Id.Equals(id)));
+        return Mapper.Map(CreateQuery(noTracking, noIncludes: true).FirstOrDefault(s => s.Id.Equals(id)));
     }
 
 
-    public ScheduleDTO? GettingTheFirstScheduleById(Guid id,Guid? userId, string? roleName = null, bool noTracking = true)
+    public ScheduleDTO? GettingTheFirstScheduleById(Guid id, Guid? userId, string? roleName = null, bool noTracking = true)
     {
         return Mapper.Map(CreateQuery(userId, roleName)
             .OrderBy(s => s.StartDateAndTime.Hour)
@@ -144,7 +144,7 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
             .FirstOrDefault());
     }
 
-    
+
     /// <summary>
     /// Select the Schedules for the specified <paramref name="driverId"/>
     /// </summary>
@@ -170,7 +170,7 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
             .ToList().Select(e => Mapper.Map(e))!;
     }
 
-    
+
     public DateTime[] GettingStartAndEndTime(IEnumerable<ScheduleDTO> schedules, Guid? userId = null,
         string? roleName = null)
     {
@@ -217,7 +217,7 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
         return Mapper.Map(res);
     }
 
-    
+
 
     protected IQueryable<Schedule> CreateQuery(Guid? userId = null, string? roleName = null, bool noTracking = true)
     {

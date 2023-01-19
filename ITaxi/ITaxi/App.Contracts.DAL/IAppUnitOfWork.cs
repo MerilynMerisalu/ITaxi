@@ -8,6 +8,7 @@ public interface IAppUnitOfWork : IUnitOfWork
     ICountyRepository Counties { get; }
     ICityRepository Cities { get; }
     IAdminRepository Admins { get; }
+    IAppUserRepository AppUsers { get; }
     //IBookingRepository Bookings { get; }
     IDriverRepository Drivers { get; }
     IDriverLicenseCategoryRepository DriverLicenseCategories { get; }

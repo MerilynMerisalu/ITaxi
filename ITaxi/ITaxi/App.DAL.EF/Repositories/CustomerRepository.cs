@@ -33,23 +33,23 @@ public class CustomerRepository : BaseEntityRepository<Customer, AppDbContext>, 
 
     public async Task<IEnumerable<Customer?>> GettingAllCustomersWithoutIncludesAsync(bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking)
+        return await base.CreateQuery(noTracking, noIncludes: true)
             .ToListAsync();
     }
 
     public IEnumerable<Customer?> GettingAllCustomersWithoutIncludes(bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).ToList();
+        return base.CreateQuery(noTracking, noIncludes: true).ToList();
     }
 
     public async Task<IEnumerable<Customer?>> GettingAllOrderedCustomersWithoutIncludesAsync(bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking).OrderBy(c => c.DisabilityType).ToListAsync();
+        return await base.CreateQuery(noTracking, noIncludes: true).OrderBy(c => c.DisabilityType).ToListAsync();
     }
 
     public async Task<Customer?> GettingCustomerByIdWithoutIncludesAsync(Guid id, bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking).FirstOrDefaultAsync(c => c.Id.Equals(id));
+        return await base.CreateQuery(noTracking, noIncludes: true).FirstOrDefaultAsync(c => c.Id.Equals(id));
     }
 
     public async Task<IEnumerable<Customer?>> GettingAllOrderedCustomersAsync(bool noTracking = true)
@@ -66,17 +66,17 @@ public class CustomerRepository : BaseEntityRepository<Customer, AppDbContext>, 
 
     public Customer? GettingCustomerByIdWithoutIncludes(Guid id, bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).FirstOrDefault(c => c.Id.Equals(id));
+        return base.CreateQuery(noTracking, noIncludes: true).FirstOrDefault(c => c.Id.Equals(id));
     }
 
-    protected override IQueryable<Customer> CreateQuery(bool noTracking = true)
+    protected override IQueryable<Customer> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
-
-        query = query.Include(a => a.AppUser)
-            .Include(a => a.DisabilityType).ThenInclude(a => a!.DisabilityTypeName)
-            .ThenInclude(a => a.Translations);
+        if (!noIncludes)
+            query = query.Include(a => a.AppUser)
+                .Include(a => a.DisabilityType).ThenInclude(a => a!.DisabilityTypeName)
+                .ThenInclude(a => a.Translations);
         return query;
     }
 }*/

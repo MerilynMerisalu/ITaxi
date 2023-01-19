@@ -24,12 +24,12 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
 
     public async Task<IEnumerable<Booking?>> GettingAllBookingsWithoutIncludesAsync(bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking).ToListAsync();
+        return await base.CreateQuery(noTracking, noIncludes: true).ToListAsync();
     }
 
     public IEnumerable<Booking?> GettingAllBookingsWithoutIncludes(bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).ToList();
+        return base.CreateQuery(noTracking, noIncludes: true).ToList();
     }
 
     public async Task<IEnumerable<Booking?>> GettingAllOrderedBookingsAsync(Guid? userId = null,
@@ -68,7 +68,7 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
     public async Task<IEnumerable<Booking?>> GettingAllOrderedBookingsWithoutIncludesAsync(
         bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking)
+        return await base.CreateQuery(noTracking, noIncludes: true)
             .OrderBy(b => b.PickUpDateAndTime.Date)
             .ThenBy(b => b.PickUpDateAndTime.Day)
             .ThenBy(b => b.PickUpDateAndTime.Month)
@@ -84,7 +84,7 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
 
     public IEnumerable<Booking?> GettingAllOrderedBookingsWithoutIncludes(bool noTracking = true)
     {
-        return base.CreateQuery(noTracking)
+        return base.CreateQuery(noTracking, noIncludes: true)
             .OrderBy(b => b.PickUpDateAndTime.Date)
             .ThenBy(b => b.PickUpDateAndTime.Day)
             .ThenBy(b => b.PickUpDateAndTime.Month)
@@ -98,12 +98,12 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
 
     public async Task<Booking?> GettingBookingWithoutIncludesByIdAsync(Guid id, bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking).FirstOrDefaultAsync(b => b.Id.Equals(id));
+        return await base.CreateQuery(noTracking, noIncludes: true).FirstOrDefaultAsync(b => b.Id.Equals(id));
     }
 
     public Booking? GettingBookingWithoutIncludesById(Guid id, bool noTracking = true)
     {
-        return base.CreateQuery(noTracking).FirstOrDefault(b => b.Id.Equals(id));
+        return base.CreateQuery(noTracking, noIncludes: true).FirstOrDefault(b => b.Id.Equals(id));
     }
 
     public async Task<List<Booking>> SearchByCityAsync(string search, Guid? userId = null,

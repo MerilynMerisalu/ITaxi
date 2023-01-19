@@ -18,13 +18,13 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
 
     public virtual async Task<IEnumerable<CityDTO>> GetAllCitiesWithoutCountyAsync()
     {
-        var res = (await base.CreateQuery().ToListAsync()).Select(e => Mapper.Map(e));
+        var res = (await base.CreateQuery(noIncludes: true).ToListAsync()).Select(e => Mapper.Map(e));
         return res!;
     }
 
     public async Task<IEnumerable<CityDTO>> GetAllOrderedCitiesWithoutCountyAsync()
     {
-        var res = (await base.CreateQuery().OrderBy(c => c.CityName).ToListAsync()).
+        var res = (await base.CreateQuery(noIncludes: true).OrderBy(c => c.CityName).ToListAsync()).
             Select(e => Mapper.Map(e));
         return res!;
     }
@@ -38,24 +38,24 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
 
     public async Task<CityDTO?> FirstOrDefaultCityWithoutCountyAsync(Guid id)
     {
-        var res = await base.CreateQuery().FirstOrDefaultAsync(c => c.Id.Equals(id));
+        var res = await base.CreateQuery(noIncludes: true).FirstOrDefaultAsync(c => c.Id.Equals(id));
         return Mapper.Map(res);
     }
 
     public IEnumerable<CityDTO> GetAllOrderedCitiesWithoutCounty()
     {
-        return base.CreateQuery().OrderBy(c => c.CityName).ToList()
+        return base.CreateQuery(noIncludes: true).OrderBy(c => c.CityName).ToList()
             .Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<CityDTO> GetAllOrderedCities(bool noTracking =true)
+    public IEnumerable<CityDTO> GetAllOrderedCities(bool noTracking = true)
     {
         return CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
     public async Task<bool> HasAnyCitiesAsync(Guid id, bool noTracking = true)
     {
-        #warning violating of the DRY pattern
+#warning violating of the DRY pattern
         return await CreateQuery(noTracking).AnyAsync(c => c.CountyId.Equals(id));
     }
 
@@ -69,12 +69,11 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
         return (await CreateQuery().Where(x => x.CountyId == countyId).ToListAsync()).Select(x => Mapper.Map(x))!;
     }
 
-    public override async Task<CityDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true)
+    public override async Task<CityDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
-
-        query = query.Include(c => c.County);
+        if (!noIncludes) query = query.Include(c => c.County);
 
         var res = await query.FirstOrDefaultAsync(c => c.Id == id);
 
@@ -82,7 +81,7 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
     }
 
 
-    public override CityDTO? FirstOrDefault(Guid id, bool noTracking = true)
+    public override CityDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false)
     {
         return Mapper.Map(CreateQuery(noTracking).FirstOrDefault(c => c.Id.Equals(id)));
     }
@@ -97,12 +96,20 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
         return Mapper.Map(CreateQuery(noTracking).SingleOrDefault(e => e.Id.Equals(filter)));
     }
 
-    protected override IQueryable<City> CreateQuery(bool noTracking = true)
+    public override CityDTO Remove(CityDTO entity)
+    {
+        if (RepoDbContext.Admins.Any(x => x.CityId == entity.Id) ||
+            RepoDbContext.Bookings.Any(x => x.CityId == entity.Id) ||
+            RepoDbContext.Drivers.Any(x => x.CityId == entity.Id))
+            throw new ApplicationException("Entity cannot be deleted because it has dependent entities!");
+        return base.Remove(entity);
+    }
+    protected override IQueryable<City> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
-
-        query = query.Include(c => c.County);
+        if (!noIncludes)
+            query = query.Include(c => c.County);
         return query;
     }
 }

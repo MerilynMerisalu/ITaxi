@@ -6,7 +6,7 @@ using Base.Contracts;
 
 namespace App.BLL.Services;
 
-public class CityService: BaseEntityService<App.BLL.DTO.AdminArea.CityDTO, DAL.DTO.AdminArea.CityDTO, 
+public class CityService : BaseEntityService<App.BLL.DTO.AdminArea.CityDTO, DAL.DTO.AdminArea.CityDTO,
     ICityRepository>, ICityService
 {
     public CityService(ICityRepository repository, IMapper<CityDTO, DAL.DTO.AdminArea.CityDTO> mapper) : base(repository, mapper)
@@ -45,11 +45,12 @@ public class CityService: BaseEntityService<App.BLL.DTO.AdminArea.CityDTO, DAL.D
 
     public async Task<bool> HasAnyCitiesAsync(Guid id, bool noTracking = true)
     {
-       return await Repository.HasAnyCitiesAsync(id, noTracking);
+        return await Repository.HasAnyCitiesAsync(id, noTracking);
     }
 
     public bool HasAnyCities(Guid id, bool noTracking = true)
     {
         return Repository.HasAnyCities(id, noTracking);
     }
+
 }

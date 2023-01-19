@@ -16,12 +16,12 @@ public class VehicleModelRepository : BaseEntityRepository<App.DAL.DTO.AdminArea
 
     public async Task<IEnumerable<VehicleModelDTO>> GetAllVehicleModelsWithoutVehicleMarksAsync(bool noTracking = true)
     {
-        return (await CreateQuery(noTracking).ToListAsync()).Select(e=> Mapper.Map(e))!;
+        return (await CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
     public IEnumerable<VehicleModelDTO> GetAllVehicleModelsWithoutVehicleMarks(bool noTracking = true)
     {
-        return CreateQuery(noTracking).ToList().Select(e=> Mapper.Map(e))!;
+        return CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
     public async Task<VehicleModelDTO?> FirstOrDefaultVehicleModelWithoutVehicleMarkAsync(Guid id, bool noTracking = true)
@@ -38,25 +38,25 @@ public class VehicleModelRepository : BaseEntityRepository<App.DAL.DTO.AdminArea
         bool noTracking = true)
     {
         return (await CreateQuery(noTracking).OrderBy(v => v.VehicleMark!.VehicleMarkName)
-            .ThenBy(v => v.VehicleModelName).ToListAsync()).Select(e=> Mapper.Map(e))!;
+            .ThenBy(v => v.VehicleModelName).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
     public IEnumerable<VehicleModelDTO> GetAllVehicleModelsOrderedByVehicleMarkName(bool noTracking = true)
     {
         return CreateQuery(noTracking).OrderBy(v => v.VehicleMark!.VehicleMarkName)
-            .ThenBy(v => v.VehicleModelName).ToList().Select(e=> Mapper.Map(e))!;
+            .ThenBy(v => v.VehicleModelName).ToList().Select(e => Mapper.Map(e))!;
     }
 
     public async Task<List<VehicleModelDTO>> GettingVehicleModelsByMarkIdAsync(Guid markId, bool noTracking = true)
     {
         return ((await CreateQuery(noTracking).Where(v => v.VehicleMarkId.Equals(markId))
-            .OrderBy(v => v.VehicleMark!.VehicleMarkName).ToListAsync()).Select(e=> Mapper.Map(e)) as List<VehicleModelDTO>)!;
+            .OrderBy(v => v.VehicleMark!.VehicleMarkName).ToListAsync()).Select(e => Mapper.Map(e)) as List<VehicleModelDTO>)!;
     }
 
     public List<VehicleModelDTO> GettingVehicleModels(Guid markId, bool noTracking = true)
     {
         return (CreateQuery(noTracking).Where(v => v.VehicleMarkId.Equals(markId))
-            .OrderBy(v => v.VehicleMark!.VehicleMarkName).ToList().Select(e=> Mapper.Map(e)) as List<VehicleModelDTO>)!;
+            .OrderBy(v => v.VehicleMark!.VehicleMarkName).ToList().Select(e => Mapper.Map(e)) as List<VehicleModelDTO>)!;
     }
 
     public async Task<bool> HasAnyVehicleMarksAsync(Guid markId, bool noTracking = true)
@@ -74,12 +74,11 @@ public class VehicleModelRepository : BaseEntityRepository<App.DAL.DTO.AdminArea
         return await CreateQuery(noTracking).AnyAsync(v => v.VehicleMarkId.Equals(markId));
     }
 
-    protected override IQueryable<VehicleModel> CreateQuery(bool noTracking = true)
+    protected override IQueryable<VehicleModel> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
-
-        query = query.Include(c => c.VehicleMark);
+        if (!noIncludes) query = query.Include(c => c.VehicleMark);
         return query;
     }
 }

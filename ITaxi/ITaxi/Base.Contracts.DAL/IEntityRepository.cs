@@ -20,24 +20,24 @@ public interface IEntityRepository<TEntity, TKey>
 
 
     List<TEntity> RemoveAll(List<TEntity> entities);
-    TEntity? FirstOrDefault(TKey id, bool noTracking = true);
+    TEntity? FirstOrDefault(TKey id, bool noTracking = true, bool noIncludes = false);
     IEnumerable<TEntity> GetAll(bool noTracking = true);
     bool Exists(TKey id);
     bool Any(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
     TEntity? SingleOrDefault(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
 
-    TEntity? First(bool noTracking = true);
+    TEntity? First(bool noTracking = true, bool noIncludes = false);
 
 
     // async
     List<TEntity> AddRange(List<TEntity> entities);
-    Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true);
+    Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false);
     Task<IEnumerable<TEntity>> GetAllAsync(bool noTracking = true);
     Task<bool> ExistsAsync(TKey id);
     Task<TEntity> RemoveAsync(TKey id);
     Task<bool> AnyAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
     Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
-    Task<TEntity?> FirstAsync(bool noTracking = true);
-    
-    
+    Task<TEntity?> FirstAsync(bool noTracking = true, bool noIncludes = false);
+
+
 }
