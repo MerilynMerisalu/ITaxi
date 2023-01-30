@@ -150,7 +150,7 @@ public class SchedulesController : Controller
     public async Task<IActionResult> Edit(Guid id, EditScheduleViewModel vm)
     {
         
-        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id);
+        var schedule = await _appBLL.Schedules.FirstOrDefaultAsync(id, true, true);
 
         if (schedule != null && id != schedule.Id) return NotFound();
 
