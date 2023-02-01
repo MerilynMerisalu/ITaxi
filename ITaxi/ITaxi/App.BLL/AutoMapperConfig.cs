@@ -54,6 +54,8 @@ public class AutoMapperConfig: Profile
         CreateMap<App.BLL.DTO.AdminArea.DisabilityTypeDTO, App.DAL.DTO.AdminArea.DisabilityTypeDTO>()
             .ReverseMap()
             ;
+        
     }
+    
     
 }

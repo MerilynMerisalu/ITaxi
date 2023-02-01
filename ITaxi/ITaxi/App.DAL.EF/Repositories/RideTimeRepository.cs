@@ -152,6 +152,15 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
         return Mapper.Map(CreateQuery(userId, roleName, noTracking).FirstOrDefault(r => r.BookingId.Equals(id)));
     }
 
+    public List<string> CalculatingRideTimes(Guid scheduleId)
+    {
+        var currentSchedule = RepoDbContext.Schedules.Where(x => x.Id == scheduleId).ToArray();
+        var rideTimes = this.CalculatingRideTimes(ScheduleRepository.GettingStartAndEndTime(
+            currentSchedule));
+
+        return rideTimes;
+    }
+    
     public List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime)
     {
         var times = new List<string>();
@@ -269,7 +278,27 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
         return Mapper.Map(closestRideTime);
     }
 
+    public List<string> GettingRemainingRideTimesByScheduleId(Guid schedulId)
+    {
+        var currentSchedule = this.RepoDbContext.Schedules.Include(s => s.RideTimes).AsNoTracking().Single(x => x.Id == schedulId);
+        currentSchedule.StartDateAndTime = currentSchedule.StartDateAndTime.ToLocalTime();
+        currentSchedule.EndDateAndTime = currentSchedule.EndDateAndTime.ToLocalTime();
+        
+        // Select the RideTimes form the currently selected schedule, for the current driver
+        var rideTimesList =
+            this.CalculatingRideTimes(ScheduleRepository.GettingStartAndEndTime(new Schedule [] {currentSchedule}));
 
+        // Need to remove the times that have already been issued:
+        if (currentSchedule.RideTimes!.Any())
+        {
+            foreach (var time in currentSchedule.RideTimes!)
+            {
+                rideTimesList.Remove(time.RideDateTime.ToLocalTime().ToString("t"));
+            }
+        }
+
+        return rideTimesList;
+    }
 
     public async Task<IEnumerable<RideTimeDTO>> GetAllAsync(Guid? userId = null, string? roleName = null,
         bool noTracking = true)

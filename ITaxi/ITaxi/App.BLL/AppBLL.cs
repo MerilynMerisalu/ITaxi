@@ -60,6 +60,9 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     public virtual IScheduleService Schedules => _schedules ??
                                                  new ScheduleService(UnitOfWork.Schedules,
                                                     new ScheduleMapper(_mapper));
+    public virtual IRideTimeService RideTimes => _rideTimes ?? new RideTimeService(
+        UnitOfWork.RideTimes,
+        new RideTimeMapper(_mapper));
 
     public virtual IDisabilityTypeService DisabilityTypes => _disabilityTypes ?? new DisabilityTypeService(
         UnitOfWork.DisabilityTypes,
@@ -78,4 +81,5 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     private IVehicleService? _vehicles;
     private IScheduleService? _schedules;
     private IDisabilityTypeService? _disabilityTypes;
+    private IRideTimeService? _rideTimes;
 }

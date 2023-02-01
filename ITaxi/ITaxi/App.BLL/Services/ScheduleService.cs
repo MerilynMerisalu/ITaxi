@@ -1,6 +1,7 @@
 ﻿using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL.Services;
 using App.Contracts.DAL.IAppRepositories;
+using App.Domain;
 using Base.BLL;
 using Base.Contracts;
 
@@ -93,11 +94,11 @@ public class ScheduleService: BaseEntityService<ScheduleDTO, App.DAL.DTO.AdminAr
             .Select(e => Mapper.Map(e))!;
     }
 
-    public DateTime[] GettingStartAndEndTime(IEnumerable<DAL.DTO.AdminArea.ScheduleDTO> schedules, Guid? userId = null,
-        string? roleName = null)
-    {
-        return Repository.GettingStartAndEndTime(schedules, userId, roleName);
-    }
+    //public DateTime[] GettingStartAndEndTime(Schedule[] schedules, Guid? userId = null,
+    //    string? roleName = null)
+    //{
+    //    return Repository.GettingStartAndEndTime(schedules.Select(s => Mapper.Map(s)), userId, roleName);
+    //}
 
     public int NumberOfRideTimes(Guid? driverId = null, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {

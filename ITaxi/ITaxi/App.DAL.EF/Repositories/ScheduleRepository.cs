@@ -171,7 +171,7 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
     }
 
 
-    public DateTime[] GettingStartAndEndTime(IEnumerable<ScheduleDTO> schedules, Guid? userId = null,
+    public static DateTime[] GettingStartAndEndTime(Schedule[] schedules, Guid? userId = null,
         string? roleName = null)
     {
 #warning needs improving

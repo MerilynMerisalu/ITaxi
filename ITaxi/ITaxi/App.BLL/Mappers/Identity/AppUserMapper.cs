@@ -1,4 +1,5 @@
-﻿using App.DAL.DTO.Identity;
+﻿using App.BLL.DTO.AdminArea;
+using App.DAL.DTO.Identity;
 using Base.Contracts;
 
 namespace App.BLL.Mappers.Identity;
@@ -10,7 +11,7 @@ public class AppUserMapper: IMapper<AppUser, App.Domain.Identity.AppUser>
         throw new NotImplementedException();
     }
 
-    public Domain.Identity.AppUser? Map(AppUser? entity)
+    public App.Domain.Identity.AppUser? Map(AppUser? entity)
     {
         throw new NotImplementedException();
     }

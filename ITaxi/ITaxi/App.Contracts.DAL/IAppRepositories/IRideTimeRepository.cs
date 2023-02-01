@@ -40,7 +40,8 @@ public interface IRideTimeRepositoryCustom<TEntity>
     TEntity? GettingFirstRideTimeByBookingId(Guid id, Guid? userId = null, string? roleName = null,
         bool noTracking = true);
 
-    List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime);
+    List<string> CalculatingRideTimes(Guid scheduleId);
+    //List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime);
 
     //string DriveTimeFormatting(RideTime rideTime);
     Task<IList<TEntity>> GettingBestAvailableRideTimeAsync(DateTime pickUpDateAndTime, Guid cityId,
@@ -53,4 +54,6 @@ public interface IRideTimeRepositoryCustom<TEntity>
     TEntity? GettingBestAvailableRideTime(DateTime pickUpDateAndTime, Guid cityId,
         int numberOfPassengers, Guid? userId = null, string? roleName = null,
         bool noTracking = true); 
+    
+    List<string> GettingRemainingRideTimesByScheduleId(Guid scheduleId);
 }

@@ -134,7 +134,7 @@ public class AdminsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditAdminViewModel vm)
     {
-        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id, noIncludes: true);
+        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id, noIncludes: false);
 
         if (admin != null && id != admin.Id) return NotFound();
 
@@ -142,31 +142,19 @@ public class AdminsController : Controller
         {
             try
             {
-                if (admin != null)
-                {
-                    #warning Updating the AppUser is trying to set ALL of the fields, we need to remove the password and other critical fields from that DTO
-                    // var adminAppUser = await _appBLL.AppUsers.FirstOrDefaultAsync(admin.AppUserId, noIncludes: true);
-                    // adminAppUser!.FirstName = vm.FirstName;
-                    // adminAppUser.LastName = vm.LastName;
-                    // adminAppUser.Gender = vm.Gender;
-                    // adminAppUser.DateOfBirth = vm.DateOfBirth.Date;
-                    // adminAppUser.PhoneNumber = vm.PhoneNumber;
-                    // adminAppUser.Email = vm.Email;
-                    //// adminAppUser.UpdatedBy = User.Identity!.Name!;
-                    //// adminAppUser.UpdatedAt = DateTime.Now;
-                    // _appBLL.AppUsers.Update(adminAppUser);
+                
+                admin!.AppUser!.FirstName = vm.FirstName;
 
-                    admin.Address = vm.Address;
-                    admin.CityId = vm.CityId;
-                    admin.PersonalIdentifier = vm.PersonalIdentifier;
-                    //admin.AppUser!.IsActive = vm.IsActive;
-                    admin.UpdatedBy = User.Identity!.Name!;
-                    admin.UpdatedAt = DateTime.Now;
-                    _appBLL.Admins.Update(admin);
-                }
+                admin.Address = vm.Address;
+                admin.CityId = vm.CityId;
+                admin.PersonalIdentifier = vm.PersonalIdentifier;
+                //admin.AppUser!.IsActive = vm.IsActive;
+                admin.UpdatedBy = User.Identity!.Name!;
+                admin.UpdatedAt = DateTime.Now;
+                _appBLL.Admins.Update(admin);
+            
 
-
-                await _appBLL.SaveChangesAsync();
+            await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
