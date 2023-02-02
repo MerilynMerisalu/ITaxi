@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain.Identity;
+using App.DAL.DTO.Identity;
 using Base.Domain;
 
-namespace App.Domain;
+namespace App.DAL.DTO.AdminArea;
 
-public class Customer : DomainEntityMetaId
+public class CustomerDTO : DomainEntityMetaId
 {
     public Guid AppUserId { get; set; }
 
@@ -14,7 +14,7 @@ public class Customer : DomainEntityMetaId
     public Guid DisabilityTypeId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Customer), Name = "DisabilityType")]
-    public DisabilityType? DisabilityType { get; set; }
+    public DisabilityTypeDTO? DisabilityType { get; set; }
 
-    public ICollection<Booking>? Bookings { get; set; }
+    public ICollection<BookingDTO>? Bookings { get; set; }
 }

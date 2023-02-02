@@ -235,7 +235,24 @@ public class AutoMapperConfig : Profile
                 dto => dto
                     .MapFrom(x => x.RideDateTime.ToUniversalTime()));
         
-        
+        // Convert from EF => DTO: Convert to Local Time
+        CreateMap<App.Domain.Customer, CustomerDTO>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
+            
+        // DTO => EF: Convert to Universal Time
+        CreateMap<CustomerDTO, App.Domain.Customer>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToUniversalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToUniversalTime()));
+
 
         CreateMap<AppUser, App.Domain.Identity.AppUser>().ReverseMap();
     }
