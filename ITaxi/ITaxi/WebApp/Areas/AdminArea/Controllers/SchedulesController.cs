@@ -127,11 +127,9 @@ public class SchedulesController : Controller
         vm.Id = schedule.Id;
 
         vm.DriverId = schedule.DriverId;
-        /*vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingVehiclesByDriverIdAsync(vm.DriverId),
+        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingVehiclesByDriverIdAsync(vm.DriverId),
             nameof(VehicleDTO.Id),
-            nameof(VehicleDTO.VehicleIdentifier));*/
-        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(),
-            nameof(VehicleDTO.Id), nameof(VehicleDTO.VehicleIdentifier));
+            nameof(VehicleDTO.VehicleIdentifier));
         vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g"));
         vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"));
         vm.VehicleId = schedule.VehicleId;
@@ -221,9 +219,11 @@ public class SchedulesController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var schedule = await _appBLL.Schedules.FirstOrDefaultAsync(id);
-        /*if (await _appBLL.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
-            || await _appBLL.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");*/
+        if (await _appBLL.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
+            #warning commented out booking validation on delete schedule, fix this when booking is added back
+            //|| await _appBLL.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
+            )
+            return Content("Entity cannot be deleted because it has dependent entities!");
 
         if (schedule != null) _appBLL.Schedules.Remove(schedule);
         await _appBLL.SaveChangesAsync();

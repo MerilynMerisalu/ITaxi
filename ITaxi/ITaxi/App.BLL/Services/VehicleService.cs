@@ -81,13 +81,14 @@ public class VehicleService : BaseEntityService<App.BLL.DTO.AdminArea.VehicleDTO
     public async Task<List<VehicleDTO>> GettingVehiclesByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null,
         bool noTracking = true)
     {
-        return ((await Repository.GettingVehiclesByDriverIdAsync(driverId, userId, roleName, noTracking)).Select(e =>
-            Mapper.Map(e)) as List<VehicleDTO>)!;
+        return (await Repository.GettingVehiclesByDriverIdAsync(driverId, userId, roleName, noTracking))
+            .Select(e => Mapper.Map(e))
+            .ToList()!;
     }
 
     public List<VehicleDTO> GettingVehiclesByDriverId(Guid driverId, bool noTracking = true)
     {
-        return (Repository.GettingVehiclesByDriverId(driverId, noTracking).Select(e => Mapper.Map(e)) as List<VehicleDTO>)!;
+        return Repository.GettingVehiclesByDriverId(driverId, noTracking).Select(e => Mapper.Map(e)).ToList()!;
     }
 
     public async Task<bool> HasAnyVehicleModelsAnyAsync(Guid vehicleModelId, bool noTracking)

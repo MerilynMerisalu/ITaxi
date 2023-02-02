@@ -56,12 +56,12 @@ public class RideTimeService: BaseEntityService<App.BLL.DTO.AdminArea.RideTimeDT
 
     public async Task<IEnumerable<string?>> GettingAllSelectedRideTimesAsync(RideTimeDTO rideTime, bool noTracking = true)
     {
-        return await Repository.GettingAllSelectedRideTimesAsync(Mapper.Map(rideTime), noTracking);
+        return await Repository.GettingAllSelectedRideTimesAsync(Mapper.Map(rideTime)!, noTracking);
     }
 
     public IEnumerable<string?> GettingAllSelectedRideTimes(RideTimeDTO rideTime, bool noTracking = true)
     {
-        return Repository.GettingAllSelectedRideTimes(Mapper.Map(rideTime), noTracking);
+        return Repository.GettingAllSelectedRideTimes(Mapper.Map(rideTime)!, noTracking);
     }
 
     public async Task<RideTimeDTO?> GettingFirstRideTimeByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
