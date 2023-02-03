@@ -1,6 +1,6 @@
-﻿using App.Domain.DTO;
-using App.Domain.DTO.AdminArea;
-using CustomerDTO = App.BLL.DTO.AdminArea.CustomerDTO;
+﻿
+
+using App.BLL.DTO.AdminArea;
 
 namespace WebApp.DTO.Identity;
 

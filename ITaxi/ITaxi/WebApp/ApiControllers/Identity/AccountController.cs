@@ -7,19 +7,14 @@ using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.DAL.EF;
 using App.Domain;
-using App.Domain.DTO;
-using App.Domain.DTO.AdminArea;
 using App.Domain.Identity;
 using Base.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApp.Areas.Identity.Pages.Account;
 using WebApp.DTO;
 using WebApp.DTO.Identity;
-using CustomerDTO = App.BLL.DTO.AdminArea.CustomerDTO;
+
 
 
 namespace WebApp.ApiControllers.Identity;

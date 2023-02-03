@@ -1,7 +1,6 @@
-﻿using App.DAL.DTO.AdminArea;
-using App.Domain.DTO;
-using App.Domain.DTO.AdminArea;
-using AdminDTO = App.BLL.DTO.AdminArea.AdminDTO;
+﻿
+
+using App.BLL.DTO.AdminArea;
 
 namespace WebApp.DTO.Identity;
 

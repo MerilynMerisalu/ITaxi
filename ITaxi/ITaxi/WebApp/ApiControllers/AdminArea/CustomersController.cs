@@ -1,4 +1,6 @@
-/*#nullable enable
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,28 +12,28 @@ namespace WebApp.ApiControllers.AdminArea;
 
 [Route("api/AdminArea/[controller]")]
 [ApiController]
-[Authorize(Roles = nameof(Admin), AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CustomersController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public CustomersController(IAppUnitOfWork uow)
+    public CustomersController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: api/Customers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
     {
-        return Ok(await _uow.Customers.GettingAllOrderedCustomersWithoutIncludesAsync());
+        return Ok(await _appBLL.Customers.GettingAllOrderedCustomersWithoutIncludesAsync());
     }
 
     // GET: api/Customers/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Customer>> GetCustomer(Guid id)
+    public async Task<ActionResult<CustomerDTO>> GetCustomer(Guid id)
     {
-        var customer = await _uow.Customers.GettingCustomerByIdWithoutIncludesAsync(id);
+        var customer = await _appBLL.Customers.GettingCustomerByIdWithoutIncludesAsync(id);
 
         if (customer == null) return NotFound();
 
@@ -41,14 +43,14 @@ public class CustomersController : ControllerBase
     // PUT: api/Customers/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutCustomer(Guid id, Customer customer)
+    public async Task<IActionResult> PutCustomer(Guid id, CustomerDTO customer)
     {
         if (id != customer.Id) return BadRequest();
 
         try
         {
-            _uow.Customers.Update(customer);
-            await _uow.SaveChangesAsync();
+            _appBLL.Customers.Update(customer);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -63,10 +65,10 @@ public class CustomersController : ControllerBase
     // POST: api/Customers
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
+    public async Task<ActionResult<CustomerDTO>> PostCustomer(CustomerDTO customer)
     {
-        _uow.Customers.Add(customer);
-        await _uow.SaveChangesAsync();
+        _appBLL.Customers.Add(customer);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetCustomer", new {id = customer.Id}, customer);
     }
@@ -75,17 +77,17 @@ public class CustomersController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCustomer(Guid id)
     {
-        var customer = await _uow.Customers.GettingCustomerByIdWithoutIncludesAsync(id);
+        var customer = await _appBLL.Customers.GettingCustomerByIdWithoutIncludesAsync(id);
         if (customer == null) return NotFound();
 
-        _uow.Customers.Remove(customer);
-        await _uow.SaveChangesAsync();
+        _appBLL.Customers.Remove(customer);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool CustomerExists(Guid id)
     {
-        return _uow.Customers.Exists(id);
+        return _appBLL.Customers.Exists(id);
     }
-}*/
+}

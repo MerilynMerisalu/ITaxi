@@ -1,6 +1,7 @@
-/*#nullable enable
-using App.Contracts.DAL;
-using App.Domain;
+#nullable enable
+
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +14,12 @@ namespace WebApp.Areas.AdminArea.Controllers;
 [Area(nameof(AdminArea))]
 public class CustomersController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
     private readonly UserManager<AppUser> _userManager;
 
-    public CustomersController(IAppUnitOfWork uow, UserManager<AppUser> userManager)
+    public CustomersController(IAppBLL appBLL, UserManager<AppUser> userManager)
     {
-        _uow = uow;
+        _appBLL = appBLL;
         _userManager = userManager;
     }
 
@@ -26,13 +27,8 @@ public class CustomersController : Controller
     public async Task<IActionResult> Index()
     {
 #warning Should this be a repo method
-        var res = await _uow.Customers.GettingAllOrderedCustomersAsync();
-        foreach (var customer in res)
-            if (customer != null)
-            {
-                customer.CreatedAt = customer.CreatedAt.ToLocalTime();
-                customer.UpdatedAt = customer.UpdatedAt.ToLocalTime();
-            }
+        var res = await _appBLL.Customers.GettingAllOrderedCustomersAsync();
+        
 
         return View(res);
     }
@@ -43,7 +39,7 @@ public class CustomersController : Controller
         var vm = new DetailsDeleteCustomerViewModel();
         if (id == null) return NotFound();
 
-        var customer = await _uow.Customers.FirstOrDefaultAsync(id.Value);
+        var customer = await _appBLL.Customers.FirstOrDefaultAsync(id.Value);
         if (customer == null) return NotFound();
 
 
@@ -57,9 +53,9 @@ public class CustomersController : Controller
         vm.Email = customer.AppUser.Email;
         vm.DisabilityTypeName = customer.DisabilityType!.DisabilityTypeName;
         vm.CreatedBy = customer.CreatedBy!;
-        vm.CreatedAt = customer.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = customer.CreatedAt;
         vm.UpdatedBy = customer.UpdatedBy!;
-        vm.UpdatedAt = customer.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = customer.UpdatedAt;
 
 
         return View(vm);
@@ -70,8 +66,8 @@ public class CustomersController : Controller
     {
         var vm = new CreateCustomerViewModel();
 
-        vm.DisabilityTypes = new SelectList(await _uow.DisabilityTypes.GetAllOrderedDisabilityTypesAsync(),
-            nameof(DisabilityType.Id), nameof(DisabilityType.DisabilityTypeName));
+        vm.DisabilityTypes = new SelectList(await _appBLL.DisabilityTypes.GetAllOrderedDisabilityTypesAsync(),
+            nameof(DisabilityTypeDTO.Id), nameof(DisabilityTypeDTO.DisabilityTypeName));
         return View(vm);
     }
 
@@ -82,7 +78,7 @@ public class CustomersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateCustomerViewModel vm)
     {
-        var customer = new Customer();
+        var customer = new CustomerDTO();
         var appUser = new AppUser
         {
             Id = Guid.NewGuid(),
@@ -103,9 +99,9 @@ public class CustomersController : Controller
             customer.Id = Guid.NewGuid();
             customer.AppUserId = appUser.Id;
             customer.DisabilityTypeId = vm.DisabilityTypeId;
-            _uow.Customers.Add(customer);
-            await _userManager.AddToRoleAsync(appUser, nameof(Customer));
-            await _uow.SaveChangesAsync();
+            _appBLL.Customers.Add(customer);
+            await _userManager.AddToRoleAsync(appUser, "Customer");
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -119,13 +115,13 @@ public class CustomersController : Controller
         var vm = new EditCustomerViewModel();
         if (id == null) return NotFound();
 
-        var customer = await _uow.Customers.FirstOrDefaultAsync(id.Value);
+        var customer = await _appBLL.Customers.FirstOrDefaultAsync(id.Value);
         if (customer == null) return NotFound();
 
-        vm.DisabilityTypes = new SelectList(await _uow.DisabilityTypes
+        vm.DisabilityTypes = new SelectList(await _appBLL.DisabilityTypes
                 .GetAllOrderedDisabilityTypesAsync()
-            , nameof(DisabilityType.Id),
-            nameof(DisabilityType.DisabilityTypeName));
+            , nameof(DisabilityTypeDTO.Id),
+            nameof(DisabilityTypeDTO.DisabilityTypeName));
         vm.DisabilityTypeId = customer.DisabilityTypeId;
         vm.FirstName = customer.AppUser!.FirstName;
         vm.LastName = customer.AppUser!.LastName;
@@ -146,7 +142,7 @@ public class CustomersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditCustomerViewModel vm)
     {
-        var customer = await _uow.Customers.FirstOrDefaultAsync(id);
+        var customer = await _appBLL.Customers.FirstOrDefaultAsync(id);
         if (customer == null || id != customer.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -167,12 +163,12 @@ public class CustomersController : Controller
                     customer.DisabilityTypeId = vm.DisabilityTypeId;
                     customer.UpdatedBy = User.Identity!.Name!;
                     customer.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _uow.Customers.Update(customer);
+                    _appBLL.Customers.Update(customer);
                 }
 
                 await _userManager.UpdateAsync(appUser);
 
-                await _uow.SaveChangesAsync();
+                await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -193,7 +189,7 @@ public class CustomersController : Controller
         var vm = new DetailsDeleteCustomerViewModel();
         if (id == null) return NotFound();
 
-        var customer = await _uow.Customers.FirstOrDefaultAsync(id.Value);
+        var customer = await _appBLL.Customers.FirstOrDefaultAsync(id.Value);
         if (customer == null) return NotFound();
 
         vm.Id = customer.Id;
@@ -206,9 +202,9 @@ public class CustomersController : Controller
         vm.PhoneNumber = customer.AppUser.PhoneNumber;
         vm.DisabilityTypeName = customer.DisabilityType!.DisabilityTypeName;
         vm.CreatedBy = customer.CreatedBy!;
-        vm.CreatedAt = customer.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = customer.CreatedAt;
         vm.UpdatedBy = customer.UpdatedBy!;
-        vm.UpdatedAt = customer.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = customer.UpdatedAt;
 
         return View(vm);
     }
@@ -219,24 +215,24 @@ public class CustomersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var customer = await _uow.Customers.FirstOrDefaultAsync(id);
-        if (await _uow.Bookings.AnyAsync(c => customer != null && c != null && c.CustomerId.Equals(customer.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");
+        var customer = await _appBLL.Customers.FirstOrDefaultAsync(id);
+        /*if (await _appBLL.Bookings.AnyAsync(c => customer != null && c != null && c.CustomerId.Equals(customer.Id)))
+            return Content("Entity cannot be deleted because it has dependent entities!")*/;
 
         var appUser = await _userManager.FindByIdAsync(customer!.AppUserId.ToString());
-        await _userManager.RemoveFromRoleAsync(appUser, nameof(Customer));
-        _uow.Customers.Remove(customer);
+        await _userManager.RemoveFromRoleAsync(appUser, "Customer");
+        _appBLL.Customers.Remove(customer);
         
         #warning temporarily solution
         var claims = await _userManager.GetClaimsAsync(appUser);
         await _userManager.RemoveClaimsAsync(appUser, claims);
         await _userManager.DeleteAsync(appUser);
-        await _uow.SaveChangesAsync();
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     private bool CustomerExists(Guid id)
     {
-        return _uow.Customers.Exists(id);
+        return _appBLL.Customers.Exists(id);
     }
-}*/
+}
