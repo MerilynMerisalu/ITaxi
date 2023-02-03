@@ -67,6 +67,11 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     public virtual IDisabilityTypeService DisabilityTypes => _disabilityTypes ?? new DisabilityTypeService(
         UnitOfWork.DisabilityTypes,
         new DisabilityTypeMapper(_mapper));
+    
+    public virtual ICustomerService Customers => _customers ?? new CustomerService(
+        UnitOfWork.Customers,
+        new CustomerMapper(_mapper));
+
 
     private ICountyService? _counties;
     private ICityService? _cities;
@@ -82,4 +87,5 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     private IScheduleService? _schedules;
     private IDisabilityTypeService? _disabilityTypes;
     private IRideTimeService? _rideTimes;
+    private ICustomerService? _customers;
 }

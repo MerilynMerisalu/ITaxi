@@ -19,6 +19,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.Identity.Pages.Account;
 using WebApp.DTO;
 using WebApp.DTO.Identity;
+using CustomerDTO = App.BLL.DTO.AdminArea.CustomerDTO;
 
 
 namespace WebApp.ApiControllers.Identity;
@@ -39,7 +40,8 @@ public class AccountController : ControllerBase
     public AccountController(SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
         IConfiguration configuration,
-        ILogger<AccountController> logger, AppDbContext context, IAppBLL appBLL)
+        ILogger<AccountController> logger, AppDbContext context, IAppBLL appBLL
+        )
     {
         _signInManager = signInManager;
         _userManager = userManager;

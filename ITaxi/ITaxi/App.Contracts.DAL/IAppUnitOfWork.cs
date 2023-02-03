@@ -20,7 +20,7 @@ public interface IAppUnitOfWork : IUnitOfWork
     IScheduleRepository Schedules { get; }
     IRideTimeRepository RideTimes { get; }
     IDisabilityTypeRepository DisabilityTypes { get; }
-    //ICustomerRepository Customers { get; }
+    ICustomerRepository Customers { get; }
     //IDriveRepository Drives { get; }
     //ICommentRepository Comments { get; }
     //IPhotoRepository Photos { get; }
