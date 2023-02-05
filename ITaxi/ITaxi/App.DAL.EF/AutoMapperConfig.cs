@@ -252,6 +252,71 @@ public class AutoMapperConfig : Profile
             .ForMember(dto => dto.UpdatedAt,
                 m =>
                     m.MapFrom(x => x.UpdatedAt.ToUniversalTime()));
+        
+        // Convert from EF => DTO: Convert to Local Time
+        CreateMap<App.Domain.Booking, BookingDTO>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
+            .ForMember(dto => dto.PickUpDateAndTime,
+                m =>
+                    m.MapFrom(x => x.PickUpDateAndTime.ToLocalTime()));
+            
+        // DTO => EF: Convert to Universal Time
+        CreateMap<BookingDTO, App.Domain.Booking>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToUniversalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToUniversalTime()))
+            .ForMember(dto => dto.PickUpDateAndTime,
+                m =>
+                    m.MapFrom(x => x.PickUpDateAndTime.ToUniversalTime()));
+
+        CreateMap<App.Domain.Drive, DriveDTO>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
+            .ForMember(dto => dto.DriveAcceptedDateAndTime,
+                m =>
+                    m.MapFrom(x => x.DriveAcceptedDateAndTime.ToLocalTime()))
+            .ForMember(dto => dto.DriveDeclineDateAndTime,
+                m =>
+                    m.MapFrom(x => x.DriveDeclineDateAndTime.ToLocalTime()))
+            .ForMember(dto => dto.DriveStartDateAndTime,
+                m =>
+                    m.MapFrom(x => x.DriveStartDateAndTime.ToLocalTime()))
+            .ForMember(dto => dto.DriveEndDateAndTime,
+                x =>
+                    x.MapFrom(m => m.DriveEndDateAndTime.ToLocalTime()));
+
+        // DTO => EF: Convert to Universal Time
+        CreateMap<DriveDTO, App.Domain.Drive>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToUniversalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToUniversalTime()))
+            .ForMember(dto => dto.DriveAcceptedDateAndTime,
+                m =>
+                    m.MapFrom(x => x.DriveAcceptedDateAndTime.ToUniversalTime()))
+            .ForMember(dto => dto.DriveDeclineDateAndTime,
+                m =>
+                    m.MapFrom(x => x.DriveDeclineDateAndTime.ToUniversalTime()))
+            .ForMember(dto => dto.DriveStartDateAndTime,
+                m =>
+                    m.MapFrom(x => x.DriveStartDateAndTime.ToUniversalTime()))
+            .ForMember(dto => dto.DriveEndDateAndTime,
+                x =>
+                    x.MapFrom(m => m.DriveEndDateAndTime.ToUniversalTime()));
 
 
         CreateMap<AppUser, App.Domain.Identity.AppUser>().ReverseMap();

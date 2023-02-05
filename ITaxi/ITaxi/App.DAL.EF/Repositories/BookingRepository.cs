@@ -1,41 +1,43 @@
-﻿/*using App.Contracts.DAL.IAppRepositories;
+﻿using App.Contracts.DAL.IAppRepositories;
+using App.DAL.DTO.AdminArea;
 using App.Domain;
 using App.Domain.Enum;
+using Base.Contracts;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IBookingRepository
+public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Booking, AppDbContext>, IBookingRepository
 {
-    public BookingRepository(AppDbContext dbContext) : base(dbContext)
+    public BookingRepository(AppDbContext dbContext, IMapper<App.DAL.DTO.AdminArea.BookingDTO, App.Domain.Booking> mapper) : base(dbContext, mapper)
     {
     }
 
-    public override async Task<IEnumerable<Booking>> GetAllAsync(bool noTracking = true)
+    public override async Task<IEnumerable<BookingDTO>> GetAllAsync(bool noTracking = true)
     {
-        return await CreateQuery(noTracking).ToListAsync();
+        return (await CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public override IEnumerable<Booking> GetAll(bool noTracking = true)
+    public override IEnumerable<BookingDTO> GetAll(bool noTracking = true)
     {
-        return CreateQuery(noTracking).ToList();
+        return CreateQuery(noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<Booking?>> GettingAllBookingsWithoutIncludesAsync(bool noTracking = true)
+    public async Task<IEnumerable<BookingDTO?>> GettingAllBookingsWithoutIncludesAsync(bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking, noIncludes: true).ToListAsync();
+        return (await base.CreateQuery(noTracking, noIncludes: true).ToListAsync()).Select(e => Mapper.Map(e));
     }
 
-    public IEnumerable<Booking?> GettingAllBookingsWithoutIncludes(bool noTracking = true)
+    public IEnumerable<BookingDTO?> GettingAllBookingsWithoutIncludes(bool noTracking = true)
     {
-        return base.CreateQuery(noTracking, noIncludes: true).ToList();
+        return base.CreateQuery(noTracking, noIncludes: true).ToList().Select(e => Mapper.Map(e));
     }
 
-    public async Task<IEnumerable<Booking?>> GettingAllOrderedBookingsAsync(Guid? userId = null,
+    public async Task<IEnumerable<BookingDTO?>> GettingAllOrderedBookingsAsync(Guid? userId = null,
        string? roleName = null, bool noTracking = true)
     {
-        return await CreateQuery(userId, roleName,noTracking)
+        return (await CreateQuery(userId, roleName,noTracking)
             .OrderBy(b => b.PickUpDateAndTime.Date)
             .ThenBy(b => b.PickUpDateAndTime.Day)
             .ThenBy(b => b.PickUpDateAndTime.Month)
@@ -45,12 +47,12 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
             .ThenBy(b => b.Customer!.AppUser!.LastName)
             .ThenBy(b => b.Customer!.AppUser!.FirstName)
             .ThenBy(b => b.City!.CityName)
-            .ToListAsync();
+            .ToListAsync()).Select(e => Mapper.Map(e));
     }
 
    
 
-    public IEnumerable<Booking?> GettingAllOrderedBookings(Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public IEnumerable<BookingDTO?> GettingAllOrderedBookings(Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         return CreateQuery(userId,roleName,noTracking)
             .OrderBy(b => b.PickUpDateAndTime.Date)
@@ -62,13 +64,13 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
             .ThenBy(b => b.Customer!.AppUser!.LastName)
             .ThenBy(b => b.Customer!.AppUser!.FirstName)
             .ThenBy(b => b.City!.CityName)
-            .ToList();
+            .ToList().Select(e => Mapper.Map(e));
     }
 
-    public async Task<IEnumerable<Booking?>> GettingAllOrderedBookingsWithoutIncludesAsync(
+    public async Task<IEnumerable<BookingDTO?>> GettingAllOrderedBookingsWithoutIncludesAsync(
         bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking, noIncludes: true)
+        return (await base.CreateQuery(noTracking, noIncludes: true)
             .OrderBy(b => b.PickUpDateAndTime.Date)
             .ThenBy(b => b.PickUpDateAndTime.Day)
             .ThenBy(b => b.PickUpDateAndTime.Month)
@@ -77,12 +79,12 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
             .ThenBy(b => b.PickUpDateAndTime.Minute)
             .ThenBy(b => b.NumberOfPassengers)
             .ThenBy(b => b.StatusOfBooking)
-            .ToListAsync();
+            .ToListAsync()).Select(e => Mapper.Map(e));
     }
 
     
 
-    public IEnumerable<Booking?> GettingAllOrderedBookingsWithoutIncludes(bool noTracking = true)
+    public IEnumerable<BookingDTO?> GettingAllOrderedBookingsWithoutIncludes(bool noTracking = true)
     {
         return base.CreateQuery(noTracking, noIncludes: true)
             .OrderBy(b => b.PickUpDateAndTime.Date)
@@ -93,28 +95,31 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
             .ThenBy(b => b.PickUpDateAndTime.Minute)
             .ThenBy(b => b.NumberOfPassengers)
             .ThenBy(b => b.StatusOfBooking)
-            .ToList();
+            .ToList().Select(e =>Mapper.Map(e));
     }
 
-    public async Task<Booking?> GettingBookingWithoutIncludesByIdAsync(Guid id, bool noTracking = true)
+    public async Task<BookingDTO?> GettingBookingWithoutIncludesByIdAsync(Guid id, bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking, noIncludes: true).FirstOrDefaultAsync(b => b.Id.Equals(id));
+        return Mapper.Map(await base.CreateQuery(noTracking, noIncludes: true)
+            .FirstOrDefaultAsync(b => b.Id.Equals(id)));
     }
 
-    public Booking? GettingBookingWithoutIncludesById(Guid id, bool noTracking = true)
+    public BookingDTO? GettingBookingWithoutIncludesById(Guid id, bool noTracking = true)
     {
-        return base.CreateQuery(noTracking, noIncludes: true).FirstOrDefault(b => b.Id.Equals(id));
+        return Mapper.Map(base.CreateQuery(noTracking, noIncludes: true)
+            .FirstOrDefault(b => b.Id.Equals(id)));
     }
 
-    public async Task<List<Booking>> SearchByCityAsync(string search, Guid? userId = null,
+    public async Task<List<BookingDTO>> SearchByCityAsync(string search, Guid? userId = null,
         string? roleName = null)
     {
-        var results = await CreateQuery(userId, roleName)
-            .Where(b => b.City!.CityName.Contains(search)).ToListAsync();
-        return results;
+        var results = (await CreateQuery(userId, roleName)
+            .Where(b => b.City!.CityName.Contains(search)).ToListAsync()
+            ).Select(e => Mapper.Map(e));
+        return results.ToList()!;
     }
 
-    public string PickUpDateAndTimeStrFormat(Booking booking)
+    public string PickUpDateAndTimeStrFormat(BookingDTO booking)
     {
         return booking.PickUpDateAndTime.ToLongDateString() + " "
                                                             + booking.PickUpDateAndTime.ToShortTimeString();
@@ -126,7 +131,7 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
     }
 
 
-    public async Task<Booking?> BookingDeclineAsync(Guid id, Guid? userId = null, string? roleName = null)
+    public async Task<BookingDTO?> BookingDeclineAsync(Guid id, Guid? userId = null, string? roleName = null)
     {
         var booking = await FirstOrDefaultAsync(id, userId, roleName);
         if (booking == null)
@@ -137,7 +142,7 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
         return booking;
     }
 
-    public Booking? BookingDecline(Guid id, Guid? userId = null, string? roleName = null)
+    public BookingDTO? BookingDecline(Guid id, Guid? userId = null, string? roleName = null)
     {
         var booking = FirstOrDefault(id, userId, roleName);
         if (booking == null)
@@ -148,27 +153,29 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
         return booking;
     }
 
-    public async Task<Booking?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null,
+    public async Task<BookingDTO?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null,
         bool noTracking = true)
     {
         var booking = await FirstOrDefaultAsync(id, userId, roleName, noTracking);
         return booking;
     }
 
-    public Booking? GettingBooking(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public BookingDTO? GettingBooking(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         var booking = FirstOrDefault(id, userId, roleName, noTracking);
         return booking;
     }
 
-    public  async Task<Booking?> FirstOrDefaultAsync(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public  async Task<BookingDTO?> FirstOrDefaultAsync(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return await CreateQuery(userId, roleName,noTracking).FirstOrDefaultAsync(b => b.Id.Equals(id));
+        return Mapper.Map(await CreateQuery(userId, roleName,noTracking)
+            .FirstOrDefaultAsync(b => b.Id.Equals(id)));
     }
 
-    public  Booking? FirstOrDefault(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public  BookingDTO? FirstOrDefault(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return CreateQuery(userId, roleName,noTracking).FirstOrDefault(b => b.Id.Equals(id));
+        return Mapper.Map(CreateQuery(userId, roleName,noTracking)
+            .FirstOrDefault(b => b.Id.Equals(id)));
     }
 
     protected  IQueryable<Booking> CreateQuery(Guid? userId = null, string? roleName = null,bool noTracking = true)
@@ -209,4 +216,4 @@ public class BookingRepository : BaseEntityRepository<Booking, AppDbContext>, IB
             .Where(u => u.Customer!.AppUserId.Equals(userId));
         return query;
     }
-}*/
+}

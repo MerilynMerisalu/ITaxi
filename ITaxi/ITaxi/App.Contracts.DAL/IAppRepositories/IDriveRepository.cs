@@ -1,46 +1,46 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
+using App.DAL.DTO.AdminArea;
 using App.Domain;
 using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface IDriveRepository : IEntityRepository<Drive>
+public interface IDriveRepository : IEntityRepository<DriveDTO>
 {
     
-    Task<IEnumerable<Drive>> GetAllDrivesWithoutIncludesAsync(bool noTracking = true);
-    IEnumerable<Drive> GetAllDrivesWithoutIncludes(bool noTracking = true);
-    Task<IEnumerable<Drive>> GettingAllOrderedDrivesWithIncludesAsync(Guid? userId = null, string? roleName = null, bool? noTracking = true);
-    IEnumerable<Drive> GettingAllOrderedDrivesWithIncludes(Guid? userId = null, string? roleName = null,bool noTracking = true);
+    Task<IEnumerable<DriveDTO>> GetAllDrivesWithoutIncludesAsync(bool noTracking = true);
+    IEnumerable<DriveDTO> GetAllDrivesWithoutIncludes(bool noTracking = true);
+    Task<IEnumerable<DriveDTO>> GettingAllOrderedDrivesWithIncludesAsync(Guid? userId = null, string? roleName = null, bool? noTracking = true);
+    IEnumerable<DriveDTO> GettingAllOrderedDrivesWithIncludes(Guid? userId = null, string? roleName = null,bool noTracking = true);
 
-    Task<Drive?> GettingDriveWithoutIncludesAsync(Guid id, bool noTracking = true);
-    Drive? GetDriveWithoutIncludes(Guid id, bool noTracking = true);
-    Task<IEnumerable<Drive?>> SearchByDateAsync(DateTime search, Guid? userId = null, string? roleName = null);
-    IEnumerable<Drive?> SearchByDate(DateTime search, Guid? userId = null, string? roleName = null);
+    Task<DriveDTO?> GettingDriveWithoutIncludesAsync(Guid id, bool noTracking = true);
+    DriveDTO? GetDriveWithoutIncludes(Guid id, bool noTracking = true);
+    Task<IEnumerable<DriveDTO?>> SearchByDateAsync(DateTime search, Guid? userId = null, string? roleName = null);
+    IEnumerable<DriveDTO?> SearchByDate(DateTime search, Guid? userId = null, string? roleName = null);
 
-    Task<IEnumerable<Drive?>> PrintAsync( Guid? userId = null, string? roleName = null);
-    IEnumerable<Drive?> Print(Guid id);
-    string PickUpDateAndTimeStr(Drive drive);
-    Task<IEnumerable<Drive?>> GettingDrivesWithoutCommentAsync(Guid? userId = null, string? roleName = null,bool noTracking = true);
-    IEnumerable<Drive?> GettingDrivesWithoutComment(bool noTracking = true);
-    Task<IEnumerable<Drive?>> GettingAllDrivesForCommentsAsync(Guid? userId = null, string? roleName = null,bool noTracking = true);
-    IEnumerable<Drive?> GettingDrivesForComments(bool noTracking = true);
-    Drive? AcceptingDrive(Guid id);
-    Task<Drive?> AcceptingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true);
-    Drive? DecliningDrive(Guid id);
-    Task<Drive?> DecliningDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true);
-    Drive? StartingDrive(Guid id);
-    Task<Drive?> StartingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true );
+    Task<IEnumerable<DriveDTO?>> PrintAsync( Guid? userId = null, string? roleName = null);
+    IEnumerable<DriveDTO?> Print(Guid id);
+    string PickUpDateAndTimeStr(DriveDTO drive);
+    Task<IEnumerable<DriveDTO?>> GettingDrivesWithoutCommentAsync(Guid? userId = null, string? roleName = null,bool noTracking = true);
+    IEnumerable<DriveDTO?> GettingDrivesWithoutComment(bool noTracking = true);
+    Task<IEnumerable<DriveDTO?>> GettingAllDrivesForCommentsAsync(Guid? userId = null, string? roleName = null,bool noTracking = true);
+    IEnumerable<DriveDTO?> GettingDrivesForComments(bool noTracking = true);
+    DriveDTO? AcceptingDrive(Guid id);
+    Task<DriveDTO?> AcceptingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true);
+    DriveDTO? DecliningDrive(Guid id);
+    Task<DriveDTO?> DecliningDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true);
+    DriveDTO? StartingDrive(Guid id);
+    Task<DriveDTO?> StartingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true );
+    DriveDTO? EndingDrive(Guid id);
+    Task<DriveDTO?> EndingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true);
+    Task<DriveDTO?> GettingFirstDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
+    DriveDTO? GettingFirstDrive(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
 
-    Drive? EndingDrive(Guid id);
-    Task<Drive?> EndingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true);
-    Task<Drive?> GettingFirstDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
-    Drive? GettingFirstDrive(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
-
-    Task<Drive?> GettingSingleOrDefaultDriveAsync(Expression<Func<Drive, bool>> filter, string? roleName = null,
+    Task<DriveDTO?> GettingSingleOrDefaultDriveAsync(Expression<Func<Drive, bool>> filter, string? roleName = null,
         bool noTracking = true);
 
-    Drive? GettingSingleOrDefaultDrive( Expression<Func<Drive, bool>> filter, string? roleName = null,
+    DriveDTO? GettingSingleOrDefaultDrive( Expression<Func<Drive, bool>> filter, string? roleName = null,
         bool noTracking = true);
 
 }

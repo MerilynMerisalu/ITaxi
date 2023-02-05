@@ -1,54 +1,60 @@
-﻿/*using System.Collections;
+﻿using System.Collections;
 using System.Linq.Expressions;
 using App.Contracts.DAL.IAppRepositories;
+using App.DAL.DTO.AdminArea;
 using App.Domain;
+using Base.Contracts;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDriveRepository
+public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, AppDbContext>, IDriveRepository
 {
-    public DriveRepository(AppDbContext dbContext) : base(dbContext)
+    public DriveRepository(AppDbContext dbContext, IMapper<App.DAL.DTO.AdminArea.DriveDTO, App.Domain.Drive> mapper) : 
+        base(dbContext, mapper)
     {
     }
 
-    public  async Task<IEnumerable<Drive>> GetAllAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
+    public  async Task<IEnumerable<DriveDTO>> GetAllAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
-        return await CreateQuery(userId, roleName,noTracking).ToListAsync();
+        return (await CreateQuery(userId, roleName,noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<Drive> GetAll(Guid? userId = null, string? roleName = null,bool noTracking = true)
+    public IEnumerable<DriveDTO> GetAll(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
-        return CreateQuery(userId,roleName,noTracking).ToList();
+        return CreateQuery(userId,roleName,noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<Drive?> FirstOrDefaultAsync(Guid id,Guid? userId = null, string? roleName = null,
+    public async Task<DriveDTO?> FirstOrDefaultAsync(Guid id,Guid? userId = null, string? roleName = null,
         bool noTracking = true)
     {
-        return await CreateQuery(userId, roleName,noTracking).FirstOrDefaultAsync(d => d.Id.Equals(id));
+        return Mapper.Map(await CreateQuery(userId, roleName,noTracking)
+            .FirstOrDefaultAsync(d => d.Id.Equals(id)));
     }
 
-    public  Drive? FirstOrDefault(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public  DriveDTO? FirstOrDefault(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return CreateQuery(userId, roleName,noTracking).FirstOrDefault(d => d.Id.Equals(id));
+        return Mapper.Map(CreateQuery(userId, roleName,noTracking)
+            .FirstOrDefault(d => d.Id.Equals(id)));
     }
 
-    public async Task<IEnumerable<Drive>> GetAllDrivesWithoutIncludesAsync(
+    public async Task<IEnumerable<DriveDTO>> GetAllDrivesWithoutIncludesAsync(
         bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking, noIncludes: true).ToListAsync();
+        return (await base.CreateQuery(noTracking, noIncludes: true).ToListAsync())
+            .Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<Drive> GetAllDrivesWithoutIncludes(bool noTracking = true)
+    public IEnumerable<DriveDTO> GetAllDrivesWithoutIncludes(bool noTracking = true)
     {
-        return base.CreateQuery(noTracking, noIncludes: true).ToList();
+        return base.CreateQuery(noTracking, noIncludes: true).ToList().Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<Drive>> GettingAllOrderedDrivesWithIncludesAsync(
+    public async Task<IEnumerable<DriveDTO>> GettingAllOrderedDrivesWithIncludesAsync(
         Guid? userId = null, string? roleName = null ,bool? noTracking = true)
     {
-        return await CreateQuery(userId,roleName)
+        return (await CreateQuery(userId,roleName)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
@@ -61,11 +67,11 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
             .ThenBy(d => d.Booking!.PickupAddress)
             .ThenBy(d => d.Booking!.DestinationAddress)
             .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
-            .ToListAsync();
+            .ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
 
-    public IEnumerable<Drive> GettingAllOrderedDrivesWithIncludes(
+    public IEnumerable<DriveDTO> GettingAllOrderedDrivesWithIncludes(
         Guid? userId = null, string? roleName = null, bool noTracking = true )
     {
         return CreateQuery(userId, roleName,noTracking)
@@ -81,76 +87,81 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
             .ThenBy(d => d.Booking!.PickupAddress)
             .ThenBy(d => d.Booking!.DestinationAddress)
             .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
-            .ToList();
+            .ToList().Select(e => Mapper.Map(e))!;
     }
 
 
-    public async Task<Drive?> GettingDriveWithoutIncludesAsync(Guid id, bool noTracking = true)
+    public async Task<DriveDTO?> GettingDriveWithoutIncludesAsync(Guid id, bool noTracking = true)
     {
-        return await base.CreateQuery(noTracking, noIncludes: true).FirstOrDefaultAsync(d => d.Id.Equals(id));
+        return Mapper.Map(await base.CreateQuery(noTracking, noIncludes: true)
+            .FirstOrDefaultAsync(d => d.Id.Equals(id)));
     }
 
-    public Drive? GetDriveWithoutIncludes(Guid id, bool noTracking = true)
+    public DriveDTO? GetDriveWithoutIncludes(Guid id, bool noTracking = true)
     {
-        return base.CreateQuery(noTracking, noIncludes: true).FirstOrDefault(d => d.Id.Equals(id));
+        return Mapper.Map(base.CreateQuery(noTracking, noIncludes: true)
+            .FirstOrDefault(d => d.Id.Equals(id)));
     }
 
-    public async Task<IEnumerable<Drive?>> SearchByDateAsync(DateTime search,
+    public async Task<IEnumerable<DriveDTO?>> SearchByDateAsync(DateTime search,
         Guid? userId = null, string? roleName = null)
     {
-        var drives = await CreateQuery(userId, roleName)
+        var drives = (await CreateQuery(userId, roleName)
             .Where(d => d.Booking!.PickUpDateAndTime.Date
-                .Equals(search.Date)).ToListAsync();
+                .Equals(search.Date)).ToListAsync()).Select(e => Mapper.Map(e));
         return drives;
     }
 
     
 
-    public IEnumerable<Drive?> SearchByDate(DateTime search, Guid? userId = null, string? roleName = null)
+    public IEnumerable<DriveDTO?> SearchByDate(DateTime search, Guid? userId = null, string? roleName = null)
     {
         var drives = CreateQuery(userId, roleName)
             .Where(d => d.Booking!.PickUpDateAndTime.Date
-                .Equals(search.Date)).ToList();
+                .Equals(search.Date)).ToList().Select(e => Mapper.Map(e));
         return drives;
     }
 
-    public async Task<IEnumerable<Drive?>> PrintAsync(
+    public async Task<IEnumerable<DriveDTO?>> PrintAsync(
         Guid? userId = null, string? roleName = null)
     {
         
-        if (roleName is nameof(Admin))
+        if (roleName is "Admin")
         {
-            var drives = await CreateQuery(null, roleName).ToListAsync();
+            var drives = 
+                (await CreateQuery(null, roleName).ToListAsync()).Select(e => Mapper.Map(e));
             return drives;
         }
 
-        return await CreateQuery(userId, roleName).ToListAsync();
+        return (await CreateQuery(userId, roleName).ToListAsync()).Select(e => Mapper.Map(e));
 
     }
 
-    public IEnumerable<Drive?> Print(Guid id)
+    public IEnumerable<DriveDTO?> Print(Guid id)
     {
         var drives = CreateQuery()
-            .Where(d => d.DriverId.Equals(id)).ToList();
+            .Where(d => d.DriverId.Equals(id)).ToList().Select(e => Mapper.Map(e));
         return drives;
     }
 
-    public string PickUpDateAndTimeStr(Drive drive)
+    
+
+    public string PickUpDateAndTimeStr(DriveDTO drive)
     {
         return drive.Booking!.PickUpDateAndTime.ToLongDateString() + " "
                                                                    + drive.Booking!.PickUpDateAndTime
                                                                        .ToShortTimeString();
     }
 
-    public async Task<IEnumerable<Drive?>> GettingDrivesWithoutCommentAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
+    public async Task<IEnumerable<DriveDTO?>> GettingDrivesWithoutCommentAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
-        var res = await CreateQuery(userId, roleName, noTracking)
+        var res = (await CreateQuery(userId, roleName, noTracking)
             .Where(d => d.Comment!.DriveId == null)
-            .ToListAsync();
+            .ToListAsync()).Select(e => Mapper.Map(e));
         return res;
     }
 
-    public IEnumerable<Drive?> GettingDrivesWithoutComment(bool noTracking = true)
+    public IEnumerable<DriveDTO?> GettingDrivesWithoutComment(bool noTracking = true)
     {
         var res = CreateQuery(noTracking)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
@@ -166,14 +177,14 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
             .ThenBy(d => d.Booking!.DestinationAddress)
             .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
             .Where(d => d.Comment!.DriveId == null)
-            .ToList();
+            .ToList().Select(e => Mapper.Map(e));
         return res;
     }
 
-    public async Task<IEnumerable<Drive?>> GettingAllDrivesForCommentsAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
+    public async Task<IEnumerable<DriveDTO?>> GettingAllDrivesForCommentsAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
 #warning add a optional parameter to CreateQuery that allows the order by to be appended in that method
-        var res = await CreateQuery(userId, roleName, noTracking)
+        var res = (await CreateQuery(userId, roleName, noTracking)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
@@ -186,11 +197,11 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
             .ThenBy(d => d.Booking!.PickupAddress)
             .ThenBy(d => d.Booking!.DestinationAddress)
             .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
-            .ToListAsync();
+            .ToListAsync()).Select(e => Mapper.Map(e));
         return res;
     }
 
-    public IEnumerable<Drive?> GettingDrivesForComments(bool noTracking = true)
+    public IEnumerable<DriveDTO?> GettingDrivesForComments(bool noTracking = true)
     {
         var res = CreateQuery(noTracking)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
@@ -205,11 +216,11 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
             .ThenBy(d => d.Booking!.PickupAddress)
             .ThenBy(d => d.Booking!.DestinationAddress)
             .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
-            .ToList();
+            .ToList().Select(e => Mapper.Map(e));
         return res;
     }
 
-    public Drive? AcceptingDrive(Guid id)
+    public DriveDTO? AcceptingDrive(Guid id)
     {
         var drive = FirstOrDefault(id);
         if (drive != null)
@@ -222,7 +233,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
-    public async Task<Drive?> AcceptingDriveAsync(Guid id,Guid? userId = null, string? roleName = null,bool noTracking = true )
+    public async Task<DriveDTO?> AcceptingDriveAsync(Guid id,Guid? userId = null, string? roleName = null,bool noTracking = true )
     {
         var drive = await FirstOrDefaultAsync(id, userId, roleName);
         if (drive != null)
@@ -234,7 +245,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
-    public Drive? DecliningDrive(Guid id)
+    public DriveDTO? DecliningDrive(Guid id)
     {
         var drive = FirstOrDefault(id);
         if (drive != null)
@@ -247,7 +258,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
-    public async Task<Drive?> DecliningDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true)
+    public async Task<DriveDTO?> DecliningDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
         var drive = await FirstOrDefaultAsync(id, userId, roleName,noTracking );
         if (drive != null)
@@ -259,7 +270,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
-    public Drive? StartingDrive(Guid id)
+    public DriveDTO? StartingDrive(Guid id)
     {
         var drive = FirstOrDefault(id);
         if (drive != null)
@@ -272,7 +283,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
-    public async Task<Drive?> StartingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true )
+    public async Task<DriveDTO?> StartingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true )
     {
         var drive = await FirstOrDefaultAsync(id, userId, roleName, noTracking);
         if (drive != null)
@@ -284,7 +295,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
-    public Drive? EndingDrive(Guid id)
+    public DriveDTO? EndingDrive(Guid id)
     {
         var drive = FirstOrDefault(id);
         if (drive != null)
@@ -297,7 +308,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
-    public async Task<Drive?> EndingDriveAsync(Guid id,Guid? userId = null, string? roleName = null,bool noTracking = true )
+    public async Task<DriveDTO?> EndingDriveAsync(Guid id,Guid? userId = null, string? roleName = null,bool noTracking = true )
     {
         var drive = await FirstOrDefaultAsync(id, userId, roleName, noTracking);
         if (drive != null)
@@ -309,17 +320,19 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         return null;
     }
 
-    public async Task<Drive?> GettingFirstDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<DriveDTO?> GettingFirstDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return await CreateQuery(userId, roleName, noTracking).FirstOrDefaultAsync(d => d.Id.Equals(id));
+        return Mapper.Map(await CreateQuery(userId, roleName, noTracking)
+            .FirstOrDefaultAsync(d => d.Id.Equals(id)));
     }
 
-    public Drive? GettingFirstDrive(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public DriveDTO? GettingFirstDrive(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return CreateQuery(userId, roleName, noTracking).FirstOrDefault(d => d.Id.Equals(id));
+        return Mapper.Map(CreateQuery(userId, roleName, noTracking)
+            .FirstOrDefault(d => d.Id.Equals(id)));
     }
 
-    public async Task<Drive?> GettingSingleOrDefaultDriveAsync(
+    public async Task<DriveDTO?> GettingSingleOrDefaultDriveAsync(
         Expression<Func<Drive, bool>> filter, string? roleName = null, bool noTracking = true)
     {
         var drives = CreateQuery(null, roleName);
@@ -328,10 +341,10 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         {
             return null;
         }
-        return drive;
+        return Mapper.Map(drive);
     }
 
-    public Drive? GettingSingleOrDefaultDrive(Expression<Func<Drive, bool>> filter, string? roleName = null, bool noTracking = true)
+    public DriveDTO? GettingSingleOrDefaultDrive(Expression<Func<Drive, bool>> filter, string? roleName = null, bool noTracking = true)
     {
         var drives = CreateQuery(null, roleName);
         var drive = drives.SingleOrDefault(filter);
@@ -339,7 +352,7 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
         {
             return null;
         }
-        return drive;
+        return Mapper.Map(drive);
     }
 
 
@@ -411,4 +424,4 @@ public class DriveRepository : BaseEntityRepository<Drive, AppDbContext>, IDrive
     }
 
     
-}*/
+}

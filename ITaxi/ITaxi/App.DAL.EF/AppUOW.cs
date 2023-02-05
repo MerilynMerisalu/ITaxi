@@ -13,7 +13,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     private readonly IMapper _mapper;
     private IAdminRepository? _admins;
     private IAppUserRepository? _appUsers;
-    //private IBookingRepository? _bookings;
+    private IBookingRepository? _bookings;
     private ICityRepository? _cities;
     // private ICommentRepository _comments;
 
@@ -23,7 +23,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     private IDriverAndDriverLicenseCategoryRepository? _driverAndDriverLicenseCategories;
     private IDriverLicenseCategoryRepository? _driverLicenseCategories;
     private IDriverRepository? _drivers;
-    //private IDriveRepository _drives;
+    private IDriveRepository? _drives;
     //private IPhotoRepository _photos;
     private IRideTimeRepository? _rideTimes;
     private IScheduleRepository? _schedules;
@@ -43,7 +43,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
         new CityMapper(_mapper));
     public virtual IAdminRepository Admins => _admins ?? new AdminRepository(UOWDbContext, new AdminMapper(_mapper));
     public virtual IAppUserRepository AppUsers => _appUsers ?? new AppUserRepository(UOWDbContext, new AppUserMapper(_mapper));
-    //public IBookingRepository Bookings => _bookings ?? new BookingRepository(UOWDbContext);
+    public IBookingRepository Bookings => _bookings ?? new BookingRepository(UOWDbContext, new BookingMapper(_mapper));
     public IDriverRepository Drivers => _drivers ?? new DriverRepository(UOWDbContext, new DriverMapper(_mapper));
 
     public virtual IDriverLicenseCategoryRepository DriverLicenseCategories =>
@@ -69,7 +69,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
                                                             new DisabilityTypeMapper(_mapper));
     public ICustomerRepository Customers => _customers ?? new CustomerRepository(UOWDbContext
     , new CustomerMapper(_mapper));
-    //public IDriveRepository Drives => _drives ?? new DriveRepository(UOWDbContext);
+    public IDriveRepository Drives => _drives ?? new DriveRepository(UOWDbContext, new DriveMapper(_mapper));
     //public ICommentRepository Comments => _comments ?? new CommentRepository(UOWDbContext);
     //public IPhotoRepository Photos => _photos ?? new PhotoRepository(UOWDbContext);
 }

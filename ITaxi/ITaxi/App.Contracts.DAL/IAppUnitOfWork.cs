@@ -9,7 +9,7 @@ public interface IAppUnitOfWork : IUnitOfWork
     ICityRepository Cities { get; }
     IAdminRepository Admins { get; }
     IAppUserRepository AppUsers { get; }
-    //IBookingRepository Bookings { get; }
+    IBookingRepository Bookings { get; }
     IDriverRepository Drivers { get; }
     IDriverLicenseCategoryRepository DriverLicenseCategories { get; }
     IDriverAndDriverLicenseCategoryRepository DriverAndDriverLicenseCategories { get; }
@@ -21,7 +21,7 @@ public interface IAppUnitOfWork : IUnitOfWork
     IRideTimeRepository RideTimes { get; }
     IDisabilityTypeRepository DisabilityTypes { get; }
     ICustomerRepository Customers { get; }
-    //IDriveRepository Drives { get; }
+    IDriveRepository Drives { get; }
     //ICommentRepository Comments { get; }
     //IPhotoRepository Photos { get; }
 }
