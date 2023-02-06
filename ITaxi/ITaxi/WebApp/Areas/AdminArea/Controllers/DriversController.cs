@@ -2,6 +2,7 @@
 using App.BLL.DTO.AdminArea;
 using App.BLL.DTO.Identity;
 using App.Contracts.BLL;
+using Base.Contracts.DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,16 +18,18 @@ namespace WebApp.Areas.AdminArea.Controllers;
 [Authorize(Roles = "Admin")]
 public class DriversController : Controller
 {
+    private readonly IUnitOfWork _uow;
     private readonly IAppBLL _appBLL;
     #warning ask about it
     private readonly UserManager<App.Domain.Identity.AppUser> _userManager;
 
 
-    public DriversController(UserManager<App.Domain.Identity.AppUser> userManager, IAppBLL appBLL)
+    public DriversController(UserManager<App.Domain.Identity.AppUser> userManager, IAppBLL appBLL, IUnitOfWork uow)
     {
         
         _userManager = userManager;
         _appBLL = appBLL;
+        _uow = uow;
     }
 
     // GET: AdminArea/Drivers
@@ -255,7 +258,7 @@ public class DriversController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id);
-        /*if (await _appBLL.Schedules.AnyAsync(d => driver != null && d != null && d.DriverId.Equals(driver.Id))
+        if (await _appBLL.Schedules.AnyAsync(d => driver != null && d != null && d.DriverId.Equals(driver.Id))
             || await _appBLL.Bookings.AnyAsync(d => driver != null && d != null && d.DriverId.Equals(driver.Id)))
             return Content("Entity cannot be deleted because it has dependent entities!");
 
