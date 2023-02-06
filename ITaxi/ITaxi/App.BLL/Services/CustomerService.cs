@@ -47,4 +47,14 @@ ICustomerRepository>, ICustomerService
     {
         return Mapper.Map(Repository.GettingCustomerByIdWithoutIncludes(id, noTracking));
     }
+
+    public async Task<bool> HasBookingsAnyAsync(Guid customerId)
+    {
+        return await Repository.HasBookingsAnyAsync(customerId);
+    }
+
+    public bool HasAnyBookings(Guid customerId)
+    {
+        return Repository.HasAnyBookings(customerId);
+    }
 }

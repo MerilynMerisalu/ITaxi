@@ -2,6 +2,7 @@
 
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using App.Contracts.DAL;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,12 +16,14 @@ namespace WebApp.Areas.AdminArea.Controllers;
 public class CustomersController : Controller
 {
     private readonly IAppBLL _appBLL;
+    private readonly IAppUnitOfWork _uow;
     private readonly UserManager<AppUser> _userManager;
 
-    public CustomersController(IAppBLL appBLL, UserManager<AppUser> userManager)
+    public CustomersController(IAppBLL appBLL, UserManager<AppUser> userManager, IAppUnitOfWork uow)
     {
         _appBLL = appBLL;
         _userManager = userManager;
+        _uow = uow;
     }
 
     // GET: AdminArea/Customers
@@ -221,8 +224,8 @@ public class CustomersController : Controller
         if (customer != null)
         {
             customer.AppUser = null;
-                /*if (await _appBLL.Bookings.AnyAsync(c => customer != null && c != null && c.CustomerId.Equals(customer.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");*/
+                if (await _appBLL.Customers.HasBookingsAnyAsync(id))
+                    return Content("Entity cannot be deleted because it has dependent entities!");
 
             var appUser = await _userManager.FindByIdAsync(customer!.AppUserId.ToString());
             if (appUser != null)

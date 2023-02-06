@@ -19,4 +19,6 @@ public interface ICustomerRepositoryCustom<TEntity>
     Task<IEnumerable<TEntity?>> GettingAllOrderedCustomersAsync(bool noTracking = true);
     IEnumerable<TEntity?> GettingAllOrderedCustomers(bool noTracking = true);
     TEntity? GettingCustomerByIdWithoutIncludes(Guid id, bool noTracking = true);
+    Task<bool> HasBookingsAnyAsync(Guid customerId);
+    bool HasAnyBookings(Guid customerId);
 }

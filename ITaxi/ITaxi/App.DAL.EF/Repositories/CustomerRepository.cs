@@ -73,6 +73,16 @@ public class CustomerRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Cus
         return Mapper.Map(base.CreateQuery(noTracking, noIncludes: true).FirstOrDefault(c => c.Id.Equals(id)))!;
     }
 
+    public async Task<bool> HasBookingsAnyAsync(Guid customerId)
+    {
+        return await RepoDbContext.Bookings.AnyAsync(b => b.CustomerId.Equals(customerId));
+    }
+
+    public bool HasAnyBookings(Guid customerId)
+    {
+        return RepoDbContext.Bookings.Any(b => b.CustomerId.Equals(customerId));
+    }
+
     protected override IQueryable<Customer> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
