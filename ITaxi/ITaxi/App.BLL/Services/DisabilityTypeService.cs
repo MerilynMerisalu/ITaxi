@@ -32,4 +32,14 @@ public class DisabilityTypeService: BaseEntityService<App.BLL.DTO.AdminArea.Disa
     {
         return Repository.GetAllOrderedDisabilityTypes(noTracking).Select(e => Mapper.Map(e))!;
     }
+
+    public async Task<bool> HasAnyCustomersAsync(Guid disabilityTypeId)
+    {
+        return await Repository.HasAnyCustomersAsync(disabilityTypeId);
+    }
+
+    public bool HasAnyCustomers(Guid disabilityTypeId)
+    {
+        return Repository.HasAnyCustomers(disabilityTypeId);
+    }
 }

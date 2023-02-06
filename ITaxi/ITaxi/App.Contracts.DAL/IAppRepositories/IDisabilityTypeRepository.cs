@@ -13,4 +13,6 @@ public interface IDisabilityTypeRepositoryCustom<TEntity>
     IEnumerable<TEntity> GetAllDisabilityTypeDto(string? roleName = null, bool noTracking = true);
     Task<IEnumerable<TEntity>> GetAllOrderedDisabilityTypesAsync(bool noTracking = true);
     IEnumerable<TEntity> GetAllOrderedDisabilityTypes(bool noTracking = true);
+    Task<bool> HasAnyCustomersAsync(Guid disabilityTypeId);
+    bool HasAnyCustomers(Guid disabilityTypeId);
 }

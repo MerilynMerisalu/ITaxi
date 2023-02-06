@@ -317,6 +317,25 @@ public class AutoMapperConfig : Profile
             .ForMember(dto => dto.DriveEndDateAndTime,
                 x =>
                     x.MapFrom(m => m.DriveEndDateAndTime.ToUniversalTime()));
+        // Convert from EF => DTO: Convert to Local Time
+        CreateMap<App.Domain.Comment, CommentDTO>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
+            ;
+
+        // DTO => EF: Convert to Universal Time
+        CreateMap<CommentDTO, App.Domain.Comment>()
+            .ForMember(db => db.CreatedAt,
+                dto =>
+                    dto.MapFrom(x => x.CreatedAt.ToUniversalTime()))
+            .ForMember(db => db.UpdatedAt,
+                dto =>
+                    dto.MapFrom(x => x.UpdatedAt.ToUniversalTime()))
+            ;
 
 
         CreateMap<AppUser, App.Domain.Identity.AppUser>().ReverseMap();

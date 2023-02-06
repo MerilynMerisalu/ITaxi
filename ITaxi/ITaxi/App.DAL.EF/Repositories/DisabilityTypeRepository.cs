@@ -63,6 +63,16 @@ public class DisabilityTypeRepository : BaseEntityRepository<DisabilityTypeDTO, 
             ;
     }
 
+    public async Task<bool> HasAnyCustomersAsync(Guid disabilityTypeId)
+    {
+        return await RepoDbContext.Customers.AnyAsync(d => d.DisabilityTypeId.Equals(disabilityTypeId));
+    }
+
+    public bool HasAnyCustomers(Guid disabilityTypeId)
+    {
+        return RepoDbContext.Customers.Any(d => d.DisabilityTypeId.Equals(disabilityTypeId));
+    }
+
     protected override IQueryable<DisabilityType> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();

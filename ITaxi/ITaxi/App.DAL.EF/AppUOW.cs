@@ -15,7 +15,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     private IAppUserRepository? _appUsers;
     private IBookingRepository? _bookings;
     private ICityRepository? _cities;
-    // private ICommentRepository _comments;
+     private ICommentRepository? _comments;
 
     private ICountyRepository? _counties;
     private ICustomerRepository? _customers;
@@ -70,6 +70,6 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     public ICustomerRepository Customers => _customers ?? new CustomerRepository(UOWDbContext
     , new CustomerMapper(_mapper));
     public IDriveRepository Drives => _drives ?? new DriveRepository(UOWDbContext, new DriveMapper(_mapper));
-    //public ICommentRepository Comments => _comments ?? new CommentRepository(UOWDbContext);
+    public ICommentRepository Comments => _comments ?? new CommentRepository(UOWDbContext, new CommentMapper(_mapper));
     //public IPhotoRepository Photos => _photos ?? new PhotoRepository(UOWDbContext);
 }

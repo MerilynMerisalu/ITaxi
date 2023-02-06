@@ -1,16 +1,20 @@
-/*#nullable enable
+#nullable enable
+using App.BLL.DTO.AdminArea;
 using App.Contracts.DAL;
-using App.Domain;
+using App.DAL.DTO.AdminArea;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
+using BookingDTO = App.DAL.DTO.AdminArea.BookingDTO;
+using DriveDTO = App.DAL.DTO.AdminArea.DriveDTO;
+using DriverDTO = App.DAL.DTO.AdminArea.DriverDTO;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
-[Authorize(Roles = nameof(Admin))]
+[Authorize(Roles = "Admin")]
 [Area(nameof(AdminArea))]
 public class CommentsController : Controller
 {
@@ -30,12 +34,7 @@ public class CommentsController : Controller
         var roleName = User.GettingUserRoleName();
         var res = await _uow.Comments.GettingAllOrderedCommentsWithIncludesAsync(null, roleName);
         
-        foreach (var comment in res)
-        {
-            comment.Drive!.Booking!.PickUpDateAndTime = comment.Drive.Booking!.PickUpDateAndTime.ToLocalTime();
-            comment.CreatedAt = comment.CreatedAt.ToLocalTime();
-            comment.UpdatedAt = comment.UpdatedAt.ToLocalTime();
-        }
+        
         return View(res);
     }
 
@@ -51,13 +50,13 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToLocalTime().ToString("g");
+        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
         vm.CustomerName = comment.Drive!.Booking!.Customer!.AppUser!.LastAndFirstName;
         vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
-        vm.CreatedAt = comment.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = comment.CreatedAt;
         vm.CreatedBy = comment.CreatedBy!;
-        vm.UpdatedAt = comment.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = comment.UpdatedAt;
         vm.UpdatedBy = comment.UpdatedBy!;
 
 
@@ -76,7 +75,7 @@ public class CommentsController : Controller
             if (drive != null) drive.Booking!.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
         }
         vm.Drives = new SelectList(drives,
-            nameof(Drive.Id), nameof(Drive.DriveDescription));
+            nameof(App.DAL.DTO.AdminArea.DriveDTO.Id), nameof(DriveDTO.DriveDescription));
 
         return View(vm);
     }
@@ -89,7 +88,7 @@ public class CommentsController : Controller
     public async Task<IActionResult> Create(CreateCommentViewModel vm)
     {
         var roleName = User.GettingUserRoleName();
-        var comment = new Comment();
+        var comment = new CommentDTO();
         if (ModelState.IsValid)
         {
             comment.Id = Guid.NewGuid();
@@ -104,8 +103,8 @@ public class CommentsController : Controller
         }
 
         vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(null, roleName),
-            nameof(Drive.Id),
-            nameof(Booking.DriveTime));
+            nameof(DriverDTO.Id),
+            nameof(BookingDTO.DriveTime));
 
 
         return View(vm);
@@ -182,15 +181,13 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-#warning Ask maybe can be done as a base method
-
-        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToLocalTime().ToString("g");
+        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
         vm.CustomerName = comment.Drive!.Booking!.Customer!.AppUser!.LastAndFirstName;
-        vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
+        vm.DriverName = comment.Drive.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
-        vm.CreatedAt = comment.CreatedAt.ToLocalTime().ToString("G");
+        vm.CreatedAt = comment.CreatedAt;
         vm.CreatedBy = comment.CreatedBy!;
-        vm.UpdatedAt = comment.UpdatedAt.ToLocalTime().ToString("G");
+        vm.UpdatedAt = comment.UpdatedAt;
         vm.UpdatedBy = comment.UpdatedBy!;
 
         return View(vm);
@@ -213,4 +210,4 @@ public class CommentsController : Controller
     {
         return _uow.Comments.Exists(id);
     }
-}*/
+}

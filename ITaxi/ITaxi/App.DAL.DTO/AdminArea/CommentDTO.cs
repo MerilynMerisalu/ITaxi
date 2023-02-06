@@ -20,4 +20,5 @@ public class CommentDTO: DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Comment),
         Name = "CommentName")]
     public string? CommentText { get; set; }
+
 }
