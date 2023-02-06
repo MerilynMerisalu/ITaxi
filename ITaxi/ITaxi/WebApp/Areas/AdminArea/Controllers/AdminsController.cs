@@ -207,15 +207,18 @@ public class AdminsController : Controller
         var admin = await _appBLL.Admins.FirstOrDefaultAsync(id);
         if (admin != null)
         {
-            var appUser = await _userManager.FindByEmailAsync(admin.AppUser!.Email);
-            await _userManager.RemoveFromRoleAsync(appUser, "Admin");
-            _appBLL.Admins.Remove(admin);
-            //await _appBLL.SaveChangesAsync();
+            admin.AppUser = null;
+            
+                var appUser = await _userManager.FindByIdAsync(admin.AppUserId.ToString());
+                await _userManager.RemoveFromRoleAsync(appUser, "Admin");
+                _appBLL.Admins.Remove(admin);
+                await _appBLL.SaveChangesAsync();
 #warning temporarily solution
-            var claims = await _userManager.GetClaimsAsync(appUser);
-            await _userManager.RemoveClaimsAsync(appUser, claims);
-            await _userManager.DeleteAsync(appUser);
-            await _appBLL.SaveChangesAsync();
+                var claims = await _userManager.GetClaimsAsync(appUser);
+                await _userManager.RemoveClaimsAsync(appUser, claims);
+                await _userManager.DeleteAsync(appUser);
+                await _appBLL.SaveChangesAsync();
+            
         }
 
         return RedirectToAction(nameof(Index));
