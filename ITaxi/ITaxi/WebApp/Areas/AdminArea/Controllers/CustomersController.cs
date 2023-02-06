@@ -143,31 +143,33 @@ public class CustomersController : Controller
     public async Task<IActionResult> Edit(Guid id, EditCustomerViewModel vm)
     {
         var customer = await _appBLL.Customers.FirstOrDefaultAsync(id);
+        
         if (customer == null || id != customer.Id) return NotFound();
 
         if (ModelState.IsValid)
         {
+            customer.AppUser = null;
             try
             {
                 var appUser = await _userManager.FindByIdAsync(customer.AppUserId.ToString());
-                appUser.FirstName = vm.FirstName;
-                appUser.LastName = vm.LastName;
-                appUser.Gender = vm.Gender;
-                appUser.DateOfBirth = vm.DateOfBirth.ToUniversalTime();
-                appUser.Email = vm.Email;
-                appUser.PhoneNumber = vm.PhoneNumber;
-                appUser.IsActive = vm.IsActive;
-                if (true)
+                if (appUser != null)
                 {
-                    customer.Id = id;
-                    customer.DisabilityTypeId = vm.DisabilityTypeId;
-                    customer.UpdatedBy = User.Identity!.Name!;
-                    customer.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _appBLL.Customers.Update(customer);
+                    appUser.FirstName = vm.FirstName;
+                    appUser.LastName = vm.LastName;
+                    appUser.Gender = vm.Gender;
+                    appUser.DateOfBirth = vm.DateOfBirth.ToUniversalTime();
+                    appUser.Email = vm.Email;
+                    appUser.PhoneNumber = vm.PhoneNumber;
+                    appUser.IsActive = vm.IsActive;
+                    await _userManager.UpdateAsync(appUser);
                 }
 
-                await _userManager.UpdateAsync(appUser);
-
+                customer.Id = id;
+                customer.DisabilityTypeId = vm.DisabilityTypeId;
+                customer.UpdatedBy = User.Identity!.Name!;
+                customer.UpdatedAt = DateTime.Now.ToUniversalTime();
+                _appBLL.Customers.Update(customer);
+                
                 await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -216,17 +218,25 @@ public class CustomersController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var customer = await _appBLL.Customers.FirstOrDefaultAsync(id);
-        /*if (await _appBLL.Bookings.AnyAsync(c => customer != null && c != null && c.CustomerId.Equals(customer.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!")*/;
+        if (customer != null)
+        {
+            customer.AppUser = null;
+                /*if (await _appBLL.Bookings.AnyAsync(c => customer != null && c != null && c.CustomerId.Equals(customer.Id)))
+            return Content("Entity cannot be deleted because it has dependent entities!");*/
 
-        var appUser = await _userManager.FindByIdAsync(customer!.AppUserId.ToString());
-        await _userManager.RemoveFromRoleAsync(appUser, "Customer");
-        _appBLL.Customers.Remove(customer);
-        
-        #warning temporarily solution
-        var claims = await _userManager.GetClaimsAsync(appUser);
-        await _userManager.RemoveClaimsAsync(appUser, claims);
-        await _userManager.DeleteAsync(appUser);
+            var appUser = await _userManager.FindByIdAsync(customer!.AppUserId.ToString());
+            if (appUser != null)
+            {
+                await _userManager.RemoveFromRoleAsync(appUser, "Customer");
+                _appBLL.Customers.Remove(customer);
+
+#warning temporarily solution
+                var claims = await _userManager.GetClaimsAsync(appUser);
+                await _userManager.RemoveClaimsAsync(appUser, claims);
+                await _userManager.DeleteAsync(appUser);
+            }
+        }
+
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
