@@ -12,7 +12,7 @@ public class DriveDTO: DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "JobTitle")]
     public DriverDTO? Driver { get; set; }
 
-    public BookingDTO? Booking { get; set; }
+    public BookingDTO Booking { get; set; }
 
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = nameof(Comment))]

@@ -57,6 +57,9 @@ public class AutoMapperConfig: Profile
         CreateMap<App.BLL.DTO.AdminArea.CustomerDTO, App.DAL.DTO.AdminArea.CustomerDTO>()
             .ReverseMap()
             ;
+        CreateMap<App.BLL.DTO.AdminArea.BookingDTO, App.DAL.DTO.AdminArea.BookingDTO>()
+            .ReverseMap()
+            ;
         
     }
     

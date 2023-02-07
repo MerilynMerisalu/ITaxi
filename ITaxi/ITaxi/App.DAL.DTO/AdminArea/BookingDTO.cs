@@ -52,13 +52,13 @@ public class BookingDTO: DomainEntityMetaId
     public Guid? DriveId { get; set; }
     public DriveDTO? Drive { get; set; }
 
-    public string DriveTime => $"{PickUpDateAndTime:g}";
+    //public string DriveTime => $"{PickUpDateAndTime:g}";
 
     public bool IsDeclined { get; set; }
     
     public DateTime DeclineDateAndTime { get; set; }
 
-    public string DeclineDateAndTimeCustomerView => $"{DeclineDateAndTime:g}";
+    //public string DeclineDateAndTimeCustomerView => $"{DeclineDateAndTime:g}";
 
     public string? ConfirmedBy { get; set; }
     

@@ -1,7 +1,8 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
-using App.DAL.DTO.AdminArea;
+/*using App.DAL.DTO.AdminArea;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +19,11 @@ namespace WebApp.Areas.AdminArea.Controllers;
 [Area(nameof(AdminArea))]
 public class CommentsController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public CommentsController(IAppUnitOfWork uow)
+    public CommentsController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: AdminArea/Comments
@@ -32,7 +33,7 @@ public class CommentsController : Controller
 #warning Ask how to get the user role using interface
         
         var roleName = User.GettingUserRoleName();
-        var res = await _uow.Comments.GettingAllOrderedCommentsWithIncludesAsync(null, roleName);
+        var res = await _appBLL.Comments.GettingAllOrderedCommentsWithIncludesAsync(null, roleName);
         
         
         return View(res);
@@ -46,7 +47,7 @@ public class CommentsController : Controller
 
         var roleName = User.GettingUserRoleName();
 
-        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id.Value, null, roleName);
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id.Value, null, roleName);
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
@@ -69,7 +70,7 @@ public class CommentsController : Controller
         var vm = new CreateCommentViewModel();
 
         var roleName = User.GettingUserRoleName();
-        var drives = await _uow.Drives.GettingDrivesWithoutCommentAsync(null, roleName);
+        var drives = await _appBLL.Drives.GettingDrivesWithoutCommentAsync(null, roleName);
         foreach (var drive in drives)
         {
             if (drive != null) drive.Booking!.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
@@ -97,12 +98,12 @@ public class CommentsController : Controller
             comment.CreatedBy = User.Identity!.Name;
             comment.CreatedAt = DateTime.Now.ToUniversalTime();
 
-            _uow.Comments.Add(comment);
-            await _uow.SaveChangesAsync();
+            _appBLL.Comments.Add(comment);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(null, roleName),
+        vm.Drives = new SelectList(await _appBLL.Drives.GettingDrivesWithoutCommentAsync(null, roleName),
             nameof(DriverDTO.Id),
             nameof(BookingDTO.DriveTime));
 
@@ -117,7 +118,7 @@ public class CommentsController : Controller
         var vm = new EditCommentViewModel();
         if (id == null) return NotFound();
 
-        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id.Value, null, roleName);
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id.Value, null, roleName);
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
@@ -139,7 +140,7 @@ public class CommentsController : Controller
     public async Task<IActionResult> Edit(Guid id, EditCommentViewModel vm)
     {
         var roleName = User.GettingUserRoleName();
-        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id, null, roleName);
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, null, roleName);
         if (comment != null && id != comment.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -152,10 +153,10 @@ public class CommentsController : Controller
                     comment.CommentText = vm.CommentText;
                     comment.UpdatedBy = User.Identity!.Name;
                     comment.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _uow.Comments.Update(comment);
+                    _appBLL.Comments.Update(comment);
                 }
 
-                await _uow.SaveChangesAsync();
+                await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -177,7 +178,7 @@ public class CommentsController : Controller
         if (id == null) return NotFound();
 
         var roleName = User.GettingUserRoleName();
-        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id.Value, null, roleName);
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id.Value, null, roleName);
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
@@ -200,14 +201,14 @@ public class CommentsController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var roleName = User.GettingUserRoleName();
-        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id, null, roleName);
-        if (comment != null) _uow.Comments.Remove(comment);
-        await _uow.SaveChangesAsync();
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, null, roleName);
+        if (comment != null) _appBLL.Comments.Remove(comment);
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     private bool CommentExists(Guid id)
     {
-        return _uow.Comments.Exists(id);
+        return _appBLL.Comments.Exists(id);
     }
-}
+}*/

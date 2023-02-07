@@ -263,7 +263,7 @@ public class DriversController : Controller
             return Content("Entity cannot be deleted because it has dependent entities!");
 
         await _appBLL.DriverAndDriverLicenseCategories.RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(id);
-        */
+        
 
         if (driver != null)
         {

@@ -1,6 +1,7 @@
 #nullable enable
 using System.Net;
 using System.Net.Mail;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.DAL.DTO.AdminArea;
 using App.Domain.Enum;
@@ -21,12 +22,12 @@ namespace WebApp.Areas.AdminArea.Controllers;
 public class BookingsController : Controller
 {
     private readonly IMailService _mailService;
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public BookingsController(IAppUnitOfWork uow, IMailService mailService)
+    public BookingsController(IMailService mailService, IAppBLL appBLL)
     {
-        _uow = uow;
         _mailService = mailService;
+        _appBLL = appBLL;
     }
 
 
@@ -35,7 +36,7 @@ public class BookingsController : Controller
     {
         var roleName = User.GettingUserRoleName();
 #warning Should this be a repo method
-        var res = await _uow.Bookings.GettingAllOrderedBookingsAsync(null, roleName);
+        var res = await _appBLL.Bookings.GettingAllOrderedBookingsAsync(null, roleName);
         return View(res);
     }
 
@@ -46,7 +47,7 @@ public class BookingsController : Controller
         if (id == null) return NotFound();
 
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, null, roleName);
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
@@ -106,11 +107,11 @@ public class BookingsController : Controller
             if (parameters.RideTimeId.HasValue)
             {
                 var rideTime =
-                    await _uow.RideTimes.GettingFirstRideTimeByIdAsync(parameters.RideTimeId.Value, null, null, false);
+                    await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(parameters.RideTimeId.Value, null, null, false);
                 if (rideTime != null)
                 {
                     rideTime.ExpiryTime = null;
-                    await _uow.SaveChangesAsync();
+                    await _appBLL.SaveChangesAsync();
                 }
             }
 
@@ -126,7 +127,7 @@ public class BookingsController : Controller
 
                 // We want to find the nearest available ride date and time
                 // First we get a list of the available ride times
-                var bestTimes = await _uow.RideTimes.GettingBestAvailableRideTimeAsync(parameters.PickupDateAndTime,
+                var bestTimes = await _appBLL.RideTimes.GettingBestAvailableRideTimeAsync(parameters.PickupDateAndTime,
                     parameters.CityId, parameters.NumberOfPassengers, parameters.VehicleTypeId, true);
                 if (bestTimes.Any())
                 {
@@ -172,7 +173,7 @@ public class BookingsController : Controller
         if (parameters.ListType == "RideTimeId")
         {
             var rideTimeId = Guid.Parse(parameters.Value);
-            var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(rideTimeId);
+            var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(rideTimeId);
 
             vm.RideTimeId = rideTimeId;
             vm.Schedules = new SelectList(new[] {rideTime.Schedule}, nameof(ScheduleDTO.Id),
@@ -195,7 +196,7 @@ public class BookingsController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var vm = new CreateBookingViewModel();
-        var schedules = await _uow.Schedules
+        var schedules = await _appBLL.Schedules
             .GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
         foreach (var schedule in schedules)
         {
@@ -206,20 +207,20 @@ public class BookingsController : Controller
 
         vm.Schedules = new SelectList(schedules,
             nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime));
-        vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
             nameof(CityDTO.Id), nameof(App.BLL.DTO.AdminArea.CityDTO.CityName));
-        vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+        vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(App.BLL.DTO.AdminArea.VehicleTypeDTO.Id), 
             nameof(App.BLL.DTO.AdminArea.VehicleTypeDTO.VehicleTypeName));
-        vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+        vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
             nameof(App.BLL.DTO.AdminArea.DriverDTO.Id),
             $"{nameof(App.BLL.DTO.AdminArea.DriverDTO.AppUser)}.{nameof(
                 App.BLL.DTO.AdminArea.DriverDTO.AppUser.LastAndFirstName)}");
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
+        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
             nameof(App.BLL.DTO.AdminArea.VehicleDTO.Id), 
             nameof(App.BLL.DTO.AdminArea.VehicleDTO.VehicleIdentifier));
-        vm.Customers = new SelectList(await _uow.Customers.GettingAllOrderedCustomersAsync(),
+        vm.Customers = new SelectList(await _appBLL.Customers.GettingAllOrderedCustomersAsync(),
             nameof(App.BLL.DTO.AdminArea.CustomerDTO.Id),
 #warning "Magic string" code smell, fix it
             $"{nameof(App.BLL.DTO.AdminArea.CustomerDTO.AppUser)}." +
@@ -257,7 +258,7 @@ public class BookingsController : Controller
             booking.StatusOfBooking = StatusOfBooking.Awaiting;
 #warning Booking PickUpDateAndTime needs a custom validation
             booking.PickUpDateAndTime = DateTime.Parse(vm.PickUpDateAndTime).ToUniversalTime();
-            _uow.Bookings.Add(booking);
+            _appBLL.Bookings.Add(booking);
 
             var drive = new App.DAL.DTO.AdminArea.DriveDTO()
             {
@@ -266,40 +267,40 @@ public class BookingsController : Controller
                 DriverId = booking.DriverId,
                 StatusOfDrive = StatusOfDrive.Awaiting
             };
-            _uow.Drives.Add(drive);
+            _appBLL.Drives.Add(drive);
 
-            var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(vm.RideTimeId, null, null, false);
+            var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(vm.RideTimeId, null, null, false);
             if (rideTime != null)
             {
                 rideTime.BookingId = booking.Id;
                 rideTime.IsTaken = true;
-                _uow.RideTimes.Update(rideTime);
+                _appBLL.RideTimes.Update(rideTime);
             }
 
-            await _uow.SaveChangesAsync();
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
+        vm.Schedules = new SelectList(await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
             nameof(App.BLL.DTO.AdminArea.ScheduleDTO.Id), nameof(App.BLL.DTO.AdminArea.ScheduleDTO.ShiftDurationTime),
             nameof(vm.ScheduleId));
-        vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
             nameof(App.BLL.DTO.AdminArea.CityDTO.Id),
             nameof(App.BLL.DTO.AdminArea.CityDTO.CityName), nameof(vm.CityId));
-        vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+        vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleTypeDTO.Id), nameof(VehicleTypeDTO.VehicleTypeName)
             , nameof(vm.VehicleTypeId));
-        vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+        vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
             nameof(App.BLL.DTO.AdminArea.DriverDTO.Id),
             $"{nameof(App.BLL.DTO.AdminArea.DriverDTO.AppUser)}." +
             $"{nameof(App.BLL.DTO.AdminArea.DriverDTO.AppUser.LastAndFirstName)}",
             nameof(vm.DriverId));
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(),
+        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(),
             nameof(App.BLL.DTO.AdminArea.VehicleDTO.Id), 
             nameof(App.BLL.DTO.AdminArea.VehicleDTO.VehicleIdentifier),
             nameof(vm.VehicleId));
-        vm.Customers = new SelectList(await _uow.Customers.GettingAllOrderedCustomersAsync(),
+        vm.Customers = new SelectList(await _appBLL.Customers.GettingAllOrderedCustomersAsync(),
             nameof(CustomerDTO.Id),
 #warning "Magic string" code smell, fix it
             $"{nameof(CustomerDTO.AppUser)}" +
@@ -316,11 +317,11 @@ public class BookingsController : Controller
         var vm = new EditBookingViewModel();
         if (id == null) return NotFound();
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, null, roleName);
         if (booking == null) return NotFound();
         
         // For edit, only load 1 item into each drop down list
-        var schedule = await _uow.Schedules.GettingTheFirstScheduleByIdAsync(booking.ScheduleId);
+        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(booking.ScheduleId);
         schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
         schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
         vm.Schedules = new SelectList(new [] {schedule},
@@ -328,18 +329,18 @@ public class BookingsController : Controller
         vm.ScheduleId = booking.ScheduleId;
         #warning Change this to Get just 1 driver by Id from the uow
         //var driver = _
-        vm.Drivers = new SelectList(await _uow.Drivers.GetAllDriversOrderedByLastNameAsync(),
+        vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
             nameof(Driver.Id),
             $"{nameof(Driver.AppUser)}.{nameof(Driver.AppUser.LastAndFirstName)}");
         vm.DriverId = booking.DriverId;
-        vm.Customers = new SelectList(await _uow.Customers.GettingAllOrderedCustomersAsync(),
+        vm.Customers = new SelectList(await _appBLL.Customers.GettingAllOrderedCustomersAsync(),
             nameof(Customer.Id),
             $"{nameof(Customer.AppUser)}.{nameof(Customer.AppUser.LastAndFirstName)}");
         vm.CustomerId = booking.CustomerId;
-        vm.Cities = new SelectList(await _uow.Cities.GetAllCitiesWithoutCountyAsync()
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllCitiesWithoutCountyAsync()
             , nameof(City.Id), nameof(City.CityName));
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(null, roleName),
+        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(null, roleName),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
         vm.VehicleId = booking.VehicleId;
         vm.AdditionalInfo = booking.AdditionalInfo;
@@ -347,7 +348,7 @@ public class BookingsController : Controller
         vm.DestinationAddress = booking.DestinationAddress;
         vm.PickupAddress = booking.PickupAddress;
         vm.VehicleTypes = new SelectList(
-            await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+            await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleType.Id)
             , nameof(VehicleType.VehicleTypeName));
         vm.HasAnAssistant = booking.HasAnAssistant;
@@ -366,7 +367,7 @@ public class BookingsController : Controller
     /*public async Task<IActionResult> Edit(Guid id, EditBookingViewModel vm)
     {
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.GettingBookingAsync(id, null, roleName);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id, null, roleName);
         if (booking != null && id != booking.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -393,10 +394,10 @@ public class BookingsController : Controller
                     booking.UpdatedBy = User.Identity!.Name;
                     booking.UpdatedAt = DateTime.Now.ToUniversalTime();
 
-                    _uow.Bookings.Update(booking);
+                    _appBLL.Bookings.Update(booking);
                 }
 
-                var drive = await _uow.Drives
+                var drive = await _appBLL.Drives
                     .SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(booking!.Id), false);
                 if (drive != null)
                 {
@@ -406,8 +407,8 @@ public class BookingsController : Controller
                         drive.Booking = booking;
                     }
 
-                    _uow.Drives.Update(drive);
-                    await _uow.SaveChangesAsync();
+                    _appBLL.Drives.Update(drive);
+                    await _appBLL.SaveChangesAsync();
                 }
             }
             catch (DbUpdateConcurrencyException)
@@ -430,7 +431,7 @@ public class BookingsController : Controller
         if (id == null) return NotFound();
 
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, null, roleName);
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
@@ -463,18 +464,18 @@ public class BookingsController : Controller
     public async Task<IActionResult> DeclineConfirmed(Guid id)
     {
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.GettingBookingAsync(id, null, roleName);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id, null, roleName);
         if (booking != null)
         {
-            var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id), false);
-            await _uow.Bookings.BookingDeclineAsync(booking.Id, null, roleName );
+            var drive = await _appBLL.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id), false);
+            await _appBLL.Bookings.BookingDeclineAsync(booking.Id, null, roleName );
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             booking.IsDeclined = true;
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             booking.UpdatedBy = User.Identity!.Name;
             booking.UpdatedAt = DateTime.Now.ToUniversalTime();
             drive!.Booking = booking;
-            _uow.Bookings.Update(booking);
+            _appBLL.Bookings.Update(booking);
             drive.IsDriveDeclined = true;
             drive.StatusOfDrive = StatusOfDrive.Declined;
             drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
@@ -511,20 +512,20 @@ public class BookingsController : Controller
             }
 
             // Release the RideTime
-            var rideTime = await _uow.RideTimes.GettingFirstRideTimeByBookingIdAsync(booking.Id, null, null, false);
+            var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByBookingIdAsync(booking.Id, null, null, false);
             if (rideTime != null)
             {
                 rideTime.BookingId = null;
                 rideTime.ExpiryTime = null;
                 rideTime.IsTaken = false;
-                _uow.RideTimes.Update(rideTime);
+                _appBLL.RideTimes.Update(rideTime);
             }
 
-            await _uow.SaveChangesAsync();
-            _uow.Drives.Update(drive);
+            await _appBLL.SaveChangesAsync();
+            _appBLL.Drives.Update(drive);
         }
 
-        await _uow.SaveChangesAsync();
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
@@ -536,7 +537,7 @@ public class BookingsController : Controller
         if (id == null) return NotFound();
         var roleName = User.GettingUserRoleName();
 
-        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, null, roleName );
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, null, roleName );
         if (booking == null) return NotFound();
         vm.Id = booking.Id;
         booking.Schedule!.StartDateAndTime = booking.Schedule.StartDateAndTime.ToLocalTime();
@@ -573,30 +574,30 @@ public class BookingsController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.GettingBookingAsync(id, null,roleName );
-        var drive = await _uow.Drives.SingleOrDefaultAsync(d => d != null && d.Booking!.Id.Equals(id), false);
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByBookingIdAsync(id, null, null, false);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id, null,roleName );
+        var drive = await _appBLL.Drives.SingleOrDefaultAsync(d => d != null && d.Booking!.Id.Equals(id), false);
+        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByBookingIdAsync(id, null, null, false);
         /*var comment =
-            await _uow.Comments.SingleOrDefaultAsync(c => drive != null && c != null && c.DriveId.Equals(drive.Id),
+            await _appBLL.Comments.SingleOrDefaultAsync(c => drive != null && c != null && c.DriveId.Equals(drive.Id),
                 false);
-        if (comment != null) _uow.Comments.Remove(comment);*/
-        if (drive != null) _uow.Drives.Remove(drive);
+        if (comment != null) _appBLL.Comments.Remove(comment);*/
+        if (drive != null) _appBLL.Drives.Remove(drive);
          if (rideTime != null)
         {
             rideTime.BookingId = null;
             rideTime.ExpiryTime = null;
             rideTime.IsTaken = false;
-            _uow.RideTimes.Update(rideTime);
+            _appBLL.RideTimes.Update(rideTime);
         }
 
-        if (booking != null) _uow.Bookings.Remove(booking);
-        await _uow.SaveChangesAsync();
+        if (booking != null) _appBLL.Bookings.Remove(booking);
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     private bool BookingExists(Guid id)
     {
-        return _uow.Bookings.Exists(id);
+        return _appBLL.Bookings.Exists(id);
     }
 
     /// <summary>
@@ -608,7 +609,7 @@ public class BookingsController : Controller
     public async Task<IActionResult> SearchByCityAsync([FromForm] string search)
     {
         var roleName = User.GettingUserRoleName();
-        var results = await _uow.Bookings.SearchByCityAsync(search, null, roleName );
+        var results = await _appBLL.Bookings.SearchByCityAsync(search, null, roleName );
         return View(nameof(Index), results);
     }
 }

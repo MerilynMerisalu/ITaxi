@@ -72,6 +72,9 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
         UnitOfWork.Customers,
         new CustomerMapper(_mapper));
 
+    public virtual IBookingService Bookings => _bookings ?? new BookingService(UnitOfWork.Bookings,
+        new BookingMapper(_mapper));
+
 
     private ICountyService? _counties;
     private ICityService? _cities;
@@ -88,4 +91,5 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     private IDisabilityTypeService? _disabilityTypes;
     private IRideTimeService? _rideTimes;
     private ICustomerService? _customers;
+    private IBookingService? _bookings;
 }

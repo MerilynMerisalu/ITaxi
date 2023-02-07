@@ -21,4 +21,5 @@ public interface IAppBLL : IBLL
     IScheduleService Schedules { get; }
     IRideTimeService RideTimes { get; }
     ICustomerService Customers { get; }
+    IBookingService Bookings { get; }
 }

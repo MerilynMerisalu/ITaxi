@@ -3,25 +3,34 @@ using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface IBookingRepository : IEntityRepository<BookingDTO>
+public interface IBookingRepository : IEntityRepository<BookingDTO>, 
+    IBookingRepositoryCustom<App.DAL.DTO.AdminArea.BookingDTO>
 {
-    Task<IEnumerable<BookingDTO?>> GettingAllBookingsWithoutIncludesAsync(bool noTracking = true);
-    IEnumerable<BookingDTO?> GettingAllBookingsWithoutIncludes(bool noTracking = true);
+    
+}
 
-    Task<IEnumerable<BookingDTO?>> GettingAllOrderedBookingsAsync(Guid? userId = null, string? roleName = null, bool noTracking = true);
-    IEnumerable<BookingDTO?> GettingAllOrderedBookings(Guid? userId = null, string? roleName = null, bool noTracking = true);
+public interface IBookingRepositoryCustom<TEntity>
+{
+    Task<IEnumerable<TEntity?>> GettingAllBookingsWithoutIncludesAsync(bool noTracking = true);
+    IEnumerable<TEntity?> GettingAllBookingsWithoutIncludes(bool noTracking = true);
 
-    Task<IEnumerable<BookingDTO?>> GettingAllOrderedBookingsWithoutIncludesAsync( bool noTracking = true);
+    Task<IEnumerable<TEntity?>> GettingAllOrderedBookingsAsync(Guid? userId = null, string? roleName = null,
+        bool noTracking = true);
+
+    IEnumerable<TEntity?> GettingAllOrderedBookings(Guid? userId = null, string? roleName = null,
+        bool noTracking = true);
+
+    Task<IEnumerable<TEntity?>> GettingAllOrderedBookingsWithoutIncludesAsync(bool noTracking = true);
+
     // IEnumerable<Booking?> GettingAllOrderedBookingsWithoutIncludes( bool? noTracking = true);
-    Task<BookingDTO?> GettingBookingWithoutIncludesByIdAsync(Guid id, bool noTracking = true);
-    BookingDTO? GettingBookingWithoutIncludesById(Guid id,  bool noTracking = true);
-    Task<List<BookingDTO>> SearchByCityAsync(string search, Guid? userId = null, string? roleName = null);
-    string PickUpDateAndTimeStrFormat(BookingDTO booking);
+    Task<TEntity?> GettingBookingWithoutIncludesByIdAsync(Guid id, bool noTracking = true);
+    TEntity? GettingBookingWithoutIncludesById(Guid id, bool noTracking = true);
+    Task<List<TEntity>> SearchByCityAsync(string search, Guid? userId = null, string? roleName = null);
+    string PickUpDateAndTimeStrFormat(TEntity booking);
     DateTime DateTimeFormatting();
 
-    Task<BookingDTO?> BookingDeclineAsync(Guid id, Guid? userId = null, string? roleName = null);
-    BookingDTO? BookingDecline(Guid id, Guid? userId = null, string? roleName = null);
-    Task<BookingDTO?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
-    BookingDTO? GettingBooking(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
-    
+    Task<TEntity?> BookingDeclineAsync(Guid id, Guid? userId = null, string? roleName = null);
+    TEntity? BookingDecline(Guid id, Guid? userId = null, string? roleName = null);
+    Task<TEntity?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
+    TEntity? GettingBooking(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
 }
