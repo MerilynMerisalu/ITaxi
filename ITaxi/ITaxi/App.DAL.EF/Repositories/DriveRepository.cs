@@ -52,6 +52,13 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
     }
 
     public async Task<IEnumerable<DriveDTO>> GettingAllOrderedDrivesWithIncludesAsync(
+        Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return (await CreateQuery(userId, roleName, noTracking).ToListAsync())
+            .Select(e => Mapper.Map(e))!;
+    }
+
+    public async Task<IEnumerable<DriveDTO>> GettingAllOrderedDrivesWithIncludesAsync(
         Guid? userId = null, string? roleName = null ,bool? noTracking = true)
     {
         return (await CreateQuery(userId,roleName)

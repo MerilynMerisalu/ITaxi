@@ -1,20 +1,22 @@
-﻿using Base.Domain;
+﻿using System.ComponentModel.DataAnnotations;
+using App.Domain.Enum;
+using Base.Domain;
 
 namespace App.BLL.DTO.AdminArea;
 
 public class DriveDTO: DomainEntityMetaId
 {
-    /*[Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "JobTitle")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "JobTitle")]
     public Guid DriverId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "JobTitle")]
     public DriverDTO? Driver { get; set; }
 
-    public Booking? Booking { get; set; }
+    public BookingDTO? Booking { get; set; }
 
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = nameof(Comment))]
-    public Comment? Comment { get; set; }
+    public CommentDTO? Comment { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "AcceptedDateAndTime")]
     
@@ -67,6 +69,6 @@ public class DriveDTO: DomainEntityMetaId
 
     public string? DriveAcceptInformation => $"{StatusOfDrive} {AcceptedBy} {DriveAcceptedDateAndTime}";
     
-    */
+    
 
 }

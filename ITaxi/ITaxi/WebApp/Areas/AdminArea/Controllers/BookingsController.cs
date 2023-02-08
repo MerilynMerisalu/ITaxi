@@ -237,7 +237,7 @@ public class BookingsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateBookingViewModel vm)
     {
-        var booking = new BookingDTO();
+        var booking = new App.BLL.DTO.AdminArea.BookingDTO();
         if (ModelState.IsValid)
         {
 
@@ -260,7 +260,7 @@ public class BookingsController : Controller
             booking.PickUpDateAndTime = DateTime.Parse(vm.PickUpDateAndTime).ToUniversalTime();
             _appBLL.Bookings.Add(booking);
 
-            var drive = new App.DAL.DTO.AdminArea.DriveDTO()
+            var drive = new App.BLL.DTO.AdminArea.DriveDTO()
             {
                 Id = new Guid(),
                 Booking = booking,
