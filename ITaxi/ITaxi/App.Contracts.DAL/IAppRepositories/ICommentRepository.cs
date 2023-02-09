@@ -4,17 +4,22 @@ using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface ICommentRepository : IEntityRepository<CommentDTO>
+public interface ICommentRepository : IEntityRepository<CommentDTO>,
+    ICommentRepositoryCustom<App.DAL.DTO.AdminArea.CommentDTO>
 {
-   Task<IEnumerable<CommentDTO>> GetAllCommentsWithoutIncludesAsync(bool noTracking = true);
-   IEnumerable<CommentDTO> GetAllCommentsWithoutIncludes(bool noTracking = true);
-    Task<IEnumerable<CommentDTO>> GettingAllOrderedCommentsWithIncludesAsync(Guid? userId = null, string? roleName = null,bool noTracking = true);
+}
+
+public interface ICommentRepositoryCustom<TEntity> 
+{
+    Task<IEnumerable<TEntity>> GetAllCommentsWithoutIncludesAsync(bool noTracking = true);
+    IEnumerable<TEntity> GetAllCommentsWithoutIncludes(bool noTracking = true);
+    Task<IEnumerable<TEntity>> GettingAllOrderedCommentsWithIncludesAsync(Guid? userId = null, string? roleName = null,bool noTracking = true);
     //IEnumerable<Comment> GettingAllOrderedCommentsWithIncludes(bool noTracking = true);
-    Task<IEnumerable<CommentDTO>> GettingAllOrderedCommentsWithoutIncludesAsync(bool noTracking = true);
-    IEnumerable<CommentDTO> GettingAllOrderedCommentsWithoutIncludes(bool noTracking = true);
-    Task<CommentDTO?> GettingCommentWithoutIncludesAsync(Guid id, bool noTracking = true);
+    Task<IEnumerable<TEntity>> GettingAllOrderedCommentsWithoutIncludesAsync(bool noTracking = true);
+    IEnumerable<TEntity> GettingAllOrderedCommentsWithoutIncludes(bool noTracking = true);
+    Task<TEntity?> GettingCommentWithoutIncludesAsync(Guid id, bool noTracking = true);
     //Comment? GettingCommentWithoutIncludes(Guid id, bool noTracking = true);
-    string PickUpDateAndTimeStr(Comment comment);
-    Task<CommentDTO?> GettingTheFirstCommentAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
-    CommentDTO? GettingTheFirstComment(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
+    string PickUpDateAndTimeStr(TEntity comment);
+    Task<TEntity?> GettingTheFirstCommentAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
+    TEntity? GettingTheFirstComment(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
 }

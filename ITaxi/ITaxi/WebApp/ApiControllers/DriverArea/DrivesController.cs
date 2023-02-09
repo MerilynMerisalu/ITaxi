@@ -1,11 +1,10 @@
-/*#nullable enable
+#nullable enable
+using App.BLL.DTO.AdminArea;
 using App.Contracts.DAL;
-using App.Domain;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.DriverArea;
 
@@ -23,44 +22,32 @@ public class DrivesController : ControllerBase
 
     // GET: api/Drives
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Drive>>> GetDrives()
+    public async Task<ActionResult<IEnumerable<DriveDTO>>> GetDrives()
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var res = await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync(userId, roleName);
-        foreach (var drive in res)
-        {
-            drive.Booking!.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
-            drive.Booking!.DeclineDateAndTime = drive.Booking.DeclineDateAndTime.ToLocalTime();
-            drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
-            drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
-            drive.DriveStartDateAndTime = drive.DriveStartDateAndTime.ToLocalTime();
-            drive.DriveEndDateAndTime = drive.DriveEndDateAndTime.ToLocalTime();
-        }
+
         return Ok(res);
     }
 
     // GET: api/Drives/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Drive>> GetDrive(Guid id)
+    public async Task<ActionResult<DriveDTO>> GetDrive(Guid id)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var drive = await _uow.Drives.GettingFirstDriveAsync(id, userId, roleName);
-        
+
         if (drive == null) return NotFound();
 
-        drive.Booking!.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
-        drive.Booking!.DeclineDateAndTime = drive.Booking.DeclineDateAndTime.ToLocalTime();
-        drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
-        drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
-        drive.DriveStartDateAndTime = drive.DriveStartDateAndTime.ToLocalTime();
-        drive.DriveEndDateAndTime = drive.DriveEndDateAndTime.ToLocalTime();
-        
-        return drive;
+
+
+        return Ok(drive);
     }
 
-    // PUT: api/Drives/5
+
+// PUT: api/Drives/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     /*[HttpPut("{id}")]
     public async Task<IActionResult> PutDrive(Guid id, Drive drive)
@@ -82,10 +69,11 @@ public class DrivesController : ControllerBase
 
         return NoContent();
     }
+    */
 
     // POST: api/Drives
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
+    /*[HttpPost]
     public async Task<ActionResult<Drive>> PostDrive(Drive drive)
     {
         _uow.Drives.Add(drive);
@@ -93,6 +81,7 @@ public class DrivesController : ControllerBase
 
         return CreatedAtAction("GetDrive", new {id = drive.Id}, drive);
     }
+    */
 
     // DELETE: api/Drives/5
     [HttpDelete("{id}")]
@@ -110,5 +99,5 @@ public class DrivesController : ControllerBase
     private bool DriveExists(Guid id)
     {
         return _uow.Drives.Exists(id);
-    }#1#
-}*/
+    }
+}

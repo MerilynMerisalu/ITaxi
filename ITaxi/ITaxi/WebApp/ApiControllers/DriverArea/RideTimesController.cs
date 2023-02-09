@@ -1,4 +1,6 @@
-/*#nullable enable
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.Domain;
 using Base.Extensions;
@@ -13,11 +15,12 @@ namespace WebApp.ApiControllers.DriverArea;
 [ApiController]
 public class RideTimesController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public RideTimesController(IAppUnitOfWork uow)
+    public RideTimesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
+        
     }
 
     // GET: api/RideTimes
@@ -26,47 +29,36 @@ public class RideTimesController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var res = await _uow.RideTimes.GettingAllOrderedRideTimesAsync(userId, roleName);
+        var res = await _appBLL.RideTimes.GettingAllOrderedRideTimesAsync(userId, roleName);
         foreach (var rideTime in res)
         {
-            if (rideTime != null)
-            {
-                rideTime.Schedule!.StartDateAndTime = rideTime.Schedule!.StartDateAndTime.ToLocalTime();
-                rideTime.Schedule!.EndDateAndTime = rideTime.Schedule!.EndDateAndTime.ToLocalTime();
-                rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
-                rideTime.CreatedAt = rideTime.CreatedAt.ToLocalTime();
-                rideTime.UpdatedAt = rideTime.UpdatedAt.ToLocalTime();
-            }
+            
         }
         return Ok(res);
     }
 
     // GET: api/RideTimes/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<RideTime>> GetRideTime(Guid id)
+    public async Task<ActionResult<RideTimeDTO>> GetRideTime(Guid id)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
+        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
 
         if (rideTime == null) return NotFound();
-        rideTime.Schedule!.StartDateAndTime = rideTime.Schedule!.StartDateAndTime.ToLocalTime();
-        rideTime.Schedule!.EndDateAndTime = rideTime.Schedule!.EndDateAndTime.ToLocalTime();
-        rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
-        rideTime.CreatedAt = rideTime.CreatedAt.ToLocalTime();
-        rideTime.UpdatedAt = rideTime.UpdatedAt.ToLocalTime();
+        
 
-        return rideTime;
+        return Ok(rideTime);
     }
 
     // PUT: api/RideTimes/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutRideTime(Guid id, RideTime? rideTime)
+    public async Task<IActionResult> PutRideTime(Guid id, RideTimeDTO? rideTime)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
+        rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
         
         if (rideTime == null)
         {
@@ -79,8 +71,8 @@ public class RideTimesController : ControllerBase
             rideTime.RideDateTime = rideTime.RideDateTime.ToUniversalTime();
             rideTime.UpdatedBy = User.Identity!.Name;
             rideTime.UpdatedAt = DateTime.Now.ToUniversalTime();
-            _uow.RideTimes.Update(rideTime);
-            await _uow.SaveChangesAsync();
+            _appBLL.RideTimes.Update(rideTime);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -95,17 +87,10 @@ public class RideTimesController : ControllerBase
     // POST: api/RideTimes
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<RideTime>> PostRideTime(RideTime rideTime)
+    public async Task<ActionResult<RideTimeDTO>> PostRideTime(RideTimeDTO rideTime)
     {
-        rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToUniversalTime();
-        rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToUniversalTime();
-        rideTime.RideDateTime = rideTime.RideDateTime.ToUniversalTime();
-        rideTime.CreatedBy = User.Identity!.Name;
-        rideTime.CreatedAt = DateTime.Now.ToUniversalTime();
-        rideTime.UpdatedBy = User.Identity!.Name;
-        rideTime.UpdatedAt = DateTime.Now.ToUniversalTime();
-        _uow.RideTimes.Add(rideTime);
-        await _uow.SaveChangesAsync();
+        _appBLL.RideTimes.Add(rideTime);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetRideTime", new {id = rideTime.Id}, rideTime);
     }
@@ -116,17 +101,17 @@ public class RideTimesController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
+        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
         if (rideTime == null) return NotFound();
 
-        _uow.RideTimes.Remove(rideTime);
-        await _uow.SaveChangesAsync();
+        _appBLL.RideTimes.Remove(rideTime);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool RideTimeExists(Guid id)
     {
-        return _uow.RideTimes.Exists(id);
+        return _appBLL.RideTimes.Exists(id);
     }
-}*/
+}

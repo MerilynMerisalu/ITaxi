@@ -91,13 +91,14 @@ public class CommentRepository : BaseEntityRepository<CommentDTO, App.Domain.Com
             .FirstOrDefaultAsync(c => c.Id.Equals(id)));
     }
 
+    
     public CommentDTO? GettingCommentWithoutIncludes(Guid id, bool noTracking = true)
     {
         return Mapper.Map(base.CreateQuery(noTracking, noIncludes: true)
             .FirstOrDefault(c => c.Id.Equals(id)));
     }
 
-    public string PickUpDateAndTimeStr(Comment comment)
+    public string PickUpDateAndTimeStr(CommentDTO comment)
     {
         return comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
     }

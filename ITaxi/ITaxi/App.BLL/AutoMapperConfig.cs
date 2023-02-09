@@ -63,6 +63,9 @@ public class AutoMapperConfig: Profile
         CreateMap<App.BLL.DTO.AdminArea.DriveDTO, App.DAL.DTO.AdminArea.DriveDTO>()
             .ReverseMap()
             ;
+        CreateMap<App.BLL.DTO.AdminArea.CommentDTO, App.DAL.DTO.AdminArea.CommentDTO>()
+            .ReverseMap()
+            ;
     }
     
     
