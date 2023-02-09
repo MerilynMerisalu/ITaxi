@@ -1,7 +1,6 @@
-/*#nullable enable
-using App.Contracts.DAL;
-using App.Domain;
-using App.Domain.DTO;
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -15,39 +14,30 @@ namespace WebApp.ApiControllers.CustomerArea;
 [Authorize(Roles = "Admin, Customer", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class BookingsController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
-    public BookingsController(IAppUnitOfWork uow)
+    private readonly IAppBLL _appBLL;
+    public BookingsController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: api/Bookings
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
+    public async Task<ActionResult<IEnumerable<BookingDTO>>> GetBookings()
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var res = await _uow.Bookings.GettingAllOrderedBookingsAsync(userId, roleName);
-        foreach (var booking in res)
-        {
-            if (booking != null)
-            {
-                booking.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime();
-                booking.Schedule!.StartDateAndTime = booking.Schedule.StartDateAndTime.ToLocalTime();
-                booking.Schedule!.EndDateAndTime = booking.Schedule.EndDateAndTime.ToLocalTime();
-                booking.DeclineDateAndTime = booking.DeclineDateAndTime.ToLocalTime();
-            }
-        }
+        var res = await _appBLL.Bookings.GettingAllOrderedBookingsAsync(userId, roleName);
+        
         return Ok(res);
     }
 
     // GET: api/Bookings/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Booking>> GetBooking(Guid id)
+    public async Task<ActionResult<BookingDTO>> GetBooking(Guid id)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName);
 
         if (booking == null) return NotFound();
         
@@ -55,30 +45,30 @@ public class BookingsController : ControllerBase
         booking.Schedule!.StartDateAndTime = booking.Schedule.StartDateAndTime.ToLocalTime();
         booking.Schedule!.EndDateAndTime = booking.Schedule.EndDateAndTime.ToLocalTime();
         booking.DeclineDateAndTime = booking.DeclineDateAndTime.ToLocalTime();
-        return booking;
+        return Ok(booking);
     }
 
     // PUT: api/Bookings/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
+    /*[HttpPut("{id}")]
     public async Task<IActionResult> PutBooking(Guid id, Booking? booking)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName);
+        booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName);
         if (booking == null)
         {
             return NotFound();
         }
-        var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.DriveId.Equals(booking.DriverId));
+        var drive = await _appBLL.Drives.SingleOrDefaultAsync(d => d!.Booking!.DriveId.Equals(booking.DriverId));
 
 
         try
         { booking.UpdatedBy = User.Identity!.Name!;
             booking.UpdatedAt = DateTime.Now.ToUniversalTime();
-            _uow.Bookings.Update(booking);
-            if (drive != null) _uow.Drives.Update(drive);
-            await _uow.SaveChangesAsync();
+            _appBLL.Bookings.Update(booking);
+            if (drive != null) _appBLL.Drives.Update(drive);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -89,11 +79,12 @@ public class BookingsController : ControllerBase
 
         return NoContent();
     }
+    */
 
     // POST: api/Bookings
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Booking>> PostBooking(Booking booking)
+    public async Task<ActionResult<BookingDTO>> PostBooking(BookingDTO booking)
     {
         var userId = User.GettingUserId();
         if (booking.Customer!.AppUserId != userId)
@@ -101,14 +92,10 @@ public class BookingsController : ControllerBase
             return Forbid();
         }
         booking.Customer.AppUserId = userId;
-        booking.PickUpDateAndTime = booking.PickUpDateAndTime.ToUniversalTime();
-        booking.CreatedBy = User.Identity!.Name;
-        booking.CreatedAt = DateTime.Now.ToUniversalTime();
-        booking.UpdatedBy = User.Identity!.Name;
-        booking.UpdatedAt = DateTime.Now.ToUniversalTime();
-        _uow.Bookings.Add(booking);
+        
+        _appBLL.Bookings.Add(booking);
 #warning Needs checking
-        var drive = new Drive
+        var drive = new DriveDTO()
         {
             Id = new Guid(),
             DriverId = booking.DriverId,
@@ -118,8 +105,8 @@ public class BookingsController : ControllerBase
             UpdatedBy = User.Identity.Name,
             UpdatedAt = DateTime.Now.ToUniversalTime()
         };
-        _uow.Drives.Add(drive);
-        await _uow.SaveChangesAsync();
+        _appBLL.Drives.Add(drive);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetBooking", new {id = booking.Id}, booking);
     }
@@ -131,21 +118,20 @@ public class BookingsController : ControllerBase
 #warning Needs checking
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName);
         if (booking == null) return NotFound();
 
-        var drive = await _uow.Drives.GettingSingleOrDefaultDriveAsync(d => d!.Booking!.DriverId.Equals(booking.DriveId)
-        );
+        var drive = await _appBLL.Drives.GettingDriveAsync(id, userId, roleName);
 
-        if (drive != null) await _uow.Drives.RemoveAsync(drive.Id);
-        _uow.Bookings.Remove(booking);
-        await _uow.SaveChangesAsync();
+        if (drive != null) await _appBLL.Drives.RemoveAsync(drive.Id);
+        _appBLL.Bookings.Remove(booking);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool BookingExists(Guid id)
     {
-        return _uow.Bookings.Exists(id);
+        return _appBLL.Bookings.Exists(id);
     }
-}*/
+}

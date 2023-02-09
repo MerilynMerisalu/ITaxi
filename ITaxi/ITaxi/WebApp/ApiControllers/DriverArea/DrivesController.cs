@@ -1,6 +1,6 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
-using App.Contracts.DAL;
+using App.Contracts.BLL;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -13,11 +13,11 @@ namespace WebApp.ApiControllers.DriverArea;
 [Authorize(Roles = "Admin, Driver", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DrivesController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public DrivesController(IAppUnitOfWork uow)
+    public DrivesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: api/Drives
@@ -26,7 +26,7 @@ public class DrivesController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var res = await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync(userId, roleName);
+        var res = await _appBLL.Drives.GettingAllOrderedDrivesWithIncludesAsync(userId, roleName);
 
         return Ok(res);
     }
@@ -37,7 +37,7 @@ public class DrivesController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var drive = await _uow.Drives.GettingFirstDriveAsync(id, userId, roleName);
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, userId, roleName);
 
         if (drive == null) return NotFound();
 
@@ -57,8 +57,8 @@ public class DrivesController : ControllerBase
 
         try
         {
-            _uow.Drives.Update(drive);
-            await _uow.SaveChangesAsync();
+            _appBLL.Drives.Update(drive);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -76,8 +76,8 @@ public class DrivesController : ControllerBase
     /*[HttpPost]
     public async Task<ActionResult<Drive>> PostDrive(Drive drive)
     {
-        _uow.Drives.Add(drive);
-        await _uow.SaveChangesAsync();
+        _appBLL.Drives.Add(drive);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetDrive", new {id = drive.Id}, drive);
     }
@@ -87,17 +87,17 @@ public class DrivesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDrive(Guid id)
     {
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        var drive = await _appBLL.Drives.FirstOrDefaultAsync(id);
         if (drive == null) return NotFound();
 
-        _uow.Drives.Remove(drive);
-        await _uow.SaveChangesAsync();
+        _appBLL.Drives.Remove(drive);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool DriveExists(Guid id)
     {
-        return _uow.Drives.Exists(id);
+        return _appBLL.Drives.Exists(id);
     }
 }
