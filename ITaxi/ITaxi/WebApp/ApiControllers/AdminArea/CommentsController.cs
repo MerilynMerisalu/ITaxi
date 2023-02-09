@@ -1,6 +1,7 @@
-/*#nullable enable
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
-using App.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,28 +11,28 @@ namespace WebApp.ApiControllers.AdminArea;
 
 [Route("api/AdminArea/[controller]")]
 [ApiController]
-[Authorize(Roles = nameof(Admin), AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CommentsController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public CommentsController(IAppUnitOfWork uow)
+    public CommentsController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: api/Comments
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
+    public async Task<ActionResult<IEnumerable<CommentDTO>>> GetComments()
     {
-        return Ok(await _uow.Comments.GettingAllOrderedCommentsWithoutIncludesAsync());
+        return Ok(await _appBLL.Comments.GettingAllOrderedCommentsWithoutIncludesAsync());
     }
 
     // GET: api/Comments/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Comment>> GetComment(Guid id)
+    public async Task<ActionResult<CommentDTO>> GetComment(Guid id)
     {
-        var comment = await _uow.Comments.GettingCommentWithoutIncludesAsync(id);
+        var comment = await _appBLL.Comments.GettingCommentWithoutIncludesAsync(id);
 
         if (comment == null) return NotFound();
 
@@ -41,15 +42,15 @@ public class CommentsController : ControllerBase
     // PUT: api/Comments/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutComment(Guid id, Comment comment)
+    public async Task<IActionResult> PutComment(Guid id, CommentDTO comment)
     {
         if (id != comment.Id) return BadRequest();
 
 
         try
         {
-            _uow.Comments.Update(comment);
-            await _uow.SaveChangesAsync();
+            _appBLL.Comments.Update(comment);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -64,10 +65,10 @@ public class CommentsController : ControllerBase
     // POST: api/Comments
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Comment>> PostComment(Comment comment)
+    public async Task<ActionResult<CommentDTO>> PostComment(CommentDTO comment)
     {
-        _uow.Comments.Add(comment);
-        await _uow.SaveChangesAsync();
+        _appBLL.Comments.Add(comment);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetComment", new {id = comment.Id}, comment);
     }
@@ -76,17 +77,17 @@ public class CommentsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteComment(Guid id)
     {
-        var comment = await _uow.Comments.GettingCommentWithoutIncludesAsync(id);
+        var comment = await _appBLL.Comments.GettingCommentWithoutIncludesAsync(id);
         if (comment == null) return NotFound();
 
-        _uow.Comments.Remove(comment);
-        await _uow.SaveChangesAsync();
+        _appBLL.Comments.Remove(comment);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool CommentExists(Guid id)
     {
-        return _uow.Comments.Exists(id);
+        return _appBLL.Comments.Exists(id);
     }
-}*/
+}

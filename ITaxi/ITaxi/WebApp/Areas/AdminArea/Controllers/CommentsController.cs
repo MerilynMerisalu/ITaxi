@@ -1,17 +1,13 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
-/*using App.DAL.DTO.AdminArea;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
-using BookingDTO = App.DAL.DTO.AdminArea.BookingDTO;
-using DriveDTO = App.DAL.DTO.AdminArea.DriveDTO;
-using DriverDTO = App.DAL.DTO.AdminArea.DriverDTO;
+
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
@@ -76,7 +72,7 @@ public class CommentsController : Controller
             if (drive != null) drive.Booking!.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
         }
         vm.Drives = new SelectList(drives,
-            nameof(App.DAL.DTO.AdminArea.DriveDTO.Id), nameof(DriveDTO.DriveDescription));
+            nameof(App.BLL.DTO.AdminArea.DriveDTO.Id), nameof(App.BLL.DTO.AdminArea.DriveDTO.DriveDescription));
 
         return View(vm);
     }
@@ -211,4 +207,4 @@ public class CommentsController : Controller
     {
         return _appBLL.Comments.Exists(id);
     }
-}*/
+}
