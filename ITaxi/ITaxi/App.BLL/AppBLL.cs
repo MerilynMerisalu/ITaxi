@@ -79,7 +79,7 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
         new DriveMapper(_mapper));
 
     
-    public ICommentService Comments => _comments ?? new CommentService(UnitOfWork.Comments, new CommentMapper(_mapper));
+    public virtual ICommentService Comments => _comments ?? new CommentService(UnitOfWork.Comments, new CommentMapper(_mapper));
 
 
     private ICountyService? _counties;
