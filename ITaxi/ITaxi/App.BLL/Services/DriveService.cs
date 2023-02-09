@@ -148,13 +148,15 @@ public class DriveService: BaseEntityService<App.BLL.DTO.AdminArea.DriveDTO, App
         return Mapper.Map(Repository.GettingFirstDrive(id, userId, roleName, noTracking));
     }
 
-    /*public async Task<DriveDTO?> GettingSingleOrDefaultDriveAsync(Expression<Func<DriveDTO, bool>> filter, string? roleName = null, bool noTracking = true)
+    public async Task<DriveDTO?> GettingDriveAsync(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return Mapper.Map(await Repository.GettingSingleOrDefaultDriveAsync(Mapper.Map(filter)))
+        return Mapper.Map(await Repository.GettingDriveAsync(bookingId, userId, roleName, noTracking));
     }
 
-    public DriveDTO? GettingSingleOrDefaultDrive(Expression<Func<DriveDTO, bool>> filter, string? roleName = null, bool noTracking = true)
+    public DriveDTO? GettingDrive(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        throw new NotImplementedException();
-    }*/
+        return Mapper.Map(Repository.GettingDrive(id, userId, roleName, noTracking));
+    }
+
+    
 }

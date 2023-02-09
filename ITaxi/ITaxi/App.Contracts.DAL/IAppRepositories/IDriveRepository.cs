@@ -39,10 +39,8 @@ public interface IDriveRepositoryCustom<TEntity>
     Task<TEntity?> EndingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true);
     Task<TEntity?> GettingFirstDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
     TEntity? GettingFirstDrive(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
-
-    /*Task<TEntity?> GettingSingleOrDefaultDriveAsync(Expression<Func<TEntity, bool>> filter, string? roleName = null,
-        bool noTracking = true);
-
-    TEntity? GettingSingleOrDefaultDrive( Expression<Func<TEntity, bool>> filter, string? roleName = null,
-        bool noTracking = true);*/
+    Task<TEntity?> GettingDriveAsync(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true);
+    TEntity? GettingDrive(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true);
+    
+    
 }

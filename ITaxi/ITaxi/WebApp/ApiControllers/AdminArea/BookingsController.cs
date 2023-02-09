@@ -1,37 +1,36 @@
-/*#nullable enable
-using App.Contracts.DAL;
-using App.Domain;
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
 [Route("api/AdminArea/[controller]")]
 [ApiController]
-[Authorize(Roles = nameof(Admin), AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class BookingsController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public BookingsController(IAppUnitOfWork uow)
+    public BookingsController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: api/Bookings
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
+    public async Task<ActionResult<IEnumerable<BookingDTO>>> GetBookings()
     {
-        return Ok(await _uow.Bookings.GettingAllOrderedBookingsWithoutIncludesAsync());
+        return Ok(await _appBLL.Bookings.GettingAllOrderedBookingsWithoutIncludesAsync());
     }
 
     // GET: api/Bookings/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Booking>> GetBooking(Guid id)
+    public async Task<ActionResult<BookingDTO>> GetBooking(Guid id)
     {
-        var booking = await _uow.Bookings.GettingBookingWithoutIncludesByIdAsync(id);
+        var booking = await _appBLL.Bookings.GettingBookingWithoutIncludesByIdAsync(id);
 
         if (booking == null) return NotFound();
 
@@ -41,18 +40,18 @@ public class BookingsController : ControllerBase
     // PUT: api/Bookings/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutBooking(Guid id, Booking booking)
-    {
-        if (id != booking.Id) return BadRequest();
+    /*public async Task<IActionResult> PutBooking(Guid id, BookingDTO booking)
+    {*/
+        /*if (id != booking.Id) return BadRequest();
 
-        var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.DriveId.Equals(booking.DriverId));
+        var drive = await _appBLL.Drives.FirstOrDefaultAsync(id);
 
 
         try
         {
-            _uow.Bookings.Update(booking);
-            if (drive != null) _uow.Drives.Update(drive);
-            await _uow.SaveChangesAsync();
+            _appBLL.Bookings.Update(booking);
+            if (drive != null) _appBLL.Drives.Update(drive);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -63,22 +62,23 @@ public class BookingsController : ControllerBase
 
         return NoContent();
     }
+    */
 
     // POST: api/Bookings
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Booking>> PostBooking(Booking booking)
+    public async Task<ActionResult<BookingDTO>> PostBooking(BookingDTO booking)
     {
-        _uow.Bookings.Add(booking);
+        _appBLL.Bookings.Add(booking);
 #warning Needs checking
-        var drive = new Drive
+        var drive = new DriveDTO()
         {
             Id = new Guid(),
             DriverId = booking.DriverId,
             Booking = booking
         };
-        _uow.Drives.Add(drive);
-        await _uow.SaveChangesAsync();
+        _appBLL.Drives.Add(drive);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetBooking", new {id = booking.Id}, booking);
     }
@@ -88,20 +88,20 @@ public class BookingsController : ControllerBase
     public async Task<IActionResult> DeleteBooking(Guid id)
     {
 #warning Needs checking
-        var booking = await _uow.Bookings.GettingBookingWithoutIncludesByIdAsync(id);
+        var booking = await _appBLL.Bookings.GettingBookingWithoutIncludesByIdAsync(id);
         if (booking == null) return NotFound();
 
-        var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.DriverId.Equals(booking.DriveId));
+        var drive = await _appBLL.Drives.GettingDriveAsync(id);
 
-        if (drive != null) await _uow.Drives.RemoveAsync(drive.Id);
-        _uow.Bookings.Remove(booking);
-        await _uow.SaveChangesAsync();
+        if (drive != null) await _appBLL.Drives.RemoveAsync(drive.Id);
+        _appBLL.Bookings.Remove(booking);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool BookingExists(Guid id)
     {
-        return _uow.Bookings.Exists(id);
+        return _appBLL.Bookings.Exists(id);
     }
-}*/
+}

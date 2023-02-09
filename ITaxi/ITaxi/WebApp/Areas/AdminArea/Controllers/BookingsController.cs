@@ -1,9 +1,8 @@
 #nullable enable
 using System.Net;
 using System.Net.Mail;
+using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
-using App.DAL.DTO.AdminArea;
 using App.Domain.Enum;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;

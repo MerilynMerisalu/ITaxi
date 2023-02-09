@@ -166,6 +166,7 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
         return booking;
     }
 
+    
     public  async Task<BookingDTO?> FirstOrDefaultAsync(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         return Mapper.Map(await CreateQuery(userId, roleName,noTracking)

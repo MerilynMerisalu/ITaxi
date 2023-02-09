@@ -1,6 +1,6 @@
-/*#nullable enable
-using App.Contracts.DAL;
-using App.Domain;
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,28 +10,29 @@ namespace WebApp.ApiControllers.AdminArea;
 
 [Route("api/AdminArea/[controller]")]
 [ApiController]
-[Authorize(Roles = nameof(Admin), AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DrivesController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public DrivesController(IAppUnitOfWork uow)
+    public DrivesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
+        
     }
 
     // GET: api/Drives
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Drive>>> GetDrives()
+    public async Task<ActionResult<IEnumerable<DriveDTO>>> GetDrives()
     {
-        return Ok(await _uow.Drives.GetAllDrivesWithoutIncludesAsync());
+        return Ok(await _appBLL.Drives.GetAllDrivesWithoutIncludesAsync());
     }
 
     // GET: api/Drives/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Drive>> GetDrive(Guid id)
+    public async Task<ActionResult<DriveDTO>> GetDrive(Guid id)
     {
-        var drive = await _uow.Drives.GettingDriveWithoutIncludesAsync(id);
+        var drive = await _appBLL.Drives.GettingDriveWithoutIncludesAsync(id);
 
         if (drive == null) return NotFound();
 
@@ -41,15 +42,15 @@ public class DrivesController : ControllerBase
     // PUT: api/Drives/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutDrive(Guid id, Drive drive)
+    public async Task<IActionResult> PutDrive(Guid id, DriveDTO drive)
     {
         if (id != drive.Id) return BadRequest();
 
 
         try
         {
-            _uow.Drives.Update(drive);
-            await _uow.SaveChangesAsync();
+            _appBLL.Drives.Update(drive);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -64,10 +65,10 @@ public class DrivesController : ControllerBase
     // POST: api/Drives
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Drive>> PostDrive(Drive drive)
+    public async Task<ActionResult<DriveDTO>> PostDrive(DriveDTO drive)
     {
-        _uow.Drives.Add(drive);
-        await _uow.SaveChangesAsync();
+        _appBLL.Drives.Add(drive);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetDrive", new {id = drive.Id}, drive);
     }
@@ -76,17 +77,17 @@ public class DrivesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDrive(Guid id)
     {
-        var drive = await _uow.Drives.FirstOrDefaultAsync(id);
+        var drive = await _appBLL.Drives.FirstOrDefaultAsync(id);
         if (drive == null) return NotFound();
 
-        _uow.Drives.Remove(drive);
-        await _uow.SaveChangesAsync();
+        _appBLL.Drives.Remove(drive);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool DriveExists(Guid id)
     {
-        return _uow.Drives.Exists(id);
+        return _appBLL.Drives.Exists(id);
     }
-}*/
+}

@@ -32,5 +32,6 @@ public interface IBookingRepositoryCustom<TEntity>
     Task<TEntity?> BookingDeclineAsync(Guid id, Guid? userId = null, string? roleName = null);
     TEntity? BookingDecline(Guid id, Guid? userId = null, string? roleName = null);
     Task<TEntity?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
-    TEntity? GettingBooking(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
+    TEntity? GettingBooking(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true);
+    
 }
