@@ -18,18 +18,18 @@ namespace WebApp.Areas.AdminArea.Controllers;
 [Authorize(Roles = "Admin")]
 public class DriversController : Controller
 {
-    private readonly IUnitOfWork _uow;
+    
     private readonly IAppBLL _appBLL;
     #warning ask about it
     private readonly UserManager<App.Domain.Identity.AppUser> _userManager;
 
 
-    public DriversController(UserManager<App.Domain.Identity.AppUser> userManager, IAppBLL appBLL, IUnitOfWork uow)
+    public DriversController(UserManager<App.Domain.Identity.AppUser> userManager, IAppBLL appBLL)
     {
         
         _userManager = userManager;
         _appBLL = appBLL;
-        _uow = uow;
+        
     }
 
     // GET: AdminArea/Drivers
@@ -258,9 +258,9 @@ public class DriversController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id);
-        if (await _appBLL.Schedules.AnyAsync(d => driver != null && d != null && d.DriverId.Equals(driver.Id))
+        /*if (await _appBLL.Schedules.AnyAsync(d => driver != null && d != null && d.DriverId.Equals(driver.Id))
             || await _appBLL.Bookings.AnyAsync(d => driver != null && d != null && d.DriverId.Equals(driver.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");
+            return Content("Entity cannot be deleted because it has dependent entities!");*/
 
         await _appBLL.DriverAndDriverLicenseCategories.RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(id);
         
