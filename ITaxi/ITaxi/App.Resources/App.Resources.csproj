@@ -147,6 +147,10 @@
           <Generator>ResXFileCodeGenerator</Generator>
           <LastGenOutput>PDF.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\DriverArea\Photo.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Photo.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -324,6 +328,11 @@
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
           <DependentUpon>PDF.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\DriverArea\Photo.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Photo.resx</DependentUpon>
         </Compile>
     </ItemGroup>
 

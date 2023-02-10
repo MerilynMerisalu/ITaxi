@@ -1,5 +1,5 @@
 
-#nullable disable
+#nullable enable
 using App.Contracts.DAL;
 using App.DAL.DTO.AdminArea;
 using Microsoft.AspNetCore.Mvc;

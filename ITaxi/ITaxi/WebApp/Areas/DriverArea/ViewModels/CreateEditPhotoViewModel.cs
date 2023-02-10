@@ -1,37 +1,37 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using App.DAL.DTO.Identity;
-using Base.Domain;
 using Base.Resources;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace App.DAL.DTO.AdminArea;
+namespace WebApp.Areas.DriverArea.ViewModels;
 
-public class PhotoDTO : DomainEntityMetaId
+public class CreateEditPhotoViewModel
 {
+    public Guid Id { get; set; }
+    
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(255, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Title))]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.DriverArea.Photo),
+        Name = nameof(Title))]
     public string Title { get; set; } = default!;
-
+    
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(255, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(PhotoURL))]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.DriverArea.Photo), Name = nameof(PhotoURL))]
     public string? PhotoURL { get; set; }
+    
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.DriverArea.Photo), Name = "Vehicle")]
 
     public Guid VehicleId { get; set; }
-    public VehicleDTO? Vehicle { get; set; }
+    
+    public SelectList? Vehicles { get; set; }
 
-    public Guid? AppUserId { get; set; }
-    public AppUser? AppUser { get; set; }
-
-    [NotMapped] public IFormFile? ImageFile { get; set; }
+    
 }
