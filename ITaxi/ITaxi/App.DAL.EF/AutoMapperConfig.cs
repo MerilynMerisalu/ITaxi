@@ -26,7 +26,8 @@ public class AutoMapperConfig : Profile
             .ForMember(dto => dto.UpdatedAt,
                 m =>
                     m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
-            .ForMember(dto => dto.NumberOfCities, m => m.MapFrom(x => x.Cities.Count()))
+            .ForMember(dto => dto.NumberOfCities, m
+                => m.MapFrom(x => x.Cities.Count()))
             ;
 
         // DTO => EF: Convert to Universal Time
@@ -192,8 +193,13 @@ public class AutoMapperConfig : Profile
                 m =>
                     m.MapFrom(x => x.StartDateAndTime.ToLocalTime()))
             .ForMember(dto => dto.EndDateAndTime,
-                m => 
-                    m.MapFrom(x => x.EndDateAndTime.ToLocalTime() ));
+                m =>
+                    m.MapFrom(x => x.EndDateAndTime.ToLocalTime()))
+            .ForMember(dto => dto.NumberOfRideTimes, m
+                => m.MapFrom(x => x.RideTimes!.Count));
+#warning is it right
+            /*.ForMember(dto => dto.NumberOfTakenRideTimes, m
+                => m.MapFrom(x => x.NumberOfTakenRideTimes));*/
 
         // DTO => EF: Convert to Universal Time
         CreateMap<ScheduleDTO, App.Domain.Schedule>()

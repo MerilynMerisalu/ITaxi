@@ -237,6 +237,7 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
                 .ThenInclude(v => v!.VehicleTypeName)
                 .ThenInclude(v => v.Translations)
                 .Include(s => s.RideTimes);
+                
             return query;
         }
 
