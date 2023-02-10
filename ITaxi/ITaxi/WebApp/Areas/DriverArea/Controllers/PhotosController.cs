@@ -1,12 +1,12 @@
-using App.Contracts.DAL;
-using App.DAL.DTO.AdminArea;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.DriverArea.ViewModels;
-using VehicleDTO = App.BLL.DTO.AdminArea.VehicleDTO;
+
 
 namespace WebApp.Areas.DriverArea.Controllers;
 
@@ -14,17 +14,20 @@ namespace WebApp.Areas.DriverArea.Controllers;
 [Authorize(Roles = "Admin, Driver")]
 public class PhotosController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public PhotosController(IAppUnitOfWork uow)
+    public PhotosController( IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
+        
     }
 
     // GET: DriverArea/Photos
     public async Task<IActionResult> Index()
     {
-        var res = await _uow.Photos.GetAllPhotosWithIncludesAsync();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var res = await _appBLL.Photos.GetAllPhotosWithIncludesAsync(userId, roleName);
         return View(res);
     }
 
@@ -32,8 +35,10 @@ public class PhotosController : Controller
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeletePhotoViewModel();
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
         if (id == null) return NotFound();
-        var photo = await _uow.Photos.GetPhotoByIdAsync(id.Value);
+        var photo = await _appBLL.Photos.GetPhotoByIdAsync(id.Value, userId, roleName);
         if (photo == null) return NotFound();
         vm.Id = photo.Id;
         vm.Title = photo.Title;
@@ -47,7 +52,7 @@ public class PhotosController : Controller
     {
         var userId = User.GettingUserId();
         var vm = new CreateEditPhotoViewModel();
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(userId),
+        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId),
             nameof(VehicleDTO.Id)
             , nameof(VehicleDTO.VehicleIdentifier));
         
@@ -68,8 +73,8 @@ public class PhotosController : Controller
             photo.Title = vm.Title;
             photo.PhotoURL = vm.PhotoURL;
             photo.AppUserId = User.GettingUserId();
-            _uow.Photos.Add(photo);
-            await _uow.SaveChangesAsync();
+            _appBLL.Photos.Add(photo);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -83,13 +88,13 @@ public class PhotosController : Controller
         var vm = new CreateEditPhotoViewModel();
         var userId = User.GettingUserId();
         if (id == null) return NotFound();
-        var photo = await _uow.Photos.FirstOrDefaultAsync(id.Value);
+        var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
         if (photo == null) return NotFound();
         vm.Id = photo.Id;
         vm.Title = photo.Title;
         vm.PhotoURL = photo.PhotoURL;
         vm.VehicleId = vm.VehicleId;
-        vm.Vehicles = new SelectList(await _uow.Vehicles.GettingOrderedVehiclesAsync(userId),
+        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId),
             nameof(VehicleDTO.Id),
             nameof(VehicleDTO.VehicleIdentifier),
             nameof(vm.VehicleId));
@@ -105,7 +110,7 @@ public class PhotosController : Controller
          CreateEditPhotoViewModel vm)
     {
         var userId = User.GettingUserId();
-        var photo = await _uow.Photos.GetPhotoByIdAsync(id, userId);
+        var photo = await _appBLL.Photos.GetPhotoByIdAsync(id, userId);
         if (photo != null && id != photo.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -118,10 +123,10 @@ public class PhotosController : Controller
                     photo.AppUserId = userId;
                     photo.VehicleId = vm.VehicleId;
                     photo.CreatedBy = User.GettingUserEmail();
-                    _uow.Photos.Update(photo);
+                    _appBLL.Photos.Update(photo);
                 }
 
-                await _uow.SaveChangesAsync();
+                await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -143,7 +148,7 @@ public class PhotosController : Controller
         var vm = new DetailsDeletePhotoViewModel();
         if (id == null) return NotFound();
 
-        var photo = await _uow.Photos.GetPhotoByIdAsync(id.Value);
+        var photo = await _appBLL.Photos.GetPhotoByIdAsync(id.Value);
         if (photo == null) return NotFound();
 
         return View(vm);
@@ -156,15 +161,15 @@ public class PhotosController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         
-        var photo = await _uow.Photos.FirstOrDefaultAsync(id);
-        if (photo != null) _uow.Photos.Remove(photo);
+        var photo = await _appBLL.Photos.FirstOrDefaultAsync(id);
+        if (photo != null) _appBLL.Photos.Remove(photo);
 
-        await _uow.SaveChangesAsync();
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     private bool PhotoExists(Guid id)
     {
-        return (_uow.Photos?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_appBLL.Photos?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

@@ -1,5 +1,7 @@
-/*using App.Contracts.DAL;
-using App.Domain;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
+using App.Contracts.DAL;
+
 using App.Domain.Enum;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -14,11 +16,11 @@ namespace WebApp.Areas.CustomerArea.Controllers;
 [Authorize(Roles = "Admin, Customer")]
 public class BookingsController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public BookingsController(IAppUnitOfWork uow)
+    public BookingsController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
 
@@ -27,7 +29,7 @@ public class BookingsController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var res = await _uow.Bookings.GettingAllOrderedBookingsAsync(userId, roleName);
+        var res = await _appBLL.Bookings.GettingAllOrderedBookingsAsync(userId, roleName);
         foreach (var booking in res)
         {
             if (booking != null)
@@ -48,7 +50,7 @@ public class BookingsController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
 
-        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, userId, roleName);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, userId, roleName);
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
@@ -71,10 +73,10 @@ public class BookingsController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateBookingViewModel();
-        vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesAsync(),
-            nameof(City.Id), nameof(City.CityName));
-        vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
-            nameof(VehicleType.Id), nameof(VehicleType.VehicleTypeName));
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
+            nameof(CityDTO.Id), nameof(CityDTO.CityName));
+        vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+            nameof(VehicleTypeDTO.Id), nameof(VehicleTypeDTO.VehicleTypeName));
 
         return View(vm);
     }
@@ -87,19 +89,19 @@ public class BookingsController : Controller
     public async Task<IActionResult> Create(CreateBookingViewModel vm)
     {
         var userId = User.GettingUserId();
-        var booking = new Booking();
+        var booking = new BookingDTO();
         if (ModelState.IsValid)
         {
             booking.Id = Guid.NewGuid();
             booking.CityId = vm.CityId;
-            booking.CustomerId = _uow.Customers
+            booking.CustomerId = _appBLL.Customers
                 .SingleOrDefaultAsync(c => c!.AppUserId.Equals(userId)).Result!.Id;
-            booking.DriverId = _uow.Drivers.FirstAsync().Result!.Id;
+            booking.DriverId = _appBLL.Drivers.FirstAsync().Result!.Id;
 #warning needs fixing
-            booking.ScheduleId =  _uow.Schedules.FirstAsync().Result!.Id;
+            booking.ScheduleId =  _appBLL.Schedules.FirstAsync().Result!.Id;
 #warning needs fixing
             booking.VehicleId =
-                 _uow.Vehicles.FirstAsync().Result!.Id;
+                 _appBLL.Vehicles.FirstAsync().Result!.Id;
             booking.AdditionalInfo = vm.AdditionalInfo;
             booking.DestinationAddress = vm.DestinationAddress;
             booking.PickupAddress = vm.PickupAddress;
@@ -109,24 +111,25 @@ public class BookingsController : Controller
             booking.StatusOfBooking = StatusOfBooking.Awaiting;
 #warning Booking PickUpDateAndTime needs a custom validation
             booking.PickUpDateAndTime = DateTime.Parse(vm.PickUpDateAndTime).ToUniversalTime();
-            _uow.Bookings.Add(booking);
+            _appBLL.Bookings.Add(booking);
 
-            var drive = new Drive
+            var drive = new DriveDTO()
             {
                 Id = new Guid(),
                 Booking = booking,
                 DriverId = booking.DriverId
             };
 
-            _uow.Drives.Add(drive);
-            await _uow.SaveChangesAsync();
+            _appBLL.Drives.Add(drive);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Cities = new SelectList(await _uow.Cities.GetAllOrderedCitiesWithoutCountyAsync(), nameof(City.Id),
-            nameof(City.CityName), nameof(booking.CityId));
-        vm.VehicleTypes = new SelectList(await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
-            nameof(VehicleType.Id), nameof(VehicleType.VehicleTypeName),
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesWithoutCountyAsync(),
+            nameof(CityDTO.Id),
+            nameof(CityDTO.CityName), nameof(booking.CityId));
+        vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+            nameof(VehicleTypeDTO.Id), nameof(VehicleTypeDTO.VehicleTypeName),
             nameof(booking.VehicleTypeId));
 
         return View(vm);
@@ -141,18 +144,18 @@ public class BookingsController : Controller
         var userId = User.GettingUserId();
         
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, userId, roleName);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, userId, roleName);
         if (booking == null) return NotFound();
 
 
-        vm.Cities = new SelectList(await _uow.Cities.GetAllCitiesWithoutCountyAsync()
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllCitiesWithoutCountyAsync()
             , nameof(City.Id), nameof(City.CityName));
         vm.AdditionalInfo = booking.AdditionalInfo;
         vm.CityId = booking.CityId;
         vm.DestinationAddress = booking.DestinationAddress;
         vm.PickupAddress = booking.PickupAddress;
         vm.VehicleTypes = new SelectList(
-            await _uow.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
+            await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleType.Id)
             , nameof(VehicleType.VehicleTypeName));
         vm.HasAnAssistant = booking.HasAnAssistant;
@@ -161,24 +164,25 @@ public class BookingsController : Controller
         vm.PickUpDateAndTime = booking.PickUpDateAndTime;
         return View(vm);
     }
-    #1#
+    */
+    
 
     // POST: AdminArea/Bookings/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     
-    /*[HttpPost]
+    [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, EditBookingViewModel vm)
+    /*public async Task<IActionResult> Edit(Guid id, EditBookingViewModel vm)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName, false);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName, false);
         if (booking != null && id != booking.Id) return NotFound();
 
         if (ModelState.IsValid)
         {
-            var customerId = _uow.Customers
+            var customerId = _appBLL.Customers
                 .SingleOrDefaultAsync(c => c!.AppUserId.Equals(userId)).Result!.Id;
             try
             {
@@ -187,11 +191,11 @@ public class BookingsController : Controller
                     booking.Id = id;
                     booking.CityId = vm.CityId;
                     booking.CustomerId = customerId;
-                    booking.DriverId = _uow.Drivers.FirstAsync().Result!.Id;
+                    booking.DriverId = _appBLL.Drivers.FirstAsync().Result!.Id;
 #warning needs fixing
-                    booking.ScheduleId =  _uow.Schedules.FirstAsync().Result!.Id;
+                    booking.ScheduleId =  _appBLL.Schedules.FirstAsync().Result!.Id;
 #warning needs fixing
-                    booking.VehicleId = _uow.Vehicles.FirstAsync().Result!.Id;
+                    booking.VehicleId = _appBLL.Vehicles.FirstAsync().Result!.Id;
                     booking.AdditionalInfo = vm.AdditionalInfo;
                     booking.DestinationAddress = vm.DestinationAddress;
                     booking.PickupAddress = vm.PickupAddress;
@@ -202,10 +206,10 @@ public class BookingsController : Controller
                     booking.PickUpDateAndTime = vm.PickUpDateAndTime;
 
 
-                    _uow.Bookings.Update(booking);
+                    _appBLL.Bookings.Update(booking);
                 }
 
-                var drive = await _uow.Drives
+                var drive = await _appBLL.Drives
                     .SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(booking!.Id), false);
                 if (drive != null)
                 {
@@ -215,8 +219,8 @@ public class BookingsController : Controller
                         drive.Booking = booking;
                     }
 
-                    _uow.Drives.Update(drive);
-                    await _uow.SaveChangesAsync();
+                    _appBLL.Drives.Update(drive);
+                    await _appBLL.SaveChangesAsync();
                 }
             }
             catch (DbUpdateConcurrencyException)
@@ -230,7 +234,7 @@ public class BookingsController : Controller
         }
 
         return View(vm);
-    }#1#
+    }*/
 
     // GET: CustomerArea/Bookings/Decline/5
     public async Task<IActionResult> Decline(Guid? id)
@@ -240,7 +244,7 @@ public class BookingsController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
 
-        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, userId, roleName);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, userId, roleName);
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
@@ -266,19 +270,19 @@ public class BookingsController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName, false);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName, false);
         if (booking != null)
         {
-            var drive = await _uow.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id), false);
-            await _uow.Bookings.BookingDeclineAsync(booking.Id, userId, roleName);
+            var drive = await _appBLL.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id), false);
+            await _appBLL.Bookings.BookingDeclineAsync(booking.Id, userId, roleName);
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             drive!.Booking = booking;
-            _uow.Bookings.Update(booking);
-            await _uow.SaveChangesAsync();
-            _uow.Drives.Update(drive);
+            _appBLL.Bookings.Update(booking);
+            await _appBLL.SaveChangesAsync();
+            _appBLL.Drives.Update(drive);
         }
 
-        await _uow.SaveChangesAsync();
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
@@ -290,7 +294,7 @@ public class BookingsController : Controller
         if (id == null) return NotFound();
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.GettingBookingAsync(id.Value, userId, roleName, false);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, userId, roleName, false);
         if (booking == null) return NotFound();
         vm.Id = booking.Id;
         vm.City = booking.City!.CityName;
@@ -315,21 +319,21 @@ public class BookingsController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var booking = await _uow.Bookings.GettingBookingAsync(id, userId, roleName );
-        var drive = await _uow.Drives.SingleOrDefaultAsync(d => d != null && d.Booking!.Id.Equals(id), false);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName );
+        var drive = await _appBLL.Drives.SingleOrDefaultAsync(d => d != null && d.Booking!.Id.Equals(id), false);
         var comment =
-            await _uow.Comments.SingleOrDefaultAsync(c => drive != null && c != null && c.DriveId.Equals(drive.Id),
+            await _appBLL.Comments.SingleOrDefaultAsync(c => drive != null && c != null && c.DriveId.Equals(drive.Id),
                 false);
-        if (comment != null) _uow.Comments.Remove(comment);
-        if (drive != null) _uow.Drives.Remove(drive);
-        if (booking != null) _uow.Bookings.Remove(booking);
-        await _uow.SaveChangesAsync();
+        if (comment != null) _appBLL.Comments.Remove(comment);
+        if (drive != null) _appBLL.Drives.Remove(drive);
+        if (booking != null) _appBLL.Bookings.Remove(booking);
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     private bool BookingExists(Guid id)
     {
-        return _uow.Bookings.Exists(id);
+        return _appBLL.Bookings.Exists(id);
     }
 
     /// <summary>
@@ -342,7 +346,7 @@ public class BookingsController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var results = await _uow.Bookings.SearchByCityAsync(search, userId, roleName);
+        var results = await _appBLL.Bookings.SearchByCityAsync(search, userId, roleName);
         return View(nameof(Index), results);
     }
-}*/
+}

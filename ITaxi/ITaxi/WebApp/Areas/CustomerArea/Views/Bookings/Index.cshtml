@@ -1,7 +1,7 @@
-@*@using App.Resources.Areas.App.Domain.CustomerArea
+@using App.Resources.Areas.App.Domain.CustomerArea
 @using Base.Resources
 @using App.Domain.Enum
-@model IEnumerable<App.Domain.Booking>
+@model IEnumerable<App.BLL.DTO.AdminArea.BookingDTO?>
 
 @{
     ViewData["Title"] = Common.Index;
@@ -130,11 +130,11 @@ $1$<form action="@Url.Action("SearchByCity")" method="post">
                 {
                     <p style="display: inline"><a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |</p>
                 }
-                $1$<a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |#1#
+                @*<a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |*@
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
             </td>
         </tr>
     }
     </tbody>
-</table>*@
+</table>

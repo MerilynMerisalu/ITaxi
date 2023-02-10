@@ -52,9 +52,9 @@ public class SchedulesController : Controller
         vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
 
 #warning Should this be a repository method
-        vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
+        vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
 #warning Should this be a repository method
-        vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
+        vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
 
         return View(vm);
     }
