@@ -23,5 +23,5 @@ public interface IAppUnitOfWork : IUnitOfWork
     ICustomerRepository Customers { get; }
     IDriveRepository Drives { get; }
     ICommentRepository Comments { get; }
-    //IPhotoRepository Photos { get; }
+    IPhotoRepository Photos { get; }
 }

@@ -1,7 +1,7 @@
-/*
+
 #nullable disable
 using App.Contracts.DAL;
-using App.Domain;
+using App.DAL.DTO.AdminArea;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
@@ -53,7 +53,7 @@ public class PhotosController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateEditPhotoViewModel vm, Photo photo)
+    public async Task<IActionResult> Create(CreateEditPhotoViewModel vm, PhotoDTO photo)
     {
         if (ModelState.IsValid)
         {
@@ -142,5 +142,5 @@ public class PhotosController : Controller
         return _uow.Photos.Exists(id);
     }
 }
-*/
+
 

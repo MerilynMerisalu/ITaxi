@@ -1,38 +1,44 @@
-﻿/*using App.Contracts.DAL.IAppRepositories;
+﻿using App.Contracts.DAL.IAppRepositories;
+using App.DAL.DTO.AdminArea;
 using App.Domain;
+using Base.Contracts;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class PhotoRepository : BaseEntityRepository<Photo, AppDbContext>, IPhotoRepository
+public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, AppDbContext>, IPhotoRepository
 {
-    public PhotoRepository(AppDbContext dbContext) : base(dbContext)
+    public PhotoRepository(AppDbContext dbContext,
+        IMapper<App.DAL.DTO.AdminArea.PhotoDTO, App.Domain.Photo> mapper)
+        : base(dbContext, mapper)
     {
     }
-
-
-    public async Task<IEnumerable<Photo?>> GetAllPhotosWithIncludesAsync(Guid? userId = null, 
+    
+    public async Task<IEnumerable<PhotoDTO?>> GetAllPhotosWithIncludesAsync(Guid? userId = null, 
         string? roleName = null, bool noTracking = true)
     {
-        return await CreateQuery(userId,roleName,noTracking).ToListAsync();
+        return (await CreateQuery(userId,roleName,noTracking).ToListAsync())
+            .Select(e => Mapper.Map(e));
     }
 
-    public IEnumerable<Photo?> GetAllPhotosWithIncludes(Guid? userId = null, string? roleName = null, 
+    public IEnumerable<PhotoDTO?> GetAllPhotosWithIncludes(Guid? userId = null, string? roleName = null, 
         bool noTracking = true)
     {
-        return CreateQuery(userId, roleName,noTracking).ToList();
+        return CreateQuery(userId, roleName,noTracking).ToList().Select(e => Mapper.Map(e));
     }
 
-    public async Task<Photo?> GetPhotoByIdAsync(Guid id, Guid? userId = null, string? roleName = null,
+    public async Task<PhotoDTO?> GetPhotoByIdAsync(Guid id, Guid? userId = null, string? roleName = null,
         bool noTracking = true)
     {
-        return await CreateQuery(userId, roleName,noTracking).FirstOrDefaultAsync(p => p.Id.Equals(id));
+        return Mapper.Map(await CreateQuery(userId, roleName,noTracking)
+            .FirstOrDefaultAsync(p => p.Id.Equals(id)));
     }
 
-    public Photo? GetPhotoById(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public PhotoDTO? GetPhotoById(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return CreateQuery(userId, roleName,noTracking).FirstOrDefault(p => p.Id.Equals(id));
+        return Mapper.Map(CreateQuery(userId, roleName,noTracking)
+            .FirstOrDefault(p => p.Id.Equals(id)));
     }
 
 
@@ -53,4 +59,4 @@ public class PhotoRepository : BaseEntityRepository<Photo, AppDbContext>, IPhoto
         query = query.Include(c => c.AppUser).Where(p => p.AppUser!.Id.Equals(userId));
         return query;
     }
-}*/
+}

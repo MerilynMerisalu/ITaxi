@@ -24,7 +24,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     private IDriverLicenseCategoryRepository? _driverLicenseCategories;
     private IDriverRepository? _drivers;
     private IDriveRepository? _drives;
-    //private IPhotoRepository _photos;
+    private IPhotoRepository? _photos;
     private IRideTimeRepository? _rideTimes;
     private IScheduleRepository? _schedules;
     private IVehicleMarkRepository? _vehicleMarks;
@@ -71,5 +71,5 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     , new CustomerMapper(_mapper));
     public IDriveRepository Drives => _drives ?? new DriveRepository(UOWDbContext, new DriveMapper(_mapper));
     public ICommentRepository Comments => _comments ?? new CommentRepository(UOWDbContext, new CommentMapper(_mapper));
-    //public IPhotoRepository Photos => _photos ?? new PhotoRepository(UOWDbContext);
+    public IPhotoRepository Photos => _photos ?? new PhotoRepository(UOWDbContext, new PhotoMapper(_mapper));
 }
