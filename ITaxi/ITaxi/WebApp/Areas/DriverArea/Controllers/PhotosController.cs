@@ -156,7 +156,7 @@ public class PhotosController : Controller
 
     // POST: DriverArea/Photos/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {

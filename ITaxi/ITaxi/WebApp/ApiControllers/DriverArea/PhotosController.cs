@@ -1,6 +1,6 @@
-/*#nullable enable
-using App.Contracts.DAL;
-using App.Domain;
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -14,41 +14,34 @@ namespace WebApp.ApiControllers.DriverArea;
 [Authorize(Roles = "Admin, Driver", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class PhotosController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public PhotosController(IAppUnitOfWork uow)
+    public PhotosController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: api/Photos
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Photo>>> GetPhotos()
+    public async Task<ActionResult<IEnumerable<PhotoDTO>>> GetPhotos()
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var res = await _uow.Photos.GetAllPhotosWithIncludesAsync(userId, roleName);
-        foreach (var photo in res)
-        {
-            if (photo != null)
-            {
-                photo.CreatedAt = photo.CreatedAt.ToLocalTime();
-                photo.UpdatedAt = photo.UpdatedAt.ToLocalTime();
-            }
-        }
+        var res = await _appBLL.Photos.GetAllPhotosWithIncludesAsync(userId, roleName);
+        
         return Ok(res);
     }
 
     // GET: api/Photos/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Photo>> GetPhoto(Guid id)
+    public async Task<ActionResult<PhotoDTO>> GetPhoto(Guid id)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var photo = await _uow.Photos.GetPhotoByIdAsync(id, userId, roleName);
+        var photo = await _appBLL.Photos.GetPhotoByIdAsync(id, userId, roleName);
         if (photo == null) return NotFound();
-        photo.CreatedAt = photo.CreatedAt.ToLocalTime();
-        photo.UpdatedAt = photo.UpdatedAt.ToLocalTime();
+        photo.CreatedAt = photo.CreatedAt;
+        photo.UpdatedAt = photo.UpdatedAt;
 
         return photo;
     }
@@ -56,19 +49,19 @@ public class PhotosController : ControllerBase
     // PUT: api/Photos/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutPhoto(Guid id, Photo? photo)
+    public async Task<IActionResult> PutPhoto(Guid id, PhotoDTO? photo)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-         photo = await _uow.Photos.GetPhotoByIdAsync(id, userId, roleName);
+         photo = await _appBLL.Photos.GetPhotoByIdAsync(id, userId, roleName);
         if (photo == null) return NotFound();
         
         try
         {
             photo.UpdatedBy = User.Identity!.Name;
             photo.UpdatedAt = DateTime.Now.ToUniversalTime();
-            _uow.Photos.Update(photo);
-            await _uow.SaveChangesAsync();
+            _appBLL.Photos.Update(photo);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -83,21 +76,21 @@ public class PhotosController : ControllerBase
     // POST: api/Photos
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Photo>> PostPhoto(Photo photo)
+    public async Task<ActionResult<PhotoDTO>> PostPhoto(PhotoDTO photo)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        if (roleName != nameof(Admin) || photo.AppUserId != userId)
+        if (roleName != "Admin" || photo.AppUserId != userId)
         {
             return Forbid();
         }
 
         photo.AppUserId = userId;
-        photo.CreatedAt = photo.CreatedAt.ToLocalTime();
-        photo.UpdatedAt = photo.UpdatedAt.ToLocalTime();
+        photo.CreatedAt = photo.CreatedAt;
+        photo.UpdatedAt = photo.UpdatedAt;
 
-        _uow.Photos.Add(photo);
-        await _uow.SaveChangesAsync();
+        _appBLL.Photos.Add(photo);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetPhoto", new {id = photo.Id}, photo);
     }
@@ -108,17 +101,17 @@ public class PhotosController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var photo = await _uow.Photos.GetPhotoByIdAsync(id, userId, roleName);
+        var photo = await _appBLL.Photos.GetPhotoByIdAsync(id, userId, roleName);
         if (photo == null) return NotFound();
 
-        _uow.Photos.Remove(photo);
-        await _uow.SaveChangesAsync();
+        _appBLL.Photos.Remove(photo);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool PhotoExists(Guid id)
     {
-        return (_uow.Photos?.Exists(id)).GetValueOrDefault();
+        return (_appBLL.Photos?.Exists(id)).GetValueOrDefault();
     }
-}*/
+}

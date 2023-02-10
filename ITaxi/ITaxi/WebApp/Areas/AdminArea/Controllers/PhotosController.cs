@@ -65,7 +65,7 @@ public class PhotosController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        //ViewData["AppUserId"] = new SelectList(_appBLL.Users, "Id", "Email", photo.AppUserId);
+        
         return View(vm);
     }
 
