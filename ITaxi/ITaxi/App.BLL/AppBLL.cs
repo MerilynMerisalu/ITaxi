@@ -80,6 +80,7 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
 
     
     public virtual ICommentService Comments => _comments ?? new CommentService(UnitOfWork.Comments, new CommentMapper(_mapper));
+    public virtual IPhotoService Photos => _photos ?? new PhotoService(UnitOfWork.Photos, new PhotoMapper(_mapper));
 
 
     private ICountyService? _counties;
@@ -100,4 +101,5 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     private IBookingService? _bookings;
     private IDriveService? _drives;
     private ICommentService? _comments;
+    private IPhotoService? _photos;
 }

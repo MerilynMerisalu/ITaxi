@@ -14,7 +14,6 @@ public class PhotoDTO : DomainEntityMetaId
         ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Title))]
     public string Title { get; set; } = default!;
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
@@ -22,11 +21,7 @@ public class PhotoDTO : DomainEntityMetaId
         ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(PhotoURL))]
     public string? PhotoURL { get; set; }
-
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
-
     public Guid VehicleId { get; set; }
     public VehicleDTO? Vehicle { get; set; }
 

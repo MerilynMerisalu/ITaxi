@@ -24,4 +24,5 @@ public interface IAppBLL : IBLL
     IBookingService Bookings { get; }
     IDriveService Drives { get; }
     ICommentService Comments { get; }
+    IPhotoService Photos { get; }
 }

@@ -1,7 +1,8 @@
 
 #nullable enable
-using App.Contracts.DAL;
-using App.DAL.DTO.AdminArea;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
@@ -11,18 +12,18 @@ namespace WebApp.Areas.AdminArea.Controllers;
 [Area(nameof(AdminArea))]
 public class PhotosController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public PhotosController(IAppUnitOfWork uow)
+    public PhotosController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: AdminArea/Photos
     public async Task<IActionResult> Index()
     {
-        var photos = await _uow.Photos.GetAllPhotosWithIncludesAsync();
-        return View(photos);
+        var res = await _appBLL.Photos.GetAllPhotosWithIncludesAsync();
+        return View(res);
     }
 
     // GET: AdminArea/Photos/Details/5
@@ -31,7 +32,7 @@ public class PhotosController : Controller
         var vm = new DetailsDeletePhotoViewModel();
         if (id == null) return NotFound();
 
-        var photo = await _uow.Photos.GetPhotoByIdAsync(id.Value);
+        var photo = await _appBLL.Photos.GetPhotoByIdAsync(id.Value);
         if (photo == null) return NotFound();
 
         photo.Id = vm.Id;
@@ -44,7 +45,6 @@ public class PhotosController : Controller
     public IActionResult Create()
     {
         var vm = new CreateEditPhotoViewModel();
-        //ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email");
         return View(vm);
     }
 
@@ -60,12 +60,12 @@ public class PhotosController : Controller
             photo.Id = Guid.NewGuid();
             photo.Title = vm.Title;
             photo.PhotoURL = vm.PhotoName;
-            _uow.Photos.Add(photo);
-            await _uow.SaveChangesAsync();
+            _appBLL.Photos.Add(photo);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        //ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email", photo.AppUserId);
+        //ViewData["AppUserId"] = new SelectList(_appBLL.Users, "Id", "Email", photo.AppUserId);
         return View(vm);
     }
 
@@ -75,9 +75,9 @@ public class PhotosController : Controller
         var vm = new CreateEditPhotoViewModel();
         if (id == null) return NotFound();
 
-        var photo = await _uow.Photos.FirstOrDefaultAsync(id.Value);
+        var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
         if (photo == null) return NotFound();
-        //ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email", photo.AppUserId);
+        
         return View(vm);
     }
 
@@ -88,15 +88,15 @@ public class PhotosController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditPhotoViewModel vm)
     {
-        var photo = await _uow.Photos.FirstOrDefaultAsync(id);
+        var photo = await _appBLL.Photos.FirstOrDefaultAsync(id);
         if (photo != null && id != photo.Id) return NotFound();
 
         if (ModelState.IsValid)
         {
             try
             {
-                _uow.Photos.Update(photo!);
-                await _uow.SaveChangesAsync();
+                if (photo != null) _appBLL.Photos.Update(photo);
+                await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -108,7 +108,7 @@ public class PhotosController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        //ViewData["AppUserId"] = new SelectList(_uow.Users, "Id", "Email", photo.AppUserId);
+        
         return View(vm);
     }
 
@@ -118,7 +118,7 @@ public class PhotosController : Controller
         var vm = new DetailsDeletePhotoViewModel();
         if (id == null) return NotFound();
 
-        var photo = await _uow.Photos.FirstOrDefaultAsync(id.Value);
+        var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
         if (photo == null) return NotFound();
 
         return View(vm);
@@ -126,20 +126,20 @@ public class PhotosController : Controller
 
     // POST: AdminArea/Photos/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var photo = await _uow.Photos.FirstOrDefaultAsync(id);
-        if (photo != null) _uow.Photos.Remove(photo);
+        var photo = await _appBLL.Photos.FirstOrDefaultAsync(id);
+        if (photo != null) _appBLL.Photos.Remove(photo);
 
-        await _uow.SaveChangesAsync();
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     private bool PhotoExists(Guid id)
     {
-        return _uow.Photos.Exists(id);
+        return _appBLL.Photos.Exists(id);
     }
 }
 
