@@ -1,6 +1,7 @@
-/*#nullable enable
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
-using App.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,28 +11,29 @@ namespace WebApp.ApiControllers.AdminArea;
 
 [Route("api/AdminArea/[controller]")]
 [ApiController]
-[Authorize(Roles = nameof(Admin), AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class PhotosController : ControllerBase
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public PhotosController(IAppUnitOfWork uow)
+    public PhotosController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
+        
     }
 
     // GET: api/Photos
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Photo>>> GetPhotos()
+    public async Task<ActionResult<IEnumerable<PhotoDTO>>> GetPhotos()
     {
-        return Ok(await _uow.Photos.GetAllAsync());
+        return Ok(await _appBLL.Photos.GetAllPhotosWithIncludesAsync());
     }
 
     // GET: api/Photos/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Photo>> GetPhoto(Guid id)
+    public async Task<ActionResult<PhotoDTO>> GetPhoto(Guid id)
     {
-        var photo = await _uow.Photos.FirstOrDefaultAsync(id);
+        var photo = await _appBLL.Photos.FirstOrDefaultAsync(id);
 
         if (photo == null) return NotFound();
 
@@ -41,15 +43,15 @@ public class PhotosController : ControllerBase
     // PUT: api/Photos/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutPhoto(Guid id, Photo photo)
+    public async Task<IActionResult> PutPhoto(Guid id, PhotoDTO photo)
     {
         if (id != photo.Id) return BadRequest();
 
 
         try
         {
-            _uow.Photos.Update(photo);
-            await _uow.SaveChangesAsync();
+            _appBLL.Photos.Update(photo);
+            await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -64,10 +66,10 @@ public class PhotosController : ControllerBase
     // POST: api/Photos
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Photo>> PostPhoto(Photo photo)
+    public async Task<ActionResult<PhotoDTO>> PostPhoto(PhotoDTO photo)
     {
-        _uow.Photos.Add(photo);
-        await _uow.SaveChangesAsync();
+        _appBLL.Photos.Add(photo);
+        await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetPhoto", new {id = photo.Id}, photo);
     }
@@ -76,17 +78,17 @@ public class PhotosController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePhoto(Guid id)
     {
-        var photo = await _uow.Photos.FirstOrDefaultAsync(id);
+        var photo = await _appBLL.Photos.FirstOrDefaultAsync(id);
         if (photo == null) return NotFound();
 
-        _uow.Photos.Remove(photo);
-        await _uow.SaveChangesAsync();
+        _appBLL.Photos.Remove(photo);
+        await _appBLL.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool PhotoExists(Guid id)
     {
-        return (_uow.Photos?.Exists(id)).GetValueOrDefault();
+        return (_appBLL.Photos?.Exists(id)).GetValueOrDefault();
     }
-}*/
+}
