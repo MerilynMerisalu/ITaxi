@@ -1,5 +1,6 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 
 using Base.Extensions;
@@ -15,11 +16,11 @@ namespace WebApp.ApiControllers.DriverArea;
 [Authorize(Roles = "Admin, Driver", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class SchedulesController : ControllerBase
 {
-    private readonly IAppUnitOfWork _appBLL;
+    private readonly IAppBLL _appBLL;
 
-    public SchedulesController(IAppUnitOfWork uow)
+    public SchedulesController(IAppBLL appBLL)
     {
-        _appBLL = uow;
+        _appBLL = appBLL;
     }
 
     // GET: api/Schedules
@@ -80,7 +81,7 @@ public class SchedulesController : ControllerBase
     // POST: api/Schedules
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    /*public async Task<ActionResult<ScheduleDTO>> PostSchedule(App.BLL.DTO.AdminArea.ScheduleDTO schedule)
+    public async Task<ActionResult<ScheduleDTO>> PostSchedule(ScheduleDTO schedule)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
@@ -94,7 +95,7 @@ public class SchedulesController : ControllerBase
 
         return CreatedAtAction("GetSchedule", new {id = schedule.Id}, schedule);
     }
-    */
+    
 
     // DELETE: api/Schedules/5
     [HttpDelete("{id}")]
