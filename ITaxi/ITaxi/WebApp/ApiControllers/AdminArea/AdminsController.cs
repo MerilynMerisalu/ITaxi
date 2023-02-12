@@ -1,6 +1,7 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -50,6 +51,8 @@ public class AdminsController : ControllerBase
 
         try
         {
+            adminDTO.CreatedBy = User.GettingUserEmail();
+            adminDTO.UpdatedBy = User.GettingUserEmail();
             _appBLL.Admins.Update(adminDTO);
             await _appBLL.SaveChangesAsync();
         }
@@ -68,6 +71,8 @@ public class AdminsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<AdminDTO>> PostAdmin(AdminDTO adminDTO)
     {
+        adminDTO.CreatedBy = User.GettingUserEmail();
+        adminDTO.UpdatedBy = User.GettingUserEmail();
         _appBLL.Admins.Add(adminDTO);
         await _appBLL.SaveChangesAsync();
 
