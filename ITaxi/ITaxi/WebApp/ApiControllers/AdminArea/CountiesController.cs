@@ -1,7 +1,7 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-
+using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -75,9 +75,9 @@ public class CountiesController : ControllerBase
     {
 
         county.Id = Guid.NewGuid();
-        county.CreatedBy = User.Identity!.Name;
+        county.CreatedBy = User.GettingUserEmail();
+        county.UpdatedBy = User.GettingUserEmail();
         county.CreatedAt = DateTime.Now.ToUniversalTime();
-        county.UpdatedBy = User.Identity!.Name;
         county.UpdatedAt = DateTime.Now.ToUniversalTime();
         _appBLL.Counties.Add(county);
         await _appBLL.SaveChangesAsync();
@@ -91,8 +91,6 @@ public class CountiesController : ControllerBase
     {
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
         if (county == null) return NotFound();
-        
-        #warning ask how about it
 
         _appBLL.Counties.Remove(county);
         await _appBLL.SaveChangesAsync();

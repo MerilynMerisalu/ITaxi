@@ -2,6 +2,7 @@
 
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +50,8 @@ public class CitiesController : ControllerBase
 
         try
         {
+            city.CreatedBy = User.GettingUserEmail();
+            city.UpdatedBy = User.GettingUserEmail();
             _appBLL.Cities.Update(city);
             await _appBLL.SaveChangesAsync();
         }
@@ -67,6 +70,7 @@ public class CitiesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<CityDTO>> PostCity(CityDTO city)
     {
+        city.CreatedBy = User.GettingUserEmail();
         _appBLL.Cities.Add(city);
         await _appBLL.SaveChangesAsync();
 
