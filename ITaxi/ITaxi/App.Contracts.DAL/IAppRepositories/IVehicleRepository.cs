@@ -23,10 +23,15 @@ public interface IVehicleRepositoryCustom<TEntity>
     Task<TEntity?> GettingVehicleWithoutIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
     TEntity? GettingVehicleWithoutIncludesById(Guid id, bool noTracking = true);
     List<int> GettingManufactureYears();
-    Task<TEntity?> GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailabilityAsync(Booking booking);
-    TEntity? GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailability(Booking booking);
+    Task<TEntity?> GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailabilityAsync(BookingDTO booking);
+    TEntity? GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailability(BookingDTO booking);
     Task<List<TEntity>> GettingVehiclesByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true);
     List<TEntity> GettingVehiclesByDriverId(Guid driverId, bool noTracking = true);
     Task<bool> HasAnyVehicleModelsAnyAsync(Guid vehicleModelId, bool noTracking = true);
     bool HasAnyVehicleModelsAny(Guid vehicleModelId, bool noTracking = true);
+    Task<bool> HasAnySchedulesAnyAsync(Guid vehicleId, bool noTracking = true);
+    bool HasAnySchedulesAny(Guid vehicleId, bool noTracking = true);
+    
+    Task<bool> HasAnyBookingsAnyAsync(Guid vehicleId, bool noTracking = true);
+    bool HasAnyBookingsAny(Guid vehicleId, bool noTracking = true);
 }

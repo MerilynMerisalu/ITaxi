@@ -4,6 +4,7 @@ using App.Contracts.DAL.IAppRepositories;
 using App.Domain;
 using Base.BLL;
 using Base.Contracts;
+using BookingDTO = App.DAL.DTO.AdminArea.BookingDTO;
 
 namespace App.BLL.Services;
 
@@ -68,16 +69,18 @@ public class VehicleService : BaseEntityService<App.BLL.DTO.AdminArea.VehicleDTO
         return Repository.GettingManufactureYears();
     }
 
-    public async Task<VehicleDTO?> GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailabilityAsync(Booking booking)
+    public async Task<VehicleDTO?> GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailabilityAsync(BookingDTO booking)
     {
-        throw new NotImplementedException();
+        return Mapper.Map(await Repository.GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailabilityAsync(booking));
     }
 
-    public VehicleDTO? GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailability(Booking booking)
+    public VehicleDTO? GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailability(BookingDTO booking)
     {
-        throw new NotImplementedException();
+        return Mapper.Map(Repository.GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailability
+            (booking));
     }
 
+    
     public async Task<List<VehicleDTO>> GettingVehiclesByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null,
         bool noTracking = true)
     {
@@ -99,5 +102,25 @@ public class VehicleService : BaseEntityService<App.BLL.DTO.AdminArea.VehicleDTO
     public bool HasAnyVehicleModelsAny(Guid vehicleModelId, bool noTracking = true)
     {
         return Repository.HasAnyVehicleModelsAny(vehicleModelId, noTracking);
+    }
+
+    public async Task<bool> HasAnySchedulesAnyAsync(Guid vehicleId, bool noTracking = true)
+    {
+        return await Repository.HasAnySchedulesAnyAsync(vehicleId, noTracking);
+    }
+
+    public bool HasAnySchedulesAny(Guid vehicleId, bool noTracking = true)
+    {
+        return Repository.HasAnySchedulesAny(vehicleId, noTracking);
+    }
+
+    public async Task<bool> HasAnyBookingsAnyAsync(Guid vehicleId, bool noTracking = true)
+    {
+        return await Repository.HasAnyBookingsAnyAsync(vehicleId, noTracking);
+    }
+
+    public bool HasAnyBookingsAny(Guid vehicleId, bool noTracking = true)
+    {
+        return Repository.HasAnyBookingsAny(vehicleId, noTracking);
     }
 }

@@ -129,7 +129,8 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
         return years;
     }
 
-    public async Task<VehicleDTO?> GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailabilityAsync(Booking booking)
+    public async Task<VehicleDTO?> 
+        GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailabilityAsync(BookingDTO booking)
     {
         return Mapper.Map(await RepoDbSet
             .Where(v => v.DriverId.Equals(booking.DriverId)
@@ -137,7 +138,7 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
             .FirstAsync());
     }
 
-    public VehicleDTO? GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailability(Booking booking)
+    public VehicleDTO? GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailability(BookingDTO booking)
     {
         return Mapper.Map(CreateQuery(noIncludes: true)
             .First(v => v.DriverId.Equals(booking.DriverId)
@@ -166,6 +167,30 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
     public bool HasAnyVehicleModelsAny(Guid vehicleModelId, bool noTracking = true)
     {
         return CreateQuery(noTracking).Any(v => v.VehicleModelId.Equals(vehicleModelId));
+    }
+
+    public async Task<bool> HasAnySchedulesAnyAsync(Guid vehicleId, bool noTracking = true)
+    {
+        return await
+            RepoDbContext.Schedules
+                .AnyAsync(s => s.VehicleId.Equals(vehicleId));
+    }
+
+    public bool HasAnySchedulesAny(Guid vehicleId, bool noTracking = true)
+    {
+        return
+            RepoDbContext.Schedules
+                .Any(s => s.VehicleId.Equals(vehicleId));
+    }
+
+    public async Task<bool> HasAnyBookingsAnyAsync(Guid vehicleId, bool noTracking = true)
+    {
+        return await RepoDbContext.Bookings.AnyAsync(b => b.VehicleId.Equals(vehicleId));
+    }
+
+    public bool HasAnyBookingsAny(Guid vehicleId, bool noTracking = true)
+    {
+        return RepoDbContext.Bookings.Any(b => b.VehicleId.Equals(vehicleId));
     }
 
 
