@@ -144,7 +144,7 @@ public class AdminsController : Controller
             {
                 
                 admin!.AppUser!.FirstName = vm.FirstName;
-
+                
                 admin.Address = vm.Address;
                 admin.CityId = vm.CityId;
                 admin.PersonalIdentifier = vm.PersonalIdentifier;

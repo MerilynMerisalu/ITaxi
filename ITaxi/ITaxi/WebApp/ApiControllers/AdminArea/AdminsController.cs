@@ -51,6 +51,7 @@ public class AdminsController : ControllerBase
 
         try
         {
+            
             adminDTO.CreatedBy = User.GettingUserEmail();
             adminDTO.UpdatedBy = User.GettingUserEmail();
             _appBLL.Admins.Update(adminDTO);
