@@ -28,4 +28,5 @@ public interface IVehicleRepositoryCustom<TEntity>
     Task<List<TEntity>> GettingVehiclesByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true);
     List<TEntity> GettingVehiclesByDriverId(Guid driverId, bool noTracking = true);
     Task<bool> HasAnyVehicleModelsAnyAsync(Guid vehicleModelId, bool noTracking = true);
+    bool HasAnyVehicleModelsAny(Guid vehicleModelId, bool noTracking = true);
 }

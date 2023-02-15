@@ -1,5 +1,6 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
 using App.DAL.DTO.AdminArea;
+using App.DAL.DTO.Identity;
 using App.Domain;
 using Base.Contracts;
 using Base.DAL.EF;
@@ -45,6 +46,8 @@ public class AdminRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.AdminD
         return CreateQuery(noTracking).OrderBy(a => a.AppUser!.LastName)
             .ThenBy(a => a.AppUser!.FirstName).ToList().Select(e => Mapper.Map(e))!;
     }
+
+    
 
     protected override IQueryable<Admin> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {

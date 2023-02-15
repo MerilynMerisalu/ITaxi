@@ -158,11 +158,9 @@ public class VehicleTypesController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var vehicleType = await _appBLL.VehicleTypes.FirstOrDefaultAsync(id);
-        /*if (await _appBLL.Vehicles.AnyAsync(v =>
-                vehicleType != null && v != null && v.VehicleType != null && v.VehicleType.Id.Equals(vehicleType.Id))
-            || await _appBLL.Bookings.AnyAsync(b =>
-                vehicleType != null && b != null && b.VehicleTypeId.Equals(vehicleType.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");*/
+        if (vehicleType != null && (await _appBLL.VehicleTypes.HasVehiclesAnyAsync(vehicleType.Id)
+                                    || await _appBLL.VehicleTypes.HasBookingsAnyAsync(vehicleType.Id)))
+            return Content("Entity cannot be deleted because it has dependent entities!");
 
         if (vehicleType != null)
         {

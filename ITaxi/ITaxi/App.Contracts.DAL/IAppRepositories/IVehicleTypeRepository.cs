@@ -7,6 +7,7 @@ public interface IVehicleTypeRepository : IEntityRepository<VehicleTypeDTO>, IVe
 {
     
 
+
 }
 
 public interface IVehicleTypeRepositoryCustom<TEntity>
@@ -15,4 +16,8 @@ public interface IVehicleTypeRepositoryCustom<TEntity>
     IEnumerable<TEntity> GetAllVehicleTypesOrdered(bool noTracking = true);
     Task<IEnumerable<TEntity>> GetAllVehicleTypesDTOAsync(bool noTracking = true);
     IEnumerable<TEntity> GetAllVehicleTypesDTO(bool noTracking = true);
+    Task<bool> HasVehiclesAnyAsync(Guid vehicleTypeId, bool noTracking = true);
+    bool HasVehiclesAny(Guid vehicleTypeId, bool noTracking = true);
+    Task<bool> HasBookingsAnyAsync(Guid vehicleTypeId, bool noTracking = true);
+    bool HasBookingsAny(Guid vehicleTypeId, bool noTracking = true);
 }

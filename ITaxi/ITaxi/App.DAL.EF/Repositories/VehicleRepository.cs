@@ -163,6 +163,11 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
         return await CreateQuery(noTracking).AnyAsync(mo => mo.VehicleModelId.Equals(vehicleModelId));
     }
 
+    public bool HasAnyVehicleModelsAny(Guid vehicleModelId, bool noTracking = true)
+    {
+        return CreateQuery(noTracking).Any(v => v.VehicleModelId.Equals(vehicleModelId));
+    }
+
 
     //public async Task<VehicleDTO?> GettingVehicleByIdAsync(Guid id, Guid? userId = null, string? roleName = null,
     //    bool noTracking = true)

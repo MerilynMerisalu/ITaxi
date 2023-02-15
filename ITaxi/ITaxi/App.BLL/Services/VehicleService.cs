@@ -95,4 +95,9 @@ public class VehicleService : BaseEntityService<App.BLL.DTO.AdminArea.VehicleDTO
     {
         return await Repository.HasAnyVehicleModelsAnyAsync(vehicleModelId, noTracking);
     }
+
+    public bool HasAnyVehicleModelsAny(Guid vehicleModelId, bool noTracking = true)
+    {
+        return Repository.HasAnyVehicleModelsAny(vehicleModelId, noTracking);
+    }
 }

@@ -68,6 +68,26 @@ public class VehicleTypeRepository : BaseEntityRepository<VehicleTypeDTO, Vehicl
         return vehicleTypeDtos;
     }
 
+    public async Task<bool> HasVehiclesAnyAsync(Guid vehicleTypeId, bool noTracking = true)
+    {
+        return await RepoDbContext.Vehicles.AnyAsync(v => v.VehicleTypeId.Equals(vehicleTypeId));
+    }
+
+    public bool HasVehiclesAny(Guid vehicleTypeId, bool noTracking = true)
+    {
+        return RepoDbContext.Vehicles.Any(v => v.VehicleTypeId.Equals(vehicleTypeId));
+    }
+
+    public async Task<bool> HasBookingsAnyAsync(Guid vehicleTypeId, bool noTracking = true)
+    {
+        return await RepoDbContext.Bookings.AnyAsync(v => v.VehicleTypeId.Equals(vehicleTypeId));
+    }
+
+    public bool HasBookingsAny(Guid vehicleTypeId, bool noTracking = true)
+    {
+        return RepoDbContext.Vehicles.Any(v => v.VehicleTypeId.Equals(vehicleTypeId));
+    }
+
     protected override IQueryable<VehicleType> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
         var query = base.CreateQuery(noTracking, noIncludes);

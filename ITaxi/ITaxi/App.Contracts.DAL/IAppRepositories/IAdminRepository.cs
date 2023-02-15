@@ -14,5 +14,5 @@ public interface IAdminRepositoryCustom<TEntity>
 {
     Task<IEnumerable<TEntity>> GetAllAdminsOrderedByLastNameAsync(bool noTracking = true);
     IEnumerable<TEntity> GetAllAdminsOrderedByLastName(bool noTracking = true);
-    
+   
 }

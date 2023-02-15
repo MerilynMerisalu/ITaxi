@@ -135,8 +135,12 @@ public class AdminsController : Controller
     public async Task<IActionResult> Edit(Guid id, EditAdminViewModel vm)
     {
         var admin = await _appBLL.Admins.FirstOrDefaultAsync(id, noIncludes: false);
+        
 
         if (admin != null && id != admin.Id) return NotFound();
+        admin.AppUser = null;
+        
+        
 
         if (ModelState.IsValid)
         {
