@@ -24,10 +24,11 @@ public class DriverAndDriverLicenseCategoryService: BaseEntityService<App.BLL.DT
         return Repository.GetAllDriverLicenseCategoriesBelongingToTheDriver(id, separator);
     }
 
-    public async Task<List<DriverAndDriverLicenseCategoryDTO?>> RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(Guid id)
+    public async Task<List<DriverAndDriverLicenseCategoryDTO?>> 
+        RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(Guid id, bool noTracking)
     {
         return (
-                await Repository.RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(id))
+                await Repository.RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(id, noTracking))
             .Select(e => Mapper.Map(e)).ToList();
     }
 

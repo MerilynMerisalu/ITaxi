@@ -1,4 +1,5 @@
-﻿using App.Contracts.DAL.IAppRepositories;
+﻿using App.BLL.DTO.Identity;
+using App.Contracts.DAL.IAppRepositories;
 using Base.Contracts.BLL;
 
 namespace App.Contracts.BLL.Services;

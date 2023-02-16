@@ -1,9 +1,6 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
-using App.Domain;
-using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -59,7 +56,7 @@ public class VehiclesController : Controller
         return View(vm);
     }
 
-    /*[HttpPost]
+    [HttpPost]
     public async Task<IActionResult> SetDropDownList(Guid id)
     {
         // Use the EditRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
@@ -72,7 +69,7 @@ public class VehiclesController : Controller
             nameof(VehicleModelDTO.Id), nameof(VehicleModelDTO.VehicleModelName));
         
         return Ok(vm);
-    }*/
+    }
 
     // GET: AdminArea/Vehicles/Create
     public async Task<IActionResult> Create()
@@ -187,7 +184,7 @@ public class VehiclesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleViewModel vm)
     {
-        var vehicle = await _appBLL.Vehicles.FirstOrDefaultAsync(id);
+        var vehicle = await _appBLL.Vehicles.FirstOrDefaultAsync(id, noIncludes:true);
         if (vehicle != null && id != vehicle.Id) return NotFound();
 
         if (ModelState.IsValid)

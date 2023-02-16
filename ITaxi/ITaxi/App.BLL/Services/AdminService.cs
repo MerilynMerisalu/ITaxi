@@ -4,6 +4,7 @@ using App.Contracts.DAL.IAppRepositories;
 using App.DAL.DTO.Identity;
 using Base.BLL;
 using Base.Contracts;
+using AppUser = App.BLL.DTO.Identity.AppUser;
 
 namespace App.BLL.Services;
 
@@ -19,10 +20,7 @@ public class AdminService: BaseEntityService<App.BLL.DTO.AdminArea.AdminDTO,App.
         return (await Repository.GetAllAdminsOrderedByLastNameAsync(noTracking)).Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<AdminDTO> GetAllAdminsOrderedByLastName(bool noTracking = true)
-    {
-        return Repository.GetAllAdminsOrderedByLastName(noTracking).Select(e => Mapper.Map(e))!;
-    }
+    
 
     
 }

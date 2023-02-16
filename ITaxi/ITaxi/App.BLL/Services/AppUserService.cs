@@ -24,4 +24,8 @@ public class AppUserService : BaseEntityService<App.BLL.DTO.Identity.AppUser, Ap
         return Repository.GetAllAppUsersOrderedByLastName(noTracking).Select(e => Mapper.Map(e))!;
     }
 
+    public async Task<AppUser> GettingAppUserByAppUserIdAsync(Guid appUserId, bool noTracking = true)
+    {
+        return Mapper.Map(await Repository.FirstOrDefaultAsync(appUserId, noTracking))!;
+    }
 }

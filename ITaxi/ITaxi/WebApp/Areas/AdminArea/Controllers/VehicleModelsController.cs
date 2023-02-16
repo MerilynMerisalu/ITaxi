@@ -103,7 +103,7 @@ public class VehicleModelsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleModelViewModel vm)
     {
-        var vehicleModel = await _appBLL.VehicleModels.FirstOrDefaultAsync(id);
+        var vehicleModel = await _appBLL.VehicleModels.FirstOrDefaultAsync(id, noIncludes:true);
         if (vehicleModel != null && id != vehicleModel.Id) return NotFound();
 
         if (ModelState.IsValid)

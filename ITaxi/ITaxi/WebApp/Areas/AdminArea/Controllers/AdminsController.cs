@@ -134,40 +134,43 @@ public class AdminsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditAdminViewModel vm)
     {
-        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id, noIncludes: false);
-        
-
-        if (admin != null && id != admin.Id) return NotFound();
-        admin.AppUser = null;
-        
-        
-
-        if (ModelState.IsValid)
+        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id, noIncludes: true);
+        if (admin != null)
         {
-            try
+            var appUser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(admin.AppUserId);
+
+            if (id != admin.Id) return NotFound();
+
+            if (appUser != null)
             {
                 
-                admin!.AppUser!.FirstName = vm.FirstName;
-                
-                admin.Address = vm.Address;
-                admin.CityId = vm.CityId;
-                admin.PersonalIdentifier = vm.PersonalIdentifier;
-                //admin.AppUser!.IsActive = vm.IsActive;
-                admin.UpdatedBy = User.Identity!.Name!;
-                admin.UpdatedAt = DateTime.Now;
-                _appBLL.Admins.Update(admin);
-            
+                appUser.FirstName = vm.FirstName;
+                _appBLL.AppUsers.Update(appUser);
+                await _appBLL.SaveChangesAsync();
 
-            await _appBLL.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (admin == null)
-                    return NotFound();
-                throw;
-            }
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        admin.AppUser = null;
+                        admin.Address = vm.Address;
+                        admin.CityId = vm.CityId;
+                        admin.PersonalIdentifier = vm.PersonalIdentifier;
+                        
+                        admin.UpdatedBy = User.Identity!.Name!;
+                        admin.UpdatedAt = DateTime.Now;
+                        _appBLL.Admins.Update(admin);
+                        await _appBLL.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        throw;
+                    }
+
+                    return RedirectToAction(nameof(Index));
+                }
+            }
         }
 
         return View(vm);

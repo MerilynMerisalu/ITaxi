@@ -38,15 +38,16 @@ public class DriverAndDriverLicenseCategoryRepository :
     }
 
     public async Task<List<DriverAndDriverLicenseCategoryDTO?>>
-        RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(Guid id)
+        RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(Guid id, bool noTracking = true)
     {
         var driverAndDriverLicenseCategories =
-            await CreateQuery()
+            await CreateQuery(noTracking)
                 .Where(dl => dl.DriverId.Equals(id))
                 .Select(dl => dl).ToListAsync();
 
 
-        return RemoveAll((driverAndDriverLicenseCategories.Select(e => Mapper.Map(e)) as List<DriverAndDriverLicenseCategoryDTO>)!)!;
+        return RemoveAll(driverAndDriverLicenseCategories.Select(e => Mapper.Map(e!)).ToList()!)!;
+        
     }
 
     public async Task<bool> HasAnyDriversAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)

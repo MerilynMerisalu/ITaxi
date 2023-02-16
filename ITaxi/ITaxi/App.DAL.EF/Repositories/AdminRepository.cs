@@ -41,6 +41,8 @@ public class AdminRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.AdminD
             .ThenBy(a => a.AppUser!.FirstName).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
+    
+
     public IEnumerable<AdminDTO> GetAllAdminsOrderedByLastName(bool noTracking = true)
     {
         return CreateQuery(noTracking).OrderBy(a => a.AppUser!.LastName)
