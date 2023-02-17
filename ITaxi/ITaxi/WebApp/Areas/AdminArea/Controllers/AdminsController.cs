@@ -4,8 +4,6 @@ using App.BLL;
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Contracts.DAL;
-
-
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -134,44 +132,37 @@ public class AdminsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditAdminViewModel vm)
     {
-        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id, noIncludes: true);
+        var admin = await _appBLL.Admins.FirstOrDefaultAsync(id, noIncludes: true, noTracking: true);
         if (admin != null)
         {
-            var appUser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(admin.AppUserId);
+            admin.AppUser = null;
+
 
             if (id != admin.Id) return NotFound();
 
-            if (appUser != null)
+
+            if (ModelState.IsValid)
             {
-                
+                var appUser =
+                    await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(admin.AppUserId, noIncludes: true,
+                        noTracking: true);
                 appUser.FirstName = vm.FirstName;
+                admin.AppUserId = appUser.Id;
+                admin.Address = vm.Address;
+                admin.CityId = vm.CityId;
+                admin.PersonalIdentifier = vm.PersonalIdentifier;
+
+                admin.UpdatedBy = User.Identity!.Name!;
+                admin.UpdatedAt = DateTime.Now;
                 _appBLL.AppUsers.Update(appUser);
+                _appBLL.Admins.Update(admin);
                 await _appBLL.SaveChangesAsync();
 
-                if (ModelState.IsValid)
-                {
-                    try
-                    {
-                        admin.AppUser = null;
-                        admin.Address = vm.Address;
-                        admin.CityId = vm.CityId;
-                        admin.PersonalIdentifier = vm.PersonalIdentifier;
-                        
-                        admin.UpdatedBy = User.Identity!.Name!;
-                        admin.UpdatedAt = DateTime.Now;
-                        _appBLL.Admins.Update(admin);
-                        await _appBLL.SaveChangesAsync();
 
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        throw;
-                    }
-
-                    return RedirectToAction(nameof(Index));
-                }
+                return RedirectToAction(nameof(Index));
             }
         }
+
 
         return View(vm);
     }
@@ -210,22 +201,20 @@ public class AdminsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-
         var admin = await _appBLL.Admins.FirstOrDefaultAsync(id);
         if (admin != null)
         {
             admin.AppUser = null;
-            
-                var appUser = await _userManager.FindByIdAsync(admin.AppUserId.ToString());
-                await _userManager.RemoveFromRoleAsync(appUser, "Admin");
-                _appBLL.Admins.Remove(admin);
-                await _appBLL.SaveChangesAsync();
+
+            var appUser = await _userManager.FindByIdAsync(admin.AppUserId.ToString());
+            await _userManager.RemoveFromRoleAsync(appUser, "Admin");
+            _appBLL.Admins.Remove(admin);
+            await _appBLL.SaveChangesAsync();
 #warning temporarily solution
-                var claims = await _userManager.GetClaimsAsync(appUser);
-                await _userManager.RemoveClaimsAsync(appUser, claims);
-                await _userManager.DeleteAsync(appUser);
-                await _appBLL.SaveChangesAsync();
-            
+            var claims = await _userManager.GetClaimsAsync(appUser);
+            await _userManager.RemoveClaimsAsync(appUser, claims);
+            await _userManager.DeleteAsync(appUser);
+            await _appBLL.SaveChangesAsync();
         }
 
         return RedirectToAction(nameof(Index));

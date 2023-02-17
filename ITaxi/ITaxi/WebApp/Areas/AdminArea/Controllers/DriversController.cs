@@ -253,23 +253,26 @@ public class DriversController : Controller
 
     // POST: AdminArea/Drivers/Delete/5
     [HttpPost]
-    [ActionName("Delete")]
+    [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
+        var noTracking = true;
         var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id);
-        /*if (await _appBLL.Schedules.AnyAsync(d => driver != null && d != null && d.DriverId.Equals(driver.Id))
-            || await _appBLL.Bookings.AnyAsync(d => driver != null && d != null && d.DriverId.Equals(driver.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");*/
+        if (await _appBLL.Drivers.HasAnySchedulesAsync(id) || await _appBLL.Drivers.HasAnyBookingsAsync(id))
+            return Content("Entity cannot be deleted because it has dependent entities!");
 
-        await _appBLL.DriverAndDriverLicenseCategories.RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(id);
+        await _appBLL.DriverAndDriverLicenseCategories.
+            RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(id, noTracking);
         
 
         if (driver != null)
         {
+            driver.AppUser = null;
             var appUser = await _userManager.FindByIdAsync(driver!.AppUserId.ToString());
             await _userManager.RemoveFromRoleAsync(appUser, "Driver");
-            _appBLL.Drivers.Remove(driver);
+            
+            await _appBLL.Drivers.RemoveAsync(driver.Id);
             await _appBLL.SaveChangesAsync();
     #warning  temporarily solution
             var claims = await _userManager.GetClaimsAsync(appUser);

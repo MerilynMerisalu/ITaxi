@@ -48,5 +48,7 @@ public interface IScheduleRepositoryCustom<TEntity>
         string? roleName = null, bool noTracking = true);
     int NumberOfTakenRideTimes(Guid? driverId = null, Guid? userId = null,
         string? roleName = null, bool noTracking = true);
-        
+    
+    
+
 }

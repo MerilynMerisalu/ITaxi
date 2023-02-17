@@ -9,5 +9,6 @@ namespace App.Contracts.BLL.Services;
 public interface IAppUserService : IEntityService<App.BLL.DTO.Identity.AppUser>,
     IAppUserRepositoryCustom<App.BLL.DTO.Identity.AppUser>
 {
-    Task<AppUser> GettingAppUserByAppUserIdAsync(Guid appUserId, bool noTracking = true);
+    Task<AppUser> GettingAppUserByAppUserIdAsync(Guid appUserId, bool noTracking = true,
+        bool noIncludes = false);
 }
