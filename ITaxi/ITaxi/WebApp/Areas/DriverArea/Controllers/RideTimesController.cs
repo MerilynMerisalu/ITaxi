@@ -1,5 +1,7 @@
-/*using App.Contracts.DAL;
-using App.Domain;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
+using App.Contracts.DAL;
+
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +15,11 @@ namespace WebApp.Areas.DriverArea.Controllers;
 [Authorize(Roles = "Admin, Driver")]
 public class RideTimesController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public RideTimesController(IAppUnitOfWork uow)
+    public RideTimesController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: DriverArea/RideTimes
@@ -25,15 +27,8 @@ public class RideTimesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var res = await _uow.RideTimes.GettingAllOrderedRideTimesAsync(userId, roleName);
-#warning Should this be a repository method
-        foreach (var rideTime in res)
-            if (rideTime != null)
-            {
-                rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
-                rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
-                rideTime.RideDateTime = rideTime.RideDateTime.ToLocalTime();
-            }
+        var res = await _appBLL.RideTimes.GettingAllOrderedRideTimesAsync(userId, roleName);
+
 
         return View(res);
     }
@@ -46,7 +41,7 @@ public class RideTimesController : Controller
 
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, userId, roleName);
+        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, userId, roleName);
         if (rideTime == null) return NotFound();
 
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
@@ -69,16 +64,16 @@ public class RideTimesController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
 
-        vm.Schedules = new SelectList(await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName)
-            , nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
-        var schedules = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
+        vm.Schedules = new SelectList(await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName)
+            , nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime));
+        var schedules = await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
         foreach (var schedule in schedules)
         {
-            schedule.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToLocalTime().ToString("g"));
-            schedule.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToLocalTime().ToString("g"));
+            schedule.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g"));
+            schedule.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"));
         }
-        var scheduleStartAndEndTime = _uow.Schedules.GettingStartAndEndTime(schedules);
-        var rideTimes = _uow.RideTimes.CalculatingRideTimes(scheduleStartAndEndTime);
+        var scheduleStartAndEndTime = _appBLL.Schedules.GettingStartAndEndTime(schedules);
+        var rideTimes = _appBLL.RideTimes.CalculatingRideTimes(scheduleStartAndEndTime);
         vm.RideTimes = new SelectList(rideTimes);
 
 
@@ -90,11 +85,11 @@ public class RideTimesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateRideTimeViewModel vm, List<RideTime> rideTimes)
+    public async Task<IActionResult> Create(CreateRideTimeViewModel vm, List<RideTimeDTO> rideTimes)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var driver = await _uow.Drivers.SingleOrDefaultAsync(d => d!.AppUserId.Equals(userId));
+        var driver = await _appBLL.Drivers.SingleOrDefaultAsync(d => d!.AppUserId.Equals(userId));
         if (ModelState.IsValid)
         {
             if (vm.SelectedRideTimes != null)
@@ -102,7 +97,7 @@ public class RideTimesController : Controller
                 foreach (var selectedRideTime in vm.SelectedRideTimes)
                     if (driver != null)
                     {
-                        var rideTime = new RideTime
+                        var rideTime = new RideTimeDTO()
                         {
                             Id = new Guid(),
                             DriverId = driver.Id,
@@ -116,8 +111,8 @@ public class RideTimesController : Controller
                         rideTimes.Add(rideTime);
                     }
 
-                await _uow.RideTimes.AddRangeAsync(rideTimes);
-                await _uow.SaveChangesAsync();
+                await _appBLL.RideTimes.AddRangeAsync(rideTimes);
+                await _appBLL.SaveChangesAsync();
             }
 #warning Needs custom validation to check that at least one ride time is chosen
 
@@ -126,36 +121,36 @@ public class RideTimesController : Controller
 
 
 #warning Selectlist of schedules must be recreated when something goes wrong with creating the record
-        vm.Schedules = new SelectList(await _uow.Schedules
+        vm.Schedules = new SelectList(await _appBLL.Schedules
                 .GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName),
-            nameof(Schedule.Id),
-            nameof(Schedule.ShiftDurationTime));
+            nameof(ScheduleDTO.Id),
+            nameof(ScheduleDTO.ShiftDurationTime));
 #warning Selectable ride times must be recreated when something goes wrong with creating the record
 #warning Selected ride times remain so when something goes wrong with creating the record
         return View(vm);
     }
 
     // GET: DriverArea/RideTimes/Edit/5
-    public async Task<IActionResult> Edit(Guid? id)
+    /*public async Task<IActionResult> Edit(Guid? id)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var vm = new EditRideTimeViewModel();
         if (id == null) return NotFound();
 
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, userId, roleName);
+        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, userId, roleName);
         if (rideTime == null) return NotFound();
 
         vm.Id = rideTime.Id;
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
         rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
         vm.Schedules = new SelectList(
-            await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName),
-            nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
-        var schedules = await _uow.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
+            await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName),
+            nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime));
+        var schedules = await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
         vm.IsTaken = rideTime.IsTaken;
 #warning Ridetimes should be hidden and reappearing based on whether IsTaken is true or not
-        var rideTimes = _uow.RideTimes.CalculatingRideTimes(_uow.Schedules.GettingStartAndEndTime(schedules));
+        var rideTimes = _appBLL.RideTimes.CalculatingRideTimes(_appBLL.Schedules.GettingStartAndEndTime(schedules));
 #warning Ask if there is a better way to implement this
         var rideTimeList = new List<string>();
         foreach (var rideTimeLocal in rideTimes) 
@@ -167,6 +162,7 @@ public class RideTimesController : Controller
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
         return View(vm);
     }
+    */
 
     // POST: DriverArea/RideTimes/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -177,7 +173,7 @@ public class RideTimesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
+        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
 
         if (id != rideTime!.Id) return NotFound();
 
@@ -192,8 +188,8 @@ public class RideTimesController : Controller
                 rideTime.UpdatedBy = User.Identity!.Name;
                 rideTime.UpdatedAt = DateTime.Now.ToUniversalTime();
 
-                _uow.RideTimes.Update(rideTime);
-                await _uow.SaveChangesAsync();
+                _appBLL.RideTimes.Update(rideTime);
+                await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -216,7 +212,7 @@ public class RideTimesController : Controller
 
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var rideTime = await _uow.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, userId, roleName);
+        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, userId, roleName);
         if (rideTime == null) return NotFound();
 
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
@@ -237,15 +233,15 @@ public class RideTimesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var rideTime = await _uow.RideTimes.FirstOrDefaultAsync(id);
-        if (rideTime != null) _uow.RideTimes.Remove(rideTime);
-        await _uow.SaveChangesAsync();
+        var rideTime = await _appBLL.RideTimes.FirstOrDefaultAsync(id);
+        if (rideTime != null) _appBLL.RideTimes.Remove(rideTime);
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
 
     private bool RideTimeExists(Guid id)
     {
-        return _uow.RideTimes.Exists(id);
+        return _appBLL.RideTimes.Exists(id);
     }
-}*/
+}

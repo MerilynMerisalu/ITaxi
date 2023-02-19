@@ -1,4 +1,4 @@
-@*@using App.Resources.Areas.App.Domain.DriverArea
+@using App.Resources.Areas.App.Domain.DriverArea
 @using Base.Resources
 @model WebApp.Areas.DriverArea.ViewModels.DetailsDriveViewModel
 
@@ -136,6 +136,6 @@
     <a asp-action="Decline" asp-route-id="@Model.Id">@Drive.Decline</a> |
     <a asp-action="StartDrive" asp-route-id="@Model.Id">@Drive.InProgress</a> |
     <a asp-action="EndDrive" asp-route-id="@Model.Id">@Drive.Finished</a> |
-    $1$<a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |#1#
+    @*<a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |*@
     <a asp-action="Index">@Common.BackToList</a>
-</div>*@
+</div>

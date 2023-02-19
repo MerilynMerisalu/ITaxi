@@ -1,4 +1,4 @@
-/*#nullable enable
+#nullable enable
 using App.Contracts.DAL;
 using App.Domain.Enum;
 using Base.Extensions;
@@ -13,11 +13,12 @@ namespace WebApp.Areas.DriverArea.Controllers;
 [Authorize(Roles = "Admin, Driver")]
 public class DrivesController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppUnitOfWork _appBLL;
 
-    public DrivesController(IAppUnitOfWork uow)
+    public DrivesController(IAppUnitOfWork appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
+        
     }
 
     // GET: DriverArea/Drives
@@ -25,18 +26,8 @@ public class DrivesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var res = await _uow.Drives.GettingAllOrderedDrivesWithIncludesAsync(userId, roleName);
-#warning Should this be a repo method
-        foreach (var drive in res)
-        {
-            drive.Booking!.Schedule!.StartDateAndTime = drive.Booking!.Schedule!.StartDateAndTime.ToLocalTime();
-            drive.Booking!.Schedule!.EndDateAndTime = drive.Booking!.Schedule!.EndDateAndTime.ToLocalTime();
-            drive.Booking!.PickUpDateAndTime = drive.Booking!.PickUpDateAndTime.ToLocalTime();
-            drive.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime();
-            drive.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime();
-            drive.DriveStartDateAndTime = drive.DriveStartDateAndTime.ToLocalTime();
-            drive.DriveEndDateAndTime = drive.DriveEndDateAndTime.ToLocalTime();
-        }
+        var res = await _appBLL.Drives.GettingAllOrderedDrivesWithIncludesAsync(userId, roleName);
+
 
         return View(res);
     }
@@ -49,17 +40,17 @@ public class DrivesController : Controller
         var vm = new DetailsDriveViewModel();
         if (id == null) return NotFound();
 
-        var drive = await _uow.Drives
+        var drive = await _appBLL.Drives
             .GettingFirstDriveAsync(id.Value, userId, roleName);
         if (drive == null) return NotFound();
 
 
         vm.Id = drive.Id;
         vm.City = drive.Booking!.City!.CityName;
-        drive.Booking.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime(); 
-        drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
+        drive.Booking.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime; 
+        drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
-        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
         
         if (drive.Comment?.CommentText != null) vm.CommentText = drive.Comment.CommentText;
 
@@ -70,7 +61,7 @@ public class DrivesController : Controller
         vm.HasAnAssistant = drive.Booking.HasAnAssistant;
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
-        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.IsDriveAccepted = drive.IsDriveAccepted;
@@ -79,25 +70,25 @@ public class DrivesController : Controller
         vm.IsDriveFinished = drive.IsDriveFinished;
         if (vm.IsDriveAccepted )
         {
-            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
         }
         if (vm.IsDriveDeclined )
         {
-            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
-            vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
+            vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToString("g");
         }
 
         if (vm.IsDriveStarted)
         {
-            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
-            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("g");
         }
 
         if (vm.IsDriveFinished)
         {
-            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
-            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
-            vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("g");
+            vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToString("g");
         }
         
         
@@ -109,7 +100,7 @@ public class DrivesController : Controller
     // GET: DriverArea/Drives/Create
     public IActionResult Create()
     {
-        ViewData["DriverId"] = new SelectList(_uow.Drivers, "Id", "Address");
+        ViewData["DriverId"] = new SelectList(_appBLL.Drivers, "Id", "Address");
         return View();
     }
 
@@ -123,11 +114,11 @@ public class DrivesController : Controller
         if (ModelState.IsValid)
         {
             drive.Id = Guid.NewGuid();
-            _uow.Add(drive);
-            await _uow.SaveChangesAsync();
+            _appBLL.Add(drive);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["DriverId"] = new SelectList(_uow.Drivers, "Id", "Address", drive.DriverId);
+        ViewData["DriverId"] = new SelectList(_appBLL.Drivers, "Id", "Address", drive.DriverId);
         return View(drive);
     }
 
@@ -139,12 +130,12 @@ public class DrivesController : Controller
             return NotFound();
         }
 
-        var drive = await _uow.Drives.FindAsync(id);
+        var drive = await _appBLL.Drives.FindAsync(id);
         if (drive == null)
         {
             return NotFound();
         }
-        ViewData["DriverId"] = new SelectList(_uow.Drivers, "Id", "Address", drive.DriverId);
+        ViewData["DriverId"] = new SelectList(_appBLL.Drivers, "Id", "Address", drive.DriverId);
         return View(drive);
     }
 
@@ -164,8 +155,8 @@ public class DrivesController : Controller
         {
             try
             {
-                _uow.Update(drive);
-                await _uow.SaveChangesAsync();
+                _appBLL.Update(drive);
+                await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -180,7 +171,7 @@ public class DrivesController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewData["DriverId"] = new SelectList(_uow.Drivers, "Id", "Address", drive.DriverId);
+        ViewData["DriverId"] = new SelectList(_appBLL.Drivers, "Id", "Address", drive.DriverId);
         return View(drive);
     }
 
@@ -192,7 +183,7 @@ public class DrivesController : Controller
             return NotFound();
         }
 
-        var drive = await _uow.Drives
+        var drive = await _appBLL.Drives
             .Include(d => d.Driver)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (drive == null)
@@ -208,12 +199,12 @@ public class DrivesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var drive = await _uow.Drives.FindAsync(id);
-        _uow.Drives.Remove(drive);
-        await _uow.SaveChangesAsync();
+        var drive = await _appBLL.Drives.FindAsync(id);
+        _appBLL.Drives.Remove(drive);
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-    #1#
+    */
 
     /// <summary>
     ///     Search drives by inserted date
@@ -225,7 +216,7 @@ public class DrivesController : Controller
     {
         var roleName = User.GettingUserRoleName();
         var userId = User.GettingUserId();
-        var drives = await _uow.Drives.SearchByDateAsync(search, userId, roleName);
+        var drives = await _appBLL.Drives.SearchByDateAsync(search, userId, roleName);
         return View(nameof(Index), drives);
     }
 
@@ -238,14 +229,14 @@ public class DrivesController : Controller
         var roleName = User.GettingUserRoleName();
         var userId = User.GettingUserId();
         
-        var drives = await _uow.Drives.PrintAsync( userId, roleName );
+        var drives = await _appBLL.Drives.PrintAsync( userId, roleName );
         foreach (var drive in drives)
         {
             if (drive != null)
             {
-                drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime();
-                drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
-                drive.Booking.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
+                drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime;
+                drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
+                drive.Booking.PickUpDateAndTime = drive.Booking.PickUpDateAndTime;
             }
         }
         return new ViewAsPdf("PrintDrives", drives);
@@ -260,12 +251,12 @@ public class DrivesController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var vm = new DriveStateViewModel();
-        var drive = await _uow.Drives.GettingFirstDriveAsync(id.Value, userId, roleName);
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, userId, roleName);
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
-        drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime(); 
-        drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
+        drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime; 
+        drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
         vm.City = drive.Booking.City!.CityName;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
@@ -277,29 +268,29 @@ public class DrivesController : Controller
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
-        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
         #warning  needs refactoring
         if (vm.IsDriveAccepted )
         {
-            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
         }
         if (vm.IsDriveDeclined )
         {
-            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
-            vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
+            vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToString("g");
         }
 
         if (vm.IsDriveStarted)
         {
-            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
-            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("g");
         }
 
         if (vm.IsDriveFinished)
         {
-            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
-            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
-            vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("g");
+            vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToString("g");
         }
 
 
@@ -314,10 +305,10 @@ public class DrivesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var drive = await _uow.Drives.GettingFirstDriveAsync(id,userId, roleName );
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id,userId, roleName );
         if (drive == null) return NotFound();
 
-        drive = await _uow.Drives.AcceptingDriveAsync(id, userId, roleName);
+        drive = await _appBLL.Drives.AcceptingDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
         drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
@@ -325,16 +316,16 @@ public class DrivesController : Controller
         drive.IsDriveAccepted = true;
         drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
-        _uow.Drives.Update(drive);
-        await _uow.SaveChangesAsync();
+        _appBLL.Drives.Update(drive);
+        await _appBLL.SaveChangesAsync();
 
-        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id), false);
+        var booking = await _appBLL.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id), false);
         if (booking != null)
         {
             booking.StatusOfBooking = StatusOfBooking.Accepted;
             booking.UpdatedAt = DateTime.Now.ToUniversalTime();
-            _uow.Bookings.Update(booking);
-            await _uow.SaveChangesAsync();
+            _appBLL.Bookings.Update(booking);
+            await _appBLL.SaveChangesAsync();
         }
 
         return RedirectToAction(nameof(Index));
@@ -348,12 +339,12 @@ public class DrivesController : Controller
         var roleName = User.GettingUserRoleName();
 
         var vm = new DriveStateViewModel();
-        var drive = await _uow.Drives.GettingFirstDriveAsync(id.Value, userId, roleName);
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, userId, roleName);
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
-        drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime(); 
-        drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
+        drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime; 
+        drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
         vm.City = drive.Booking.City!.CityName;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
@@ -365,10 +356,10 @@ public class DrivesController : Controller
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
-        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
         if (vm.IsDriveAccepted )
         {
-            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
         }
         if (vm.IsDriveDeclined )
         {
@@ -401,10 +392,10 @@ public class DrivesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var drive = await _uow.Drives.GettingFirstDriveAsync(id, userId, roleName);
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
-        drive = await _uow.Drives.DecliningDriveAsync(id, userId, roleName);
+        drive = await _appBLL.Drives.DecliningDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
         drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
@@ -412,10 +403,10 @@ public class DrivesController : Controller
         drive.IsDriveDeclined = true;
         drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
-        _uow.Drives.Update(drive);
-        await _uow.SaveChangesAsync();
+        _appBLL.Drives.Update(drive);
+        await _appBLL.SaveChangesAsync();
 
-        var booking = await _uow.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id), false);
+        var booking = await _appBLL.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id), false);
         if (booking != null)
         {
             booking.StatusOfBooking = StatusOfBooking.Declined;
@@ -423,8 +414,8 @@ public class DrivesController : Controller
             booking.IsDeclined = true;
             
             booking.UpdatedAt = DateTime.Now.ToUniversalTime();
-            _uow.Bookings.Update(booking);
-            await _uow.SaveChangesAsync();
+            _appBLL.Bookings.Update(booking);
+            await _appBLL.SaveChangesAsync();
         }
 
         return RedirectToAction(nameof(Index));
@@ -438,7 +429,7 @@ public class DrivesController : Controller
         var vm = new DriveStateViewModel();
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var drive = await _uow.Drives.GettingFirstDriveAsync(id.Value, userId, roleName);
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, userId, roleName);
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
@@ -490,10 +481,10 @@ public class DrivesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var drive = await _uow.Drives.GettingFirstDriveAsync(id, userId, roleName);
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
-        drive = await _uow.Drives.StartingDriveAsync(id, userId, roleName);
+        drive = await _appBLL.Drives.StartingDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
         drive.DriveStartDateAndTime = DateTime.Now.ToUniversalTime();
@@ -501,8 +492,8 @@ public class DrivesController : Controller
         drive.IsDriveStarted = true;
         drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
-        _uow.Drives.Update(drive);
-        await _uow.SaveChangesAsync();
+        _appBLL.Drives.Update(drive);
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
@@ -513,7 +504,7 @@ public class DrivesController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var vm = new DriveStateViewModel();
-        var drive = await _uow.Drives.GettingFirstDriveAsync(id.Value,userId, roleName );
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value,userId, roleName );
         if (drive == null) return NotFound();
 
         vm.Id = drive.Id;
@@ -554,10 +545,10 @@ public class DrivesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var drive = await _uow.Drives.GettingFirstDriveAsync(id, userId, roleName);
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
-        drive = await _uow.Drives.EndingDriveAsync(id, userId, roleName);
+        drive = await _appBLL.Drives.EndingDriveAsync(id, userId, roleName);
         if (drive == null) return NotFound();
 
         drive.IsDriveFinished = true;
@@ -565,8 +556,8 @@ public class DrivesController : Controller
         drive.DriveEndDateAndTime = DateTime.Now.ToUniversalTime();
         drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
-        _uow.Drives.Update(drive);
-        await _uow.SaveChangesAsync();
+        _appBLL.Drives.Update(drive);
+        await _appBLL.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index));
     }
