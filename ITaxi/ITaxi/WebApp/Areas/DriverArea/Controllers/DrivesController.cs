@@ -1,5 +1,5 @@
 #nullable enable
-using App.Contracts.DAL;
+/*using App.Contracts.DAL;
 using App.Domain.Enum;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -204,7 +204,7 @@ public class DrivesController : Controller
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-    */
+    #1#
 
     /// <summary>
     ///     Search drives by inserted date
@@ -561,4 +561,4 @@ public class DrivesController : Controller
 
         return RedirectToAction(nameof(Index));
     }
-}*/
+}#1#*/

@@ -159,7 +159,8 @@ public class DriversController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditDriverViewModel vm)
     {
-        var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id);
+        var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id, noIncludes:true);
+        var appuser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(driver!.AppUserId, noIncludes: true);
 
         if (driver != null && id != driver.Id) return NotFound();
 
@@ -169,7 +170,7 @@ public class DriversController : Controller
             {
                 if (driver != null)
                 {
-                    driver.Id = id;
+
                     driver.PersonalIdentifier = vm.PersonalIdentifier;
                     if (vm.DriverAndDriverLicenseCategories != null)
                     {
@@ -188,14 +189,16 @@ public class DriversController : Controller
                         
                     }
                     
-/*
-                    driver.AppUser!.FirstName = vm.FirstName;
-                    driver.AppUser!.LastName = vm.LastName;
-                    driver.AppUser!.Gender = vm.Gender;
-                    driver.AppUser!.DateOfBirth = DateTime.Parse(vm.DateOfBirth.ToString("d")).ToUniversalTime();
-                    driver.AppUser.PhoneNumber = vm.PhoneNumber;
-                    driver.AppUser.Email = vm.Email;
-                    driver.AppUser.IsActive = vm.IsActive;*/
+
+                    appuser.FirstName = vm.FirstName;
+                    appuser.LastName = vm.LastName;
+                    appuser.Gender = vm.Gender;
+                    appuser.DateOfBirth = DateTime.Parse(vm.DateOfBirth.ToString("d")).ToUniversalTime();
+                    appuser.PhoneNumber = vm.PhoneNumber;
+                    appuser.Email = vm.Email;
+                    appuser.IsActive = vm.IsActive;
+                    _appBLL.AppUsers.Update(appuser);
+                    
                     driver.DriverLicenseNumber = vm.DriverLicenseNumber;
                     driver.DriverLicenseExpiryDate = DateTime.Parse(vm.DriverLicenseExpiryDate.ToString("d")).ToUniversalTime();
                     driver.CityId = vm.CityId;
@@ -258,7 +261,7 @@ public class DriversController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var noTracking = true;
-        var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id);
+        var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id, noTracking, noIncludes:true);
         if (await _appBLL.Drivers.HasAnySchedulesAsync(id) || await _appBLL.Drivers.HasAnyBookingsAsync(id))
             return Content("Entity cannot be deleted because it has dependent entities!");
 

@@ -146,8 +146,13 @@ public class AdminsController : Controller
                 var appUser =
                     await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(admin.AppUserId, noIncludes: true,
                         noTracking: true);
+                
                 appUser.FirstName = vm.FirstName;
-                admin.AppUserId = appUser.Id;
+                appUser.LastName = vm.LastName;
+                appUser.Gender = vm.Gender;
+                appUser.DateOfBirth = vm.DateOfBirth;
+                appUser.PhoneNumber = vm.PhoneNumber;
+                
                 admin.Address = vm.Address;
                 admin.CityId = vm.CityId;
                 admin.PersonalIdentifier = vm.PersonalIdentifier;

@@ -1,4 +1,4 @@
-using App.BLL.DTO.AdminArea;
+/*using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Contracts.DAL;
 
@@ -162,7 +162,7 @@ public class RideTimesController : Controller
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
         return View(vm);
     }
-    */
+    #1#
 
     // POST: DriverArea/RideTimes/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -244,4 +244,4 @@ public class RideTimesController : Controller
     {
         return _appBLL.RideTimes.Exists(id);
     }
-}
+}*/

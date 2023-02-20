@@ -1,5 +1,5 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
-
+using App.DAL.DTO.Identity;
 using App.Domain;
 using Base.Contracts;
 using Base.DAL.EF;
@@ -45,14 +45,36 @@ public class AppUserRepository : BaseEntityRepository<App.DAL.DTO.Identity.AppUs
         return CreateQuery(noTracking).OrderBy(a => a.LastName)
             .ThenBy(a => a.FirstName).ToList().Select(e => Mapper.Map(e))!;
     }
-
+/*
     protected override IQueryable<Domain.Identity.AppUser> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking) query = query.AsNoTracking();
-        //if (!noIncludes)
-        //    query = query.Include(a => a.AppUser)
-        //                 .Include(a => a.City);
-        return query;
+     //   var query = RepoDbSet.AsQueryable();
+     //   if (noTracking) query = query.AsNoTracking();
+     //   return query;
+     return base.CreateQuery(noTracking, noIncludes);
     }
+*/
+    public AppUser Update(AppUser entity)
+    {
+        // Deliberately NOT using Mapper to resolve the domain entity here
+        // It is unclear exactly which property is causing trouble, but Mapper is assigning properties that we shouldn'ˇt be, perhaps the password?
+        // As a special case for this AppUser Entity, we are using explicit mapping.
+        // - AutoMapper with Ignore rules might also do this job.
+        
+        //var domain = Mapper.Map(entity);
+        
+        var domain = RepoDbSet.FirstOrDefault(x => x.Id == entity.Id)!;
+        domain.FirstName = entity.FirstName;
+        domain.LastName = entity.LastName;
+        domain.Gender = entity.Gender;
+        domain.DateOfBirth = entity.DateOfBirth;
+        domain.PhoneNumber = entity.PhoneNumber;
+        domain.IsActive = entity.IsActive;
+        
+        var result = RepoDbSet.Update(domain!);
+        
+        return Mapper.Map(result.Entity)!;
+    }
+
+
 }

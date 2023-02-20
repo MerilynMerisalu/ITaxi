@@ -160,7 +160,7 @@ public class VehiclesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, userId, roleName);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id, userId, roleName);
         if (vehicle != null && id != vehicle.Id) return NotFound();
 
         if (ModelState.IsValid)
