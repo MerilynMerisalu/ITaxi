@@ -1,9 +1,5 @@
-﻿using App.BLL.DTO.AdminArea;
-using App.DAL.DTO.Identity;
-using AutoMapper;
-using Base.Contracts;
+﻿using AutoMapper;
 using Base.DAL;
-using AppUser = App.BLL.DTO.Identity.AppUser;
 
 namespace App.BLL.Mappers.Identity;
 

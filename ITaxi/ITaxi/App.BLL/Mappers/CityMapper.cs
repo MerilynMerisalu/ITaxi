@@ -4,7 +4,7 @@ using Base.DAL;
 
 namespace App.BLL.Mappers;
 
-public class CityMapper : BaseMapper<App.BLL.DTO.AdminArea.CityDTO, App.DAL.DTO.AdminArea.CityDTO>
+public class CityMapper : BaseMapper<App.BLL.DTO.AdminArea.CityDTO, CityDTO>
 {
     public CityMapper(IMapper mapper) : base(mapper)
     {

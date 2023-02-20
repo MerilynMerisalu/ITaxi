@@ -3,7 +3,7 @@ using Base.DAL;
 
 namespace App.BLL.Mappers;
 
-public class DriverAndDriverLicenseCategoryMapper: BaseMapper<App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO, 
+public class DriverAndDriverLicenseCategoryMapper: BaseMapper<DTO.AdminArea.DriverAndDriverLicenseCategoryDTO, 
     App.DAL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO>
 {
     public DriverAndDriverLicenseCategoryMapper(IMapper mapper) : base(mapper)

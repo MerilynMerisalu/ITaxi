@@ -4,7 +4,7 @@ using Base.DAL;
 
 namespace App.DAL.EF.Mappers;
 
-public class CountyMapper:BaseMapper<CountyDTO,App.Domain.County>
+public class CountyMapper:BaseMapper<CountyDTO,Domain.County>
 {
     public CountyMapper(IMapper mapper) : base(mapper)
     {
