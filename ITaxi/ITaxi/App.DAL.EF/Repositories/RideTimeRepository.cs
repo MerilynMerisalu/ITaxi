@@ -152,21 +152,15 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
         return Mapper.Map(CreateQuery(userId, roleName, noTracking).FirstOrDefault(r => r.BookingId.Equals(id)));
     }
 
-    public List<string> CalculatingRideTimes(Guid scheduleId)
-    {
-        var currentSchedule = RepoDbContext.Schedules.Where(x => x.Id == scheduleId).ToArray();
-        var rideTimes = this.CalculatingRideTimes(ScheduleRepository.GettingStartAndEndTime(
-            currentSchedule));
-
-        return rideTimes;
-    }
     
-    public List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime)
+
+    public  List<string> CalculatingRideTimes(Guid id)
     {
+        var schedule = RepoDbContext.Schedules.FirstOrDefaultAsync(s => s.Id.Equals(id)).Result;
         var times = new List<string>();
-        var start = scheduleStartAndEndTime[0];
+        var start = schedule!.StartDateAndTime;
         var time = start;
-        var end = scheduleStartAndEndTime[1];
+        var end = schedule.EndDateAndTime;
 
         while (time < end)
         {
@@ -278,15 +272,15 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
         return Mapper.Map(closestRideTime);
     }
 
-    public List<string> GettingRemainingRideTimesByScheduleId(Guid schedulId)
+    public List<string> GettingRemainingRideTimesByScheduleId(Guid scheduleId)
     {
-        var currentSchedule = this.RepoDbContext.Schedules.Include(s => s.RideTimes).AsNoTracking().Single(x => x.Id == schedulId);
+        var currentSchedule = this.RepoDbContext.Schedules.Include(s => s.RideTimes).AsNoTracking().Single(x => x.Id == scheduleId);
         currentSchedule.StartDateAndTime = currentSchedule.StartDateAndTime.ToLocalTime();
         currentSchedule.EndDateAndTime = currentSchedule.EndDateAndTime.ToLocalTime();
         
         // Select the RideTimes form the currently selected schedule, for the current driver
         var rideTimesList =
-            this.CalculatingRideTimes(ScheduleRepository.GettingStartAndEndTime(new Schedule [] {currentSchedule}));
+            this.CalculatingRideTimes(currentSchedule.Id);//(new Schedule [] {currentSchedule}));
 
         // Need to remove the times that have already been issued:
         if (currentSchedule.RideTimes!.Any())

@@ -171,7 +171,7 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
     }
 
 
-    public static DateTime[] GettingStartAndEndTime(Schedule[] schedules, Guid? userId = null,
+    /*public static DateTime[] GettingStartAndEndTime(Schedule[] schedules, Guid? userId = null,
         string? roleName = null)
     {
 #warning needs improving
@@ -182,11 +182,11 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
             scheduleStartAndEndTime[0] = schedule.StartDateAndTime;
 
             scheduleStartAndEndTime[1] = schedule.EndDateAndTime;
-        }
+        }*/
 
 
-        return scheduleStartAndEndTime;
-    }
+        // return scheduleStartAndEndTime;
+    // }
 
     public int NumberOfRideTimes(Guid? driverId = null, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
