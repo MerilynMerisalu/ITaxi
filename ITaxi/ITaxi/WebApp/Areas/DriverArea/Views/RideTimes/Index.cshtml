@@ -43,9 +43,17 @@
 
 
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
+                @*<a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |*@
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+                @if (item.IsTaken)
+                {
+                    <a hidden="hidden" asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+                }
+                else
+                {
+                    <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+                }
+                
             </td>
         </tr>
     }

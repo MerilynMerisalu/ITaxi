@@ -222,7 +222,7 @@ public class RideTimesController : Controller
     }
 
     // GET: AdminArea/RideTimes/Edit/5
-    public async Task<IActionResult> Edit(Guid? id)
+    /*public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new EditRideTimeViewModel();
         if (id == null) return NotFound();
@@ -301,7 +301,7 @@ public class RideTimesController : Controller
         }
 
         return View(vm);
-    }
+    }*/
 
     // GET: AdminArea/RideTimes/Delete/5
     public async Task<IActionResult> Delete(Guid? id)
@@ -340,6 +340,11 @@ public class RideTimesController : Controller
     {
         
         var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id);
+        if (rideTime != null && rideTime.IsTaken)
+        {
+            return Content("Entity cannot be deleted");
+        }
+
         if (rideTime != null) _appBLL.RideTimes.Remove(rideTime);
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
