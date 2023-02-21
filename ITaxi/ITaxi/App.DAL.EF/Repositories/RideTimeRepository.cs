@@ -156,11 +156,11 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
 
     public  List<string> CalculatingRideTimes(Guid id)
     {
-        var schedule = RepoDbContext.Schedules.FirstOrDefaultAsync(s => s.Id.Equals(id)).Result;
+        var schedule = RepoDbContext.Schedules.FirstOrDefault(s => s.Id.Equals(id));
         var times = new List<string>();
-        var start = schedule!.StartDateAndTime;
+        var start = schedule!.StartDateAndTime.ToLocalTime();
         var time = start;
-        var end = schedule.EndDateAndTime;
+        var end = schedule.EndDateAndTime.ToLocalTime();
 
         while (time < end)
         {
@@ -292,6 +292,16 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
         }
 
         return rideTimesList;
+    }
+
+    public async Task<bool> HasScheduleAnyAsync(Guid id, bool noTracking = true)
+    {
+        return await RepoDbContext.RideTimes.AnyAsync(r => r.ScheduleId.Equals(id));
+    }
+
+    public bool HasScheduleAny(Guid id, bool noTracking = true)
+    {
+        return RepoDbContext.RideTimes.Any(r => r.ScheduleId.Equals(id));
     }
 
     public async Task<IEnumerable<RideTimeDTO>> GetAllAsync(Guid? userId = null, string? roleName = null,

@@ -33,5 +33,7 @@ public interface IBookingRepositoryCustom<TEntity>
     TEntity? BookingDecline(Guid id, Guid? userId = null, string? roleName = null);
     Task<TEntity?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
     TEntity? GettingBooking(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true);
-    
+    Task<bool> HasAnyScheduleAsync(Guid id);
+    bool HasAnySchedule(Guid id);
+
 }

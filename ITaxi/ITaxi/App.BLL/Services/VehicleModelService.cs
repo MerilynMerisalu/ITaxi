@@ -53,13 +53,13 @@ public class VehicleModelService : BaseEntityService<App.BLL.DTO.AdminArea.Vehic
     public async Task<List<VehicleModelDTO>> GettingVehicleModelsByMarkIdAsync(Guid markId, bool noTracking = true)
     {
         return ((await Repository.GettingVehicleModelsByMarkIdAsync(markId, noTracking))
-            .Select(e => Mapper.Map(e)) as List<VehicleModelDTO>)!;
+            .Select(e => Mapper.Map(e)).ToList())!;
     }
 
     public List<VehicleModelDTO> GettingVehicleModels(Guid markId, bool noTracking = true)
     {
         return (Repository.GettingVehicleModels(markId, noTracking)
-            .Select(e => Mapper.Map(e)) as List<VehicleModelDTO>)!;
+            .Select(e => Mapper.Map(e)).ToList())!;
     }
 
     public async Task<bool> HasAnyVehicleMarksAsync(Guid markId, bool noTracking = true)

@@ -41,13 +41,11 @@ public interface IScheduleRepositoryCustom<TEntity>
     IEnumerable<TEntity> GettingTheScheduleByDriverId(Guid driverId, Guid? userId = null,
         string? roleName = null, bool noTracking = true);
 
-    
-
-
     int NumberOfRideTimes(Guid? driverId = null, Guid? userId = null,
         string? roleName = null, bool noTracking = true);
-    int NumberOfTakenRideTimes(Guid? driverId = null, Guid? userId = null,
+    int? NumberOfTakenRideTimes(Guid? driverId = null, Guid? userId = null,
         string? roleName = null, bool noTracking = true);
+    
     
     
 

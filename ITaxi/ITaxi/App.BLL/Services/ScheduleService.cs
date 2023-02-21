@@ -105,12 +105,10 @@ public class ScheduleService: BaseEntityService<ScheduleDTO, App.DAL.DTO.AdminAr
         return Repository.NumberOfRideTimes(driverId, userId, roleName, noTracking);
     }
 
-    public int NumberOfTakenRideTimes(Guid? driverId = null, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public int? NumberOfTakenRideTimes(Guid? driverId = null, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         return Repository.NumberOfTakenRideTimes(driverId, userId, roleName, noTracking);
     }
 
     
-
-   
 }

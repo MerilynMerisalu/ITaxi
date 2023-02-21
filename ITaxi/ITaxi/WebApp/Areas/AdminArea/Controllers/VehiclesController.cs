@@ -56,8 +56,8 @@ public class VehiclesController : Controller
         return View(vm);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> SetDropDownList(Guid id)
+    [HttpPost("AdminArea/Vehicles/SetDropDownList/{id}")]
+    public async Task<IActionResult> SetDropDownList([FromRoute]Guid id)
     {
         // Use the EditRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
         var vm = new CreateEditVehicleViewModel();

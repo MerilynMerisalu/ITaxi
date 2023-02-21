@@ -108,4 +108,14 @@ public class RideTimeService: BaseEntityService<App.BLL.DTO.AdminArea.RideTimeDT
     {
         return Repository.GettingRemainingRideTimesByScheduleId(scheduleId);
     }
+
+    public async Task<bool> HasScheduleAnyAsync(Guid id, bool noTracking = true)
+    {
+        return await Repository.HasScheduleAnyAsync(id, noTracking);
+    }
+
+    public bool HasScheduleAny(Guid id, bool noTracking = true)
+    {
+        return Repository.HasScheduleAny(id, noTracking);
+    }
 }

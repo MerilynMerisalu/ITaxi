@@ -166,7 +166,17 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
         return booking;
     }
 
-    
+    public async Task<bool> HasAnyScheduleAsync(Guid id)
+    {
+        return await RepoDbContext.Bookings.AnyAsync(b => b.ScheduleId.Equals(id));
+    }
+
+    public bool HasAnySchedule(Guid id)
+    {
+        return RepoDbContext.Bookings.Any(b => b.ScheduleId.Equals(id));
+    }
+
+
     public  async Task<BookingDTO?> FirstOrDefaultAsync(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         return Mapper.Map(await CreateQuery(userId, roleName,noTracking)

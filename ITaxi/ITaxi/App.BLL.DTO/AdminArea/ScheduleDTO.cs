@@ -45,7 +45,7 @@ public class ScheduleDTO: DomainEntityMetaId
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule),
         Name = "NumberOfTakenRideTimesPerSchedule")]
 #warning Is it right
-    public int NumberOfTakenRideTimes => RideTimes.Count(r => r.IsTaken);
+    public int NumberOfTakenRideTimes;
 
-
+    
 }

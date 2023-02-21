@@ -67,7 +67,7 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
 
     public virtual TDalEntity Remove(TKey id)
     {
-        var entity = FirstOrDefault(id);
+        var entity = FirstOrDefault(id, noTracking:true, noIncludes:true);
         if (entity == null)
             // TODO: implement custom exception for entity not found
             throw new NullReferenceException($"Entity {typeof(TDalEntity).Name} with id {id} was not found");

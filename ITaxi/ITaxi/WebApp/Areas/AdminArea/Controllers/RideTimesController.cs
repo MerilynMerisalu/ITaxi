@@ -68,9 +68,6 @@ public class RideTimesController : Controller
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
 #warning "Magic string" code smell, fix it
             nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
-        vm.Schedules = new SelectList(await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
-           nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime));
-        vm.RideTimes = new SelectList(_appBLL.RideTimes.CalculatingRideTimes(vm.ScheduleId));
         vm.Schedules = new SelectList(new Schedule[0]
             , nameof(ScheduleDTO.Id), nameof(Schedule.ShiftDurationTime));
         vm.RideTimes = new SelectList(new string[0]);

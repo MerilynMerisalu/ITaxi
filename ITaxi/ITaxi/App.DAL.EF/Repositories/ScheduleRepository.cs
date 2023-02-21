@@ -195,11 +195,26 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
         return numberOfRideTimes;
     }
 
-    public int NumberOfTakenRideTimes(Guid? driverId = null, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public int? NumberOfTakenRideTimes(Guid? driverId = null, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         var numberOfRideTimesTaken = CreateQuery(userId, roleName, noTracking)
             .Select(d => d.RideTimes!.Where(rt => rt.IsTaken == true)).Count();
+        if (numberOfRideTimesTaken == null)
+        {
+            numberOfRideTimesTaken = 0;
+            return numberOfRideTimesTaken;
+        }
         return numberOfRideTimesTaken;
+    }
+
+    public async Task<bool> HasAnyScheduleAsync(Guid id, bool noTracking = true)
+    {
+        return await RepoDbContext.Bookings.AnyAsync(b => b.ScheduleId.Equals(id));
+    }
+
+    public bool HasAnySchedule(Guid id, bool noTracking = true)
+    {
+        return RepoDbContext.Bookings.Any(b => b.ScheduleId.Equals(id));
     }
 
 

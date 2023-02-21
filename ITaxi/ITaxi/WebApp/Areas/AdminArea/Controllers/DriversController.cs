@@ -159,7 +159,7 @@ public class DriversController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditDriverViewModel vm)
     {
-        var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id, noIncludes:true);
+        var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id, noIncludes:true, noTracking:true);
         var appuser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(driver!.AppUserId, noIncludes: true);
 
         if (driver != null && id != driver.Id) return NotFound();
@@ -177,6 +177,8 @@ public class DriversController : Controller
                         await _appBLL.DriverAndDriverLicenseCategories
                             .RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(driver.Id);
 
+                        await _appBLL.SaveChangesAsync();
+                        
                         foreach (var selectedDriverLicenseCategory in vm.DriverAndDriverLicenseCategories)
                         {
                             var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategoryDTO()
@@ -274,7 +276,7 @@ public class DriversController : Controller
             driver.AppUser = null;
             var appUser = await _userManager.FindByIdAsync(driver!.AppUserId.ToString());
             await _userManager.RemoveFromRoleAsync(appUser, "Driver");
-            
+
             await _appBLL.Drivers.RemoveAsync(driver.Id);
             await _appBLL.SaveChangesAsync();
     #warning  temporarily solution

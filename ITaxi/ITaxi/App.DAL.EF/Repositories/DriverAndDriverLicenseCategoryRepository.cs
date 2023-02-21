@@ -41,7 +41,7 @@ public class DriverAndDriverLicenseCategoryRepository :
         RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(Guid id, bool noTracking = true)
     {
         var driverAndDriverLicenseCategories =
-            await CreateQuery(noTracking)
+            await CreateQuery(noTracking, true)
                 .Where(dl => dl.DriverId.Equals(id))
                 .Select(dl => dl).ToListAsync();
 

@@ -50,13 +50,13 @@ public class VehicleModelRepository : BaseEntityRepository<App.DAL.DTO.AdminArea
     public async Task<List<VehicleModelDTO>> GettingVehicleModelsByMarkIdAsync(Guid markId, bool noTracking = true)
     {
         return ((await CreateQuery(noTracking).Where(v => v.VehicleMarkId.Equals(markId))
-            .OrderBy(v => v.VehicleMark!.VehicleMarkName).ToListAsync()).Select(e => Mapper.Map(e)) as List<VehicleModelDTO>)!;
+            .OrderBy(v => v.VehicleMark!.VehicleMarkName).ToListAsync()).Select(e => Mapper.Map(e)).ToList())!;
     }
 
     public List<VehicleModelDTO> GettingVehicleModels(Guid markId, bool noTracking = true)
     {
         return (CreateQuery(noTracking).Where(v => v.VehicleMarkId.Equals(markId))
-            .OrderBy(v => v.VehicleMark!.VehicleMarkName).ToList().Select(e => Mapper.Map(e)) as List<VehicleModelDTO>)!;
+            .OrderBy(v => v.VehicleMark!.VehicleMarkName).ToList().Select(e => Mapper.Map(e)).ToList())!;
     }
 
     public async Task<bool> HasAnyVehicleMarksAsync(Guid markId, bool noTracking = true)

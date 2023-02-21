@@ -92,5 +92,15 @@ public class BookingService : BaseEntityService<App.BLL.DTO.AdminArea.BookingDTO
         return Mapper.Map(
             Repository.GettingBooking(id, userId, roleName, noTracking));
     }
+
+    public async Task<bool> HasAnyScheduleAsync(Guid id)
+    {
+        return await Repository.HasAnyScheduleAsync(id);
+    }
+
+    public bool HasAnySchedule(Guid id)
+    {
+        return Repository.HasAnySchedule(id);
+    }
 }
 
