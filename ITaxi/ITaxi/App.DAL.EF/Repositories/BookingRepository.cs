@@ -209,7 +209,7 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
 
-        if (roleName is nameof(Admin))
+        if (roleName is ("Admin"))
         {
             query = query.Include(b => b.City)
                 .Include(b => b.Driver)
