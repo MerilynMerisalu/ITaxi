@@ -16,14 +16,14 @@ namespace WebApp.Areas.AdminArea.Controllers;
 public class CustomersController : Controller
 {
     private readonly IAppBLL _appBLL;
-    private readonly IAppUnitOfWork _uow;
+    
     private readonly UserManager<AppUser> _userManager;
 
-    public CustomersController(IAppBLL appBLL, UserManager<AppUser> userManager, IAppUnitOfWork uow)
+    public CustomersController(IAppBLL appBLL, UserManager<AppUser> userManager)
     {
         _appBLL = appBLL;
         _userManager = userManager;
-        _uow = uow;
+        
     }
 
     // GET: AdminArea/Customers
@@ -145,17 +145,17 @@ public class CustomersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditCustomerViewModel vm)
     {
-        var customer = await _appBLL.Customers.FirstOrDefaultAsync(id);
+        var customer = await _appBLL.Customers.FirstOrDefaultAsync(id, noTracking:true, noIncludes:true);
         
         if (customer == null || id != customer.Id) return NotFound();
 
         if (ModelState.IsValid)
         {
             customer.AppUser = null;
+            var appUser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(customer.AppUserId);
             try
             {
-                var appUser = await _userManager.FindByIdAsync(customer.AppUserId.ToString());
-                if (appUser != null)
+                if (true)
                 {
                     appUser.FirstName = vm.FirstName;
                     appUser.LastName = vm.LastName;
@@ -164,7 +164,8 @@ public class CustomersController : Controller
                     appUser.Email = vm.Email;
                     appUser.PhoneNumber = vm.PhoneNumber;
                     appUser.IsActive = vm.IsActive;
-                    await _userManager.UpdateAsync(appUser);
+                     _appBLL.AppUsers.Update(appUser);
+                    await _appBLL.SaveChangesAsync();
                 }
 
                 customer.Id = id;
