@@ -379,7 +379,7 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
 
-        if (roleName is nameof(Admin))
+        if (roleName is "Admin")
         {
            return query.Include(d => d.Booking)
                .ThenInclude(d => d!.Schedule)

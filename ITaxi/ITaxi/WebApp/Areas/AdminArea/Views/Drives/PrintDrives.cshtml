@@ -1,5 +1,5 @@
 ﻿@using App.Resources.Areas.App.Domain.AdminArea
-@model IEnumerable<App.DAL.DTO.AdminArea.DriveDTO>
+@model IEnumerable<App.BLL.DTO.AdminArea.DriveDTO>
 
 
 @{
@@ -77,7 +77,7 @@
                 @Html.DisplayFor(modelItem => item.Booking!.PickUpDateAndTime)
             </td>
             <td>
-                @Html.DisplayTextFor(modelItem => item.Booking!.VehicleType!.VehicleTypeName)
+                @Html.DisplayTextFor(modelItem => item.Booking!.Vehicle!.VehicleType!.VehicleTypeName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.LastAndFirstName)

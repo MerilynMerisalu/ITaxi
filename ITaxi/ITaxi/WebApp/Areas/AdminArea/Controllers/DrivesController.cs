@@ -226,16 +226,7 @@ public async Task<IActionResult> Print()
     
     
         var drives = await _appBLL.Drives.PrintAsync( null, roleName );
-        foreach (var drive in drives)
-        {
-            if (drive != null)
-            {
-                drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime.ToLocalTime();
-                drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime.ToLocalTime();
-                drive.Booking.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
-            }
-        }
-
+        
         return new ViewAsPdf("PrintDrives", drives);
     
 
