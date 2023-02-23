@@ -3,6 +3,7 @@ using App.Contracts.BLL;
 using App.Contracts.DAL;
 
 using App.Domain.Enum;
+using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -254,7 +255,7 @@ public async Task<IActionResult> Accept(Guid? id)
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("G");
     vm.PickupAddress = drive.Booking.PickupAddress;
-    vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
+    vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
     vm.StatusOfBooking = drive.Booking.StatusOfBooking;
@@ -299,10 +300,9 @@ public async Task<IActionResult> Accept(Guid? id)
 public async Task<IActionResult> AcceptConfirmed(Guid id)
 {
     var roleName = User.GettingUserRoleName();
-    var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, null, roleName);
-    if (drive == null) return NotFound();
+    
 
-    drive = await _appBLL.Drives.AcceptingDriveAsync(id, null, roleName);
+    var drive = await _appBLL.Drives.AcceptingDriveAsync(id, null, roleName, noIncludes:true);
     if (drive == null) return NotFound();
 
     drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
@@ -312,15 +312,15 @@ public async Task<IActionResult> AcceptConfirmed(Guid id)
 
     _appBLL.Drives.Update(drive);
     await _appBLL.SaveChangesAsync();
+    
 
-    var booking = await _appBLL.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id), false);
+    var booking = await _appBLL.Bookings.GettingBookingByDriveIdAsync(id, noTracking:true);
     if (booking != null)
     {
         booking.StatusOfBooking = StatusOfBooking.Accepted;
-        var bestRideTime = await _appBLL.RideTimes.GettingBestAvailableRideTimeAsync(booking.PickUpDateAndTime, booking.CityId, booking.NumberOfPassengers, booking.VehicleTypeId, false, null, null, false);
-        //bestRideTime.Single().IsTaken = true;
-        
-            
+        booking.ConfirmedBy = User.GettingUserName();
+
+
         booking.UpdatedAt = DateTime.Now.ToUniversalTime();
         _appBLL.Bookings.Update(booking);
         await _appBLL.SaveChangesAsync();

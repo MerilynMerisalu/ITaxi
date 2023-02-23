@@ -102,9 +102,10 @@ public class DriveService: BaseEntityService<App.BLL.DTO.AdminArea.DriveDTO, App
         return Mapper.Map(Repository.AcceptingDrive(id));
     }
 
-    public async Task<DriveDTO?> AcceptingDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<DriveDTO?> AcceptingDriveAsync(Guid id, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await Repository.AcceptingDriveAsync(id, userId, roleName, noTracking));
+        return Mapper.Map(await Repository.AcceptingDriveAsync(id, userId, roleName, noTracking, noIncludes));
     }
 
     public DriveDTO DecliningDrive(Guid id)
@@ -138,24 +139,28 @@ public class DriveService: BaseEntityService<App.BLL.DTO.AdminArea.DriveDTO, App
         return Mapper.Map(await Repository.EndingDriveAsync(id, userId, roleName, noTracking));
     }
 
-    public async Task<DriveDTO?> GettingFirstDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<DriveDTO?> GettingFirstDriveAsync(Guid id, Guid? userId = null, 
+        string? roleName = null, bool noTracking = true, bool noIncludes = false )
     {
-        return Mapper.Map(await Repository.GettingFirstDriveAsync(id, userId, roleName, noTracking));
+        return Mapper.Map(await Repository.GettingFirstDriveAsync(id, userId, roleName, noTracking, noIncludes));
     }
 
-    public DriveDTO? GettingFirstDrive(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public DriveDTO? GettingFirstDrive(Guid id, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(Repository.GettingFirstDrive(id, userId, roleName, noTracking));
+        return Mapper.Map(Repository.GettingFirstDrive(id, userId, roleName, noTracking, noIncludes));
     }
 
-    public async Task<DriveDTO?> GettingDriveAsync(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<DriveDTO?> GettingDriveAsync(Guid bookingId, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await Repository.GettingDriveAsync(bookingId, userId, roleName, noTracking));
+        return Mapper.Map(await Repository.GettingDriveAsync(bookingId, userId, roleName, noTracking, noIncludes));
     }
 
-    public DriveDTO? GettingDrive(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public DriveDTO? GettingDrive(Guid id, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(Repository.GettingDrive(id, userId, roleName, noTracking));
+        return Mapper.Map(Repository.GettingDrive(id, userId, roleName, noTracking, noIncludes));
     }
 
     

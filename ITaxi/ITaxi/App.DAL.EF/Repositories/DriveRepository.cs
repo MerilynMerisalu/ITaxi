@@ -27,9 +27,9 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
     }
 
     public async Task<DriveDTO?> FirstOrDefaultAsync(Guid id,Guid? userId = null, string? roleName = null,
-        bool noTracking = true)
+        bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await CreateQuery(userId, roleName,noTracking)
+        return Mapper.Map(await CreateQuery(userId, roleName,noTracking, noIncludes)
             .FirstOrDefaultAsync(d => d.Id.Equals(id)));
     }
 
@@ -240,9 +240,10 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
         return null;
     }
 
-    public async Task<DriveDTO?> AcceptingDriveAsync(Guid id,Guid? userId = null, string? roleName = null,bool noTracking = true )
+    public async Task<DriveDTO?> AcceptingDriveAsync(Guid id,Guid? userId = null, string? roleName = null,
+        bool noTracking = true, bool noIncludes = false  )
     {
-        var drive = await FirstOrDefaultAsync(id, userId, roleName);
+        var drive = await FirstOrDefaultAsync(id, userId, roleName , noTracking, noIncludes);
         if (drive != null)
         {
             drive.IsDriveAccepted = true;
@@ -327,24 +328,29 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
         return null;
     }
 
-    public async Task<DriveDTO?> GettingFirstDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    
+    public async Task<DriveDTO?> GettingFirstDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = false)
     {
         return Mapper.Map(await CreateQuery(userId, roleName, noTracking)
             .FirstOrDefaultAsync(d => d.Id.Equals(id)));
     }
 
-    public DriveDTO? GettingFirstDrive(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public DriveDTO? GettingFirstDrive(Guid id, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = false)
     {
         return Mapper.Map(CreateQuery(userId, roleName, noTracking)
             .FirstOrDefault(d => d.Id.Equals(id)));
     }
 
-    public async Task<DriveDTO?> GettingDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<DriveDTO?> GettingDriveAsync(Guid id, Guid? userId = null, string? roleName = null
+        ,bool noTracking = true, bool noIncludes = false)
     {
         return Mapper.Map(await RepoDbSet.FirstOrDefaultAsync(d => d.Booking!.Id.Equals(id)));
     }
 
-    public DriveDTO? GettingDrive(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public DriveDTO? GettingDrive(Guid bookingId, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = false)
     {
         return Mapper.Map(RepoDbSet.FirstOrDefault(d => d.Booking!.Id.Equals(bookingId)));
 
@@ -374,40 +380,50 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
     }
 
 
-    protected  IQueryable<Drive> CreateQuery(Guid? userId = null, string? roleName = null,bool noTracking = true)
+    protected  IQueryable<Drive> CreateQuery(Guid? userId = null, string? roleName = null,
+    bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
 
         if (roleName is "Admin")
         {
-           return query.Include(d => d.Booking)
-               .ThenInclude(d => d!.Schedule)
-               .Include(c => c.Booking)
-               .ThenInclude(c => c!.Customer)
-               .ThenInclude(c => c!.AppUser)
-               .Include(c => c.Booking)
-               .ThenInclude(c => c!.Customer)
-               .ThenInclude(c => c!.DisabilityType)
-               .ThenInclude(c => c!.DisabilityTypeName)
-               .ThenInclude(c => c.Translations)
-               .Include(c => c.Booking)
-               .ThenInclude(c => c!.City)
-               .Include(b => b.Booking)
-               .Include(v => v.Booking)
-               .ThenInclude(v => v!.Vehicle)
-               .ThenInclude(v => v!.VehicleType)
-               .ThenInclude(c => c!.VehicleTypeName)
-               .ThenInclude(c => c.Translations)
-               .Include(v => v.Booking)
-               .ThenInclude(v => v!.Vehicle)
-               .ThenInclude(v => v!.VehicleMark)
-               .Include(v => v.Booking)
-               .ThenInclude(v => v!.Vehicle)
-               .ThenInclude(v => v!.VehicleModel)
-               .Include(c => c.Comment)
-               .Include(d => d.Driver)
-               .ThenInclude(d => d!.AppUser);
+            if (noIncludes)
+            {
+                return query;
+            }
+            return query.Include(d => d.Booking)
+                .ThenInclude(d => d!.Schedule)
+                .Include(c => c.Booking)
+                .ThenInclude(c => c!.Customer)
+                .ThenInclude(c => c!.AppUser)
+                .Include(c => c.Booking)
+                .ThenInclude(c => c!.Customer)
+                .ThenInclude(c => c!.DisabilityType)
+                .ThenInclude(c => c!.DisabilityTypeName)
+                .ThenInclude(c => c.Translations)
+                .Include(c => c.Booking)
+                .ThenInclude(c => c!.City)
+                .Include(b => b.Booking)
+                .Include(v => v.Booking)
+                .ThenInclude(v => v!.Vehicle)
+                .ThenInclude(v => v!.VehicleType)
+                .ThenInclude(c => c!.VehicleTypeName)
+                .ThenInclude(c => c.Translations)
+                .Include(v => v.Booking)
+                .ThenInclude(v => v!.Vehicle)
+                .ThenInclude(v => v!.VehicleMark)
+                .Include(v => v.Booking)
+                .ThenInclude(v => v!.Vehicle)
+                .ThenInclude(v => v!.VehicleModel)
+                .Include(c => c.Comment)
+                .Include(d => d.Driver)
+                .ThenInclude(d => d!.AppUser);
+        }
+
+        if (noIncludes)
+        {
+            return query;
         }
         query = query.Include(d => d.Booking)
             .ThenInclude(d => d!.Schedule)

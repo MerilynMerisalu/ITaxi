@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using App.DAL.DTO.AdminArea;
 using App.Domain;
 using Base.Contracts.DAL;
+using Booking = App.Resources.Areas.App.Domain.AdminArea.Booking;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
@@ -30,17 +31,22 @@ public interface IDriveRepositoryCustom<TEntity>
     Task<IEnumerable<TEntity?>> GettingAllDrivesForCommentsAsync(Guid? userId = null, string? roleName = null,bool noTracking = true);
     IEnumerable<TEntity?> GettingDrivesForComments(bool noTracking = true);
     TEntity? AcceptingDrive(Guid id);
-    Task<TEntity?> AcceptingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true);
+    Task<TEntity?> AcceptingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true, 
+        bool noIncludes = false);
     TEntity? DecliningDrive(Guid id);
     Task<TEntity?> DecliningDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true);
     TEntity? StartingDrive(Guid id);
     Task<TEntity?> StartingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true );
     TEntity? EndingDrive(Guid id);
     Task<TEntity?> EndingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true);
-    Task<TEntity?> GettingFirstDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
-    TEntity? GettingFirstDrive(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
-    Task<TEntity?> GettingDriveAsync(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true);
-    TEntity? GettingDrive(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true);
+    Task<TEntity?> GettingFirstDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = false );
+    TEntity? GettingFirstDrive(Guid id, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = false);
+    Task<TEntity?> GettingDriveAsync(Guid bookingId, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = false);
+    TEntity? GettingDrive(Guid bookingId, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true,bool noIncludes = false );
     
     
 }

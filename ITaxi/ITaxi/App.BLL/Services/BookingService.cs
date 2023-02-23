@@ -82,15 +82,16 @@ public class BookingService : BaseEntityService<App.BLL.DTO.AdminArea.BookingDTO
     }
 
     public async Task<BookingDTO?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null,
-        bool noTracking = true)
+        bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await Repository.GettingBookingAsync(id, userId, roleName, noTracking));
+        return Mapper.Map(await Repository.GettingBookingAsync(id, userId, roleName, noTracking, noIncludes));
     }
 
-    public BookingDTO? GettingBooking(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public BookingDTO? GettingBooking(Guid id, Guid? userId = null, 
+        string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
         return Mapper.Map(
-            Repository.GettingBooking(id, userId, roleName, noTracking));
+            Repository.GettingBooking(id, userId, roleName, noTracking, noIncludes));
     }
 
     public async Task<bool> HasAnyScheduleAsync(Guid id)
@@ -105,12 +106,12 @@ public class BookingService : BaseEntityService<App.BLL.DTO.AdminArea.BookingDTO
 
     public async Task<BookingDTO> GettingBookingByDriveIdAsync(Guid id, bool noIncludes = true, bool noTracking = true)
     {
-        return Mapper.Map(await Repository.GettingBookingByDriveIdAsync(id))!;
+        return Mapper.Map(await Repository.GettingBookingByDriveIdAsync(id, noIncludes, noTracking))!;
     }
 
     public BookingDTO GettingBookingByDriveId(Guid id, bool noIncludes = true, bool noTracking = true)
     {
-        return Mapper.Map(Repository.GettingBookingByDriveId(id))!;
+        return Mapper.Map(Repository.GettingBookingByDriveId(id, noIncludes, noTracking))!;
     }
 }
 

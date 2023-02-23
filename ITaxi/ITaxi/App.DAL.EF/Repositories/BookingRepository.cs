@@ -153,16 +153,18 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
         return booking;
     }
 
-    public async Task<BookingDTO?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null,
+    public async Task<BookingDTO?> GettingBookingAsync(Guid id, Guid? userId = null, 
+        string? roleName = null, bool noIncludes = false,
         bool noTracking = true)
     {
-        var booking = await FirstOrDefaultAsync(id, userId, roleName, noTracking);
+        var booking = await FirstOrDefaultAsync(id, userId, roleName,noIncludes, noTracking);
         return booking;
     }
 
-    public BookingDTO? GettingBooking(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public BookingDTO? GettingBooking(Guid id, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = false)
     {
-        var booking = FirstOrDefault(id, userId, roleName, noTracking);
+        var booking = FirstOrDefault(id, userId, roleName, noTracking, noIncludes);
         return booking;
     }
 
@@ -178,24 +180,26 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
 
     public async Task<BookingDTO> GettingBookingByDriveIdAsync(Guid id, bool noIncludes = true, bool noTracking = true)
     {
-        return Mapper.Map(await RepoDbSet.SingleOrDefaultAsync(b => b.DriveId.Equals(id)))!;
+        return Mapper.Map(await CreateQuery(noTracking, noIncludes).SingleOrDefaultAsync(b => b.DriveId.Equals(id)))!;
     }
 
     public BookingDTO GettingBookingByDriveId(Guid id, bool noIncludes = true, bool noTracking = true)
     {
-        return Mapper.Map(RepoDbSet.SingleOrDefault(b => b.DriveId.Equals(id)))!;
+        return  Mapper.Map(CreateQuery(noTracking, noIncludes).SingleOrDefault(b => b.DriveId.Equals(id)))!;
     }
 
 
-    public  async Task<BookingDTO?> FirstOrDefaultAsync(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public  async Task<BookingDTO?> FirstOrDefaultAsync(Guid id,Guid? userId = null, string? 
+        roleName = null, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await CreateQuery(userId, roleName,noTracking)
+        return Mapper.Map(await CreateQuery(userId, roleName,noTracking, noIncludes)
             .FirstOrDefaultAsync(b => b.Id.Equals(id)));
     }
 
-    public  BookingDTO? FirstOrDefault(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public  BookingDTO? FirstOrDefault(Guid id,Guid? userId = null, string? roleName = null, 
+       bool noIncludes = false, bool noTracking = true)
     {
-        return Mapper.Map(CreateQuery(userId, roleName,noTracking)
+        return Mapper.Map(CreateQuery(userId, roleName,noTracking, noIncludes)
             .FirstOrDefault(b => b.Id.Equals(id)));
     }
 
