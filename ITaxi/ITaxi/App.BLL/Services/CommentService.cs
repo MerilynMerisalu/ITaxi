@@ -25,7 +25,8 @@ public class CommentService: BaseEntityService<App.BLL.DTO.AdminArea.CommentDTO,
             .Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<CommentDTO>> GettingAllOrderedCommentsWithIncludesAsync(Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<IEnumerable<CommentDTO>> GettingAllOrderedCommentsWithIncludesAsync(Guid?
+        userId = null, string? roleName = null, bool noTracking = true)
     {
         return (await Repository.GettingAllOrderedCommentsWithIncludesAsync(userId, roleName, noTracking))
             .Select(e => Mapper.Map(e))!;
@@ -53,14 +54,15 @@ public class CommentService: BaseEntityService<App.BLL.DTO.AdminArea.CommentDTO,
         return Repository.PickUpDateAndTimeStr(Mapper.Map(comment)!);
     }
 
-    public async Task<CommentDTO?> GettingTheFirstCommentAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<CommentDTO?> GettingTheFirstCommentAsync(Guid id, Guid? userId = null,
+        string? roleName = null, bool noIncludes = false, bool noTracking = true)
     {
-        return Mapper.Map(await Repository.GettingTheFirstCommentAsync(id, userId, roleName, noTracking));
+        return Mapper.Map(await Repository.GettingTheFirstCommentAsync(id, userId, roleName, noIncludes, noTracking));
     }
 
     public CommentDTO? GettingTheFirstComment(Guid id, Guid? userId = null, 
-        string? roleName = null, bool noTracking = true)
+        string? roleName = null, bool noIncludes = false, bool noTracking = true)
     {
-        return Mapper.Map(Repository.GettingTheFirstComment(id, userId, roleName, noTracking));
+        return Mapper.Map(Repository.GettingTheFirstComment(id, userId, roleName, noIncludes, noTracking));
     }
 }

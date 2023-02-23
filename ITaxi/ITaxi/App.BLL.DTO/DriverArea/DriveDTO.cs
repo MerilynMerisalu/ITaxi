@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using App.BLL.DTO.AdminArea;
 using App.Domain.Enum;
 using Base.Domain;
 
-namespace App.BLL.DTO.AdminArea;
+namespace App.BLL.DTO.DriverArea;
 
-public class DriveDTO: DomainEntityMetaId
+public class DriveDTO: DomainEntityId
+
 {
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "JobTitle")]
     public Guid DriverId { get; set; }
@@ -12,7 +14,6 @@ public class DriveDTO: DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "JobTitle")]
     public DriverDTO? Driver { get; set; }
 
-    
     public BookingDTO? Booking { get; set; }
 
 

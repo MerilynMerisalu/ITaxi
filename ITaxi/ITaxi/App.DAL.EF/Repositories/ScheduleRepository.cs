@@ -38,18 +38,8 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
         (Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         var res = await CreateQuery(userId, roleName, noTracking)
-            .OrderBy(s => s.StartDateAndTime.Date)
-            .ThenBy(s => s.StartDateAndTime.Year)
-            .ThenBy(s => s.StartDateAndTime.Month)
-            .ThenBy(s => s.StartDateAndTime.Day)
-            .ThenBy(s => s.StartDateAndTime.Hour)
-            .ThenBy(s => s.StartDateAndTime.Minute)
-            .ThenBy(s => s.StartDateAndTime.Date)
-            .ThenBy(s => s.EndDateAndTime.Year)
-            .ThenBy(s => s.EndDateAndTime.Month)
-            .ThenBy(s => s.EndDateAndTime.Day)
-            .ThenBy(s => s.EndDateAndTime.Hour)
-            .ThenBy(s => s.EndDateAndTime.Minute)
+            .OrderBy(s => s.StartDateAndTime)
+            .ThenBy(s => s.EndDateAndTime)
             .ToListAsync();
         return res.Select(e => Mapper.Map(e))!;
     }

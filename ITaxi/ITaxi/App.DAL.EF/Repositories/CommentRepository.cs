@@ -47,7 +47,8 @@ public class CommentRepository : BaseEntityRepository<CommentDTO, App.Domain.Com
     }
 
 
-    public async Task<IEnumerable<CommentDTO>> GettingAllOrderedCommentsWithIncludesAsync(Guid? userId= null, string? roleName = null,bool noTracking = true)
+    public async Task<IEnumerable<CommentDTO>> GettingAllOrderedCommentsWithIncludesAsync(
+        Guid? userId= null, string? roleName = null,bool noTracking = true)
     {
         return (await CreateQuery(userId, roleName,noTracking)
             .OrderBy(c => c.Drive!.Booking!.PickUpDateAndTime.Date)
@@ -103,28 +104,37 @@ public class CommentRepository : BaseEntityRepository<CommentDTO, App.Domain.Com
         return comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
     }
 
-    public async Task<CommentDTO?> GettingTheFirstCommentAsync(Guid id, Guid? userId = null, string? roleName = null, 
+    public async Task<CommentDTO?> GettingTheFirstCommentAsync(Guid id, Guid? userId = null, 
+        string? roleName = null, bool noIncludes = false,
         bool noTracking = true)
     {
-        var res = Mapper.Map(await CreateQuery(userId, roleName, noTracking)
+        var res = Mapper.Map(await CreateQuery(userId, roleName, noIncludes , noTracking)
             .FirstOrDefaultAsync(c => c.Id.Equals(id)));
         return res;
     }
 
-    public CommentDTO? GettingTheFirstComment(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = false)
+    
+
+    public CommentDTO? GettingTheFirstComment(Guid id, Guid? userId = null, string? roleName = null,
+        bool noIncludes = false,bool noTracking = false)
     {
-        return Mapper.Map(CreateQuery(userId, roleName, noTracking)
+        return Mapper.Map(CreateQuery(userId,roleName,noIncludes, noTracking)
             .FirstOrDefault(c => c.Id.Equals(id)));
     }
 
-    protected  IQueryable<Comment> CreateQuery(Guid? userId= null, string? roleName = null, bool noTracking = true)
+    protected  IQueryable<Comment> CreateQuery(Guid? userId= null, string? roleName = null,
+       bool noIncludes = false, bool noTracking = true)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
 
         if (roleName is "Admin")
         {
-             query.Include(c => c.Drive)
+            if (noIncludes == true )
+            {
+                return query;
+            }
+            query.Include(c => c.Drive)
                 .ThenInclude(d => d!.Booking)
                 .ThenInclude(d => d!.Customer)
                 .ThenInclude(d => d!.AppUser)
@@ -134,7 +144,11 @@ public class CommentRepository : BaseEntityRepository<CommentDTO, App.Domain.Com
 
             return query;
         }
-        
+
+        if (noIncludes)
+        {
+            return query;
+        }
         query = query.Include(c => c.Drive)
             .ThenInclude(d => d!.Booking)
             .ThenInclude(d => d!.Customer)

@@ -1,4 +1,5 @@
 #nullable enable
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 
 using App.Domain.Enum;
@@ -14,9 +15,9 @@ namespace WebApp.Areas.AdminArea.Controllers;
 [Authorize(Roles = "Admin")]
 public class DrivesController : Controller
 {
-    private readonly IAppUnitOfWork _appBLL;
+    private readonly IAppBLL _appBLL;
 
-    public DrivesController(IAppUnitOfWork appBLL)
+    public DrivesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
 

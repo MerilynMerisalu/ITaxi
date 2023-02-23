@@ -1,6 +1,6 @@
 @using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
-@model IEnumerable<App.DAL.DTO.AdminArea.DriveDTO>
+@model IEnumerable<App.BLL.DTO.AdminArea.DriveDTO>
 
 @{
     #warning Needs fixing with css
@@ -22,7 +22,7 @@
 <thead>
 <tr>
     <th>
-        @Html.DisplayNameFor(model => model.Booking!.Driver)
+        @Html.DisplayNameFor(model => model.Driver)
     </th>
 
     <th>
@@ -124,7 +124,7 @@
 {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Booking!.Driver!.AppUser!.LastAndFirstName)
+            @Html.DisplayFor(modelItem => item.Driver!.AppUser!.LastAndFirstName)
         </td>
 
         <td>
@@ -150,7 +150,7 @@
             @Html.DisplayFor(modelItem => item.Booking!.DestinationAddress)
         </td>
         <td>
-            @Html.DisplayTextFor(modelItem => item.Booking!.VehicleType!.VehicleTypeName)
+            @Html.DisplayTextFor(modelItem => item.Booking!.Vehicle!.VehicleType!.VehicleTypeName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Booking!.Vehicle!.VehicleIdentifier)

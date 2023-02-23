@@ -1,4 +1,4 @@
-/*using App.BLL.DTO.AdminArea;
+using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Contracts.DAL;
 
@@ -50,7 +50,7 @@ public class RideTimesController : Controller
 
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
 #warning Should it be a repository method
-        #warning Ridetime needs fixing
+#warning Ridetime needs fixing
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
         vm.IsTaken = rideTime.IsTaken;
 
@@ -64,20 +64,39 @@ public class RideTimesController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
 
-        vm.Schedules = new SelectList(await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName)
+        vm.Schedules = new SelectList(
+            await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName)
             , nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime));
         var schedules = await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
-        foreach (var schedule in schedules)
-        {
-            schedule.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g"));
-            schedule.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"));
-        }
-        var scheduleStartAndEndTime = _appBLL.Schedules.GettingStartAndEndTime(schedules);
-        var rideTimes = _appBLL.RideTimes.CalculatingRideTimes(scheduleStartAndEndTime);
-        vm.RideTimes = new SelectList(rideTimes);
+ 
+        vm.RideTimes = new SelectList(new string[0]);
 
 
         return View(vm);
+    }
+    
+    /// <summary>
+    /// Generic method that will update the VM to reflect the new SelectLists if any need to be changed
+    /// </summary>
+    /// <param name="id">the Id (Guid) of the selected RideTime</param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<IActionResult> SetDropDownList([FromRoute] Guid id)
+    {
+        // Use the CreateRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
+        var vm = new CreateRideTimeViewModel();
+        vm.ScheduleId = id;
+
+        // Always refresh the RideTimes, if the DriverId or the ScheduleId are changed
+        // => because the ScheduleId is ALWAYS changed when the DriverId is changed.
+        // Select the RideTimes form the currently selected schedule, for the current driver
+        var rideTimes = _appBLL.RideTimes.GettingRemainingRideTimesByScheduleId(vm.ScheduleId);
+
+        // the times in schedules have already been converted!
+        vm.RideTimes = new SelectList(rideTimes.Select(x => new {RideTime = x}),
+            "RideTime", "RideTime");
+
+        return Ok(vm);
     }
 
     // POST: DriverArea/RideTimes/Create
@@ -85,11 +104,11 @@ public class RideTimesController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateRideTimeViewModel vm, List<RideTimeDTO> rideTimes)
+    public async Task<IActionResult> Create(CreateRideTimeViewModel vm)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var driver = await _appBLL.Drivers.SingleOrDefaultAsync(d => d!.AppUserId.Equals(userId));
+        var driver = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(userId);
         if (ModelState.IsValid)
         {
             if (vm.SelectedRideTimes != null)
@@ -108,10 +127,9 @@ public class RideTimesController : Controller
                             CreatedAt = DateTime.Now.ToUniversalTime()
                         };
 
-                        rideTimes.Add(rideTime);
+                        _appBLL.RideTimes.Add(rideTime);
                     }
 
-                await _appBLL.RideTimes.AddRangeAsync(rideTimes);
                 await _appBLL.SaveChangesAsync();
             }
 #warning Needs custom validation to check that at least one ride time is chosen
@@ -131,7 +149,7 @@ public class RideTimesController : Controller
     }
 
     // GET: DriverArea/RideTimes/Edit/5
-    /*public async Task<IActionResult> Edit(Guid? id)
+    public async Task<IActionResult> Edit(Guid? id)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
@@ -150,10 +168,10 @@ public class RideTimesController : Controller
         var schedules = await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
         vm.IsTaken = rideTime.IsTaken;
 #warning Ridetimes should be hidden and reappearing based on whether IsTaken is true or not
-        var rideTimes = _appBLL.RideTimes.CalculatingRideTimes(_appBLL.Schedules.GettingStartAndEndTime(schedules));
+        var rideTimes = _appBLL.RideTimes.CalculatingRideTimes(rideTime.ScheduleId);
 #warning Ask if there is a better way to implement this
         var rideTimeList = new List<string>();
-        foreach (var rideTimeLocal in rideTimes) 
+        foreach (var rideTimeLocal in rideTimes)
             rideTimeList.Add(DateTime.Parse(rideTimeLocal).ToString("t"));
 
         vm.RideTimes = new SelectList(rideTimeList);
@@ -162,7 +180,7 @@ public class RideTimesController : Controller
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
         return View(vm);
     }
-    #1#
+
 
     // POST: DriverArea/RideTimes/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -244,4 +262,4 @@ public class RideTimesController : Controller
     {
         return _appBLL.RideTimes.Exists(id);
     }
-}*/
+}

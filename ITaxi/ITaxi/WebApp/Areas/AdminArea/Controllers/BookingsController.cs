@@ -197,12 +197,7 @@ public class BookingsController : Controller
         var vm = new CreateBookingViewModel();
         var schedules = await _appBLL.Schedules
             .GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
-        foreach (var schedule in schedules)
-        {
-            schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
-            schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
-
-        }
+        
 
         vm.Schedules = new SelectList(schedules,
             nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime));

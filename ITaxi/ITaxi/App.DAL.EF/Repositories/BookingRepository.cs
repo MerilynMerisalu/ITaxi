@@ -176,6 +176,16 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
         return RepoDbContext.Bookings.Any(b => b.ScheduleId.Equals(id));
     }
 
+    public async Task<BookingDTO> GettingBookingByDriveIdAsync(Guid id, bool noIncludes = true, bool noTracking = true)
+    {
+        return Mapper.Map(await RepoDbSet.SingleOrDefaultAsync(b => b.DriveId.Equals(id)))!;
+    }
+
+    public BookingDTO GettingBookingByDriveId(Guid id, bool noIncludes = true, bool noTracking = true)
+    {
+        return Mapper.Map(RepoDbSet.SingleOrDefault(b => b.DriveId.Equals(id)))!;
+    }
+
 
     public  async Task<BookingDTO?> FirstOrDefaultAsync(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
@@ -189,7 +199,8 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
             .FirstOrDefault(b => b.Id.Equals(id)));
     }
 
-    protected  IQueryable<Booking> CreateQuery(Guid? userId = null, string? roleName = null,bool noTracking = true)
+    protected  IQueryable<Booking> CreateQuery(Guid? userId = null, string? roleName = null,bool noTracking = true, 
+        bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
@@ -227,4 +238,5 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
             .Where(u => u.Customer!.AppUserId.Equals(userId));
         return query;
     }
+    
 }

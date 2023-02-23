@@ -25,9 +25,14 @@ public class DriverService: BaseEntityService<App.BLL.DTO.AdminArea.DriverDTO, A
         return Repository.GetAllDriversOrderedByLastName(noTracking).Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<DriverDTO> GettingDriverByVehicleAsync(Guid driverId, bool noTracking = true)
+    public async Task<DriverDTO> GettingDriverByAppUserIdAsync(Guid driverAppUserId, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await Repository.GettingDriverByVehicleAsync(driverId, noTracking))!;
+        return Mapper.Map(await Repository.GettingDriverByAppUserIdAsync(driverAppUserId, noTracking, noIncludes))!;
+    }
+
+    public async Task<DriverDTO> GettingDriverByVehicleAsync(Guid vehicleId, bool noTracking = true, bool noIncludes = false)
+    {
+        return Mapper.Map(await Repository.GettingDriverByVehicleAsync(vehicleId, noTracking, noIncludes))!;
     }
 
     public async Task<bool> HasAnySchedulesAsync(Guid driverId, bool noTracking = true)
@@ -51,9 +56,8 @@ public class DriverService: BaseEntityService<App.BLL.DTO.AdminArea.DriverDTO, A
         return Repository.HasAnyBookings(driverId, noTracking);
     }
 
-
-    public async Task<DriverDTO> GettingDriverByAppUserIdAsync(Guid userId)
+    public async Task<DriverDTO> GettingDriverByAppUserIdAsync(Guid Id)
     {
-        return Mapper.Map(await Repository.SingleOrDefaultAsync(d => d!.AppUserId.Equals(userId)))!;
+        return Mapper.Map(await Repository.GettingDriverByAppUserIdAsync(Id))!;
     }
 }

@@ -20,6 +20,8 @@ public interface ICommentRepositoryCustom<TEntity>
     Task<TEntity?> GettingCommentWithoutIncludesAsync(Guid id, bool noTracking = true);
     //Comment? GettingCommentWithoutIncludes(Guid id, bool noTracking = true);
     string PickUpDateAndTimeStr(TEntity comment);
-    Task<TEntity?> GettingTheFirstCommentAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
-    TEntity? GettingTheFirstComment(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
+    Task<TEntity?> GettingTheFirstCommentAsync(Guid id, Guid? userId = null, string? roleName = null,
+         bool noIncludes = false, bool noTracking = true);
+    TEntity? GettingTheFirstComment(Guid id, Guid? userId = null, string? roleName = null, 
+        bool noIncludes = false, bool noTracking = true);
 }

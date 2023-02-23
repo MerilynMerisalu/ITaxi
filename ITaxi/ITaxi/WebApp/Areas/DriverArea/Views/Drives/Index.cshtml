@@ -1,4 +1,4 @@
-@*@using App.Resources.Areas.App.Domain.DriverArea
+@using App.Resources.Areas.App.Domain.DriverArea
 @using Base.Resources
 @using App.Domain.Enum
 @model IEnumerable<App.DAL.DTO.AdminArea.DriveDTO>
@@ -73,7 +73,7 @@
                 </th>
             
                 <th>
-                    @Html.DisplayNameFor(model => model.DriveAcceptedDateTimeDriverView)
+                    @Html.DisplayNameFor(model => model.DriveAcceptedDateAndTime)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.DriveStartDateAndTime)
@@ -141,25 +141,25 @@
             <td>
             @if (item.IsDriveDeclined || (item.IsDriveAccepted && item.IsDriveDeclined))
             {
-                @Html.DisplayFor(modelItem => item.DriveDeclinedDateTimeDriverView)
+                @Html.DisplayFor(modelItem => item.DriveDeclineDateAndTime)
             }
             </td>
             <td>
                 @if (item.IsDriveAccepted)
                 {
-                    @Html.DisplayFor(modelItem => item.DriveAcceptedDateTimeDriverView)
+                    @Html.DisplayFor(modelItem => item.DriveAcceptedDateAndTime)
                 }
             </td>
             <td>
             @if (item.IsDriveStarted || (item.IsDriveAccepted && item.IsDriveStarted))
             {
-                @Html.DisplayFor(modelItem => item.DriveStartedDateTimeDriverView)
+                @Html.DisplayFor(modelItem => item.DriveStartDateAndTime)
             }
             </td>
             <td>
             @if (item.IsDriveFinished)
             {
-                @Html.DisplayFor(modelItem => item.DriveEndDateTimeDriverView)
+                @Html.DisplayFor(modelItem => item.DriveEndDateAndTime)
             }
             </td>
 
@@ -204,4 +204,4 @@
         </tr>
     }
     </tbody>
-</table>*@
+</table>

@@ -121,9 +121,9 @@ public class SchedulesController : Controller
         vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
             nameof(Vehicle.Id),
             nameof(Vehicle.VehicleIdentifier));
-        vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g")).ToLocalTime();
+        vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g"));
         vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"))
-            .ToLocalTime();
+            ;
         vm.VehicleId = schedule.VehicleId;
 
         return View(vm);
@@ -183,8 +183,8 @@ public class SchedulesController : Controller
 
         vm.Id = schedule.Id;
         vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
-        vm.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime().ToString("g");
-        vm.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime().ToString("g");
+        vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
+        vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
 
         return View(vm);
     }
@@ -197,10 +197,9 @@ public class SchedulesController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id, userId, roleName);
-        /*if (await _appBLL.RideTimes.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id))
-            || await _appBLL.Bookings.AnyAsync(s => s!.ScheduleId.Equals(schedule!.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");*/
+        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id, userId, roleName, noTracking: true);
+        if (await _appBLL.RideTimes.HasScheduleAnyAsync(id) || await _appBLL.Bookings.HasAnyScheduleAsync(id))
+            return Content("Entity cannot be deleted because it has dependent entities!");
 
         if (schedule != null)
         {

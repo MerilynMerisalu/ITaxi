@@ -39,9 +39,15 @@ public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Drive
             .ToList().Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<DriverDTO> GettingDriverByVehicleAsync(Guid driverAppUserId, bool noTracking = true)
+    public async Task<DriverDTO> GettingDriverByVehicleAsync(Guid vehicleId, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await CreateQuery(noTracking)
+        return Mapper.Map(await CreateQuery(noTracking, noIncludes)
+            .SingleOrDefaultAsync(d => d.Vehicles!.Any(v => v.Id.Equals(vehicleId))))!;
+    }
+
+    public async Task<DriverDTO> GettingDriverByAppUserIdAsync(Guid driverAppUserId, bool noTracking = true, bool noIncludes = false)
+    {
+        return Mapper.Map(await CreateQuery(noTracking, noIncludes)
             .SingleOrDefaultAsync(d => d.AppUserId.Equals(driverAppUserId)))!;
     }
 

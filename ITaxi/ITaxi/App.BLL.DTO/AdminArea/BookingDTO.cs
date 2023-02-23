@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using App.Domain.Enum;
+using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Domain;
 using Base.Resources;
 
@@ -42,6 +43,7 @@ public class BookingDTO: DomainEntityMetaId
     [Range(1, 5, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
     public int NumberOfPassengers { get; set; }
 
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(HasAnAssistant))]
     public bool HasAnAssistant { get; set; }
 
     [MaxLength(1000, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]

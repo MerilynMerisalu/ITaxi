@@ -96,20 +96,20 @@ public class RideTimesController : Controller
 
                     var rideTime = new App.BLL.DTO.AdminArea.RideTimeDTO()
                     {
-                        Id = new Guid(),
+                        Id = Guid.NewGuid(),
                         DriverId = vm.DriverId,
                         ScheduleId = vm.ScheduleId,
                         
                         RideDateTime = rideDateAndTime.ToUniversalTime(),
                         IsTaken = vm.IsTaken,
                         CreatedBy = User.Identity!.Name,
-                        CreatedAt = DateTime.Now
+                        CreatedAt = DateTime.Now.ToUniversalTime()
                     };
 
                     rideTimes.Add(rideTime);
+                    
                 }
-
-                await _appBLL.RideTimes.AddRangeAsync(rideTimes);
+                 _appBLL.RideTimes.AddRange(rideTimes);
                 await _appBLL.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));

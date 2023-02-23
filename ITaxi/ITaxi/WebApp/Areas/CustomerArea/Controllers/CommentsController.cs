@@ -1,4 +1,6 @@
-/*#nullable enable
+#nullable enable
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.Domain;
 using Base.Extensions;
@@ -14,23 +16,21 @@ namespace WebApp.Areas.CustomerArea.Controllers;
 [Area(nameof(CustomerArea))]
 public class CommentsController : Controller
 {
-    private readonly IAppUnitOfWork _uow;
+    private readonly IAppBLL _appBLL;
 
-    public CommentsController(IAppUnitOfWork uow)
+    public CommentsController(IAppBLL appBLL)
     {
-        _uow = uow;
+        _appBLL = appBLL;
     }
 
     // GET: CustomerArea/Comments
     public async Task<IActionResult> Index()
     {
         var userId = User.GettingUserId();
-        var roleName = User.GettingUserName();
-        var res = await _uow.Comments.GettingAllOrderedCommentsWithIncludesAsync(userId, roleName);
-        foreach (var comment in res)
-        {
-            comment.Drive!.Booking!.PickUpDateAndTime = comment.Drive!.Booking.PickUpDateAndTime.ToLocalTime();
-        }
+        var roleName = User.GettingUserRoleName();
+        var res = await _appBLL.Comments.
+            GettingAllOrderedCommentsWithIncludesAsync(userId, roleName);
+        
         return View(res);
     }
 
@@ -38,15 +38,15 @@ public class CommentsController : Controller
     public async Task<IActionResult> Details(Guid? id)
     {
         var userId = User.GettingUserId();
-        var roleName = User.GettingUserName();
+        var roleName = User.GettingUserRoleName();
         var vm = new DetailsDeleteCommentViewModel();
         if (id == null) return NotFound();
 
-        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id.Value, userId, roleName);
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id.Value, userId, roleName);
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToLocalTime().ToString("g");
+        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
         vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
 
@@ -61,7 +61,7 @@ public class CommentsController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
 
-        var drives = await _uow.Drives.GettingDrivesWithoutCommentAsync(userId, roleName);
+        var drives = await _appBLL.Drives.GettingDrivesWithoutCommentAsync(userId, roleName);
         foreach (var drive in drives)
         {
             if (drive != null) drive.Booking!.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
@@ -80,7 +80,7 @@ public class CommentsController : Controller
     public async Task<IActionResult> Create(CreateCommentViewModel vm)
     {var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var comment = new Comment();
+        var comment = new CommentDTO();
         if (ModelState.IsValid)
         {
             comment.Id = Guid.NewGuid();
@@ -89,12 +89,12 @@ public class CommentsController : Controller
             comment.CreatedBy = User.Identity!.Name;
             comment.CreatedAt = DateTime.Now.ToUniversalTime();
 
-            _uow.Comments.Add(comment);
-            await _uow.SaveChangesAsync();
+            _appBLL.Comments.Add(comment);
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Drives = new SelectList(await _uow.Drives.GettingDrivesWithoutCommentAsync(userId, roleName),
+        vm.Drives = new SelectList(await _appBLL.Drives.GettingDrivesWithoutCommentAsync(userId, roleName),
             nameof(Drive.Id),
             nameof(Drive.DriveDescription));
 
@@ -111,11 +111,11 @@ public class CommentsController : Controller
         if (id == null) return NotFound();
         
 
-        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id.Value, userId, roleName);
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id.Value, userId, roleName);
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        comment.Drive!.Booking!.PickUpDateAndTime = comment.Drive.Booking.PickUpDateAndTime.ToLocalTime();
+        comment.Drive!.Booking!.PickUpDateAndTime = comment.Drive.Booking.PickUpDateAndTime;
         vm.DriveTimeAndDriver = comment.Drive!.DriveDescription;
 
         
@@ -135,7 +135,7 @@ public class CommentsController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id, userId, roleName);
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, userId, roleName, noIncludes:true);
         if (comment != null && id != comment.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -148,10 +148,10 @@ public class CommentsController : Controller
                     comment.CommentText = vm.CommentText;
                     comment.UpdatedBy = User.Identity!.Name;
                     comment.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _uow.Comments.Update(comment);
+                    _appBLL.Comments.Update(comment);
                 }
 
-                await _uow.SaveChangesAsync();
+                await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -173,11 +173,11 @@ public class CommentsController : Controller
         if (id == null) return NotFound();
         var userId = User.GettingUserId();
         var roleName = User.GettingUserName();
-        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id.Value, userId, roleName);
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id.Value, userId, roleName);
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToLocalTime().ToString("g");
+        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
 
         vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
@@ -194,14 +194,14 @@ public class CommentsController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserName();
-        var comment = await _uow.Comments.GettingTheFirstCommentAsync(id, userId, roleName);
-        if (comment != null) _uow.Comments.Remove(comment);
-        await _uow.SaveChangesAsync();
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, userId, roleName, noIncludes:true);
+        if (comment != null) _appBLL.Comments.Remove(comment);
+        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     private bool CommentExists(Guid id)
     {
-        return _uow.Comments.Exists(id);
+        return _appBLL.Comments.Exists(id);
     }
-}*/
+}
