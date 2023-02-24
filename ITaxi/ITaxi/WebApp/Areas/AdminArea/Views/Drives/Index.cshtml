@@ -69,16 +69,21 @@
     <th>
         @Html.DisplayNameFor(model => model.Comment)
     </th>
-    @foreach (var i in Model)
-    {
-        if (i.IsDriveAccepted)
+    @{
+        var hasAnyAccepted = Model.Any(x => x.IsDriveAccepted);
+        var hasAnyDeclined = Model.Any(x => x.IsDriveDeclined);
+        var hasAnyStarted = Model.Any(x => x.IsDriveStarted);
+        var hasAnyFinished = Model.Any(x => x.IsDriveFinished);
+    }
+    
+        @if (hasAnyAccepted)
         {
             <th>
                 @Html.DisplayNameFor(model => model.DriveAcceptedDateAndTime)
             </th>
         }
         
-        if (i.IsDriveDeclined || (i.IsDriveAccepted && i.IsDriveDeclined))
+        @if (hasAnyDeclined)
         {
             <th>
                 @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
@@ -86,20 +91,20 @@
         }
         
 
-        if (i.IsDriveStarted || (i.IsDriveAccepted && i.IsDriveStarted))
+        @if (hasAnyStarted)
         {
             <th>
                 @Html.DisplayNameFor(model => model.DriveStartDateAndTime)
             </th>
         }
 
-        if (i.IsDriveFinished)
+        @if(hasAnyFinished)
         {
             <th>
                 @Html.DisplayNameFor(model => model.DriveEndDateAndTime)
             </th>
         }
-    }
+    
 
     <th>
         @Html.DisplayNameFor(model => model.CreatedBy)
@@ -172,30 +177,42 @@
             @Html.DisplayFor(modelItem => item.Booking!.Drive!.Comment!.CommentText)
         </td>
 
-        @if (item.IsDriveAccepted)
+        @if (hasAnyAccepted)
         {
             <td>
-                @Html.DisplayFor(modelItem => item.DriveAcceptedDateAndTime)
+                 @if (item.IsDriveAccepted)
+                 {
+                     @Html.DisplayFor(modelItem => item.DriveAcceptedDateAndTime)
+                 }
             </td>
         }
         
-        @if (item.IsDriveDeclined || (item.IsDriveAccepted && item.IsDriveDeclined))
+        @if (hasAnyDeclined)
+        {
+            <td>
+                @if (item.IsDriveDeclined || (item.IsDriveAccepted && item.IsDriveDeclined))
                 {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DriveDeclineDateAndTime)
-                    </td>
+                    @Html.DisplayFor(modelItem => item.DriveDeclineDateAndTime)
                 }
-        
-        @if (item.IsDriveStarted || (item.IsDriveAccepted && item.IsDriveStarted))
-        {
-            <td>
-                @Html.DisplayFor(modelItem => item.DriveStartDateAndTime)
             </td>
         }
-        @if (item.IsDriveFinished)
+        
+        @if (hasAnyStarted)
         {
             <td>
-                @Html.DisplayFor(modelItem => item.DriveEndDateAndTime)
+                @if (item.IsDriveStarted || (item.IsDriveAccepted && item.IsDriveStarted))
+                {
+                    @Html.DisplayFor(modelItem => item.DriveStartDateAndTime)
+                }
+            </td>
+        }
+        @if (hasAnyFinished)
+        {
+            <td>
+                @if (item.IsDriveFinished)
+                {
+                    @Html.DisplayFor(modelItem => item.DriveEndDateAndTime)
+                }
             </td>
         }
 
@@ -220,10 +237,22 @@
         </td>
 
         <td>
-            <a asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a> |
-            <a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> |
-            <a asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a> |
-            <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a> |
+            @if (!item.IsDriveAccepted && !item.IsDriveDeclined && !item.IsDriveStarted && !item.IsDriveFinished)
+            {
+                <a asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a> <span>|</span>
+            }
+            @if (!item.IsDriveDeclined && !item.IsDriveStarted && !item.IsDriveFinished)
+            {
+                <a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> <span>|</span>
+            }
+            @if (item.IsDriveAccepted && !item.IsDriveDeclined && !item.IsDriveStarted && !item.IsDriveFinished)
+            {
+                <a asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a> <span>|</span>
+            }
+            @if (item.IsDriveAccepted && !item.IsDriveDeclined && item.IsDriveStarted && !item.IsDriveFinished)
+            {
+                <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a> <span>|</span>
+            }
             <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a>
         </td>
     </tr>

@@ -388,7 +388,7 @@ public async Task<IActionResult> DeclineConfirmed(Guid id)
         booking.UpdatedAt = DateTime.Now.ToUniversalTime();
         _appBLL.Bookings.Update(booking);
         
-        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByBookingIdAsync(booking.Id, null, null, true);
+        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByBookingIdAsync(booking.Id, null, null, true, noIncludes:true);
         if (rideTime != null)
         {
             rideTime.BookingId = null;

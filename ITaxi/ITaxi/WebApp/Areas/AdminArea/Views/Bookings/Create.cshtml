@@ -111,7 +111,10 @@
                             PopulateDropDownList("VehicleId", [], false, undefined);
                             SetFieldValue("RideTimeId", undefined);
                         }
-                    });
+                    }, function (error){
+                        // should NEVER happen, just log it for now.
+                        console.log(error);
+                        });
                 });
             }
         }

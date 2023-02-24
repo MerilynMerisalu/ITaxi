@@ -199,11 +199,9 @@ public class AutoMapperConfig : Profile
             .ForMember(dto => dto.NumberOfRideTimes, 
                 m
                 => m.MapFrom(x => x.RideTimes!.Count))
-#warning is it right
-            
             .ForMember(dto => dto.NumberOfTakenRideTimes, 
                 m
-                => m.MapFrom(x => x.NumberOfTakenRideTimes));
+                => m.MapFrom(x => x.RideTimes!.Count(x => x.IsTaken)));
             
 
         // DTO => EF: Convert to Universal Time

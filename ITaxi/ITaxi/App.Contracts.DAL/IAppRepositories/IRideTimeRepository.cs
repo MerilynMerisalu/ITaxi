@@ -29,10 +29,10 @@ public interface IRideTimeRepositoryCustom<TEntity>
     IEnumerable<string?> GettingAllSelectedRideTimes(TEntity rideTime, bool noTracking = true);
 
     Task<TEntity?> GettingFirstRideTimeByIdAsync(Guid id, Guid? userId = null, string? roleName = null,
-        bool noTracking = true);
+        bool noTracking = true, bool noIncludes = false);
 
     TEntity? GettingFirstRideTimeById(Guid id, Guid? userId = null, string? roleName = null,
-        bool noTracking = true);
+        bool noTracking = true, bool noIncludes = false);
 
     Task<TEntity?> GettingFirstRideTimeByBookingIdAsync(Guid id, Guid? userId = null, 
         string? roleName = null,

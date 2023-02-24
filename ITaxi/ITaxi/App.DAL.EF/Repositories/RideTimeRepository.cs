@@ -37,74 +37,36 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
     }
 
     public async Task<IEnumerable<RideTimeDTO?>> GettingAllOrderedRideTimesAsync(Guid? userId = null,
-        string? roleName = null, bool noTracking = true)
+        string? roleName = null, bool noTracking = true)//, bool noIncludes = false)
     {
-        return (await CreateQuery(userId, roleName, noTracking)
-            .OrderBy(r => r.Schedule!.StartDateAndTime.Date)
-            .ThenBy(r => r.Schedule!.StartDateAndTime.Day)
-            .ThenBy(r => r.Schedule!.StartDateAndTime.Month)
-            .ThenBy(r => r.Schedule!.StartDateAndTime.Year)
-            .ThenBy(r => r.Schedule!.StartDateAndTime.Hour)
-            .ThenBy(r => r.Schedule!.StartDateAndTime.Minute)
-            .ThenBy(r => r.Schedule!.EndDateAndTime.Date)
-            .ThenBy(r => r.Schedule!.EndDateAndTime.Month)
-            .ThenBy(r => r.Schedule!.EndDateAndTime.Year)
-            .ThenBy(r => r.Schedule!.EndDateAndTime.Hour)
-            .ThenBy(r => r.Schedule!.EndDateAndTime.Minute)
-            .ThenBy(r => r.RideDateTime.Date)
-            .ThenBy(r => r.RideDateTime.Day)
-            .ThenBy(r => r.RideDateTime.Month)
-            .ThenBy(r => r.RideDateTime.Year)
-            .ThenBy(r => r.RideDateTime.Hour)
-            .ThenBy(r => r.RideDateTime.Minute)
+        return (await CreateQuery(userId, roleName, noTracking, noIncludes:false)
+            .OrderBy(r => r.Schedule!.StartDateAndTime)
+            .ThenBy(r => r.Schedule!.EndDateAndTime)
+            .ThenBy(r => r.RideDateTime)
             .ToListAsync()).Select(e => Mapper.Map(e));
     }
 
     public IEnumerable<RideTimeDTO?> GettingAllOrderedRideTimes(Guid? userId, string? roleName = null,
-        bool noTracking = true)
+        bool noTracking = true)//, bool noIncludes = false)
     {
-        return CreateQuery(userId, roleName, noTracking)
-            .OrderBy(r => r.Schedule!.StartDateAndTime.Date)
-            .ThenBy(r => r.Schedule!.StartDateAndTime.Day)
-            .ThenBy(r => r.Schedule!.StartDateAndTime.Month)
-            .ThenBy(r => r.Schedule!.StartDateAndTime.Year)
-            .ThenBy(r => r.Schedule!.StartDateAndTime.Hour)
-            .ThenBy(r => r.Schedule!.StartDateAndTime.Minute)
-            .ThenBy(r => r.Schedule!.EndDateAndTime.Date)
-            .ThenBy(r => r.Schedule!.EndDateAndTime.Month)
-            .ThenBy(r => r.Schedule!.EndDateAndTime.Year)
-            .ThenBy(r => r.Schedule!.EndDateAndTime.Hour)
-            .ThenBy(r => r.Schedule!.EndDateAndTime.Minute)
-            .ThenBy(r => r.RideDateTime.Date)
-            .ThenBy(r => r.RideDateTime.Day)
-            .ThenBy(r => r.RideDateTime.Month)
-            .ThenBy(r => r.RideDateTime.Year)
-            .ThenBy(r => r.RideDateTime.Hour)
-            .ThenBy(r => r.RideDateTime.Minute)
+        return CreateQuery(userId, roleName, noTracking, noIncludes: false)
+            .OrderBy(r => r.Schedule!.StartDateAndTime)
+            .ThenBy(r => r.Schedule!.EndDateAndTime)
+            .ThenBy(r => r.RideDateTime)
             .ToList().Select(e => Mapper.Map(e));
     }
 
     public async Task<IEnumerable<RideTimeDTO?>> GettingAllOrderedRideTimesWithoutIncludesAsync(bool noTracking = true)
     {
         return (await CreateQuery(noTracking, noIncludes: true)
-            .OrderBy(r => r.RideDateTime.Date)
-            .ThenBy(r => r.RideDateTime.Day)
-            .ThenBy(r => r.RideDateTime.Month)
-            .ThenBy(r => r.RideDateTime.Year)
-            .ThenBy(r => r.RideDateTime.Hour)
-            .ThenBy(r => r.RideDateTime.Minute)
+            .OrderBy(r => r.RideDateTime)
             .ToListAsync()).Select(e => Mapper.Map(e));
     }
 
     public IEnumerable<RideTimeDTO?> GettingAllOrderedRideTimesWithoutIncludes(bool noTracking = true)
     {
         return CreateQuery(noTracking, noIncludes: true)
-            .OrderBy(r => r.RideDateTime.Date)
-            .ThenBy(r => r.RideDateTime.Day)
-            .ThenBy(r => r.RideDateTime.Month)
-            .ThenBy(r => r.RideDateTime.Year)
-            .ThenBy(r => r.RideDateTime.Hour)
-            .ThenBy(r => r.RideDateTime.Minute)
+            .OrderBy(r => r.RideDateTime)
             .ToList().Select(e => Mapper.Map(e));
     }
 
@@ -126,16 +88,16 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
     }
 
     public async Task<RideTimeDTO?> GettingFirstRideTimeByIdAsync(Guid id, Guid? userId = null, string? roleName = null,
-        bool noTracking = true)
+        bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await CreateQuery(userId, roleName, noTracking)
+        return Mapper.Map(await CreateQuery(userId, roleName, noTracking, noIncludes)
             .FirstOrDefaultAsync(r => r.Id.Equals(id)));
     }
 
     public RideTimeDTO? GettingFirstRideTimeById(Guid id, Guid? userId = null, string? roleName = null,
-        bool noTracking = true)
+        bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(CreateQuery(userId, roleName, noTracking).FirstOrDefault(r => r.Id.Equals(id)));
+        return Mapper.Map(CreateQuery(userId, roleName, noTracking, noIncludes).FirstOrDefault(r => r.Id.Equals(id)));
     }
 
     public async Task<RideTimeDTO?> GettingFirstRideTimeByBookingIdAsync(Guid id, Guid? userId = null,
@@ -250,7 +212,7 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
             await RepoDbContext.SaveChangesAsync();
         }
 
-        return (closestRideTimes.Select(e => Mapper.Map(e)) as IList<RideTimeDTO>)!;
+        return closestRideTimes.Select(e => Mapper.Map(e)).ToList()!;
     }
 
     public RideTimeDTO? GettingBestAvailableRideTime(DateTime pickUpDateAndTime,

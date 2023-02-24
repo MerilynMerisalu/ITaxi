@@ -38,9 +38,9 @@ public class Schedule : DomainEntityMetaId
     
     public ICollection<Booking>? Bookings { get; set; }
     
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "NumberOfRideTimesPerSchedule")]
-    public int NumberOfRideTimes { get; set; }
+    //[Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "NumberOfRideTimesPerSchedule")]
+    //public int NumberOfRideTimes { get; set; }
     
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "NumberOfTakenRideTimesPerSchedule")]
-    public int NumberOfTakenRideTimes { get; set; }
+    //[Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule), Name = "NumberOfTakenRideTimesPerSchedule")]
+    //public int NumberOfTakenRideTimes { get; set; }
 }

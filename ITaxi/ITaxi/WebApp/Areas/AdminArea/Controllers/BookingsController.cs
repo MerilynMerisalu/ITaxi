@@ -103,7 +103,7 @@ public class BookingsController : Controller
         if (parameters.ListType == nameof(BookingDTO.PickUpDateAndTime))
         {
             // If the UI provides a RideTimeId, then we need to clear or release this time first
-            if (parameters.RideTimeId.HasValue)
+            if (parameters.RideTimeId.HasValue && parameters.RideTimeId != Guid.Empty)
             {
                 var rideTime =
                     await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(parameters.RideTimeId.Value, null, null, false);
@@ -140,7 +140,7 @@ public class BookingsController : Controller
                         vm.Schedules = new SelectList(new[] {bestTime.Schedule}, nameof(ScheduleDTO.Id),
                             nameof(App.BLL.DTO.AdminArea.ScheduleDTO.ShiftDurationTime));
                         vm.ScheduleId = bestTime.ScheduleId;
-                        vm.Drivers = new SelectList(new[] {bestTime.Driver}, nameof(DriverDTO.Id),
+                        vm.Drivers = new SelectList(new[] {bestTime.Schedule.Driver}, nameof(DriverDTO.Id),
                             "AppUser.LastAndFirstName");
                         vm.DriverId = bestTime.DriverId;
                         vm.Vehicles = new SelectList(new[] {bestTime.Schedule!.Vehicle}, nameof(VehicleDTO.Id),
@@ -252,18 +252,18 @@ public class BookingsController : Controller
             booking.StatusOfBooking = StatusOfBooking.Awaiting;
 #warning Booking PickUpDateAndTime needs a custom validation
             booking.PickUpDateAndTime = DateTime.Parse(vm.PickUpDateAndTime).ToUniversalTime();
-            _appBLL.Bookings.Add(booking);
-
-            var drive = new App.BLL.DTO.AdminArea.DriveDTO()
+            
+            // Assign the Drive via the implicit related object creation
+            var drive = booking.Drive = new App.BLL.DTO.AdminArea.DriveDTO()
             {
                 Id = new Guid(),
-                Booking = booking,
                 DriverId = booking.DriverId,
                 StatusOfDrive = StatusOfDrive.Awaiting
             };
-            _appBLL.Drives.Add(drive);
+            
+            _appBLL.Bookings.Add(booking);
 
-            var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(vm.RideTimeId, null, null, false);
+            var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(vm.RideTimeId, null, null, true, true);
             if (rideTime != null)
             {
                 rideTime.BookingId = booking.Id;
