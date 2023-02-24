@@ -347,7 +347,7 @@ public async Task<IActionResult> Decline(Guid? id)
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.PickupAddress = drive.Booking.PickupAddress;
-    vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
+    vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
     vm.StatusOfBooking = drive.Booking.StatusOfBooking;
@@ -369,10 +369,7 @@ public async Task<IActionResult> Decline(Guid? id)
 public async Task<IActionResult> DeclineConfirmed(Guid id)
 {
     var roleName = User.GettingUserRoleName();
-    var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, null, roleName);
-    if (drive == null) return NotFound();
-
-    drive = await _appBLL.Drives.DecliningDriveAsync(id, null, roleName);
+    var drive = await _appBLL.Drives.DecliningDriveAsync(id, null, roleName, noTracking:true, noIncludes:true);
     if (drive == null) return NotFound();
 
     drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
@@ -384,15 +381,14 @@ public async Task<IActionResult> DeclineConfirmed(Guid id)
     _appBLL.Drives.Update(drive);
     await _appBLL.SaveChangesAsync();
 
-    var booking = await _appBLL.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id), 
-        false);
+    var booking = await _appBLL.Bookings.GettingBookingByDriveIdAsync(id);
     if (booking != null)
     {
         booking.StatusOfBooking = StatusOfBooking.Declined;
         booking.UpdatedAt = DateTime.Now.ToUniversalTime();
         _appBLL.Bookings.Update(booking);
         
-        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByBookingIdAsync(booking.Id, null, null, false);
+        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByBookingIdAsync(booking.Id, null, null, true);
         if (rideTime != null)
         {
             rideTime.BookingId = null;

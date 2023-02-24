@@ -114,9 +114,9 @@ public class DriveService: BaseEntityService<App.BLL.DTO.AdminArea.DriveDTO, App
     }
 
     public async Task<DriveDTO?> DecliningDriveAsync(Guid id, 
-        Guid? userId = null, string? roleName = null, bool noTracking = true)
+        Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await Repository.DecliningDriveAsync(id, userId, roleName, noTracking));
+        return Mapper.Map(await Repository.DecliningDriveAsync(id, userId, roleName, noTracking, noIncludes));
     }
 
     public DriveDTO? StartingDrive(Guid id)

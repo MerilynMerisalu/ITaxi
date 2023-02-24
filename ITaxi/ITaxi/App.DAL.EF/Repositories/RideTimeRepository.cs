@@ -140,16 +140,16 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
 
     public async Task<RideTimeDTO?> GettingFirstRideTimeByBookingIdAsync(Guid id, Guid? userId = null,
         string? roleName = null,
-        bool noTracking = true)
+        bool noTracking = true, bool noIncludes = true)
     {
-        return Mapper.Map(await CreateQuery(userId, roleName, noTracking)
+        return Mapper.Map(await CreateQuery(userId, roleName, noTracking, noIncludes)
             .FirstOrDefaultAsync(r => r.BookingId.Equals(id)));
     }
 
     public RideTimeDTO? GettingFirstRideTimeByBookingId(Guid id, Guid? userId = null, string? roleName = null,
-        bool noTracking = true)
+        bool noTracking = true, bool noIncludes = true)
     {
-        return Mapper.Map(CreateQuery(userId, roleName, noTracking).FirstOrDefault(r => r.BookingId.Equals(id)));
+        return Mapper.Map(CreateQuery(userId, roleName, noTracking, noIncludes).FirstOrDefault(r => r.BookingId.Equals(id)));
     }
 
     
@@ -326,10 +326,15 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
         return Mapper.Map(CreateQuery(userId, roleName, noTracking).FirstOrDefault(r => r.Id.Equals(id)));
     }
 
-    protected IQueryable<RideTime> CreateQuery(Guid? userId = null, string? roleName = null, bool noTracking = true)
+    protected IQueryable<RideTime> CreateQuery(Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
+        if (noIncludes)
+        {
+            return query;
+        }
 
         if (roleName == null)
             return query = query.Include(c => c.Schedule)

@@ -74,16 +74,17 @@ public class RideTimeService: BaseEntityService<App.BLL.DTO.AdminArea.RideTimeDT
         return Mapper.Map(Repository.GettingFirstRideTimeById(id, userId, roleName, noTracking));
     }
 
-    public async Task<RideTimeDTO?> GettingFirstRideTimeByBookingIdAsync(Guid id, Guid? userId = null, string? roleName = null,
-        bool noTracking = true)
+    public async Task<RideTimeDTO?> GettingFirstRideTimeByBookingIdAsync(Guid id, Guid? userId = null,
+        string? roleName = null, 
+        bool noTracking = true, bool noIncludes = true)
     {
-        return Mapper.Map(await Repository.GettingFirstRideTimeByBookingIdAsync(id, userId, roleName, noTracking));
+        return Mapper.Map(await Repository.GettingFirstRideTimeByBookingIdAsync(id, userId, roleName, noTracking, noIncludes));
     }
 
     public RideTimeDTO? GettingFirstRideTimeByBookingId(Guid id, Guid? userId = null, string? roleName = null,
-        bool noTracking = true)
+        bool noTracking = true, bool noIncludes = true)
     {
-        return Mapper.Map(Repository.GettingFirstRideTimeByBookingId(id, userId, roleName, noTracking));
+        return Mapper.Map(Repository.GettingFirstRideTimeByBookingId(id, userId, roleName, noTracking, noIncludes));
     }
 
     public List<string> CalculatingRideTimes(Guid scheduleId)

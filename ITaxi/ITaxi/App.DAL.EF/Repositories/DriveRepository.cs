@@ -266,9 +266,11 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
         return null;
     }
 
-    public async Task<DriveDTO?> DecliningDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true)
+    public async Task<DriveDTO?> DecliningDriveAsync(Guid id, Guid? userId = null, string? 
+            roleName = null, bool noIncludes = true,
+        bool noTracking = true)
     {
-        var drive = await FirstOrDefaultAsync(id, userId, roleName,noTracking );
+        var drive = await FirstOrDefaultAsync(id, userId, roleName,noIncludes,noTracking );
         if (drive != null)
         {
             drive.IsDriveDeclined = true;

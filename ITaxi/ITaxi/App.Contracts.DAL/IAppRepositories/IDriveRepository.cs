@@ -34,7 +34,8 @@ public interface IDriveRepositoryCustom<TEntity>
     Task<TEntity?> AcceptingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true, 
         bool noIncludes = false);
     TEntity? DecliningDrive(Guid id);
-    Task<TEntity?> DecliningDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true);
+    Task<TEntity?> DecliningDriveAsync
+        (Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true, bool noIncludes = false);
     TEntity? StartingDrive(Guid id);
     Task<TEntity?> StartingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true );
     TEntity? EndingDrive(Guid id);

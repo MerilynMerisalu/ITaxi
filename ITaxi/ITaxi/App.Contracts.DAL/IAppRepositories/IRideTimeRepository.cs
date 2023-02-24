@@ -34,11 +34,12 @@ public interface IRideTimeRepositoryCustom<TEntity>
     TEntity? GettingFirstRideTimeById(Guid id, Guid? userId = null, string? roleName = null,
         bool noTracking = true);
 
-    Task<TEntity?> GettingFirstRideTimeByBookingIdAsync(Guid id, Guid? userId = null, string? roleName = null,
-        bool noTracking = true);
+    Task<TEntity?> GettingFirstRideTimeByBookingIdAsync(Guid id, Guid? userId = null, 
+        string? roleName = null,
+        bool noTracking = true, bool noIncludes = false);
 
     TEntity? GettingFirstRideTimeByBookingId(Guid id, Guid? userId = null, string? roleName = null,
-        bool noTracking = true);
+        bool noTracking = true, bool noIncludes = false);
 
     List<string> CalculatingRideTimes(Guid scheduleId);
     //List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime);
