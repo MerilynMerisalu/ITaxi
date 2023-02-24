@@ -124,9 +124,10 @@ public class DriveService: BaseEntityService<App.BLL.DTO.AdminArea.DriveDTO, App
         return Mapper.Map(Repository.StartingDrive(id));
     }
 
-    public async Task<DriveDTO?> StartingDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<DriveDTO?> StartingDriveAsync(Guid id, Guid? userId = null, 
+        string? roleName = null, bool noTracking = true, bool noIncludes = true)
     {
-        return Mapper.Map(await Repository.StartingDriveAsync(id, userId, roleName, noTracking));
+        return Mapper.Map(await Repository.StartingDriveAsync(id, userId, roleName, noTracking, noIncludes));
     }
 
     public DriveDTO? EndingDrive(Guid id)
@@ -134,9 +135,10 @@ public class DriveService: BaseEntityService<App.BLL.DTO.AdminArea.DriveDTO, App
         return Mapper.Map(Repository.EndingDrive(id));
     }
 
-    public async Task<DriveDTO?> EndingDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<DriveDTO?> EndingDriveAsync(Guid id, Guid? userId = null, 
+        string? roleName = null, bool noTracking = true, bool noIncludes = true)
     {
-        return Mapper.Map(await Repository.EndingDriveAsync(id, userId, roleName, noTracking));
+        return Mapper.Map(await Repository.EndingDriveAsync(id, userId, roleName, noTracking, noIncludes));
     }
 
     public async Task<DriveDTO?> GettingFirstDriveAsync(Guid id, Guid? userId = null, 

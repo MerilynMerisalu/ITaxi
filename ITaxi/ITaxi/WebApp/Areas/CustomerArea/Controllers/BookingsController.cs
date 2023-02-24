@@ -197,9 +197,7 @@ public class BookingsController : Controller
         {
             booking.Id = Guid.NewGuid();
             booking.CityId = vm.CityId;
-            booking.CustomerId = _appBLL.Customers
-                .SingleOrDefaultAsync(c => c!.AppUserId.Equals(userId)).Result!.Id;
-            booking.DriverId = _appBLL.Drivers.FirstAsync().Result!.Id;
+            booking.CustomerId = await _appBLL.Customers.GettingCustomerIdByAppUserIdAsync(userId);
 #warning needs fixing
             booking.ScheduleId =  _appBLL.Schedules.FirstAsync().Result!.Id;
 #warning needs fixing
@@ -216,15 +214,24 @@ public class BookingsController : Controller
             booking.PickUpDateAndTime = DateTime.Parse(vm.PickUpDateAndTime).ToUniversalTime();
             _appBLL.Bookings.Add(booking);
 
-            var drive = new DriveDTO()
+            // Assign the Drive via the implicit related object creation
+            var drive = booking.Drive = new App.BLL.DTO.AdminArea.DriveDTO()
             {
                 Id = new Guid(),
-                Booking = booking,
-                DriverId = booking.DriverId
+                DriverId = booking.DriverId,
+                StatusOfDrive = StatusOfDrive.Awaiting
             };
+            
+            _appBLL.Bookings.Add(booking);
 
-            _appBLL.Drives.Add(drive);
-            await _appBLL.SaveChangesAsync();
+            var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(vm.RideTimeId, null, null, true, true);
+            if (rideTime != null)
+            {
+                rideTime.BookingId = booking.Id;
+                rideTime.IsTaken = true;
+                _appBLL.RideTimes.Update(rideTime);
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

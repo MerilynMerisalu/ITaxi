@@ -293,9 +293,10 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
         return null;
     }
 
-    public async Task<DriveDTO?> StartingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,bool noTracking = true )
+    public async Task<DriveDTO?> StartingDriveAsync(Guid id, Guid? userId = null, string? roleName = null,
+        bool noTracking = true, bool noIncludes = true )
     {
-        var drive = await FirstOrDefaultAsync(id, userId, roleName, noTracking);
+        var drive = await FirstOrDefaultAsync(id, userId, roleName, noTracking, noIncludes);
         if (drive != null)
         {
             drive.IsDriveStarted = true;
@@ -318,9 +319,10 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
         return null;
     }
 
-    public async Task<DriveDTO?> EndingDriveAsync(Guid id,Guid? userId = null, string? roleName = null,bool noTracking = true )
+    public async Task<DriveDTO?> EndingDriveAsync(Guid id,Guid? userId = null, string? roleName = null,
+        bool noTracking = true, bool noIncludes = true )
     {
-        var drive = await FirstOrDefaultAsync(id, userId, roleName, noTracking);
+        var drive = await FirstOrDefaultAsync(id, userId, roleName, noTracking, noIncludes);
         if (drive != null)
         {
             drive.IsDriveFinished = true;

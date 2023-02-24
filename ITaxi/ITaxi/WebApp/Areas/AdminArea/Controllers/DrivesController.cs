@@ -420,7 +420,7 @@ public async Task<IActionResult> StartDrive(Guid? id)
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.PickupAddress = drive.Booking.PickupAddress;
-    vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
+    vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
     vm.StatusOfBooking = drive.Booking.StatusOfBooking;
@@ -441,10 +441,7 @@ public async Task<IActionResult> StartDrive(Guid? id)
 public async Task<IActionResult> StartConfirmed(Guid id)
 {
     var roleName = User.GettingUserRoleName();
-    var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, null, roleName);
-    if (drive == null) return NotFound();
-
-    drive = await _appBLL.Drives.StartingDriveAsync(id, null, roleName);
+    var drive = await _appBLL.Drives.StartingDriveAsync(id, null, roleName);
     if (drive == null) return NotFound();
 
     drive.DriveStartDateAndTime = DateTime.Now.ToUniversalTime();
@@ -475,7 +472,7 @@ public async Task<IActionResult> EndDrive(Guid? id)
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.PickupAddress = drive.Booking.PickupAddress;
-    vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
+    vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
     vm.StatusOfBooking = drive.Booking.StatusOfBooking;
@@ -497,10 +494,9 @@ public async Task<IActionResult> EndDrive(Guid? id)
 public async Task<IActionResult> EndDriveConfirmed(Guid id)
 {
     var roleName = User.GettingUserRoleName();
-    var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, null, roleName);
-    if (drive == null) return NotFound();
+    
 
-    drive = await _appBLL.Drives.EndingDriveAsync(id, null, roleName);
+   var drive = await _appBLL.Drives.EndingDriveAsync(id, null, roleName);
     if (drive == null) return NotFound();
 
     drive.IsDriveFinished = true;

@@ -21,4 +21,6 @@ public interface ICustomerRepositoryCustom<TEntity>
     TEntity? GettingCustomerByIdWithoutIncludes(Guid id, bool noTracking = true);
     Task<bool> HasBookingsAnyAsync(Guid customerId);
     bool HasAnyBookings(Guid customerId);
+    Task<Guid> GettingCustomerIdByAppUserIdAsync(Guid appUserId);
+    Guid GettingCustomerIdByAppUserId(Guid appUserId);
 }

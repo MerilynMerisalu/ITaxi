@@ -57,4 +57,14 @@ ICustomerRepository>, ICustomerService
     {
         return Repository.HasAnyBookings(customerId);
     }
+
+    public async Task<Guid> GettingCustomerIdByAppUserIdAsync(Guid appUserId)
+    {
+        return await Repository.GettingCustomerIdByAppUserIdAsync(appUserId);
+    }
+
+    public Guid GettingCustomerIdByAppUserId(Guid appUserId)
+    {
+        return Repository.GettingCustomerIdByAppUserId(appUserId);
+    }
 }

@@ -83,6 +83,16 @@ public class CustomerRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Cus
         return RepoDbContext.Bookings.Any(b => b.CustomerId.Equals(customerId));
     }
 
+    public async Task<Guid> GettingCustomerIdByAppUserIdAsync(Guid appUserId)
+    {
+        return (await RepoDbSet.SingleOrDefaultAsync(c => c.AppUserId.Equals(appUserId)))!.Id;
+    }
+
+    public Guid GettingCustomerIdByAppUserId(Guid appUserId)
+    {
+        return RepoDbSet.SingleOrDefault(c => c.AppUserId.Equals(appUserId))!.Id;
+    }
+
     protected override IQueryable<Customer> CreateQuery(bool noTracking = true, bool noIncludes = false)
     {
         var query = RepoDbSet.AsQueryable();
