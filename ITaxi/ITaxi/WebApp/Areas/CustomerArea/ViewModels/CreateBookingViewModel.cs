@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Resources.Areas.App.Domain.CustomerArea;
+using App.BLL.DTO.AdminArea;
+using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Resources;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -50,4 +51,12 @@ public class CreateBookingViewModel
     [StringLength(1000, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     public string? AdditionalInfo { get; set; }
+
+    public Guid DriverId { get; set; }
+    public Guid ScheduleId { get; set; }
+    public Guid RideTimeId { get; set; }
+
+    public SelectList? RideTimes  { get; set; }
+
+    public Guid VehicleId { get; set; }
 }

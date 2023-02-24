@@ -30,17 +30,120 @@ public class BookingsController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var res = await _appBLL.Bookings.GettingAllOrderedBookingsAsync(userId, roleName);
-        foreach (var booking in res)
-        {
-            if (booking != null)
-            {
-                booking.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime();
-                booking.DeclineDateAndTime = booking.DeclineDateAndTime.ToLocalTime();
-            }
-        }
+        
+        
         return View(res);
         
     }
+    public class BookingSetDropDownListRequest
+        {
+            public string ListType { get; set; }
+            public string Value { get; set; }
+    
+            public Guid VehicleTypeId { get; set; }
+            public Guid CityId { get; set; }
+    
+            public int NumberOfPassengers { get; set; }
+    
+            public DateTime PickupDateAndTime { get; set; }
+            public Guid? RideTimeId { get; set; }
+        }
+    
+        /// <summary>
+        /// Generic method that will update the VM to reflect the new SelectLists if any need to be changed
+        /// </summary>
+        /// <param name="listType">the dropdownlist that has been changed</param>
+        /// <param name="value">The currently selected item value</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> SetDropDownList([FromBody] BookingSetDropDownListRequest parameters)
+        {
+            // Use the EditRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
+            var vm = new CreateBookingViewModel();
+            IEnumerable<ScheduleDTO> schedules = null;
+            //Guid id = Guid.Parse(value);
+    
+            if (parameters.ListType == nameof(BookingDTO.PickUpDateAndTime))
+            {
+                // If the UI provides a RideTimeId, then we need to clear or release this time first
+                if (parameters.RideTimeId.HasValue && parameters.RideTimeId != Guid.Empty)
+                {
+                    var rideTime =
+                        await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(parameters.RideTimeId.Value, null, null, false);
+                    if (rideTime != null)
+                    {
+                        rideTime.ExpiryTime = null;
+                        await _appBLL.SaveChangesAsync();
+                    }
+                }
+    
+                // Value in this case IS the pickupDateAndTime
+                parameters.PickupDateAndTime = DateTime.Parse(parameters.Value);
+                if (parameters.PickupDateAndTime == DateTime.MinValue)
+                {
+                    // Do nothing, this will show the message to re-select the time entry
+                }
+                else
+                {
+                    parameters.PickupDateAndTime = parameters.PickupDateAndTime.ToUniversalTime();
+    
+                    // We want to find the nearest available ride date and time
+                    // First we get a list of the available ride times
+                    var bestTimes = await _appBLL.RideTimes.GettingBestAvailableRideTimeAsync(parameters.PickupDateAndTime,
+                        parameters.CityId, parameters.NumberOfPassengers, parameters.VehicleTypeId, true);
+                    if (bestTimes.Any())
+                    {
+                        if (bestTimes.Count == 1)
+                        {
+                            var bestTime = bestTimes.First();
+                            bestTime.Schedule!.StartDateAndTime = bestTime.Schedule.StartDateAndTime.ToLocalTime();
+                            bestTime.Schedule.EndDateAndTime = bestTime.Schedule.EndDateAndTime.ToLocalTime();
+    
+                            vm.RideTimeId = bestTime.Id;
+                            vm.ScheduleId = bestTime.ScheduleId;
+                            
+                            vm.DriverId = bestTime.DriverId;
+                            
+                            vm.VehicleId = bestTime.Schedule!.VehicleId;
+                        }
+                        else
+                        {
+                            var min = DateTime.UtcNow.AddHours(-24);
+                            var max = parameters.PickupDateAndTime.AddHours(24);
+                            var timesForDisplay = bestTimes
+                                .Where(x => x.RideDateTime > min && x.RideDateTime < max)
+                                .Select(x => new
+                                {
+                                    Value = x.RideDateTime.ToLocalTime().ToString("yyyy-MM-ddTHH:mm"),
+                                    Text = x.RideDateTime.ToLocalTime().ToString("g")
+                                })
+                                .ToList();
+                            if (timesForDisplay.Any())
+                                vm.RideTimes = new SelectList(timesForDisplay, "Value", "Text");
+                        }
+                    }
+                }
+            }
+    
+            // This is not currently in use, this is theoretically what we would do if the user was
+            // forced to select a specific RideTime, we have changed this and instead
+            // the user is forced to enter a Pickup Date Time that matches an existing Ride Time
+            if (parameters.ListType == "RideTimeId")
+            {
+                var rideTimeId = Guid.Parse(parameters.Value);
+                var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(rideTimeId);
+    
+                vm.RideTimeId = rideTimeId;
+                
+                vm.ScheduleId = rideTime.ScheduleId;
+                
+                vm.DriverId = rideTime.DriverId;
+                
+                vm.VehicleId = rideTime.Schedule!.VehicleId;
+            }
+    
+            return Ok(vm);
+        }
 
     // GET: CustomerArea/Bookings/Details/5
     public async Task<IActionResult> Details(Guid? id)

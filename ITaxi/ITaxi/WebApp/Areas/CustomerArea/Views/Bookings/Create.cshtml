@@ -70,5 +70,99 @@
 </div>
 
 @section Scripts {
+<script>
+    
+        function setPickupTime (value) {
+            document.getElementById('PickUpDateAndTime').value = value;
+            pickupDateAndTimeChanged(value);
+        }
+        
+        function pickupDateAndTimeChanged (value) {
+    
+            let content = { 
+                listType: 'PickUpDateAndTime',
+                value: value.toString(),
+                vehicleTypeId: document.getElementById('VehicleTypeId').value.toString(),
+                cityId: document.getElementById('CityId').value.toString(),
+                numberOfPassengers: document.getElementById('NumberOfPassengers').value               
+            };
+            // Only include RideTime if one was previously selected
+            let rideTime = document.getElementById('RideTimeId').value;
+            //alert(rideTime);
+            if (rideTime && rideTime != undefined && rideTime != "" && rideTime != "undefined")
+                content.rideTimeId = rideTime;
+            
+            // reset client-side validation messages
+            clearClientErrorMessage('VehicleTypeIdClientValidationSpan');
+            clearClientErrorMessage('CityIdClientValidationSpan');
+            clearClientErrorMessage('NumberOfPassengersValidationSpan');
+            clearClientErrorMessage('PickupValidationSpan');
+            let hasError = false;
+            if (content.vehicleTypeId.length === 0 || content.vehicleTypeId === 'Please Select') {
+                 showClientErrorMessage('You must select the Vehicle Type first','VehicleTypeIdClientValidationSpan');
+                 hasError = true;
+            }
+            if( content.cityId.length === 0 || content.cityId === 'Please Select') {
+                 showClientErrorMessage('You must select the City first','CityIdClientValidationSpan');
+                 hasError = true;
+            }
+            if (Number(content.numberOfPassengers) === 0) {
+                showClientErrorMessage("You must enter number of passengers first!",'NumberOfPassengersValidationSpan');
+                hasError = true;
+            }
+            if(hasError === false) {
+                fetch('@Url.Action("SetDropDownList")', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    },
+                    body: JSON.stringify(content)
+                }).then(response => {
+                    response.json().then(data => {
+                        
+                        if (data.scheduleId) {
+                            PopulateDropDownList("ScheduleId", data.schedules, false, data.scheduleId);
+                            PopulateDropDownList("DriverId", data.drivers, false, data.driverId);
+                            PopulateDropDownList("VehicleId", data.vehicles, false, data.vehicleId);
+                            // we need to save this in the DOM
+                            SetFieldValue("RideTimeId", data.rideTimeId);
+                        }
+                        else if (data.rideTimes) {
+                            console.log('Multiple RideTimes were found, user to select');
+                            var message = 'We are unable to match you to your preferred pickup time, please choose another pickup time, ';
+                            if (data.rideTimes.length > 1)
+                                message += 'the closest times available are: ';
+                            else
+                                message += 'the closest time available is: ';
+                            message += ` <a onclick='setPickupTime("${data.rideTimes[0].value}")' style='text-decoration:underline;'>${data.rideTimes[0].text}</span>`;
+                            if (data.rideTimes.length > 1)
+                                message += ` and <a style='text-decoration:underline;' onclick='setPickupTime("${data.rideTimes[1].value}")'>${data.rideTimes[1].text}</span>`;
+                            showClientErrorMessage(message, 'PickupValidationSpan', true);
+                            
+                            // clear the previous selections (if any)
+                            PopulateDropDownList("ScheduleId", [], false, undefined);
+                            PopulateDropDownList("DriverId", [], false, undefined);
+                            PopulateDropDownList("VehicleId", [], false, undefined);
+                            SetFieldValue("RideTimeId", undefined);
+                        }
+                        else {
+                            console.log('No drivers are available at this time, please select another time.');
+                            showClientErrorMessage('No drivers are available at this time, please select another time.', 'PickupValidationSpan');
+                            // clear the previous selections (if any)
+                            PopulateDropDownList("ScheduleId", [], false, undefined);
+                            PopulateDropDownList("DriverId", [], false, undefined);
+                            PopulateDropDownList("VehicleId", [], false, undefined);
+                            SetFieldValue("RideTimeId", undefined);
+                        }
+                    }, function (error){
+                        // should NEVER happen, just log it for now.
+                        console.log(error);
+                        });
+                });
+            }
+        }
+        
+    </script>
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
