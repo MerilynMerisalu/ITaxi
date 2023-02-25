@@ -141,8 +141,8 @@ public class DriveService: BaseEntityService<App.BLL.DTO.AdminArea.DriveDTO, App
         return Mapper.Map(await Repository.EndingDriveAsync(id, userId, roleName, noTracking, noIncludes));
     }
 
-    public async Task<DriveDTO?> GettingFirstDriveAsync(Guid id, Guid? userId = null, 
-        string? roleName = null, bool noTracking = true, bool noIncludes = false )
+    public async Task<DriveDTO?> GettingFirstDriveAsync(Guid? id, Guid? userId = null,
+        string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
         return Mapper.Map(await Repository.GettingFirstDriveAsync(id, userId, roleName, noTracking, noIncludes));
     }
@@ -153,16 +153,31 @@ public class DriveService: BaseEntityService<App.BLL.DTO.AdminArea.DriveDTO, App
         return Mapper.Map(Repository.GettingFirstDrive(id, userId, roleName, noTracking, noIncludes));
     }
 
+    public async Task<DriveDTO?> GettingDriveByBookingIdAsync(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = true)
+    {
+        return Mapper.Map(
+            await Repository.GettingDriveByBookingIdAsync(bookingId, userId, roleName, noTracking, noIncludes));
+    }
+
+    public DriveDTO? GettingDriveByBookingId(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = true)
+    {
+        return Mapper.Map(
+             Repository.GettingDriveByBookingId(bookingId, userId, roleName, noTracking, noIncludes));
+    }
+
+
     public async Task<DriveDTO?> GettingDriveAsync(Guid bookingId, Guid? userId = null, string? roleName = null, 
         bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await Repository.GettingDriveAsync(bookingId, userId, roleName, noTracking, noIncludes));
+        return Mapper.Map(await Repository.GettingDriveByBookingIdAsync(bookingId, userId, roleName, noTracking, noIncludes));
     }
 
     public DriveDTO? GettingDrive(Guid id, Guid? userId = null, string? roleName = null, 
         bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(Repository.GettingDrive(id, userId, roleName, noTracking, noIncludes));
+        return Mapper.Map(Repository.GettingDriveByBookingId(id, userId, roleName, noTracking, noIncludes));
     }
 
     

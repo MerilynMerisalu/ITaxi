@@ -130,10 +130,13 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
         return Convert.ToDateTime(DateTime.Now.ToString("g"));
     }
 
+    
 
-    public async Task<BookingDTO?> BookingDeclineAsync(Guid id, Guid? userId = null, string? roleName = null)
+
+    public async Task<BookingDTO?> BookingDeclineAsync(Guid id, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = true)
     {
-        var booking = await FirstOrDefaultAsync(id, userId, roleName);
+        var booking = await FirstOrDefaultAsync(id, userId, roleName, noTracking, noIncludes);
         if (booking == null)
         {
             return null;

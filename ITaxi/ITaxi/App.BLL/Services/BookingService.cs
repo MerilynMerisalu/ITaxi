@@ -71,9 +71,12 @@ public class BookingService : BaseEntityService<App.BLL.DTO.AdminArea.BookingDTO
         return Repository.DateTimeFormatting();
     }
 
-    public async Task<BookingDTO?> BookingDeclineAsync(Guid id, Guid? userId = null, string? roleName = null)
+    
+
+    public async Task<BookingDTO?> BookingDeclineAsync(
+        Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await Repository.BookingDeclineAsync(id, userId, roleName));
+        return Mapper.Map(await Repository.BookingDeclineAsync(id, userId, roleName, noTracking, noIncludes));
     }
 
     public BookingDTO? BookingDecline(Guid id, Guid? userId = null, string? roleName = null)

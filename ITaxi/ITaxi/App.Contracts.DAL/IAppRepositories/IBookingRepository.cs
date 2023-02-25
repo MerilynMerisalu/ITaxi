@@ -29,7 +29,7 @@ public interface IBookingRepositoryCustom<TEntity>
     string PickUpDateAndTimeStrFormat(TEntity booking);
     DateTime DateTimeFormatting();
 
-    Task<TEntity?> BookingDeclineAsync(Guid id, Guid? userId = null, string? roleName = null);
+    Task<TEntity?> BookingDeclineAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = true);
     TEntity? BookingDecline(Guid id, Guid? userId = null, string? roleName = null);
     Task<TEntity?> GettingBookingAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true,
         bool noIncludes = false);

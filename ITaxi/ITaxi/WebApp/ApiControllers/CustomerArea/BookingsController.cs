@@ -121,7 +121,7 @@ public class BookingsController : ControllerBase
         var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName);
         if (booking == null) return NotFound();
 
-        var drive = await _appBLL.Drives.GettingDriveAsync(id, userId, roleName);
+        var drive = await _appBLL.Drives.GettingDriveByBookingIdAsync(booking.Id, userId, roleName, noIncludes:true, noTracking:true);
 
         if (drive != null) await _appBLL.Drives.RemoveAsync(drive.Id);
         _appBLL.Bookings.Remove(booking);

@@ -356,8 +356,8 @@ public class BookingsController : Controller
     // POST: AdminArea/Bookings/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
+    /*[HttpPost]
+    [ValidateAntiForgeryToken]*/
     /*public async Task<IActionResult> Edit(Guid id, EditBookingViewModel vm)
     {
         var roleName = User.GettingUserRoleName();
@@ -458,18 +458,17 @@ public class BookingsController : Controller
     public async Task<IActionResult> DeclineConfirmed(Guid id)
     {
         var roleName = User.GettingUserRoleName();
-        var booking = await _appBLL.Bookings.GettingBookingAsync(id, null, roleName);
-        if (booking != null)
-        {
-            var drive = await _appBLL.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id), false);
-            await _appBLL.Bookings.BookingDeclineAsync(booking.Id, null, roleName );
+        
+          var booking = await _appBLL.Bookings.BookingDeclineAsync(id, null, roleName, noIncludes:true, noTracking:true  );
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             booking.IsDeclined = true;
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             booking.UpdatedBy = User.Identity!.Name;
             booking.UpdatedAt = DateTime.Now.ToUniversalTime();
-            drive!.Booking = booking;
             _appBLL.Bookings.Update(booking);
+            await _appBLL.SaveChangesAsync();
+
+            var drive = await _appBLL.Drives.GettingDriveByBookingIdAsync(booking.Id, noIncludes:true, noTracking:true);
             drive.IsDriveDeclined = true;
             drive.StatusOfDrive = StatusOfDrive.Declined;
             drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
@@ -506,7 +505,7 @@ public class BookingsController : Controller
             }
 
             // Release the RideTime
-            var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByBookingIdAsync(booking.Id, null, null, false);
+            var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByBookingIdAsync(booking.Id, null, null, true, noIncludes:true);
             if (rideTime != null)
             {
                 rideTime.BookingId = null;
@@ -517,7 +516,7 @@ public class BookingsController : Controller
 
             await _appBLL.SaveChangesAsync();
             _appBLL.Drives.Update(drive);
-        }
+        
 
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));

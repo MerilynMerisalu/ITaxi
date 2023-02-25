@@ -333,7 +333,8 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
     }
 
     
-    public async Task<DriveDTO?> GettingFirstDriveAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true,
+    public async Task<DriveDTO?> GettingFirstDriveAsync(Guid? id, Guid? userId = null, string? roleName = null,
+        bool noTracking = true,
         bool noIncludes = false)
     {
         return Mapper.Map(await CreateQuery(userId, roleName, noTracking)
@@ -347,10 +348,17 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
             .FirstOrDefault(d => d.Id.Equals(id)));
     }
 
-    public async Task<DriveDTO?> GettingDriveAsync(Guid id, Guid? userId = null, string? roleName = null
+    public async Task<DriveDTO?> GettingDriveByBookingIdAsync(Guid bookingId, Guid? userId = null, string? roleName = null
         ,bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await RepoDbSet.FirstOrDefaultAsync(d => d.Booking!.Id.Equals(id)));
+        return Mapper.Map(await RepoDbSet.FirstOrDefaultAsync(d => d.Booking!.Id.Equals(bookingId)));
+    }
+
+    public DriveDTO? GettingDriveByBookingId(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = true)
+    {
+        return Mapper.Map(CreateQuery(userId, roleName, noTracking, noIncludes)
+            .FirstOrDefault(d => d.Booking!.Id.Equals(bookingId)));
     }
 
     public DriveDTO? GettingDrive(Guid bookingId, Guid? userId = null, string? roleName = null, 

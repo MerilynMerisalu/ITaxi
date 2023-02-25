@@ -71,6 +71,7 @@ public class BookingDTO: DomainEntityMetaId
 
     public bool IsDeclined { get; set; }
     
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = "BookingDeclineDateAndTime")]
     public DateTime DeclineDateAndTime { get; set; }
 
     public string DeclineDateAndTimeCustomerView => $"{DeclineDateAndTime:g}";
