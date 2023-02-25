@@ -266,7 +266,7 @@ public async Task<IActionResult> Accept(Guid? id)
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.PickupAddress = drive.Booking.PickupAddress;
-    vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
+    vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
     vm.StatusOfBooking = drive.Booking.StatusOfBooking;
@@ -308,10 +308,8 @@ public async Task<IActionResult> AcceptConfirmed(Guid id)
 {
     var userId = User.GettingUserId();
     var roleName = User.GettingUserRoleName();
-    var drive = await _appBLL.Drives.GettingFirstDriveAsync(id,userId, roleName );
-    if (drive == null) return NotFound();
-
-    drive = await _appBLL.Drives.AcceptingDriveAsync(id, userId, roleName);
+    
+    var drive = await _appBLL.Drives.AcceptingDriveAsync(id, userId, roleName);
     if (drive == null) return NotFound();
 
     drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
@@ -322,7 +320,7 @@ public async Task<IActionResult> AcceptConfirmed(Guid id)
     _appBLL.Drives.Update(drive);
     await _appBLL.SaveChangesAsync();
 
-    var booking = await _appBLL.Bookings.SingleOrDefaultAsync(b => b!.DriveId.Equals(drive.Id), false);
+    var booking = await _appBLL.Bookings.GettingBookingByDriveIdAsync(id, userId, roleName, noTracking:true, noIncludes:true);
     if (booking != null)
     {
         booking.StatusOfBooking = StatusOfBooking.Accepted;
@@ -354,7 +352,7 @@ public async Task<IActionResult> Decline(Guid? id)
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.PickupAddress = drive.Booking.PickupAddress;
-    vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
+    vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
     vm.StatusOfBooking = drive.Booking.StatusOfBooking;
@@ -366,21 +364,21 @@ public async Task<IActionResult> Decline(Guid? id)
     }
     if (vm.IsDriveDeclined )
     {
-        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
-        vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToLocalTime().ToString("g");
+        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
+        vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToString("g");
     }
 
     if (vm.IsDriveStarted)
     {
-        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
-        vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
+        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
+        vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("g");
     }
 
     if (vm.IsDriveFinished)
     {
-        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToLocalTime().ToString("g");
-        vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToLocalTime().ToString("g");
-        vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToLocalTime().ToString("g");
+        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
+        vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("g");
+        vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToString("g");
     }
 
 
@@ -395,10 +393,7 @@ public async Task<IActionResult> DeclineConfirmed(Guid id)
 {
     var userId = User.GettingUserId();
     var roleName = User.GettingUserRoleName();
-    var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, userId, roleName);
-    if (drive == null) return NotFound();
-
-    drive = await _appBLL.Drives.DecliningDriveAsync(id, userId, roleName);
+    var drive = await _appBLL.Drives.DecliningDriveAsync(id, userId, roleName, noTracking:true);
     if (drive == null) return NotFound();
 
     drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
@@ -409,7 +404,7 @@ public async Task<IActionResult> DeclineConfirmed(Guid id)
     _appBLL.Drives.Update(drive);
     await _appBLL.SaveChangesAsync();
 
-    var booking = await _appBLL.Bookings.GettingBookingByDriveIdAsync(id);
+    var booking = await _appBLL.Bookings.GettingBookingByDriveIdAsync(id, userId, roleName, noTracking:true);
     if (booking != null)
     {
         booking.StatusOfBooking = StatusOfBooking.Declined;
@@ -444,7 +439,7 @@ public async Task<IActionResult> StartDrive(Guid? id)
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.PickupAddress = drive.Booking.PickupAddress;
-    vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
+    vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
     vm.StatusOfBooking = drive.Booking.StatusOfBooking;
@@ -484,10 +479,8 @@ public async Task<IActionResult> StartConfirmed(Guid id)
 {
     var userId = User.GettingUserId();
     var roleName = User.GettingUserRoleName();
-    var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, userId, roleName);
-    if (drive == null) return NotFound();
-
-    drive = await _appBLL.Drives.StartingDriveAsync(id, userId, roleName);
+    
+    var drive = await _appBLL.Drives.StartingDriveAsync(id, userId, roleName);
     if (drive == null) return NotFound();
 
     drive.DriveStartDateAndTime = DateTime.Now.ToUniversalTime();
@@ -519,7 +512,7 @@ public async Task<IActionResult> EndDrive(Guid? id)
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.PickupAddress = drive.Booking.PickupAddress;
-    vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
+    vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
     vm.StatusOfBooking = drive.Booking.StatusOfBooking;
@@ -548,10 +541,8 @@ public async Task<IActionResult> EndDriveConfirmed(Guid id)
 {
     var userId = User.GettingUserId();
     var roleName = User.GettingUserRoleName();
-    var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, userId, roleName);
-    if (drive == null) return NotFound();
-
-    drive = await _appBLL.Drives.EndingDriveAsync(id, userId, roleName);
+    
+    var drive = await _appBLL.Drives.EndingDriveAsync(id, userId, roleName);
     if (drive == null) return NotFound();
 
     drive.IsDriveFinished = true;

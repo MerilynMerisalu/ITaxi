@@ -141,25 +141,25 @@
             <td>
             @if (item.IsDriveDeclined || (item.IsDriveAccepted && item.IsDriveDeclined))
             {
-                @Html.DisplayFor(modelItem => item.DriveDeclineDateAndTime)
+                @Html.DisplayFor(modelItem => item.DriveDeclinedDateTimeDriverView)
             }
             </td>
             <td>
                 @if (item.IsDriveAccepted)
                 {
-                    @Html.DisplayFor(modelItem => item.DriveAcceptedDateAndTime)
+                    @Html.DisplayFor(modelItem => item.DriveAcceptedDateTimeDriverView)
                 }
             </td>
             <td>
             @if (item.IsDriveStarted || (item.IsDriveAccepted && item.IsDriveStarted))
             {
-                @Html.DisplayFor(modelItem => item.DriveStartDateAndTime)
+                @Html.DisplayFor(modelItem => item.DriveStartedDateTimeDriverView)
             }
             </td>
             <td>
             @if (item.IsDriveFinished)
             {
-                @Html.DisplayFor(modelItem => item.DriveEndDateAndTime)
+                @Html.DisplayFor(modelItem => item.DriveEndDateTimeDriverView)
             }
             </td>
 

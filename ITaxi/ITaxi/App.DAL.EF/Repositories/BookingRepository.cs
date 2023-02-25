@@ -178,14 +178,15 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
         return RepoDbContext.Bookings.Any(b => b.ScheduleId.Equals(id));
     }
 
-    public async Task<BookingDTO> GettingBookingByDriveIdAsync(Guid id, bool noIncludes = true, bool noTracking = true)
+    public async Task<BookingDTO> GettingBookingByDriveIdAsync(Guid id, Guid? userId = null, string? roleName = null,
+        bool noIncludes = true, bool noTracking = true)
     {
-        return Mapper.Map(await CreateQuery(noTracking, noIncludes).SingleOrDefaultAsync(b => b.DriveId.Equals(id)))!;
+        return Mapper.Map(await CreateQuery(userId, roleName,noTracking, noIncludes).SingleOrDefaultAsync(b => b.DriveId.Equals(id)))!;
     }
 
-    public BookingDTO GettingBookingByDriveId(Guid id, bool noIncludes = true, bool noTracking = true)
+    public BookingDTO GettingBookingByDriveId(Guid id, Guid? userId = null, string? roleName = null,  bool noIncludes = true, bool noTracking = true)
     {
-        return  Mapper.Map(CreateQuery(noTracking, noIncludes).SingleOrDefault(b => b.DriveId.Equals(id)))!;
+        return  Mapper.Map(CreateQuery(userId, roleName,noTracking, noIncludes).SingleOrDefault(b => b.DriveId.Equals(id)))!;
     }
 
 
@@ -208,6 +209,10 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
     {
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
+        if (noIncludes)
+        {
+            return query;
+        }
 
         if (roleName is ("Admin"))
         {
@@ -239,7 +244,7 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
             .ThenInclude(v => v.Translations)
             .Include(c => c.Drive)
             .ThenInclude(c => c!.Comment)
-            .Where(u => u.Customer!.AppUserId.Equals(userId));
+            .Where(u => u.Customer!.AppUserId.Equals(userId) || u.Driver!.AppUserId.Equals(userId)) ;
         return query;
     }
     

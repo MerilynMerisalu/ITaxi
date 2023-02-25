@@ -37,7 +37,9 @@ public interface IBookingRepositoryCustom<TEntity>
         bool noTracking = true, bool noIncludes = false);
     Task<bool> HasAnyScheduleAsync(Guid id);
     bool HasAnySchedule(Guid id);
-    Task<TEntity> GettingBookingByDriveIdAsync(Guid id, bool noIncludes = true, bool noTracking = true);
-    TEntity GettingBookingByDriveId(Guid id, bool noIncludes = true, bool noTracking = true);
+    Task<TEntity> GettingBookingByDriveIdAsync(Guid id, Guid? userId = null, 
+        string? roleName = null, bool noIncludes = true, bool noTracking = true);
+    TEntity GettingBookingByDriveId(Guid id, Guid? userId = null, 
+        string? roleName = null, bool noIncludes = true, bool noTracking = true);
 
 }
