@@ -58,7 +58,7 @@ public class DrivesController : Controller
         vm.DestinationAddress = drive.Booking.DestinationAddress;
         vm.PickupAddress = drive.Booking.PickupAddress;
         vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
-        vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
+        vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
         vm.HasAnAssistant = drive.Booking.HasAnAssistant;
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
