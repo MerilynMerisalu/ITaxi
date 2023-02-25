@@ -1,7 +1,7 @@
 @using App.Resources.Areas.App.Domain.DriverArea
 @using Base.Resources
 @using App.Domain.Enum
-@model IEnumerable<App.DAL.DTO.AdminArea.DriveDTO>
+@model IEnumerable<App.BLL.DTO.AdminArea.DriveDTO>
 
 @{
     ViewData["Title"] = Common.Index;
@@ -115,7 +115,7 @@
                 @Html.DisplayFor(modelItem => item.Booking!.DestinationAddress)
             </td>
             <td>
-                @Html.DisplayTextFor(modelItem => item.Booking!.VehicleType!.VehicleTypeName)
+                @Html.DisplayTextFor(modelItem => item.Booking!.Vehicle!.VehicleType!.VehicleTypeName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Booking!.Vehicle!.VehicleIdentifier)

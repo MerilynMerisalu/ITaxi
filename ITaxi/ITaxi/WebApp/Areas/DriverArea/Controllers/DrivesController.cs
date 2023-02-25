@@ -1,4 +1,5 @@
 #nullable enable
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.Domain.Enum;
 using Base.Extensions;
@@ -13,9 +14,9 @@ namespace WebApp.Areas.DriverArea.Controllers;
 [Authorize(Roles = "Admin, Driver")]
 public class DrivesController : Controller
 {
-    private readonly IAppUnitOfWork _appBLL;
+    private readonly IAppBLL _appBLL;
 
-    public DrivesController(IAppUnitOfWork appBLL)
+    public DrivesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
 
@@ -240,15 +241,7 @@ public async Task<IActionResult> Print()
     var userId = User.GettingUserId();
     
     var drives = await _appBLL.Drives.PrintAsync( userId, roleName );
-    foreach (var drive in drives)
-    {
-        if (drive != null)
-        {
-            drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime;
-            drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
-            drive.Booking.PickUpDateAndTime = drive.Booking.PickUpDateAndTime;
-        }
-    }
+    
     return new ViewAsPdf("PrintDrives", drives);
 
 }

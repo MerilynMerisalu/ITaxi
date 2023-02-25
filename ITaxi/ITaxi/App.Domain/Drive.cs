@@ -41,8 +41,6 @@ public class Drive : DomainEntityMetaId
         get =>
             $"{Booking!.PickUpDateAndTime:g} " +
             $"- {Driver!.AppUser!.LastAndFirstName}";
-
-       
     }
 
     public string? DriveAcceptInformation => $"{StatusOfDrive} {AcceptedBy} {DriveAcceptedDateAndTime}";
