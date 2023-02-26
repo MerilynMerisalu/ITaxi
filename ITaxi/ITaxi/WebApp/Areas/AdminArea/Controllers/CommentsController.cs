@@ -29,9 +29,7 @@ public class CommentsController : Controller
 #warning Ask how to get the user role using interface
         
         var roleName = User.GettingUserRoleName();
-        var res = await _appBLL.Comments.GettingAllOrderedCommentsWithIncludesAsync(null, roleName);
-        
-        
+        var res = await _appBLL.Comments.GettingAllOrderedCommentsWithIncludesAsync(roleName:roleName);
         return View(res);
     }
 
@@ -47,7 +45,7 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
+        vm.Drive = comment.Drive.Booking.PickUpDateAndTime.ToString("g");
         vm.CustomerName = comment.Drive!.Booking!.Customer!.AppUser!.LastAndFirstName;
         vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
@@ -67,10 +65,10 @@ public class CommentsController : Controller
 
         var roleName = User.GettingUserRoleName();
         var drives = await _appBLL.Drives.GettingDrivesWithoutCommentAsync(null, roleName);
-        foreach (var drive in drives)
+        /*foreach (var drive in drives)
         {
             if (drive != null) drive.Booking!.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
-        }
+        }*/
         vm.Drives = new SelectList(drives,
             nameof(App.BLL.DTO.AdminArea.DriveDTO.Id), nameof(App.BLL.DTO.AdminArea.DriveDTO.DriveDescription));
 

@@ -425,7 +425,7 @@ public class BookingsController : Controller
         if (id == null) return NotFound();
 
         var roleName = User.GettingUserRoleName();
-        var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, null, roleName);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, null, roleName, noIncludes:false);
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
@@ -568,13 +568,13 @@ public class BookingsController : Controller
     {
         var roleName = User.GettingUserRoleName();
         var booking = await _appBLL.Bookings.GettingBookingAsync(id, null,roleName );
-        var drive = await _appBLL.Drives.SingleOrDefaultAsync(d => d != null && d.Booking!.Id.Equals(id), false);
+        var drive = await _appBLL.Drives.GettingDriveByBookingIdAsync(id, null, roleName, noTracking: true,
+            noIncludes: true);
         var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByBookingIdAsync(id, null, null, false);
-        /*var comment =
-            await _appBLL.Comments.SingleOrDefaultAsync(c => drive != null && c != null && c.DriveId.Equals(drive.Id),
-                false);
-        if (comment != null) _appBLL.Comments.Remove(comment);*/
-        if (drive != null) _appBLL.Drives.Remove(drive);
+        var comment =
+            await _appBLL.Comments.GettingCommentByDriveIdAsync(drive.Id, noTracking:true);
+        if (comment != null) _appBLL.Comments.Remove(comment);
+        if (drive != null) await _appBLL.Drives.RemoveAsync(drive.Id);
          if (rideTime != null)
         {
             rideTime.BookingId = null;

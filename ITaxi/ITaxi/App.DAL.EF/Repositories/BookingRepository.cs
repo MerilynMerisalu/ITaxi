@@ -192,6 +192,8 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
         return  Mapper.Map(CreateQuery(userId, roleName,noTracking, noIncludes).SingleOrDefault(b => b.DriveId.Equals(id)))!;
     }
 
+    
+
 
     public  async Task<BookingDTO?> FirstOrDefaultAsync(Guid id,Guid? userId = null, string? 
         roleName = null, bool noTracking = true, bool noIncludes = false)

@@ -48,9 +48,9 @@ public class CommentRepository : BaseEntityRepository<CommentDTO, App.Domain.Com
 
 
     public async Task<IEnumerable<CommentDTO>> GettingAllOrderedCommentsWithIncludesAsync(
-        Guid? userId= null, string? roleName = null,bool noTracking = true)
+        Guid? userId= null, string? roleName = null,bool noTracking = true, bool noIncludes = false)
     {
-        return (await CreateQuery(userId, roleName,noTracking)
+        var res =(await CreateQuery(userId, roleName,noIncludes, noTracking)
             .OrderBy(c => c.Drive!.Booking!.PickUpDateAndTime.Date)
             .ThenBy(c => c.Drive!.Booking!.PickUpDateAndTime.Day)
             .ThenBy(c => c.Drive!.Booking!.PickUpDateAndTime.Month)
@@ -59,6 +59,7 @@ public class CommentRepository : BaseEntityRepository<CommentDTO, App.Domain.Com
             .ThenBy(c => c.Drive!.Booking!.PickUpDateAndTime.Minute)
             .ThenBy(c => c.CommentText)
             .ToListAsync()).Select(e => Mapper.Map(e))!;
+        return res!;
     }
 
     public IEnumerable<CommentDTO> GettingAllOrderedCommentsWithIncludes(Guid? userId = null, string? roleName = null, bool noTracking = true)
@@ -76,7 +77,7 @@ public class CommentRepository : BaseEntityRepository<CommentDTO, App.Domain.Com
 
     public async Task<IEnumerable<CommentDTO>> GettingAllOrderedCommentsWithoutIncludesAsync(bool noTracking = true)
     {
-        return (await CreateQuery(noTracking, noIncludes: true)
+        return (await CreateQuery(noTracking, noIncludes: false)
             .OrderBy(c => c.CommentText).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
@@ -122,18 +123,35 @@ public class CommentRepository : BaseEntityRepository<CommentDTO, App.Domain.Com
             .FirstOrDefault(c => c.Id.Equals(id)));
     }
 
+    public async Task<CommentDTO?> GettingCommentByDriveIdAsync(Guid driveId, Guid? userId = null, 
+        string? roleName = null, bool noIncludes = true, bool noTracking = true)
+    {
+        return Mapper.Map(await CreateQuery(userId, roleName, noIncludes, noTracking)
+            .FirstOrDefaultAsync(c => c.Drive!.Booking!.Id.Equals(driveId)));
+    }
+
+
+    public CommentDTO? GettingCommentByDriveId(Guid driveId, 
+        Guid? userId = null, string? roleName = null,
+        bool noIncludes = true, bool noTracking = true)
+    {
+        return Mapper.Map(CreateQuery(userId, roleName, noIncludes, noTracking)
+            .FirstOrDefault(c => c.Drive!.Booking!.Id.Equals(driveId)));
+    }
+
     protected  IQueryable<Comment> CreateQuery(Guid? userId= null, string? roleName = null,
        bool noIncludes = false, bool noTracking = true)
     {
+        
         var query = RepoDbSet.AsQueryable();
         if (noTracking) query = query.AsNoTracking();
+        if (noIncludes == true )
+        {
+            return query;
+        }
 
         if (roleName is "Admin")
         {
-            if (noIncludes == true )
-            {
-                return query;
-            }
             query.Include(c => c.Drive)
                 .ThenInclude(d => d!.Booking)
                 .ThenInclude(d => d!.Customer)
@@ -141,14 +159,11 @@ public class CommentRepository : BaseEntityRepository<CommentDTO, App.Domain.Com
                 .Include(d => d.Drive)
                 .ThenInclude(d => d!.Driver)
                 .ThenInclude(d => d!.AppUser);
-
+            query = query;
             return query;
         }
 
-        if (noIncludes)
-        {
-            return query;
-        }
+        
         query = query.Include(c => c.Drive)
             .ThenInclude(d => d!.Booking)
             .ThenInclude(d => d!.Customer)

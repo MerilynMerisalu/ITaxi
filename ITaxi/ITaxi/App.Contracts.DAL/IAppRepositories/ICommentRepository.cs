@@ -13,7 +13,8 @@ public interface ICommentRepositoryCustom<TEntity>
 {
     Task<IEnumerable<TEntity>> GetAllCommentsWithoutIncludesAsync(bool noTracking = true);
     IEnumerable<TEntity> GetAllCommentsWithoutIncludes(bool noTracking = true);
-    Task<IEnumerable<TEntity>> GettingAllOrderedCommentsWithIncludesAsync(Guid? userId = null, string? roleName = null,bool noTracking = true);
+    Task<IEnumerable<TEntity>> GettingAllOrderedCommentsWithIncludesAsync(Guid? userId = null, string? roleName = null
+        ,bool noTracking = true, bool noIncludes = false);
     //IEnumerable<Comment> GettingAllOrderedCommentsWithIncludes(bool noTracking = true);
     Task<IEnumerable<TEntity>> GettingAllOrderedCommentsWithoutIncludesAsync(bool noTracking = true);
     IEnumerable<TEntity> GettingAllOrderedCommentsWithoutIncludes(bool noTracking = true);
@@ -24,4 +25,8 @@ public interface ICommentRepositoryCustom<TEntity>
          bool noIncludes = false, bool noTracking = true);
     TEntity? GettingTheFirstComment(Guid id, Guid? userId = null, string? roleName = null, 
         bool noIncludes = false, bool noTracking = true);
+    Task<TEntity?> GettingCommentByDriveIdAsync(Guid driveId, Guid? userId = null, string? roleName = null,
+        bool noIncludes = true, bool noTracking = false);
+    TEntity? GettingCommentByDriveId(Guid driveId, Guid? userId = null, string? roleName = null,
+        bool noIncludes = true, bool noTracking = false);
 }

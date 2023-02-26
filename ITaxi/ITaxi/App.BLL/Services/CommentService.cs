@@ -26,9 +26,9 @@ public class CommentService: BaseEntityService<App.BLL.DTO.AdminArea.CommentDTO,
     }
 
     public async Task<IEnumerable<CommentDTO>> GettingAllOrderedCommentsWithIncludesAsync(Guid?
-        userId = null, string? roleName = null, bool noTracking = true)
+        userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
-        return (await Repository.GettingAllOrderedCommentsWithIncludesAsync(userId, roleName, noTracking))
+        return (await Repository.GettingAllOrderedCommentsWithIncludesAsync(userId, roleName, noTracking, noIncludes))
             .Select(e => Mapper.Map(e))!;
     }
 
@@ -64,5 +64,18 @@ public class CommentService: BaseEntityService<App.BLL.DTO.AdminArea.CommentDTO,
         string? roleName = null, bool noIncludes = false, bool noTracking = true)
     {
         return Mapper.Map(Repository.GettingTheFirstComment(id, userId, roleName, noIncludes, noTracking));
+    }
+
+    public async Task<CommentDTO?> GettingCommentByDriveIdAsync(Guid driveId, Guid? userId = null, string? roleName = null,
+        bool noIncludes = true, bool noTracking = true)
+    {
+        return Mapper.Map(
+            await Repository.GettingCommentByDriveIdAsync(driveId, userId, roleName, noIncludes, noTracking));
+    }
+
+    public CommentDTO? GettingCommentByDriveId(Guid driveId, Guid? userId = null, string? roleName = null,
+        bool noIncludes = true, bool noTracking = true)
+    {
+        return Mapper.Map(Repository.GettingCommentByDriveId(driveId, userId, roleName, noIncludes, noTracking));
     }
 }
