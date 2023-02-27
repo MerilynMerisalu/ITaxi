@@ -351,7 +351,8 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
     public async Task<DriveDTO?> GettingDriveByBookingIdAsync(Guid bookingId, Guid? userId = null, string? roleName = null
         ,bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await RepoDbSet.FirstOrDefaultAsync(d => d.Booking!.Id.Equals(bookingId)));
+        return Mapper.Map(await CreateQuery(userId, roleName, noTracking, noIncludes)
+            .FirstOrDefaultAsync(d => d.Booking!.Id.Equals(bookingId)));
     }
 
     public DriveDTO? GettingDriveByBookingId(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true,

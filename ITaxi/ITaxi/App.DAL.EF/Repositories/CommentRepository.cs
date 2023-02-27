@@ -152,7 +152,7 @@ public class CommentRepository : BaseEntityRepository<CommentDTO, App.Domain.Com
 
         if (roleName is "Admin")
         {
-            query.Include(c => c.Drive)
+            query = query.Include(c => c.Drive)
                 .ThenInclude(d => d!.Booking)
                 .ThenInclude(d => d!.Customer)
                 .ThenInclude(d => d!.AppUser)

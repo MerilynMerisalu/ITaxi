@@ -567,15 +567,15 @@ public class BookingsController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var roleName = User.GettingUserRoleName();
-        var booking = await _appBLL.Bookings.GettingBookingAsync(id, null,roleName );
-        var drive = await _appBLL.Drives.GettingDriveByBookingIdAsync(id, null, roleName, noTracking: true,
-            noIncludes: true);
-        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByBookingIdAsync(id, null, null, false);
-        var comment =
-            await _appBLL.Comments.GettingCommentByDriveIdAsync(drive.Id, noTracking:true);
-        if (comment != null) _appBLL.Comments.Remove(comment);
-        if (drive != null) await _appBLL.Drives.RemoveAsync(drive.Id);
-         if (rideTime != null)
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id, null, roleName, noIncludes: true);
+        //var drive = await _appBLL.Drives.GettingDriveByBookingIdAsync(id, null, roleName, noTracking: true,
+        //    noIncludes: true);
+        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByBookingIdAsync(id, null, null, true, true);
+        //var comment =
+        //    await _appBLL.Comments.GettingCommentByDriveIdAsync(drive!.Id, noTracking: true);
+        //if (comment != null) _appBLL.Comments.Remove(comment);
+        //if (drive != null) await _appBLL.Drives.RemoveAsync(drive.Id);
+        if (rideTime != null)
         {
             rideTime.BookingId = null;
             rideTime.ExpiryTime = null;
@@ -583,8 +583,14 @@ public class BookingsController : Controller
             _appBLL.RideTimes.Update(rideTime);
         }
 
-        if (booking != null) _appBLL.Bookings.Remove(booking);
         await _appBLL.SaveChangesAsync();
+
+        if (booking != null)
+        {
+            _appBLL.Bookings.Remove(booking);
+            await _appBLL.SaveChangesAsync();
+        }
+
         return RedirectToAction(nameof(Index));
     }
 

@@ -45,9 +45,9 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.Drive = comment.Drive.Booking.PickUpDateAndTime.ToString("g");
+        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
         vm.CustomerName = comment.Drive!.Booking!.Customer!.AppUser!.LastAndFirstName;
-        vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
+        vm.DriverName = comment.Drive!.Booking!.Drive!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.CreatedAt = comment.CreatedAt;
         vm.CreatedBy = comment.CreatedBy!;

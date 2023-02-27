@@ -44,6 +44,9 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
                      .SelectMany(e => e.GetForeignKeys()))
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
 
+        builder.Entity<Drive>().HasOne(x => x.Comment).WithOne(x => x.Drive).OnDelete(DeleteBehavior.Cascade);
+        builder.Entity<Booking>().HasOne(x => x.Drive).WithOne(x => x.Booking).OnDelete(DeleteBehavior.Cascade);
+        
         builder.Entity<DriverAndDriverLicenseCategory>()
             .HasOne(e => e.Driver)
             .WithMany(l => l.DriverLicenseCategories)
