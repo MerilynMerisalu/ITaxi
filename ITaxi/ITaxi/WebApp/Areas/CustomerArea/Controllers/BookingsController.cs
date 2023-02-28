@@ -355,7 +355,7 @@ public class BookingsController : Controller
         vm.HasAnAssistant = booking.HasAnAssistant;
         vm.NumberOfPassengers = booking.NumberOfPassengers;
         vm.StatusOfBooking = booking.StatusOfBooking;
-        vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToLocalTime().ToString("g");
+        vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToString("g");
 
 
         return View(vm);
@@ -372,7 +372,8 @@ public class BookingsController : Controller
         var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName, false);
         if (booking != null)
         {
-            var drive = await _appBLL.Drives.SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(id), false);
+            var drive = await _appBLL.Drives.GettingDriveByBookingIdAsync(booking.Id, userId, roleName,
+                noIncludes: true);
             await _appBLL.Bookings.BookingDeclineAsync(booking.Id, userId, roleName);
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             drive!.Booking = booking;

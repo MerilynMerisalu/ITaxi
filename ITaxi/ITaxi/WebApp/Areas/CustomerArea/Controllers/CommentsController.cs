@@ -47,7 +47,7 @@ public class CommentsController : Controller
 
         vm.Id = comment.Id;
         vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
-        vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
+        vm.DriverName = comment.Drive!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
 
 
@@ -179,7 +179,7 @@ public class CommentsController : Controller
         vm.Id = comment.Id;
         vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
 
-        vm.DriverName = comment.Drive!.Booking!.Driver!.AppUser!.LastAndFirstName;
+        vm.DriverName = comment.Drive!.Driver!.AppUser!.LastAndFirstName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
 
 
