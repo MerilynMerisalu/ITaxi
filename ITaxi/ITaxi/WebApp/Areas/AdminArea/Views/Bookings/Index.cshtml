@@ -150,7 +150,7 @@
             <td>
                 @if (item.StatusOfBooking == StatusOfBooking.Declined)
                 {
-                    <a hidden asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a>
+                     <p style="display:inline"><a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a> |</p>
                 }
                 else
                 {
@@ -160,8 +160,8 @@
                 
 
                 @*<a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |*@
-                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a>
+                
             </td>
         </tr>
     }

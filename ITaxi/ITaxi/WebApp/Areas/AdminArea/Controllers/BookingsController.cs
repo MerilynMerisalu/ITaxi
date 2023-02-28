@@ -253,6 +253,11 @@ public class BookingsController : Controller
 #warning Booking PickUpDateAndTime needs a custom validation
             booking.PickUpDateAndTime = DateTime.Parse(vm.PickUpDateAndTime).ToUniversalTime();
             
+            booking.CreatedAt = DateTime.Now.ToUniversalTime();
+            booking.CreatedBy = User.GettingUserEmail();
+            booking.UpdatedAt = booking.CreatedAt;
+            booking.UpdatedBy = booking.CreatedBy;
+            
             // Assign the Drive via the implicit related object creation
             var drive = booking.Drive = new App.BLL.DTO.AdminArea.DriveDTO()
             {

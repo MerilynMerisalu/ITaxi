@@ -53,7 +53,7 @@ public class CreateBookingViewModel
     public string? AdditionalInfo { get; set; }
 
     public Guid DriverId { get; set; }
-    public Guid ScheduleId { get; set; }
+    public Guid? ScheduleId { get; set; }
     public Guid RideTimeId { get; set; }
 
     public SelectList? RideTimes  { get; set; }

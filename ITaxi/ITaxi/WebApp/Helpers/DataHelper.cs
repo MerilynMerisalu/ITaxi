@@ -657,9 +657,11 @@ public static class DataHelper
                     HasAnAssistant = true,
                     StatusOfBooking = StatusOfBooking.Awaiting,
                     CreatedBy = "System",
-                    CreatedAt = DateTime.Now.ToUniversalTime()
+                    CreatedAt = DateTime.Now.ToUniversalTime(),
                 };
-
+                booking.UpdatedBy = booking.CreatedBy;
+                booking.UpdatedAt = booking.CreatedAt;
+                
                 rideTime1.Booking = booking;
                 rideTime1.IsTaken = true;
                 booking.PickUpDateAndTime = rideTime1.RideDateTime;
@@ -705,7 +707,9 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
-
+                booking.UpdatedBy = booking.CreatedBy;
+                booking.UpdatedAt = booking.CreatedAt;
+                
                 rideTime2.Booking = booking;
                 rideTime2.IsTaken = true;
                 booking.PickUpDateAndTime = rideTime2.RideDateTime;
