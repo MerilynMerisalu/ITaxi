@@ -132,17 +132,41 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
 
     
 
-
+/// <summary>
+/// Decline the booking, this will also decline the associated drive and set the times.
+/// </summary>
+/// <param name="id">Id of the booking to decline</param>
+/// <param name="userId">Id of the current user</param>
+/// <param name="roleName"></param>
+/// <param name="noTracking"></param>
+/// <param name="noIncludes"></param>
+/// <returns></returns>
     public async Task<BookingDTO?> BookingDeclineAsync(Guid id, Guid? userId = null, string? roleName = null, 
         bool noTracking = true, bool noIncludes = true)
     {
-        var booking = await FirstOrDefaultAsync(id, userId, roleName, noTracking, noIncludes);
+        var booking = await RepoDbContext.Bookings.FirstOrDefaultAsync(x => x.Id == id);
         if (booking == null)
         {
             return null;
         }
         booking.StatusOfBooking = StatusOfBooking.Declined;
-        return booking;
+        booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
+        
+        var user = await RepoDbContext.Users.FirstOrDefaultAsync(x => x.Id == userId!.Value);
+        booking.DeclinedBy = user!.Email;
+        
+        var drive = await RepoDbContext.Drives.FirstOrDefaultAsync(x => x.Id == booking.DriveId);
+        if (drive != null)
+        {
+            drive.IsDriveDeclined = true;
+            drive.StatusOfDrive = StatusOfDrive.Declined;
+            drive.DriveDeclineDateAndTime = booking.DeclineDateAndTime;
+            RepoDbContext.Drives.Update(drive);
+        }
+       
+        await RepoDbContext.SaveChangesAsync();
+        
+        return await FirstOrDefaultAsync(id, userId, roleName, noTracking, noIncludes);
     }
 
     public BookingDTO? BookingDecline(Guid id, Guid? userId = null, string? roleName = null)

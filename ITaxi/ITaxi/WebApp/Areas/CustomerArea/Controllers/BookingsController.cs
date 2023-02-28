@@ -270,8 +270,8 @@ public class BookingsController : Controller
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     
-    [HttpPost]
-    [ValidateAntiForgeryToken]
+    //[HttpPost]
+   // [ValidateAntiForgeryToken]
     /*public async Task<IActionResult> Edit(Guid id, EditBookingViewModel vm)
     {
         var userId = User.GettingUserId();
@@ -372,17 +372,8 @@ public class BookingsController : Controller
         var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName, false);
         if (booking != null)
         {
-            var drive = await _appBLL.Drives.GettingDriveByBookingIdAsync(booking.Id, userId, roleName,
-                noIncludes: true);
             await _appBLL.Bookings.BookingDeclineAsync(booking.Id, userId, roleName);
-            booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
-            drive!.Booking = booking;
-            _appBLL.Bookings.Update(booking);
-            await _appBLL.SaveChangesAsync();
-            _appBLL.Drives.Update(drive);
         }
-
-        await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
