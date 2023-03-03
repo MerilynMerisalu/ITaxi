@@ -12,10 +12,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Rotativa.AspNetCore;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using WebApp;
 using WebApp.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,6 +48,19 @@ builder.Services.AddControllersWithViews(options =>
     .AddDataAnnotationsLocalization(options =>
         options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(Base.Resources.Common)));
         */
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddApiVersioning(options =>
+{
+    options.ReportApiVersions = true;
+    // in case of no explicit version
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+});
+builder.Services.AddVersionedApiExplorer( options => options.GroupNameFormat = "'v'VVV" );
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.CustomSchemaIds(type => type.ToString());
+});
 
 builder.Services.AddSingleton<IConfigureOptions<MvcOptions>,
     ConfigureModelBindingLocalization>();
@@ -98,6 +114,7 @@ builder.Services
         };
     });
 
+
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
 builder.Services.AddTransient<IMailService, MailService>();
 
@@ -142,5 +159,18 @@ app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{id?}");
 
-
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>(); 
+    foreach ( var description in provider.ApiVersionDescriptions )
+    {
+        options.SwaggerEndpoint(
+            $"/swagger/{description.GroupName}/swagger.json",
+            description.GroupName.ToUpperInvariant() 
+        );
+    }
+    // serve from root
+    // options.RoutePrefix = string.Empty;
+});
 app.Run();

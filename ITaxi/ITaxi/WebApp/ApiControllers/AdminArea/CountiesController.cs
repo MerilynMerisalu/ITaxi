@@ -8,9 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/AdminArea/[controller]")]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
 [ApiController]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[ApiVersion("1.0")]
 public class CountiesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
@@ -82,7 +83,12 @@ public class CountiesController : ControllerBase
         _appBLL.Counties.Add(county);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetCounty", new { id = county.Id }, county);
+        return CreatedAtAction("GetCounty", new
+        {
+            id = county.Id,
+            version = HttpContext.GetRequestedApiVersion()?.ToString() ?? "0",
+
+        }, county);
     }
 
     // DELETE: api/Counties/5

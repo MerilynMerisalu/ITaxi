@@ -18,8 +18,8 @@ using WebApp.DTO.Identity;
 
 
 namespace WebApp.ApiControllers.Identity;
-
-[Route("api/identity/[controller]/[action]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/identity/[controller]/[action]")]
 [ApiController]
 
 public class AccountController : ControllerBase
@@ -275,7 +275,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<JwtResponseAdminRegister>> RegisterDriverDTO(DriverRegistrationDTO driverRegistrationDto)
+    public async Task<ActionResult<JwtResponseDriverRegister>> RegisterDriverDTO(DriverRegistrationDTO driverRegistrationDto)
     {
         var appUser = await _userManager.FindByEmailAsync(driverRegistrationDto.Email);
         if (appUser != null)
@@ -409,11 +409,6 @@ public class AccountController : ControllerBase
             UpdatedAt = driver.UpdatedAt,
             UpdatedBy = driver.UpdatedBy
         };
-
-       
-        
-            
-        
         
         var res = new JwtResponseDriverRegister()
         {
