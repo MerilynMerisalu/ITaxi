@@ -145,5 +145,7 @@
     <ItemGroup>
       <None Remove="Areas\AdminArea\Views\Schedules\_schedules.js" />
     </ItemGroup>
-
+    <PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
 </Project>

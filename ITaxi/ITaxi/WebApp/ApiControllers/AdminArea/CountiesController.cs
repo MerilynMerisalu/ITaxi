@@ -22,8 +22,15 @@ public class CountiesController : ControllerBase
         
     }
 
-    // GET: api/RideTimes
+    // GET: api/counties
+    /// <summary>
+    /// Gets all the counties 
+    /// </summary>
+    /// <returns>List of counties</returns>
     [HttpGet]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(IEnumerable<CountyDTO>), 
+        StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<CountyDTO>>> GetCounties()
     {
         var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
@@ -33,7 +40,16 @@ public class CountiesController : ControllerBase
     }
 
     // GET: api/Counties/5
+    /// <summary>
+    /// Returns county based on id
+    /// </summary>
+    /// <param name="id">County id, Guid</param>
+    /// <returns>County(TEntity)</returns>
     [HttpGet("{id}")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(CountyDTO), 
+        StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<CountyDTO>> GetCounty(Guid id)
     {
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
