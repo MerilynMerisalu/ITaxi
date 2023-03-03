@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.ApiControllers.AdminArea;
 
+/// <summary>
+/// Api controller for counties
+/// </summary>
 [Route("api/v{version:apiVersion}/AdminArea/[controller]")]
 [ApiController]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -16,6 +19,10 @@ public class CountiesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    ///  constructor for counties
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public CountiesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
@@ -31,6 +38,9 @@ public class CountiesController : ControllerBase
     [Produces("application/json")]
     [ProducesResponseType(typeof(IEnumerable<CountyDTO>), 
         StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+
     public async Task<ActionResult<IEnumerable<CountyDTO>>> GetCounties()
     {
         var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
@@ -50,6 +60,9 @@ public class CountiesController : ControllerBase
     [ProducesResponseType(typeof(CountyDTO), 
         StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    
     public async Task<ActionResult<CountyDTO>> GetCounty(Guid id)
     {
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
@@ -63,10 +76,22 @@ public class CountiesController : ControllerBase
 
     // PUT: api/Counties/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    /// <summary>
+    /// Updating an county 
+    /// </summary>
+    /// <param name="id">An id of the entity which is updated</param>
+    /// <param name="countyDTO">DTO which holds the values</param>
+    /// <returns>StatusCode 204 or StatusCode 403 or Statuscode 404 or statusCode 401 </returns>
     [HttpPut("{id}")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(CountyDTO), 
+        StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PutCounty(Guid id, CountyDTO countyDTO)
     {
-
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
         if (county == null)
         {
@@ -87,7 +112,19 @@ public class CountiesController : ControllerBase
 
     // POST: api/Counties
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    /// <summary>
+    /// Creating a new county
+    /// </summary>
+    /// <param name="county">CountyDTO with properties</param>
+    /// <returns>Status201Created with an entity</returns>
     [HttpPost]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(CountyDTO), 
+        StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    
     public async Task<ActionResult<CountyDTO>> PostCounty(CountyDTO county)
     {
 
@@ -108,6 +145,16 @@ public class CountiesController : ControllerBase
     }
 
     // DELETE: api/Counties/5
+    /// <summary>
+    /// Deletes an entity
+    /// </summary>
+    /// <param name="id">Id of an entity</param>
+    /// <returns>Status204</returns>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCounty(Guid id)
     {
@@ -119,7 +166,15 @@ public class CountiesController : ControllerBase
 
         return NoContent();
     }
-
+    /// <summary>
+    /// Return a boolean based on whether or not an entity exists
+    /// </summary>
+    /// <param name="id">Entity id guid</param>
+    /// <returns>boolean value</returns>
+    
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     private bool CountyExists(Guid id)
     {
         return _appBLL.Counties.Exists(id);

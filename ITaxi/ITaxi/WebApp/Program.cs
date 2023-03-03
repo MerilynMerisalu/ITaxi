@@ -1,8 +1,5 @@
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using App.BLL;
 using App.Contracts.BLL;
 using App.Contracts.DAL;
@@ -16,12 +13,10 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Rotativa.AspNetCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApp;
 using WebApp.Helpers;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -60,33 +55,9 @@ builder.Services.AddVersionedApiExplorer( options => options.GroupNameFormat = "
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-    {
-        In = ParameterLocation.Header,
-        Description = "Please insert token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "bearer"
-    });
-    
     options.CustomSchemaIds(type => type.ToString());
 });
-builder.Services.AddSwaggerGen(s => s.AddSecurityRequirement(
-    new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new List<string>()
-        }
-    }));
+
 
 builder.Services.AddSingleton<IConfigureOptions<MvcOptions>,
     ConfigureModelBindingLocalization>();
