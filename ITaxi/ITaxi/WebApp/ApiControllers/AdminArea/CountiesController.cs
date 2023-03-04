@@ -11,10 +11,11 @@ namespace WebApp.ApiControllers.AdminArea;
 /// <summary>
 /// Api controller for counties
 /// </summary>
-[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
 [ApiController]
-[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
 [ApiVersion("1.0")]
+[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
 public class CountiesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
@@ -36,16 +37,16 @@ public class CountiesController : ControllerBase
     /// <returns>List of counties</returns>
     [HttpGet]
     [Produces("application/json")]
+    //[Consumes("application/json")]
     [ProducesResponseType(typeof(IEnumerable<CountyDTO>), 
         StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-
+    
     public async Task<ActionResult<IEnumerable<CountyDTO>>> GetCounties()
     {
         var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
-        
-            
+
         return Ok(res);
     }
 
@@ -84,6 +85,7 @@ public class CountiesController : ControllerBase
     /// <returns>StatusCode 204 or StatusCode 403 or Statuscode 404 or statusCode 401 </returns>
     [HttpPut("{id}")]
     [Produces("application/json")]
+    [Consumes("application/json")]
     [ProducesResponseType(typeof(CountyDTO), 
         StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -125,9 +127,12 @@ public class CountiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     
-    public async Task<ActionResult<CountyDTO>> PostCounty(CountyDTO county)
+    public async Task<ActionResult<CountyDTO>> PostCounty([FromBody] CountyDTO county)
     {
-
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         county.Id = Guid.NewGuid();
         county.CreatedBy = User.GettingUserEmail();
         county.UpdatedBy = User.GettingUserEmail();
@@ -139,7 +144,7 @@ public class CountiesController : ControllerBase
         return CreatedAtAction("GetCounty", new
         {
             id = county.Id,
-            version = HttpContext.GetRequestedApiVersion()?.ToString() ?? "0",
+            version = HttpContext.GetRequestedApiVersion()!.ToString(),
 
         }, county);
     }

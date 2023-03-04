@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/AdminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DrivesController : ControllerBase
 {
@@ -39,7 +40,7 @@ public class DrivesController : ControllerBase
         return drive;
     }
 
-    // PUT: api/Drives/5
+    /*// PUT: api/Drives/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     public async Task<IActionResult> PutDrive(Guid id, DriveDTO drive)
@@ -67,10 +68,18 @@ public class DrivesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<DriveDTO>> PostDrive(DriveDTO drive)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            
+        }
         _appBLL.Drives.Add(drive);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetDrive", new {id = drive.Id}, drive);
+        return CreatedAtAction("GetDrive", new
+        {
+            id = drive.Id,
+            version = HttpContext.GetRequestedApiVersion().ToString(),
+        }, drive);
     }
 
     // DELETE: api/Drives/5
@@ -89,5 +98,5 @@ public class DrivesController : ControllerBase
     private bool DriveExists(Guid id)
     {
         return _appBLL.Drives.Exists(id);
-    }
+    }*/
 }

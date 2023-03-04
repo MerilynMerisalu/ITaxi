@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/adminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DriverLicenseCategoriesController : ControllerBase
 {
@@ -65,12 +66,21 @@ public class DriverLicenseCategoriesController : ControllerBase
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<DriverLicenseCategoryDTO>> PostDriverLicenseCategory(
-        DriverLicenseCategoryDTO driverLicenseCategory)
+        [FromBody]DriverLicenseCategoryDTO driverLicenseCategory)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+
+        }
         _appBLL.DriverLicenseCategories.Add(driverLicenseCategory);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetDriverLicenseCategory", new {id = driverLicenseCategory.Id}, driverLicenseCategory);
+        return CreatedAtAction("GetDriverLicenseCategory", new
+        {
+            id = driverLicenseCategory.Id, 
+            version = HttpContext.GetRequestedApiVersion()!.ToString(),
+        }, driverLicenseCategory);
     }
 
     // DELETE: api/DriverLicenseCategories/5

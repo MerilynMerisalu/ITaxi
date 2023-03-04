@@ -8,9 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
-[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("api/AdminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
+[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class RideTimesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
@@ -81,8 +82,12 @@ public class RideTimesController : ControllerBase
     // POST: api/RideTimes
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<RideTimeDTO>> PostRideTime(RideTimeDTO rideTime)
+    public async Task<ActionResult<RideTimeDTO>> PostRideTime([FromBody]RideTimeDTO rideTime)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToUniversalTime();
         rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToUniversalTime();
         rideTime.RideDateTime = rideTime.RideDateTime.ToUniversalTime();
@@ -93,7 +98,11 @@ public class RideTimesController : ControllerBase
         _appBLL.RideTimes.Add(rideTime);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetRideTime", new {id = rideTime.Id}, rideTime);
+        return CreatedAtAction("GetRideTime", new
+        {
+            id = rideTime.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString(),
+        }, rideTime);
     }
 
     // DELETE: api/RideTimes/5

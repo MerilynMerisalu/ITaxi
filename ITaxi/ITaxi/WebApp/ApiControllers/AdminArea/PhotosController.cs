@@ -9,8 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/AdminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class PhotosController : ControllerBase
 {
@@ -66,12 +67,17 @@ public class PhotosController : ControllerBase
     // POST: api/Photos
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<PhotoDTO>> PostPhoto(PhotoDTO photo)
+    public async Task<ActionResult<PhotoDTO>> PostPhoto([FromBody]PhotoDTO photo)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         _appBLL.Photos.Add(photo);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetPhoto", new {id = photo.Id}, photo);
+        return CreatedAtAction("GetPhoto", new {id = photo.Id, 
+            version = HttpContext.GetRequestedApiVersion()!.ToString()}, photo);
     }
 
     // DELETE: api/Photos/5

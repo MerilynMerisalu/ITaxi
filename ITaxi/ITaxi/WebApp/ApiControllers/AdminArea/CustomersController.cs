@@ -10,8 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/AdminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CustomersController : ControllerBase
 {
@@ -65,12 +66,20 @@ public class CustomersController : ControllerBase
     // POST: api/Customers
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<CustomerDTO>> PostCustomer(CustomerDTO customer)
+    public async Task<ActionResult<CustomerDTO>> PostCustomer([FromBody]CustomerDTO customer)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         _appBLL.Customers.Add(customer);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetCustomer", new {id = customer.Id}, customer);
+        return CreatedAtAction("GetCustomer", new
+        {
+            id = customer.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString(), 
+        }, customer);
     }
 
     // DELETE: api/Customers/5

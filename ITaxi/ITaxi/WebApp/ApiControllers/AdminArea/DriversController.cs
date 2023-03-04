@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/AdminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DriversController : ControllerBase
 {
@@ -63,12 +64,20 @@ public class DriversController : ControllerBase
     // POST: api/Drivers
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<DriverDTO>> PostDriver(DriverDTO driver)
+    public async Task<ActionResult<DriverDTO>> PostDriver([FromBody]DriverDTO driver)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         _appBLL.Drivers.Add(driver);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetDriver", new {id = driver.Id}, driver);
+        return CreatedAtAction("GetDriver", new
+        {
+            id = driver.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString(),
+        }, driver);
     }
 
     // DELETE: api/Drivers/5

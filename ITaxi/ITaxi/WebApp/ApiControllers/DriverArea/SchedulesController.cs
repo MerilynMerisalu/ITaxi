@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.DriverArea;
-
-[Route("api/DriverArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/DriverArea/[controller]")]
 [Authorize(Roles = "Admin, Driver", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class SchedulesController : ControllerBase
+
 {
     private readonly IAppBLL _appBLL;
 
@@ -81,7 +81,7 @@ public class SchedulesController : ControllerBase
     // POST: api/Schedules
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<ScheduleDTO>> PostSchedule(ScheduleDTO schedule)
+    public async Task<ActionResult<ScheduleDTO>> PostSchedule([FromBody]ScheduleDTO schedule)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
@@ -89,11 +89,20 @@ public class SchedulesController : ControllerBase
         {
             return Forbid();
         }
+
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         schedule.Driver!.AppUserId = userId;
         _appBLL.Schedules.Add(schedule);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetSchedule", new {id = schedule.Id}, schedule);
+        return CreatedAtAction("GetSchedule", new
+        {
+            id = schedule.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString() ,
+        }, schedule);
     }
     
 

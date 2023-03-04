@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/AdminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class VehicleModelsController : ControllerBase
 {
@@ -63,12 +64,20 @@ public class VehicleModelsController : ControllerBase
     // POST: api/VehicleModels
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<VehicleModelDTO>> PostVehicleModel(VehicleModelDTO vehicleModel)
+    public async Task<ActionResult<VehicleModelDTO>> PostVehicleModel([FromBody]VehicleModelDTO vehicleModel)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         _appBLL.VehicleModels.Add(vehicleModel);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetVehicleModel", new {id = vehicleModel.Id}, vehicleModel);
+        return CreatedAtAction("GetVehicleModel", new
+        {
+            id = vehicleModel.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString(),
+        }, vehicleModel);
     }
 
     // DELETE: api/VehicleModels/5

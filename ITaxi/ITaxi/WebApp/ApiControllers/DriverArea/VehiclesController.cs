@@ -8,10 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.DriverArea;
-[Route("api/DriverArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/DriverArea/[controller]")]
 [Authorize(Roles = "Admin, Driver", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-
 public class VehiclesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
@@ -82,8 +81,12 @@ public class VehiclesController : ControllerBase
     // POST: api/Vehicles
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<VehicleDTO>> PostVehicle(VehicleDTO vehicle)
+    public async Task<ActionResult<VehicleDTO>> PostVehicle([FromBody]VehicleDTO vehicle)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         vehicle.Driver!.AppUserId = User.GettingUserId();
         vehicle.CreatedBy = User.Identity!.Name;
         vehicle.CreatedAt = DateTime.Now;
@@ -92,7 +95,11 @@ public class VehiclesController : ControllerBase
         _appBLL.Vehicles.Add(vehicle);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetVehicle", new {id = vehicle.Id}, vehicle);
+        return CreatedAtAction("GetVehicle", new
+        {
+            id = vehicle.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString() ,
+        }, vehicle);
     }
 
     // DELETE: api/Vehicles/5
@@ -102,9 +109,9 @@ public class VehiclesController : ControllerBase
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id);
         if (vehicle == null) return NotFound();
 
-        /*if (await _appBLL.Schedules.AnyAsync(s => s != null && s.VehicleId.Equals(vehicle.Id))
-            || await _appBLL.Bookings.AnyAsync(v => v != null && v.VehicleId.Equals(vehicle.Id)))
-            return BadRequest("Vehicle cannot be deleted! ");*/
+        if (await _appBLL.Vehicles.HasAnySchedulesAnyAsync(vehicle.Id)
+            || await _appBLL.Vehicles.HasAnyBookingsAnyAsync(vehicle.Id))
+            return BadRequest("Vehicle cannot be deleted! ");
         
         _appBLL.Vehicles.Remove(vehicle);
         await _appBLL.SaveChangesAsync();

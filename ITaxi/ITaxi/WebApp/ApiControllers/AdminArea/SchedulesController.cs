@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/AdminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class SchedulesController : ControllerBase
 {
@@ -63,12 +64,20 @@ public class SchedulesController : ControllerBase
     // POST: api/Schedules
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<ScheduleDTO>> PostSchedule(ScheduleDTO schedule)
+    public async Task<ActionResult<ScheduleDTO>> PostSchedule([FromBody]ScheduleDTO schedule)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         _appBLL.Schedules.Add(schedule);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetSchedule", new {id = schedule.Id}, schedule);
+        return CreatedAtAction("GetSchedule", new
+        {
+            id = schedule.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString(),
+        }, schedule);
     }
 
     // DELETE: api/Schedules/5

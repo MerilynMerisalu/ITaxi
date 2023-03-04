@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.ApiControllers.DriverArea;
 
-[Route("api/DriverArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/DriverArea/[controller]")]
 [Authorize(Roles = "Admin, Driver", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DrivesController : ControllerBase
 {
@@ -84,7 +84,7 @@ public class DrivesController : ControllerBase
     */
 
     // DELETE: api/Drives/5
-    [HttpDelete("{id}")]
+    /*[HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDrive(Guid id)
     {
         var drive = await _appBLL.Drives.FirstOrDefaultAsync(id);
@@ -94,7 +94,7 @@ public class DrivesController : ControllerBase
         await _appBLL.SaveChangesAsync();
 
         return NoContent();
-    }
+    }*/
 
     private bool DriveExists(Guid id)
     {

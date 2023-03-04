@@ -8,9 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.CustomerArea;
-[Authorize(Roles = "Admin, Customer", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("api/CustomerArea/[controller]")]
+
 [ApiController]
+[Route("api/v{version:apiVersion}/CustomerArea/[controller]")]
+[Authorize(Roles = "Admin, Customer", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CommentsController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
@@ -27,7 +28,7 @@ public class CommentsController : ControllerBase
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var res = await _appBLL.Comments.GettingAllOrderedCommentsWithIncludesAsync(userId, roleName);
-        
+
         return Ok(res);
     }
 
@@ -40,7 +41,7 @@ public class CommentsController : ControllerBase
         var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, userId, roleName);
 
         if (comment == null) return NotFound();
-        
+
 
         return comment;
     }
@@ -57,6 +58,7 @@ public class CommentsController : ControllerBase
         {
             return NotFound();
         }
+
         try
         {
             comment.UpdatedBy = User.Identity!.Name;
@@ -77,7 +79,7 @@ public class CommentsController : ControllerBase
     // POST: api/Comments
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<CommentDTO>> PostComment(CommentDTO comment)
+    public async Task<ActionResult<CommentDTO>> PostComment([FromBody]CommentDTO comment)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
@@ -86,6 +88,10 @@ public class CommentsController : ControllerBase
             return Forbid();
         }
 
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         comment.Drive.Booking.Customer.AppUserId = userId;
         comment.CreatedBy = User.Identity!.Name;
         comment.CreatedAt = DateTime.Now;
@@ -94,7 +100,11 @@ public class CommentsController : ControllerBase
         _appBLL.Comments.Add(comment);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetComment", new {id = comment.Id}, comment);
+        return CreatedAtAction("GetComment", new
+        {
+            id = comment.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString() ,
+        }, comment);
     }
 
     // DELETE: api/Comments/5

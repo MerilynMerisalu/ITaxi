@@ -9,8 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.CustomerArea;
 
-[Route("api/CustomerArea/[controller]")]
 [ApiController]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/CustomerArea/[controller]")]
 [Authorize(Roles = "Admin, Customer", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class BookingsController : ControllerBase
 {
@@ -84,8 +85,12 @@ public class BookingsController : ControllerBase
     // POST: api/Bookings
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<BookingDTO>> PostBooking(BookingDTO booking)
+    public async Task<ActionResult<BookingDTO>> PostBooking([FromBody]BookingDTO booking)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         var userId = User.GettingUserId();
         if (booking.Customer!.AppUserId != userId)
         {
@@ -100,7 +105,7 @@ public class BookingsController : ControllerBase
             Id = new Guid(),
             DriverId = booking.DriverId,
             Booking = booking,
-            CreatedBy = User.Identity.Name,
+            CreatedBy = User.Identity!.Name,
             CreatedAt = DateTime.Now.ToUniversalTime(),
             UpdatedBy = User.Identity.Name,
             UpdatedAt = DateTime.Now.ToUniversalTime()
@@ -108,7 +113,11 @@ public class BookingsController : ControllerBase
         _appBLL.Drives.Add(drive);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetBooking", new {id = booking.Id}, booking);
+        return CreatedAtAction("GetBooking", new
+        {
+            id = booking.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString(),
+        }, booking);
     }
 
     // DELETE: api/Bookings/5

@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/AdminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class BookingsController : ControllerBase
 {
@@ -67,8 +68,12 @@ public class BookingsController : ControllerBase
     // POST: api/Bookings
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<BookingDTO>> PostBooking(BookingDTO booking)
+    public async Task<ActionResult<BookingDTO>> PostBooking([FromBody] BookingDTO booking)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         _appBLL.Bookings.Add(booking);
 #warning Needs checking
         var drive = new DriveDTO()
@@ -80,7 +85,11 @@ public class BookingsController : ControllerBase
         _appBLL.Drives.Add(drive);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetBooking", new {id = booking.Id}, booking);
+        return CreatedAtAction("GetBooking", new
+        {
+            id = booking.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString() ,
+        }, booking);
     }
 
     // DELETE: api/Bookings/5

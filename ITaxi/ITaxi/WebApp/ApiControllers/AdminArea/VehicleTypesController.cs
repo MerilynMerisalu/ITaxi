@@ -8,9 +8,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/AdminArea/[controller]")]
 [ApiController]
-[Authorize(Roles = "Admin" , AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
+[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class VehicleTypesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
@@ -64,12 +65,17 @@ public class VehicleTypesController : ControllerBase
     // POST: api/VehicleTypes
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<VehicleTypeDTO>> PostVehicleType(VehicleTypeDTO vehicleType)
+    public async Task<ActionResult<VehicleTypeDTO>> PostVehicleType([FromBody]VehicleTypeDTO vehicleType)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory!");
+        }
         _appBLL.VehicleTypes.Add(vehicleType);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetVehicleType", new {id = vehicleType.Id}, vehicleType);
+        return CreatedAtAction("GetVehicleType", new {id = vehicleType.Id, 
+            version = HttpContext.GetRequestedApiVersion()!.ToString(),}, vehicleType);
     }
 
     // DELETE: api/VehicleTypes/5

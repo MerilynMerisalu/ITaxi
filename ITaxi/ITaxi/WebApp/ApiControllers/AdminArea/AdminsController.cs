@@ -9,8 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/adminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class AdminsController : ControllerBase
 {
@@ -70,14 +71,22 @@ public class AdminsController : ControllerBase
     // POST: api/Admins
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<AdminDTO>> PostAdmin(AdminDTO adminDTO)
+    public async Task<ActionResult<AdminDTO>> PostAdmin([FromBody]AdminDTO adminDTO)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         adminDTO.CreatedBy = User.GettingUserEmail();
         adminDTO.UpdatedBy = User.GettingUserEmail();
         _appBLL.Admins.Add(adminDTO);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetAdmin", new {id = adminDTO.Id}, adminDTO);
+        return CreatedAtAction("GetAdmin", new
+        {
+            id = adminDTO.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString(),
+        }, adminDTO);
     }
 
     // DELETE: api/Admins/5

@@ -10,8 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/AdminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CitiesController : ControllerBase
 {
@@ -24,6 +25,7 @@ public class CitiesController : ControllerBase
 
     // GET: api/Cities
     [HttpGet]
+    
     public async Task<ActionResult<IEnumerable<CityDTO>>> GetCities()
     {
         var cities = await _appBLL.Cities.GetAllAsync();
@@ -68,13 +70,22 @@ public class CitiesController : ControllerBase
     // POST: api/Cities
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<CityDTO>> PostCity(CityDTO city)
+    public async Task<ActionResult<CityDTO>> PostCity([FromBody] CityDTO city)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         city.CreatedBy = User.GettingUserEmail();
         _appBLL.Cities.Add(city);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetCity", new {id = city.Id}, city);
+        return CreatedAtAction("GetCity", new
+            {
+                id = city.Id,
+                version = HttpContext.GetRequestedApiVersion()!.ToString() ,
+            },
+            city);
     }
 
     // DELETE: api/Cities/5

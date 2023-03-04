@@ -9,8 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/AdminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class CommentsController : ControllerBase
 {
@@ -65,12 +66,20 @@ public class CommentsController : ControllerBase
     // POST: api/Comments
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<CommentDTO>> PostComment(CommentDTO comment)
+    public async Task<ActionResult<CommentDTO>> PostComment([FromBody] CommentDTO comment)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         _appBLL.Comments.Add(comment);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetComment", new {id = comment.Id}, comment);
+        return CreatedAtAction("GetComment", new
+        {
+            id = comment.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString() ,
+        }, comment);
     }
 
     // DELETE: api/Comments/5

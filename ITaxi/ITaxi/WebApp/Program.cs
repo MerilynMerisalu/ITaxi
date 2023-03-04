@@ -55,7 +55,7 @@ builder.Services.AddVersionedApiExplorer( options => options.GroupNameFormat = "
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.CustomSchemaIds(type => type.ToString());
+    //options.CustomSchemaIds(type => type.ToString());
 });
 
 

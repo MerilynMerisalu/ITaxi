@@ -7,9 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
-[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("api/AdminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
+[Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class VehiclesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
@@ -62,12 +63,20 @@ public class VehiclesController : ControllerBase
     // POST: api/Vehicles
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<VehicleDTO>> PostVehicle(VehicleDTO vehicle)
+    public async Task<ActionResult<VehicleDTO>> PostVehicle([FromBody]VehicleDTO vehicle)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         _appBLL.Vehicles.Add(vehicle);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetVehicle", new {id = vehicle.Id}, vehicle);
+        return CreatedAtAction("GetVehicle", new
+        {
+            id = vehicle.Id,
+            version = HttpContext.GetRequestedApiVersion()!.ToString() ,
+        }, vehicle);
     }
 
     // DELETE: api/Vehicles/5

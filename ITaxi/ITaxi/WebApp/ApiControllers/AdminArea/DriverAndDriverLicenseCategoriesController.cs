@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
-[Route("api/AdminArea/[controller]")]
 [ApiController]
+[Route("api/v{version:apiVersion}/AdminArea/[controller]")]
+[ApiVersion("1.0")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DriverAndDriverLicenseCategoriesController : ControllerBase
 {
@@ -68,12 +69,20 @@ public class DriverAndDriverLicenseCategoriesController : ControllerBase
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<DriverAndDriverLicenseCategoryDTO>> PostDriverAndDriverLicenseCategory(
-        DriverAndDriverLicenseCategoryDTO driverAndDriverLicenseCategory)
+        [FromBody]DriverAndDriverLicenseCategoryDTO driverAndDriverLicenseCategory)
     {
+        if (HttpContext.GetRequestedApiVersion() == null)
+        {
+            return BadRequest("Api version is mandatory");
+        }
         _appBLL.DriverAndDriverLicenseCategories.Add(driverAndDriverLicenseCategory);
         await _appBLL.SaveChangesAsync();
 
-        return CreatedAtAction("GetDriverAndDriverLicenseCategory", new {id = driverAndDriverLicenseCategory.Id},
+        return CreatedAtAction("GetDriverAndDriverLicenseCategory", new
+            {
+                id = driverAndDriverLicenseCategory.Id,
+                version = HttpContext.GetRequestedApiVersion()!.ToString(),
+            },
             driverAndDriverLicenseCategory);
     }
 
