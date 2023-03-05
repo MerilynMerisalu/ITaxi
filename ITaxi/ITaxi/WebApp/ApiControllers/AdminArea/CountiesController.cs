@@ -37,12 +37,9 @@ public class CountiesController : ControllerBase
     /// <returns>List of counties</returns>
     [HttpGet]
     [Produces("application/json")]
-    //[Consumes("application/json")]
-    [ProducesResponseType(typeof(IEnumerable<CountyDTO>), 
-        StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    
+    [Consumes("application/json")]
+    [ProducesResponseType( typeof( IEnumerable<CountyDTO>), StatusCodes.Status200OK )] 
+
     public async Task<ActionResult<IEnumerable<CountyDTO>>> GetCounties()
     {
         var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
