@@ -1,6 +1,7 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using App.Public.DTO.v1.AdminArea;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +22,7 @@ public class CountiesController : ControllerBase
     private readonly IAppBLL _appBLL;
 
     /// <summary>
-    ///  constructor for counties
+    ///  Constructor for county API controller
     /// </summary>
     /// <param name="appBLL">AppBLL</param>
     public CountiesController(IAppBLL appBLL)
@@ -39,8 +40,9 @@ public class CountiesController : ControllerBase
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType( typeof( IEnumerable<CountyDTO>), StatusCodes.Status200OK )] 
-
-    public async Task<ActionResult<IEnumerable<CountyDTO>>> GetCounties()
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<IEnumerable<County>>> GetCounties()
     {
         var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
 
@@ -53,13 +55,15 @@ public class CountiesController : ControllerBase
     /// </summary>
     /// <param name="id">County id, Guid</param>
     /// <returns>County(TEntity)</returns>
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(CountyDTO), 
-        StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(CountyDTO), StatusCodes.Status200OK )] 
+    [ProducesResponseType( StatusCodes.Status404NotFound )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    
+
     
     public async Task<ActionResult<CountyDTO>> GetCounty(Guid id)
     {
@@ -89,7 +93,7 @@ public class CountiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PutCounty(Guid id, CountyDTO countyDTO)
+    public async Task<IActionResult> PutCounty(Guid id, County countyDTO)
     {
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
         if (county == null)

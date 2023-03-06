@@ -25,7 +25,6 @@ public class CitiesController : ControllerBase
 
     // GET: api/Cities
     [HttpGet]
-    
     public async Task<ActionResult<IEnumerable<CityDTO>>> GetCities()
     {
         var cities = await _appBLL.Cities.GetAllAsync();

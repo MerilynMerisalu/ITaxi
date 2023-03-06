@@ -27,4 +27,7 @@
     <data name="CountyName" xml:space="preserve">
         <value>County</value>
     </data>
+    <data name="NumberOfCities" xml:space="preserve">
+        <value>Number of Cities</value>
+    </data>
 </root>

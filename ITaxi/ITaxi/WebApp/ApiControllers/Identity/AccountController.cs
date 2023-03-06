@@ -29,9 +29,12 @@ public class AccountController : ControllerBase
     private readonly IConfiguration _configuration;
     private readonly ILogger<AccountController> _logger;
     private readonly Random _rand = new Random();
+    #warning code smell check it
     private readonly AppDbContext _context;
+    #warning code smell check it
     private readonly IAppBLL _appBLL;
 
+    
     public AccountController(SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
         IConfiguration configuration,
@@ -46,6 +49,11 @@ public class AccountController : ControllerBase
         _appBLL = appBLL;
     }
 
+    /// <summary>
+    /// Customer registration api endpoint
+    /// </summary>
+    /// <param name="customerRegistrationDTO">Customer registration DTO which holds data for the registration</param>
+    /// <returns>JwtResponseCustomerRegister</returns>
     [HttpPost]
     public async Task<ActionResult<JwtResponseCustomerRegister>> RegisterCustomerDTO
         (CustomerRegistrationDTO customerRegistrationDTO)
@@ -158,6 +166,11 @@ public class AccountController : ControllerBase
         return Ok(res);
     }
 
+    /// <summary>
+    /// Admin registration api endpoint
+    /// </summary>
+    /// <param name="adminRegistrationDTO">Admin registration DTO which holds data for the registration</param>
+    /// <returns>JwtResponseAdminRegister</returns>
     [HttpPost]
     public async Task<ActionResult<JwtResponseAdminRegister>> RegisterAdminDTO(AdminRegistrationDTO adminRegistrationDTO)
     {
@@ -273,7 +286,11 @@ public class AccountController : ControllerBase
             
         return Ok(res);
     }
-
+/// <summary>
+/// Admin registration api endpoint
+/// </summary>
+/// <param name="driverRegistrationDto">Admin registration DTO which holds data for the registration</param>
+/// <returns>JwtResponseAdminRegister</returns>
     [HttpPost]
     public async Task<ActionResult<JwtResponseDriverRegister>> RegisterDriverDTO(DriverRegistrationDTO driverRegistrationDto)
     {
@@ -424,6 +441,11 @@ public class AccountController : ControllerBase
             
         return Ok(res);
     }
+/// <summary>
+/// Log in api endpoint
+/// </summary>
+/// <param name="loginData">Supply email and password</param>
+/// <returns></returns>
     [HttpPost]
     public async Task<ActionResult<JwtResponse>> LogIn([FromBody] LoginDTO loginData)
     {
@@ -480,7 +502,11 @@ public class AccountController : ControllerBase
         };
         return Ok(res);
     }
-
+/// <summary>
+/// Generating a refresh token to grant access without reentering credentials
+/// </summary>
+/// <param name="refreshTokenModel">Refresh token model DTO which holds data for the refresh token</param>
+/// <returns>Action result OK</returns>
     [HttpPost]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenModelDTO refreshTokenModel)
     {
