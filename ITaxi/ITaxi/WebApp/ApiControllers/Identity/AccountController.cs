@@ -30,6 +30,7 @@ public class AccountController : ControllerBase
     private readonly ILogger<AccountController> _logger;
     private readonly Random _rand = new Random();
     #warning code smell check it
+    [Obsolete("Move this code to AppBll", false)]
     private readonly AppDbContext _context;
     #warning code smell check it
     private readonly IAppBLL _appBLL;
@@ -539,11 +540,8 @@ public class AccountController : ControllerBase
             return BadRequest($"User with email ${userEmail} was not found!");
         }
 
-        await _context.Entry(appUser).Collection(u => u.RefreshTokens!)
-            .Query().Where(x => (x.Token == refreshTokenModel.RefreshToken && 
-                                 x.TokenExpirationDateAndTime > DateTime.UtcNow) ||
-                                x.PreviousToken == refreshTokenModel.RefreshToken &&
-                                x.PreviousTokenExpirationDateAndTime > DateTime.UtcNow).ToListAsync();
+        List<RefreshToken> tokens = await GetRefreshTokens(appUser, refreshTokenModel.Token);
+   
         if (appUser.RefreshTokens == null)
         {
             return Problem("Refresh token collection is null");
@@ -599,5 +597,15 @@ public class AccountController : ControllerBase
         
         return Ok(res);
         
+    }
+
+#pragma warning disable 612, 618 
+    public async Task<List<RefreshToken>> GetRefreshTokens(AppUser appUser, string token)
+    {
+        return await _context.Entry(appUser).Collection(u => u.RefreshTokens!)                               
+            .Query().Where(x => (x.Token == token &&                         
+                                 x.TokenExpirationDateAndTime > DateTime.UtcNow) ||                   
+                                x.PreviousToken == token &&                  
+                                x.PreviousTokenExpirationDateAndTime > DateTime.UtcNow).ToListAsync();
     }
 }

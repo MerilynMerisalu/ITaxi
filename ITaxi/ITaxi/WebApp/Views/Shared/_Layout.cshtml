@@ -317,6 +317,42 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+@{
+    var currentCultureCode = Thread.CurrentThread.CurrentCulture.Name.Split('-')[0];
+
+    // map .net datetime format strings to flatpick/momentjs format
+
+    // https://flatpickr.js.org/formatting/
+    // d - day of month,2 digits
+    // j - day of month, no leading zero
+    // m - month, 2 digits
+    // n - mont, no leading zero
+    // y - 2 digit year, Y - 4 digit year
+
+    // https://docs.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo?view=netcore-3.1
+    // dd.MM.yyyy or dd/MM/yyyy
+
+    var datePattern = Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortDatePattern;
+    datePattern = datePattern
+        .Replace("dd", "d")
+        .Replace("MM", "m")
+        .Replace("yyyy", "Y");
+
+    // LongTimePattern and ShortTimePattern HH:mm for 23:59,  h:mm tt for 11:59 PM
+    var timePattern = Thread.CurrentThread.CurrentUICulture.DateTimeFormat.ShortTimePattern;
+    var clock24H = timePattern.Contains("tt") == false;
+    timePattern = timePattern
+        .Replace("HH", "H")
+        .Replace("mm", "i")
+        .Replace("ss", "S")
+        .Replace("tt", "K");
+    var dateTimePattern = timePattern + " " + datePattern;
+}
+</script>
+
 @await RenderSectionAsync("Scripts", false)
+
 </body>
 </html>

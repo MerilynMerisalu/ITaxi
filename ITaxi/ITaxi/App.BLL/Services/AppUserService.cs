@@ -28,4 +28,7 @@ public class AppUserService : BaseEntityService<App.BLL.DTO.Identity.AppUser, Ap
     {
         return Mapper.Map(await Repository.FirstOrDefaultAsync(appUserId, noTracking, noIncludes))!;
     }
+
+
+
 }
