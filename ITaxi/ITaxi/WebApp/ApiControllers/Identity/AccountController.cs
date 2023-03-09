@@ -600,7 +600,7 @@ public class AccountController : ControllerBase
     }
 
 #pragma warning disable 612, 618 
-    public async Task<List<RefreshToken>> GetRefreshTokens(AppUser appUser, string token)
+    protected async Task<List<RefreshToken>> GetRefreshTokens(AppUser appUser, string token)
     {
         return await _context.Entry(appUser).Collection(u => u.RefreshTokens!)                               
             .Query().Where(x => (x.Token == token &&                         

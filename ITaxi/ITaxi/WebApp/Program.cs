@@ -17,6 +17,8 @@ using Rotativa.AspNetCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApp;
 using WebApp.Helpers;
+using AutoMapperConfig = WebApp.ApiControllers.v1.AutoMapperConfig;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -91,7 +93,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(App.DAL.EF.AutoMapperConfig),
-    typeof(App.BLL.AutoMapperConfig));
+    typeof(App.BLL.AutoMapperConfig),
+    typeof(AutoMapperConfig));
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddCookie(options => { options.SlidingExpiration = true; })

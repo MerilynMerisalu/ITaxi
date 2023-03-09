@@ -41,6 +41,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="ApiControllers\v1\AdminArea" />
         <Folder Include="Areas\AdminArea\Views" />
         <Folder Include="Areas\Identity" />
         <Folder Include="wwwroot\Images" />

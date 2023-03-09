@@ -2,6 +2,8 @@
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Public.DTO.v1.AdminArea;
+using AutoMapper;
+using Base.Contracts;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -20,15 +22,16 @@ namespace WebApp.ApiControllers.AdminArea;
 public class CountiesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
+    private readonly IMapper _mapper;
 
     /// <summary>
     ///  Constructor for county API controller
     /// </summary>
     /// <param name="appBLL">AppBLL</param>
-    public CountiesController(IAppBLL appBLL)
+    public CountiesController(IAppBLL appBLL, IMapper mapper)//<App.Public.DTO.v1.AdminArea.County, App.BLL.DTO.AdminArea>)
     {
         _appBLL = appBLL;
-        
+        _mapper = mapper;
     }
 
     // GET: api/counties
@@ -39,14 +42,13 @@ public class CountiesController : ControllerBase
     [HttpGet]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType( typeof( IEnumerable<CountyDTO>), StatusCodes.Status200OK )] 
+    [ProducesResponseType( typeof( IEnumerable<County>), StatusCodes.Status200OK )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<County>>> GetCounties()
     {
         var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
-
-        return Ok(res);
+        return Ok(res.Select(x => _mapper.Map<County>(x)).ToList());
     }
 
     // GET: api/Counties/5
@@ -58,7 +60,7 @@ public class CountiesController : ControllerBase
     [HttpGet("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType(typeof(CountyDTO), StatusCodes.Status200OK )] 
+    [ProducesResponseType(typeof(County), StatusCodes.Status200OK )] 
     [ProducesResponseType( StatusCodes.Status404NotFound )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -66,7 +68,7 @@ public class CountiesController : ControllerBase
 
     
     //public async Task<ActionResult<App.Public.DTO.v1.AdminArea.County>> GetCounty(Guid id)
-    public async Task<ActionResult<CountyDTO>> GetCounty(Guid id)
+    public async Task<ActionResult<County>> GetCounty(Guid id)
     {
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
 
@@ -74,7 +76,7 @@ public class CountiesController : ControllerBase
        
 
 
-        return county;
+        return _mapper.Map<County>(county);
     }
 
     // PUT: api/Counties/5
@@ -85,11 +87,10 @@ public class CountiesController : ControllerBase
     /// <param name="id">An id of the entity which is updated</param>
     /// <param name="countyDTO">DTO which holds the values</param>
     /// <returns>StatusCode 204 or StatusCode 403 or Statuscode 404 or statusCode 401 </returns>
-    [HttpPut("{id}")]
+    [HttpPut("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType(typeof(CountyDTO), 
-        StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -123,13 +124,13 @@ public class CountiesController : ControllerBase
     /// <returns>Status201Created with an entity</returns>
     [HttpPost]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(CountyDTO), 
+    [ProducesResponseType(typeof(County), 
         StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     
-    public async Task<ActionResult<CountyDTO>> PostCounty([FromBody] CountyDTO county)
+    public async Task<ActionResult<County>> PostCounty([FromBody] CountyDTO county)
     {
         if (HttpContext.GetRequestedApiVersion() == null)
         {
@@ -148,7 +149,7 @@ public class CountiesController : ControllerBase
             id = county.Id,
             version = HttpContext.GetRequestedApiVersion()!.ToString(),
 
-        }, county);
+        }, _mapper.Map<County>(county));
     }
 
     // DELETE: api/Counties/5
@@ -162,7 +163,7 @@ public class CountiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteCounty(Guid id)
     {
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
