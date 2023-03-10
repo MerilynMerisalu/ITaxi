@@ -25,9 +25,10 @@ public class CountiesController : ControllerBase
     private readonly IMapper _mapper;
 
     /// <summary>
-    ///  Constructor for county API controller
+    /// Constructor for counties api controller
     /// </summary>
     /// <param name="appBLL">AppBLL</param>
+    /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea to Public.DTO.v1.AdminArea.County</param>
     public CountiesController(IAppBLL appBLL, IMapper mapper)//<App.Public.DTO.v1.AdminArea.County, App.BLL.DTO.AdminArea>)
     {
         _appBLL = appBLL;
@@ -38,7 +39,7 @@ public class CountiesController : ControllerBase
     /// <summary>
     /// Gets all the counties 
     /// </summary>
-    /// <returns>List of counties</returns>
+    /// <returns>List of counties with a statusCode 200OK or statusCode 403 or statusCode 401 </returns>
     [HttpGet]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -56,7 +57,7 @@ public class CountiesController : ControllerBase
     /// Returns county based on id
     /// </summary>
     /// <param name="id">County id, Guid</param>
-    /// <returns>County(TEntity)</returns>
+    /// <returns>County(TEntity) with statusCode 200 or statusCode 404 or statusCode 403 or statusCode 401   </returns>
     [HttpGet("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -64,10 +65,6 @@ public class CountiesController : ControllerBase
     [ProducesResponseType( StatusCodes.Status404NotFound )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    
-
-    
-    //public async Task<ActionResult<App.Public.DTO.v1.AdminArea.County>> GetCounty(Guid id)
     public async Task<ActionResult<County>> GetCounty(Guid id)
     {
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
@@ -86,7 +83,7 @@ public class CountiesController : ControllerBase
     /// </summary>
     /// <param name="id">An id of the entity which is updated</param>
     /// <param name="countyDTO">DTO which holds the values</param>
-    /// <returns>StatusCode 204 or StatusCode 403 or Statuscode 404 or statusCode 401 </returns>
+    /// <returns>StatusCode 204 or StatusCode 403 or StatusCode 404 or StatusCode 401 or StatusCode 400 </returns>
     [HttpPut("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -102,16 +99,12 @@ public class CountiesController : ControllerBase
         {
             return NotFound();
         }
-
-
+        
         county.CountyName = countyDTO.CountyName;
         county.UpdatedBy = User.Identity!.Name;
         county.UpdatedAt = DateTime.Now;
         _appBLL.Counties.Update(county);
         await _appBLL.SaveChangesAsync();
-
-
-
         return NoContent();
     }
 
@@ -162,7 +155,6 @@ public class CountiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteCounty(Guid id)
     {
