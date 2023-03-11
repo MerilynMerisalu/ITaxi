@@ -1,6 +1,7 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
+/// <summary>
+/// Constructor for cities api controller
+/// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/AdminArea/[controller]")]
 [ApiVersion("1.0")]
@@ -15,10 +19,17 @@ namespace WebApp.ApiControllers.AdminArea;
 public class DriverLicenseCategoriesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
+    private readonly IMapper _mapper;
 
-    public DriverLicenseCategoriesController(IAppBLL appBLL)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="appBLL"></param>
+    /// <param name="mapper"></param>
+    public DriverLicenseCategoriesController(IAppBLL appBLL, IMapper mapper)
     {
         _appBLL = appBLL;
+        _mapper = mapper;
     }
 
     // GET: api/DriverLicenseCategories

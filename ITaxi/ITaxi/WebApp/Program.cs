@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using Rotativa.AspNetCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApp;
+using WebApp.ApiControllers;
 using WebApp.Helpers;
 using AutoMapperConfig = WebApp.ApiControllers.v1.AutoMapperConfig;
 
@@ -57,7 +58,7 @@ builder.Services.AddVersionedApiExplorer( options => options.GroupNameFormat = "
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 builder.Services.AddSwaggerGen(options =>
 {
-    //options.CustomSchemaIds(type => type.ToString());
+    options.SchemaFilter<ApiSchemaFilter>();
 });
 
 
@@ -170,6 +171,7 @@ app.UseSwaggerUI(options =>
             description.GroupName.ToUpperInvariant() 
         );
     }
+
     // serve from root
     // options.RoutePrefix = string.Empty;
 });

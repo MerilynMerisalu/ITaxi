@@ -82,7 +82,7 @@ public class CountiesController : ControllerBase
     /// Updating an county 
     /// </summary>
     /// <param name="id">An id of the entity which is updated</param>
-    /// <param name="countyDTO">DTO which holds the values</param>
+    /// <param name="county">DTO which holds the values</param>
     /// <returns>StatusCode 204 or StatusCode 403 or StatusCode 404 or StatusCode 401 or StatusCode 400 </returns>
     [HttpPut("{id:guid}")]
     [Produces("application/json")]
@@ -92,18 +92,19 @@ public class CountiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PutCounty(Guid id, County countyDTO)
+    public async Task<IActionResult> PutCounty(Guid id, County county)
     {
-        var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
-        if (county == null)
+        var countyDTO = await _appBLL.Counties.FirstOrDefaultAsync(id);
+        if (countyDTO == null)
         {
             return NotFound();
         }
         
-        county.CountyName = countyDTO.CountyName;
-        county.UpdatedBy = User.Identity!.Name;
-        county.UpdatedAt = DateTime.Now;
-        _appBLL.Counties.Update(county);
+        countyDTO.CountyName = county.CountyName;
+        
+        countyDTO.UpdatedBy = User.Identity!.Name;
+        countyDTO.UpdatedAt = DateTime.Now;
+        _appBLL.Counties.Update(countyDTO);
         await _appBLL.SaveChangesAsync();
         return NoContent();
     }
@@ -113,7 +114,7 @@ public class CountiesController : ControllerBase
     /// <summary>
     /// Creating a new county
     /// </summary>
-    /// <param name="county">CountyDTO with properties</param>
+    /// <param name="county">County with properties</param>
     /// <returns>Status201Created with an entity</returns>
     [HttpPost]
     [Produces("application/json")]
@@ -123,26 +124,30 @@ public class CountiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     
-    public async Task<ActionResult<County>> PostCounty([FromBody] CountyDTO county)
+    public async Task<ActionResult<County>> PostCounty([FromBody] County county)
     {
         if (HttpContext.GetRequestedApiVersion() == null)
         {
             return BadRequest("Api version is mandatory");
         }
-        county.Id = Guid.NewGuid();
-        county.CreatedBy = User.GettingUserEmail();
-        county.UpdatedBy = User.GettingUserEmail();
-        county.CreatedAt = DateTime.Now.ToUniversalTime();
-        county.UpdatedAt = DateTime.Now.ToUniversalTime();
-        _appBLL.Counties.Add(county);
+
+        var dto = _mapper.Map<CountyDTO>(county);
+        
+        dto.Id = Guid.NewGuid();
+        dto.CreatedBy = User.GettingUserEmail();
+        dto.UpdatedBy = User.GettingUserEmail();
+        dto.CreatedAt = DateTime.Now.ToUniversalTime();
+        dto.UpdatedAt = DateTime.Now.ToUniversalTime();
+
+        _appBLL.Counties.Add(dto);
         await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetCounty", new
         {
-            id = county.Id,
+            id = dto.Id,
             version = HttpContext.GetRequestedApiVersion()!.ToString(),
 
-        }, _mapper.Map<County>(county));
+        }, dto);
     }
 
     // DELETE: api/Counties/5

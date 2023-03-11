@@ -8,13 +8,15 @@ using App.Contracts.BLL;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
+using App.Public.DTO.v1.Enum;
+using App.Public.DTO.v1.Identity;
 using Base.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.DTO;
 using WebApp.DTO.Identity;
-
+using AppUser = App.Domain.Identity.AppUser;
 
 
 namespace WebApp.ApiControllers.Identity;
@@ -89,7 +91,7 @@ public class AccountController : ControllerBase
         {
             FirstName = customerRegistrationDTO.FirstName,
             LastName = customerRegistrationDTO.LastName,
-            Gender = customerRegistrationDTO.Gender,
+            Gender = Enum.Parse<App.Domain.Enum.Gender>(customerRegistrationDTO.Gender.ToString()),
             DateOfBirth = DateTime.Parse(customerRegistrationDTO.DateOfBirth).ToUniversalTime(),
             PhoneNumber = customerRegistrationDTO.PhoneNumber,
             Email = customerRegistrationDTO.Email,
@@ -173,7 +175,7 @@ public class AccountController : ControllerBase
     /// <param name="adminRegistrationDTO">Admin registration DTO which holds data for the registration</param>
     /// <returns>JwtResponseAdminRegister</returns>
     [HttpPost]
-    public async Task<ActionResult<JwtResponseAdminRegister>> RegisterAdminDTO(AdminRegistrationDTO adminRegistrationDTO)
+    public async Task<ActionResult<JwtResponseAdminRegister>> RegisterAdminDTO(AdminRegistration adminRegistrationDTO)
     {
         var appUser = await _userManager.FindByEmailAsync(adminRegistrationDTO.Email);
         if (appUser != null)
@@ -201,12 +203,13 @@ public class AccountController : ControllerBase
         {
             TokenExpirationDateAndTime = DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")).ToUniversalTime()
         };
+        
         appUser = new AppUser()
         {
             FirstName = adminRegistrationDTO.FirstName,
             LastName = adminRegistrationDTO.LastName,
-            Gender = adminRegistrationDTO.Gender,
-            DateOfBirth = DateTime.Parse(adminRegistrationDTO.DateOfBirth).ToUniversalTime(),
+            Gender = Enum.Parse<App.Domain.Enum.Gender>(adminRegistrationDTO.Gender.ToString()),
+            DateOfBirth = adminRegistrationDTO.DateOfBirth.ToUniversalTime(),
             PhoneNumber = adminRegistrationDTO.PhoneNumber,
             Email = adminRegistrationDTO.Email,
             UserName = adminRegistrationDTO.Email,
@@ -325,7 +328,7 @@ public class AccountController : ControllerBase
         {
             FirstName = driverRegistrationDto.FirstName,
             LastName = driverRegistrationDto.LastName,
-            Gender = driverRegistrationDto.Gender,
+            Gender = Enum.Parse<App.Domain.Enum.Gender>(driverRegistrationDto.Gender.ToString()),
             DateOfBirth = DateTime.Parse(driverRegistrationDto.DateOfBirth).ToUniversalTime(),
             PhoneNumber = driverRegistrationDto.PhoneNumber,
             Email = driverRegistrationDto.Email,

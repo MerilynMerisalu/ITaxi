@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain.Enum;
+using App.Public.DTO.v1.Enum;
+using App.Resources.Areas.Identity.Pages.Account;
+using Base.Resources;
 
 namespace WebApp.DTO.Identity;
 
@@ -32,5 +34,12 @@ public class RegisterDTO
     [StringLength(50, MinimumLength = 5, ErrorMessage = "Invalid email address length")]
     
     public string Email { get; set; } = default!;
+    [Required(ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [StringLength(100, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage",
+        MinimumLength = 6)]
+    [DataType(DataType.Password)]
+    [Display(ResourceType = typeof(AdminRegister), Name = nameof(Password))]
     public string Password { get; set; } = default!;
 }

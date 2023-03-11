@@ -47,7 +47,7 @@ public class CitiesController : ControllerBase
     [ProducesResponseType( typeof( IEnumerable<City>), StatusCodes.Status200OK )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<IEnumerable<CityDTO>>> GetCities()
+    public async Task<ActionResult<IEnumerable<City>>> GetCities()
     {
         var cities = await _appBLL.Cities.GetAllAsync();
         return Ok(cities.Select(c => _mapper.Map<City>(c)));
@@ -81,7 +81,7 @@ public class CitiesController : ControllerBase
     /// Updating an city
     /// </summary>
     /// <param name="id">An id of the entity which is updated</param>
-    /// <param name="cityDTO">DTO which holds the values</param>
+    /// <param name="city">DTO which holds the values</param>
     /// <returns>StatusCode 204 or StatusCode 403 or StatusCode 404 or StatusCode 401 or StatusCode 400  </returns>
     [HttpPut("{id:guid}")]
     [Produces("application/json")]
@@ -91,21 +91,21 @@ public class CitiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PutCity(Guid id, City cityDTO)
+    public async Task<IActionResult> PutCity(Guid id, City city)
     {
-        if (id != cityDTO.Id) return BadRequest();
-        var city = await _appBLL.Cities.FirstOrDefaultAsync(id);
-        if (city == null)
+        if (id != city.Id) return BadRequest();
+        var cityDTO = await _appBLL.Cities.FirstOrDefaultAsync(id);
+        if (cityDTO == null)
         {
             return NotFound();
         }
         try
         {
-            city.CityName = cityDTO.CityName;
-            city.CountyId = cityDTO.CountyId;
-            city.CreatedBy = User.GettingUserEmail();
-            city.UpdatedBy = User.GettingUserEmail();
-            _appBLL.Cities.Update(city);
+            cityDTO.CityName = city.CityName;
+            cityDTO.CountyId = city.CountyId;
+            cityDTO.CreatedBy = User.GettingUserEmail();
+            cityDTO.UpdatedBy = User.GettingUserEmail();
+            _appBLL.Cities.Update(cityDTO);
             await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
@@ -132,14 +132,17 @@ public class CitiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<City>> PostCity([FromBody] CityDTO city)
+    public async Task<ActionResult<City>> PostCity([FromBody] City city)
     {
         if (HttpContext.GetRequestedApiVersion() == null)
         {
             return BadRequest("Api version is mandatory");
         }
-        city.CreatedBy = User.GettingUserEmail();
-        _appBLL.Cities.Add(city);
+
+        var dto = _mapper.Map<CityDTO>(city);
+        
+        dto.CreatedBy = User.GettingUserEmail();
+        _appBLL.Cities.Add(dto);
         await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetCity", new
@@ -147,7 +150,7 @@ public class CitiesController : ControllerBase
                 id = city.Id,
                 version = HttpContext.GetRequestedApiVersion()!.ToString() ,
             },
-            city);
+            dto);
     }
 
     // DELETE: api/Cities/5
