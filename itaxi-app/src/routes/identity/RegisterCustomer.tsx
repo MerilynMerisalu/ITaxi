@@ -195,6 +195,7 @@ const RegisterCustomer = () => {
                     id="Input_Password"
                     maxLength={100}
                     name="Input.Password"
+                    autoComplete="off"
                   />
                   <span
                     className="text-danger field-validation-valid"
@@ -215,6 +216,7 @@ const RegisterCustomer = () => {
                     data-val-required="The Confirm Password field is required."
                     id="Input_ConfirmPassword"
                     name="Input.ConfirmPassword"
+                    autoComplete="off"
                   />
                   <span
                     className="text-danger field-validation-valid"
