@@ -1,10 +1,12 @@
+import { Link } from "react-router-dom";
+
 const Header = () => {
   return (
     <header>
       <nav className="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div className="container">
           <a className="navbar-brand" href="/">
-            WebApp
+            ITaxi
           </a>
           <button
             className="navbar-toggler"
@@ -20,14 +22,10 @@ const Header = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" href="/">
-                  Home
-                </a>
+                <Link to="/" className="nav-link active">Home</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" href="/Home/Privacy">
-                  Privacy
-                </a>
+                <Link to="privacy" className="nav-link active">Privacy</Link>
               </li>
 
               <li className="nav-item dropdown">
@@ -93,25 +91,13 @@ const Header = () => {
               </a>
             </li>
             <li className="nav-item">
-              <a
-                className="nav-link text-dark"
-                href="/Identity/Account/RegisterDriver"
-              >
-                Register Driver
-              </a>
+              <Link to="registerDriver" className="nav-link text-dark">Register Driver</Link>
             </li>
             <li className="nav-item">
-              <a
-                className="nav-link text-dark"
-                href="/Identity/Account/RegisterCustomer"
-              >
-                Register Customer
-              </a>
+              <Link to="registerCustomer" className="nav-link text-dark">Register Customer</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-dark" href="/Identity/Account/Login">
-                Login
-              </a>
+              <Link to="login" className="nav-link text-dark">Login</Link>
             </li>
           </ul>
         </div>

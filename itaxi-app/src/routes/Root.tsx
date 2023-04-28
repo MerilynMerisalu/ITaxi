@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
@@ -7,7 +8,7 @@ const Root = () => {
       <Header />
       <div className="container">
         <main role="main" className="pb-3">
-          ROOT
+          <Outlet />
         </main>
       </div>
       <Footer />
