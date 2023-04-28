@@ -1,5 +1,6 @@
 const RegisterDriver = () => {
   return (
+    <form>
     <div  className="container">
       <main  role="main" className="pb-3">
         <h1>Register Driver</h1>
@@ -369,6 +370,7 @@ const RegisterDriver = () => {
         </div>
       </main>
     </div>
+    </form>
   );
 };
 export default RegisterDriver;

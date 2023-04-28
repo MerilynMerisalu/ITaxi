@@ -1,6 +1,6 @@
 const RegisterCustomer = () => {
   return (
-    <>
+    <form>
       <div  className="container">
         <main role="main" className="pb-3">
           <h1>Register Customer</h1>
@@ -251,7 +251,7 @@ const RegisterCustomer = () => {
           </div>
         </main>
       </div>
-    </>
+      </form>
   );
 };
 
