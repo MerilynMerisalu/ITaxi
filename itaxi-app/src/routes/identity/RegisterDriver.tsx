@@ -1,6 +1,6 @@
 const RegisterDriver = () => {
   return (
-    <form>
+    <form onSubmit={(e)=>e.preventDefault()}>
     <div  className="container">
       <main  role="main" className="pb-3">
         <h1>Register Driver</h1>
