@@ -2,13 +2,18 @@
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Contracts.DAL;
-
+using App.Public.DTO.v1.AdminArea;
+using AutoMapper;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
+/// <summary>
+/// Api controller for disability types
+/// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/AdminArea/[controller]")]
 [ApiVersion("1.0")]
@@ -16,42 +21,94 @@ namespace WebApp.ApiControllers.AdminArea;
 public class DisabilityTypesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
-
-    public DisabilityTypesController(IAppBLL appBLL)
+    private readonly IMapper _mapper;
+    /// <summary>
+    ///  /// <summary>
+    /// Constructor for disability types api controller
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
+    /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea to Public.DTO.v1.AdminArea.DisabilityType</param>
+    /// </summary>
+    
+    public DisabilityTypesController(IAppBLL appBLL, IMapper mapper)
     {
         _appBLL = appBLL;
+        _mapper = mapper;
         ;
     }
 
-    // GET: api/DisabilityTypes
+    // GET: api/counties
+    /// <summary>
+    /// Gets all the disability types 
+    /// </summary>
+    /// <returns>List of counties with a statusCode 200OK or statusCode 403 or statusCode 401 </returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<DisabilityTypeDTO>>> GetDisabilityTypes()
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType( typeof( IEnumerable<DisabilityType>), StatusCodes.Status200OK )] 
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<DisabilityType>>> GetDisabilityTypes()
     {
-        return Ok(await _appBLL.DisabilityTypes.GetAllDisabilityTypeDtoAsync());
+        var res =await _appBLL.DisabilityTypes.GetAllDisabilityTypeDtoAsync();
+        return Ok(res.Select(x => _mapper.Map<DisabilityType>(x)).ToList());
     }
 
     // GET: api/DisabilityTypes/5
+    /// <summary>
+    /// Returns county based on id
+    /// </summary>
+    /// <param name="id">County id, Guid</param>
+    /// <returns>County(TEntity) with statusCode 200 or statusCode 404 or statusCode 403 or statusCode 401   </returns>
+    [HttpGet("{id:guid}")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(DisabilityType), StatusCodes.Status200OK )] 
+    [ProducesResponseType( StatusCodes.Status404NotFound )] 
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [HttpGet("{id}")]
-    public async Task<ActionResult<DisabilityTypeDTO>> GetDisabilityType(Guid id)
+    public async Task<ActionResult<DisabilityType>> GetDisabilityType(Guid id)
     {
         var disabilityType = await _appBLL.DisabilityTypes.FirstOrDefaultAsync(id);
 
         if (disabilityType == null) return NotFound();
 
-        return disabilityType;
+        return _mapper.Map<DisabilityType>(disabilityType);
     }
 
     // PUT: api/DisabilityTypes/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutDisabilityType(Guid id, DisabilityTypeDTO disabilityType)
+    /// <summary>
+    /// Updating an disability type
+    /// </summary>
+    /// <param name="id">An id of the entity which is updated</param>
+    /// <param name="disabilityType">DTO which holds the values</param>
+    /// <returns>StatusCode 204 or StatusCode 403 or StatusCode 404 or StatusCode 401 or StatusCode 400 </returns>
+    [HttpPut("{id:guid}")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> PutDisabilityType(Guid id, DisabilityType disabilityType)
     {
-        if (id != disabilityType.Id) return BadRequest();
-
-
+        var disabilityTypeDTO = await _appBLL.DisabilityTypes.FirstOrDefaultAsync(id);
+        if (disabilityTypeDTO == null)
+        {
+            return NotFound();
+        }
+        
         try
         {
-            _appBLL.DisabilityTypes.Update(disabilityType);
+            disabilityTypeDTO.DisabilityTypeName = disabilityType.DisabilityTypeName;
+            disabilityTypeDTO.UpdatedBy = User.GettingUserEmail();
+            disabilityTypeDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
+            
+            _appBLL.DisabilityTypes.Update(disabilityTypeDTO);
             await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
@@ -66,15 +123,30 @@ public class DisabilityTypesController : ControllerBase
 
     // POST: api/DisabilityTypes
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    /// <summary>
+    /// Creating a new disability type
+    /// </summary>
+    /// <param name="disabilityType">County with properties</param>
+    /// <returns>Status201Created with an entity</returns>
     [HttpPost]
-    public async Task<ActionResult<DisabilityTypeDTO>> PostDisabilityType
-        ([FromBody] DisabilityTypeDTO disabilityType)
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(DisabilityType), 
+        StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<DisabilityType>> PostDisabilityType
+        ([FromBody] DisabilityType disabilityType)
     {
         if (HttpContext.GetRequestedApiVersion() == null)
         {
             return BadRequest("Api version is mandatory!");
         }
-        _appBLL.DisabilityTypes.Add(disabilityType);
+
+        var dto = _mapper.Map<DisabilityTypeDTO>(disabilityType);
+        dto.Id = Guid.NewGuid();
+        dto.DisabilityTypeName = disabilityType.DisabilityTypeName;
+        _appBLL.DisabilityTypes.Add(dto);
         await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetDisabilityType", new
@@ -85,7 +157,16 @@ public class DisabilityTypesController : ControllerBase
     }
 
     // DELETE: api/DisabilityTypes/5
-    [HttpDelete("{id}")]
+    /// <summary>
+    /// Deletes an entity
+    /// </summary>
+    /// <param name="id">Id of an entity</param>
+    /// <returns>Status204</returns>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteDisabilityType(Guid id)
     {
         var disabilityType = await _appBLL.DisabilityTypes.FirstOrDefaultAsync(id);
@@ -97,6 +178,15 @@ public class DisabilityTypesController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Return a boolean based on whether or not an entity exists
+    /// </summary>
+    /// <param name="id">Entity id guid</param>
+    /// <returns>boolean value</returns>
+    
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     private bool DisabilityTypeExists(Guid id)
     {
         return _appBLL.DisabilityTypes.Exists(id);
