@@ -1,4 +1,4 @@
-#nullable enable
+/*#nullable enable
 using App.BLL;
 using App.BLL.DTO.AdminArea;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
+/// <summary>
+/// 
+/// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/AdminArea/[controller]")]
 [ApiVersion("1.0")]
@@ -16,6 +19,10 @@ public class DriverAndDriverLicenseCategoriesController : ControllerBase
 {
     private readonly AppBLL _appBLL;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="appBLL"></param>
     public DriverAndDriverLicenseCategoriesController( AppBLL appBLL)
     {
         _appBLL = appBLL;
@@ -23,6 +30,10 @@ public class DriverAndDriverLicenseCategoriesController : ControllerBase
     }
 
     // GET: api/DriverAndDriverLicenseCategories
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IEnumerable<DriverAndDriverLicenseCategoryDTO>> GetDriverAndDriverLicenseCategories()
     {
@@ -103,4 +114,4 @@ public class DriverAndDriverLicenseCategoriesController : ControllerBase
     {
         return _appBLL.DriverAndDriverLicenseCategories.Any(e => e.Id == id);
     }
-}
+}*/

@@ -1,5 +1,5 @@
 
-
+import React, {MouseEvent} from 'react';
 
 interface IProps {
     values: {
@@ -12,12 +12,14 @@ interface IProps {
         PhoneNumber: string,
         Password: string,
         ConfirmPassword: string,
-    }
+    },
+    validationErrors: string[]
 
     handleChange: (target: 
     EventTarget & HTMLInputElement | 
-    EventTarget & HTMLSelectElement | 
-    EventTarget & HTMLTextAreaElement) => void;
+    EventTarget & HTMLSelectElement ) => void;
+
+    onSubmit: (event: MouseEvent) => void;
 }
 
 
@@ -28,6 +30,9 @@ const RegisterCustomerFormView = (props: IProps) => {
         <div  className="container">
           <main role="main" className="pb-3">
             <h1>Register Customer</h1>
+            <ul style={{display: props.validationErrors.length === 0 ? "none": ''}}>
+              <li>{props.validationErrors.length > 0 ? props.validationErrors[0]: ""}</li>
+            </ul>
   
             <div className="row">
               <div className="col-md-4">
@@ -110,12 +115,14 @@ const RegisterCustomerFormView = (props: IProps) => {
                       className="form-control"
                       id="Input_Gender"
                       name="Gender"
+                      onChange={(e) => props.handleChange(e.target)}
                     >
                       <option>Please Select</option>
                       <option value={props.values.Gender}>Custom</option>
                       <option value={props.values.Gender}>Female</option>
                       <option value={props.values.Gender}>Male</option>
                     </select>
+                    
                     {/* <span
                       className="text-danger field-validation-valid"
                       data-valmsg-for="Input.Gender"
@@ -152,6 +159,7 @@ const RegisterCustomerFormView = (props: IProps) => {
                       className="form-control"
                       id="Input_DisabilityTypeId"
                       name="DisabilityTypeId"
+                      onChange={(e) => props.handleChange(e.target)}
                     >
                       <option>Please Select</option>
                       <option value={props.values.DisabilityTypeId}>
@@ -226,10 +234,11 @@ const RegisterCustomerFormView = (props: IProps) => {
                     ></span> */}
                   </div>
   
-                  <button
+                  <button 
+                  
                     id="registerSubmit"
-                    type="submit"
                     className="w-100 btn btn-lg btn-primary"
+                    onClick={(e) => props.onSubmit(e)}
                   >
                     Register
                   </button>

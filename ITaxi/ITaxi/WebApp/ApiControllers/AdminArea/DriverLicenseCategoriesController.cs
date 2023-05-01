@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace WebApp.ApiControllers.AdminArea;
 
 /// <summary>
-/// Constructor for cities api controller
+/// Constructor for driver license category api controller
 /// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/AdminArea/[controller]")]
@@ -75,6 +75,11 @@ public class DriverLicenseCategoriesController : ControllerBase
 
     // POST: api/DriverLicenseCategories
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="driverLicenseCategory"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ActionResult<DriverLicenseCategoryDTO>> PostDriverLicenseCategory(
         [FromBody]DriverLicenseCategoryDTO driverLicenseCategory)
@@ -95,6 +100,11 @@ public class DriverLicenseCategoriesController : ControllerBase
     }
 
     // DELETE: api/DriverLicenseCategories/5
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDriverLicenseCategory(Guid id)
     {

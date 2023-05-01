@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
+
 [ApiController]
 [Route("api/v{version:apiVersion}/AdminArea/[controller]")]
 [ApiVersion("1.0")]
