@@ -26,7 +26,6 @@ public class LangStr<TKey> : DomainEntityId<TKey>
     where TKey : IEquatable<TKey>
 {
     private static readonly string _defaultCulture = "en";
-
     public LangStr()
     {
     }
@@ -69,7 +68,7 @@ public class LangStr<TKey> : DomainEntityId<TKey>
             if (Id.Equals(default)) return null;
             throw new NullReferenceException("Translations cannot be null. Did you forgot to do .include?");
         }
-
+        
         culture = culture?.Trim() ?? Thread.CurrentThread.CurrentUICulture.Name;
 
         /*

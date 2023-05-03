@@ -47,12 +47,14 @@ public class DisabilityTypesController : ControllerBase
     [Consumes("application/json")]
     [ProducesResponseType( typeof( IEnumerable<DisabilityType>), StatusCodes.Status200OK )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<DisabilityType>>> GetDisabilityTypes()
     {
         var res =await _appBLL.DisabilityTypes.GetAllDisabilityTypeDtoAsync();
-        return Ok(res.Select(x => _mapper.Map<DisabilityType>(x)).ToList());
+        return Ok(res.Select(x => 
+            _mapper.Map<DisabilityType>(x)).ToList());
     }
 
     // GET: api/DisabilityTypes/5
@@ -67,7 +69,8 @@ public class DisabilityTypesController : ControllerBase
     [ProducesResponseType(typeof(DisabilityType), StatusCodes.Status200OK )] 
     [ProducesResponseType( StatusCodes.Status404NotFound )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<DisabilityType>> GetDisabilityType(Guid id)
     {

@@ -9,5 +9,5 @@ public class DisabilityType : DomainEntityMetaId
     [MaxLength(80, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.DisabilityType),
         Name = nameof(DisabilityTypeName))]
-    public LangStr DisabilityTypeName { get; set; } = default!;
+    public string DisabilityTypeName { get; set; } = default!;
 }

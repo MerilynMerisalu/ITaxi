@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Rotativa.AspNetCore;
@@ -37,6 +38,7 @@ builder.Services.AddIdentity<AppUser, AppRole>(
     .AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddLocalization(options => { options.ResourcesPath = ""; });
 
+builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 /*
 builder.Services.AddControllersWithViews(options =>
@@ -88,8 +90,9 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     {
         // Order is important, its in which order they will be evaluated
         // add support for ?culture=ru-RU
-        new QueryStringRequestCultureProvider(),
-        new CookieRequestCultureProvider()
+        //new QueryStringRequestCultureProvider(),
+        //new CookieRequestCultureProvider(),
+        new AcceptLanguageHeaderRequestCultureProvider()
     };
 });
 
