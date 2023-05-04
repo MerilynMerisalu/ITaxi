@@ -122,6 +122,16 @@ builder.Services
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
 builder.Services.AddTransient<IMailService, MailService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name:"CorsAllowAll", policy =>
+    {
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+        policy.AllowAnyOrigin();
+    });
+} );
+
 var app = builder.Build();
 Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
 Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
@@ -146,6 +156,8 @@ app.UseStaticFiles();
 RotativaConfiguration.Setup(builder.Environment.WebRootPath);
 
 app.UseRouting();
+
+app.UseCors("CorsAllowAll");
 
 
 var requestLocalizationOptions = ((IApplicationBuilder)app).ApplicationServices

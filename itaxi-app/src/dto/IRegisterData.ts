@@ -1,14 +1,16 @@
- interface IRegisterData {
-    
+import { Gender } from "../utilities/enums";
+
+interface IRegisterData {
+
     Email: string,
     FirstName: string,
     LastName: string,
-    Gender: string,
+    Gender: Gender,
     DateOfBirth: string,
     PhoneNumber: string,
     Password: string,
     ConfirmPassword: string,
-        
-    }
 
-    export type {IRegisterData}
+}
+
+export type { IRegisterData }

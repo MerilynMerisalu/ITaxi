@@ -1,18 +1,15 @@
 
 import React, {MouseEvent} from 'react';
+import { IRegisterCustomerData } from '../../dto/IRegisterCustomerData';
+import RegisterCustomer from './RegisterCustomer';
+import { IDisabilityTypeData } from '../../dto/IDisabilityType';
+import { Gender } from '../../utilities/enums';
+ 
 
 interface IProps {
-    values: {
-        Email: string,
-        FirstName: string,
-        LastName: string,
-        Gender: string,
-        DateOfBirth: string,
-        DisabilityTypeId: string,
-        PhoneNumber: string,
-        Password: string,
-        ConfirmPassword: string,
-    },
+    values: IRegisterCustomerData;
+    disabilityTypes: IDisabilityTypeData[];
+  
     validationErrors: string[]
 
     handleChange: (target: 
@@ -118,9 +115,11 @@ const RegisterCustomerFormView = (props: IProps) => {
                       onChange={(e) => props.handleChange(e.target)}
                     >
                       <option>Please Select</option>
-                      <option value={props.values.Gender}>Custom</option>
-                      <option value={props.values.Gender}>Female</option>
-                      <option value={props.values.Gender}>Male</option>
+                      {
+                        Object.values(Gender).filter((item)=> typeof item === 'string').map((gender)=> {
+return (<option value={gender}>{gender}</option>)
+                        })
+                      }
                     </select>
                     
                     {/* <span
@@ -162,9 +161,17 @@ const RegisterCustomerFormView = (props: IProps) => {
                       onChange={(e) => props.handleChange(e.target)}
                     >
                       <option>Please Select</option>
-                      <option value={props.values.DisabilityTypeId}>
-                        None
-                      </option>
+                      {
+                        props.disabilityTypes.map((disabilityType)=> {
+return <option value={disabilityType.disabilityTypeName}>
+  {disabilityType.disabilityTypeName}
+</option>
+
+                        })
+                      }
+                    
+                        
+                  
                     </select>
                     {/* <span
                       className="text-danger field-validation-valid"
