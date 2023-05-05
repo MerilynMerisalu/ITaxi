@@ -5,7 +5,7 @@ interface IRegisterData {
     Email: string,
     FirstName: string,
     LastName: string,
-    Gender: Gender,
+    Gender: string,
     DateOfBirth: string,
     PhoneNumber: string,
     Password: string,

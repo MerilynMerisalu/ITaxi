@@ -1,4 +1,4 @@
-import { IDisabilityTypeData } from "../dto/IDisabilityType";
+/* import { IDisabilityTypeData } from "../dto/IDisabilityType";
 
 import BaseService from "./BaseService";
 
@@ -24,5 +24,5 @@ import BaseService from "./BaseService";
 
     }
 
-}
+} */
 

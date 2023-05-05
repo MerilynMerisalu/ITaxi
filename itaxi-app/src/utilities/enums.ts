@@ -1,7 +1,7 @@
 export enum Gender {
-    Custom,
-    Female,
-    Male
+    Custom = 3,
+    Female = 2,
+    Male = 1,
 }
 
 export enum VehicleAvailability

@@ -116,8 +116,10 @@ const RegisterCustomerFormView = (props: IProps) => {
                     >
                       <option>Please Select</option>
                       {
-                        Object.values(Gender).filter((item)=> typeof item === 'string').map((gender)=> {
-return (<option value={gender}>{gender}</option>)
+                        Object.entries(Gender)
+                        //.filter((item)=> typeof item === 'string')
+                        .map(([key, gender])=> {
+return (<option key={gender} value={key}>{gender}</option>)
                         })
                       }
                     </select>
@@ -157,13 +159,13 @@ return (<option value={gender}>{gender}</option>)
                     <select
                       className="form-control"
                       id="Input_DisabilityTypeId"
-                      name="DisabilityTypeId"
+                      name="DisabilityTypeId" 
                       onChange={(e) => props.handleChange(e.target)}
                     >
                       <option>Please Select</option>
                       {
                         props.disabilityTypes.map((disabilityType)=> {
-return <option value={disabilityType.disabilityTypeName}>
+return <option key={disabilityType.id} value={disabilityType.id}>
   {disabilityType.disabilityTypeName}
 </option>
 
