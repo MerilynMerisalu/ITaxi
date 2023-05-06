@@ -1,4 +1,6 @@
 import { IJwtCustomerRegisterResponse } from "../dto/IJwtCustomerRegisterResponse";
+import { IJwtLoginResponse } from "../dto/IJwtLoginResponse";
+import { ILoginData } from "../dto/ILoginData";
 import { IRegisterCustomerData } from "../dto/IRegisterCustomerData";
 import BaseService from "./BaseService";
 
@@ -24,4 +26,20 @@ export class IdentityService extends BaseService {
 
     }
 
+    async login(data: ILoginData): Promise<IJwtLoginResponse | undefined> {
+        try {
+            const response = await this.axios.post<IJwtLoginResponse>('login', data);
+
+            console.log('login response', response);
+            if (response.status === 200) {
+                return response.data;
+            }
+            return undefined;
+
+        } catch (e){
+            console.log('error: ', (e as Error).message);
+            return undefined;
+        }
+
+    }
 }

@@ -23,7 +23,7 @@ interface IProps {
 const RegisterCustomerFormView = (props: IProps) => {
     
     return (
-        
+
         <div  className="container">
           <main role="main" className="pb-3">
             <h1>Register Customer</h1>
