@@ -1,9 +1,7 @@
-
-
 interface IJwtLoginResponse{
     jwt: string;
-    refreshToken: string;
-     
+    refreshToken: string;   
  
 }
-export type {IJwtLoginResponse};
+
+export type { IJwtLoginResponse };

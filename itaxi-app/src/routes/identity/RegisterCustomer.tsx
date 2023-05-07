@@ -1,7 +1,7 @@
 import { useState, MouseEvent, useEffect } from "react";
 import RegisterCustomerFormView from "./RegisterCustomerFormView";
 import { IRegisterCustomerData } from "../../dto/IRegisterCustomerData";
-import { IdentityService } from "../../services/identiyService";
+import { IdentityService } from "../../services/IdentiyService";
 //import { DisabilityTypesService } from "../../services/disabilityTypesService";
 import { Gender } from "../../utilities/enums";
 import axios from "axios";

@@ -1,6 +1,7 @@
 interface ILoginData {
     Email: string,
-    Password: string
+    Password: string,
+    // RememberMe: string,
 
 }
 

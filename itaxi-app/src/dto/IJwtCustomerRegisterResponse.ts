@@ -3,7 +3,7 @@ import { IRegisterData } from "./IRegisterData";
 interface IJwtCustomerRegisterResponse extends IRegisterData {
     jwt: string;
     refreshToken: string;
-     customerDTO: {
+    customerDTO: {
 
         DisabilityTypeId: string,
 
