@@ -1,5 +1,5 @@
 interface IJwtLoginResponse{
-    jwt: string;
+    token: string 
     refreshToken: string;   
  
 }

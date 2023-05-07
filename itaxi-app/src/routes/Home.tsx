@@ -1,4 +1,5 @@
 import React from "react";
+import { JwtContext } from "./Root";
 
 type Props = {};
 
@@ -7,12 +8,9 @@ const Home = (props: Props) => {
     <div className="container">
       <main role="main" className="pb-3">
         <div className="text-center">
-          <h1 className="display-4">Welcome</h1>
+          <h1 className="display-4">ITaxi</h1>
           <p>
-            Learn about{" "}
-            <a href="https://docs.microsoft.com/aspnet/core">
-              building Web apps with ASP.NET Core
-            </a>
+            Welcome to ITAXI {JwtContext.displayName}
             .
           </p>
         </div>
