@@ -1,11 +1,11 @@
 import { useState, useContext, MouseEvent} from "react";
 import { ILoginData } from "../../dto/ILoginData";
-import { IdentityService } from "../../services/IdentiyService";
 import LoginFormView from "../LoginFormView";
 import { Navigate, useNavigate } from "react-router-dom";
 import { isJSDocUnknownTag } from "typescript";
 import { IJwtLoginResponse } from "../../dto/IJwtLoginResponse";
 import { JwtContext } from "../Root";
+import { IdentityService } from "../../services/IdentiyService";
 
 
 const Login = () => {
@@ -26,7 +26,7 @@ const Login = () => {
       setInput({ ...values, [target.name]: target.value });
     }
 
-    const {jwtLoginResponse, setJwtLoginResponse} = useContext(JwtContext);
+    //const {jwtLoginResponse, setJwtLoginResponse} = useContext(JwtContext);
 
     
     const identityService = new IdentityService();

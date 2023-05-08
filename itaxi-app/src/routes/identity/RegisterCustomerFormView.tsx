@@ -116,10 +116,10 @@ const RegisterCustomerFormView = (props: IProps) => {
                     >
                       <option>Please Select</option>
                       {
-                        Object.entries(Gender)
-                        //.filter((item)=> typeof item === 'string')
-                        .map(([key, gender])=> {
-return (<option key={gender} value={key}>{gender}</option>)
+                        Object.values(Gender)
+                        .filter((item)=> typeof item === 'number' && (+item) != Gender.undefined)
+                        .map((gender)=> {
+return (<option key={gender} value={+gender}>{Gender[gender as number]}</option>)
                         })
                       }
                     </select>

@@ -11,6 +11,9 @@ export class IdentityService extends BaseService {
     
     async registerCustomer(data: IRegisterCustomerData): Promise<IJwtCustomerRegisterResponse | undefined> {
         try {
+            // Re-assert that Gender is numeric
+            data.Gender = +data.Gender;
+            console.log(typeof data.Gender)
             const response = await this.axios.post<IJwtCustomerRegisterResponse>('RegisterCustomerDTO', data);
 
             console.log('RegisterCustomerDTO response', response);

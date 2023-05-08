@@ -1,7 +1,7 @@
 import { IRegisterData } from "./IRegisterData";
 
 interface IRegisterCustomerData extends IRegisterData {
-    DisabilityTypes: {}[]
+    //DisabilityTypes: {}[]
     DisabilityTypeId: string,
 
 

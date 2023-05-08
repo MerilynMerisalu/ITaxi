@@ -19,9 +19,8 @@ const [disabilityTypes, setDisabilityTypes] = useState([])
         Email: "",
         FirstName: "",
         LastName: "",
-        Gender: "",
+        Gender: 0,
         DateOfBirth: "",
-        DisabilityTypes: [],
         DisabilityTypeId: "",
         PhoneNumber: "",
         Password: "",
@@ -96,23 +95,23 @@ console.log(today)
    console.log('*** VALUE', values, +values.Gender === Gender.Male)
 console.log(
 "*** FIND ERROR",
- values.Email.length === 0 , values.FirstName.length === 0 , values.LastName.length === 0 ,
-        !(values.Gender === Gender[Gender.Male] || values.Gender === Gender[Gender.Female] || values.Gender === Gender[Gender.Custom]) ,
+  values.Email.length === 0 , values.FirstName.length === 0 , values.LastName.length === 0 ,
+        +values.Gender === Gender.undefined ,
          values.DisabilityTypeId === "" , 
          values.PhoneNumber.length <= 0 ,
       values.Password.length === 0 , values.ConfirmPassword.length === 0 ,
        values.ConfirmPassword !== values.Password, !isDateOfBirthValid
-
-
+ 
+    //console.log(values.Gender)
 )
       if(values.Email.length === 0 || values.FirstName.length === 0 || values.LastName.length === 0 || 
-        !(+values.Gender === Gender.Male || +values.Gender === Gender.Female || +values.Gender === Gender.Custom) ||
+        +values.Gender === Gender.undefined ||
          values.DisabilityTypeId === "" || values.PhoneNumber.length <= 0 ||
         values.Password.length === 0 || values.ConfirmPassword.length === 0 || 
         values.ConfirmPassword !== values.Password || !isDateOfBirthValid   ) {
           setValidationErrors(["Bad input values!"]);
           return;
-        }
+        } 
         // setting the initial state
       setValidationErrors([]);
 

@@ -1,11 +1,12 @@
 import { Gender } from "../utilities/enums";
 
+
 interface IRegisterData {
 
     Email: string,
     FirstName: string,
     LastName: string,
-    Gender: string,
+    Gender: number,
     DateOfBirth: string,
     PhoneNumber: string,
     Password: string,
