@@ -1,11 +1,11 @@
 import { useState, useContext, MouseEvent} from "react";
 import { ILoginData } from "../../dto/ILoginData";
 import { IdentityService } from "../../services/IdentiyService";
-import { JwtContext } from "../Root";
 import LoginFormView from "../LoginFormView";
 import { Navigate, useNavigate } from "react-router-dom";
 import { isJSDocUnknownTag } from "typescript";
 import { IJwtLoginResponse } from "../../dto/IJwtLoginResponse";
+import { JwtContext } from "../Root";
 
 
 const Login = () => {
@@ -26,7 +26,8 @@ const Login = () => {
       setInput({ ...values, [target.name]: target.value });
     }
 
-    //const {jwtLoginResponse, setJwtLoginResponse} =useContext(JwtContext);
+    const {jwtLoginResponse, setJwtLoginResponse} = useContext(JwtContext);
+
     
     const identityService = new IdentityService();
     
@@ -46,13 +47,14 @@ const Login = () => {
       var jwtLoginData = await identityService.login(values);
 
       if (jwtLoginData == undefined) {
+        // get error info
         setValidationErrors(["No jwt!"]);
         //return;
       } 
-      else {
+       /* else {
         console.log(jwtLoginData.token)
         setValidationErrors([jwtLoginData.token])
-      }
+      }  */
 
       /* if (setJwtLoginResponse){
         setValidationErrors([jwtLoginResponse.jwt])

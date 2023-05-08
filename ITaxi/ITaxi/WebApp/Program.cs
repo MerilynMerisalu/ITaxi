@@ -90,8 +90,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     {
         // Order is important, its in which order they will be evaluated
         // add support for ?culture=ru-RU
-        //new QueryStringRequestCultureProvider(),
-        //new CookieRequestCultureProvider(),
+        new QueryStringRequestCultureProvider(),
+        new CookieRequestCultureProvider(),
         new AcceptLanguageHeaderRequestCultureProvider()
     };
 });

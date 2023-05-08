@@ -1,5 +1,5 @@
 import React from "react";
-import { JwtContext } from "./Root";
+
 
 type Props = {};
 
@@ -10,7 +10,7 @@ const Home = (props: Props) => {
         <div className="text-center">
           <h1 className="display-4">ITaxi</h1>
           <p>
-            Welcome to ITAXI {JwtContext.displayName}
+            Welcome to ITAXI 
             .
           </p>
         </div>

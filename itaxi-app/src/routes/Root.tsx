@@ -5,26 +5,31 @@ import Header from "../components/Header";
 import { IJwtLoginResponse } from "../dto/IJwtLoginResponse";
 import { data } from "jquery";
 
-export const JwtContext = createContext<{
+
+/* export const JwtContext = createContext<{
   jwtLoginResponse: IJwtLoginResponse | null,
   setJwtLoginResponse: ((data: IJwtLoginResponse | null) => void) | null
-}>({ jwtLoginResponse: null, setJwtLoginResponse: null });
+}>({ jwtLoginResponse: null, setJwtLoginResponse: null }); */
 
+
+export const JwtContext = createContext({
+
+});
 const Root = () => {
-
-  const [jwtLoginResponse, setJwtLoginResponse] = useState(null as IJwtLoginResponse | null);
-
+ 
+  const [jwtLoginResponse, setJwtLoginResponse] = useState(null as IJwtLoginResponse | null)
+  
   return (
-    <JwtContext.Provider value={{ jwtLoginResponse, setJwtLoginResponse }}>
+    <JwtContext.Provider value={{jwtLoginResponse, setJwtLoginResponse}}>
       <Header />
-
-      <div className="container">
+        <div className="container">
         <main role="main" className="pb-3">
           <Outlet />
         </main>
-      </div>
-      <Footer />
+        </div>
+        <Footer />
     </JwtContext.Provider>
+      
   );
 }
 
