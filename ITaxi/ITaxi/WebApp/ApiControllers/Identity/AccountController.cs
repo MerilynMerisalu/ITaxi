@@ -89,6 +89,7 @@ public class AccountController : ControllerBase
         };
         appUser = new AppUser()
         {
+            Id = Guid.NewGuid(),
             FirstName = customerRegistrationDTO.FirstName,
             LastName = customerRegistrationDTO.LastName,
             Gender = Enum.Parse<App.Domain.Enum.Gender>(customerRegistrationDTO.Gender.ToString()),
@@ -206,6 +207,7 @@ public class AccountController : ControllerBase
         
         appUser = new AppUser()
         {
+            Id = Guid.NewGuid(),
             FirstName = adminRegistrationDTO.FirstName,
             LastName = adminRegistrationDTO.LastName,
             Gender = Enum.Parse<App.Domain.Enum.Gender>(adminRegistrationDTO.Gender.ToString()),
@@ -326,6 +328,7 @@ public class AccountController : ControllerBase
         };
         appUser = new AppUser()
         {
+            Id = Guid.NewGuid(),
             FirstName = driverRegistrationDto.FirstName,
             LastName = driverRegistrationDto.LastName,
             Gender = Enum.Parse<App.Domain.Enum.Gender>(driverRegistrationDto.Gender.ToString()),
