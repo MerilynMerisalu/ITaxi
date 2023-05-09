@@ -113,8 +113,8 @@ public class AccountController : ControllerBase
 
         result = await _userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname",
             appUser.FirstName));
+        
         result = await _userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
-
         appUser = await _userManager.FindByEmailAsync(appUser.Email);
 
         if (appUser == null)
@@ -131,6 +131,7 @@ public class AccountController : ControllerBase
             await Task.Delay(_rand.Next(100, 1000));
             return NotFound("Username / password problem!");
         }
+        await _userManager.AddToRoleAsync(appUser, "Customer");
 
         var jwt = IdentityExtension.GenerateJwt(
             claimsPrincipal.Claims,
@@ -139,8 +140,10 @@ public class AccountController : ControllerBase
             audience: _configuration["JWT:Issuer"],
             expirationDateTime: refreshToken.TokenExpirationDateAndTime
         );
-        await _userManager.AddToRoleAsync(appUser, "Customer");
+        
 
+        
+        
         var customer = new Customer()
         {
             AppUserId = appUser.Id,
@@ -362,6 +365,7 @@ public class AccountController : ControllerBase
             return BadRequest($"User with email {driverRegistrationDto.Email} is not found after registration");
 
         }
+        await _userManager.AddToRoleAsync(appUser, "Driver");
 
         var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
         if (claimsPrincipal == null)
@@ -370,6 +374,7 @@ public class AccountController : ControllerBase
             await Task.Delay(_rand.Next(100, 1000));
             return NotFound("Username / password problem!");
         }
+        await _userManager.AddToRoleAsync(appUser, "Driver");
 
         var jwt = IdentityExtension.GenerateJwt(
             claimsPrincipal.Claims,
@@ -378,7 +383,7 @@ public class AccountController : ControllerBase
             audience: _configuration["JWT:Issuer"],
             expirationDateTime: refreshToken.TokenExpirationDateAndTime
         );
-        await _userManager.AddToRoleAsync(appUser, "Driver");
+        
       
         var driver = new App.BLL.DTO.AdminArea.DriverDTO()
         {

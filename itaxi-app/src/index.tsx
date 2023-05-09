@@ -17,6 +17,7 @@ import RegisterCustomer from "./routes/identity/RegisterCustomer";
 import RegisterDriver from "./routes/identity/RegisterDriver";
 import Privacy from "./routes/Privacy";
 import Home from "./routes/Home";
+import Vehicles from "./domain/vehicles/Vehicles";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,11 @@ const router = createBrowserRouter([
         path: "privacy/",
         element: <Privacy />,
       },
+
+      {
+        path: "vehicles/",
+        element: <Vehicles />
+      }
     ],
   },
 ]);

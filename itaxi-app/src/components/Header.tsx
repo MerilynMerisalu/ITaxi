@@ -24,8 +24,8 @@ function Header() {
               
             </NavDropdown>
 
-            <NavDropdown title="Activities" id="basic-nav-dropdown">
-              <NavDropdown.Item href="/DriverArea/Vehicles">Vehicles</NavDropdown.Item>
+            <NavDropdown style={{'display': jwtLoginResponse == null ? 'none' : ''}} title="Activities" id="basic-nav-dropdown">
+              <NavDropdown.Item href="/Vehicles">Vehicles</NavDropdown.Item>
               <NavDropdown.Item href="/DriverArea/Schedules">
                 Schedules
               </NavDropdown.Item>

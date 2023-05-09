@@ -9,7 +9,7 @@ import { IDisabilityTypeData } from "../../dto/IDisabilityType";
 import { isDate } from "util/types";
 
 
-//const [gender, setGender] = useState()
+
 const RegisterCustomer = () => {
 
 

@@ -23,6 +23,8 @@ public class VehiclesController : ControllerBase
 
     // GET: api/Vehicles
     [HttpGet]
+    [AllowAnonymous] 
+    #warning change it later back
     public async Task<ActionResult<IEnumerable<VehicleDTO>>> GetVehicles()
     {
         var userId = User.GettingUserId();

@@ -106,7 +106,7 @@ public static class IdentityExtension
         // role: "Admin,User"
         // role: "Driver"
         var claimEmail = user.Claims.FirstOrDefault(u => u.Type.Equals(ClaimTypes.Email));
-        if (claimEmail == null) throw new NullReferenceException("Role identifier claim not found!");
+        if (claimEmail == null) throw new NullReferenceException("Email identifier claim not found!");
 
         /*var res = (TKeyType) TypeDescriptor.GetConverter(typeof(TKeyType))
             .ConvertFromInvariantString(claimRole.Value)!;
