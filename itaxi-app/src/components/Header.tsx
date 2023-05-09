@@ -1,9 +1,12 @@
+import { useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { JwtContext } from '../routes/Root';
 
-function BasicExample() {
+function Header() {
+  const {jwtLoginResponse,setJwtLoginResponse} = useContext(JwtContext)
   return (
     <Navbar className='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3'>
       <Container fluid>
@@ -21,7 +24,8 @@ function BasicExample() {
               
             </NavDropdown>
           </Nav>
-          <Nav>
+          <Nav style={{'display': jwtLoginResponse == null ? '' : 'none'}}>
+            
             <Nav.Link className="nav-link text-dark" href="registerAdmin">Register Admin</Nav.Link>
             <Nav.Link className="nav-link text-dark" href="registerDriver">Register Driver</Nav.Link>
             <Nav.Link className="nav-link text-dark" href="registerCustomer" >Register Customer</Nav.Link>
@@ -33,4 +37,4 @@ function BasicExample() {
   );
 }
 
-export default BasicExample;
+export default Header;

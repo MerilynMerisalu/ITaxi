@@ -1,7 +1,7 @@
 import { IRegisterData } from "./IRegisterData";
 
 interface IJwtCustomerRegisterResponse extends IRegisterData {
-    jwt: string;
+    token: string;
     refreshToken: string;
     customerDTO: {
 

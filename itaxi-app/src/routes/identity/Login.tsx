@@ -4,12 +4,14 @@ import LoginFormView from "../LoginFormView";
 import { Navigate, useNavigate } from "react-router-dom";
 import { isJSDocUnknownTag } from "typescript";
 import { IJwtLoginResponse } from "../../dto/IJwtLoginResponse";
+import { IdentityService } from "../../services/IdentityService";
 import { JwtContext } from "../Root";
-import { IdentityService } from "../../services/IdentiyService";
+
+
 
 
 const Login = () => {
-   //const navigate = useNavigate();
+   const navigate = useNavigate();
 
    const [values, setInput] = useState({
         Email: "",
@@ -26,8 +28,7 @@ const Login = () => {
       setInput({ ...values, [target.name]: target.value });
     }
 
-    //const {jwtLoginResponse, setJwtLoginResponse} = useContext(JwtContext);
-
+    const {setJwtLoginResponse} = useContext(JwtContext)
     
     const identityService = new IdentityService();
     
@@ -46,22 +47,21 @@ const Login = () => {
 
       var jwtLoginData = await identityService.login(values);
 
-      if (jwtLoginData == undefined) {
+      if (!jwtLoginData) {
         // get error info
         setValidationErrors(["No jwt!"]);
-        //return;
+        return;
       } 
-       /* else {
+
+      if(setJwtLoginResponse)
+      setJwtLoginResponse(jwtLoginData)
+      navigate("/")
+        /* else {
         console.log(jwtLoginData.token)
         setValidationErrors([jwtLoginData.token])
       }  */
 
-      /* if (setJwtLoginResponse){
-        setValidationErrors([jwtLoginResponse.jwt])
-        console.log(jwtLoginData.jwt)
-        //setJwtLoginResponse(jwtLoginData);
-        //navigate("/");
-      } */
+      
     }
     
     return(
