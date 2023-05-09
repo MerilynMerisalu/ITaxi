@@ -52,14 +52,14 @@ const Login = () => {
         setValidationErrors(["No jwt!"]);
         return;
       } 
-
-      if(setJwtLoginResponse)
-      setJwtLoginResponse(jwtLoginData)
-      navigate("/")
-        /* else {
+       /* else {
         console.log(jwtLoginData.token)
         setValidationErrors([jwtLoginData.token])
-      }  */
+      }   */
+       if(setJwtLoginResponse)
+        setJwtLoginResponse(jwtLoginData)
+        navigate("/")
+         
 
       
     }

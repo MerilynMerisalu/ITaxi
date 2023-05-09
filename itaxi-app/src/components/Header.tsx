@@ -23,6 +23,25 @@ function Header() {
               </NavDropdown.Item>
               
             </NavDropdown>
+
+            <NavDropdown title="Activities" id="basic-nav-dropdown">
+              <NavDropdown.Item href="/DriverArea/Vehicles">Vehicles</NavDropdown.Item>
+              <NavDropdown.Item href="/DriverArea/Schedules">
+                Schedules
+              </NavDropdown.Item>
+              <NavDropdown.Item href="/DriverArea/RideTimes">
+                RideTimes
+              </NavDropdown.Item>
+              <NavDropdown.Item href="/DriverArea/Drives">
+                Drives
+              </NavDropdown.Item>
+              <NavDropdown.Item href="/DriverArea/Photos">
+                Photos
+              </NavDropdown.Item>
+            
+            </NavDropdown>
+
+          
           </Nav>
           <Nav style={{'display': jwtLoginResponse == null ? '' : 'none'}}>
             
@@ -30,6 +49,10 @@ function Header() {
             <Nav.Link className="nav-link text-dark" href="registerDriver">Register Driver</Nav.Link>
             <Nav.Link className="nav-link text-dark" href="registerCustomer" >Register Customer</Nav.Link>
             <Nav.Link className="nav-link text-dark" href="login">Login</Nav.Link>
+          </Nav>
+          <Nav style={{'display': jwtLoginResponse !== null ? '' : 'none'}} >
+          <Nav.Link className="nav-link text-dark" href="/">Logout</Nav.Link>
+
           </Nav>
         </Navbar.Collapse>
       </Container>
