@@ -183,10 +183,13 @@ public class DriversController : ControllerBase
 
         await _appBLL.DriverAndDriverLicenseCategories
             .RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(driver.Id);
-
-        var appUser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(driver.AppUserId);
-        await _userManager.DeleteAsync(appUser);
         
+        var appUser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(driver.AppUserId);
+        var claims = await _userManager.GetClaimsAsync(appUser);
+        await _userManager.RemoveClaimsAsync(appUser, claims);
+        var roles = await _userManager.GetRolesAsync(appUser);
+        await _userManager.RemoveFromRolesAsync(appUser, roles);
+        await _userManager.DeleteAsync(appUser);
         
         _appBLL.Drivers.Remove(driver);
         await _appBLL.SaveChangesAsync();
