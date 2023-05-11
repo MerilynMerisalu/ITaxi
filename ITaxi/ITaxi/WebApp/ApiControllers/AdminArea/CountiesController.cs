@@ -70,8 +70,6 @@ public class CountiesController : ControllerBase
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
 
         if (county == null) return NotFound();
-       
-
 
         return _mapper.Map<County>(county);
     }

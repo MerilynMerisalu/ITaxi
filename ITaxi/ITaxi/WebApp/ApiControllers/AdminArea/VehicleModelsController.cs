@@ -1,6 +1,9 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using App.Public.DTO.v1.AdminArea;
+using AutoMapper;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,40 +18,69 @@ namespace WebApp.ApiControllers.AdminArea;
 public class VehicleModelsController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
+    private readonly IMapper _mapper;
 
-    public VehicleModelsController(IAppBLL appBLL)
+    public VehicleModelsController(IAppBLL appBLL, IMapper mapper)
     {
         _appBLL = appBLL;
+        _mapper = mapper;
     }
 
     // GET: api/VehicleModels
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<VehicleModelDTO>>> GetVehicleModels()
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType( typeof( IEnumerable<VehicleModel>), StatusCodes.Status200OK )] 
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<IEnumerable<VehicleModel>>> GetVehicleModels()
     {
-        return Ok(await _appBLL.VehicleModels.GetAllVehicleModelsWithoutVehicleMarksAsync());
+        var res = await _appBLL.VehicleModels.GetAllVehicleModelsWithoutVehicleMarksAsync();
+        return Ok(res.Select(v => _mapper.Map<VehicleModel>(v)));
     }
 
     // GET: api/VehicleModels/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<VehicleModelDTO>> GetVehicleModel(Guid id)
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(VehicleModel), StatusCodes.Status200OK )] 
+    [ProducesResponseType( StatusCodes.Status404NotFound )] 
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<VehicleModel>> GetVehicleModel(Guid id)
     {
         var vehicleModel = await _appBLL.VehicleModels.FirstOrDefaultVehicleModelWithoutVehicleMarkAsync(id);
 
         if (vehicleModel == null) return NotFound();
 
-        return vehicleModel;
+        return _mapper.Map<VehicleModel>(vehicleModel);
     }
 
     // PUT: api/VehicleModels/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutVehicleModel(Guid id, VehicleModelDTO vehicleModel)
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> PutVehicleModel(Guid id, VehicleModel vehicleModel)
     {
         if (id != vehicleModel.Id) return BadRequest();
-        
+        var vehicleModelDto = await _appBLL.VehicleModels.FirstOrDefaultAsync(id);
         try
         {
-            _appBLL.VehicleModels.Update(vehicleModel);
+            if (vehicleModelDto != null)
+            {
+                vehicleModelDto.VehicleMarkId = vehicleModel.VehicleMarkId;
+                vehicleModelDto.VehicleModelName = vehicleModel.VehicleModelName;
+                vehicleModelDto.UpdatedBy = User.GettingUserEmail();
+                vehicleModelDto.CreatedAt = DateTime.Now.ToUniversalTime();
+                _appBLL.VehicleModels.Update(vehicleModelDto);
+            }
+
             await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
@@ -64,13 +96,29 @@ public class VehicleModelsController : ControllerBase
     // POST: api/VehicleModels
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<VehicleModelDTO>> PostVehicleModel([FromBody]VehicleModelDTO vehicleModel)
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(VehicleModel), 
+        StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
+    public async Task<ActionResult<VehicleModel>> PostVehicleModel([FromBody]VehicleModel vehicleModel)
     {
         if (HttpContext.GetRequestedApiVersion() == null)
         {
             return BadRequest("Api version is mandatory");
         }
-        _appBLL.VehicleModels.Add(vehicleModel);
+
+        var vehicleModelDto = new VehicleModelDTO();
+        vehicleModelDto.Id = Guid.NewGuid();
+        vehicleModel.VehicleMarkId = vehicleModel.VehicleMarkId;
+        vehicleModelDto.VehicleModelName = vehicleModel.VehicleModelName;
+        vehicleModelDto.CreatedBy = User.GettingUserEmail();
+        vehicleModelDto.CreatedAt = DateTime.Now.ToUniversalTime();
+        vehicleModelDto.UpdatedBy = User.GettingUserEmail();
+        vehicleModelDto.UpdatedAt = DateTime.Now.ToUniversalTime();
+        _appBLL.VehicleModels.Add(vehicleModelDto);
         await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetVehicleModel", new
