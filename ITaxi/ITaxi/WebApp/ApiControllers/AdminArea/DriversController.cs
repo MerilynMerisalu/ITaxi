@@ -176,6 +176,10 @@ public class DriversController : ControllerBase
 
     // DELETE: api/Drivers/5
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> DeleteDriver(Guid id)
     {
         var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id);

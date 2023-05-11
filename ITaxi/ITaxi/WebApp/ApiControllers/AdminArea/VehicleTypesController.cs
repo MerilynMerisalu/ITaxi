@@ -1,6 +1,9 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using App.Public.DTO.v1.AdminArea;
+using AutoMapper;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,41 +18,69 @@ namespace WebApp.ApiControllers.AdminArea;
 public class VehicleTypesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
-
-    public VehicleTypesController(IAppBLL appBLL)
+    private readonly IMapper _mapper;
+    public VehicleTypesController(IAppBLL appBLL, IMapper mapper)
     {
         _appBLL = appBLL;
+        _mapper = mapper;
     }
 
     // GET: api/VehicleTypes
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<VehicleTypeDTO>>> GetVehicleTypes()
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType( typeof( IEnumerable<VehicleType>), StatusCodes.Status200OK )] 
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<IEnumerable<VehicleType>>> GetVehicleTypes()
     {
         return Ok(await _appBLL.VehicleTypes.GetAllVehicleTypesDTOAsync());
     }
 
     // GET: api/VehicleTypes/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<VehicleTypeDTO>> GetVehicleType(Guid id)
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(VehicleType), StatusCodes.Status200OK )] 
+    [ProducesResponseType( StatusCodes.Status404NotFound )] 
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<VehicleType>> GetVehicleType(Guid id)
     {
         var vehicleType = await _appBLL.VehicleTypes.FirstOrDefaultAsync(id);
 
         if (vehicleType == null) return NotFound();
 
-        return vehicleType;
+        return _mapper.Map<VehicleType>(vehicleType);
     }
 
     // PUT: api/VehicleTypes/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutVehicleType(Guid id, VehicleTypeDTO vehicleType)
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> PutVehicleType(Guid id, VehicleType vehicleType)
     {
         if (id != vehicleType.Id) return BadRequest();
 
-
+        
         try
         {
-            _appBLL.VehicleTypes.Update(vehicleType);
+            var vehicleTypeDto = await _appBLL.VehicleTypes.FirstOrDefaultAsync(id);
+
+            if (vehicleTypeDto != null)
+            {
+                vehicleTypeDto.VehicleTypeName = vehicleType.VehicleTypeName;
+                vehicleTypeDto.UpdatedAt = DateTime.Now.ToUniversalTime();
+                vehicleTypeDto.UpdatedBy = User.GettingUserEmail();
+            }
+
+            if (vehicleTypeDto != null) _appBLL.VehicleTypes.Update(vehicleTypeDto);
             await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
@@ -65,13 +96,26 @@ public class VehicleTypesController : ControllerBase
     // POST: api/VehicleTypes
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<VehicleTypeDTO>> PostVehicleType([FromBody]VehicleTypeDTO vehicleType)
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(VehicleType), 
+        StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
+    public async Task<ActionResult<VehicleType>> PostVehicleType([FromBody]VehicleType vehicleType)
     {
         if (HttpContext.GetRequestedApiVersion() == null)
         {
             return BadRequest("Api version is mandatory!");
         }
-        _appBLL.VehicleTypes.Add(vehicleType);
+
+        var vehicleTypeDto = new VehicleTypeDTO();
+        vehicleTypeDto.Id = Guid.NewGuid();
+        vehicleTypeDto.VehicleTypeName = vehicleType.VehicleTypeName;
+        vehicleTypeDto.CreatedBy = User.GettingUserEmail();
+        vehicleTypeDto.CreatedAt = DateTime.Now.ToUniversalTime();
+        _appBLL.VehicleTypes.Add(vehicleTypeDto);
         await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetVehicleType", new {id = vehicleType.Id, 

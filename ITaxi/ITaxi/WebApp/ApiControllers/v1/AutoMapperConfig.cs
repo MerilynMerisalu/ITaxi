@@ -62,19 +62,19 @@ public class AutoMapperConfig: Profile
             .ReverseMap();
         CreateMap<App.Public.DTO.v1.AdminArea.Vehicle, App.BLL.DTO.AdminArea.VehicleDTO>()
             .ReverseMap();
-        /*
-        CreateMap<App.BLL.DTO.AdminArea.DriverDTO, App.DAL.DTO.AdminArea.DriverDTO>()
+        
+        CreateMap<App.Public.DTO.v1.AdminArea.Driver, App.BLL.DTO.AdminArea.DriverDTO>()
             .ReverseMap()
            ;
         
-        CreateMap<App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO,
-                App.DAL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO>()
+        CreateMap<App.Public.DTO.v1.AdminArea.DriverAndDriverLicenseCategory,
+                App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO>()
             .ReverseMap();
         
         CreateMap<App.BLL.DTO.AdminArea.VehicleTypeDTO, App.DAL.DTO.AdminArea.VehicleTypeDTO>()
             .ReverseMap()
 ;        
-        CreateMap<App.BLL.DTO.AdminArea.VehicleMarkDTO, App.DAL.DTO.AdminArea.VehicleMarkDTO>()
+        /* CreateMap<App.BLL.DTO.AdminArea.VehicleMarkDTO, App.DAL.DTO.AdminArea.VehicleMarkDTO>()
             .ReverseMap()
            ;
         
