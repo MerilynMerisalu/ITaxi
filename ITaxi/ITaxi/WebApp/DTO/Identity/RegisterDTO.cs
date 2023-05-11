@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Public.DTO.v1.Enum;
+using App.Enum.Enum;
 using App.Resources.Areas.Identity.Pages.Account;
 using Base.Resources;
 

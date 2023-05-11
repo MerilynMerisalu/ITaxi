@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using App.Public.DTO.v1.Enum;
+using App.Enum.Enum;
 using Base.Resources;
 
 

@@ -8,7 +8,7 @@ using App.Contracts.BLL;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
-using App.Public.DTO.v1.Enum;
+using App.Enum.Enum;
 using App.Public.DTO.v1.Identity;
 using Base.Extensions;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +17,6 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.DTO;
 using WebApp.DTO.Identity;
 using AppUser = App.Domain.Identity.AppUser;
-using Gender = App.Enum.Enum.Gender;
 
 
 namespace WebApp.ApiControllers.Identity;

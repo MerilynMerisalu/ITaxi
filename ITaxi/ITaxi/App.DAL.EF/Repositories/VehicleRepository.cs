@@ -120,7 +120,7 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
 
         for (var i = 6; i > 0; i--)
         {
-            var year = DateTime.Today.AddYears(-i).Year;
+            var year = DateTime.Today.AddYears(1).AddYears(-i).Year;
             years.Add(year);
         }
 

@@ -1,16 +1,15 @@
 #nullable enable
-using App.BLL.DTO.AdminArea;
-using App.Contracts.BLL;
 
+using App.Contracts.BLL;
+using App.Enum.Enum;
 using App.Public.DTO.v1.AdminArea;
-using App.Public.DTO.v1.Enum;
+
 using AutoMapper;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Gender = App.Enum.Enum.Gender;
 
 
 namespace WebApp.ApiControllers.AdminArea;
