@@ -1,5 +1,6 @@
 #nullable enable
 
+using App.BLL.DTO.Identity;
 using App.Contracts.BLL;
 using App.Enum.Enum;
 using App.Public.DTO.v1.AdminArea;
@@ -8,6 +9,7 @@ using AutoMapper;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,17 +27,13 @@ public class AdminsController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
     private readonly IMapper _mapper;
-
-    /// <summary>
-    /// Constructor for admins api controller
-    /// </summary>
-    /// <param name="appBLL">AppBLL</param>
-    /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea.CitiesDTO to
-    /// Public.DTO.v1.AdminArea.City</param>
-    public AdminsController(IAppBLL appBLL, IMapper mapper)
+    private readonly UserManager<AppUser> _userManager;
+    
+    public AdminsController(IAppBLL appBLL, IMapper mapper, UserManager<AppUser> userManager)
     {
         _appBLL = appBLL;
         _mapper = mapper;
+        _userManager = userManager;
     }
 
     // GET: api/Admins
@@ -176,6 +174,12 @@ public class AdminsController : ControllerBase
     {
         var admin = await _appBLL.Admins.FirstOrDefaultAsync(id);
         if (admin == null) return NotFound();
+
+        var appUser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(admin.AppUserId);
+        var claims = await _userManager.GetClaimsAsync(appUser);
+        await _userManager.RemoveClaimsAsync(appUser, claims);
+        var roles = await _userManager.GetRolesAsync(appUser);
+        await _userManager.RemoveFromRolesAsync(appUser, roles);
 
         _appBLL.Admins.Remove(admin);
         await _appBLL.SaveChangesAsync();
