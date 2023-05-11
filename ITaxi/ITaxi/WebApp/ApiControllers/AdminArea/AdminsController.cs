@@ -110,13 +110,14 @@ public class AdminsController : ControllerBase
         try
         {
             admin.AppUserId = appUser.Id;
-            admin.AppUser!.Email = adminDTO.AppUser!.Email;
-            admin.AppUser.Gender = (Gender)adminDTO.AppUser.Gender;
+            appUser.Email = adminDTO.AppUser!.Email;
+            appUser.Gender = adminDTO.AppUser.Gender;
             admin.CityId = adminDTO.CityId;
             admin.Address = adminDTO.Address;
             admin.PersonalIdentifier = adminDTO.PersonalIdentifier;
             admin.CreatedBy = User.GettingUserEmail();
             admin.UpdatedBy = User.GettingUserEmail();
+            _appBLL.AppUsers.Update(appUser);
             _appBLL.Admins.Update(admin);
             await _appBLL.SaveChangesAsync();
         }

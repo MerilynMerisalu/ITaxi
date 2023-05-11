@@ -8,6 +8,12 @@ namespace App.Public.DTO.v1.DriverArea;
 
 public class Vehicle: DomainEntityMetaId
 {
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "Driver")]
+    public Guid DriverId { get; set; }
+
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = nameof(Driver))]
+    public Driver? Driver { get; set; }
+
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleType")]
     
     public Guid VehicleTypeId { get; set; }

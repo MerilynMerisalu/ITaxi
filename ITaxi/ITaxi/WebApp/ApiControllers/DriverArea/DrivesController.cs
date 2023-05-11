@@ -1,6 +1,7 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using App.Public.DTO.v1.AdminArea;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +23,7 @@ public class DrivesController : ControllerBase
 
     // GET: api/Drives
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<DriveDTO>>> GetDrives()
+    public async Task<ActionResult<IEnumerable<Drive>>> GetDrives()
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();

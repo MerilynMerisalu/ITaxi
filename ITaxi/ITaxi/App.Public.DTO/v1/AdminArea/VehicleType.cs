@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using App.BLL.DTO.AdminArea;
 using Base.Domain;
 using Base.Resources;
 
@@ -11,9 +12,9 @@ public class VehicleType : DomainEntityMetaId
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.VehicleType), Name = "VehicleTypeName")]
-    public LangStr VehicleTypeName { get; set; } = default!;
+    public string VehicleTypeName { get; set; } = default!;
 
 
-    public ICollection<Vehicle>? Vehicles { get; set; }
+    public ICollection<VehicleDTO>? Vehicles { get; set; }
 
 }

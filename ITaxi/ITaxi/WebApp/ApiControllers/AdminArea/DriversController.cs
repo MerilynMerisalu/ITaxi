@@ -1,12 +1,16 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using App.Domain.Identity;
 using App.Public.DTO.v1.AdminArea;
 using AutoMapper;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AppUser = App.BLL.DTO.Identity.AppUser;
 
 namespace WebApp.ApiControllers.AdminArea;
 
@@ -22,16 +26,17 @@ public class DriversController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
     private readonly IMapper _mapper;
-
+    private readonly UserManager<App.BLL.DTO.Identity.AppUser> _userManager;
     /// <summary>
     /// Constructor for drivers api controller
     /// </summary>
     /// <param name="appBLL">AppBLL</param>
     /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea.Driver to Public.DTO.v1.AdminArea.Drivers</param>
-    public DriversController(IAppBLL appBLL, IMapper mapper)
+    public DriversController(IAppBLL appBLL, IMapper mapper, UserManager<AppUser> userManager)
     {
         _appBLL = appBLL;
         _mapper = mapper;
+        _userManager = userManager;
     }
 
     // GET: api/Drivers
@@ -76,11 +81,11 @@ public class DriversController : ControllerBase
     // PUT: api/Drivers/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     /// <summary>
-    /// 
+    /// Updating a driver entity 
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="driver"></param>
-    /// <returns></returns>
+    /// <param name="id">Driver id, Guid</param>
+    /// <param name="driver">Driver with properties</param>
+    /// <returns>Status201Created with an entity</returns>
     [HttpPut("{id}")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -89,13 +94,54 @@ public class DriversController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PutDriver(Guid id, DriverDTO driver)
+    public async Task<IActionResult> PutDriver(Guid id, Driver driver)
     {
         if (id != driver.Id) return BadRequest();
 
+        var driverLicenseCategories = await _appBLL.DriverAndDriverLicenseCategories
+            .RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(driver.Id);
+
         try
         {
-            _appBLL.Drivers.Update(driver);
+            if (driver.DriverLicenseCategories!.Count != 0)
+            {
+                foreach (var driverLicenseCategory in driver.DriverLicenseCategories)
+                {
+                    var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory()
+                    {
+                        Id = new Guid(),
+                        DriverId = driverLicenseCategory.DriverId,
+                        DriverLicenseCategoryId = driverLicenseCategory.DriverLicenseCategoryId
+                    };
+                    _appBLL.DriverAndDriverLicenseCategories
+                        .Update(_mapper.Map<DriverAndDriverLicenseCategoryDTO>(driverAndDriverLicenseCategory));
+                    await _appBLL.SaveChangesAsync();
+                }
+            }
+
+            var appUser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(driver.AppUserId);
+            appUser.Email = appUser.Email;
+            appUser.Gender = appUser.Gender;
+            appUser.FirstName = appUser.FirstName;
+            appUser.LastName = appUser.LastName;
+            appUser.IsActive = appUser.IsActive;
+            appUser.PhoneNumber = appUser.PhoneNumber;
+            appUser.DateOfBirth = appUser.DateOfBirth;
+
+            _appBLL.AppUsers.Update(appUser);
+            await _appBLL.SaveChangesAsync();
+
+            driver.Address = driver.Address;
+            driver.CityId = driver.CityId;
+            driver.DriverLicenseNumber = driver.DriverLicenseNumber;
+            driver.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
+            driver.PersonalIdentifier = driver.PersonalIdentifier;
+            driver.UpdatedBy = User.GettingUserEmail();
+            driver.UpdatedAt = DateTime.Now.ToUniversalTime();
+
+            var driverDto = _mapper.Map<DriverDTO>(driver);
+            
+            _appBLL.Drivers.Update(driverDto);
             await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
@@ -108,7 +154,7 @@ public class DriversController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Drivers
+    /*// POST: api/Drivers
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<DriverDTO>> PostDriver([FromBody]DriverDTO driver)
@@ -126,6 +172,7 @@ public class DriversController : ControllerBase
             version = HttpContext.GetRequestedApiVersion()!.ToString(),
         }, driver);
     }
+    */
 
     // DELETE: api/Drivers/5
     [HttpDelete("{id}")]
@@ -134,6 +181,13 @@ public class DriversController : ControllerBase
         var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id);
         if (driver == null) return NotFound();
 
+        await _appBLL.DriverAndDriverLicenseCategories
+            .RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(driver.Id);
+
+        var appUser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(driver.AppUserId);
+        await _userManager.DeleteAsync(appUser);
+        
+        
         _appBLL.Drivers.Remove(driver);
         await _appBLL.SaveChangesAsync();
 
