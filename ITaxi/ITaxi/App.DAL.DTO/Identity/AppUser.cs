@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using App.Domain.Enum;
+using App.Enum.Enum;
 using Base.Domain;
 using Base.Resources;
 using Microsoft.AspNetCore.Http;

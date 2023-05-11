@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.DTO;
 using WebApp.DTO.Identity;
 using AppUser = App.Domain.Identity.AppUser;
+using Gender = App.Enum.Enum.Gender;
 
 
 namespace WebApp.ApiControllers.Identity;
@@ -92,7 +93,7 @@ public class AccountController : ControllerBase
             Id = Guid.NewGuid(),
             FirstName = customerRegistrationDTO.FirstName,
             LastName = customerRegistrationDTO.LastName,
-            Gender = Enum.Parse<App.Domain.Enum.Gender>(customerRegistrationDTO.Gender.ToString()),
+            Gender = Enum.Parse<Gender>(customerRegistrationDTO.Gender.ToString()),
             DateOfBirth = DateTime.Parse(customerRegistrationDTO.DateOfBirth).ToUniversalTime(),
             PhoneNumber = customerRegistrationDTO.PhoneNumber,
             Email = customerRegistrationDTO.Email,
@@ -213,7 +214,7 @@ public class AccountController : ControllerBase
             Id = Guid.NewGuid(),
             FirstName = adminRegistrationDTO.FirstName,
             LastName = adminRegistrationDTO.LastName,
-            Gender = Enum.Parse<App.Domain.Enum.Gender>(adminRegistrationDTO.Gender.ToString()),
+            Gender = Enum.Parse<Gender>(adminRegistrationDTO.Gender.ToString()),
             DateOfBirth = adminRegistrationDTO.DateOfBirth.ToUniversalTime(),
             PhoneNumber = adminRegistrationDTO.PhoneNumber,
             Email = adminRegistrationDTO.Email,
@@ -334,7 +335,7 @@ public class AccountController : ControllerBase
             Id = Guid.NewGuid(),
             FirstName = driverRegistrationDto.FirstName,
             LastName = driverRegistrationDto.LastName,
-            Gender = Enum.Parse<App.Domain.Enum.Gender>(driverRegistrationDto.Gender.ToString()),
+            Gender = Enum.Parse<Gender>(driverRegistrationDto.Gender.ToString()),
             DateOfBirth = DateTime.Parse(driverRegistrationDto.DateOfBirth).ToUniversalTime(),
             PhoneNumber = driverRegistrationDto.PhoneNumber,
             Email = driverRegistrationDto.Email,

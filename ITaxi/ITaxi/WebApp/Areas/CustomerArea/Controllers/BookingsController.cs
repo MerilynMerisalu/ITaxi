@@ -1,8 +1,7 @@
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Contracts.DAL;
-
-using App.Domain.Enum;
+using App.Enum.Enum;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

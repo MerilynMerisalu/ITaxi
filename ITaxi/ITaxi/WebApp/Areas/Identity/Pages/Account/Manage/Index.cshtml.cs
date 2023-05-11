@@ -6,8 +6,8 @@
 using System.ComponentModel.DataAnnotations;
 using App.DAL.EF;
 using App.Domain;
-using App.Domain.Enum;
 using App.Domain.Identity;
+using App.Enum.Enum;
 using Base.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

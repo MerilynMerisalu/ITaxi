@@ -31,6 +31,7 @@ public class AutoMapperConfig: Profile
         // Globally convert all LangStr using Request Headers, not the current Thread!
         CreateMap<LangStr, string>().ConvertUsing<LangStrTypeConverter>();
         
+        
         CreateMap<App.Public.DTO.v1.AdminArea.County, App.BLL.DTO.AdminArea.CountyDTO>()
             .ReverseMap()
             ;
@@ -50,9 +51,12 @@ public class AutoMapperConfig: Profile
         CreateMap<App.Public.DTO.v1.AdminArea.DriverLicenseCategory,
                 App.BLL.DTO.AdminArea.DriverLicenseCategoryDTO>()
             .ReverseMap();
+        
 
         CreateMap<App.Public.DTO.v1.Identity.AdminRegistration,
                 WebApp.DTO.AdminRegistrationDTO>()
+            .ReverseMap();
+        CreateMap<App.Public.DTO.v1.AdminArea.Driver, App.BLL.DTO.AdminArea.DriverDTO>()
             .ReverseMap();
         CreateMap<App.Public.DTO.v1.AdminArea.DisabilityType, App.BLL.DTO.AdminArea.DisabilityTypeDTO>()
             .ReverseMap()

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain.Enum;
+using App.Enum.Enum;
 using Base.Domain;
 
 namespace App.Domain;

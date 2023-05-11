@@ -1,13 +1,17 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+
 using App.Public.DTO.v1.AdminArea;
+using App.Public.DTO.v1.Enum;
 using AutoMapper;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Gender = App.Enum.Enum.Gender;
+
 
 namespace WebApp.ApiControllers.AdminArea;
 
@@ -93,7 +97,7 @@ public class AdminsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PutAdmin(Guid id, AdminDTO adminDTO)
+    public async Task<IActionResult> PutAdmin(Guid id, Admin adminDTO)
     {
         if (id != adminDTO.Id) return BadRequest();
 
@@ -102,8 +106,13 @@ public class AdminsController : ControllerBase
         {
             return NotFound();
         }
+
+        var appUser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(adminDTO.AppUserId);
         try
         {
+            admin.AppUserId = appUser.Id;
+            admin.AppUser!.Email = adminDTO.AppUser!.Email;
+            admin.AppUser.Gender = (Gender)adminDTO.AppUser.Gender;
             admin.CityId = adminDTO.CityId;
             admin.Address = adminDTO.Address;
             admin.PersonalIdentifier = adminDTO.PersonalIdentifier;
@@ -124,12 +133,7 @@ public class AdminsController : ControllerBase
 
     // POST: api/Admins
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    /// <summary>
-    /// Creating an admin
-    /// </summary>
-    /// <param name="admin"></param>
-    /// <returns></returns>
-    [HttpPost]
+    /*[HttpPost]
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -155,7 +159,7 @@ public class AdminsController : ControllerBase
             id = admin.Id,
             version = HttpContext.GetRequestedApiVersion()!.ToString(),
         }, admin);
-    }
+    }*/
 
     // DELETE: api/Admins/5
     /// <summary>

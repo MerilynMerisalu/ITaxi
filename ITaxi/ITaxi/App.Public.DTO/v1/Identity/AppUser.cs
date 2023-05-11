@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using App.Domain.Enum;
+using App.Public.DTO.v1.Enum;
 using Base.Resources;
-using Gender = App.Public.DTO.v1.Enum.Gender;
+
 
 namespace App.Public.DTO.v1.Identity;
 

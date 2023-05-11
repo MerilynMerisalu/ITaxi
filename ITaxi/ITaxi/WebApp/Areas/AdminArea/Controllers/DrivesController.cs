@@ -1,8 +1,7 @@
 #nullable enable
 using App.Contracts.BLL;
 using App.Contracts.DAL;
-
-using App.Domain.Enum;
+using App.Enum.Enum;
 using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;

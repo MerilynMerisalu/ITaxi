@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Domain.Enum;
+
+using App.Enum.Enum;
 using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Domain;
 using Base.Resources;

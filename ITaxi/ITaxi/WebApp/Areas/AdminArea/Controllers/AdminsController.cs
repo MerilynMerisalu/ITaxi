@@ -1,15 +1,14 @@
 #nullable enable
-using System.Security.Claims;
-using App.BLL;
+
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
+
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+
 using WebApp.Areas.AdminArea.ViewModels;
 
 

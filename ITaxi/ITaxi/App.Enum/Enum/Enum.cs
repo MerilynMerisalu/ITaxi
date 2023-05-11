@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Base.Resources;
 
-namespace App.Domain.Enum;
+namespace App.Enum.Enum;
 
 public enum Gender
 {

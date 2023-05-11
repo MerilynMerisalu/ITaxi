@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Mail;
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Domain.Enum;
+using App.Enum.Enum;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

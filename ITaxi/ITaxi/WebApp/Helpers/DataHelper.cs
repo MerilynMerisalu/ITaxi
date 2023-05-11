@@ -2,8 +2,8 @@
 using System.Security.Claims;
 using App.DAL.EF;
 using App.Domain;
-using App.Domain.Enum;
 using App.Domain.Identity;
+using App.Enum.Enum;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

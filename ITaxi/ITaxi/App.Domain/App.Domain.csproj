@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\App.Enum\App.Enum.csproj" />
         <ProjectReference Include="..\App.Resources\App.Resources.csproj" />
         <ProjectReference Include="..\Base.Domain\Base.Domain.csproj" />
         <ProjectReference Include="..\Base.Resources\Base.Resources.csproj" />
