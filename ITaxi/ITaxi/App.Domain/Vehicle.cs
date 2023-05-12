@@ -10,13 +10,10 @@ public class Vehicle : DomainEntityMetaId
     public Guid DriverId { get; set; }
     public Driver? Driver { get; set; }
     public Guid VehicleTypeId { get; set; }
-    
     public VehicleType? VehicleType { get; set; }
     public Guid VehicleMarkId { get; set; }
-
     public VehicleMark? VehicleMark { get; set; }
     public Guid VehicleModelId { get; set; }
-
     public VehicleModel? VehicleModel { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]

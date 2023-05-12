@@ -28,7 +28,7 @@ const Login = () => {
       setInput({ ...values, [target.name]: target.value });
     }
 
-    const {setJwtLoginResponse} = useContext(JwtContext)
+    const {jwtLoginResponse, setJwtLoginResponse} = useContext(JwtContext);
     
     const identityService = new IdentityService();
     
@@ -47,7 +47,7 @@ const Login = () => {
 
       var jwtLoginData = await identityService.login(values);
 
-      if (!jwtLoginData) {
+      if (jwtLoginData == undefined) {
         // get error info
         setValidationErrors(["No jwt!"]);
         return;
@@ -58,10 +58,7 @@ const Login = () => {
       }   */
        if(setJwtLoginResponse)
         setJwtLoginResponse(jwtLoginData)
-        navigate("/")
-         
-
-      
+        navigate("/")   
     }
     
     return(

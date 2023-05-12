@@ -3,6 +3,7 @@ using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.Domain;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,11 @@ namespace WebApp.ApiControllers.AdminArea;
 public class CustomersController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
-
-    public CustomersController(IAppBLL appBLL)
+    private readonly IMapper _mapper;
+    public CustomersController(IAppBLL appBLL, IMapper mapper)
     {
         _appBLL = appBLL;
+        _mapper = mapper;
     }
 
     // GET: api/Customers

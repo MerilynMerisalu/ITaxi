@@ -12,9 +12,10 @@ export const JwtContext = createContext
 <{jwtLoginResponse: IJwtLoginResponse | null, 
   setJwtLoginResponse: ((data: IJwtLoginResponse) => void) | null}>
   ({jwtLoginResponse: null, setJwtLoginResponse: null});
+
 const Root = () => {
  
-const [jwtLoginResponse, setJwtLoginResponse] = useState(null as IJwtLoginResponse | null )
+const [jwtLoginResponse, setJwtLoginResponse] = useState(null as IJwtLoginResponse | null );
   
   return (
       <JwtContext.Provider value={{jwtLoginResponse, setJwtLoginResponse}}>

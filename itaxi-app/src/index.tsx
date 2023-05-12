@@ -17,7 +17,7 @@ import RegisterCustomer from "./routes/identity/RegisterCustomer";
 import RegisterDriver from "./routes/identity/RegisterDriver";
 import Privacy from "./routes/Privacy";
 import Home from "./routes/Home";
-import Vehicles from "./domain/vehicles/Vehicles";
+import Vehicles from "./routes/vehicles/Vehicles";
 
 const router = createBrowserRouter([
   {

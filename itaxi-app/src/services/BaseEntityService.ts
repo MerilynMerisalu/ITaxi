@@ -1,33 +1,35 @@
-import axios from "axios";
 import { IBaseEntity } from "../domain/Base/IBaseEntity";
 import BaseService from "./BaseService";
 
-export abstract class BaseEntityService<TEntity extends IBaseEntity> extends BaseService {
-    constructor(baseUrl: string) {
-        super(baseUrl);
-    } 
+export abstract class BaseEntityService <TEntity extends IBaseEntity> extends BaseService {
+  constructor(baseUrl: string){
+      super(baseUrl);
+  }
 
-    async getAll(): Promise<TEntity[]| null> {
-        try {
-            axios.get("https://localhost:7026/api/v1/adminarea/disabilityTypes", {
-        headers: {
-          "Content-Type": "application/json"
+  async getAll(token: string): Promise<TEntity[] | undefined> {
+
+    try {
+      
+      const response = await this.axios.get<TEntity[]>('', 
+        {
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+
         }
-      }).then(response => {
-        console.log('*** RES', response)
-         setDisabilityTypes(response.data);
-      });
+      );
 
-      const today = new Date().getDate()
-console.log(today)
-      console.log("Try get data");
-      //getData();
+      console.log('response', response);
+      if (response.status === 200) {
+          return response.data;
+      }
+      return undefined;
 
-    }, []);
-
-        } catch (error) {
-            
-        }
-
-    }
+  } catch (e){
+      console.log('error: ', (e as Error).message);
+      return undefined;
+  }
+    
+  }
+  
 }
