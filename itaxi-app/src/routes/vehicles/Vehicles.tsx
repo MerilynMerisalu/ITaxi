@@ -11,6 +11,7 @@ const Vehicles = () => {
   const { jwtLoginResponse, setJwtLoginResponse } = useContext(JwtContext);
 
   const [data, setData] = useState([] as IVehicle[]);
+  const [vehicleType, setVehicleType] = useState([])
 
   useEffect(() => {
     if (jwtLoginResponse) {
@@ -19,7 +20,7 @@ const Vehicles = () => {
           console.log(response);
           if (response) {
             //var vehicleAvailability: VehicleAvailability = response[0].vehicleAvailability;
-            response[0].vehicleAvailability as Number;
+          
             setData(response);
           } else {
             setData([]);
@@ -69,7 +70,7 @@ const Vehicles = () => {
             {data.map((data => (
               <tr>
               <td>
-
+                
               </td>
               <td>
                 

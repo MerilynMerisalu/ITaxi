@@ -11,6 +11,9 @@ export interface IVehicle extends IBaseEntity {
     numberOfSeats: number,          // Number or string?
     VehicleIdentifier: string,
     vehicleAvailability: number,
+    vehicleType: {
+        vehicleTypeName: string
+    }
     //Schedules?
     //VehiclePhotos?
 }

@@ -34,7 +34,8 @@ public class VehicleTypesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<VehicleType>>> GetVehicleTypes()
     {
-        return Ok(await _appBLL.VehicleTypes.GetAllVehicleTypesDTOAsync());
+        var res = await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync();
+        return Ok(res.Select(v => _mapper.Map<VehicleType>(v)));
     }
 
     // GET: api/VehicleTypes/5
