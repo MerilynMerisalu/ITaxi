@@ -132,7 +132,7 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
     public async Task<VehicleDTO?> 
         GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailabilityAsync(BookingDTO booking)
     {
-        return Mapper.Map(await RepoDbSet
+        return Mapper.Map(await CreateQuery()
             .Where(v => v.DriverId.Equals(booking.DriverId)
                         && v.VehicleAvailability == VehicleAvailability.Available)
             .FirstAsync());
@@ -200,9 +200,9 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
     //    return Mapper.Map(await CreateQuery(userId, roleName, noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id)));
     //}
 
-    protected IQueryable<Vehicle> CreateQuery(Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    protected IQueryable<Vehicle> CreateQuery(Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        var query = RepoDbSet.AsQueryable();
+        var query = CreateQuery(noTracking, noIncludes, showDeleted);
         if (noTracking) query = query.AsNoTracking();
 
         if (!noIncludes)

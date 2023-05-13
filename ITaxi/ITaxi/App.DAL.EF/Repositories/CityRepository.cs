@@ -71,7 +71,7 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
 
     public override async Task<CityDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false)
     {
-        var query = RepoDbSet.AsQueryable();
+        var query = base.CreateQuery(noTracking, noIncludes);
         if (noTracking) query = query.AsNoTracking();
         if (!noIncludes) query = query.Include(c => c.County);
 
@@ -104,9 +104,9 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
             throw new ApplicationException("Entity cannot be deleted because it has dependent entities!");
         return base.Remove(entity);
     }
-    protected override IQueryable<City> CreateQuery(bool noTracking = true, bool noIncludes = false)
+    protected override IQueryable<City> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        var query = RepoDbSet.AsQueryable();
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
         if (noTracking) query = query.AsNoTracking();
         if (!noIncludes)
             query = query.Include(c => c.County);

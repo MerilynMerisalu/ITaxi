@@ -61,9 +61,9 @@ public class DriverAndDriverLicenseCategoryRepository :
     }
 
 
-    protected override IQueryable<DriverAndDriverLicenseCategory> CreateQuery(bool noTracking = true, bool noIncludes = false)
+    protected override IQueryable<DriverAndDriverLicenseCategory> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        var query = RepoDbSet.AsQueryable();
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
         if (noTracking) query = query.AsNoTracking();
         if (!noIncludes)
             query = query.Include(c => c.DriverLicenseCategory)

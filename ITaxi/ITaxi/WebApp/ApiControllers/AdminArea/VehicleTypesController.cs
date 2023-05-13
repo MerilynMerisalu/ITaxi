@@ -32,6 +32,7 @@ public class VehicleTypesController : ControllerBase
     [ProducesResponseType( typeof( IEnumerable<VehicleType>), StatusCodes.Status200OK )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<VehicleType>>> GetVehicleTypes()
     {
         var res = await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync();

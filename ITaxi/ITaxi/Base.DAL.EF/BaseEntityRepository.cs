@@ -62,7 +62,22 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
 
     public virtual TDalEntity Remove(TDalEntity entity)
     {
-        return Mapper.Map(RepoDbSet.Remove(Mapper.Map(entity)!).Entity)!;
+        // This is HARD Delete:
+        //return Mapper.Map(RepoDbSet.Remove(Mapper.Map(entity)!).Entity)!;
+        
+        // Instead, we want to implement soft delete, by setting the IsDeleted Flag
+        var data = Mapper.Map(entity)!;
+        data.IsDeleted = true;
+
+        if (data is IDomainEntityMeta meta)
+        {
+            meta.DeletedAt = DateTime.Now.ToUniversalTime();
+            meta.DeletedBy = "?";
+        }
+        
+        // TODO: also set the DeletedBy and DeletedAt
+        
+        return Mapper.Map(RepoDbSet.Update(data).Entity)!;
     }
 
     public virtual TDalEntity Remove(TKey id)
@@ -81,7 +96,21 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         {
             domainEntities.Add(Mapper.Map(entity)!);
         }
-        RepoDbSet.RemoveRange(domainEntities);
+        // This is HARD delete:
+        //RepoDbSet.RemoveRange(domainEntities);
+        
+        //We want SOFT delete
+        foreach (var entity in domainEntities)
+        {
+            entity.IsDeleted = true;
+            if (entity is IDomainEntityMeta meta)
+            {
+                meta.DeletedAt = DateTime.Now.ToUniversalTime();
+                meta.DeletedBy = "?";
+            }
+        }
+        RepoDbSet.UpdateRange(domainEntities);
+        
         return entities.ToList();
     }
 
@@ -98,7 +127,7 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
 
     public virtual bool Exists(TKey id)
     {
-        return RepoDbSet.Any(a => a.Id.Equals(id));
+        return CreateQuery().Any(a => a.Id.Equals(id));
     }
 
     public bool Any(Expression<Func<TDalEntity?, bool>> filter, bool noTracking = true)
@@ -160,7 +189,7 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
 
     public virtual async Task<bool> ExistsAsync(TKey id)
     {
-        return await RepoDbSet.AnyAsync(a => a.Id.Equals(id));
+        return await CreateQuery().AnyAsync(a => a.Id.Equals(id));
     }
 
     public virtual async Task<TDalEntity> RemoveAsync(TKey id)
@@ -189,9 +218,21 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         return Mapper.Map(await CreateQuery(noTracking, noIncludes).FirstAsync());
     }
 
-    protected virtual IQueryable<TDomainEntity> CreateQuery(bool noTracking = true, bool noIncludes = false)
+    /// <summary>
+    /// Create a query against this Repository that sets up the Tracking and default Includes based onthe passed in parameters.
+    /// </summary>
+    /// <remarks>This method manages filtering for records that have been "Soft Deleted", inheriting classes should call this base implementation <i><b>first.</b></i></remarks>
+    /// <param name="noTracking">Disable tracking on the query results if this is set to true</param>
+    /// <param name="noIncludes">Ignore Auto Includes if this is true</param>
+    /// <param name="showDeleted">If True, include "Soft Deleted" records in the query results</param>
+    /// <returns>The default query that you can further compose for your domain repo logic</returns>
+    protected virtual IQueryable<TDomainEntity> CreateQuery(bool noTracking = true, bool noIncludes = false,
+        bool showDeleted = false)
+
     {
         var query = RepoDbSet.AsQueryable();
+        if (!showDeleted)
+            query = query.Where(x => !x.IsDeleted);
         if (noTracking)
             query = query.AsNoTracking();
         if (noIncludes)

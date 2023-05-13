@@ -55,7 +55,7 @@ public class DriverService: BaseEntityService<App.BLL.DTO.AdminArea.DriverDTO, A
     {
         return Repository.HasAnyBookings(driverId, noTracking);
     }
-
+  
     public async Task<DriverDTO> GettingDriverByAppUserIdAsync(Guid Id)
     {
         return Mapper.Map(await Repository.GettingDriverByAppUserIdAsync(Id))!;

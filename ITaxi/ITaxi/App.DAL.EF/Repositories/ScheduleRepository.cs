@@ -46,7 +46,7 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
 
     public IEnumerable<ScheduleDTO> GettingAllOrderedSchedulesWithIncludes(bool noTracking = true)
     {
-        return RepoDbSet
+        return CreateQuery(noTracking)
             .OrderBy(s => s.StartDateAndTime.Date)
             .ThenBy(s => s.StartDateAndTime.Year)
             .ThenBy(s => s.StartDateAndTime.Month)
@@ -224,9 +224,9 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
 
 
 
-    protected IQueryable<Schedule> CreateQuery(Guid? userId = null, string? roleName = null, bool noTracking = true)
+    protected IQueryable<Schedule> CreateQuery(Guid? userId = null, string? roleName = null, bool noTracking = true, bool showDeleted = false)
     {
-        var query = RepoDbSet.AsQueryable();
+        var query = CreateQuery(noTracking, noIncludes:false, showDeleted);
         if (noTracking) query = query.AsNoTracking();
 
         if (roleName == null)

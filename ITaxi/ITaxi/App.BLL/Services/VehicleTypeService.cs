@@ -54,4 +54,9 @@ public class VehicleTypeService: BaseEntityService<App.BLL.DTO.AdminArea.Vehicle
     {
         return Repository.HasBookingsAny(vehicleTypeId, noTracking);
     }
+
+    public async Task<IEnumerable<VehicleTypeDTO>> GetAllVehicleTypesWithOutIncludesAsync(bool noTracking = true)
+    {
+        return (await Repository.GetAllVehicleTypesWithOutIncludesAsync(noTracking)).Select(x => Mapper.Map(x)).ToList()!;
+    }
 }

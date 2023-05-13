@@ -12,6 +12,11 @@ public class BaseUser : BaseUser<Guid>, IDomainEntityId
     public BaseUser(string username) : base(username)
     {
     }
+
+    /// <summary>
+    /// Flag to indicate that this User has been deleted
+    /// </summary>
+    public bool IsDeleted { get; set; }
 }
 
 public class BaseUser<TKey> : IdentityUser<TKey>

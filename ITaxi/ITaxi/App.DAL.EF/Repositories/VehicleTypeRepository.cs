@@ -88,9 +88,14 @@ public class VehicleTypeRepository : BaseEntityRepository<VehicleTypeDTO, Vehicl
         return RepoDbContext.Vehicles.Any(v => v.VehicleTypeId.Equals(vehicleTypeId));
     }
 
-    protected override IQueryable<VehicleType> CreateQuery(bool noTracking = true, bool noIncludes = false)
+    public async Task<IEnumerable<VehicleTypeDTO>> GetAllVehicleTypesWithOutIncludesAsync(bool noTracking = true)
     {
-        var query = base.CreateQuery(noTracking, noIncludes);
+        return (await CreateQuery(noTracking: noTracking, noIncludes: true).Select(x => Mapper.Map(x)).ToListAsync()!)!;
+    }
+
+    protected override IQueryable<VehicleType> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
         if (!noIncludes)
             query = query.Include(t => t.VehicleTypeName)
                          .ThenInclude(t => t.Translations);

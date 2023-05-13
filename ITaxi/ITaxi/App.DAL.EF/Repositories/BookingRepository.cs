@@ -234,9 +234,9 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
     }
 
     protected  IQueryable<Booking> CreateQuery(Guid? userId = null, string? roleName = null,bool noTracking = true, 
-        bool noIncludes = false)
+        bool noIncludes = false, bool showDeleted = false)
     {
-        var query = RepoDbSet.AsQueryable();
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
         if (noTracking) query = query.AsNoTracking();
         if (noIncludes)
         {

@@ -17,6 +17,12 @@ public abstract class DomainEntityMetaId : DomainEntityId<Guid>, IDomainEntityId
 
     [Display(ResourceType = typeof(Common), Name = nameof(UpdatedAt))]
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    
+    [Display(ResourceType = typeof(Common), Name = nameof(DeletedBy))]
+    public string? DeletedBy { get; set; }
+
+    [Display(ResourceType = typeof(Common), Name = nameof(DeletedAt))]
+    public DateTime? DeletedAt { get; set; } = null;
 }
 
 public abstract class DomainEntityMetaId<TKey> : DomainEntityId<TKey>,
@@ -29,4 +35,10 @@ public abstract class DomainEntityMetaId<TKey> : DomainEntityId<TKey>,
     [MaxLength(32)] public string? UpdatedBy { get; set; }
 
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    public bool IsDeleted { get; set; } = false;
+    
+    [MaxLength(32)] public string? DeletedBy { get; set; }
+    
+    public DateTime? DeletedAt { get; set; } = null;
 }

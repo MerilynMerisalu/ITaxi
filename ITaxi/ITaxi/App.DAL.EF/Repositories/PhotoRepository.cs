@@ -44,9 +44,10 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
 
     protected  IQueryable<Photo> CreateQuery(Guid? userId = null, 
         string? roleName = null,
-        bool noTracking = true)
+        bool noTracking = true,
+        bool showDeleted = false)
     {
-        var query = RepoDbSet.AsQueryable();
+        var query = base.CreateQuery(noIncludes: false, noTracking: noTracking, showDeleted: showDeleted);
         if (noTracking) query = query.AsNoTracking();
 
         if (roleName != null && roleName.Equals(nameof(Admin)))

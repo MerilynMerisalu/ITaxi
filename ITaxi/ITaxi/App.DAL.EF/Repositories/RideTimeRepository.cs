@@ -73,7 +73,7 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
     public async Task<IEnumerable<string?>> GettingAllSelectedRideTimesAsync(RideTimeDTO rideTime,
         bool noTracking = true)
     {
-        return await RepoDbSet
+        return await CreateQuery()
             .Where(r => r.ScheduleId.Equals(rideTime.ScheduleId))
             .Select(r => r.RideDateTime.ToString("t"))
             .ToListAsync();
@@ -81,7 +81,7 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
 
     public IEnumerable<string?> GettingAllSelectedRideTimes(RideTimeDTO rideTime, bool noTracking = true)
     {
-        return RepoDbSet
+        return CreateQuery()
             .Where(r => r.ScheduleId.Equals(rideTime.ScheduleId))
             .Select(r => r.RideDateTime.ToString("t"))
             .ToList();
@@ -289,9 +289,9 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
     }
 
     protected IQueryable<RideTime> CreateQuery(Guid? userId = null, string? roleName = null, 
-        bool noTracking = true, bool noIncludes = false)
+        bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        var query = RepoDbSet.AsQueryable();
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
         if (noTracking) query = query.AsNoTracking();
         if (noIncludes)
         {

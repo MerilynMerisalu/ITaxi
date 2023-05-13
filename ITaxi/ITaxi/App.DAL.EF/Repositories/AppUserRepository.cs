@@ -63,7 +63,7 @@ public class AppUserRepository : BaseEntityRepository<App.DAL.DTO.Identity.AppUs
         
         //var domain = Mapper.Map(entity);
         
-        var domain = RepoDbSet.FirstOrDefault(x => x.Id == entity.Id)!;
+        var domain = CreateQuery().FirstOrDefault(x => x.Id == entity.Id)!;
         domain.FirstName = entity.FirstName;
         domain.LastName = entity.LastName;
         domain.Gender = entity.Gender;

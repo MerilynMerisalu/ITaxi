@@ -140,10 +140,10 @@ public class CommentRepository : BaseEntityRepository<CommentDTO, App.Domain.Com
     }
 
     protected  IQueryable<Comment> CreateQuery(Guid? userId= null, string? roleName = null,
-       bool noIncludes = false, bool noTracking = true)
+       bool noIncludes = false, bool noTracking = true, bool showDeleted = false)
     {
         
-        var query = RepoDbSet.AsQueryable();
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
         if (noTracking) query = query.AsNoTracking();
         if (noIncludes == true )
         {

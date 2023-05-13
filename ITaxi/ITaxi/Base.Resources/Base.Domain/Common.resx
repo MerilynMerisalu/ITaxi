@@ -45,4 +45,13 @@
     <data name="DeclineDateAndTime" xml:space="preserve">
         <value>Date and Time of the Decline </value>
     </data>
+    <data name="IsDeleted" xml:space="preserve">
+        <value>Is Deleted</value>
+    </data>
+    <data name="DeletedBy" xml:space="preserve">
+        <value>Deleted By</value>
+    </data>
+    <data name="DeletedAt" xml:space="preserve">
+        <value>Deleted At</value>
+    </data>
 </root>

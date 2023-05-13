@@ -36,4 +36,13 @@
     <data name="DeclineDateAndTime" xml:space="preserve">
         <value>Tühistamiskuupäev ja-kellaaeg</value>
     </data>
+    <data name="DeletedAt" xml:space="preserve">
+        <value>Kustutamiskuupäev ja-kellaaeg</value>
+    </data>
+    <data name="DeletedBy" xml:space="preserve">
+        <value>Kustutaja</value>
+    </data>
+    <data name="IsDeleted" xml:space="preserve">
+        <value>Kustutatud?</value>
+    </data>
 </root>

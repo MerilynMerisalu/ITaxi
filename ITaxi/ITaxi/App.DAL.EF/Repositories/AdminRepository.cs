@@ -51,10 +51,9 @@ public class AdminRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.AdminD
 
     
 
-    protected override IQueryable<Admin> CreateQuery(bool noTracking = true, bool noIncludes = false)
+    protected override IQueryable<Admin> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        var query = RepoDbSet.AsQueryable();
-        if (noTracking) query = query.AsNoTracking();
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
         if (!noIncludes)
             query = query.Include(a => a.AppUser)
                          .Include(a => a.City);

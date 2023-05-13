@@ -365,14 +365,14 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
     public DriveDTO? GettingDrive(Guid bookingId, Guid? userId = null, string? roleName = null, 
         bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(RepoDbSet.FirstOrDefault(d => d.Booking!.Id.Equals(bookingId)));
+        return Mapper.Map(CreateQuery(noTracking, noIncludes).FirstOrDefault(d => d.Booking!.Id.Equals(bookingId)));
 
     }
 
     public async Task<DriveDTO?> GettingSingleOrDefaultDriveAsync(
         Expression<Func<Drive, bool>> filter, string? roleName = null, bool noTracking = true)
     {
-        var drives = CreateQuery(null, roleName);
+        var drives = CreateQuery(null, roleName, noTracking);
         var drive = await drives.SingleOrDefaultAsync(filter);
         if (drive == null)
         {
@@ -383,7 +383,7 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
 
     public DriveDTO? GettingSingleOrDefaultDrive(Expression<Func<Drive, bool>> filter, string? roleName = null, bool noTracking = true)
     {
-        var drives = CreateQuery(null, roleName);
+        var drives = CreateQuery(null, roleName, noTracking);
         var drive = drives.SingleOrDefault(filter);
         if (drive == null)
         {
@@ -394,9 +394,9 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
 
 
     protected  IQueryable<Drive> CreateQuery(Guid? userId = null, string? roleName = null,
-    bool noTracking = true, bool noIncludes = false)
+    bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        var query = RepoDbSet.AsQueryable();
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
         if (noTracking) query = query.AsNoTracking();
 
         if (roleName is "Admin")

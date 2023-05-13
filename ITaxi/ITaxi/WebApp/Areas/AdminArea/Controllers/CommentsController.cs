@@ -195,7 +195,7 @@ public class CommentsController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var roleName = User.GettingUserRoleName();
-        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, null, roleName);
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, null, roleName, noIncludes:true);
         if (comment != null) _appBLL.Comments.Remove(comment);
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));

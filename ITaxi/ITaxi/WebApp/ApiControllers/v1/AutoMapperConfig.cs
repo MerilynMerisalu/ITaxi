@@ -71,7 +71,7 @@ public class AutoMapperConfig: Profile
                 App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO>()
             .ReverseMap();
         
-        CreateMap<App.BLL.DTO.AdminArea.VehicleTypeDTO, App.DAL.DTO.AdminArea.VehicleTypeDTO>()
+        CreateMap<App.Public.DTO.v1.AdminArea.VehicleType, App.BLL.DTO.AdminArea.VehicleTypeDTO>()
             .ReverseMap()
 ;        
         /* CreateMap<App.BLL.DTO.AdminArea.VehicleMarkDTO, App.DAL.DTO.AdminArea.VehicleMarkDTO>()

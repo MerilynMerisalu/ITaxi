@@ -24,4 +24,9 @@ public class BaseRole<TKey> : IdentityRole<TKey>, IDomainEntityId<TKey>
     public BaseRole(string roleName) : base(roleName)
     {
     }
+
+    /// <summary>
+    /// Flag to indicate that this Role has been deleted
+    /// </summary>
+    public bool IsDeleted { get; set; }
 }

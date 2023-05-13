@@ -76,11 +76,13 @@ public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Drive
         return await CreateQuery(noTracking)
             .AnyAsync(d => d.DriverLicenseCategories!.Any(dl => dl.DriverId.Equals(id)));
     }
+      
+       
+   
 
-
-    protected override IQueryable<Driver> CreateQuery(bool noTracking = true, bool noIncludes = false)
+    protected override IQueryable<Driver> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        var query = RepoDbSet.AsQueryable();
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
         if (noTracking) query = query.AsNoTracking();
         if (!noIncludes)
             query = query.Include(a => a.AppUser)
