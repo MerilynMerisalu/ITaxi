@@ -8,8 +8,8 @@ export enum Gender {
 
 export enum VehicleAvailability
 {
-    Available,
-    InAvailable
+    Available = "Available",
+    InAvailable = "In-Available"
 }
 
 export enum StatusOfBooking
