@@ -19,8 +19,7 @@ public class ScheduleDTO: DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Schedule),
         Name = "Vehicle")]
     public VehicleDTO? Vehicle { get; set; }
-
-
+    
     [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Schedule), Name = "ShiftStartDateAndTime")]
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
@@ -45,7 +44,5 @@ public class ScheduleDTO: DomainEntityMetaId
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule),
         Name = "NumberOfTakenRideTimesPerSchedule")]
     public int NumberOfTakenRideTimes { get; set; }
-
-
     
 }

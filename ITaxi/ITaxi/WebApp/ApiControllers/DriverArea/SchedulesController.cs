@@ -2,7 +2,8 @@
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Contracts.DAL;
-
+using App.Public.DTO.v1.DriverArea;
+using AutoMapper;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -17,21 +18,23 @@ public class SchedulesController : ControllerBase
 
 {
     private readonly IAppBLL _appBLL;
+    private readonly IMapper _mapper;
 
-    public SchedulesController(IAppBLL appBLL)
+    public SchedulesController(IAppBLL appBLL, IMapper mapper)
     {
         _appBLL = appBLL;
+        _mapper = mapper;
     }
 
     // GET: api/Schedules
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ScheduleDTO>>> GetSchedules()
+    public async Task<ActionResult<IEnumerable<App.Public.DTO.v1.DriverArea.Schedule>>> GetSchedules()
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var res = await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
         
-        return Ok(res);
+        return Ok(res.Select(s => _mapper.Map<Schedule>(s)));
     }
 
     // GET: api/Schedules/5

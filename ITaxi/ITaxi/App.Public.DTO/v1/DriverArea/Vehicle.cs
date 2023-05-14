@@ -64,9 +64,8 @@ public class Vehicle: DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleAvailability")]
     public VehicleAvailability VehicleAvailability { get; set; }
 
-    public ICollection<Schedule>? Schedules { get; set; }
+    // public ICollection<Schedule>? Schedules { get; set; }
 
-    public ICollection<Photo>? VehiclePhotos { get; set; }
+    // public ICollection<Photo>? VehiclePhotos { get; set; }
     
-
 }

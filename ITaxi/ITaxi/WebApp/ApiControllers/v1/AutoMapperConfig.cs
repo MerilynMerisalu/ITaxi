@@ -31,83 +31,58 @@ public class AutoMapperConfig: Profile
         // Globally convert all LangStr using Request Headers, not the current Thread!
         CreateMap<LangStr, string>().ConvertUsing<LangStrTypeConverter>();
         
-        
         CreateMap<App.Public.DTO.v1.AdminArea.County, App.BLL.DTO.AdminArea.CountyDTO>()
-            .ReverseMap()
-            ;
+            .ReverseMap();
 
         CreateMap<App.Public.DTO.v1.AdminArea.City, App.BLL.DTO.AdminArea.CityDTO>()
-            .ReverseMap()
-           ;
-        
+            .ReverseMap();
 
         CreateMap<App.Public.DTO.v1.AdminArea.Admin, App.BLL.DTO.AdminArea.AdminDTO>()
-            .ReverseMap()
-           ;
-        
-        
+            .ReverseMap();
+
         CreateMap<App.Public.DTO.v1.Identity.AppUser, App.BLL.DTO.Identity.AppUser>().ReverseMap();
 
         CreateMap<App.Public.DTO.v1.AdminArea.DriverLicenseCategory,
-                App.BLL.DTO.AdminArea.DriverLicenseCategoryDTO>()
-            .ReverseMap();
+                App.BLL.DTO.AdminArea.DriverLicenseCategoryDTO>().ReverseMap();
         
-
         CreateMap<App.Public.DTO.v1.Identity.AdminRegistration,
-                WebApp.DTO.AdminRegistrationDTO>()
-            .ReverseMap();
-        CreateMap<App.Public.DTO.v1.AdminArea.Driver, App.BLL.DTO.AdminArea.DriverDTO>()
-            .ReverseMap();
-        CreateMap<App.Public.DTO.v1.AdminArea.DisabilityType, App.BLL.DTO.AdminArea.DisabilityTypeDTO>()
-            .ReverseMap();
-        CreateMap<App.Public.DTO.v1.AdminArea.Vehicle, App.BLL.DTO.AdminArea.VehicleDTO>()
-            .ReverseMap();
+                WebApp.DTO.AdminRegistrationDTO>().ReverseMap();
+        
+        CreateMap<App.Public.DTO.v1.AdminArea.Driver, App.BLL.DTO.AdminArea.DriverDTO>().ReverseMap();
+        
+        CreateMap<App.Public.DTO.v1.AdminArea.DisabilityType, App.BLL.DTO.AdminArea.DisabilityTypeDTO>().ReverseMap();
+       
+        CreateMap<App.Public.DTO.v1.AdminArea.Vehicle, App.BLL.DTO.AdminArea.VehicleDTO>().ReverseMap();
+        
+        CreateMap<App.Public.DTO.v1.DriverArea.Vehicle, App.BLL.DTO.AdminArea.VehicleDTO>().ReverseMap();
         
         CreateMap<App.Public.DTO.v1.AdminArea.Driver, App.BLL.DTO.AdminArea.DriverDTO>()
-            .ReverseMap()
-           ;
+            .ReverseMap();
         
         CreateMap<App.Public.DTO.v1.AdminArea.DriverAndDriverLicenseCategory,
-                App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO>()
-            .ReverseMap();
+                App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO>().ReverseMap();
         
-        CreateMap<App.Public.DTO.v1.AdminArea.VehicleType, App.BLL.DTO.AdminArea.VehicleTypeDTO>()
-            .ReverseMap()
+        CreateMap<App.Public.DTO.v1.AdminArea.VehicleType, App.BLL.DTO.AdminArea.VehicleTypeDTO>().ReverseMap()
 ;        
-         CreateMap<App.Public.DTO.v1.AdminArea.VehicleMark, App.BLL.DTO.AdminArea.VehicleMarkDTO>()
-            .ReverseMap()
-           ;
+         CreateMap<App.Public.DTO.v1.AdminArea.VehicleMark, App.BLL.DTO.AdminArea.VehicleMarkDTO>().ReverseMap();
         
-        CreateMap<App.Public.DTO.v1.AdminArea.VehicleModel, App.BLL.DTO.AdminArea.VehicleModelDTO>()
-            .ReverseMap()
-           ;
-        
-        CreateMap<App.Public.DTO.v1.AdminArea.Vehicle, App.BLL.DTO.AdminArea.VehicleDTO>()
-            .ReverseMap()
-            ;
-        CreateMap<App.BLL.DTO.AdminArea.ScheduleDTO, App.DAL.DTO.AdminArea.ScheduleDTO>()
-            .ReverseMap()
-            ;
-        CreateMap<App.BLL.DTO.AdminArea.RideTimeDTO, App.DAL.DTO.AdminArea.RideTimeDTO>()
-            .ReverseMap();
-        
-            ;
-        CreateMap<App.BLL.DTO.AdminArea.CustomerDTO, App.DAL.DTO.AdminArea.CustomerDTO>()
-            .ReverseMap()
-            ;
-        CreateMap<App.BLL.DTO.AdminArea.BookingDTO, App.DAL.DTO.AdminArea.BookingDTO>()
-            .ReverseMap()
-            ;
-        CreateMap<App.BLL.DTO.AdminArea.DriveDTO, App.DAL.DTO.AdminArea.DriveDTO>()
-            .ReverseMap()
-            ;
-        CreateMap<App.BLL.DTO.AdminArea.CommentDTO, App.DAL.DTO.AdminArea.CommentDTO>()
-            .ReverseMap()
-            ;
-        CreateMap<App.BLL.DTO.AdminArea.PhotoDTO, App.DAL.DTO.AdminArea.PhotoDTO>()
-            .ReverseMap();
+        CreateMap<App.Public.DTO.v1.AdminArea.VehicleModel, App.BLL.DTO.AdminArea.VehicleModelDTO>().ReverseMap();
 
+        CreateMap<App.Public.DTO.v1.AdminArea.Schedule, App.BLL.DTO.AdminArea.ScheduleDTO>().ReverseMap();
+        
+        CreateMap<App.Public.DTO.v1.DriverArea.Schedule, App.BLL.DTO.AdminArea.ScheduleDTO>().ReverseMap();
+       
+        CreateMap<App.BLL.DTO.AdminArea.RideTimeDTO, App.DAL.DTO.AdminArea.RideTimeDTO>().ReverseMap();
+        
+        CreateMap<App.BLL.DTO.AdminArea.CustomerDTO, App.DAL.DTO.AdminArea.CustomerDTO>().ReverseMap();
+        
+        CreateMap<App.BLL.DTO.AdminArea.BookingDTO, App.DAL.DTO.AdminArea.BookingDTO>().ReverseMap();
+        
+        CreateMap<App.BLL.DTO.AdminArea.DriveDTO, App.DAL.DTO.AdminArea.DriveDTO>().ReverseMap();
+        
+        CreateMap<App.BLL.DTO.AdminArea.CommentDTO, App.DAL.DTO.AdminArea.CommentDTO>().ReverseMap();
+        
+        CreateMap<App.BLL.DTO.AdminArea.PhotoDTO, App.DAL.DTO.AdminArea.PhotoDTO>().ReverseMap();
+        
     }
-    
-    
 }
