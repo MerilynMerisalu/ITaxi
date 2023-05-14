@@ -1,28 +1,30 @@
-import { IBaseEntity } from "./Base/IBaseEntity";
-import { VehicleAvailability } from "../utilities/enums";
+import { VehicleAvailability } from "../utilities/enums"
 
-export interface IVehicle extends IBaseEntity {
+interface IVehicleData {
+
     driverId: string,
     vehicleTypeId: string,
-    vehicleType: {
+    vehicleTypeDTO: {
         vehicleTypeName: string
     }
-    
     vehicleMarkId: string,
-    vehicleMark: {
+    vehicleMarkDTO: {
         vehicleMarkName: string
     }
     vehicleModelId: string,
-    vehicleModel: {
-        vehicleModelName: string
+    vehicleModelDTO: {
+        vehicleMarkName: string
     }
     vehiclePlateNumber: string,
     manufactureYear: number
     numberOfSeats: number,
     vehicleIdentifier: string,
-    vehicleAvailability: Number
-    createdBy: string,
+    vehicleAvailability: Number,
+    /* createdBy: string,
     createdAt: Date,
     updatedBy: string,
-    updatedAt: Date,
+    updatedAt: Date, */
+
 }
+
+export type { IVehicleData }

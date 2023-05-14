@@ -11,12 +11,14 @@ export abstract class BaseEntityService <TEntity extends IBaseEntity> extends Ba
     try {
       
       const response = await this.axios.get<TEntity[]>('', 
+      /*
         {
           headers: {
             'Authorization': 'Bearer ' + token
           }
 
         }
+        */
       );
 
       console.log('response', response);

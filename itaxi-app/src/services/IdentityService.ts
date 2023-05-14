@@ -1,3 +1,4 @@
+import axios from "axios";
 import { IJwtCustomerRegisterResponse } from "../dto/IJwtCustomerRegisterResponse";
 import { IJwtLoginResponse } from "../dto/IJwtLoginResponse";
 import { ILoginData } from "../dto/ILoginData";
@@ -35,6 +36,10 @@ export class IdentityService extends BaseService {
 
             console.log('login response', response);
             if (response.status === 200) {
+
+                // Add the token to the default axios headers, this app is only calling on our domain anyway
+                axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
+
                 return response.data;
             }
             return undefined;

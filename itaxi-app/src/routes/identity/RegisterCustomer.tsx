@@ -38,8 +38,6 @@ const [disabilityTypes, setDisabilityTypes] = useState([])
 
     useEffect(()  => {
       
-      
-
       // On initial load, set the select list data values
       // 1. Set the Genders lookup
 
