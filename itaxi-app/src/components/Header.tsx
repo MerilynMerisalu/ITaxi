@@ -38,7 +38,7 @@ function Header() {
 
             <NavDropdown style={{'display': jwtLoginResponse != null && jwtLoginResponse.roleNames[0] === "Driver" ? '' : 'none'  }} title="Activities" id="basic-nav-dropdown">
               <NavDropdown.Item as={Link} to="/vehicles/index">Vehicles</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/schedules">Schedules</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/schedules/index">Schedules</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/rideTimes">RideTimes</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/drives">Drives</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/photos">Photos</NavDropdown.Item>

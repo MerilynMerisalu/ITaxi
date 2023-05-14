@@ -24,5 +24,5 @@ export interface IVehicle extends IBaseEntity {
     createdBy: string,
     createdAt: Date,
     updatedBy: string,
-    updatedAt: Date,
+    updatedAt: Date
 }

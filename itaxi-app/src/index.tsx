@@ -17,8 +17,9 @@ import RegisterCustomer from "./routes/identity/RegisterCustomer";
 import RegisterDriver from "./routes/identity/RegisterDriver";
 import Privacy from "./routes/Privacy";
 import Home from "./routes/Home";
-import Index from "./routes/vehicles";
-import BookingIndex from "./routes/booking";
+import Index from "./routes/vehicles/VehiclesIndex";
+import BookingIndex from "./routes/booking/BookingIndex";
+import SchedulesIndex from "./routes/schedules/SchedulesIndex";
 
 
 const router = createBrowserRouter([
@@ -56,6 +57,11 @@ const router = createBrowserRouter([
       {
         path: "booking/index",
         element: <BookingIndex />
+      },
+
+      {
+        path: "schedules/index",
+        element: <SchedulesIndex />
       },
 
     ],

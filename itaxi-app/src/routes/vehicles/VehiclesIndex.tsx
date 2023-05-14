@@ -4,8 +4,7 @@ import { VehicleService } from '../../services/VehicleService';
 import { IVehicle } from '../../domain/IVehicle';
 import { VehicleAvailability } from '../../utilities/enums';
 
-const Index = () => {
-
+const VehiclesIndex = () => {
 
     const { jwtLoginResponse, setJwtLoginResponse } = useContext(JwtContext);
     const [data, setData] = useState([] as IVehicle[])
@@ -27,10 +26,6 @@ const Index = () => {
         }
 
     }, [jwtLoginResponse]);
-
-
-
-
 
 
     return (
@@ -96,10 +91,7 @@ const Index = () => {
                                 <td >
                                     {v.vehicleAvailability === 1 ? VehicleAvailability.Available: VehicleAvailability.InAvailable }
                                 </td>
-                                </>
-                                
-
-                                
+                                </>                              
                             ))}
                             
                             
@@ -117,4 +109,4 @@ const Index = () => {
     )
 }
 
-export default Index
+export default VehiclesIndex
