@@ -503,14 +503,16 @@ public class AccountController : ControllerBase
         await _context.Entry(appUser)
             .Collection(a => a.RefreshTokens!).Query().ToListAsync();
         appUser.RefreshTokens!.Add(refreshToken);
-        
+
+        var roles = await _userManager.GetRolesAsync(appUser);
         await _context.SaveChangesAsync();
         var res = new JwtResponse()
         {
             Token = jwt,
             RefreshToken = refreshToken.Token,
             FirstName = appUser.FirstName,
-            LastName = appUser.LastName
+            LastName = appUser.LastName,
+            RoleNames = roles.ToArray()
         };
         return Ok(res);
     }

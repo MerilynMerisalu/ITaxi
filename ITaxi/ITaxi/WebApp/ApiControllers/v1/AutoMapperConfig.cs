@@ -74,15 +74,15 @@ public class AutoMapperConfig: Profile
         CreateMap<App.Public.DTO.v1.AdminArea.VehicleType, App.BLL.DTO.AdminArea.VehicleTypeDTO>()
             .ReverseMap()
 ;        
-        /* CreateMap<App.BLL.DTO.AdminArea.VehicleMarkDTO, App.DAL.DTO.AdminArea.VehicleMarkDTO>()
+         CreateMap<App.Public.DTO.v1.AdminArea.VehicleMark, App.BLL.DTO.AdminArea.VehicleMarkDTO>()
             .ReverseMap()
            ;
         
-        CreateMap<App.BLL.DTO.AdminArea.VehicleModelDTO, App.DAL.DTO.AdminArea.VehicleModelDTO>()
+        CreateMap<App.Public.DTO.v1.AdminArea.VehicleModel, App.BLL.DTO.AdminArea.VehicleModelDTO>()
             .ReverseMap()
            ;
         
-        CreateMap<App.BLL.DTO.AdminArea.VehicleDTO, App.DAL.DTO.AdminArea.VehicleDTO>()
+        CreateMap<App.Public.DTO.v1.AdminArea.Vehicle, App.BLL.DTO.AdminArea.VehicleDTO>()
             .ReverseMap()
             ;
         CreateMap<App.BLL.DTO.AdminArea.ScheduleDTO, App.DAL.DTO.AdminArea.ScheduleDTO>()
@@ -105,8 +105,8 @@ public class AutoMapperConfig: Profile
             .ReverseMap()
             ;
         CreateMap<App.BLL.DTO.AdminArea.PhotoDTO, App.DAL.DTO.AdminArea.PhotoDTO>()
-            .ReverseMap()
-            ;*/
+            .ReverseMap();
+
     }
     
     

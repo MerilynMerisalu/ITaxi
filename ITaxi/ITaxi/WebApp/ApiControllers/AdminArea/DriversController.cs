@@ -103,21 +103,7 @@ public class DriversController : ControllerBase
 
         try
         {
-            if (driver.DriverLicenseCategories!.Count != 0)
-            {
-                foreach (var driverLicenseCategory in driver.DriverLicenseCategories)
-                {
-                    var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategory()
-                    {
-                        Id = new Guid(),
-                        DriverId = driverLicenseCategory.DriverId,
-                        DriverLicenseCategoryId = driverLicenseCategory.DriverLicenseCategoryId
-                    };
-                    _appBLL.DriverAndDriverLicenseCategories
-                        .Update(_mapper.Map<DriverAndDriverLicenseCategoryDTO>(driverAndDriverLicenseCategory));
-                    await _appBLL.SaveChangesAsync();
-                }
-            }
+            
 
             var appUser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(driver.AppUserId);
             appUser.Email = appUser.Email;

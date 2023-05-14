@@ -32,7 +32,7 @@ public class VehiclesController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var res = await _appBLL.Vehicles.GettingOrderedVehiclesWithoutIncludesAsync(userId, roleName);
+        var res = await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId, roleName);
         
         return Ok(res.Select(v => _mapper.Map<App.Public.DTO.v1.AdminArea.Vehicle>(v)));
     }

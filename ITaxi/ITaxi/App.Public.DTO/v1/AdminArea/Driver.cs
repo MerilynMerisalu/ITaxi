@@ -16,8 +16,8 @@ public class Driver: DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "PersonalIdentifier")]
     public string? PersonalIdentifier { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseCategories")]
-    public ICollection<DriverAndDriverLicenseCategory>? DriverLicenseCategories { get; set; }
+    //[Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseCategories")]
+    //public ICollection<DriverAndDriverLicenseCategory>? DriverLicenseCategories { get; set; }
 
     [MaxLength(15, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [MinLength(2, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMinLength")]
@@ -47,9 +47,10 @@ public class Driver: DomainEntityMetaId
     public string Address { get; set; } = default!;
 
 
-    public ICollection<Vehicle>? Vehicles { get; set; }
+    /*public ICollection<Vehicle>? Vehicles { get; set; }
     public ICollection<Drive>? Drives { get; set; }
     public ICollection<Schedule>? Schedules { get; set; }
     public ICollection<RideTime>? RideTimes { get; set; }
+    */
 
 }

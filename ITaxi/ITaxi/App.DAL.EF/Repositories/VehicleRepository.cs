@@ -77,11 +77,11 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
     {
         if (userId == null)
         {
-            return (await CreateQuery(noTracking, noIncludes: true).OrderBy(v => v.ManufactureYear).ToListAsync())
+            return (await CreateQuery(noTracking, noIncludes: false).OrderBy(v => v.ManufactureYear).ToListAsync())
                 .Select(e => Mapper.Map(e))!;
         }
 
-        return (await CreateQuery(noTracking, noIncludes: true)
+        return (await CreateQuery(noTracking, noIncludes: false)
                 .Where(d => d.Driver!.AppUserId.Equals(userId))
                 .OrderBy(v => v.ManufactureYear).ToListAsync())
             .Select(e => Mapper.Map(e))!;

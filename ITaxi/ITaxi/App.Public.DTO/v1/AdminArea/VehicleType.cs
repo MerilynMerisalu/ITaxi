@@ -15,6 +15,6 @@ public class VehicleType : DomainEntityMetaId
     public string VehicleTypeName { get; set; } = default!;
 
 
-   // public ICollection<Vehicle>? Vehicles { get; set; }
+    
 
 }

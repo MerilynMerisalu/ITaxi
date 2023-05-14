@@ -13,5 +13,5 @@ public class VehicleMark: DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.VehicleMark), Name = "VehicleMarkName")]
     public string VehicleMarkName { get; set; } = default!;
 
-    public ICollection<VehicleModel>? VehicleModels { get; set; }
+   // public ICollection<VehicleModel>? VehicleModels { get; set; }
 }

@@ -7,4 +7,5 @@ public class JwtResponse
     public string RefreshToken { get; set; } = default!;
     public string FirstName { get; set; } = default!;
     public string LastName { get; set; } = default!;
+    public string[] RoleNames { get; set; } = default!;
 }
