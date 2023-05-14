@@ -3,13 +3,14 @@ import { JwtContext } from '../Root'
 import { VehicleService } from '../../services/VehicleService';
 import { IVehicle } from '../../domain/IVehicle';
 import { VehicleAvailability } from '../../utilities/enums';
+import { Link, Outlet } from 'react-router-dom';
 
 const VehiclesIndex = () => {
 
     const { jwtLoginResponse, setJwtLoginResponse } = useContext(JwtContext);
     const [data, setData] = useState([] as IVehicle[])
     const vehicleService = new VehicleService();
-
+    
     useEffect(() => {
         if (jwtLoginResponse) {
             vehicleService.getAll(jwtLoginResponse.token)
@@ -67,16 +68,16 @@ const VehiclesIndex = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            {data.map(v => (
-                                <>
-                                <td key={v.vehicleTypeId}>
+              {data.map(v => (
+                            
+                                <tr key={v.id}>
+                                <td >
                                  {v.vehicleType.vehicleTypeName}
                                 </td>
-                                <td key={v.vehicleMarkId}>
+                                <td>
                                  {v.vehicleMark.vehicleMarkName}
                                 </td>
-                                <td key={v.vehicleModelId}>
+                                <td>
                                     {v.vehicleModel.vehicleModelName}
                                 </td>
                                 <td>
@@ -91,20 +92,22 @@ const VehiclesIndex = () => {
                                 <td >
                                     {v.vehicleAvailability === 1 ? VehicleAvailability.Available: VehicleAvailability.InAvailable }
                                 </td>
-                                </>                              
-                            ))}
-                            
-                            
-                            <td>
-                                <a href="/DriverArea/Vehicles/Edit/ace1042c-5175-4903-72b1-08db546860a1">Edit</a> |
-                                <a href="/DriverArea/Vehicles/Details/ace1042c-5175-4903-72b1-08db546860a1">Details</a> |
+                                <td>
+                                <Link to="/DriverArea/Vehicles/Edit/ace1042c-5175-4903-72b1-08db546860a1">Edit</Link> |
+                                <Link to={`/vehicles/${v.id}`}>Details</Link> |
                                 <a href="/DriverArea/Vehicles/Delete/ace1042c-5175-4903-72b1-08db546860a1">Delete</a> |
                                 <a href="/DriverArea/Vehicles/Gallery/ace1042c-5175-4903-72b1-08db546860a1">Gallery</a> |
                             </td>
                         </tr>
+                                                       
+                            ))}
+                            
+                            
+                            
                     </tbody>
                 </table>
             </main>
+            <Outlet />
         </div>
     )
 }

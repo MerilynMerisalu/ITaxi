@@ -8,7 +8,7 @@ import "./site.css";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, useParams } from "react-router-dom";
 
 import Root from "./routes/Root";
 import ErrorPage from "./routes/ErrorPage";
@@ -20,6 +20,11 @@ import Home from "./routes/Home";
 import Index from "./routes/vehicles/VehiclesIndex";
 import BookingIndex from "./routes/booking/BookingIndex";
 import SchedulesIndex from "./routes/schedules/SchedulesIndex";
+import VehicleDetails from "./routes/vehicles/VehicleDetails";
+import VehiclesIndex from "./routes/vehicles/VehiclesIndex";
+import { data } from "jquery";
+
+
 
 
 const router = createBrowserRouter([
@@ -48,12 +53,17 @@ const router = createBrowserRouter([
         path: "privacy/",
         element: <Privacy />,
       },
-
       {
-        path: "vehicles/index",
-        element: <Index />
+        path: "vehicles/",
+        element: <VehiclesIndex />,
+        
       },
-
+      {
+        path: "vehicles/:id",
+        element: <VehicleDetails  />,
+        
+      },
+      
       {
         path: "booking/index",
         element: <BookingIndex />
@@ -63,6 +73,8 @@ const router = createBrowserRouter([
         path: "schedules/index",
         element: <SchedulesIndex />
       },
+
+      
 
     ],
   },

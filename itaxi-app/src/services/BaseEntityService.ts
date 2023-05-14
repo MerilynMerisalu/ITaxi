@@ -21,9 +21,12 @@ export abstract class BaseEntityService <TEntity extends IBaseEntity> extends Ba
         */
       );
 
+      
+
       console.log('response', response);
       if (response.status === 200) {
           return response.data;
+          
       }
       return undefined;
 
@@ -33,5 +36,7 @@ export abstract class BaseEntityService <TEntity extends IBaseEntity> extends Ba
   }
     
   }
+ 
+  
   
 }
