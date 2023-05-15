@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { IJwtLoginResponse } from "../dto/IJwtLoginResponse";
 import { data } from "jquery";
-
+import { IdentityService } from "../services/IdentityService";
 
 
 
@@ -14,9 +14,10 @@ export const JwtContext = createContext
   ({jwtLoginResponse: null, setJwtLoginResponse: null});
 
 const Root = () => {
- 
-const [jwtLoginResponse, setJwtLoginResponse] = useState(null as IJwtLoginResponse | null );
-  
+  const localUser = IdentityService.getCurrentUser()
+  const [jwtLoginResponse, setJwtLoginResponse] = useState(localUser as IJwtLoginResponse | null );
+
+  console.log('provider jwtloginresponse', jwtLoginResponse)
   return (
       <JwtContext.Provider value={{jwtLoginResponse, setJwtLoginResponse}}>
       <Header />

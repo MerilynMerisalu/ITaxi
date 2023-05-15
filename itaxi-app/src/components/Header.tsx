@@ -13,14 +13,14 @@ import { IJwtLoginResponse } from '../dto/IJwtLoginResponse';
 function Header() {
   
   const navigate = useNavigate();
-  const [user, setUser] = useState({} as any );
+  const [user, setUser] = useState<IJwtLoginResponse>();
   useEffect(() => {
-    const user : IJwtLoginResponse | undefined = IdentityService.getCurrentUser();
+    const newUser : IJwtLoginResponse | undefined = IdentityService.getCurrentUser();
   
     return () => {
-      setUser(user)
+      setUser(newUser)
     }
-  }, [user]);
+  }, []);
 
 const languageButtonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
   //event.preventDefault();
