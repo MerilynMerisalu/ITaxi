@@ -1,16 +1,34 @@
 import React, { useContext, useEffect, useState } from 'react'
 
-import { useSearchParams, useParams } from 'react-router-dom'
+import {  useParams } from 'react-router-dom'
 import { IVehicle } from '../../domain/IVehicle'
 import { VehicleService } from '../../services/VehicleService';
 import { JwtContext } from '../Root';
 
 const VehicleDetails = () => {
+const {id} = useParams();
+const {jwtLoginResponse, setJwtLoginResponse } = useContext(JwtContext);
+const [data, setData] = useState({} as IVehicle)
+const vehicleService = new VehicleService();
 
-    
-    
+useEffect(() => {
+    if (jwtLoginResponse) {
+        vehicleService.details(id, jwtLoginResponse.token)
+            .then(
+                response => {
+                    console.log(`Vehicle: ${response}`)
+                    if (response)
+                        setData(response)
+                    else {
+                        setData({}as IVehicle)
+                    }
+                }
+            )
+    }
+
+}, [id,jwtLoginResponse]);
   return (
-    <div>Vehicle Details </div>
+    <div>{JSON.stringify(data)}</div>
   )
 }
 

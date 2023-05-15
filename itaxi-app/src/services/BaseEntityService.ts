@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { IBaseEntity } from "../domain/Base/IBaseEntity";
 import BaseService from "./BaseService";
 
@@ -19,6 +20,8 @@ export abstract class BaseEntityService <TEntity extends IBaseEntity> extends Ba
 
         }
         */
+
+        
       );
 
       
@@ -38,5 +41,16 @@ export abstract class BaseEntityService <TEntity extends IBaseEntity> extends Ba
   }
  
   
-  
+  async details(id?: string, jwt?: string): Promise<TEntity | undefined> {
+    try {
+      let response = await this.axios.get(`/${id}`);
+      if (response.status === 200) {
+        return response.data;
+      }
+      return undefined;
+    } catch (e) {
+      console.log('Details -  error: ', (e as Error).message);
+      return undefined;
+    }
+  }
 }
