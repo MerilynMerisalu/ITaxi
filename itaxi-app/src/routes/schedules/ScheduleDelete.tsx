@@ -68,7 +68,7 @@ const ScheduleDelete = () => {
                     <form action="/DriverArea/Schedules/Delete/0022fe87-aa46-4f8d-7778-08db5594171b" method="post">
                         <input type="hidden" id="Id" name="Id" value="0022fe87-aa46-4f8d-7778-08db5594171b" />
                         <input type="submit" value="Delete" className="btn btn-danger" /> |
-                        <Link to={"/schedule"}>Back to List</Link>
+                        <Link to={"/schedules"}>Back to List</Link>
                         <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H6gnGQdd_VPhYRnzYmPi0pFOPpONt4UD5bH7DbJObG37FJjqJGKXdIKhV6-vreBR3w17vYLmdFiNkEV4lJOxBV7ZoMJ4E2iL7W5CjJIj05QX_e8U7TDz25XRyUHdJj9AHd0Y7Rf49kBH2QcJmYPsJW_P4hzwtzU60Aqch4AQ_JcHhkhJIcmjZ4_DG789B6gTQ" /></form>
                 </div>
             </main>

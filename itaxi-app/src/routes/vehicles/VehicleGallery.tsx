@@ -36,6 +36,10 @@ const VehicleGallery = () => {
 
                 <Link to="#">Upload Images</Link>
 
+                <div>
+                    <Link to={"/vehicles"}>Back to List</Link>
+                </div>
+
             </main>
         </div>
     )

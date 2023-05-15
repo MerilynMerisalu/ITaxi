@@ -63,7 +63,7 @@ const ScheduleDetails = () => {
                     </dl>
                 </div>
                 <div>
-                    <a href="/DriverArea/Schedules/Edit/d88e5375-314a-4c3d-f505-08db556c3975">Edit</a> |
+                    <Link to={"/schedules/edit/:id"}>Edit</Link> |
                     <Link to={"/schedules"}>Back to List</Link>
                 </div>
             </main>
