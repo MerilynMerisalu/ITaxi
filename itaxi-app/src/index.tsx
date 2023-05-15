@@ -23,6 +23,7 @@ import SchedulesIndex from "./routes/schedules/SchedulesIndex";
 import VehicleDetails from "./routes/vehicles/VehicleDetails";
 import VehiclesIndex from "./routes/vehicles/VehiclesIndex";
 import { data } from "jquery";
+import VehicleCreate from "./routes/vehicles/VehicleCreate";
 
 
 
@@ -63,17 +64,20 @@ const router = createBrowserRouter([
         element: <VehicleDetails  />,
         
       },
-      
-      
+      {
+        path: "vehicles/vehiclecreate",
+        element: <VehicleCreate />
+      },    
       {
         path: "booking/index",
         element: <BookingIndex />
       },
-
       {
         path: "schedules/index",
         element: <SchedulesIndex />
       },
+      
+
 
       
 

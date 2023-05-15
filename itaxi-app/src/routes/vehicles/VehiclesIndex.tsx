@@ -34,7 +34,7 @@ const VehiclesIndex = () => {
                 <h1>Index</h1>
 
                 <p>
-                    <a href="/DriverArea/Vehicles/Create">Create New</a>
+                    <Link to="vehiclecreate">Create New</Link>
                 </p>
                 <table className="table">
                     <thead>
