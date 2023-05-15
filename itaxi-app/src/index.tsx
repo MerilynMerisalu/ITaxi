@@ -24,6 +24,9 @@ import VehicleDetails from "./routes/vehicles/VehicleDetails";
 import VehiclesIndex from "./routes/vehicles/VehiclesIndex";
 import { data } from "jquery";
 import VehicleCreate from "./routes/vehicles/VehicleCreate";
+import VehicleDelete from "./routes/vehicles/VehicleDelete";
+import VehicleEdit from "./routes/vehicles/VehicleEdit";
+import VehicleGallery from "./routes/vehicles/VehicleGallery";
 
 
 
@@ -60,14 +63,25 @@ const router = createBrowserRouter([
         
       },
       {
-        path: "vehicles/:id",
-        element: <VehicleDetails  />,
-        
+        path: "vehicle/edit/:id",
+        element: <VehicleEdit  />,
       },
       {
-        path: "vehicles/vehiclecreate",
+        path: "vehicle/details/:id",
+        element: <VehicleDetails  />,
+      },
+      {
+        path: "vehicle/delete/:id",
+        element: <VehicleDelete  />,
+      },
+      {
+        path: "vehicle/gallery/:id",
+        element: <VehicleGallery  />,
+      },
+      {
+        path: "vehicles/create",
         element: <VehicleCreate />
-      },    
+      },     
       {
         path: "booking/index",
         element: <BookingIndex />

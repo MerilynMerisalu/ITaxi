@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
-
-import { useParams } from 'react-router-dom'
-import { IVehicle } from '../../domain/IVehicle'
-import { VehicleService } from '../../services/VehicleService';
+import { useParams } from 'react-router-dom';
 import { JwtContext } from '../Root';
+import { VehicleService } from '../../services/VehicleService';
+import { IVehicle } from '../../domain/IVehicle';
 import { VehicleAvailability } from '../../utilities/enums';
 import { Link } from 'react-router-dom';
-import VehiclesIndex from './VehiclesIndex';
 
-const VehicleDetails = () => {
+
+const VehicleDelete = () => {
     const { id } = useParams();
     const { jwtLoginResponse, setJwtLoginResponse } = useContext(JwtContext);
     const [data, setData] = useState<IVehicle | null>(null)
@@ -17,7 +16,7 @@ const VehicleDetails = () => {
     useEffect(() => {
         console.log('jwtloginresponse', jwtLoginResponse)
         if (jwtLoginResponse) {
-            vehicleService.details(id)
+            vehicleService.deleteDetails(id)
                 .then(
                     response => {
                         console.log(`Vehicle: ${response}`)
@@ -31,12 +30,16 @@ const VehicleDetails = () => {
         }
 
     }, [id]);
+
+
+
     return (
         <div className="container">
             <main role="main" className="pb-3">
 
+                <h1>Delete</h1>
 
-                <h1>Details</h1>
+                <h3>Are You Sure You Want To Delete This? </h3>
                 <div>
                     <h4>Vehicle</h4>
                     <hr />
@@ -47,19 +50,19 @@ const VehicleDetails = () => {
                             Vehicle Type
                         </dt>
                         <dd className="col-sm-10">
-                            {data?.vehicleType.vehicleTypeName}
+                            {data?.vehicleType?.vehicleTypeName}
                         </dd>
                         <dt className="col-sm-2">
                             Vehicle Mark
                         </dt>
                         <dd className="col-sm-10">
-                            {data?.vehicleMark.vehicleMarkName}
+                            {data?.vehicleMark?.vehicleMarkName}
                         </dd>
                         <dt className="col-sm-2">
                             Vehicle Model
                         </dt>
                         <dd className="col-sm-10">
-                            {data?.vehicleModel.vehicleModelName}
+                            {data?.vehicleModel?.vehicleModelName}
                         </dd>
                         <dt className="col-sm-2">
                             Vehicle Plate Number
@@ -88,15 +91,15 @@ const VehicleDetails = () => {
 
                     </dl>
 
-                    <form action="/DriverArea/Vehicles/Details/0eed7879-3550-49e8-0517-08db5547dad6" method="post">
-                        <input type="hidden" id="Id" name="Id" value={data?.id ?? ''} />
-
+                    <form action="/DriverArea/Vehicles/Delete/65c41561-8581-4ffe-7cae-08db556c394f" method="post">
+                        <input type="hidden" id="Id" name="Id" value="65c41561-8581-4ffe-7cae-08db556c394f" />
+                        <input type="submit" value="Delete" className="btn btn-danger" /> |
                         <Link to={"/vehicles"}>Back to List</Link>
-                        <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H6gnGQdd_VPhYRnzYmPi0rCSnZ-27ju1SgdOhvNt4Fk7RIn4qoW3cKbXVi_1Yaa6PZ6DcDo-kFxAwFMJ8_qmX78yfqCWtDk2IW1UL8l-kn57sKUAQDNwI44BGSUlpiHoRO-N_UXt4sDZMMpbaP1s0_hlk4sb2kCwZrRjUpis21MqWbkTtIO-aTpHC0CuF-n1A" /></form>
+                        <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H6gnGQdd_VPhYRnzYmPi0q8KLw9xhC6hjgoURA-dd0n3oP-GTbcky6oIi8FSBCzGyqGXaMU1uc7jOGed8rHjgtz-fCnATkMZvOq_b6Ne7cH0J5ptrNlkObVyA9Jp2hQ7sg4C22O3cfEDZs54JLeqmddI77XZPVT1seyLOSSrl-mVAoALwW5h9uTQ-y66-ZtKQ" /></form>
                 </div>
             </main>
         </div>
     )
 }
 
-export default VehicleDetails
+export default VehicleDelete

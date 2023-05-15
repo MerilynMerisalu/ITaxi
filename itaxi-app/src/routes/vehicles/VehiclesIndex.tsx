@@ -9,32 +9,32 @@ const VehiclesIndex = () => {
 
     const [data, setData] = useState([] as IVehicle[])
     const vehicleService = new VehicleService();
-    
+
     useEffect(() => {
-            vehicleService.getAll()
-                .then(
-                    response => {
-                        console.log(response)
-                        if (response)
-                            setData(response)
-                        else {
-                            setData([])
-                        }
+        vehicleService.getAll()
+            .then(
+                response => {
+                    console.log(response)
+                    if (response)
+                        setData(response)
+                    else {
+                        setData([])
                     }
-                )
-      
+                }
+            )
+
     }, []);
 
 
     return (
-        <div  className="container">
-            <main  role="main" className="pb-3">
+        <div className="container">
+            <main role="main" className="pb-3">
 
 
                 <h1>Index</h1>
 
                 <p>
-                    <Link to="vehiclecreate">Create New</Link>
+                    <Link to="create">Create New</Link>
                 </p>
                 <table className="table">
                     <thead>
@@ -65,14 +65,14 @@ const VehiclesIndex = () => {
                         </tr>
                     </thead>
                     <tbody>
-              {data.map(v => (
-                            
-                                <tr key={v.id}>
+                        {data.map(v => (
+
+                            <tr key={v.id}>
                                 <td >
-                                 {v.vehicleType.vehicleTypeName}
+                                    {v.vehicleType.vehicleTypeName}
                                 </td>
                                 <td>
-                                 {v.vehicleMark.vehicleMarkName}
+                                    {v.vehicleMark.vehicleMarkName}
                                 </td>
                                 <td>
                                     {v.vehicleModel.vehicleModelName}
@@ -81,26 +81,24 @@ const VehiclesIndex = () => {
                                     {v.vehiclePlateNumber}
                                 </td>
                                 <td>
-                                     {v.manufactureYear}
+                                    {v.manufactureYear}
                                 </td>
                                 <td>
                                     {v.numberOfSeats}
                                 </td>
                                 <td >
-                                    {v.vehicleAvailability === 1 ? VehicleAvailability.Available: VehicleAvailability.InAvailable }
+                                    {v.vehicleAvailability === 1 ? VehicleAvailability.Available : VehicleAvailability.InAvailable}
                                 </td>
                                 <td>
-                                <Link to="/DriverArea/Vehicles/Edit/ace1042c-5175-4903-72b1-08db546860a1">Edit</Link> |
-                                <Link to={`/vehicles/${v.id}`}>Details</Link> |
-                                <a href="/DriverArea/Vehicles/Delete/ace1042c-5175-4903-72b1-08db546860a1">Delete</a> |
-                                <a href="/DriverArea/Vehicles/Gallery/ace1042c-5175-4903-72b1-08db546860a1">Gallery</a> |
-                            </td>
-                        </tr>
-                                                       
-                            ))}
-                            
-                            
-                            
+                                    <Link to={`/vehicle/edit/${v.id}`}>Edit</Link> |
+                                    <Link to={`/vehicle/details/${v.id}`}>Details</Link> |
+                                    <Link to={`/vehicle/delete/${v.id}`}>Delete</Link> |
+                                    <Link to={`/vehicle/gallery/${v.id}`}>Gallery</Link> |
+                                </td>
+                            </tr>
+
+                        ))}
+
                     </tbody>
                 </table>
             </main>
