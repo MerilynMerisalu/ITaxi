@@ -13,7 +13,7 @@ const vehicleService = new VehicleService();
 
 useEffect(() => {
     if (jwtLoginResponse) {
-        vehicleService.details(id, jwtLoginResponse.token)
+        vehicleService.details(id)
             .then(
                 response => {
                     console.log(`Vehicle: ${response}`)
@@ -26,7 +26,7 @@ useEffect(() => {
             )
     }
 
-}, [id,jwtLoginResponse]);
+}, [id]);
   return (
     <div>{JSON.stringify(data)}</div>
   )

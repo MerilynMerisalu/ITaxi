@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { IBaseEntity } from "../domain/Base/IBaseEntity";
+import { IdentityService } from "./IdentityService";
 import BaseService from "./BaseService";
 
 export abstract class BaseEntityService <TEntity extends IBaseEntity> extends BaseService {
@@ -7,30 +8,30 @@ export abstract class BaseEntityService <TEntity extends IBaseEntity> extends Ba
       super(baseUrl);
   }
 
-  async getAll(token: string): Promise<TEntity[] | undefined> {
+  async getAll(): Promise<TEntity[] | undefined > {
 
     try {
-      
+      var user = IdentityService.getCurrentUser();
+      if(user) {
       const response = await this.axios.get<TEntity[]>('', 
-      /*
         {
           headers: {
-            'Authorization': 'Bearer ' + token
+            'Authorization': 'Bearer ' + user.token
           }
+        });
 
-        }
-        */
-
-        
-      );
-
-      
-
-      console.log('response', response);
-      if (response.status === 200) {
+        console.log('response', response);
+        if (response.status === 200) {
           return response.data;
           
       }
+  
+      }
+      else{
+        throw Error("User is not logged in"); 
+      }
+
+      
       return undefined;
 
   } catch (e){
@@ -41,12 +42,24 @@ export abstract class BaseEntityService <TEntity extends IBaseEntity> extends Ba
   }
  
   
-  async details(id?: string, jwt?: string): Promise<TEntity | undefined> {
+  async details(id?: string): Promise<TEntity | undefined> {
     try {
-      let response = await this.axios.get(`/${id}`);
+      let user = IdentityService.getCurrentUser();
+      if(user)
+      {
+      let response = await this.axios.get(`/${id}`, 
+      {
+        headers: {
+          'Authorization': 'Bearer ' + user.token
+        }
+      });
       if (response.status === 200) {
         return response.data;
       }
+    }
+    else{
+      throw Error("User is not logged in"); 
+    }
       return undefined;
     } catch (e) {
       console.log('Details -  error: ', (e as Error).message);

@@ -10,8 +10,8 @@ const SchedulesIndex = () => {
     const scheduleService = new ScheduleService();
 
     useEffect(() => {
-        if (jwtLoginResponse) {
-            scheduleService.getAll(jwtLoginResponse.token)
+
+            scheduleService.getAll()
                 .then(
                     response => {
                         console.log(response)
@@ -22,9 +22,9 @@ const SchedulesIndex = () => {
                         }
                     }
                 )
-        }
+        
 
-    }, [jwtLoginResponse]);
+    }, []);
 
     return (
         <div className="container">

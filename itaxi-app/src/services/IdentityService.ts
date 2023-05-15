@@ -4,6 +4,7 @@ import { IJwtLoginResponse } from "../dto/IJwtLoginResponse";
 import { ILoginData } from "../dto/ILoginData";
 import { IRegisterCustomerData } from "../dto/IRegisterCustomerData";
 import BaseService from "./BaseService";
+import { useNavigate } from "react-router-dom";
 
 export class IdentityService extends BaseService {
     constructor(){
@@ -39,6 +40,7 @@ export class IdentityService extends BaseService {
 
                 // Add the token to the default axios headers, this app is only calling on our domain anyway
                 axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
+                localStorage.setItem("user", JSON.stringify(response.data) );
 
                 return response.data;
             }
@@ -49,6 +51,21 @@ export class IdentityService extends BaseService {
             return undefined;
         }
 
+    }
+    
+    static logout(): boolean {
+       
+        console.log("Log out!");
+        axios.defaults.headers.common.Authorization = "";
+        localStorage.setItem("user", "");
+        return true;
+    }
+
+  
+    static getCurrentUser() : IJwtLoginResponse | undefined {
+        const userStr = localStorage.getItem("user");
+        if(userStr) return JSON.parse(userStr);
+        return undefined;
     }
 }
 

@@ -7,13 +7,11 @@ import { Link, Outlet } from 'react-router-dom';
 
 const VehiclesIndex = () => {
 
-    const { jwtLoginResponse, setJwtLoginResponse } = useContext(JwtContext);
     const [data, setData] = useState([] as IVehicle[])
     const vehicleService = new VehicleService();
     
     useEffect(() => {
-        if (jwtLoginResponse) {
-            vehicleService.getAll(jwtLoginResponse.token)
+            vehicleService.getAll()
                 .then(
                     response => {
                         console.log(response)
@@ -24,9 +22,8 @@ const VehiclesIndex = () => {
                         }
                     }
                 )
-        }
-
-    }, [jwtLoginResponse]);
+      
+    }, []);
 
 
     return (

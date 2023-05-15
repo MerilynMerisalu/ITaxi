@@ -27,7 +27,7 @@ public class VehiclesController : ControllerBase
     // GET: api/Vehicles
     [HttpGet]
     
-    #warning change it later back
+    
     public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
     {
         var userId = User.GettingUserId();
@@ -43,7 +43,7 @@ public class VehiclesController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var vehicle = await _appBLL.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id, userId, roleName);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, userId, roleName);
         
         if (vehicle == null) return NotFound();
 
