@@ -1,12 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-
 const VehicleEdit = () => {
     return (
         <div className="container">
             <main role="main" className="pb-3">
-
 
                 <h1>Edit</h1>
 

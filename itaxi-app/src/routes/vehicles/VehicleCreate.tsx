@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const VehicleCreate = () => {
     return (
@@ -79,10 +80,8 @@ const VehicleCreate = () => {
                 </div>
 
                 <div>
-                    <a href="/DriverArea/Vehicles">Back to List</a>
+                    <Link to={"/vehicles"}>Back to List</Link>
                 </div>
-
-
             </main>
         </div>
     )

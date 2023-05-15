@@ -88,7 +88,6 @@ const LoginFormView = (props: IProps) => {
     </div>
 </div>
 
-
     </main>
 </div>
   )

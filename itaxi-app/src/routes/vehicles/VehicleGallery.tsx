@@ -3,7 +3,6 @@ import { VehicleService } from '../../services/VehicleService';
 import { IVehicle } from '../../domain/IVehicle';
 import { Link, useParams } from 'react-router-dom';
 
-
 const VehicleGallery = () => {
     const { id } = useParams();
     const [data, setData] = useState<IVehicle | null>(null)
@@ -23,7 +22,6 @@ const VehicleGallery = () => {
             )
 
     }, []);
-
 
     return (
         <div className="container">

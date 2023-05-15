@@ -3,13 +3,10 @@ import "popper.js";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
-
 import "./site.css";
-
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, useParams } from "react-router-dom";
-
 import Root from "./routes/Root";
 import ErrorPage from "./routes/ErrorPage";
 import Login from "./routes/identity/Login";
@@ -27,9 +24,10 @@ import VehicleCreate from "./routes/vehicles/VehicleCreate";
 import VehicleDelete from "./routes/vehicles/VehicleDelete";
 import VehicleEdit from "./routes/vehicles/VehicleEdit";
 import VehicleGallery from "./routes/vehicles/VehicleGallery";
-
-
-
+import ScheduleEdit from "./routes/schedules/ScheduleEdit";
+import ScheduleDetails from "./routes/schedules/ScheduleDetails";
+import ScheduleDelete from "./routes/schedules/ScheduleDelete";
+import ScheduleCreate from "./routes/schedules/ScheduleCreate";
 
 const router = createBrowserRouter([
   {
@@ -60,40 +58,52 @@ const router = createBrowserRouter([
       {
         path: "vehicles/",
         element: <VehiclesIndex />,
-        
+
       },
       {
         path: "vehicle/edit/:id",
-        element: <VehicleEdit  />,
+        element: <VehicleEdit />,
       },
       {
         path: "vehicle/details/:id",
-        element: <VehicleDetails  />,
+        element: <VehicleDetails />,
       },
       {
         path: "vehicle/delete/:id",
-        element: <VehicleDelete  />,
+        element: <VehicleDelete />,
       },
       {
         path: "vehicle/gallery/:id",
-        element: <VehicleGallery  />,
+        element: <VehicleGallery />,
       },
       {
         path: "vehicles/create",
         element: <VehicleCreate />
-      },     
+      },
       {
         path: "booking/index",
         element: <BookingIndex />
       },
       {
-        path: "schedules/index",
+        path: "schedules",
         element: <SchedulesIndex />
       },
-      
-
-
-      
+      {
+        path: "schedules/edit/:id",
+        element: <ScheduleEdit />
+      },
+      {
+        path: "schedules/details/:id",
+        element: <ScheduleDetails />
+      },
+      {
+        path: "schedules/delete/:id",
+        element: <ScheduleDelete />,
+      },
+      {
+        path: "schedules/create",
+        element: <ScheduleCreate />
+      },
 
     ],
   },

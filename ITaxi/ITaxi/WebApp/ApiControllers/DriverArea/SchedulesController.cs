@@ -39,7 +39,7 @@ public class SchedulesController : ControllerBase
 
     // GET: api/Schedules/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<ScheduleDTO>> GetSchedule(Guid id)
+    public async Task<ActionResult<Schedule>> GetSchedule(Guid id)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
@@ -51,7 +51,7 @@ public class SchedulesController : ControllerBase
         schedule.CreatedAt = schedule.CreatedAt;
         schedule.UpdatedAt = schedule.UpdatedAt;
 
-        return Ok(schedule);
+        return Ok(_mapper.Map<Schedule>(schedule));
     }
 
     // PUT: api/Schedules/5

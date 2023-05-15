@@ -6,7 +6,6 @@ import { IVehicle } from '../../domain/IVehicle';
 import { VehicleAvailability } from '../../utilities/enums';
 import { Link } from 'react-router-dom';
 
-
 const VehicleDelete = () => {
     const { id } = useParams();
     const { jwtLoginResponse, setJwtLoginResponse } = useContext(JwtContext);
@@ -30,8 +29,6 @@ const VehicleDelete = () => {
         }
 
     }, [id]);
-
-
 
     return (
         <div className="container">

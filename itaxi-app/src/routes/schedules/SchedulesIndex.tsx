@@ -3,26 +3,26 @@ import { JwtContext } from '../Root';
 import { ScheduleService } from '../../services/ScheduleService';
 import { IScheduleData } from '../../dto/IScheduleData';
 import { ISchedule } from '../../domain/ISchedule';
+import { Link } from 'react-router-dom';
 
 const SchedulesIndex = () => {
-    const { jwtLoginResponse, setJwtLoginResponse } = useContext(JwtContext);
+    // const { jwtLoginResponse, setJwtLoginResponse } = useContext(JwtContext);
     const [data, setData] = useState([] as ISchedule[])
     const scheduleService = new ScheduleService();
 
     useEffect(() => {
 
-            scheduleService.getAll()
-                .then(
-                    response => {
-                        console.log(response)
-                        if (response)
-                            setData(response)
-                        else {
-                            setData([])
-                        }
+        scheduleService.getAll()
+            .then(
+                response => {
+                    console.log(response)
+                    if (response)
+                        setData(response)
+                    else {
+                        setData([])
                     }
-                )
-        
+                }
+            )
 
     }, []);
 
@@ -33,7 +33,7 @@ const SchedulesIndex = () => {
                 <h1>Index</h1>
 
                 <p>
-                    <a href="/DriverArea/Schedules/Create">Create New</a>
+                    <Link to="create">Create New</Link>
                 </p>
                 <table className="table">
                     <thead>
@@ -54,27 +54,28 @@ const SchedulesIndex = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+
                         {data.map(s => (
-                                <>
-                                <td key={s.vehicleId}>
-                                 {s.vehicle.vehicleIdentifier}
+                            <tr key={s.vehicleId}>
+                                <td>
+                                    {s.vehicle.vehicleIdentifier}
                                 </td>
                                 <td>
-                                 {s.startDateAndTime}
+                                    {s.startDateAndTime}
                                 </td>
                                 <td>
                                     {s.endDateAndTime}
                                 </td>
-                                </>                              
-                            ))}
 
-                            <td>
-                                <a href="/DriverArea/Schedules/Edit/6cfd35ef-ae8b-4cd9-f572-08db5495e718">Edit</a> |
-                                <a href="/DriverArea/Schedules/Details/6cfd35ef-ae8b-4cd9-f572-08db5495e718">Details</a> |
-                                <a href="/DriverArea/Schedules/Delete/6cfd35ef-ae8b-4cd9-f572-08db5495e718">Delete</a>
-                            </td>
-                        </tr>
+                                <td>
+                                    <Link to={`/schedules/edit/${s.id}`}>Edit</Link> |
+                                    <Link to={`/schedules/details/${s.id}`}>Details</Link> |
+                                    <Link to={`/schedules/delete/${s.id}`}>Delete</Link> |
+                                </td>
+                            </tr>
+
+                        ))}
+
                     </tbody>
                 </table>
             </main>

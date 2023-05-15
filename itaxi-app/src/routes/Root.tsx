@@ -6,8 +6,6 @@ import { IJwtLoginResponse } from "../dto/IJwtLoginResponse";
 import { data } from "jquery";
 import { IdentityService } from "../services/IdentityService";
 
-
-
 export const JwtContext = createContext
 <{jwtLoginResponse: IJwtLoginResponse | null, 
   setJwtLoginResponse: ((data: IJwtLoginResponse) => void) | null}>
@@ -27,10 +25,7 @@ const Root = () => {
         </main>
         </div>
         <Footer />
-        </JwtContext.Provider>
-    
-    
-      
+        </JwtContext.Provider> 
   );
 }
 

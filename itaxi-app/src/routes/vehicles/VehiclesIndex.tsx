@@ -6,7 +6,6 @@ import { VehicleAvailability } from '../../utilities/enums';
 import { Link, Outlet } from 'react-router-dom';
 
 const VehiclesIndex = () => {
-
     const [data, setData] = useState([] as IVehicle[])
     const vehicleService = new VehicleService();
 
@@ -25,11 +24,9 @@ const VehiclesIndex = () => {
 
     }, []);
 
-
     return (
         <div className="container">
             <main role="main" className="pb-3">
-
 
                 <h1>Index</h1>
 
