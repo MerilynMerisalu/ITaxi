@@ -64,6 +64,7 @@ const router = createBrowserRouter([
         
       },
       
+      
       {
         path: "booking/index",
         element: <BookingIndex />

@@ -5,6 +5,8 @@ import { IVehicle } from '../../domain/IVehicle'
 import { VehicleService } from '../../services/VehicleService';
 import { JwtContext } from '../Root';
 import { VehicleAvailability } from '../../utilities/enums';
+import { Link } from 'react-router-dom';
+import VehiclesIndex from './VehiclesIndex';
 
 const VehicleDetails = () => {
     const { id } = useParams();
@@ -89,7 +91,7 @@ const VehicleDetails = () => {
                     <form action="/DriverArea/Vehicles/Details/0eed7879-3550-49e8-0517-08db5547dad6" method="post">
                         <input type="hidden" id="Id" name="Id" value={data?.id ?? ''} />
 
-                        <a href="vehicles">Back to List</a>
+                        <Link to={"/vehicles"}>Back to List</Link>
                         <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H6gnGQdd_VPhYRnzYmPi0rCSnZ-27ju1SgdOhvNt4Fk7RIn4qoW3cKbXVi_1Yaa6PZ6DcDo-kFxAwFMJ8_qmX78yfqCWtDk2IW1UL8l-kn57sKUAQDNwI44BGSUlpiHoRO-N_UXt4sDZMMpbaP1s0_hlk4sb2kCwZrRjUpis21MqWbkTtIO-aTpHC0CuF-n1A" /></form>
                 </div>
             </main>
