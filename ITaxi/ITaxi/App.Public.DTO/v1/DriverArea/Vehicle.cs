@@ -52,7 +52,7 @@ public class Vehicle: DomainEntityMetaId
     [Required]
     public int ManufactureYear { get; set; }
 
-    [Range(1, 6, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
+    [Range(2, 6, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "NumberOfSeats")]
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     public int NumberOfSeats { get; set; }

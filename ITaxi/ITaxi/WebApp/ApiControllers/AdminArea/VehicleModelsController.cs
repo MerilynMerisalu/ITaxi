@@ -35,7 +35,7 @@ public class VehicleModelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<VehicleModel>>> GetVehicleModels()
     {
-        var res = await _appBLL.VehicleModels.GetAllVehicleModelsWithoutVehicleMarksAsync();
+        var res = await _appBLL.VehicleModels.GetAllAsync();
         return Ok(res.Select(v => _mapper.Map<VehicleModel>(v)));
     }
 

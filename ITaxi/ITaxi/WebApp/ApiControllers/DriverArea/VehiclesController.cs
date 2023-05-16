@@ -59,15 +59,21 @@ public class VehiclesController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var vehicleDto = await _appBLL.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id, userId, roleName);
+        var vehicleDto = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, userId, roleName);
+        
+        
 
-        if (vehicleDto!.Driver!.AppUserId != userId || !User.IsInRole("Admin"))
+        if (vehicleDto!.Driver!.AppUserId != userId /*|| !User.IsInRole("Admin") */)
         {
             return Forbid();
         }
 
+        ;
+
         try
         {
+            vehicleDto.Id = vehicleDto.Id;
+            vehicleDto.DriverId = vehicleDto.DriverId;
             vehicleDto.VehicleAvailability = vehicle.VehicleAvailability;
             vehicleDto.ManufactureYear = vehicle.ManufactureYear;
             vehicleDto.NumberOfSeats = vehicle.NumberOfSeats;
@@ -100,8 +106,9 @@ public class VehiclesController : ControllerBase
             return BadRequest("Api version is mandatory");
         }
         var vehicleDto = _mapper.Map<VehicleDTO>(vehicle);
+        
         vehicleDto.Id = Guid.NewGuid();
-        vehicleDto.DriverId = User.GettingUserId();
+        vehicleDto.DriverId = _appBLL.Drivers.GettingDriverByAppUserIdAsync(User.GettingUserId()).Result.Id;
         vehicleDto.CreatedBy = User.Identity!.Name;
         vehicle.CreatedAt = DateTime.Now;
         vehicle.UpdatedBy = User.Identity!.Name;
@@ -128,7 +135,7 @@ public class VehiclesController : ControllerBase
             || await _appBLL.Vehicles.HasAnyBookingsAnyAsync(vehicle.Id))
             return BadRequest("Vehicle cannot be deleted! ");
         
-        _appBLL.Vehicles.Remove(vehicle);
+        await _appBLL.Vehicles.RemoveAsync(vehicle.Id);
         await _appBLL.SaveChangesAsync();
 
         return NoContent();

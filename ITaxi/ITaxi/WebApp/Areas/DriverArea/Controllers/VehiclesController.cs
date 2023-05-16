@@ -85,7 +85,7 @@ public class VehiclesController : Controller
             var driver = await _appBLL.Drivers.GettingDriverByVehicleAsync(userId);
 
             vehicle.Id = Guid.NewGuid();
-            vehicle.DriverId = driver.Id;
+            vehicle.DriverId = _appBLL.Drivers.GettingDriverByAppUserIdAsync(userId).Result.Id;
             vehicle.ManufactureYear = vm.ManufactureYear;
             vehicle.VehicleAvailability = vm.VehicleAvailability;
             vehicle.VehicleMarkId = vm.VehicleMarkId;
@@ -171,8 +171,6 @@ public class VehiclesController : Controller
                 {
                     vehicle.Id = id;
 
-                    var driver = await _appBLL.Drivers.GettingDriverByVehicleAsync(userId);
-
                     vehicle.VehiclePlateNumber = vm.VehiclePlateNumber;
                     vehicle.ManufactureYear = vm.ManufactureYear;
                     vehicle.VehicleAvailability = vm.VehicleAvailability;
@@ -230,16 +228,19 @@ public class VehiclesController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, userId, roleName);
-        /*if (await _appBLL.Schedules.AnyAsync(s => vehicle != null && s != null && s.VehicleId.Equals(vehicle.Id))
-            || await _appBLL.Bookings.AnyAsync(v => vehicle != null && v != null && v.VehicleId.Equals(vehicle.Id)))
-            return Content("Entity cannot be deleted because it has dependent entities!");*/
-
         if (vehicle != null)
         {
-            _appBLL.Vehicles.Remove(vehicle);
-            await _appBLL.SaveChangesAsync();
-        }
+            if (await _appBLL.Vehicles.HasAnySchedulesAnyAsync(vehicle.Id) || await _appBLL.Vehicles.HasAnyBookingsAnyAsync(vehicle.Id))
+            {
+                return Content("Entity cannot be deleted because it has dependent entities!");
 
+                
+            }
+
+            await _appBLL.Vehicles.RemoveAsync(vehicle.Id);
+            await _appBLL.SaveChangesAsync();
+
+        }
         return RedirectToAction(nameof(Index));
     }
 
