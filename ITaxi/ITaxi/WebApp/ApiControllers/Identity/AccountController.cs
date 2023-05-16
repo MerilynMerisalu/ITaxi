@@ -512,7 +512,7 @@ public class AccountController : ControllerBase
             RefreshToken = refreshToken.Token,
             FirstName = appUser.FirstName,
             LastName = appUser.LastName,
-            RoleNames = roles.ToArray()
+            RoleNames = roles.ToArray(),
         };
         return Ok(res);
     }

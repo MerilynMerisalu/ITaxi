@@ -22,6 +22,8 @@ function Header() {
     }
   }, []);
 
+  let currentuser = IdentityService.getCurrentUser()
+
 const languageButtonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
   //event.preventDefault();
 
@@ -43,19 +45,20 @@ const logoutButtonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 }
 
 const displayIfNotLoggedIn= () => {
-  var user = IdentityService.getCurrentUser();
-  return {'display': user == null ? '' : 'none'}
+  //var user = IdentityService.getCurrentUser();
+  return {'display': currentuser == null ? '' : 'none'}
 }
 
 const displayIfLoggedIn= () => {
-  var user = IdentityService.getCurrentUser();
-  return {'display': user == null ? 'none' : ''}
+  //var user = IdentityService.getCurrentUser();
+  return {'display': currentuser == null ? 'none' : ''}
 };
 
 const displayIfLoggedInRole= (role : string) => {
-  var user = IdentityService.getCurrentUser();
-  return {'display': user != null && user.roleNames[0] === role ? '' : 'none'  }
+  //var user = IdentityService.getCurrentUser();
+  return {'display': currentuser != null && currentuser.roleNames[0] === role ? '' : 'none'  }
 };
+
 
 
   return (
@@ -81,7 +84,7 @@ const displayIfLoggedInRole= (role : string) => {
             </NavDropdown>
             <NavDropdown style={displayIfLoggedInRole("Customer")} title="Activities" id="basic-nav-dropdown">
               <NavDropdown.Item as={Link} to="/booking/index">Booking</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/comments">SComments</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/comments">Comments</NavDropdown.Item>
               
             
             </NavDropdown>
@@ -94,6 +97,7 @@ const displayIfLoggedInRole= (role : string) => {
             <Nav.Link className="nav-link text-dark" as={Link} to="login">Login</Nav.Link>
           </Nav>
           <Nav style={displayIfLoggedIn()} onClick={logoutButtonHandler}>
+          <Nav.Link style={displayIfLoggedIn()}  as= {Link} to="#">{`Hello, ${currentuser?.firstAndLastName}!`}</Nav.Link> 
           <Nav.Link className="nav-link text-dark" as={Link} to="/">Logout</Nav.Link>
 
           </Nav>

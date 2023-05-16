@@ -3,7 +3,9 @@ interface IJwtLoginResponse{
     refreshToken: string;
     roleNames: string[]
     firstName: string,
-    lastName: string
+    lastName: string,
+    firstAndLastName: string,
+    lastAndFirstName: string
  
 }
 
