@@ -59,11 +59,10 @@ public class VehiclesController : ControllerBase
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var vehicleDto = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, userId, roleName);
-        
-        
+        var vehicleDto = await _appBLL.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id, userId, roleName);
+        var currentDriver = await _appBLL.Drivers.GettingDriverByVehicleAsync(vehicleDto!.Id);
 
-        if (vehicleDto!.Driver!.AppUserId != userId /*|| !User.IsInRole("Admin") */)
+        if (currentDriver!.AppUserId != userId && !User.IsInRole("Admin") )
         {
             return Forbid();
         }
@@ -72,8 +71,6 @@ public class VehiclesController : ControllerBase
 
         try
         {
-            vehicleDto.Id = vehicleDto.Id;
-            vehicleDto.DriverId = vehicleDto.DriverId;
             vehicleDto.VehicleAvailability = vehicle.VehicleAvailability;
             vehicleDto.ManufactureYear = vehicle.ManufactureYear;
             vehicleDto.NumberOfSeats = vehicle.NumberOfSeats;
@@ -81,6 +78,7 @@ public class VehiclesController : ControllerBase
             vehicleDto.VehicleModelId = vehicle.VehicleModelId;
             vehicleDto.VehiclePlateNumber = vehicle.VehiclePlateNumber;
             vehicleDto.VehicleTypeId = vehicle.VehicleTypeId;
+            // System Managed Fields
             vehicleDto.UpdatedBy = User.Identity!.Name;
             vehicleDto.UpdatedAt = DateTime.Now.ToUniversalTime();
             _appBLL.Vehicles.Update(vehicleDto);
@@ -88,7 +86,7 @@ public class VehiclesController : ControllerBase
         }
         catch (DbUpdateConcurrencyException)
         {
-            
+            throw;
         }
 
         return NoContent();
