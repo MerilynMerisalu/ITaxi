@@ -61,7 +61,7 @@ public class VehiclesController : ControllerBase
         var roleName = User.GettingUserRoleName();
         var vehicleDto = await _appBLL.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id, userId, roleName);
         var currentDriver = await _appBLL.Drivers.GettingDriverByVehicleAsync(vehicleDto!.Id);
-
+        
         if (currentDriver!.AppUserId != userId && !User.IsInRole("Admin") )
         {
             return Forbid();
@@ -143,4 +143,14 @@ public class VehiclesController : ControllerBase
     {
         return _appBLL.Vehicles.Exists(id);
     }
+    
+    [Route("GetManufactureYears")]
+    [HttpGet]
+    public ActionResult<IEnumerable<int>> GetManufactureYears()
+    {
+        var res =  _appBLL.Vehicles.GettingManufactureYears();
+        
+        return Ok(res);
+    }
 }
+
