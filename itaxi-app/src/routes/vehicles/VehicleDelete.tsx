@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { JwtContext } from '../Root';
 import { VehicleService } from '../../services/VehicleService';
@@ -30,9 +30,13 @@ const VehicleDelete = () => {
         }
 
     }, [id]);
-    const deleteAction = async () =>{
+    const deleteAction = async (event: FormEvent) =>{
+        event.preventDefault()
+        console.log('deleteAction id test:', id)
         const status = await vehicleService.delete(id)
-        if (status === 200) {
+        console.log('deleteAction status:', status)
+        if (status === 204 || status === 200) {
+            console.log('status ok')
             navigate('/vehicles')
         } else {
             console.warn('Vehicle delete not OK', status)
@@ -97,9 +101,9 @@ const VehicleDelete = () => {
 
                     </dl>
 
-                    <form action="/DriverArea/Vehicles/Delete/65c41561-8581-4ffe-7cae-08db556c394f" method="post">
+                    <form onSubmit={deleteAction}>
                         <input type="hidden" id="Id" name="Id" value="65c41561-8581-4ffe-7cae-08db556c394f" />
-                        <input type="submit" onClick={deleteAction} value="Delete" className="btn btn-danger" /> |
+                        <input type="submit" value="Delete" className="btn btn-danger" /> |
                         <Link to={"/vehicles"}>Back to List</Link>
                         <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H6gnGQdd_VPhYRnzYmPi0q8KLw9xhC6hjgoURA-dd0n3oP-GTbcky6oIi8FSBCzGyqGXaMU1uc7jOGed8rHjgtz-fCnATkMZvOq_b6Ne7cH0J5ptrNlkObVyA9Jp2hQ7sg4C22O3cfEDZs54JLeqmddI77XZPVT1seyLOSSrl-mVAoALwW5h9uTQ-y66-ZtKQ" />
                     </form>

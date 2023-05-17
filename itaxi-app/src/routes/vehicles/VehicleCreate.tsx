@@ -1,7 +1,44 @@
-import React from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const VehicleCreate = () => {
+    const [values, setValues] = useState({
+        VehicleMarkId: '',
+        VehicleModelId: ''
+    })
+    console.log('values', values)
+    function handleChange(event: ChangeEvent<HTMLSelectElement>) {
+        setValues(currentValues => {
+            return {
+                ...currentValues,
+                [event.target.name]: event.target.value
+            }
+        })
+    }
+    const markOptions = [
+        { value: "a6cd7932-64d6-4ae3-fc3a-08db556c391c", label: 'Ford' },
+        { value: "ead191e5-3bb9-405b-fc39-08db556c391c", label: 'Toyota' }
+    ]
+    const markViews = markOptions.map(option => (
+        <option key={option.value} value={option.value}>{option.label}</option>
+    ))
+    
+    const modelOptions = [
+        { value: "1b9044ac-8d48-474b-8015-08db556c392e", label: 'Focus' },
+        { value: "5b85a958-f455-44c6-8014-08db556c392e", label: 'Avensis' }
+    ]
+    const fordIds = ["1b9044ac-8d48-474b-8015-08db556c392e"]
+    const toyotaIds = ["5b85a958-f455-44c6-8014-08db556c392e"]
+    const fordSelected = values.VehicleMarkId === "a6cd7932-64d6-4ae3-fc3a-08db556c391c"
+    const toyotaSelected = values.VehicleMarkId === "ead191e5-3bb9-405b-fc39-08db556c391c"
+    const filteredModelOptions = fordSelected
+        ? modelOptions.filter(option => fordIds.includes(option.value))
+        : toyotaSelected
+            ? modelOptions.filter(option => toyotaIds.includes(option.value))
+            : modelOptions
+    const modelViews = filteredModelOptions.map(option => (
+        <option key={option.value} value={option.value}>{option.label}</option>
+    ))
     return (
         <div className="container">
             <main role="main" className="pb-3">
@@ -18,7 +55,11 @@ const VehicleCreate = () => {
 
                             <div className="form-group">
                                 <label className="control-label" html-for="VehicleTypeId">Vehicle Type</label>
-                                <select className="form-control" id="VehicleTypeId" name="VehicleTypeId">
+                                <select
+                                    className="form-control"
+                                    id="VehicleTypeId"
+                                    name="VehicleTypeId"
+                                >
                                     <option>Please Select</option>
                                     <option value="fefa19bc-4f87-4a31-a0de-f53fcc1f89ed">Regular</option>
                                     <option value="51444aaa-8e1e-4aaf-b0f9-d4dd10eb7664">Wheelchair</option>
@@ -26,18 +67,28 @@ const VehicleCreate = () => {
                             </div>
                             <div className="form-group">
                                 <label className="control-label" html-for="VehicleMarkId">Vehicle Mark</label>
-                                <select className="form-control" id="VehicleMarkId" name="VehicleMarkId">
+                                <select
+                                    className="form-control"
+                                    id="VehicleMarkId"
+                                    name="VehicleMarkId"
+                                    value={values.VehicleMarkId}
+                                    onChange={handleChange}
+                                >
                                     <option>Please Select</option>
-                                    <option value="a6cd7932-64d6-4ae3-fc3a-08db556c391c">Ford</option>
-                                    <option value="ead191e5-3bb9-405b-fc39-08db556c391c">Toyota</option>
+                                    {markViews}
                                 </select>
                             </div>
                             <div className="form-group">
                                 <label className="control-label" html-for="VehicleModelId">Vehicle Model</label>
-                                <select className="form-control" id="VehicleModelId" name="VehicleModelId">
+                                <select
+                                    className="form-control" 
+                                    id="VehicleModelId"
+                                    name="VehicleModelId"
+                                    value={values.VehicleModelId}
+                                    onChange={handleChange}
+                                >
                                     <option>Please Select</option>
-                                    <option value="1b9044ac-8d48-474b-8015-08db556c392e">Focus</option>
-                                    <option value="5b85a958-f455-44c6-8014-08db556c392e">Avensis</option>
+                                    {modelViews}
                                 </select>
                             </div>
                             <div className="form-group">
@@ -49,12 +100,12 @@ const VehicleCreate = () => {
                                 <label className="control-label" html-for="ManufactureYear">Year</label>
                                 <select className="form-control" id="ManufactureYear" name="ManufactureYear">
                                     <option>Please Select</option>
-                                    <option>2023</option>
-                                    <option>2022</option>
-                                    <option>2021</option>
-                                    <option>2020</option>
-                                    <option>2019</option>
-                                    <option>2018</option>
+                                    <option></option>
+                                    <option></option>
+                                    <option></option>
+                                    <option></option>
+                                    <option></option>
+                                    <option></option>
                                 </select>
                                 <span className="text-danger field-validation-valid"></span>
                             </div>
