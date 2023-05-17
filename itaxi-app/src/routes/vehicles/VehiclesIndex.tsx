@@ -4,16 +4,18 @@ import { VehicleService } from '../../services/VehicleService';
 import { IVehicle } from '../../domain/IVehicle';
 import { VehicleAvailability } from '../../utilities/enums';
 import { Link, Outlet } from 'react-router-dom';
-
+import axios from 'axios';
+const vehicleService = new VehicleService()
 const VehiclesIndex = () => {
     const [data, setData] = useState([] as IVehicle[])
-    const vehicleService = new VehicleService();
-
+    const { language } = useContext(JwtContext)
+    console.log('index language', language)
     useEffect(() => {
+        axios.defaults.headers.common['Accept-Language'] = language;
         vehicleService.getAll()
             .then(
                 response => {
-                    console.log(response)
+                    console.log('index response', response)
                     if (response)
                         setData(response)
                     else {
@@ -22,7 +24,7 @@ const VehiclesIndex = () => {
                 }
             )
 
-    }, []);
+    }, [language]);
 
     return (
         <div className="container">

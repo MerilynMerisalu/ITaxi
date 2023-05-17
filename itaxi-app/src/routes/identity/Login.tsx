@@ -37,7 +37,7 @@ const Login = () => {
       console.log('onSubmit', event);
       event.preventDefault();
       
-      if(values.Email.length == 0 || values.Password.length == 0  ) {
+      if(values.Email.length === 0 || values.Password.length === 0  ) {
           setValidationErrors(["Bad input values!"]);
           return;
       }

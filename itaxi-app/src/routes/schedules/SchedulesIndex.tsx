@@ -4,14 +4,15 @@ import { ScheduleService } from '../../services/ScheduleService';
 import { IScheduleData } from '../../dto/IScheduleData';
 import { ISchedule } from '../../domain/ISchedule';
 import { Link } from 'react-router-dom';
-
+import axios from 'axios'
+const scheduleService = new ScheduleService();
 const SchedulesIndex = () => {
     // const { jwtLoginResponse, setJwtLoginResponse } = useContext(JwtContext);
     const [data, setData] = useState([] as ISchedule[])
-    const scheduleService = new ScheduleService();
+    const { language } = useContext(JwtContext)
 
     useEffect(() => {
-
+        axios.defaults.headers.common['Accept-Language'] = language;
         scheduleService.getAll()
             .then(
                 response => {
@@ -24,7 +25,28 @@ const SchedulesIndex = () => {
                 }
             )
 
-    }, []);
+    }, [language]);
+    function pad (s: number) {
+        const padded = `0${s}`
+        return padded.slice(-2)
+    }
+
+    function formatDate (iso: string) {
+        const date = new Date(iso)
+        const year = pad(date.getFullYear())
+        const month = pad(date.getMonth() + 1)
+        const day = pad(date.getDate())
+        const hours = pad(date.getHours())
+        const minutes = pad(date.getMinutes())
+
+        if (language === 'en-GB') {
+            return `${year}-${month}-${day} ${hours}:${minutes}`
+        }
+        if (language === 'et-EE') {
+            return `${day}.${month}.${year} ${hours}:${minutes}`
+        }
+    }
+
 
     return (
         <div className="container">
@@ -61,7 +83,7 @@ const SchedulesIndex = () => {
                                     {s.vehicle.vehicleIdentifier}
                                 </td>
                                 <td>
-                                    {s.startDateAndTime}
+                                    {formatDate(s.startDateAndTime)}
                                 </td>
                                 <td>
                                     {s.endDateAndTime}

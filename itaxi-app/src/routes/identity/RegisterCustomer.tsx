@@ -8,11 +8,7 @@ import axios from "axios";
 import { IDisabilityTypeData } from "../../dto/IDisabilityType";
 import { isDate } from "util/types";
 
-
-
 const RegisterCustomer = () => {
-
-
 
 const [disabilityTypes, setDisabilityTypes] = useState([])
     const [values, setInput] = useState({

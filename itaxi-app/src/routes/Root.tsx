@@ -1,4 +1,4 @@
-import { createContext, useState,useContext } from "react";
+import { createContext, useState,useContext, Dispatch, SetStateAction } from "react";
 import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -7,17 +7,21 @@ import { data } from "jquery";
 import { IdentityService } from "../services/IdentityService";
 
 export const JwtContext = createContext
-<{jwtLoginResponse: IJwtLoginResponse | null, 
-  setJwtLoginResponse: ((data: IJwtLoginResponse) => void) | null}>
-  ({jwtLoginResponse: null, setJwtLoginResponse: null});
+<{
+  jwtLoginResponse: IJwtLoginResponse | null, 
+  setJwtLoginResponse: ((data: IJwtLoginResponse) => void) | null,
+  language: string,
+  setLanguage: Dispatch<SetStateAction<string>> | null
+}>
+  ({jwtLoginResponse: null, setJwtLoginResponse: null, language: 'en-GB', setLanguage: null });
 
 const Root = () => {
   const localUser = IdentityService.getCurrentUser()
   const [jwtLoginResponse, setJwtLoginResponse] = useState(localUser as IJwtLoginResponse | null );
-
+  const [language, setLanguage] = useState<string>('en-GB')
   console.log('provider jwtloginresponse', jwtLoginResponse)
   return (
-      <JwtContext.Provider value={{jwtLoginResponse, setJwtLoginResponse}}>
+      <JwtContext.Provider value={{jwtLoginResponse, setJwtLoginResponse, language, setLanguage }}>
       <Header />
         <div className="container">
         <main role="main" className="pb-3">

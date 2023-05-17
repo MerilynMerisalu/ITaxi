@@ -1,31 +1,52 @@
-import React, { ChangeEvent, useState, useEffect } from 'react'
+import React, { ChangeEvent, useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { VehicleService } from '../../services/VehicleService'
+import {VehicleTypeService} from '../../services/VehicleTypeService'
+import { IVehicleType } from '../../domain/IVehicleType'
+import { IVehicleData } from '../../dto/IVehicleData'
+import { ICreateVehicleData } from '../../dto/ICreateVehicleData'
+import { JwtContext } from '../Root'
+import axios from 'axios'
 
+const service = new VehicleService()
+const vehicleTypeService = new VehicleTypeService()
 const VehicleCreate = () => {
     const [values, setValues] = useState({
-        VehicleMarkId: '',
-        VehicleModelId: '',
-        numberOfSeats: '2'
-    })
-    const service = new VehicleService()
+        vehicleTypeId: "",
+        vehicleMarkId: "",
+        vehicleModelId: "",
+        manufactureYear: "",
+        numberOfSeats: "2",
+        vehiclePlateNumber: "",
+        vehicleAvailability: 0
+
+
+    } as ICreateVehicleData)
+    const { language } = useContext(JwtContext)
+    const [vehicleTypes, setVehicleTypes] = useState<IVehicleType[]>();
     const [manufactureYears, setManufactureYears] = useState<number[]>()
     const [marks, setMarks] = useState<string[]>()
     useEffect(() => {
+        
         async function downloadYears() {
             const years = await service.getManufactureYears()
             setManufactureYears(years)
+        }
+        async function downloadVehicleTypes() {
+            const vehicleTypes = await vehicleTypeService.getAll()
+            setVehicleTypes(vehicleTypes)
         }
         // async function downloadMarks() {
         //     const marks = await service.getMarks() // not yet
         //     setMarks(marks)
         // }
         async function download () {
-            const promises = [downloadYears()]//, downloadMarks()]
+            const promises = [downloadVehicleTypes() ,downloadYears()]//, downloadMarks()]
             await Promise.all(promises)
         }
         download()
-    }, [])
+        axios.defaults.headers.common['Accept-Language'] = language;
+    }, [language])
     console.log('values', values)
     function handleChange(event: ChangeEvent<HTMLSelectElement | HTMLInputElement>) {
         setValues(currentValues => {
@@ -35,6 +56,8 @@ const VehicleCreate = () => {
             }
         })
     }
+    const vehicleTypeViews = vehicleTypes?.map(option => (
+        <option key={option.id} value={option.id}>{option.vehicleTypeName}</option>))
     const markOptions = [
         { value: "a6cd7932-64d6-4ae3-fc3a-08db556c391c", label: 'Ford' },
         { value: "ead191e5-3bb9-405b-fc39-08db556c391c", label: 'Toyota' }
@@ -46,9 +69,9 @@ const VehicleCreate = () => {
         { value: "1b9044ac-8d48-474b-8015-08db556c392e", label: 'Focus', markId: 'a6cd7932-64d6-4ae3-fc3a-08db556c391c' },
         { value: "5b85a958-f455-44c6-8014-08db556c392e", label: 'Avensis', markId: '"ead191e5-3bb9-405b-fc39-08db556c391c' }
     ]
-    const filteredModelOptions = values.VehicleMarkId === ''
+    const filteredModelOptions = values.vehicleMarkId === ''
         ? modelOptions
-        : modelOptions.filter(option => option.markId === values.VehicleMarkId)
+        : modelOptions.filter(option => option.markId === values.vehicleMarkId)
     const modelViews = filteredModelOptions.map(option => (
         <option key={option.value} value={option.value}>{option.label}</option>
     ))
@@ -75,10 +98,11 @@ const VehicleCreate = () => {
                                     className="form-control"
                                     id="VehicleTypeId"
                                     name="VehicleTypeId"
+                                    value={values.vehicleTypeId}
+                                    onChange={handleChange}
                                 >
                                     <option>Please Select</option>
-                                    <option value="fefa19bc-4f87-4a31-a0de-f53fcc1f89ed">Regular</option>
-                                    <option value="51444aaa-8e1e-4aaf-b0f9-d4dd10eb7664">Wheelchair</option>
+                                    {vehicleTypeViews}
                                 </select>
                             </div>
                             <div className="form-group">
@@ -87,7 +111,7 @@ const VehicleCreate = () => {
                                     className="form-control"
                                     id="VehicleMarkId"
                                     name="VehicleMarkId"
-                                    value={values.VehicleMarkId}
+                                    value={values.vehicleMarkId}
                                     onChange={handleChange}
                                 >
                                     <option>Please Select</option>
@@ -100,7 +124,7 @@ const VehicleCreate = () => {
                                     className="form-control" 
                                     id="VehicleModelId"
                                     name="VehicleModelId"
-                                    value={values.VehicleModelId}
+                                    value={values.vehicleModelId}
                                     onChange={handleChange}
                                 >
                                     <option>Please Select</option>

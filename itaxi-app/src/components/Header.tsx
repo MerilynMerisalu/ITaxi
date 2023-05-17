@@ -11,7 +11,7 @@ import { IdentityService } from '../services/IdentityService';
 import { IJwtLoginResponse } from '../dto/IJwtLoginResponse';
 
 function Header() {
-  
+  const { language, setLanguage } = useContext(JwtContext);
   const navigate = useNavigate();
   const [user, setUser] = useState<IJwtLoginResponse>();
   useEffect(() => {
@@ -29,9 +29,12 @@ const languageButtonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 
   const button: HTMLButtonElement = event.currentTarget;
   let lang = button.name;
-  
+  setLanguage?.(lang)
+  IdentityService.setLanguage(lang);
   console.log(`User selected language: '${lang}'`);
   axios.defaults.headers.common['Accept-Language'] = lang;
+
+  // window.location.reload()
 }
 
 const logoutButtonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
