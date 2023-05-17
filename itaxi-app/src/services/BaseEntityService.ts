@@ -92,4 +92,29 @@ export abstract class BaseEntityService <TEntity extends IBaseEntity> extends Ba
       return undefined;
     }
   }
+
+  async delete(id?: string): Promise<number| undefined> {
+    try {
+      let user = IdentityService.getCurrentUser();
+      if(user)
+      {
+      let response = await this.axios.delete(`/${id}`, 
+      {
+        headers: {
+          'Authorization': 'Bearer ' + user.token
+        }
+      });
+      if (response.status === 204) {
+        return response.status
+      }
+    }
+    else{
+      throw Error("User is not logged in"); 
+    }
+      return undefined;
+    } catch (e) {
+      console.log('Details -  error: ', (e as Error).message);
+      return undefined;
+    }
+  }
 }
