@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IBaseEntity } from "../domain/Base/IBaseEntity";
 import { IdentityService } from "./IdentityService";
 import BaseService from "./BaseService";
@@ -12,12 +12,15 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
   async getAll(): Promise<TEntity[] | undefined> {
 
     try {
-      var user = IdentityService.getCurrentUser();
+      let user = IdentityService.getCurrentUser();
+      let language = IdentityService.getLanguage();
+      
       if (user) {
         const response = await this.axios.get<TEntity[]>('',
           {
             headers: {
-              'Authorization': 'Bearer ' + user.token
+              'Authorization': 'Bearer ' + user.token,
+              'Accept-Language': language
             }
           });
 
@@ -46,11 +49,13 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
   async details(id?: string): Promise<TEntity | undefined> {
     try {
       let user = IdentityService.getCurrentUser();
+      let language = IdentityService.getLanguage();
       if (user) {
         let response = await this.axios.get(`/${id}`,
           {
             headers: {
-              'Authorization': 'Bearer ' + user.token
+              'Authorization': 'Bearer ' + user.token,
+              'Accept-Language': language
             }
           });
         if (response.status === 200) {

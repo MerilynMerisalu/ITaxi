@@ -67,5 +67,15 @@ export class IdentityService extends BaseService {
         if(userStr) return JSON.parse(userStr);
         return undefined;
     }
+
+    static getLanguage() : string {
+        let langStr = localStorage.getItem("language");
+        if (!langStr) langStr = "en-GB";
+        return langStr;
+    }
+
+    static setLanguage(language : string) : void {
+        localStorage.setItem("language", language);
+    }
 }
 
