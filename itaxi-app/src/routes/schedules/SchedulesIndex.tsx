@@ -86,7 +86,7 @@ const SchedulesIndex = () => {
                                     {formatDate(s.startDateAndTime)}
                                 </td>
                                 <td>
-                                    {s.endDateAndTime}
+                                    {formatDate(s.endDateAndTime)}
                                 </td>
 
                                 <td>

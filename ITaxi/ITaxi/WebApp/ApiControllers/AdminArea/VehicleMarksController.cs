@@ -32,6 +32,7 @@ public class VehicleMarksController : ControllerBase
     [ProducesResponseType( typeof( IEnumerable<VehicleMark>), StatusCodes.Status200OK )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<VehicleMark>>> GetVehicleMarks()
     {
 

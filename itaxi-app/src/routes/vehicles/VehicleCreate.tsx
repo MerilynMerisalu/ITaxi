@@ -1,16 +1,29 @@
-import React, { ChangeEvent, useState, useEffect, useContext } from 'react'
+import React, { ChangeEvent, useState, useEffect, useContext, FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { VehicleService } from '../../services/VehicleService'
 import {VehicleTypeService} from '../../services/VehicleTypeService'
+import { useNavigate } from 'react-router-dom'
+
 import { IVehicleType } from '../../domain/IVehicleType'
+import { IVehicleMark } from '../../domain/IVehicleMark'
 import { IVehicleData } from '../../dto/IVehicleData'
 import { ICreateVehicleData } from '../../dto/ICreateVehicleData'
 import { JwtContext } from '../Root'
+
 import axios from 'axios'
+import { VehicleMarkService } from '../../services/VehicleMarkService'
+import { VehicleModelService } from '../../services/VehicleModelService'
+import { IVehicleModel } from '../../domain/IVehicleModel'
+
+import { VehicleAvailability } from '../../utilities/enums'
+const availabilityEntries = Object.entries(VehicleAvailability)
 
 const service = new VehicleService()
 const vehicleTypeService = new VehicleTypeService()
+const vehicleMarkService = new VehicleMarkService()
+const vehicleModelService = new VehicleModelService();
 const VehicleCreate = () => {
+    const navigate = useNavigate()
     const [values, setValues] = useState({
         vehicleTypeId: "",
         vehicleMarkId: "",
@@ -19,15 +32,14 @@ const VehicleCreate = () => {
         numberOfSeats: "2",
         vehiclePlateNumber: "",
         vehicleAvailability: 0
-
-
     } as ICreateVehicleData)
     const { language } = useContext(JwtContext)
     const [vehicleTypes, setVehicleTypes] = useState<IVehicleType[]>();
     const [manufactureYears, setManufactureYears] = useState<number[]>()
-    const [marks, setMarks] = useState<string[]>()
+    const [marks, setMarks] = useState<IVehicleMark[]>()
+    const [models, setModels] = useState<IVehicleModel[]>()
+
     useEffect(() => {
-        
         async function downloadYears() {
             const years = await service.getManufactureYears()
             setManufactureYears(years)
@@ -36,13 +48,18 @@ const VehicleCreate = () => {
             const vehicleTypes = await vehicleTypeService.getAll()
             setVehicleTypes(vehicleTypes)
         }
-        // async function downloadMarks() {
-        //     const marks = await service.getMarks() // not yet
-        //     setMarks(marks)
-        // }
+         async function downloadMarks() {
+             const marks = await vehicleMarkService.getAll()
+            setMarks(marks)
+         }
+         async function downloadModels() {
+            const models = await vehicleModelService.getAll()
+           setModels(models)
+        }
         async function download () {
-            const promises = [downloadVehicleTypes() ,downloadYears()]//, downloadMarks()]
+            const promises = [downloadYears(), downloadVehicleTypes(), downloadMarks(), downloadModels()]
             await Promise.all(promises)
+            console.log('download complete')
         }
         download()
         axios.defaults.headers.common['Accept-Language'] = language;
@@ -56,28 +73,39 @@ const VehicleCreate = () => {
             }
         })
     }
+    console.log('vehicleTYpes:', vehicleTypes)
     const vehicleTypeViews = vehicleTypes?.map(option => (
         <option key={option.id} value={option.id}>{option.vehicleTypeName}</option>))
-    const markOptions = [
-        { value: "a6cd7932-64d6-4ae3-fc3a-08db556c391c", label: 'Ford' },
-        { value: "ead191e5-3bb9-405b-fc39-08db556c391c", label: 'Toyota' }
-    ]
-    const markViews = markOptions.map(option => (
-        <option key={option.value} value={option.value}>{option.label}</option>
+    const markViews = marks?.map(option => (
+        <option key={option.id} value={option.id}>{option.vehicleMarkName}</option>
     ))
-    const modelOptions = [
-        { value: "1b9044ac-8d48-474b-8015-08db556c392e", label: 'Focus', markId: 'a6cd7932-64d6-4ae3-fc3a-08db556c391c' },
-        { value: "5b85a958-f455-44c6-8014-08db556c392e", label: 'Avensis', markId: '"ead191e5-3bb9-405b-fc39-08db556c391c' }
-    ]
     const filteredModelOptions = values.vehicleMarkId === ''
-        ? modelOptions
-        : modelOptions.filter(option => option.markId === values.vehicleMarkId)
-    const modelViews = filteredModelOptions.map(option => (
-        <option key={option.value} value={option.value}>{option.label}</option>
+        ? models
+        : models?.filter(option => option.vehicleMarkId === values.vehicleMarkId)
+    const modelViews = filteredModelOptions?.map(option => (
+        <option key={option.id} value={option.id}>{option.vehicleModelName}</option>
     ))
     const yearOptionViews = manufactureYears?.map(year=> (
         <option key={year} value={year}>{year}</option>
     ))
+    const availabilityOptionViews = availabilityEntries.map((entry, index) => {
+        const value = index +1
+        return (
+            <option key={value} value={value}>{entry[1]}</option>
+        )
+    })
+    const createAction = async (event: FormEvent) =>{
+        event.preventDefault()
+        console.log('values test:', values)
+        const status = await service.create(values)
+        console.log('status:', status)
+        if (status === 201 || status === 200) {
+            console.log('status ok')
+            navigate('/vehicles')
+        } else {
+            console.warn('Vehicle create not OK', status)
+        }
+    }
     return (
         <div className="container">
             <main role="main" className="pb-3">
@@ -88,7 +116,7 @@ const VehicleCreate = () => {
                 <hr />
                 <div className="row">
                     <div className="col-md-4">
-                        <form action="/DriverArea/Vehicles/Create" method="post">
+                        <form onSubmit={createAction}>
                             <div className="text-danger validation-summary-valid"><ul><li style={{ display: "none" }}></li>
                             </ul></div>
 
@@ -97,7 +125,7 @@ const VehicleCreate = () => {
                                 <select
                                     className="form-control"
                                     id="VehicleTypeId"
-                                    name="VehicleTypeId"
+                                    name="vehicleTypeId"
                                     value={values.vehicleTypeId}
                                     onChange={handleChange}
                                 >
@@ -110,7 +138,7 @@ const VehicleCreate = () => {
                                 <select
                                     className="form-control"
                                     id="VehicleMarkId"
-                                    name="VehicleMarkId"
+                                    name="vehicleMarkId"
                                     value={values.vehicleMarkId}
                                     onChange={handleChange}
                                 >
@@ -123,7 +151,7 @@ const VehicleCreate = () => {
                                 <select
                                     className="form-control" 
                                     id="VehicleModelId"
-                                    name="VehicleModelId"
+                                    name="vehicleModelId"
                                     value={values.vehicleModelId}
                                     onChange={handleChange}
                                 >
@@ -133,12 +161,26 @@ const VehicleCreate = () => {
                             </div>
                             <div className="form-group">
                                 <label className="control-label" html-for="VehiclePlateNumber">Vehicle Plate Number</label>
-                                <input className="form-control" type="text" id="VehiclePlateNumber" maxLength={25} name="VehiclePlateNumber" value="" />
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    id="VehiclePlateNumber"
+                                    maxLength={25}
+                                    name="vehiclePlateNumber"
+                                    value={values.vehiclePlateNumber}
+                                    onChange={handleChange}
+                                 />
                                 <span className="text-danger field-validation-valid"></span>
                             </div>
                             <div className="form-group">
                                 <label className="control-label" html-for="ManufactureYear">Year</label>
-                                <select className="form-control" id="ManufactureYear" name="ManufactureYear">
+                                <select
+                                    className="form-control"
+                                    id="ManufactureYear"
+                                    name="manufactureYear"
+                                    value={values.manufactureYear}
+                                    onChange={handleChange}
+                                >
                                     <option>Please Select</option>
                                     {yearOptionViews}
                                 </select>
@@ -146,16 +188,24 @@ const VehicleCreate = () => {
                             </div>
                             <div className="form-group">
                                 <label className="control-label" html-for="NumberOfSeats">Number of Seats</label>
-                                <input className="form-control" min="2" max="6" type="number" id="NumberOfSeats" name="numberOfSeats" 
-                                value={values.numberOfSeats}  onChange={handleChange}/><input name="__Invariant" type="hidden" value="NumberOfSeats" />
+                                <input
+                                    className="form-control"
+                                    min="2"
+                                    max="6"
+                                    type="number"
+                                    id="NumberOfSeats"
+                                    name="numberOfSeats" 
+                                    value={values.numberOfSeats}
+                                    onChange={handleChange}
+                                />
+                                <input name="__Invariant" type="hidden" value="NumberOfSeats" />
                                 <span className="text-danger field-validation-valid"></span>
                             </div>
                             <div className="form-group">
                                 <label className="control-label" html-for="VehicleAvailability">Vehicle Availability</label>
                                 <select className="form-control" id="VehicleAvailability" name="VehicleAvailability">
                                     <option>Please Select</option>
-                                    <option value="1">Available</option>
-                                    <option value="2">In-Available</option>
+                                    {availabilityOptionViews}
                                 </select>
                                 <span className="text-danger field-validation-valid"></span>
                             </div>
