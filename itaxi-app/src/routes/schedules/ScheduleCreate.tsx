@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import DateTimePicker from '../../components/DateTimePicker'
+
 
 const ScheduleCreate = () => {
     return (
@@ -24,7 +26,8 @@ const ScheduleCreate = () => {
                             </div>
                             <div className="form-group">
                                 <label className="control-label" html-for="StartDateAndTime">Shift Start Date and Time</label>
-                                <input className="form-control" type="datetime-local" id="StartDateAndTime" name="StartDateAndTime" value="" /><input name="__Invariant" type="hidden" value="StartDateAndTime" />
+                                <DateTimePicker />
+                                {/* <input className="form-control" type="datetime-local" id="StartDateAndTime" name="StartDateAndTime" value="" /><input name="__Invariant" type="hidden" value="StartDateAndTime" /> */}
                                 <span className="text-danger field-validation-valid"></span>
                             </div>
                             <div className="form-group">
