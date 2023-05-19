@@ -32,7 +32,9 @@ const ScheduleCreate = () => {
                             </div>
                             <div className="form-group">
                                 <label className="control-label" html-for="EndDateAndTime">Shift End Date and Time</label>
-                                <input className="form-control" type="datetime-local" id="EndDateAndTime" name="EndDateAndTime" value="" /><input name="__Invariant" type="hidden" value="EndDateAndTime" />
+                                {/* <input className="form-control" type="datetime-local" id="EndDateAndTime" name="EndDateAndTime" value="" /><input name="__Invariant" type="hidden" value="EndDateAndTime" /> */}
+                                <DateTimePicker />
+
                                 <span className="text-danger field-validation-valid"></span>
                             </div>
 
