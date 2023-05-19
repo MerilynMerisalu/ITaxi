@@ -3,7 +3,7 @@ import { IBaseEntity } from "../domain/Base/IBaseEntity";
 import { IdentityService } from "./IdentityService";
 import BaseService from "./BaseService";
 import { AnyCnameRecord } from "dns";
-import { ICreateVehicleData } from "../dto/ICreateVehicleData";
+import { IVehicleFormData } from "../dto/IVehicleFormData";
 
 export abstract class BaseEntityService<TEntity extends IBaseEntity> extends BaseService {
   constructor(baseUrl: string) {
@@ -126,13 +126,39 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
     }
   }
 
-  async create(body: ICreateVehicleData): Promise<number | undefined> {
+  async create(body: IVehicleFormData): Promise<number | undefined> {
     console.log('body', body)
     try {
       let user = IdentityService.getCurrentUser();
       if (user) {
         console.log('this.axios', this.axios.defaults.baseURL)
         let response = await this.axios.post(`/`, body,
+          {
+            headers: {
+              'Authorization': 'Bearer ' + user.token
+            }
+          });
+        console.log('response.status:', response.status)
+        if (response.status === 201) {
+          return response.status
+        }
+      }
+      else {
+        throw Error("User is not logged in");
+      }
+      return undefined;
+    } catch (e) {
+      console.log('Details -  error: ', (e as Error).message);
+      return undefined;
+    }
+  }
+  async edit(id: string, body: IVehicleFormData): Promise<number | undefined> {
+    console.log('body', body)
+    try {
+      let user = IdentityService.getCurrentUser();
+      if (user) {
+        console.log('this.axios', this.axios.defaults.baseURL)
+        let response = await this.axios.put(`/${id}`, body,
           {
             headers: {
               'Authorization': 'Bearer ' + user.token

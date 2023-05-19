@@ -20,7 +20,7 @@ export interface IVehicle extends IBaseEntity {
     manufactureYear: number
     numberOfSeats: number,
     vehicleIdentifier: string,
-    vehicleAvailability: Number
+    vehicleAvailability: number
     createdBy: string,
     createdAt: Date,
     updatedBy: string,
