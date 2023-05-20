@@ -6,7 +6,7 @@ using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using App.BLL.DTO.AdminArea;
 namespace WebApp.ApiControllers.AdminArea;
 
 /// <summary>
@@ -125,9 +125,10 @@ public class DriverLicenseCategoriesController : ControllerBase
             return BadRequest("Api version is mandatory");
         }
 
-        var dto = _mapper.Map<App.BLL.DTO.AdminArea.DriverLicenseCategoryDTO>(driverLicenseCategory);
+        var dto = _mapper.Map<DriverLicenseCategoryDTO>(driverLicenseCategory);
         
         dto.Id = Guid.NewGuid();
+        dto.DriverLicenseCategoryName = driverLicenseCategory.DriverLicenseCategoryName;
         dto.CreatedBy = User.GettingUserEmail();
         dto.UpdatedBy = User.GettingUserEmail();
         dto.CreatedAt = DateTime.Now.ToUniversalTime();
