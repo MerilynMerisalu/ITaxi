@@ -39,7 +39,7 @@ public class CountiesController : ControllerBase
     /// <summary>
     /// Gets all the counties 
     /// </summary>
-    /// <returns>List of counties with a statusCode 200OK or statusCode 403 or statusCode 401 </returns>
+    /// <returns>List of counties with a statusCode 200OK or statusCode 403 or statusCode 401</returns>
     [HttpGet]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -57,7 +57,7 @@ public class CountiesController : ControllerBase
     /// Returns county based on id
     /// </summary>
     /// <param name="id">County id, Guid</param>
-    /// <returns>County(TEntity) with statusCode 200 or statusCode 404 or statusCode 403 or statusCode 401   </returns>
+    /// <returns>County(TEntity) with statusCode 200 or statusCode 404 or statusCode 403 or statusCode 401</returns>
     [HttpGet("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -81,7 +81,7 @@ public class CountiesController : ControllerBase
     /// </summary>
     /// <param name="id">An id of the entity which is updated</param>
     /// <param name="county">DTO which holds the values</param>
-    /// <returns>StatusCode 204 or StatusCode 403 or StatusCode 404 or StatusCode 401 or StatusCode 400 </returns>
+    /// <returns>StatusCode 204 or StatusCode 403 or StatusCode 404 or StatusCode 401 or StatusCode 400</returns>
     [HttpPut("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -99,7 +99,6 @@ public class CountiesController : ControllerBase
         }
         
         countyDTO.CountyName = county.CountyName;
-        
         countyDTO.UpdatedBy = User.Identity!.Name;
         countyDTO.UpdatedAt = DateTime.Now;
         _appBLL.Counties.Update(countyDTO);
@@ -116,12 +115,10 @@ public class CountiesController : ControllerBase
     /// <returns>Status201Created with an entity</returns>
     [HttpPost]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(County), 
-        StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(County), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    
     public async Task<ActionResult<County>> PostCounty([FromBody] County county)
     {
         if (HttpContext.GetRequestedApiVersion() == null)

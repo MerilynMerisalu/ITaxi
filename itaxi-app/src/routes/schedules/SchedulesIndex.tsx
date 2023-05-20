@@ -30,6 +30,7 @@ const SchedulesIndex = () => {
         const padded = `0${s}`
         return padded.slice(-2)
     }
+    console.log('language', language)
 
     function formatDate (iso: string) {
         const date = new Date(iso)
@@ -42,7 +43,7 @@ const SchedulesIndex = () => {
         if (language === 'en-GB') {
             return `${year}-${month}-${day} ${hours}:${minutes}`
         }
-        if (language === 'et-EE') {
+        if (language === 'et') {
             return `${day}.${month}.${year} ${hours}:${minutes}`
         }
     }

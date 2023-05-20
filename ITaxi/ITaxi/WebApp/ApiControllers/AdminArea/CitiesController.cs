@@ -24,6 +24,7 @@ public class CitiesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
     private readonly IMapper _mapper;
+    
     /// <summary>
     /// Constructor for cities api controller
     /// </summary>
@@ -58,7 +59,7 @@ public class CitiesController : ControllerBase
     /// Returns city based on id
     /// </summary>
     /// <param name="id">City id, Guid</param>
-    /// <returns>City(TEntity) with statusCode 200 or status404 or Status403 or Status401  </returns>
+    /// <returns>City(TEntity) with statusCode 200 or status404 or Status403 or Status401</returns>
     [HttpGet("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
