@@ -6,29 +6,19 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { IdentityService } from '../services/IdentityService';
-import { useNavigate } from 'react-router-dom';
-  let language = IdentityService.getLanguage();
-console.log(language);
-language = language.slice(0,2)
-console.log(language) 
+import { JwtContext } from '../routes/Root';
+  
  
 export default function BasicDateTimePicker() {
-    const locales = [ 'en-gb', 'et'];
-    type LocaleKey = (typeof locales)[number];
-  const [locale, setLocale] = React.useState<LocaleKey>("en-gb");
- /*  if (language === "et") {
-    setLocale("et")
-    /* window.location.reload() */
-  /* }
-  else {
-    setLocale("en-gb") */
-   /*  window.location.reload() */
-  //} 
+  const { language } = React.useContext(JwtContext);
+  
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale} >
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={language}>
+      
       <DemoContainer components={['DateTimePicker']}>
-        <DateTimePicker label="" /* value={locale} onChange={() => setLocale(language)} *//>
+        
+        <DateTimePicker label="" />
+        
       </DemoContainer>
     </LocalizationProvider>
   );

@@ -11,7 +11,7 @@ import { IdentityService } from '../services/IdentityService';
 import { IJwtLoginResponse } from '../dto/IJwtLoginResponse';
 
 function Header() {
-  const { language, setLanguage } = useContext(JwtContext);
+  const { setLanguage } = useContext(JwtContext);
   const navigate = useNavigate();
   const [user, setUser] = useState<IJwtLoginResponse>();
   useEffect(() => {
@@ -74,7 +74,7 @@ const displayIfLoggedInRole= (role : string) => {
             <Nav.Link as={Link} to="/" className="nav-link active">Home</Nav.Link>
             <NavDropdown title="Languages" id="basic-nav-dropdown">
               <NavDropdown.Item name="en-GB" onClick={languageButtonHandler}>English (United Kingdom)</NavDropdown.Item>
-              <NavDropdown.Item name="et-EE" onClick={languageButtonHandler}>Eesti (Eesti)</NavDropdown.Item>
+              <NavDropdown.Item name="et" onClick={languageButtonHandler}>Eesti (Eesti)</NavDropdown.Item>
             </NavDropdown>
 
             <NavDropdown style={displayIfLoggedInRole("Driver")} title="Activities" id="basic-nav-dropdown">
