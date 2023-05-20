@@ -1,7 +1,6 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
 using App.Public.DTO.v1.AdminArea;
 using AutoMapper;
 using Base.Extensions;
@@ -11,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
+
 /// <summary>
 /// Api controller for disability types
 /// </summary>
@@ -22,14 +22,14 @@ public class DisabilityTypesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
     private readonly IMapper _mapper;
+    
     /// <summary>
     ///  /// <summary>
     /// Constructor for disability types api controller
     /// </summary>
     /// <param name="appBLL">AppBLL</param>
-    /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea to Public.DTO.v1.AdminArea.DisabilityType</param>
+    /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea.DisabilityTypeDTO to Public.DTO.v1.AdminArea.DisabilityType</param>
     /// </summary>
-    
     public DisabilityTypesController(IAppBLL appBLL, IMapper mapper)
     {
         _appBLL = appBLL;
@@ -41,15 +41,14 @@ public class DisabilityTypesController : ControllerBase
     /// <summary>
     /// Gets all the disability types 
     /// </summary>
-    /// <returns>List of counties with a statusCode 200OK or statusCode 403 or statusCode 401 </returns>
+    /// <returns>List of disability types with a statusCode 200OK or statusCode 403 or statusCode 401 </returns>
     [HttpGet]
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType( typeof( IEnumerable<DisabilityType>), StatusCodes.Status200OK )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [AllowAnonymous]
-    [HttpGet]
+    
     public async Task<ActionResult<IEnumerable<DisabilityType>>> GetDisabilityTypes()
     {
         var res =await _appBLL.DisabilityTypes.GetAllDisabilityTypeDtoAsync();
@@ -59,19 +58,17 @@ public class DisabilityTypesController : ControllerBase
 
     // GET: api/DisabilityTypes/5
     /// <summary>
-    /// Returns county based on id
+    /// Returns disability type based on id
     /// </summary>
-    /// <param name="id">County id, Guid</param>
-    /// <returns>County(TEntity) with statusCode 200 or statusCode 404 or statusCode 403 or statusCode 401   </returns>
+    /// <param name="id">Disability type id, Guid</param>
+    /// <returns>Disability type (TEntity) with statusCode 200 or statusCode 404 or statusCode 403 or statusCode 401   </returns>
     [HttpGet("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(DisabilityType), StatusCodes.Status200OK )] 
     [ProducesResponseType( StatusCodes.Status404NotFound )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [AllowAnonymous]
-    [HttpGet("{id}")]
     public async Task<ActionResult<DisabilityType>> GetDisabilityType(Guid id)
     {
         var disabilityType = await _appBLL.DisabilityTypes.FirstOrDefaultAsync(id);
@@ -129,12 +126,11 @@ public class DisabilityTypesController : ControllerBase
     /// <summary>
     /// Creating a new disability type
     /// </summary>
-    /// <param name="disabilityType">County with properties</param>
+    /// <param name="disabilityType">Disability type with properties</param>
     /// <returns>Status201Created with an entity</returns>
     [HttpPost]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(DisabilityType), 
-        StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(DisabilityType), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -165,11 +161,11 @@ public class DisabilityTypesController : ControllerBase
     /// </summary>
     /// <param name="id">Id of an entity</param>
     /// <returns>Status204</returns>
+    [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteDisabilityType(Guid id)
     {
         var disabilityType = await _appBLL.DisabilityTypes.FirstOrDefaultAsync(id);

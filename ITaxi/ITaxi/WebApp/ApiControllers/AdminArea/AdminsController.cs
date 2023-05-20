@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace WebApp.ApiControllers.AdminArea;
 
 /// <summary>
@@ -29,6 +28,13 @@ public class AdminsController : ControllerBase
     private readonly IMapper _mapper;
     private readonly UserManager<AppUser> _userManager;
     
+    /// <summary>
+    /// Constructor for admins api controller
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
+    /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea.AdminDTO to 
+    /// Public.DTO.v1.AdminArea.Admin</param>
+    /// <param name="userManager">For managing admins</param>
     public AdminsController(IAppBLL appBLL, IMapper mapper, UserManager<AppUser> userManager)
     {
         _appBLL = appBLL;
@@ -40,11 +46,11 @@ public class AdminsController : ControllerBase
     /// <summary>
     /// Gets all the admins 
     /// </summary>
-    /// <returns>List of cities with statusCode 200 or statusCode 403 or statusCode 401</returns>
+    /// <returns>List of admins with statusCode 200 or statusCode 403 or statusCode 401</returns>
     [HttpGet]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType( typeof( IEnumerable<City>), StatusCodes.Status200OK )] 
+    [ProducesResponseType( typeof( IEnumerable<Admin>), StatusCodes.Status200OK )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<Admin>>> GetAdmins()
@@ -56,9 +62,9 @@ public class AdminsController : ControllerBase
 
     // GET: api/Admins/5
     /// <summary>
-    /// Returns city based on id
+    /// Returns admin based on id
     /// </summary>
-    /// <param name="id">City id, Guid</param>
+    /// <param name="id">Admin id, Guid</param>
     /// <returns>Admin (TEntity) with statusCode 200 or status404 or Status403 or Status401</returns>
     
     [Produces("application/json")]
@@ -74,18 +80,17 @@ public class AdminsController : ControllerBase
 
         if (admin == null) return NotFound();
         
-        
         return _mapper.Map<Admin>(admin);
     }
 
     // PUT: api/Admins/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     /// <summary>
-    /// Updating an city
+    /// Updating an admin
     /// </summary>
     /// <param name="id">An id of the entity which is updated</param>
     /// <param name="adminDTO">DTO which holds the values</param>
-    /// <returns>StatusCode 204 or StatusCode 403 or StatusCode 404 or StatusCode 401 or StatusCode 400 </returns>
+    /// <returns>StatusCode 204 or StatusCode 403 or StatusCode 404 or StatusCode 401 or StatusCode 400</returns>
     [HttpPut("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -128,36 +133,6 @@ public class AdminsController : ControllerBase
 
         return NoContent();
     }
-
-    // POST: api/Admins
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    /*[HttpPost]
-    [Produces("application/json")]
-    [Consumes("application/json")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<AdminDTO>> PostAdmin([FromBody]AdminDTO admin)
-    {
-        if (HttpContext.GetRequestedApiVersion() == null)
-        {
-            return BadRequest("Api version is mandatory");
-        }
-
-        admin.Id = new Guid();
-        admin.CreatedBy = User.GettingUserEmail();
-        admin.UpdatedBy = User.GettingUserEmail();
-        _appBLL.Admins.Add(admin);
-        await _appBLL.SaveChangesAsync();
-
-        return CreatedAtAction("GetAdmin", new
-        {
-            id = admin.Id,
-            version = HttpContext.GetRequestedApiVersion()!.ToString(),
-        }, admin);
-    }*/
 
     // DELETE: api/Admins/5
     /// <summary>

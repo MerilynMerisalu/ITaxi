@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
+/// <summary>
+/// Api controller for vehicle marks
+/// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/AdminArea/[controller]")]
 [ApiVersion("1.0")]
@@ -19,6 +22,13 @@ public class VehicleMarksController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
     private readonly IMapper _mapper;
+    
+    /// <summary>
+    /// Constructor for vehicle marks api controller
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
+    /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea.VehicleMarksDTO to 
+    /// Public.DTO.v1.AdminArea.VehicleMark</param>
     public VehicleMarksController(IAppBLL appBLL, IMapper mapper)
     {
         _appBLL = appBLL;
@@ -26,6 +36,10 @@ public class VehicleMarksController : ControllerBase
     }
 
     // GET: api/VehicleMarks
+    /// <summary>
+    /// Gets all the vehicle marks
+    /// </summary>
+    /// <returns>List of vehicle marks with statusCode 200 or statusCode 403 or statusCode 401</returns>
     [HttpGet]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -35,13 +49,17 @@ public class VehicleMarksController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<VehicleMark>>> GetVehicleMarks()
     {
-
         var res = await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync();
         return Ok(res.Select(v => _mapper.Map<VehicleMark>(v)));
     }
 
     // GET: api/VehicleMarks/5
-    [HttpGet("{id}")]
+    /// <summary>
+    /// Returns vehicle mark based on id
+    /// </summary>
+    /// <param name="id">Vehicle mark id, Guid</param>
+    /// <returns>Vehicle mark (TEntity) with statusCode 200 or status404 or Status403 or Status401</returns>
+    [HttpGet("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(VehicleMark), StatusCodes.Status200OK )] 
@@ -59,7 +77,13 @@ public class VehicleMarksController : ControllerBase
 
     // PUT: api/VehicleMarks/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
+    /// <summary>
+    /// Updating a vehicle mark
+    /// </summary>
+    /// <param name="id">An id of the entity which is updated</param>
+    /// <param name="vehicleMark">DTO which holds the values</param>
+    /// <returns>StatusCode 204 or StatusCode 403 or StatusCode 404 or StatusCode 401 or StatusCode 400</returns>
+    [HttpPut("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -97,7 +121,17 @@ public class VehicleMarksController : ControllerBase
 
     // POST: api/VehicleMarks
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    /// <summary>
+    /// Creating a new vehicle mark
+    /// </summary>
+    /// <param name="vehicleMark">VehicleMarkDTO with properties</param>
+    /// <returns>Status201Created with an entity</returns>
     [HttpPost]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(VehicleMark), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<VehicleMark>> PostVehicleMark([FromBody]VehicleMark vehicleMark)
     {
         if (HttpContext.GetRequestedApiVersion() == null)
@@ -122,7 +156,16 @@ public class VehicleMarksController : ControllerBase
     }
 
     // DELETE: api/VehicleMarks/5
-    [HttpDelete("{id}")]
+    /// <summary>
+    /// Deletes an entity
+    /// </summary>
+    /// <param name="id">Id of an entity</param>
+    /// <returns>Status204, StatusCode 404, StatusCode 403, StatusCode 401</returns>
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> DeleteVehicleMark(Guid id)
     {
         var vehicleMark = await _appBLL.VehicleMarks.FirstOrDefaultAsync(id);
@@ -134,6 +177,14 @@ public class VehicleMarksController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Return a boolean based on whether or not an entity exists
+    /// </summary>
+    /// <param name="id">Entity id guid</param>
+    /// <returns>Boolean value</returns>
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     private bool VehicleMarkExists(Guid id)
     {
         return _appBLL.VehicleMarks.Exists(id);

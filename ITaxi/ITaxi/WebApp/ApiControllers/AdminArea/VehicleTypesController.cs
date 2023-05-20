@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
+/// <summary>
+/// Api controller for vehicle types 
+/// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/AdminArea/[controller]")]
 [ApiVersion("1.0")]
@@ -19,6 +22,13 @@ public class VehicleTypesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
     private readonly IMapper _mapper;
+    
+    
+    /// <summary>
+    /// Constructor for vehicle types api controller
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
+    /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea.VehicleTypeDTO to Public.DTO.v1.AdminArea.VehicleType</param>
     public VehicleTypesController(IAppBLL appBLL, IMapper mapper)
     {
         _appBLL = appBLL;
@@ -26,6 +36,10 @@ public class VehicleTypesController : ControllerBase
     }
 
     // GET: api/VehicleTypes
+    /// <summary>
+    /// Gets all the vehicle types
+    /// </summary>
+    /// <returns>List of vehicle types with a statusCode 200OK or statusCode 403 or statusCode 401</returns>
     [HttpGet]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -40,7 +54,12 @@ public class VehicleTypesController : ControllerBase
     }
 
     // GET: api/VehicleTypes/5
-    [HttpGet("{id}")]
+    /// <summary>
+    /// Returns vehicle type based on id
+    /// </summary>
+    /// <param name="id">Vehicle type id, Guid</param>
+    /// <returns>Vehicle Type (TEntity) with statusCode 200 or statusCode 404 or statusCode 403 or statusCode 401</returns>
+    [HttpGet("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType(typeof(VehicleType), StatusCodes.Status200OK )] 
@@ -58,7 +77,13 @@ public class VehicleTypesController : ControllerBase
 
     // PUT: api/VehicleTypes/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
+    /// <summary>
+    /// Updating a vehicle type
+    /// </summary>
+    /// <param name="id">An id of the entity which is updated</param>
+    /// <param name="vehicleType">DTO which holds the values</param>
+    /// <returns>StatusCode 204 or StatusCode 403 or StatusCode 404 or StatusCode 401 or StatusCode 400</returns>
+    [HttpPut("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -69,7 +94,6 @@ public class VehicleTypesController : ControllerBase
     public async Task<IActionResult> PutVehicleType(Guid id, VehicleType vehicleType)
     {
         if (id != vehicleType.Id) return BadRequest();
-
         
         try
         {
@@ -97,14 +121,17 @@ public class VehicleTypesController : ControllerBase
 
     // POST: api/VehicleTypes
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    /// <summary>
+    /// Creating a new vehicle type
+    /// </summary>
+    /// <param name="vehicleType">Vehicle type with properties</param>
+    /// <returns>Status201Created with an entity</returns>
     [HttpPost]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(VehicleType), 
-        StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(VehicleType), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-
     public async Task<ActionResult<VehicleType>> PostVehicleType([FromBody]VehicleType vehicleType)
     {
         if (HttpContext.GetRequestedApiVersion() == null)
@@ -125,7 +152,16 @@ public class VehicleTypesController : ControllerBase
     }
 
     // DELETE: api/VehicleTypes/5
-    [HttpDelete("{id}")]
+    /// <summary>
+    ///  Deletes an entity
+    /// </summary>
+    /// <param name="id">Id of an entity</param>
+    /// <returns>Status204</returns>
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> DeleteVehicleType(Guid id)
     {
         var vehicleType = await _appBLL.VehicleTypes.FirstOrDefaultAsync(id);
@@ -137,6 +173,14 @@ public class VehicleTypesController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Return a boolean based on whether or not an entity exists
+    /// </summary>
+    /// <param name="id">Entity id guid</param>
+    /// <returns>boolean value</returns>
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     private bool VehicleTypeExists(Guid id)
     {
         return _appBLL.VehicleTypes.Exists(id);

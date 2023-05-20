@@ -4,7 +4,6 @@ using Base.Domain;
 using Base.Resources;
 
 namespace App.Public.DTO.v1.AdminArea;
-
 public class Driver: DomainEntityMetaId
 {
     public Guid AppUserId { get; set; }

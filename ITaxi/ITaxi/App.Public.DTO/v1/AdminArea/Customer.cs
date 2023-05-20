@@ -16,6 +16,4 @@ public class Customer: DomainEntityMetaId
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Customer), Name = "DisabilityType")]
     public DisabilityType? DisabilityType { get; set; }
-
-    public ICollection<Booking>? Bookings { get; set; }
 }

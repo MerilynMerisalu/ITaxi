@@ -3,7 +3,6 @@ using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Public.DTO.v1.AdminArea;
 using AutoMapper;
-using Base.Contracts;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +27,7 @@ public class CountiesController : ControllerBase
     /// Constructor for counties api controller
     /// </summary>
     /// <param name="appBLL">AppBLL</param>
-    /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea to Public.DTO.v1.AdminArea.County</param>
+    /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea.CountyDTO to Public.DTO.v1.AdminArea.County</param>
     public CountiesController(IAppBLL appBLL, IMapper mapper)//<App.Public.DTO.v1.AdminArea.County, App.BLL.DTO.AdminArea>)
     {
         _appBLL = appBLL;
@@ -57,7 +56,7 @@ public class CountiesController : ControllerBase
     /// Returns county based on id
     /// </summary>
     /// <param name="id">County id, Guid</param>
-    /// <returns>County(TEntity) with statusCode 200 or statusCode 404 or statusCode 403 or statusCode 401</returns>
+    /// <returns>County (TEntity) with statusCode 200 or statusCode 404 or statusCode 403 or statusCode 401</returns>
     [HttpGet("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -151,16 +150,21 @@ public class CountiesController : ControllerBase
     /// </summary>
     /// <param name="id">Id of an entity</param>
     /// <returns>Status204</returns>
+    [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    
     public async Task<IActionResult> DeleteCounty(Guid id)
     {
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
         if (county == null) return NotFound();
-
+        if (await _appBLL.Cities.HasAnyCitiesAsync(county.Id))
+        {
+            #warning what is the correct response 500 or 409
+        }
         _appBLL.Counties.Remove(county);
         await _appBLL.SaveChangesAsync();
 
@@ -171,7 +175,6 @@ public class CountiesController : ControllerBase
     /// </summary>
     /// <param name="id">Entity id guid</param>
     /// <returns>boolean value</returns>
-    
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

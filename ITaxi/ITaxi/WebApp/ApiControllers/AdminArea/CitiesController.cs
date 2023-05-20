@@ -41,7 +41,7 @@ public class CitiesController : ControllerBase
     /// <summary>
     /// Gets all the cities 
     /// </summary>
-    /// <returns>List of cities with statusCode 200 or statusCode 403 or statusCode 401 </returns>
+    /// <returns>List of cities with statusCode 200 or statusCode 403 or statusCode 401</returns>
     [HttpGet]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -59,7 +59,7 @@ public class CitiesController : ControllerBase
     /// Returns city based on id
     /// </summary>
     /// <param name="id">City id, Guid</param>
-    /// <returns>City(TEntity) with statusCode 200 or status404 or Status403 or Status401</returns>
+    /// <returns>City (TEntity) with statusCode 200 or status404 or Status403 or Status401</returns>
     [HttpGet("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -79,11 +79,11 @@ public class CitiesController : ControllerBase
     // PUT: api/Cities/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     /// <summary>
-    /// Updating an city
+    /// Updating a city
     /// </summary>
     /// <param name="id">An id of the entity which is updated</param>
     /// <param name="city">DTO which holds the values</param>
-    /// <returns>StatusCode 204 or StatusCode 403 or StatusCode 404 or StatusCode 401 or StatusCode 400  </returns>
+    /// <returns>StatusCode 204 or StatusCode 403 or StatusCode 404 or StatusCode 401 or StatusCode 400</returns>
     [HttpPut("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
@@ -124,12 +124,11 @@ public class CitiesController : ControllerBase
     /// <summary>
     /// Creating a new city
     /// </summary>
-    /// <param name="city">CountyDTO with properties</param>
+    /// <param name="city">CityDTO with properties</param>
     /// <returns>Status201Created with an entity</returns>
     [HttpPost]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(City), 
-        StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(City), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -165,6 +164,8 @@ public class CitiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    
     public async Task<IActionResult> DeleteCity(Guid id)
     {
         var city = await _appBLL.Cities.FirstOrDefaultAsync(id);
@@ -180,7 +181,6 @@ public class CitiesController : ControllerBase
     /// </summary>
     /// <param name="id">Entity id guid</param>
     /// <returns>Boolean value</returns>
-    
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
