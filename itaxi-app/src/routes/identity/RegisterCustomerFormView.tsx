@@ -2,7 +2,7 @@
 import React, {MouseEvent} from 'react';
 import { IRegisterCustomerData } from '../../dto/IRegisterCustomerData';
 import RegisterCustomer from './RegisterCustomer';
-import { IDisabilityTypeData } from '../../dto/IDisabilityType';
+import { IDisabilityTypeData } from '../../dto/IDisabilityTypeData';
 import { Gender } from '../../utilities/enums';
  
 

@@ -5,7 +5,7 @@ import { IdentityService } from "../../services/IdentityService";
 //import { DisabilityTypesService } from "../../services/disabilityTypesService";
 import { Gender } from "../../utilities/enums";
 import axios from "axios";
-import { IDisabilityTypeData } from "../../dto/IDisabilityType";
+import { IDisabilityTypeData } from "../../dto/IDisabilityTypeData";
 import { isDate } from "util/types";
 
 const RegisterCustomer = () => {

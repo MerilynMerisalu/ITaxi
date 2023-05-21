@@ -1,4 +1,4 @@
-import { IDisabilityTypeData } from "../dto/IDisabilityType";
+import { IDisabilityTypeData } from "../dto/IDisabilityTypeData";
 
 import BaseService from "./BaseService";
 

@@ -43,6 +43,7 @@ public class DriverLicenseCategoriesController : ControllerBase
     [ProducesResponseType( typeof( IEnumerable<DriverLicenseCategory>), StatusCodes.Status200OK )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<DriverLicenseCategory>>> GetDriverLicenseCategories()
     {
         var res = await _appBLL.DriverLicenseCategories

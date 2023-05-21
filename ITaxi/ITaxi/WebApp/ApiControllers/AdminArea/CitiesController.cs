@@ -48,6 +48,7 @@ public class CitiesController : ControllerBase
     [ProducesResponseType( typeof( IEnumerable<City>), StatusCodes.Status200OK )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<City>>> GetCities()
     {
         var cities = await _appBLL.Cities.GetAllAsync();
