@@ -17,11 +17,11 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
       let user = IdentityService.getCurrentUser();
       let language = IdentityService.getLanguage();
       
-      if (user) {
+      // if (user) {
         const response = await this.axios.get<TEntity[]>('',
           {
             headers: {
-              'Authorization': 'Bearer ' + user.token,
+              'Authorization': 'Bearer ' + user?.token,
               'Accept-Language': language
             }
           });
@@ -30,12 +30,14 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
         if (response.status === 200) {
           return response.data;
 
+        } else {
+          throw Error("User is not logged in");
         }
 
-      }
-      else {
-        throw Error("User is not logged in");
-      }
+      // }
+      // else {
+      //   throw Error("User is not logged in");
+      // }
 
 
       return undefined;
