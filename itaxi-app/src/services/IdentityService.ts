@@ -38,9 +38,9 @@ export class IdentityService extends BaseService {
             // Re-assert that Gender is numeric
             data.Gender = +data.Gender;
             console.log(typeof data.Gender)
-            const response = await this.axios.post<IJwtCustomerRegisterResponse>('RegisterCustomerDTO', data);
+            const response = await this.axios.post<IJwtDriverRegisterResponse>('RegisterDriverDTO', data);
 
-            console.log('RegisterCustomerDTO response', response);
+            console.log('RegisterDriverDTO response', response);
             if (response.status === 200) {
                 return response.data;
             }
