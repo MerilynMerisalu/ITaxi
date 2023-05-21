@@ -1,7 +1,6 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Domain.Identity;
 using App.Public.DTO.v1.AdminArea;
 using AutoMapper;
 using Base.Extensions;
@@ -26,12 +25,13 @@ public class DriversController : ControllerBase
     private readonly IAppBLL _appBLL;
     private readonly IMapper _mapper;
     private readonly UserManager<AppUser> _userManager;
-    
+
     /// <summary>
     /// Constructor for drivers api controller
     /// </summary>
     /// <param name="appBLL">AppBLL</param>
     /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea.DriverDTO to Public.DTO.v1.AdminArea.Driver</param>
+    /// <param name="userManager">For managing drivers</param>
     public DriversController(IAppBLL appBLL, IMapper mapper, UserManager<AppUser> userManager)
     {
         _appBLL = appBLL;

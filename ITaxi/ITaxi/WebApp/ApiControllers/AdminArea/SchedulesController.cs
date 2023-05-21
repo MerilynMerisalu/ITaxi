@@ -96,12 +96,16 @@ public class SchedulesController : ControllerBase
         var sheduleDTO = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id);
         try
         {
-            sheduleDTO.VehicleId = schedule.VehicleId;
-            sheduleDTO.StartDateAndTime = schedule.StartDateAndTime.ToUniversalTime();
-            sheduleDTO.EndDateAndTime = schedule.EndDateAndTime.ToUniversalTime();
-            sheduleDTO.UpdatedBy = User.GettingUserEmail();
-            sheduleDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
-            _appBLL.Schedules.Update(sheduleDTO);
+            if (sheduleDTO != null)
+            {
+                sheduleDTO.VehicleId = schedule.VehicleId;
+                sheduleDTO.StartDateAndTime = schedule.StartDateAndTime.ToUniversalTime();
+                sheduleDTO.EndDateAndTime = schedule.EndDateAndTime.ToUniversalTime();
+                sheduleDTO.UpdatedBy = User.GettingUserEmail();
+                sheduleDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
+                _appBLL.Schedules.Update(sheduleDTO);
+            }
+
             await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)

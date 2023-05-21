@@ -34,7 +34,6 @@ public class DisabilityTypesController : ControllerBase
     {
         _appBLL = appBLL;
         _mapper = mapper;
-        ;
     }
 
     // GET: api/counties

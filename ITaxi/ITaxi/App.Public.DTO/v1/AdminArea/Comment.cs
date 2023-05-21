@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using App.BLL.DTO.AdminArea;
 using Base.Domain;
 
-namespace App.BLL.DTO.AdminArea;
+namespace App.Public.DTO.v1.AdminArea;
 
-public class CommentDTO: DomainEntityMetaId
+public class Comment : DomainEntityMetaId
 {
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Comment),
         Name = "Drive")]

@@ -1,13 +1,16 @@
 #nullable enable
-using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using App.Public.DTO.v1.AdminArea;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.AdminArea;
 
+/// <summary>
+/// Api controller for drives
+/// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/AdminArea/[controller]")]
 [ApiVersion("1.0")]
@@ -15,88 +18,56 @@ namespace WebApp.ApiControllers.AdminArea;
 public class DrivesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
+    private readonly IMapper _mapper;
 
-    public DrivesController(IAppBLL appBLL)
+    /// <summary>
+    /// Constructor for drives api controller
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
+    /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea.DriveDTO to Public.DTO.v1.AdminArea.Drive</param>
+    public DrivesController(IAppBLL appBLL, IMapper mapper)
     {
         _appBLL = appBLL;
-        
+        _mapper = mapper;
     }
 
     // GET: api/Drives
+    /// <summary>
+    /// Gets all the drives
+    /// </summary>
+    /// <returns>List of drives with a statusCode 200OK or statusCode 403 or statusCode 401</returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<DriveDTO>>> GetDrives()
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType( typeof( IEnumerable<Drive>), StatusCodes.Status200OK )] 
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<IEnumerable<Drive>>> GetDrives()
     {
-        return Ok(await _appBLL.Drives.GetAllDrivesWithoutIncludesAsync());
+        var res = await _appBLL.Drives.GetAllDrivesWithoutIncludesAsync();
+        return Ok(res.Select(d=> _mapper.Map<Drive>(d)));
     }
 
     // GET: api/Drives/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<DriveDTO>> GetDrive(Guid id)
+    /// <summary>
+    /// Returns drive based on id
+    /// </summary>
+    /// <param name="id">Drive id, Guid</param>
+    /// <returns>Drive (TEntity) with statusCode 200 or statusCode 404 or statusCode 403 or statusCode 401</returns>
+    [HttpGet("{id:guid}")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(County), StatusCodes.Status200OK )] 
+    [ProducesResponseType( StatusCodes.Status404NotFound )] 
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<Drive>> GetDrive(Guid id)
     {
         var drive = await _appBLL.Drives.GettingDriveWithoutIncludesAsync(id);
 
         if (drive == null) return NotFound();
 
-        return drive;
+        return _mapper.Map<Drive>(drive);
     }
-
-    /*// PUT: api/Drives/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutDrive(Guid id, DriveDTO drive)
-    {
-        if (id != drive.Id) return BadRequest();
-
-
-        try
-        {
-            _appBLL.Drives.Update(drive);
-            await _appBLL.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!DriveExists(id))
-                return NotFound();
-            throw;
-        }
-
-        return NoContent();
-    }
-
-    // POST: api/Drives
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
-    public async Task<ActionResult<DriveDTO>> PostDrive(DriveDTO drive)
-    {
-        if (HttpContext.GetRequestedApiVersion() == null)
-        {
-            
-        }
-        _appBLL.Drives.Add(drive);
-        await _appBLL.SaveChangesAsync();
-
-        return CreatedAtAction("GetDrive", new
-        {
-            id = drive.Id,
-            version = HttpContext.GetRequestedApiVersion().ToString(),
-        }, drive);
-    }
-
-    // DELETE: api/Drives/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteDrive(Guid id)
-    {
-        var drive = await _appBLL.Drives.FirstOrDefaultAsync(id);
-        if (drive == null) return NotFound();
-
-        _appBLL.Drives.Remove(drive);
-        await _appBLL.SaveChangesAsync();
-
-        return NoContent();
-    }
-
-    private bool DriveExists(Guid id)
-    {
-        return _appBLL.Drives.Exists(id);
-    }*/
+    
 }
