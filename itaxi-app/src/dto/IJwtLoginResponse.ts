@@ -1,4 +1,4 @@
-interface IJwtLoginResponse{
+interface IJwtLoginResponse {
     token: string 
     refreshToken: string;
     roleNames: string[]

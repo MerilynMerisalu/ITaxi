@@ -113,13 +113,16 @@ const RegisterCustomerFormView = (props: IProps) => {
                       id="Input_Gender"
                       name="Gender"
                       onChange={(e) => props.handleChange(e.target)}
+                      value={props.values.Gender}
                     >
                       <option>Please Select</option>
                       {
                         Object.values(Gender)
                         .filter((item)=> typeof item === 'number' && (+item) != undefined)
                         .map((gender)=> {
-return (<option key={gender} value={+gender}>{Gender[gender as number]}</option>)
+                          const label = Gender[gender as number]
+                          const value = +gender === 0 ? 3 : +gender
+return (<option key={gender} value={value}>{label}</option>)
                         })
                       }
                     </select>

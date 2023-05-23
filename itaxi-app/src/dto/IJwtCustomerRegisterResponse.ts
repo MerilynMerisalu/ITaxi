@@ -1,6 +1,7 @@
+import { IJwtLoginResponse } from "./IJwtLoginResponse";
 import { IRegisterData } from "./IRegisterData";
 
-interface IJwtCustomerRegisterResponse extends IRegisterData {
+interface IJwtCustomerRegisterResponse2 extends IRegisterData {
     token: string;
     refreshToken: string;
     customerDTO: {
@@ -10,4 +11,5 @@ interface IJwtCustomerRegisterResponse extends IRegisterData {
     }
  
 }
+type IJwtCustomerRegisterResponse = IJwtCustomerRegisterResponse2 & IJwtLoginResponse
 export type {IJwtCustomerRegisterResponse};

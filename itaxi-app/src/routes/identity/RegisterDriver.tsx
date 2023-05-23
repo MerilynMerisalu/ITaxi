@@ -5,6 +5,7 @@ import React from 'react'
 import RegisterDriverFormView from "./RegisterDriverFormView";
 import { IdentityService } from "../../services/IdentityService";
 import { Gender } from "../../utilities/enums";
+import { useNavigate } from "react-router-dom";
 
 const identityService = new IdentityService();
 
@@ -12,7 +13,7 @@ const RegisterDriver: React.FC = () => {
   const [cities, setCities] = useState([])
   const [driverLicenseCategories, setDriverLicenseCategory] = useState([])
   const [validationErrors, setValidationErrors] = useState([] as string[])
-
+  const navigate = useNavigate();
   const [values, setInput] = useState({
     Email: "",
     FirstName: "",
@@ -93,6 +94,7 @@ const RegisterDriver: React.FC = () => {
       setValidationErrors(["No jwt!"]);
     } else {
       setValidationErrors([jwtDriverData.token]);
+      navigate("/login")
       
     }
 

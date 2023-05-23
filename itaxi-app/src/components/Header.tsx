@@ -11,7 +11,7 @@ import { IdentityService } from '../services/IdentityService';
 import { IJwtLoginResponse } from '../dto/IJwtLoginResponse';
 
 function Header() {
-  const { setLanguage } = useContext(JwtContext);
+  const { setLanguage, jwtLoginResponse, setJwtLoginResponse } = useContext(JwtContext);
   const navigate = useNavigate();
   const [user, setUser] = useState<IJwtLoginResponse>();
   useEffect(() => {
@@ -22,7 +22,7 @@ function Header() {
     }
   }, []);
 
-  let currentuser = IdentityService.getCurrentUser()
+  let currentuser = jwtLoginResponse ?? IdentityService.getCurrentUser()
 
 const languageButtonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
   //event.preventDefault();
@@ -43,6 +43,7 @@ const logoutButtonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
   console.log(`User clicked logout.`);
   if(IdentityService.logout())
   {
+    setJwtLoginResponse?.(null)
       navigate("/");
   }
 }

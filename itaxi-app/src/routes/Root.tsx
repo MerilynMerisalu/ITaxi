@@ -9,7 +9,7 @@ import { IdentityService } from "../services/IdentityService";
 export const JwtContext = createContext
 <{
   jwtLoginResponse: IJwtLoginResponse | null, 
-  setJwtLoginResponse: ((data: IJwtLoginResponse) => void) | null,
+  setJwtLoginResponse: ((data: IJwtLoginResponse | null) => void) | null,
   language: string,
   setLanguage: Dispatch<SetStateAction<string>> | null
 }>

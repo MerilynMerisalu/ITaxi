@@ -1,4 +1,4 @@
-import { useState, MouseEvent, useEffect } from "react";
+import { useState, MouseEvent, useEffect, useContext } from "react";
 import RegisterCustomerFormView from "./RegisterCustomerFormView";
 import { IRegisterCustomerData } from "../../dto/IRegisterCustomerData";
 import { IdentityService } from "../../services/IdentityService";
@@ -7,8 +7,11 @@ import { Gender } from "../../utilities/enums";
 import axios from "axios";
 import { IDisabilityTypeData } from "../../dto/IDisabilityTypeData";
 import { isDate } from "util/types";
+import { useNavigate } from "react-router-dom";
+import { JwtContext } from "../Root";
 
 const RegisterCustomer = () => {
+  const navigate = useNavigate();
 
 const [disabilityTypes, setDisabilityTypes] = useState([])
     const [values, setInput] = useState({
@@ -23,8 +26,8 @@ const [disabilityTypes, setDisabilityTypes] = useState([])
         ConfirmPassword: "",
 
     } as IRegisterCustomerData);
-
-    
+    console.log('values test:', values)
+    const {jwtLoginResponse, setJwtLoginResponse} = useContext(JwtContext);
     /* const getData = async () => {
       var disabilityTypes = await disabilityTypesService.getDisabilityTypes();
      
@@ -99,7 +102,7 @@ console.log(
     //console.log(values.Gender)
 )
       if(values.Email.length === 0 || values.FirstName.length === 0 || values.LastName.length === 0 || 
-        +values.Gender === undefined ||
+        values.Gender === 0 ||
          values.DisabilityTypeId === "" || values.PhoneNumber.length <= 0 ||
         values.Password.length === 0 || values.ConfirmPassword.length === 0 || 
         values.ConfirmPassword !== values.Password || !isDateOfBirthValid   ) {
@@ -115,6 +118,10 @@ console.log(
         setValidationErrors(["No jwt!"]);
       } else {
         setValidationErrors([jwtCustomerData.token]);
+        if(jwtCustomerData.token)
+      //  setJwtLoginResponse?.(jwtCustomerData)
+        navigate("/login")  
+
       }
 
     }
