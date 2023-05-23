@@ -39,11 +39,6 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
     {
         return (await CreateQuery(userId, roleName,noTracking)
             .OrderBy(b => b.PickUpDateAndTime.Date)
-            .ThenBy(b => b.PickUpDateAndTime.Day)
-            .ThenBy(b => b.PickUpDateAndTime.Month)
-            .ThenBy(b => b.PickUpDateAndTime.Year)
-            .ThenBy(b => b.PickUpDateAndTime.Hour)
-            .ThenBy(b => b.PickUpDateAndTime.Minute)
             .ThenBy(b => b.Customer!.AppUser!.LastName)
             .ThenBy(b => b.Customer!.AppUser!.FirstName)
             .ThenBy(b => b.City!.CityName)
@@ -56,11 +51,6 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
     {
         return CreateQuery(userId,roleName,noTracking)
             .OrderBy(b => b.PickUpDateAndTime.Date)
-            .ThenBy(b => b.PickUpDateAndTime.Day)
-            .ThenBy(b => b.PickUpDateAndTime.Month)
-            .ThenBy(b => b.PickUpDateAndTime.Year)
-            .ThenBy(b => b.PickUpDateAndTime.Hour)
-            .ThenBy(b => b.PickUpDateAndTime.Minute)
             .ThenBy(b => b.Customer!.AppUser!.LastName)
             .ThenBy(b => b.Customer!.AppUser!.FirstName)
             .ThenBy(b => b.City!.CityName)
@@ -72,11 +62,6 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
     {
         return (await base.CreateQuery(noTracking, noIncludes: true)
             .OrderBy(b => b.PickUpDateAndTime.Date)
-            .ThenBy(b => b.PickUpDateAndTime.Day)
-            .ThenBy(b => b.PickUpDateAndTime.Month)
-            .ThenBy(b => b.PickUpDateAndTime.Year)
-            .ThenBy(b => b.PickUpDateAndTime.Hour)
-            .ThenBy(b => b.PickUpDateAndTime.Minute)
             .ThenBy(b => b.NumberOfPassengers)
             .ThenBy(b => b.StatusOfBooking)
             .ToListAsync()).Select(e => Mapper.Map(e));
@@ -88,11 +73,6 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
     {
         return base.CreateQuery(noTracking, noIncludes: true)
             .OrderBy(b => b.PickUpDateAndTime.Date)
-            .ThenBy(b => b.PickUpDateAndTime.Day)
-            .ThenBy(b => b.PickUpDateAndTime.Month)
-            .ThenBy(b => b.PickUpDateAndTime.Year)
-            .ThenBy(b => b.PickUpDateAndTime.Hour)
-            .ThenBy(b => b.PickUpDateAndTime.Minute)
             .ThenBy(b => b.NumberOfPassengers)
             .ThenBy(b => b.StatusOfBooking)
             .ToList().Select(e =>Mapper.Map(e));

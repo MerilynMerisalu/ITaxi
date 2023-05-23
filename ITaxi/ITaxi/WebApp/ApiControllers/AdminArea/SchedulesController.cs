@@ -182,6 +182,9 @@ public class SchedulesController : ControllerBase
     /// </summary>
     /// <param name="id">Entity id guid</param>
     /// <returns>boolean value</returns>
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     private bool ScheduleExists(Guid id)
     {
         return _appBLL.Schedules.Exists(id);

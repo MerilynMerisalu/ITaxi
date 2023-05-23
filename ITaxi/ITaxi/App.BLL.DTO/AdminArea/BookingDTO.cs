@@ -9,7 +9,6 @@ namespace App.BLL.DTO.AdminArea;
 
 public class BookingDTO: DomainEntityMetaId
 {
-    
     public Guid ScheduleId { get; set; }
 
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(Schedule))]

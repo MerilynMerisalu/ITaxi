@@ -401,6 +401,9 @@ public class AccountController : ControllerBase
         _appBLL.Drivers.Add(driver);
         await _appBLL.SaveChangesAsync();
 
+        // Need to re-get the new driver Id
+        var driverFromDb = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(driver.AppUserId);
+        driver.Id = driverFromDb.Id;
         
         if (driverRegistrationDto.DriverLicenseCategories != null)
             foreach (var driverLicenseCategoryId in driverRegistrationDto.DriverLicenseCategories)

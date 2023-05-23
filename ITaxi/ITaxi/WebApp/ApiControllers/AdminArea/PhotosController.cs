@@ -176,7 +176,9 @@ public class PhotosController : ControllerBase
     /// </summary>
     /// <param name="id">Entity id guid</param>
     /// <returns>boolean value</returns>
-
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     private bool PhotoExists(Guid id)
     {
         return (_appBLL.Photos.Exists(id));
