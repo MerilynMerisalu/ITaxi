@@ -6,7 +6,7 @@ interface IJwtDriverRegisterResponse extends IRegisterData {
     driverDTO: {
         PersonalIdentifier?: string,
         DriverLicenseNumber: string,
-        DriverLicenseCategoryIds: string[],
+        DriverLicenseCategories: string[],
         DriverLicenseExpiryDate: string,
         CityId: string,
         Address: string

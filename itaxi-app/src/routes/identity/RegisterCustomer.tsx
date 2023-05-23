@@ -90,7 +90,7 @@ console.log(today)
 console.log(
 "*** FIND ERROR",
   values.Email.length === 0 , values.FirstName.length === 0 , values.LastName.length === 0 ,
-        +values.Gender === Gender.undefined ,
+        +values.Gender === undefined ,
          values.DisabilityTypeId === "" , 
          values.PhoneNumber.length <= 0 ,
       values.Password.length === 0 , values.ConfirmPassword.length === 0 ,
@@ -99,7 +99,7 @@ console.log(
     //console.log(values.Gender)
 )
       if(values.Email.length === 0 || values.FirstName.length === 0 || values.LastName.length === 0 || 
-        +values.Gender === Gender.undefined ||
+        +values.Gender === undefined ||
          values.DisabilityTypeId === "" || values.PhoneNumber.length <= 0 ||
         values.Password.length === 0 || values.ConfirmPassword.length === 0 || 
         values.ConfirmPassword !== values.Password || !isDateOfBirthValid   ) {

@@ -3,8 +3,8 @@ import { IRegisterData } from "./IRegisterData";
 interface IRegisterDriverData extends IRegisterData {
     CityId: string,
 
-    DriverLicenseCategoryId: string,
-    DriverLicenseCategoryIds: string[],
+    
+    DriverLicenseCategories: string[],
     PersonalIdentifier?: string,
     Address: string
     DriverLicenseNumber: string,

@@ -40,7 +40,7 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
       // }
 
 
-      return undefined;
+      //return undefined;
 
     } catch (e) {
       console.log('error: ', (e as Error).message);
