@@ -160,14 +160,18 @@ public class AccountController : ControllerBase
         var customerDto = new CustomerDTO()
         {
             Id = customer.Id,
+            
             DisabilityTypeId = customerRegistrationDTO.DisabilityTypeId
         };
-        
+        var roles =  await _userManager.GetRolesAsync(appUser);
         var res = new JwtResponseCustomerRegister()
         {
             Token = jwt,
             RefreshToken = refreshToken.Token,
-            CustomerDTO = customerDto
+            CustomerDTO = customerDto,
+            FirstName = appUser.FirstName,
+            LastName = appUser.LastName,
+            RoleNames = roles.ToArray()
         };
             
         return Ok(res);
@@ -290,6 +294,7 @@ public class AccountController : ControllerBase
         {
             Token = jwt,
             AdminDto = adminDto,
+            
             RefreshToken = refreshToken.Token,
         };
             
@@ -441,12 +446,16 @@ public class AccountController : ControllerBase
             UpdatedAt = driver.UpdatedAt,
             UpdatedBy = driver.UpdatedBy
         };
-        
+        var roles =  await _userManager.GetRolesAsync(appUser);
         var res = new JwtResponseDriverRegister()
         {
             Token = jwt,
             RefreshToken = refreshToken.Token,
             DriverDTO = driverDto,
+            FirstName = appUser.FirstName,
+            LastName = appUser.LastName,
+            RoleNames = roles.ToArray(),
+            
             DriverAndDriverLicenseCategoryDTO = new App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO()
             {
                 DriverLicenseCategoryNames = driverLicenseCategoryNames

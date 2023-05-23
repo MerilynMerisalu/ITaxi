@@ -125,8 +125,8 @@ const RegisterDriverFormView = (props: IProps) => {
                   type="text"
 
                   maxLength={50}
-                  name="FirstName"
-                  value={props.values.FirstName}
+                  name="firstName"
+                  value={props.values.firstName}
                   onChange={(e) => props.handleChange(e.target)}
                 />
 
@@ -139,8 +139,8 @@ const RegisterDriverFormView = (props: IProps) => {
                   placeholder="Enter Your Last Name Here"
                   type="text"
                   maxLength={50}
-                  name="LastName"
-                  value={props.values.LastName}
+                  name="lastName"
+                  value={props.values.lastName}
                   onChange={(e) => props.handleChange(e.target)}
                 />
 

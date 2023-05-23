@@ -60,7 +60,7 @@ const displayIfLoggedIn= () => {
 
 const displayIfLoggedInRole= (role : string) => {
   //var user = IdentityService.getCurrentUser();
-  return {'display': currentuser != null && currentuser.roleNames[0] === role ? '' : 'none'  }
+  return {'display': currentuser != null && currentuser.roleNames?.[0] === role ? '' : 'none'  }
 };
 
 

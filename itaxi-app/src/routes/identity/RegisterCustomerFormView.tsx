@@ -70,14 +70,14 @@ const RegisterCustomerFormView = (props: IProps) => {
                     <label html-for="Input_FirstName">First Name</label>
                     <input
                       onChange={(e) => props.handleChange(e.target)}
-                      value={props.values.FirstName}
+                      value={props.values.firstName}
                       className="form-control"
                       alt="Enter Your First Name Here"
                       placeholder="Enter Your First Name Here"
                       type="text"
                       id="Input_FirstName"
                       maxLength={50}
-                      name="FirstName"
+                      name="firstName"
                     />
                     {/* <span
                       className="text-danger field-validation-valid"
@@ -90,14 +90,14 @@ const RegisterCustomerFormView = (props: IProps) => {
                     <label html-for="Input_LastName">Last Name</label>
                     <input
                       onChange={(e) => props.handleChange(e.target)}
-                      value={props.values.LastName}
+                      value={props.values.lastName}
                       className="form-control"
                       alt="Enter Your Last Name Here"
                       placeholder="Enter Your Last Name Here"
                       type="text"
                       id="Input_LastName"
                       maxLength={50}
-                      name="LastName"  
+                      name="lastName"  
                     />
                     {/* <span
                       className="text-danger field-validation-valid"

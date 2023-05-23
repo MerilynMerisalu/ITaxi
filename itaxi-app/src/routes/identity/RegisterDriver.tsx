@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { IRegisterDriverData } from "../../dto/IRegisterDriverData";
 
 import React from 'react'
@@ -6,6 +6,7 @@ import RegisterDriverFormView from "./RegisterDriverFormView";
 import { IdentityService } from "../../services/IdentityService";
 import { Gender } from "../../utilities/enums";
 import { useNavigate } from "react-router-dom";
+import { JwtContext } from "../Root";
 
 const identityService = new IdentityService();
 
@@ -13,11 +14,12 @@ const RegisterDriver: React.FC = () => {
   const [cities, setCities] = useState([])
   const [driverLicenseCategories, setDriverLicenseCategory] = useState([])
   const [validationErrors, setValidationErrors] = useState([] as string[])
+  const {jwtLoginResponse, setJwtLoginResponse} = useContext(JwtContext);
   const navigate = useNavigate();
   const [values, setInput] = useState({
     Email: "",
-    FirstName: "",
-    LastName: "",
+    firstName: "",
+    lastName: "",
     Gender: 0,
     DateOfBirth: "",
     PersonalIdentifier: "",
@@ -67,7 +69,7 @@ const RegisterDriver: React.FC = () => {
     console.log('*** VALUE', values, +values.Gender === Gender.Male)
     console.log(
       "*** FIND ERROR",
-      values.Email.length === 0, values.FirstName.length === 0, values.LastName.length === 0,
+      values.Email.length === 0, values.firstName.length === 0, values.lastName.length === 0,
       +values.Gender === undefined,
       values.PhoneNumber.length <= 0,
       values.Password.length === 0, values.ConfirmPassword.length === 0,
@@ -75,7 +77,7 @@ const RegisterDriver: React.FC = () => {
 
       //console.log(values.Gender)
     )
-    if (values.Email.length === 0 || values.FirstName.length === 0 || values.LastName.length === 0 ||
+    if (values.Email.length === 0 || values.firstName.length === 0 || values.lastName.length === 0 ||
       +values.Gender === undefined ||
       values.PhoneNumber.length <= 0 ||
       values.Password.length === 0 || values.ConfirmPassword.length === 0 ||
@@ -94,7 +96,8 @@ const RegisterDriver: React.FC = () => {
       setValidationErrors(["No jwt!"]);
     } else {
       setValidationErrors([jwtDriverData.token]);
-      navigate("/login")
+      setJwtLoginResponse?.(jwtDriverData)
+      navigate("/")
       
     }
 

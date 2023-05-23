@@ -16,8 +16,8 @@ const RegisterCustomer = () => {
 const [disabilityTypes, setDisabilityTypes] = useState([])
     const [values, setInput] = useState({
         Email: "",
-        FirstName: "",
-        LastName: "",
+        firstName: "",
+        lastName: "",
         Gender: 0,
         DateOfBirth: "",
         DisabilityTypeId: "",
@@ -92,7 +92,7 @@ console.log(today)
    console.log('*** VALUE', values, +values.Gender === Gender.Male)
 console.log(
 "*** FIND ERROR",
-  values.Email.length === 0 , values.FirstName.length === 0 , values.LastName.length === 0 ,
+  values.Email.length === 0 , values.firstName.length === 0 , values.lastName.length === 0 ,
         +values.Gender === undefined ,
          values.DisabilityTypeId === "" , 
          values.PhoneNumber.length <= 0 ,
@@ -101,7 +101,7 @@ console.log(
  
     //console.log(values.Gender)
 )
-      if(values.Email.length === 0 || values.FirstName.length === 0 || values.LastName.length === 0 || 
+      if(values.Email.length === 0 || values.firstName.length === 0 || values.lastName.length === 0 || 
         values.Gender === 0 ||
          values.DisabilityTypeId === "" || values.PhoneNumber.length <= 0 ||
         values.Password.length === 0 || values.ConfirmPassword.length === 0 || 
@@ -119,8 +119,8 @@ console.log(
       } else {
         setValidationErrors([jwtCustomerData.token]);
         if(jwtCustomerData.token)
-      //  setJwtLoginResponse?.(jwtCustomerData)
-        navigate("/login")  
+      setJwtLoginResponse?.(jwtCustomerData)
+        navigate("/")  
 
       }
 

@@ -8,6 +8,13 @@ public class JwtResponseCustomerRegister
 {
     public string Token { get; set; } = default!;
     public string RefreshToken { get; set; } = default!;
+    public string FirstName { get; set; } = default!;
+    public string LastName { get; set; } = default!;
 
+    public string FirstAndLastName => $"{FirstName} {LastName}";
+
+    public string LastAndFirstName => $"{LastName} {FirstName}";
+    
+    public string[] RoleNames { get; set; } = default!;
     public CustomerDTO CustomerDTO { get; set; }
 }
