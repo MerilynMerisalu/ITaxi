@@ -2,6 +2,7 @@
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Public.DTO.v1.AdminArea;
+using AutoMapper;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -15,10 +16,11 @@ namespace WebApp.ApiControllers.DriverArea;
 public class DrivesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
-
-    public DrivesController(IAppBLL appBLL)
+    private readonly IMapper _mapper;
+    public DrivesController(IAppBLL appBLL, IMapper mapper)
     {
         _appBLL = appBLL;
+        _mapper = mapper;
     }
 
     // GET: api/Drives
@@ -29,12 +31,12 @@ public class DrivesController : ControllerBase
         var roleName = User.GettingUserRoleName();
         var res = await _appBLL.Drives.GettingAllOrderedDrivesWithIncludesAsync(userId, roleName);
 
-        return Ok(res);
+        return Ok(res.Select(d => _mapper.Map<Drive>(d)));
     }
 
     // GET: api/Drives/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<DriveDTO>> GetDrive(Guid id)
+    public async Task<ActionResult<Drive>> GetDrive(Guid id)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
@@ -44,7 +46,7 @@ public class DrivesController : ControllerBase
 
 
 
-        return Ok(drive);
+        return Ok(_mapper.Map<Drive>(drive));
     }
 
 
@@ -100,5 +102,22 @@ public class DrivesController : ControllerBase
     private bool DriveExists(Guid id)
     {
         return _appBLL.Drives.Exists(id);
+    }
+    
+    [Route("Print")]
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> Print()
+    {
+        var roleName = User.GettingUserRoleName();
+        var userId = User.GettingUserId();
+    
+        var drives = await _appBLL.Drives.PrintAsync( userId, roleName );
+
+        var mappedDrives = drives.Select(d => _mapper.Map<Drive>(d));
+        return Ok(mappedDrives);
+
     }
 }

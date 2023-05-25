@@ -4,6 +4,7 @@ import { IdentityService } from "./IdentityService";
 import BaseService from "./BaseService";
 import { AnyCnameRecord } from "dns";
 import { IVehicleFormData } from "../dto/IVehicleFormData";
+import { IScheduleFormData } from "../dto/IScheduleFormData";
 
 export abstract class BaseEntityService<TEntity extends IBaseEntity> extends BaseService {
   constructor(baseUrl: string) {
@@ -128,7 +129,7 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
     }
   }
 
-  async create(body: IVehicleFormData): Promise<number | undefined> {
+  async create(body: IVehicleFormData | IScheduleFormData): Promise<number | undefined> {
     console.log('body', body)
     try {
       let user = IdentityService.getCurrentUser();
@@ -154,7 +155,7 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
       return undefined;
     }
   }
-  async edit(id: string, body: IVehicleFormData): Promise<number | undefined> {
+  async edit(id: string, body: IVehicleFormData| IScheduleFormData): Promise<number | undefined> {
     console.log('body', body)
     try {
       let user = IdentityService.getCurrentUser();

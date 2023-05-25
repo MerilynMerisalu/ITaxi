@@ -3,15 +3,7 @@ interface IScheduleData {
     vehicleId: string,
     vehicle: {
         vehicleIdentifier: string,
-        vehicleModel: string,
-        vehicleMarkName: string,
-        vehicleTypeName: string,
-        vehiclePlateNumber: string
-    }
-    startDateAndTime: string,         // date või string?
-    endDateAndTime: string           // date või string?
-
-    /* vehicleTypeId: string,
+        vehicleTypeId: string,
     vehicleTypeDTO: {
         vehicleTypeName: string
     }
@@ -21,8 +13,15 @@ interface IScheduleData {
     }
     vehicleModelId: string,
     vehicleModelDTO: {
-        vehicleMarkName: string
+        vehicleModelName: string
     }
+        
+        vehiclePlateNumber: string
+    }
+    startDateAndTime: string,         // date või string?
+    endDateAndTime: string           // date või string?
+
+    /* 
     vehiclePlateNumber: string,
     manufactureYear: number
     numberOfSeats: number,

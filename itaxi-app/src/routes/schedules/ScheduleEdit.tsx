@@ -1,8 +1,12 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, {useEffect} from 'react'
+import { Link, useParams } from 'react-router-dom'
+import ScheduleForm from './ScheduleForm'
 
 
 const ScheduleEdit = () => {
+const {id} = useParams()
+console.log('*** ID', id)
+    
     return (
         <div b-7882z672yd className="container">
             <main b-7882z672yd role="main" className="pb-3">
@@ -13,6 +17,8 @@ const ScheduleEdit = () => {
                 <hr />
                 <div className="row">
                     <div className="col-md-4">
+
+                        {/* <ScheduleForm id={id} action={async()=> console.log(111)} initialValues={null}/> */}
                         <form action="/DriverArea/Schedules/Edit/d88e5375-314a-4c3d-f505-08db556c3975" method="post">
                             <div className="text-danger validation-summary-valid"><ul><li style={{ display: "none" }}></li>
                             </ul></div>

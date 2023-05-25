@@ -140,10 +140,7 @@ public class AccountController : ControllerBase
             audience: _configuration["JWT:Issuer"],
             expirationDateTime: refreshToken.TokenExpirationDateAndTime
         );
-        
 
-        
-        
         var customer = new Customer()
         {
             AppUserId = appUser.Id,

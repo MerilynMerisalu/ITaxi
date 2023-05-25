@@ -79,7 +79,7 @@ const SchedulesIndex = () => {
                     <tbody>
 
                         {data.map(s => (
-                            <tr key={s.vehicleId}>
+                            <tr key={s.vehicleId + s.startDateAndTime + s.endDateAndTime}>
                                 <td>
                                     {s.vehicle.vehicleIdentifier}
                                 </td>
