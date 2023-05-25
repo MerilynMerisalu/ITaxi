@@ -5,6 +5,7 @@ import { IVehicle } from '../../domain/IVehicle';
 import { VehicleAvailability } from '../../utilities/enums';
 import { Link, Outlet } from 'react-router-dom';
 import axios from 'axios';
+
 const vehicleService = new VehicleService()
 const VehiclesIndex = () => {
     const [data, setData] = useState([] as IVehicle[])

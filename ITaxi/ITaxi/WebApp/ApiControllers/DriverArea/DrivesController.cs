@@ -43,9 +43,7 @@ public class DrivesController : ControllerBase
         var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, userId, roleName);
 
         if (drive == null) return NotFound();
-
-
-
+        
         return Ok(_mapper.Map<Drive>(drive));
     }
 

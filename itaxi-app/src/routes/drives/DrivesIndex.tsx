@@ -1,16 +1,36 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { IDrive } from '../../domain/IDrive'
+import { JwtContext } from '../Root'
+import axios from 'axios'
+import { DriveService } from '../../services/DriveService'
 
-Link
-
+const driveService = new DriveService();
 const DrivesIndex = () => {
+    const [data, setData] = useState([] as IDrive[])
+    const { language } = useContext(JwtContext)
+    console.log('index language', language)
+    useEffect(() => {
+        axios.defaults.headers.common['Accept-Language'] = language;
+        driveService.getAll()
+            .then(
+                response => {
+                    console.log('index response', response)
+                    if (response)
+                        setData(response)
+                    else {
+                        setData([])
+                    }
+                }
+            )
+
+    }, [language]);
+
   return (
     <div className="container">
-    <main role="main" className="pb-3">
-        
+    <main role="main" className="pb-3">        
 
 <h1>Index</h1>
-
 
 <form action="/DriverArea/Drives/SearchByDate" method="post">
     <input type="date" name="search"/>
@@ -23,8 +43,7 @@ const DrivesIndex = () => {
 <table className="table">
     <thead>
     <tr>
-
-        <th>
+        {/* <th>
             Schedule
         </th>
         <th>
@@ -32,12 +51,12 @@ const DrivesIndex = () => {
         </th>
         <th>
             Disability Type
-        </th>
+        </th> 
 
         <th>
             Pick Up Date and Time
         </th>
-        <th>
+       <th>
             City
         </th>
         <th>
@@ -63,14 +82,12 @@ const DrivesIndex = () => {
         </th>
         <th>
             Status of Drive
-        </th>
+        </th> */}
 
         <th>
             Comment
-        </th>
-        
-            
-                <th>
+        </th>           
+                {/* <th>
                     Drive Decline Date and Time
                 </th>
             
@@ -82,61 +99,71 @@ const DrivesIndex = () => {
                 </th>
                 <th>
                     Drive End Date and Time
-                </th>
-            
-        
-
-
-        <th></th>
+                </th> */}
+        <th></th>   
     </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>
-                26/05/2023 00:43 - 26/05/2023 07:43
+    {data.map(d => (
+        <tr key={d.id}>
+            {/* <td>
+                {d.bookingDTO.scheduleDTO.shiftDurationTime}
             </td>
             <td>
-                M&#xE4;tas Maarika
+                {d.bookingDTO.customerDTO.appUserDTO.lastAndFirstName}
             </td>
             <td>
-                None
-            </td>
-
+                {d.bookingDTO.customerDTO.disabilityTypeDTO.disabilityTypeName}
+            </td> 
             <td>
-                26/05/2023 00:43:57
+                {d.bookingDTO.PickUpDateAndTime}
             </td>
-            <td>
-                Tallinn
-            </td>
-            <td>
-                Suurs&#xF5;jam&#xE4;e 15-2
+           <td>
+                {d.bookingDTO.cityDTO.cityName}
             </td>
             <td>
-                S&#xF5;pruse pst 10
+                {d.bookingDTO.pickupAddress}
             </td>
             <td>
-                Regular
+                {d.bookingDTO.destinationAddress}
+            </td> */}
+            {/* <td>
+                {d?.booking?.vehicleType?.vehicleTypeName}
             </td>
             <td>
-                Toyota Avensis 555 XXZ Regular
+                {d.bookingDTO.vehicleDTO.vehicleIdentifier}
             </td>
             <td>
-                2
+                {d.bookingDTO.numberOfPassengers}
             </td>
             <td>
-                <input checked={true} className="check-box" disabled={true} type="checkbox" />
+                {d.bookingDTO.hasAnAssistant}
             </td>
             <td>
-                Awaiting for Confirmation
+            {(() => {
+                switch (d.bookingDTO.statusOfBooking) {
+                    case 1:     return "Awaiting";
+                    case 2:     return "Accepted";
+                    case 3:     return "Declined";
+                    default:    return "Awaiting";
+                    }
+            })()}
             </td>
             <td>
-                Awaiting for Confirmation
-            </td>
-
+            {(() => {
+                switch (d.statusOfDrive) {
+                    case 1:     return "Awaiting";
+                    case 2:     return "Accepted";
+                    case 3:     return "Declined";
+                    case 4:     return "Started";
+                    case 5:     return "Finished";
+                    default:    return "Awaiting";
+                    }
+            })()}
+            </td>  */}
             <td>
-                J&#xE4;in teenusega rahule!
-            </td>
-
+                {d.comment.commentText}
+            </td>   
 
             <td>
             </td>
@@ -153,13 +180,11 @@ const DrivesIndex = () => {
                         |</p>
                     <p style={{display: "inline"}}><a href="/DriverArea/Drives/Decline/89014f28-af0c-460b-38f8-08db5d1db589">Decline</a> |</p>
 
-               
-
-
-                <a href="/DriverArea/Drives/Details/89014f28-af0c-460b-38f8-08db5d1db589">Details</a>
+                    <Link to={`/drive/details/${d.id}`}>Details</Link> |
 
             </td>
         </tr>
+        ))}
     </tbody>
 </table>
     </main>

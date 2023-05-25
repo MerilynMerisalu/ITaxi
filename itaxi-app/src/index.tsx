@@ -28,6 +28,7 @@ import ScheduleEdit from "./routes/schedules/ScheduleEdit";
 import ScheduleDetails from "./routes/schedules/ScheduleDetails";
 import ScheduleDelete from "./routes/schedules/ScheduleDelete";
 import ScheduleCreate from "./routes/schedules/ScheduleCreate";
+import DrivesIndex from "./routes/drives/DrivesIndex";
 
 const router = createBrowserRouter([
   {
@@ -103,6 +104,10 @@ const router = createBrowserRouter([
       {
         path: "schedules/create",
         element: <ScheduleCreate />
+      },
+      {
+        path: "drives",
+        element: <DrivesIndex />
       },
 
     ],

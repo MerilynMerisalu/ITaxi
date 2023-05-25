@@ -12,9 +12,9 @@ export enum VehicleAvailability
 
 export enum StatusOfBooking
 {
-    Awaiting,
-    Accepted,
-    Declined
+    Awaiting = "Awaiting",
+    Accepted = "Accepted",
+    Declined = "Declined"
 }
 
 export enum IsActive
@@ -25,9 +25,10 @@ export enum IsActive
 
 export enum StatusOfDrive
 {
-    Awaiting,
-    Accepted,
-    Declined,
-    Started,
-    Finished
+    Awaiting = "Awaiting",
+    Accepted = "Accepted",
+    Declined = "Declined",
+    Started = "Started",
+    Finished = "Finished"
 }
+

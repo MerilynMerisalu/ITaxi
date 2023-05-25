@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using App.BLL.DTO.AdminArea;
 using App.Enum.Enum;
+using App.Public.DTO.v1.AdminArea;
+using App.Public.DTO.v1.Identity;
 using Base.Domain;
 
-namespace App.BLL.DTO.AdminArea;
+namespace App.Public.DTO.v1.DriverArea;
 
-public class DriveDTO: DomainEntityMetaId
+public class Drive : DomainEntityMetaId
 {
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "JobTitle")]
     public Guid DriverId { get; set; }
@@ -14,6 +16,7 @@ public class DriveDTO: DomainEntityMetaId
     public DriverDTO? Driver { get; set; }
     
     public BookingDTO? Booking { get; set; }
+
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = nameof(Comment))]
     public CommentDTO? Comment { get; set; }
@@ -37,7 +40,6 @@ public class DriveDTO: DomainEntityMetaId
     public DateTime DriveEndDateAndTime { get; set; }
 
     public bool IsDriveAccepted { get; set; }
-
     public string? AcceptedBy { get; set; }
 
     public bool IsDriveDeclined { get; set; }
@@ -56,15 +58,12 @@ public class DriveDTO: DomainEntityMetaId
     public string DriveStartedDateTimeDriverView => $"{DriveStartDateAndTime:g}";
     
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.DriverArea.Drive), Name = "Finished")]
+    
     public string DriveEndDateTimeDriverView => $"{DriveEndDateAndTime:g}";
-    public string DriveDescription
-    {
-        get =>
+    
+    public string DriveDescription =>
             $"{Booking!.PickUpDateAndTime:g} " +
             $"- {Driver!.AppUser!.LastAndFirstName}";
-
-       
-    }
 
     public string? DriveAcceptInformation => $"{StatusOfDrive} {AcceptedBy} {DriveAcceptedDateAndTime}";
 }
