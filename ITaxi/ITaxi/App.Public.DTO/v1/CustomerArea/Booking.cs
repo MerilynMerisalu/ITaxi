@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using App.BLL.DTO.AdminArea;
 using App.Enum.Enum;
+using App.Public.DTO.v1.AdminArea;
 using Base.Domain;
 using Base.Resources;
 
@@ -21,17 +22,17 @@ public class Booking : DomainEntityMetaId
     
     // [Display(ResourceType = typeof(Booking), Name = nameof(Customer))]
 
-     public CustomerDTO? Customer { get; set; }
+     public Customer? Customer { get; set; }
     
     public Guid VehicleTypeId { get; set; }
-    public VehicleTypeDTO? VehicleType { get; set; }
+    public VehicleType? VehicleType { get; set; }
     // public Guid VehicleId { get; set; }
     // [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = nameof(Vehicle))]
     // public VehicleDTO? Vehicle { get; set; }
     public Guid CityId { get; set; }
     
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = nameof(City))]
-    public CityDTO City { get; set; }
+    public City City { get; set; }
 
     [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = "PickUpDateAndTime")]

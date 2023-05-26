@@ -16,5 +16,5 @@ public class CustomerDTO : DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Customer), Name = "DisabilityType")]
     public DisabilityTypeDTO? DisabilityType { get; set; }
 
-    public ICollection<BookingDTO>? Bookings { get; set; }
+    //public ICollection<BookingDTO>? Bookings { get; set; }
 }

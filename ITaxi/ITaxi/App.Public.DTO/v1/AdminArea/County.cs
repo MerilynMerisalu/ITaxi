@@ -12,7 +12,7 @@ public class County : DomainEntityMetaId
     
     public string CountyName { get; set; } = default!;
 
-    //public ICollection<CityDTO>? Cities { get; set; }
+    
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.County), Name = "NumberOfCities")]
     public int NumberOfCities { get; set; }
 }

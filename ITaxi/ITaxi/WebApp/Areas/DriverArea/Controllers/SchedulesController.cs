@@ -85,9 +85,10 @@ public class SchedulesController : Controller
         if (ModelState.IsValid)
         {
             var userId = User.GettingUserId();
-            var driverId = await _appBLL.Drivers.GettingDriverByVehicleAsync(userId);
+            var driver = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(userId);
+            
             schedule.Id = Guid.NewGuid();
-            schedule.DriverId = driverId.Id;
+            schedule.DriverId = driver.Id;
             schedule.VehicleId = vm.VehicleId;
             schedule.StartDateAndTime = DateTime.Parse(vm.StartDateAndTime);
             schedule.EndDateAndTime = DateTime.Parse(vm.EndDateAndTime);
@@ -203,7 +204,7 @@ public class SchedulesController : Controller
 
         if (schedule != null)
         {
-            _appBLL.Schedules.Remove(schedule);
+            await _appBLL.Schedules.RemoveAsync(schedule.Id);
             await _appBLL.SaveChangesAsync();
         }
 

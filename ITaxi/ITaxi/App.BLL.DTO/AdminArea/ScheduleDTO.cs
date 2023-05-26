@@ -33,9 +33,10 @@ public class ScheduleDTO: DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Schedule), Name = "ScheduleName")]
     public string ShiftDurationTime => $"{StartDateAndTime:g} - {EndDateAndTime:g}";
 
-    public ICollection<RideTimeDTO>? RideTimes { get; set; }
+    /*public ICollection<RideTimeDTO>? RideTimes { get; set; }
 
     public ICollection<BookingDTO>? Bookings { get; set; }
+    */
 
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Schedule),
         Name = "NumberOfRideTimesPerSchedule")]

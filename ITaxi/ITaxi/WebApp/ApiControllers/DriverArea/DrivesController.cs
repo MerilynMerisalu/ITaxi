@@ -1,7 +1,7 @@
 #nullable enable
-using App.BLL.DTO.AdminArea;
+
 using App.Contracts.BLL;
-using App.Public.DTO.v1.AdminArea;
+using App.Public.DTO.v1.DriverArea;
 using AutoMapper;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

@@ -82,12 +82,7 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
         Guid? userId = null, string? roleName = null, bool noTracking = true )
     {
         return CreateQuery(userId, roleName,noTracking)
-            .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
-            .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
-            .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
-            .ThenBy(d => d.Booking!.PickUpDateAndTime.Year)
-            .ThenBy(d => d.Booking!.PickUpDateAndTime.Hour)
-            .ThenBy(d => d.Booking!.PickUpDateAndTime.Minute)
+            .OrderBy(d => d.Booking!.PickUpDateAndTime)
             .ThenBy(d => d.Booking!.Customer!.AppUser!.LastName)
             .ThenBy(d => d.Booking!.Customer!.AppUser!.FirstName)
             .ThenBy(d => d.Booking!.City!.CityName)
@@ -396,7 +391,9 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
     protected  IQueryable<Drive> CreateQuery(Guid? userId = null, string? roleName = null,
     bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted)
+            .IgnoreAutoIncludes(); // auto includes cause cyclical references in this query, so disable them
+        
         if (noTracking) query = query.AsNoTracking();
 
         if (roleName is "Admin")
@@ -451,7 +448,6 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
             .Include(c => c.Booking)
             .ThenInclude(c => c!.City)
             .Include(b => b.Booking)
-            .Include(v => v.Booking)
             .ThenInclude(v => v!.Vehicle)
             .ThenInclude(v => v!.VehicleType)
             .ThenInclude(c => c!.VehicleTypeName)
