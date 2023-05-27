@@ -26,6 +26,29 @@ const DrivesIndex = () => {
 
     }, [language]);
 
+    function pad (d: number) {
+        const padded = `0${d}`
+        return padded.slice(-2)
+    }
+    console.log('language', language)
+
+    function formatDate (iso: string) {
+        const date = new Date(iso)
+        const year = pad(date.getFullYear())
+        const month = pad(date.getMonth() + 1)
+        const day = pad(date.getDate())
+        const hours = pad(date.getHours())
+        const minutes = pad(date.getMinutes())
+
+        if (language === 'en-GB') {
+            return `${year}-${month}-${day} ${hours}:${minutes}`
+        }
+        if (language === 'et') {
+            return `${day}.${month}.${year} ${hours}:${minutes}`
+        }
+    }
+
+
   return (
     <div className="container">
     <main role="main" className="pb-3">        
@@ -116,7 +139,7 @@ const DrivesIndex = () => {
                 {d.booking.customer.disabilityType.disabilityTypeName}
             </td> 
             <td>
-                {d.booking.pickUpDateAndTime}
+                {formatDate(d.booking.pickUpDateAndTime)}
             </td>
            <td>
                 {d.booking.city.cityName}
@@ -137,7 +160,7 @@ const DrivesIndex = () => {
                 {d.booking.numberOfPassengers}
             </td>
             <td>
-                <input checked={true} className="check-box" disabled={true} type="checkbox" />
+                <input checked={d.booking.hasAnAssistant} className="check-box" disabled={true} type="checkbox" />
             </td>
             <td>
             {(() => {
