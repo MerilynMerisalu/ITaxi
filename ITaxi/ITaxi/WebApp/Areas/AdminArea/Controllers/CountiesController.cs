@@ -158,7 +158,7 @@ public class CountiesController : Controller
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
 
-            _appBLL.Counties.Remove(county);
+            await _appBLL.Counties.RemoveAsync(county.Id);
             await _appBLL.SaveChangesAsync();
         }
 

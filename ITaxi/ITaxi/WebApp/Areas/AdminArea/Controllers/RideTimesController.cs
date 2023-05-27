@@ -109,7 +109,7 @@ public class RideTimesController : Controller
                     rideTimes.Add(rideTime);
                     
                 }
-                 _appBLL.RideTimes.AddRange(rideTimes);
+                await _appBLL.RideTimes.AddRangeAsync(rideTimes);
                 await _appBLL.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));

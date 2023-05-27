@@ -584,7 +584,7 @@ public class BookingsController : Controller
 
         if (booking != null)
         {
-            _appBLL.Bookings.Remove(booking);
+           await _appBLL.Bookings.RemoveAsync(booking.Id);
             await _appBLL.SaveChangesAsync();
         }
 

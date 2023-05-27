@@ -196,7 +196,7 @@ public class SchedulesController : ControllerBase
         var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id, userId, roleName);
         if (schedule == null) return NotFound();
 
-        _appBLL.Schedules.Remove(schedule);
+        await _appBLL.Schedules.RemoveAsync(schedule.Id);
         await _appBLL.SaveChangesAsync();
 
         return NoContent();

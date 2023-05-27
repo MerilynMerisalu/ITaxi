@@ -171,7 +171,7 @@ public class VehicleMarksController : ControllerBase
         var vehicleMark = await _appBLL.VehicleMarks.FirstOrDefaultAsync(id);
         if (vehicleMark == null) return NotFound();
 
-        _appBLL.VehicleMarks.Remove(vehicleMark);
+        await _appBLL.VehicleMarks.RemoveAsync(vehicleMark.Id);
         await _appBLL.SaveChangesAsync();
 
         return NoContent();

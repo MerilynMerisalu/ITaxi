@@ -158,7 +158,7 @@ public class DriverLicenseCategoriesController : Controller
             return Content("Entity cannot be deleted because it has dependent entities!");
         }
         
-        if (driverLicenseCategory != null) _appBLL.DriverLicenseCategories.Remove(driverLicenseCategory);
+        if (driverLicenseCategory != null) await _appBLL.DriverLicenseCategories.RemoveAsync(driverLicenseCategory.Id);
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }

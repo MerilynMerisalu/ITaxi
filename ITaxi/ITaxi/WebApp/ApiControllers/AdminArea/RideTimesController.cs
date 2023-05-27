@@ -179,7 +179,7 @@ public class RideTimesController : ControllerBase
         var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
         if (rideTime == null) return NotFound();
 
-        _appBLL.RideTimes.Remove(rideTime);
+        await _appBLL.RideTimes.RemoveAsync(rideTime.Id);
         await _appBLL.SaveChangesAsync();
 
         return NoContent();

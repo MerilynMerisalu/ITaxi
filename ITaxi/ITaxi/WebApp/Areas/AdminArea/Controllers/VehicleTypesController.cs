@@ -164,7 +164,7 @@ public class VehicleTypesController : Controller
 
         if (vehicleType != null)
         {
-            _appBLL.VehicleTypes.Remove(vehicleType);
+            await _appBLL.VehicleTypes.RemoveAsync(vehicleType.Id);
             await _appBLL.SaveChangesAsync();
         }
 

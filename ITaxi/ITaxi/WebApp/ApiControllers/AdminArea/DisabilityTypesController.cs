@@ -170,7 +170,7 @@ public class DisabilityTypesController : ControllerBase
         var disabilityType = await _appBLL.DisabilityTypes.FirstOrDefaultAsync(id);
         if (disabilityType == null) return NotFound();
 
-        _appBLL.DisabilityTypes.Remove(disabilityType);
+       await _appBLL.DisabilityTypes.RemoveAsync(disabilityType.Id);
         await _appBLL.SaveChangesAsync();
 
         return NoContent();

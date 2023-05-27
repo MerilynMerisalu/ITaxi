@@ -421,9 +421,9 @@ public class BookingsController : Controller
         var comment =
             await _appBLL.Comments.SingleOrDefaultAsync(c => drive != null && c != null && c.DriveId.Equals(drive.Id),
                 false);
-        if (comment != null) _appBLL.Comments.Remove(comment);
-        if (drive != null) _appBLL.Drives.Remove(drive);
-        if (booking != null) _appBLL.Bookings.Remove(booking);
+        if (comment != null) await _appBLL.Comments.RemoveAsync(comment.Id);
+        if (drive != null) await _appBLL.Drives.RemoveAsync(drive.Id);
+        if (booking != null) await _appBLL.Bookings.RemoveAsync(booking.Id);
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }

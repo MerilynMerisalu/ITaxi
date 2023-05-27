@@ -163,7 +163,7 @@ public class DriverLicenseCategoriesController : ControllerBase
         var driverLicenseCategory = await _appBLL.DriverLicenseCategories.FirstOrDefaultAsync(id);
         if (driverLicenseCategory == null) return NotFound();
 
-        _appBLL.DriverLicenseCategories.Remove(driverLicenseCategory);
+        await _appBLL.DriverLicenseCategories.RemoveAsync(driverLicenseCategory.Id);
         await _appBLL.SaveChangesAsync();
 
         return NoContent();

@@ -194,7 +194,7 @@ public class CommentsController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserName();
         var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, userId, roleName, noIncludes:true);
-        if (comment != null) _appBLL.Comments.Remove(comment);
+        if (comment != null) await _appBLL.Comments.RemoveAsync(comment.Id);
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }

@@ -175,7 +175,7 @@ public class VehiclesController : ControllerBase
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id);
         if (vehicle == null) return NotFound();
 
-        _appBLL.Vehicles.Remove(vehicle);
+        await _appBLL.Vehicles.RemoveAsync(vehicle.Id);
         await _appBLL.SaveChangesAsync();
 
         return NoContent();

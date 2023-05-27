@@ -163,9 +163,9 @@ public class CountiesController : ControllerBase
         if (county == null) return NotFound();
         if (await _appBLL.Cities.HasAnyCitiesAsync(county.Id))
         {
-            #warning what is the correct response 500 or 409
+            
         }
-        _appBLL.Counties.Remove(county);
+        await _appBLL.Counties.RemoveAsync(county.Id);
         await _appBLL.SaveChangesAsync();
 
         return NoContent();

@@ -172,7 +172,7 @@ public class CitiesController : ControllerBase
         var city = await _appBLL.Cities.FirstOrDefaultAsync(id);
         if (city == null) return NotFound();
 
-        _appBLL.Cities.Remove(city);
+        await _appBLL.Cities.RemoveAsync(city.Id);
         await _appBLL.SaveChangesAsync();
 
         return NoContent();

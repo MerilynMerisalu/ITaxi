@@ -190,7 +190,7 @@ public class CommentsController : ControllerBase
         var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, userId, roleName);
         if (comment == null) return NotFound();
 
-        _appBLL.Comments.Remove(comment);
+        await _appBLL.Comments.RemoveAsync(comment.Id);
         await _appBLL.SaveChangesAsync();
 
         return NoContent();

@@ -171,7 +171,7 @@ public class CitiesController : Controller
         {
             try
             {
-                _appBLL.Cities.Remove(city);
+                await _appBLL.Cities.RemoveAsync(city.Id);
             }
             catch (ApplicationException e)
             {

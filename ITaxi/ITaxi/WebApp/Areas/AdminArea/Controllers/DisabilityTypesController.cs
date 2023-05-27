@@ -161,7 +161,7 @@ public class DisabilityTypesController : Controller
         if (await _appBLL.DisabilityTypes.HasAnyCustomersAsync(id))
             return Content("Entity cannot be deleted because it has dependent entities!");
 
-        if (disabilityType != null) _appBLL.DisabilityTypes.Remove(disabilityType);
+        if (disabilityType != null) await _appBLL.DisabilityTypes.RemoveAsync(disabilityType.Id);
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }

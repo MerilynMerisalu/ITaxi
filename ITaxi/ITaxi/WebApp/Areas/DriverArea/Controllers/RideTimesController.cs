@@ -252,7 +252,7 @@ public class RideTimesController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var rideTime = await _appBLL.RideTimes.FirstOrDefaultAsync(id);
-        if (rideTime != null) _appBLL.RideTimes.Remove(rideTime);
+        if (rideTime != null) await _appBLL.RideTimes.RemoveAsync(rideTime.Id);
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
