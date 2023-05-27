@@ -90,7 +90,7 @@ public class RideTimesController : Controller
                 List<App.BLL.DTO.AdminArea.RideTimeDTO> rideTimes = new();
                 foreach (var selectedRideTime in vm.SelectedRideTimes)
                 {
-                    var rideDateAndTime = schedule.StartDateAndTime.Date.Add(selectedRideTime.TimeOfDay);
+                    var rideDateAndTime = schedule!.StartDateAndTime.Date.Add(selectedRideTime.TimeOfDay);
                     if (selectedRideTime.TimeOfDay < schedule.StartDateAndTime.TimeOfDay)
                         rideDateAndTime = rideDateAndTime.AddDays(1);
 

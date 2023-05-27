@@ -9,14 +9,15 @@ public class RideTime : DomainEntityMetaId
 {
     public Guid DriverId { get; set; }
 
-    public DriverDTO? Driver { get; set; }
+    /*public DriverDTO? Driver { get; set; }
+    */
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.DriverArea.RideTime), Name = "Schedule")]
     public Guid ScheduleId { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.DriverArea.RideTime), Name = "Schedule")]
+    /*[Display(ResourceType = typeof(Resources.Areas.App.Domain.DriverArea.RideTime), Name = "Schedule")]*/
 
-    public ScheduleDTO? Schedule { get; set; } 
+    public Schedule? Schedule { get; set; } 
 
     [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.DriverArea.RideTime), Name = "RideDateAndTime")]

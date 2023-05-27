@@ -175,7 +175,7 @@ public class BookingsController : Controller
             var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(rideTimeId);
 
             vm.RideTimeId = rideTimeId;
-            vm.Schedules = new SelectList(new[] {rideTime.Schedule}, nameof(ScheduleDTO.Id),
+            vm.Schedules = new SelectList(new[] {rideTime!.Schedule}, nameof(ScheduleDTO.Id),
                 nameof(ScheduleDTO.ShiftDurationTime));
             vm.ScheduleId = rideTime.ScheduleId;
             vm.Drivers = new SelectList(new[] {rideTime.Driver}, nameof(DriverDTO.Id),
@@ -257,14 +257,6 @@ public class BookingsController : Controller
             booking.CreatedBy = User.GettingUserEmail();
             booking.UpdatedAt = booking.CreatedAt;
             booking.UpdatedBy = booking.CreatedBy;
-            
-            // Assign the Drive via the implicit related object creation
-            var drive = booking.Drive = new App.BLL.DTO.AdminArea.DriveDTO()
-            {
-                Id = new Guid(),
-                DriverId = booking.DriverId,
-                StatusOfDrive = StatusOfDrive.Awaiting
-            };
             
             _appBLL.Bookings.Add(booking);
 
@@ -465,7 +457,7 @@ public class BookingsController : Controller
         var roleName = User.GettingUserRoleName();
         
           var booking = await _appBLL.Bookings.BookingDeclineAsync(id, null, roleName, noIncludes:true, noTracking:true  );
-            booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
+            booking!.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             booking.IsDeclined = true;
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             booking.UpdatedBy = User.Identity!.Name;
@@ -474,7 +466,7 @@ public class BookingsController : Controller
             await _appBLL.SaveChangesAsync();
 
             var drive = await _appBLL.Drives.GettingDriveByBookingIdAsync(booking.Id, noIncludes:true, noTracking:true);
-            drive.IsDriveDeclined = true;
+            drive!.IsDriveDeclined = true;
             drive.StatusOfDrive = StatusOfDrive.Declined;
             drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
             drive.UpdatedBy = User.Identity!.Name;

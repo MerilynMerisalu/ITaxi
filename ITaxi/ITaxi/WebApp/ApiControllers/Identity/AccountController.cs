@@ -135,9 +135,9 @@ public class AccountController : ControllerBase
 
         var jwt = IdentityExtension.GenerateJwt(
             claimsPrincipal.Claims,
-            key: _configuration["JWT:Key"],
-            issuer: _configuration["JWT:Issuer"],
-            audience: _configuration["JWT:Issuer"],
+            key: _configuration["JWT:Key"]!,
+            issuer: _configuration["JWT:Issuer"]!,
+            audience: _configuration["JWT:Issuer"]!,
             expirationDateTime: refreshToken.TokenExpirationDateAndTime
         );
 
@@ -255,9 +255,9 @@ public class AccountController : ControllerBase
 
         var jwt = IdentityExtension.GenerateJwt(
             claimsPrincipal.Claims,
-            key: _configuration["JWT:Key"],
-            issuer: _configuration["JWT:Issuer"],
-            audience: _configuration["JWT:Issuer"],
+            key: _configuration["JWT:Key"]!,
+            issuer: _configuration["JWT:Issuer"]!,
+            audience: _configuration["JWT:Issuer"]!,
             expirationDateTime: refreshToken.TokenExpirationDateAndTime
         );
         await _userManager.AddToRoleAsync(appUser, "Admin");
@@ -380,9 +380,9 @@ public class AccountController : ControllerBase
 
         var jwt = IdentityExtension.GenerateJwt(
             claimsPrincipal.Claims,
-            key: _configuration["JWT:Key"],
-            issuer: _configuration["JWT:Issuer"],
-            audience: _configuration["JWT:Issuer"],
+            key: _configuration["JWT:Key"]!,
+            issuer: _configuration["JWT:Issuer"]!,
+            audience: _configuration["JWT:Issuer"]!,
             expirationDateTime: refreshToken.TokenExpirationDateAndTime
         );
         
@@ -455,7 +455,7 @@ public class AccountController : ControllerBase
             
             DriverAndDriverLicenseCategoryDTO = new App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO()
             {
-                DriverLicenseCategoryNames = driverLicenseCategoryNames
+                DriverLicenseCategoryNames = driverLicenseCategoryNames!
             }
             
         };
@@ -497,9 +497,9 @@ public class AccountController : ControllerBase
 
         var jwt = IdentityExtension.GenerateJwt(
             claimsPrincipal.Claims,
-            key: _configuration["JWT:Key"],
-            issuer:_configuration["JWT:Issuer"],
-            audience: _configuration["JWT:Issuer"],
+            key: _configuration["JWT:Key"]!,
+            issuer:_configuration["JWT:Issuer"]!,
+            audience: _configuration["JWT:Issuer"]!,
             expirationDateTime: DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")));
         
         
@@ -589,9 +589,9 @@ public class AccountController : ControllerBase
 
         var jwt = IdentityExtension.GenerateJwt(
             claimsPrincipal.Claims,
-            key: _configuration["JWT:Key"],
-            issuer: _configuration["JWT:Issuer"],
-            audience: _configuration["JWT:Issuer"],
+            key: _configuration["JWT:Key"]!,
+            issuer: _configuration["JWT:Issuer"]!,
+            audience: _configuration["JWT:Issuer"]!,
             expirationDateTime: DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")));
 
         var refreshToken = appUser.RefreshTokens.First();

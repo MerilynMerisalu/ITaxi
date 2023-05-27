@@ -14,44 +14,44 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.AppUser!.LastAndFirstName)
+            @Html.DisplayNameFor(model => model!.AppUser!.LastAndFirstName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AppUser!.LastName)
+            @Html.DisplayNameFor(model => model!.AppUser!.LastName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AppUser!.FirstName)
+            @Html.DisplayNameFor(model => model!.AppUser!.FirstName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DisabilityType)
+            @Html.DisplayNameFor(model => model!.DisabilityType)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AppUser!.DateOfBirth)
+            @Html.DisplayNameFor(model => model!.AppUser!.DateOfBirth)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AppUser!.Gender)
-        </th>
-
-        <th>
-            @Html.DisplayNameFor(model => model.AppUser!.PhoneNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AppUser!.Email)
+            @Html.DisplayNameFor(model => model!.AppUser!.Gender)
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.CreatedBy)
+            @Html.DisplayNameFor(model => model!.AppUser!.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model!.AppUser!.Email)
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
+            @Html.DisplayNameFor(model => model!.CreatedBy)
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
+            @Html.DisplayNameFor(model => model!.CreatedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model!.UpdatedBy)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model!.UpdatedAt)
         </th>
 
         <th></th>
@@ -62,48 +62,48 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.AppUser!.LastAndFirstName)
+                @Html.DisplayFor(modelItem => item!.AppUser!.LastAndFirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AppUser!.LastName)
+                @Html.DisplayFor(modelItem => item!.AppUser!.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AppUser!.FirstName)
+                @Html.DisplayFor(modelItem => item!.AppUser!.FirstName)
             </td>
             <td>
-                @Html.DisplayTextFor(modelItem => item.DisabilityType!.DisabilityTypeName)
+                @Html.DisplayTextFor(modelItem => item!.DisabilityType!.DisabilityTypeName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AppUser!.DateOfBirth)
+                @Html.DisplayFor(modelItem => item!.AppUser!.DateOfBirth)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AppUser!.Gender)
+                @Html.DisplayFor(modelItem => item!.AppUser!.Gender)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AppUser!.PhoneNumber)
+                @Html.DisplayFor(modelItem => item!.AppUser!.PhoneNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AppUser!.Email)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
+                @Html.DisplayFor(modelItem => item!.AppUser!.Email)
             </td>
 
             <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
+                @Html.DisplayFor(modelItem => item!.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item!.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item!.UpdatedBy)
             </td>
 
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+                @Html.DisplayFor(modelItem => item!.UpdatedAt)
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item!.Id">@Common.Edit</a> |
+                <a asp-action="Details" asp-route-id="@item!.Id">@Common.Details</a> |
+                <a asp-action="Delete" asp-route-id="@item!.Id">@Common.Delete</a>
             </td>
         </tr>
     }

@@ -8,7 +8,6 @@ using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.CustomerArea;
 
@@ -120,11 +119,7 @@ public class BookingsController : ControllerBase
         }
         
         var userId = User.GettingUserId();
-        if (booking.Customer!.AppUserId != userId)
-        {
-            return Forbid();
-        }
-        
+       
         // We need to resolve the following fields first:
         // DriverId
         // ScheduleId

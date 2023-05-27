@@ -342,14 +342,14 @@ public class IndexModel : PageModel
             using (var memoryStream = new MemoryStream())
             {
                 await Input.ImageFile!.CopyToAsync(memoryStream);
-                user.ProfilePhoto = memoryStream.ToArray();
+                user!.ProfilePhoto = memoryStream.ToArray();
                 user.ProfilePhotoName = Path.GetFileName(Input.ImageFile.FileName);
             }
 
             _context.Users.Update(user);
         }
 
-        Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
+        Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user!.ProfilePhoto!)}";
 
         await _context.SaveChangesAsync();
         return RedirectToPage();

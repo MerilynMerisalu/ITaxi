@@ -14,26 +14,26 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model!.Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PhotoURL)
+            @Html.DisplayNameFor(model => model!.PhotoURL)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Vehicle)
+            @Html.DisplayNameFor(model => model!.Vehicle)
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.CreatedBy)
+            @Html.DisplayNameFor(model => model!.CreatedBy)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
+            @Html.DisplayNameFor(model => model!.CreatedAt)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
+            @Html.DisplayNameFor(model => model!.UpdatedBy)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
+            @Html.DisplayNameFor(model => model!.UpdatedAt)
         </th>
 
         <th></th>
@@ -44,28 +44,28 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
+                @Html.DisplayFor(modelItem => item!.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PhotoURL)
+                @Html.DisplayFor(modelItem => item!.PhotoURL)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
+                @Html.DisplayFor(modelItem => item!.CreatedBy)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
+                @Html.DisplayFor(modelItem => item!.CreatedAt)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
+                @Html.DisplayFor(modelItem => item!.UpdatedBy)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
+                @Html.DisplayFor(modelItem => item!.UpdatedAt)
             </td>
 
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+                <a asp-action="Edit" asp-route-id="@item!.Id">@Common.Edit</a> |
+                <a asp-action="Details" asp-route-id="@item!.Id">@Common.Details</a> |
+                <a asp-action="Delete" asp-route-id="@item!.Id">@Common.Delete</a>
             </td>
         </tr>
     }

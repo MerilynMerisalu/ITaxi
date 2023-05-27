@@ -291,7 +291,7 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
     protected IQueryable<RideTime> CreateQuery(Guid? userId = null, string? roleName = null, 
         bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
+        var query = CreateQuery(noTracking, noIncludes, showDeleted);
         if (noTracking) query = query.AsNoTracking();
         if (noIncludes)
         {

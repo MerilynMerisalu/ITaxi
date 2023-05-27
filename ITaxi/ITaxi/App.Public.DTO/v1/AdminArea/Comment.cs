@@ -12,9 +12,11 @@ public class Comment : DomainEntityMetaId
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Comment),
         Name = "Drive")]
-    public DriveDTO? Drive { get; set; }
+    public Drive? Drive { get; set; }
 
-    public string DriveCustomerStr => $"{Drive!.Booking!.PickUpDateAndTime:g}";
+    // this is mapping, so it should be in the automapper!
+    // we CAN NOT use readonly properties, not without making the relationships very inefficient
+    public string DriveCustomerStr { get; set; }
 
     [MaxLength(1000)]
     [DataType(DataType.MultilineText)]

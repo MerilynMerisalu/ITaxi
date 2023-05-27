@@ -64,7 +64,7 @@ public class Booking: DomainEntityMetaId
     public StatusOfBooking StatusOfBooking { get; set; }
 
     public Guid? DriveId { get; set; }
-    public DriveDTO? Drive { get; set; }
+    public Drive? Drive { get; set; }
 
     public string DriveTime => $"{PickUpDateAndTime:g}";
 

@@ -14,29 +14,29 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Schedule!.Driver)
+            @Html.DisplayNameFor(model => model!.Schedule!.Driver)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Schedule)
+            @Html.DisplayNameFor(model => model!.Schedule)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RideDateTime)
+            @Html.DisplayNameFor(model => model!.RideDateTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IsTaken)
+            @Html.DisplayNameFor(model => model!.IsTaken)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreatedBy)
+            @Html.DisplayNameFor(model => model!.CreatedBy)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
+            @Html.DisplayNameFor(model => model!.CreatedAt)
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
+            @Html.DisplayNameFor(model => model!.UpdatedBy)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
+            @Html.DisplayNameFor(model => model!.UpdatedAt)
         </th>
 
         <th></th>
@@ -47,38 +47,38 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Schedule!.Driver!.AppUser!.LastAndFirstName)
+                @Html.DisplayFor(modelItem => item!.Schedule!.Driver!.AppUser!.LastAndFirstName)
             </td>
 
             <td>
-                @Html.DisplayFor(modelItem => item.Schedule!.ShiftDurationTime)
+                @Html.DisplayFor(modelItem => item!.Schedule!.ShiftDurationTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RideDateTime)
+                @Html.DisplayFor(modelItem => item!.RideDateTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsTaken)
+                @Html.DisplayFor(modelItem => item!.IsTaken)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
+                @Html.DisplayFor(modelItem => item!.CreatedBy)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
+                @Html.DisplayFor(modelItem => item!.CreatedAt)
             </td>
 
             <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
+                @Html.DisplayFor(modelItem => item!.UpdatedBy)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item!.UpdatedAt)
             </td>
 
 
             <td>
                 @*<a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |*@
-                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
-                @if (item.IsTaken)
+                <a asp-action="Details" asp-route-id="@item!.Id">@Common.Details</a> |
+                @if (item!.IsTaken)
                 {
                     <a hidden="hidden" asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
                 }

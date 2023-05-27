@@ -57,14 +57,7 @@ public class DriveDTO: DomainEntityMetaId
     
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.DriverArea.Drive), Name = "Finished")]
     public string DriveEndDateTimeDriverView => $"{DriveEndDateAndTime:g}";
-    public string DriveDescription
-    {
-        get =>
-            $"{Booking!.PickUpDateAndTime:g} " +
-            $"- {Driver!.AppUser!.LastAndFirstName}";
-
-       
-    }
-
+    public string DriveDescription { get; internal set; }
+    
     public string? DriveAcceptInformation => $"{StatusOfDrive} {AcceptedBy} {DriveAcceptedDateAndTime}";
 }

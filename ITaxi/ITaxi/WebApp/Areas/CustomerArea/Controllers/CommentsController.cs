@@ -46,8 +46,8 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
-        vm.DriverName = comment.Drive!.Driver!.AppUser!.LastAndFirstName;
+        vm.Drive = comment.DriveCustomerStr;
+        vm.DriverName = comment.DriverName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
 
 
@@ -115,12 +115,11 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        comment.Drive!.Booking!.PickUpDateAndTime = comment.Drive.Booking.PickUpDateAndTime;
-        vm.DriveTimeAndDriver = comment.Drive!.DriveDescription;
+        vm.DriveTimeAndDriver = $"{comment.DriveCustomerStr} - {comment.DriverName}";
 
         
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
-        vm.DriveId = comment.Drive!.Id;
+        vm.DriveId = comment.DriveId;
 
 
         return View(vm);
@@ -177,9 +176,9 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
+        vm.Drive = comment.DriveCustomerStr;
 
-        vm.DriverName = comment.Drive!.Driver!.AppUser!.LastAndFirstName;
+        vm.DriverName = comment.DriverName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
 
 

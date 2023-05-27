@@ -157,7 +157,6 @@ public class CommentsController : ControllerBase
         commentDTO.Id = Guid.NewGuid();
         commentDTO.DriveId = comment.DriveId;
         commentDTO.CommentText = comment.CommentText;
-        commentDTO.Drive!.Booking!.Customer!.AppUserId = userId;
         commentDTO.CreatedBy = User.Identity!.Name;
         commentDTO.CreatedAt = DateTime.Now;
         commentDTO.UpdatedBy = User.Identity.Name;

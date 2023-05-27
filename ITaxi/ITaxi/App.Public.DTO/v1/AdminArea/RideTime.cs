@@ -9,14 +9,14 @@ public class RideTime : DomainEntityMetaId
 {
     public Guid DriverId { get; set; }
 
-    public DriverDTO? Driver { get; set; }
+    public Driver? Driver { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "Schedule")]
     public Guid ScheduleId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "Schedule")]
 
-    public ScheduleDTO? Schedule { get; set; } 
+    public Schedule? Schedule { get; set; } 
 
     [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "RideDateAndTime")]
@@ -28,7 +28,7 @@ public class RideTime : DomainEntityMetaId
     
     public DateTime? ExpiryTime { get; set; } 
     
-    [ForeignKey(nameof(BookingDTO))]
+    [ForeignKey(nameof(Booking))]
     public Guid? BookingId { get; set; }
-    public BookingDTO? Booking { get; set; }
+    public Booking? Booking { get; set; }
 }

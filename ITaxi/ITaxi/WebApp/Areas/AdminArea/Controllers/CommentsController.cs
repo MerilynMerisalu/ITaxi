@@ -45,9 +45,9 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
-        vm.CustomerName = comment.Drive!.Booking!.Customer!.AppUser!.LastAndFirstName;
-        vm.DriverName = comment.Drive!.Booking!.Drive!.Driver!.AppUser!.LastAndFirstName;
+        vm.Drive = comment.DriveCustomerStr;
+        vm.CustomerName = comment.CustomerName;
+        vm.DriverName = comment.DriverName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.CreatedAt = comment.CreatedAt;
         vm.CreatedBy = comment.CreatedBy!;
@@ -117,11 +117,11 @@ public class CommentsController : Controller
 
         vm.Id = comment.Id;
         vm.Id = comment.Id;
-        comment.Drive!.Booking!.PickUpDateAndTime = comment.Drive.Booking.PickUpDateAndTime.ToLocalTime();
+        // comment.Drive!.Booking!.PickUpDateAndTime = comment.Drive.Booking.PickUpDateAndTime.ToLocalTime();
         
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
-        vm.DriveId = comment.Drive!.Id;
-        vm.DriveTimeAndDriver = comment.Drive.DriveDescription;
+        vm.DriveId = comment.DriveId;
+        vm.DriveTimeAndDriver = $"{comment.DriveCustomerStr} - {comment.DriverName}";
 
         return View(vm);
     }
@@ -176,9 +176,9 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.Drive = comment.Drive!.Booking!.PickUpDateAndTime.ToString("g");
-        vm.CustomerName = comment.Drive!.Booking!.Customer!.AppUser!.LastAndFirstName;
-        vm.DriverName = comment.Drive.Driver!.AppUser!.LastAndFirstName;
+        vm.Drive = comment.DriveCustomerStr;
+        vm.CustomerName = comment.CustomerName;
+        vm.DriverName = comment.DriverName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.CreatedAt = comment.CreatedAt;
         vm.CreatedBy = comment.CreatedBy!;

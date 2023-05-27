@@ -31,7 +31,8 @@ public class DrivesController : ControllerBase
         var roleName = User.GettingUserRoleName();
         var res = await _appBLL.Drives.GettingAllOrderedDrivesWithIncludesAsync(userId, roleName);
 
-        return Ok(res.Select(d => _mapper.Map<Drive>(d)));
+        var results = res.Select(d => _mapper.Map<Drive>(d));
+        return Ok(results);
     }
 
     // GET: api/Drives/5

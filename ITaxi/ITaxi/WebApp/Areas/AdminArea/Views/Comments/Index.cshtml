@@ -14,13 +14,13 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Drive)
+            @Html.DisplayNameFor(model => model.DriveCustomerStr)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Drive!.Booking!.Customer)
+            @Html.DisplayNameFor(model => model.CustomerName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Drive!.Booking!.Driver)
+            @Html.DisplayNameFor(model => model.DriverName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CommentText)
@@ -43,15 +43,15 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Drive!.Booking!.PickUpDateAndTime)
+                @Html.DisplayFor(modelItem => item.DriveCustomerStr)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Drive!.Booking!.Customer!.AppUser!.LastAndFirstName)
+                @Html.DisplayFor(modelItem => item.CustomerName)
             </td>
 
 
             <td>
-                @Html.DisplayFor(modelItem => item.Drive!.Driver!.AppUser!.LastAndFirstName)
+                @Html.DisplayFor(modelItem => item.DriverName)
             </td>
 
             <td>

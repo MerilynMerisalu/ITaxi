@@ -170,6 +170,6 @@ public class PhotosController : Controller
 
     private bool PhotoExists(Guid id)
     {
-        return (_appBLL.Photos?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_appBLL.Photos?.Any(e => e!.Id == id)).GetValueOrDefault();
     }
 }

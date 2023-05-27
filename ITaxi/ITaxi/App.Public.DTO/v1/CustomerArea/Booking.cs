@@ -22,7 +22,7 @@ public class Booking : DomainEntityMetaId
     
     // [Display(ResourceType = typeof(Booking), Name = nameof(Customer))]
 
-     public Customer? Customer { get; set; }
+     /*public Customer? Customer { get; set; }*/
     
     public Guid VehicleTypeId { get; set; }
     public VehicleType? VehicleType { get; set; }

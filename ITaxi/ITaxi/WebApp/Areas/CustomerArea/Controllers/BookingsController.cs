@@ -123,7 +123,7 @@ public class BookingsController : Controller
 
             vm.RideTimeId = rideTimeId;
             
-            vm.ScheduleId = rideTime.ScheduleId;
+            vm.ScheduleId = rideTime!.ScheduleId;
             
             vm.DriverId = rideTime.DriverId;
             vm.VehicleId = rideTime.Schedule!.VehicleId;
@@ -199,7 +199,7 @@ public class BookingsController : Controller
 
             var rideTimeLookup =
                 await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(vm.RideTimeId, userId, null, true, false);
-            booking.ScheduleId = rideTimeLookup.ScheduleId;
+            booking.ScheduleId = rideTimeLookup!.ScheduleId;
             booking.DriverId = rideTimeLookup.Schedule!.DriverId;
             booking.VehicleId = rideTimeLookup.Schedule!.VehicleId;
             booking.CreatedAt = DateTime.Now.ToLocalTime();

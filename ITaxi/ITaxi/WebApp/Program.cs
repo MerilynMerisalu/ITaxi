@@ -72,7 +72,7 @@ builder.Services.AddSingleton<IConfigureOptions<MvcOptions>,
 var supportedCultures = builder.Configuration
     .GetSection("SupportedCultures")
     .GetChildren()
-    .Select(x => new CultureInfo(x.Value))
+    .Select(x => new CultureInfo(x.Value!))
     .ToArray();
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
@@ -83,8 +83,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedUICultures = supportedCultures;
     // if nothing is found, use this
     options.DefaultRequestCulture =
-        new RequestCulture(builder.Configuration["DefaultCulture"], builder.Configuration["DefaultCulture"]);
-    options.SetDefaultCulture(builder.Configuration["DefaultCulture"]);
+        new RequestCulture(builder.Configuration["DefaultCulture"]!, builder.Configuration["DefaultCulture"]!);
+    options.SetDefaultCulture(builder.Configuration["DefaultCulture"]!);
 
     options.RequestCultureProviders = new List<IRequestCultureProvider>
     {
@@ -113,7 +113,7 @@ builder.Services
 
 #warning secret key not added to the generated jwt which makes it not verified
             ValidateAudience = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!)),
             ClockSkew = TimeSpan.Zero // remove delay of token when expire
         };
     });

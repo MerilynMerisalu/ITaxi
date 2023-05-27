@@ -213,6 +213,18 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
             .FirstOrDefault(b => b.Id.Equals(id)));
     }
 
+    public override BookingDTO Add(BookingDTO booking)
+    {
+        // Assign the Drive via the implicit related object creation
+        booking.Drive = new DriveDTO
+        {
+            Id = new Guid(),
+            DriverId = booking.DriverId,
+            StatusOfDrive = StatusOfDrive.Awaiting
+        };
+        return base.Add(booking);
+    }
+
     protected  IQueryable<Booking> CreateQuery(Guid? userId = null, string? roleName = null,bool noTracking = true, 
         bool noIncludes = false, bool showDeleted = false)
     {
