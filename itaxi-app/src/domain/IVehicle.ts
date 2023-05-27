@@ -6,16 +6,15 @@ export interface IVehicle extends IBaseEntity {
     vehicleTypeId: string,
     vehicleType: {
         vehicleTypeName: string
-    }
-    
+    },
     vehicleMarkId: string,
     vehicleMark: {
         vehicleMarkName: string
-    }
+    },
     vehicleModelId: string,
     vehicleModel: {
         vehicleModelName: string
-    }
+    },
     vehiclePlateNumber: string,
     manufactureYear: number
     numberOfSeats: number,

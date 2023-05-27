@@ -30,6 +30,7 @@ const VehicleDelete = () => {
         }
 
     }, [id, jwtLoginResponse, vehicleService]);
+    
     const deleteAction = async (event: FormEvent) =>{
         event.preventDefault()
         console.log('deleteAction id test:', id)

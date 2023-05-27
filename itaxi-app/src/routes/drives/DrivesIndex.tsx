@@ -43,7 +43,7 @@ const DrivesIndex = () => {
 <table className="table">
     <thead>
     <tr>
-        {/* <th>
+        <th>
             Schedule
         </th>
         <th>
@@ -82,12 +82,12 @@ const DrivesIndex = () => {
         </th>
         <th>
             Status of Drive
-        </th> */}
+        </th> 
 
         <th>
             Comment
         </th>           
-                {/* <th>
+                <th>
                     Drive Decline Date and Time
                 </th>
             
@@ -99,60 +99,61 @@ const DrivesIndex = () => {
                 </th>
                 <th>
                     Drive End Date and Time
-                </th> */}
+                </th> 
         <th></th>   
     </tr>
     </thead>
     <tbody>
     {data.map(d => (
         <tr key={d.id}>
-            {/* <td>
-                {d.bookingDTO.scheduleDTO.shiftDurationTime}
-            </td>
             <td>
-                {d.bookingDTO.customerDTO.appUserDTO.lastAndFirstName}
-            </td>
-            <td>
-                {d.bookingDTO.customerDTO.disabilityTypeDTO.disabilityTypeName}
-            </td> 
-            <td>
-                {d.bookingDTO.PickUpDateAndTime}
+                {d.booking.schedule.shiftDurationTime}
             </td>
            <td>
-                {d.bookingDTO.cityDTO.cityName}
+                {d.booking.customer.appUser.lastAndFirstName}
+            </td>
+           <td>
+                {d.booking.customer.disabilityType.disabilityTypeName}
+            </td> 
+            <td>
+                {d.booking.pickUpDateAndTime}
+            </td>
+           <td>
+                {d.booking.city.cityName}
             </td>
             <td>
-                {d.bookingDTO.pickupAddress}
+                {d.booking.pickupAddress}
             </td>
             <td>
-                {d.bookingDTO.destinationAddress}
-            </td> */}
-            {/* <td>
-                {d?.booking?.vehicleType?.vehicleTypeName}
+                {d.booking.destinationAddress}
+            </td> 
+            <td>
+                {d.booking.vehicle.vehicleType.vehicleTypeName}
             </td>
             <td>
-                {d.bookingDTO.vehicleDTO.vehicleIdentifier}
+                {d.booking.vehicle.vehicleIdentifier}
             </td>
             <td>
-                {d.bookingDTO.numberOfPassengers}
+                {d.booking.numberOfPassengers}
             </td>
             <td>
-                {d.bookingDTO.hasAnAssistant}
+                <input checked={true} className="check-box" disabled={true} type="checkbox" />
             </td>
             <td>
             {(() => {
-                switch (d.bookingDTO.statusOfBooking) {
-                    case 1:     return "Awaiting";
+                switch (d.booking.statusOfBooking) {
+                    case 1:     return "Awaiting for Confirmation";
                     case 2:     return "Accepted";
                     case 3:     return "Declined";
                     default:    return "Awaiting";
                     }
             })()}
             </td>
+
             <td>
             {(() => {
                 switch (d.statusOfDrive) {
-                    case 1:     return "Awaiting";
+                    case 1:     return "Awaiting for Confirmation";
                     case 2:     return "Accepted";
                     case 3:     return "Declined";
                     case 4:     return "Started";
@@ -160,11 +161,12 @@ const DrivesIndex = () => {
                     default:    return "Awaiting";
                     }
             })()}
-            </td>  */}
-            <td>
-                {d.comment.commentText}
-            </td>   
+            </td> 
 
+           <td>
+                {d.comment.commentText}
+            </td>     
+ 
             <td>
             </td>
             <td>

@@ -29,6 +29,7 @@ import ScheduleDetails from "./routes/schedules/ScheduleDetails";
 import ScheduleDelete from "./routes/schedules/ScheduleDelete";
 import ScheduleCreate from "./routes/schedules/ScheduleCreate";
 import DrivesIndex from "./routes/drives/DrivesIndex";
+import RideTimesIndex from "./routes/rideTimes/RideTimesIndex";
 
 const router = createBrowserRouter([
   {
@@ -108,6 +109,10 @@ const router = createBrowserRouter([
       {
         path: "drives",
         element: <DrivesIndex />
+      },
+      {
+        path: "rideTimes",
+        element: <RideTimesIndex />
       },
 
     ],

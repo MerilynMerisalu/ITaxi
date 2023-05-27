@@ -93,7 +93,7 @@ const VehiclesIndex = () => {
                                     <Link to={`/vehicle/edit/${v.id}`}>Edit</Link> |
                                     <Link to={`/vehicle/details/${v.id}`}>Details</Link> |
                                     <Link to={`/vehicle/delete/${v.id}`}>Delete</Link> |
-                                    <Link to={`/vehicle/gallery/${v.id}`}>Gallery</Link> |
+                                    <Link to={`/vehicle/gallery/${v.id}`}>Gallery</Link> 
                                 </td>
                             </tr>
 
