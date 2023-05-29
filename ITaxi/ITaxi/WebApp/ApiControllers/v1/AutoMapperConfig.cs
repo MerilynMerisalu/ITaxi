@@ -78,6 +78,7 @@ public class AutoMapperConfig: Profile
         CreateMap<App.Public.DTO.v1.AdminArea.Customer, App.BLL.DTO.AdminArea.CustomerDTO>().ReverseMap();
         
         CreateMap<App.Public.DTO.v1.AdminArea.Booking, App.BLL.DTO.AdminArea.BookingDTO>().ReverseMap();
+        CreateMap<App.Public.DTO.v1.CustomerArea.Booking, App.BLL.DTO.AdminArea.BookingDTO>().ReverseMap();
         
         CreateMap<App.Public.DTO.v1.AdminArea.Drive, App.BLL.DTO.AdminArea.DriveDTO>().ReverseMap();
         CreateMap<App.Public.DTO.v1.DriverArea.Drive, App.BLL.DTO.AdminArea.DriveDTO>().ReverseMap();

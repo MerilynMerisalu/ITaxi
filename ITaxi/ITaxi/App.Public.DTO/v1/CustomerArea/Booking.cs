@@ -14,10 +14,10 @@ public class Booking : DomainEntityMetaId
     // [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = nameof(Schedule))]
     // public ScheduleDTO? Schedule { get; set; }
     
-    // public Guid DriverId { get; set; }
+    public Guid DriverId { get; set; }
     
-    // [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = nameof(Driver) )]
-    // public DriverDTO? Driver { get; set; }
+     //[Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = "" )]
+     public Driver? Driver { get; set; }
      public Guid CustomerId { get; set; }
     
     // [Display(ResourceType = typeof(Booking), Name = nameof(Customer))]
@@ -26,13 +26,13 @@ public class Booking : DomainEntityMetaId
     
     public Guid VehicleTypeId { get; set; }
     public VehicleType? VehicleType { get; set; }
-    // public Guid VehicleId { get; set; }
-    // [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = nameof(Vehicle))]
-    // public VehicleDTO? Vehicle { get; set; }
+    public Guid VehicleId { get; set; }
+     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = nameof(Vehicle))]
+     public Vehicle? Vehicle { get; set; }
     public Guid CityId { get; set; }
     
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = nameof(City))]
-    public City City { get; set; }
+    public City? City { get; set; }
 
     [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = "PickUpDateAndTime")]
@@ -61,8 +61,8 @@ public class Booking : DomainEntityMetaId
     [DataType(DataType.MultilineText)]
     // [Display(ResourceType = typeof(Booking), Name = nameof(AdditionalInfo))]
     public string? AdditionalInfo { get; set; }
-    // [Display(ResourceType = typeof(Booking), Name = "StatusOfBooking")]
-    // public StatusOfBooking StatusOfBooking { get; set; }
+     //[Display(ResourceType = typeof(Booking), Name = "StatusOfBooking")]
+     public StatusOfBooking StatusOfBooking { get; set; }
 
     // public Guid? DriveId { get; set; }
     // public DriveDTO? Drive { get; set; }

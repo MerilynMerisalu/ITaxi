@@ -87,7 +87,7 @@ const displayIfLoggedInRole= (role : string) => {
             
             </NavDropdown>
             <NavDropdown style={displayIfLoggedInRole("Customer")} title="Activities" id="basic-nav-dropdown">
-              <NavDropdown.Item as={Link} to="/booking/index">Booking</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/bookings/">Bookings</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/comments">Comments</NavDropdown.Item>
               
             

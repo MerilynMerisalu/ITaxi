@@ -446,4 +446,5 @@ public class BookingsController : Controller
         var results = await _appBLL.Bookings.SearchByCityAsync(search, userId, roleName);
         return View(nameof(Index), results);
     }
+    
 }

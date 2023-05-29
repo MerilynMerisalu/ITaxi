@@ -9,6 +9,7 @@ const ScheduleDetails = () => {
     const { id } = useParams();
     const { jwtLoginResponse, setJwtLoginResponse } = useContext(JwtContext);
     const [data, setData] = useState<ISchedule | null>(null)
+    const { language } = useContext(JwtContext)
     const scheduleService = new ScheduleService();
     console.log('data test:', data)
     useEffect(() => {
@@ -27,7 +28,29 @@ const ScheduleDetails = () => {
                 )
         }
 
-    }, [id]);
+    }, [id, language]);
+
+    function pad (s: number) {
+        const padded = `0${s}`
+        return padded.slice(-2)
+    }
+    console.log('language', language)
+
+    function formatDate (iso: string) {
+        const date = new Date(iso)
+        const year = pad(date.getFullYear())
+        const month = pad(date.getMonth() + 1)
+        const day = pad(date.getDate())
+        const hours = pad(date.getHours())
+        const minutes = pad(date.getMinutes())
+
+        if (language === 'en-GB') {
+            return `${year}-${month}-${day} ${hours}:${minutes}`
+        }
+        if (language === 'et') {
+            return `${day}.${month}.${year} ${hours}:${minutes}`
+        }
+    }
 
     return (
         <div className="container">
@@ -38,7 +61,6 @@ const ScheduleDetails = () => {
                 <div>
                     <h4>Schedule</h4>
                     <hr />
-
 
                     <dl className="row">
                         <dt className="col-sm-2">
@@ -51,13 +73,13 @@ const ScheduleDetails = () => {
                             Shift Start Date and Time
                         </dt>
                         <dd className="col-sm-10">
-                            {data?.startDateAndTime}
+                            {formatDate(data?.startDateAndTime??"")}
                         </dd>
                         <dt className="col-sm-2">
                             Shift End Date and Time
                         </dt>
                         <dd className="col-sm-10">
-                            {data?.endDateAndTime}
+                            {formatDate(data?.endDateAndTime??"")}
                         </dd>
 
                     </dl>

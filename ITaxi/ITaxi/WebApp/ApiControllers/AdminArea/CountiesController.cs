@@ -22,12 +22,14 @@ public class CountiesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
     private readonly IMapper _mapper;
+    private readonly ILogger<CountiesController> _logger;
 
     /// <summary>
     /// Constructor for counties api controller
     /// </summary>
     /// <param name="appBLL">AppBLL</param>
     /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea.CountyDTO to Public.DTO.v1.AdminArea.County</param>
+    /// <param name="logger"></param>
     public CountiesController(IAppBLL appBLL, IMapper mapper)//<App.Public.DTO.v1.AdminArea.County, App.BLL.DTO.AdminArea>)
     {
         _appBLL = appBLL;

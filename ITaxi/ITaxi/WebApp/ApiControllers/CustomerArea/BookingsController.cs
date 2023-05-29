@@ -201,6 +201,21 @@ public class BookingsController : ControllerBase
         return NoContent();
     }
 
+    [HttpPut("{id}")]
+    [Route("/Decline")]
+    public async Task<IActionResult> Decline(Guid id)
+    {
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName, false);
+        if (booking != null)
+        {
+            await _appBLL.Bookings.BookingDeclineAsync(booking.Id, userId, roleName);
+            
+        }
+
+        return NoContent();
+    }
     private bool BookingExists(Guid id)
     {
         return _appBLL.Bookings.Exists(id);

@@ -32,6 +32,8 @@ import DrivesIndex from "./routes/drives/DrivesIndex";
 import RideTimesIndex from "./routes/rideTimes/RideTimesIndex";
 import RideTimeDetails from "./routes/rideTimes/RideTimeDetails";
 import RideTimeDelete from "./routes/rideTimes/RideTimeDelete";
+import BookingDetails from "./routes/booking/BookingDetails";
+import BookingDecline from "./routes/booking/BookingDecline";
 
 const router = createBrowserRouter([
   {
@@ -85,8 +87,16 @@ const router = createBrowserRouter([
         element: <VehicleCreate />
       },
       {
-        path: "booking/index",
+        path: "bookings/",
         element: <BookingIndex />
+      },
+      {
+        path: "booking/details/:id",
+        element: <BookingDetails />,
+      },
+      {
+        path: "booking/decline/:id",
+        element: <BookingDecline/>,
       },
       {
         path: "schedules",
