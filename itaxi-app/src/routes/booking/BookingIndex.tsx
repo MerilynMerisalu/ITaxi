@@ -144,13 +144,10 @@ const BookingIndex = () => {
             </td>  
               
             <td>
-                <Link to={`/booking/details/${b.id}`}>Details</Link>
-                
-            </td>
-            <td>
+                <Link to={`/booking/details/${b.id}`}>Details </Link> |
                 <Link to={`/booking/decline/${b.id}`}>Decline</Link>
             </td>
-
+            
         </tr>
         ))}
     </tbody>
