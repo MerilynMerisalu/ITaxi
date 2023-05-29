@@ -27,7 +27,7 @@ const LoginFormView = (props: IProps) => {
     <div className="row">
     <div className="col-md-4">
         <section>
-            <form id="account" method="post">
+            <form className='form-signin' id="account" method="post">
                 <hr/>
                 
                 <h2>Use a local account to log in</h2>

@@ -3,22 +3,48 @@ import { IBooking } from "../domain/IBooking";
 import { BaseEntityService } from "./BaseEntityService";
 import { IdentityService } from "./IdentityService";
 
- export class BookingService extends BaseEntityService<IBooking> {
-    constructor(){
-        super('v1/customerarea/bookings');
-    }
-    
-     getBookingStatus (statusOfBooking: number): string | undefined {
-        switch (statusOfBooking) {
-            case 1:     return "Awaiting for Confirmation";
-            case 2:     return "Accepted";
-            case 3:     return "Declined";
-            default:    return "Awaiting";
-            }
-    
+export class BookingService extends BaseEntityService<IBooking> {
+  constructor() {
+    super('v1/customerarea/bookings');
+  }
 
-}
-async declineDetails(id?: string): Promise<IBooking | undefined> {
+  getBookingStatus(statusOfBooking: number): string | undefined {
+    switch (statusOfBooking) {
+      case 1: return "Awaiting for Confirmation";
+      case 2: return "Accepted";
+      case 3: return "Declined";
+      default: return "Awaiting";
+    }
+  }
+  
+
+  async details(date?: string): Promise<IBooking | undefined> {
+    try {
+      let user = IdentityService.getCurrentUser();
+      let language = IdentityService.getLanguage();
+      if (user) {
+        let response = await this.axios.get(`/${date}`,
+          {
+            headers: {
+              'Authorization': 'Bearer ' + user.token,
+              'Accept-Language': language
+            }
+          });
+        if (response.status === 200) {
+          return response.data;
+        }
+      }
+      else {
+        throw Error("User is not logged in");
+      }
+      return undefined;
+    } catch (e) {
+      console.log('Details -  error: ', (e as Error).message);
+      return undefined;
+    }
+  }
+
+  async declineDetails(id?: string): Promise<IBooking | undefined> {
     try {
       let user = IdentityService.getCurrentUser();
       if (user) {

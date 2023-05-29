@@ -34,6 +34,7 @@ import RideTimeDetails from "./routes/rideTimes/RideTimeDetails";
 import RideTimeDelete from "./routes/rideTimes/RideTimeDelete";
 import BookingDetails from "./routes/booking/BookingDetails";
 import BookingDecline from "./routes/booking/BookingDecline";
+import Print from "./routes/drives/Print";
 
 const router = createBrowserRouter([
   {
@@ -121,6 +122,10 @@ const router = createBrowserRouter([
       {
         path: "drives",
         element: <DrivesIndex />
+      },
+      {
+        path: "drives/print",
+        element: <Print/>
       },
       {
         path: "rideTimes",

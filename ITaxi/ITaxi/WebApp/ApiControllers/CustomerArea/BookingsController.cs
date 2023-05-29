@@ -202,7 +202,7 @@ public class BookingsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Route("/Decline")]
+    
     public async Task<IActionResult> Decline(Guid id)
     {
         var userId = User.GettingUserId();

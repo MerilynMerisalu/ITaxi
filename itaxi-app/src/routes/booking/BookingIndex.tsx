@@ -4,6 +4,7 @@ import { IBooking } from '../../domain/IBooking';
 import axios from 'axios';
 import { BookingService } from '../../services/BookingService';
 import { Link } from 'react-router-dom';
+import { StatusOfBooking } from '../../utilities/enums';
 
 const bookingService = new BookingService();
 const BookingIndex = () => {
@@ -49,7 +50,7 @@ const BookingIndex = () => {
       }
   }
 
-  
+  console.log('data', data)
 
   return (
     <div className="container">
@@ -141,11 +142,15 @@ const BookingIndex = () => {
             </td>
             <td>
             {bookingService.getBookingStatus(b.statusOfBooking)}
-            </td>  
+            </td>
+            {b.statusOfBooking !== 3} 
+            <td style={{display: "none"}} >
+                
+            </td> 
               
             <td>
                 <Link to={`/booking/details/${b.id}`}>Details </Link> |
-                <Link to={`/booking/decline/${b.id}`}>Decline</Link>
+                {b.statusOfBooking !== 3 && <Link to={`/booking/decline/${b.id}`}>Decline{b.statusOfBooking}</Link>}
             </td>
             
         </tr>

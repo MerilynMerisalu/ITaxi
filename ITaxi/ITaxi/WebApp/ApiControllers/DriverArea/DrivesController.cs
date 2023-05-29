@@ -7,6 +7,7 @@ using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Rotativa.AspNetCore;
 
 namespace WebApp.ApiControllers.DriverArea;
 
@@ -103,12 +104,12 @@ public class DrivesController : ControllerBase
         return _appBLL.Drives.Exists(id);
     }
     
-    [Route("Print")]
+    /*[Route("Print")]
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Print()
+    public async Task<string> Print()
     {
         var roleName = User.GettingUserRoleName();
         var userId = User.GettingUserId();
@@ -116,7 +117,11 @@ public class DrivesController : ControllerBase
         var drives = await _appBLL.Drives.PrintAsync( userId, roleName );
 
         var mappedDrives = drives.Select(d => _mapper.Map<Drive>(d));
-        return Ok(mappedDrives);
+        return Url.ActionLink("Print")!  ; ;
 
     }
+    */
+    
+    
+
 }
