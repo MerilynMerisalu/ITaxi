@@ -13,7 +13,7 @@ public class RideTimeDTO: DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "Schedule")]
     public Guid ScheduleId { get; set; }
 
-    /*[Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "Schedule")]*/
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.RideTime), Name = "Schedule")]
 
     public ScheduleDTO? Schedule { get; set; } 
 

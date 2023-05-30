@@ -39,6 +39,7 @@ import CommentIndex from "./routes/comment/CommentIndex";
 import CommentDetails from "./routes/comment/CommentDetails";
 import CommentDelete from "./routes/comment/CommentDelete";
 import DriveAccept from "./routes/drives/DriveAccept";
+import RideTimeCreate from "./routes/rideTimes/RideTimeCreate";
 
 const router = createBrowserRouter([
   {
@@ -136,9 +137,15 @@ const router = createBrowserRouter([
         element: <Print/>
       },
       {
+        path: "rideTimes/create",
+        element: <RideTimeCreate />
+      },
+
+      {
         path: "rideTimes",
         element: <RideTimesIndex />
       },
+
       {
         path: "rideTimes/details/:id",
         element: <RideTimeDetails />
