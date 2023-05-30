@@ -15,7 +15,7 @@ public class Comment : DomainEntityMetaId
         Name = "Drive")]
     public Drive? Drive { get; set; }
 
-    public string DriveCustomerStr => $"{Drive!.Booking!.PickUpDateAndTime:g}";
+    
 
     [MaxLength(1000)]
     [DataType(DataType.MultilineText)]

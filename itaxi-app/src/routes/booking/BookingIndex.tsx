@@ -74,7 +74,7 @@ const BookingIndex = () => {
         </th>
 
         <th>
-            VehicleType
+            Vehicle Type
         </th>
         <th>
             Vehicle

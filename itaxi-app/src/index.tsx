@@ -35,6 +35,10 @@ import RideTimeDelete from "./routes/rideTimes/RideTimeDelete";
 import BookingDetails from "./routes/booking/BookingDetails";
 import BookingDecline from "./routes/booking/BookingDecline";
 import Print from "./routes/drives/Print";
+import CommentIndex from "./routes/comment/CommentIndex";
+import CommentDetails from "./routes/comment/CommentDetails";
+import CommentDelete from "./routes/comment/CommentDelete";
+import DriveAccept from "./routes/drives/DriveAccept";
 
 const router = createBrowserRouter([
   {
@@ -124,6 +128,10 @@ const router = createBrowserRouter([
         element: <DrivesIndex />
       },
       {
+        path: "drive/accept/:id",
+        element: <DriveAccept/>,
+      },
+      {
         path: "drives/print",
         element: <Print/>
       },
@@ -138,6 +146,26 @@ const router = createBrowserRouter([
       {
         path: "rideTimes/delete/:id",
         element: <RideTimeDelete />,
+      },
+      {
+        path: "comments",
+        element: <CommentIndex />
+      },
+      /* {
+        path: "comments/create",
+        element: <CommentCreate />
+      },  */
+      /* {
+        path: "comment/edit/:id",
+        element: <CommentEdit />
+      }, */
+      {
+        path: "comment/details/:id",
+        element: <CommentDetails />
+      },
+      {
+        path: "comment/delete/:id",
+        element: <CommentDelete />,
       },
 
     ],

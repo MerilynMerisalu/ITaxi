@@ -98,7 +98,21 @@ public class DrivesController : ControllerBase
 
         return NoContent();
     }*/
+    [HttpPut("{id}")]
+    
+    public async Task<IActionResult> Accept (Guid id)
+    {
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, userId, roleName, false);
+        if (drive != null)
+        {
+            await _appBLL.Drives.AcceptingDriveAsync(drive.Id, userId, roleName);
+        }
 
+        return NoContent();
+    }
+    
     private bool DriveExists(Guid id)
     {
         return _appBLL.Drives.Exists(id);

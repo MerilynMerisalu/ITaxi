@@ -19,6 +19,9 @@ public static class DataHelper
         await using var context = serviceScope
             .ServiceProvider.GetService<AppDbContext>();
 
+        using var userManager = serviceScope.ServiceProvider.GetService<UserManager<AppUser>>();
+        using var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<AppRole>>();
+
         if (context == null) throw new ApplicationException("Problem in services. No db context.");
 
         // TODO - Check database state
@@ -29,8 +32,7 @@ public static class DataHelper
 
         // userManager and roleManager
 
-        using var userManager = serviceScope.ServiceProvider.GetService<UserManager<AppUser>>();
-        using var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<AppRole>>();
+
 
         if (userManager == null || roleManager == null) Console.Write("Cannot instantiate userManager or rolemanager!");
 
@@ -39,7 +41,14 @@ public static class DataHelper
 
         if (configuration.GetValue<bool>("DataInitialization:MigrateDatabase")) await context.Database.MigrateAsync();
 
-        if (configuration.GetValue<bool>("DataInitialization:SeedIdentity"))
+        await SeedDatabase(context, userManager, roleManager,
+            configuration.GetValue<bool>("DataInitialization:SeedIdentity"),
+            configuration.GetValue<bool>("DataInitialization:SeedData"));
+    }
+
+    public static async Task SeedDatabase(AppDbContext context, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, bool seedIdentity, bool seedData)
+    {
+        if(seedIdentity)
         {
             var roles = new (string name, string displayName)[]
             {
@@ -96,7 +105,7 @@ public static class DataHelper
                     Console.WriteLine("Cant create role! Error: " + identityError.Description);
         }*/
 
-            if (configuration.GetValue<bool>("DataInitialization:SeedData"))
+            if (seedData)
             {
                 // Initialize all vehicle Types
                 //App.Resources.Areas.App.Domain.AdminArea.VehicleType.

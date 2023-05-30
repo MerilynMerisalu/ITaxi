@@ -63,8 +63,6 @@ public class Booking : DomainEntityMetaId
     public string DeclineDateAndTimeCustomerView => $"{DeclineDateAndTime:g}";
 
     public string? ConfirmedBy { get; set; }
-    
     public string? DeclinedBy { get; set; }
-
-   
+    
 }

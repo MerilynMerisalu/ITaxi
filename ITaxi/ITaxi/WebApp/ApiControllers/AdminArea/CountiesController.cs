@@ -161,7 +161,7 @@ public class CountiesController : ControllerBase
     
     public async Task<IActionResult> DeleteCounty(Guid id)
     {
-        var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id, true, true);
         if (county == null) return NotFound();
         if (await _appBLL.Cities.HasAnyCitiesAsync(county.Id))
         {

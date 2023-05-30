@@ -204,11 +204,12 @@ const DrivesIndex = () => {
 
 
                                 <td>
-                                    <p style={{ display: "inline" }}><a href="/DriverArea/Drives/Accept/89014f28-af0c-460b-38f8-08db5d1db589">Accept</a>
+                                    <Link to={`/drive/accept/${d.id}`}>Accept</Link> |
+                                    {/* <p style={{ display: "inline" }}><a href="/DriverArea/Drives/Accept/89014f28-af0c-460b-38f8-08db5d1db589">Accept</a>
                                         |</p>
-                                    <p style={{ display: "inline" }}><a href="/DriverArea/Drives/Decline/89014f28-af0c-460b-38f8-08db5d1db589">Decline</a> |</p>
+                                    <p style={{ display: "inline" }}><a href="/DriverArea/Drives/Decline/89014f28-af0c-460b-38f8-08db5d1db589">Decline</a> |</p> */}
 
-                                    <Link to={`/drive/details/${d.id}`}>Details</Link> |
+                                    <Link to={`/drive/details/${d.id}`}>Details</Link> 
 
                                 </td>
                             </tr>

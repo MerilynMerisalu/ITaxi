@@ -9,22 +9,19 @@ import { Link } from "react-router-dom";
 import { VehicleService } from "../../services/VehicleService";
 import { VehicleTypeService } from "../../services/VehicleTypeService";
 import { useNavigate } from "react-router-dom";
-
 import { IVehicleType } from "../../domain/IVehicleType";
 import { IVehicleMark } from "../../domain/IVehicleMark";
 import { IVehicleData } from "../../dto/IVehicleData";
 import { IVehicleFormData } from "../../dto/IVehicleFormData";
 import { JwtContext } from "../Root";
-
 import axios from "axios";
 import { VehicleMarkService } from "../../services/VehicleMarkService";
 import { VehicleModelService } from "../../services/VehicleModelService";
 import { IVehicleModel } from "../../domain/IVehicleModel";
-
 import { VehicleAvailability } from "../../utilities/enums";
 import VehicleForm from "./VehicleForm";
-const availabilityEntries = Object.entries(VehicleAvailability);
 
+const availabilityEntries = Object.entries(VehicleAvailability);
 const service = new VehicleService();
 
 const VehicleCreate = () => {
@@ -40,6 +37,7 @@ const VehicleCreate = () => {
       console.warn("Vehicle create not OK", status);
     }
   };
+
   return (
     <div className="container">
       <main role="main" className="pb-3">

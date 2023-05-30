@@ -202,7 +202,6 @@ public class BookingsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    
     public async Task<IActionResult> Decline(Guid id)
     {
         var userId = User.GettingUserId();
@@ -216,6 +215,8 @@ public class BookingsController : ControllerBase
 
         return NoContent();
     }
+    
+    
     private bool BookingExists(Guid id)
     {
         return _appBLL.Bookings.Exists(id);

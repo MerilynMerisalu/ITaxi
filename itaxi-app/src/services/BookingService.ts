@@ -1,5 +1,4 @@
 import { IBooking } from "../domain/IBooking";
-
 import { BaseEntityService } from "./BaseEntityService";
 import { IdentityService } from "./IdentityService";
 
@@ -17,7 +16,6 @@ export class BookingService extends BaseEntityService<IBooking> {
     }
   }
   
-
   async details(date?: string): Promise<IBooking | undefined> {
     try {
       let user = IdentityService.getCurrentUser();

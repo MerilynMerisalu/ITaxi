@@ -7,21 +7,17 @@ import {
 } from "react";
 import { VehicleService } from "../../services/VehicleService";
 import { VehicleTypeService } from "../../services/VehicleTypeService";
-
 import { IVehicleType } from "../../domain/IVehicleType";
 import { IVehicleMark } from "../../domain/IVehicleMark";
 import { IVehicleFormData } from "../../dto/IVehicleFormData";
 import { JwtContext } from "../Root";
-
 import axios from "axios";
 import { VehicleMarkService } from "../../services/VehicleMarkService";
 import { VehicleModelService } from "../../services/VehicleModelService";
 import { IVehicleModel } from "../../domain/IVehicleModel";
-
 import { VehicleAvailability } from "../../utilities/enums";
 
 const availabilityEntries = Object.entries(VehicleAvailability);
-
 const service = new VehicleService();
 const vehicleTypeService = new VehicleTypeService();
 const vehicleMarkService = new VehicleMarkService();

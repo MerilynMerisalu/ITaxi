@@ -1,15 +1,14 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import ScheduleForm from './ScheduleForm'
 
-
 const ScheduleEdit = () => {
-const {id} = useParams()
-console.log('*** ID', id)
-    
+    const { id } = useParams()
+    console.log('*** ID', id)
+
     return (
-        <div b-7882z672yd className="container">
-            <main b-7882z672yd role="main" className="pb-3">
+        <div className="container">
+            <main role="main" className="pb-3">
 
                 <h1>Edit</h1>
 

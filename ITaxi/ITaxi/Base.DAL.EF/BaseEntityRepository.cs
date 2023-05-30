@@ -65,8 +65,14 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         // This is HARD Delete:
         //return Mapper.Map(RepoDbSet.Remove(Mapper.Map(entity)!).Entity)!;
         
-        // Instead, we want to implement soft delete, by setting the IsDeleted Flag
-        var data = Mapper.Map(entity)!;
+        // I can't just edit the entity that is provided
+        // I need re-fetch the entity from THIS context (not whatever is passed in)
+        var data = RepoDbSet.Find(entity.Id);
+        if (data == null)
+            // TODO: implement custom exception for entity not found
+            throw new NullReferenceException($"Entity {typeof(TDalEntity).Name} with id {entity.Id} was not found");
+        
+        // To implement soft delete, set the IsDeleted Flag
         data.IsDeleted = true;
 
         if (data is IDomainEntityMeta meta)

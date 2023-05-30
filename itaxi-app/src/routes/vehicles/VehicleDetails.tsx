@@ -30,6 +30,7 @@ const VehicleDetails = () => {
         }
 
     }, [id]);
+    
     return (
         <div className="container">
             <main role="main" className="pb-3">

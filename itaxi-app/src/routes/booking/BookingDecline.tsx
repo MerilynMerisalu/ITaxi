@@ -4,7 +4,6 @@ import { IBooking } from '../../domain/IBooking';
 import { BookingService } from '../../services/BookingService';
 import { JwtContext } from '../Root';
 
-
 const BookingDecline = () => {
     const navigate = useNavigate()
     const { id } = useParams();

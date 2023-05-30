@@ -334,6 +334,7 @@ public class AutoMapperConfig : Profile
             .ForMember(dto => dto.UpdatedAt,
                 m =>
                     m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
+            
             ;
 
         // DTO => EF: Convert to Universal Time

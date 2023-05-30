@@ -55,7 +55,7 @@ const LoginFormView = (props: IProps) => {
                     </div>
                 </div> */}
                 <div>
-                    <button
+                    <button 
                         onClick={(e) => props.onSubmit(e)}
                         id="login-submit" className="w-100 btn btn-lg btn-primary">Log in</button>
                 </div>
