@@ -57,7 +57,10 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
 
     public virtual TDalEntity Update(TDalEntity entity)
     {
-        return Mapper.Map(RepoDbSet.Update(Mapper.Map(entity)!).Entity)!;
+        // Hack: remove the previous tracking!
+        RepoDbContext.ChangeTracker.Clear();
+
+        return Mapper.Map(RepoDbSet.Update(Mapper.Map(entity)).Entity);
     }
 
     public virtual TDalEntity Remove(TDalEntity entity)

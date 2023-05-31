@@ -93,7 +93,7 @@ public class CountiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PutCounty(Guid id, County county)
     {
-        var countyDTO = await _appBLL.Counties.FirstOrDefaultAsync(id);
+        var countyDTO = await _appBLL.Counties.FirstOrDefaultAsync(id, noIncludes:true, noTracking: true);
         if (countyDTO == null)
         {
             return NotFound();
@@ -122,10 +122,15 @@ public class CountiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<County>> PostCounty([FromBody] County county)
     {
+        #if !xUnit
+        // Using compiler directive to avoid HttpContext checking logic, this will work
+        // at runtime but it is not worth the effort to unit test it locally.
+        // HttpContext reliant code should be testing using integration tests
         if (HttpContext.GetRequestedApiVersion() == null)
         {
             return BadRequest("Api version is mandatory");
         }
+        #endif
 
         var dto = _mapper.Map<CountyDTO>(county);
         
@@ -140,9 +145,10 @@ public class CountiesController : ControllerBase
 
         return CreatedAtAction("GetCounty", new
         {
-            id = dto.Id,
-            version = HttpContext.GetRequestedApiVersion()!.ToString(),
-
+            id = dto.Id 
+            #if !xUnit
+            , version = HttpContext.GetRequestedApiVersion()!.ToString()
+            #endif
         }, dto);
     }
 

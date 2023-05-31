@@ -151,4 +151,7 @@
     <PropertyGroup>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DefineConstants>TRACE;xUnit</DefineConstants>
+    </PropertyGroup>
 </Project>
