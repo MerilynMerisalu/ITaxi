@@ -63,16 +63,16 @@ const CommentIndex = () => {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>
+                             <th>
                                 Drive Time
-                            </th>
+                            </th> 
 
-                            {/* <th>
+                            <th>
                                 Driver Name
-                            </th>
+                            </th>  
                             <th>
                                 Comment
-                            </th> */}
+                            </th>  
 
                             <th></th>
                         </tr>
@@ -80,17 +80,17 @@ const CommentIndex = () => {
                     <tbody>
                         {data.map(c => (
                             <tr key={c.id}>
-                                <td>
-                                    {c.drive.booking.pickUpDateAndTime}
-                                </td>
-
-                                {/* <td>
-                                    Paju Toomas
-                                </td>
+                                { <td>
+                                    {c.driveCustomerStr}
+                                </td>  }
 
                                 <td>
-                                    J&#xE4;in teenusega rahule!
-                                </td> */}
+                                    {c.driverName}
+                                </td> 
+ 
+                                <td>
+                                    {c.commentText}
+                                </td>  
 
                                 <td>
                                     <Link to={`/comment/edit/${c.id}`}>Edit</Link> |

@@ -1,9 +1,7 @@
 interface ICommentData {
-    drive: {
-        booking: {
-            pickUpDateAndTime: string
-        }
-    },
+    driveCustomerStr: string
+    driverName: string
+    commentText: string
     
 }
 

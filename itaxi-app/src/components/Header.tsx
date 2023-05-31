@@ -63,8 +63,6 @@ const displayIfLoggedInRole= (role : string) => {
   return {'display': currentuser != null && currentuser.roleNames?.[0] === role ? '' : 'none'  }
 };
 
-
-
   return (
     <Navbar className='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3'>
       <Container fluid>
@@ -95,7 +93,7 @@ const displayIfLoggedInRole= (role : string) => {
           </Nav>
           <Nav style={displayIfNotLoggedIn()}>
             
-            <Nav.Link className="nav-link text-dark" as={Link} to="registerAdmin">Register Admin</Nav.Link>
+            {/* <Nav.Link className="nav-link text-dark" as={Link} to="registerAdmin">Register Admin</Nav.Link> */}
             <Nav.Link className="nav-link text-dark" as={Link} to="registerDriver">Register Driver</Nav.Link>
             <Nav.Link className="nav-link text-dark" as={Link} to="registerCustomer">Register Customer</Nav.Link>
             <Nav.Link className="nav-link text-dark" as={Link} to="login">Login</Nav.Link>

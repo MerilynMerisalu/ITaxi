@@ -19,7 +19,8 @@ interface IScheduleData {
         vehiclePlateNumber: string
     }
     startDateAndTime: string,         
-    endDateAndTime: string           
+    endDateAndTime: string,
+    shiftDurationTime: string           
 
     /* 
     vehiclePlateNumber: string,

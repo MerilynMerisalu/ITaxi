@@ -15,6 +15,11 @@ html {
 
 body {
     margin-bottom: 60px;
+    
+}
+
+body,h1,h2,h3,h4,h5,h6 {
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 a.navbar-brand {
@@ -24,19 +29,20 @@ a.navbar-brand {
 }
 
 a {
-    color: #0077cc;
+    color: #757575;
 }
+
 
 .btn-primary {
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: #ff6e25;
+    border-color: #ff6e25;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: #43464b;
+    border-color: #43464b;
 }
 
 .border-top {
@@ -61,5 +67,9 @@ button.accept-policy {
     bottom: 0;
     width: 100%;
     white-space: nowrap;
-    line-height: 60px;
+    line-height: 60px;  
+}
+
+.header:hover {
+    background-color: #ff7834;
 }

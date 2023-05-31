@@ -11,11 +11,14 @@ public class Comment : DomainEntityMetaId
         Name = "Drive")]
     public Guid? DriveId { get; set; }
 
+    public Drive? Drive { get; set; }
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Comment),
         Name = "Drive")]
-    public Drive? Drive { get; set; }
+    public string DriveCustomerStr { get; set; } = default!;
 
-    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking),
+        Name = "Driver")]
+    public string DriverName { get; set; } = default!;
 
     [MaxLength(1000)]
     [DataType(DataType.MultilineText)]

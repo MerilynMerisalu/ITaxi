@@ -1,11 +1,10 @@
 import { IBaseEntity } from "./Base/IBaseEntity";
 
 export interface IComment extends IBaseEntity {
-    drive: {
-        booking: {
-            pickUpDateAndTime: string
-        }
-    },
+        driveCustomerStr: string,
+        driverName: string
+        commentText: string
+    }
     
     
-}
+

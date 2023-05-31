@@ -1,7 +1,11 @@
 body {
-    background: #ededed;
+    background-color: f4f8fd;
 }
 .form-signin {
+    position: absolute;
+    left: 37%;
+    top: 20%;
+    min-width: 430px;
     max-width: 430px;
     padding: 15px;
     background: #f6f6f6;
@@ -14,7 +18,7 @@ body {
 }
 
 .form-signin input[type="email"] {
-    margin-bottom: -1px;
+    margin-bottom: 8px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
@@ -27,11 +31,12 @@ body {
 }
 
 #login-submit {
-    background-color: #2962ff;
-    border-color: #2962ff;
-    
-    
-    
-    
+    background-color: #ff6e25;
+    border-color: #ff6e25;
+    transition: all,.2s,ease-in-out;  
+}
+
+#login-submit:hover {
+    background-color: #FF8224;
 }
 

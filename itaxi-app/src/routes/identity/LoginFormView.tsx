@@ -18,7 +18,7 @@ const LoginFormView = (props: IProps) => {
   return (
     <div className="container">
     <main role="main" className="pb-3">
-    <h1>Log In</h1>
+    {/* <h1>Log In</h1> */}
 
     <ul style={{ 'display': props.validationErrors.length == 0 ? 'none' : ''}}>
         <li>{props.validationErrors.length > 0 ? props.validationErrors[0] : ''}</li>
@@ -28,9 +28,9 @@ const LoginFormView = (props: IProps) => {
     <div className="col-md-4">
         <section>
             <form className='form-signin' id="account" method="post">
-                <hr/>
+                {/* <hr/> */}
                 
-                <h2>Use a local account to log in</h2>
+                <h2>Log in</h2>
                 <div className="form-floating">
                     <input 
                         onChange={(e) => props.handleChange(e.target)} 
@@ -79,11 +79,11 @@ const LoginFormView = (props: IProps) => {
     <div className="col-md-6 col-md-offset-2">
         <section>
             <h3></h3>
-            <hr/>
+            {/* <hr/> */}
                     <div>
-                        <p>
+                        {/* <p>
                         There are no external authentication services configured.
-                        </p>
+                        </p> */}
                     </div>
         </section>
     </div>
