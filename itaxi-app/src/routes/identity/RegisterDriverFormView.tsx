@@ -96,7 +96,7 @@ const RegisterDriverFormView = (props: IProps) => {
               <hr />
               <div
                 className="text-danger validation-summary-valid"
-                data-valmsg-summary="true"
+                
               >
                 <ul>
                   <li style={{ display: "none" }}></li>

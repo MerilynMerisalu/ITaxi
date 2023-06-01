@@ -39,6 +39,7 @@ import CommentIndex from "./routes/comment/CommentIndex";
 import CommentDetails from "./routes/comment/CommentDetails";
 import CommentDelete from "./routes/comment/CommentDelete";
 import DriveAccept from "./routes/drives/DriveAccept";
+import CommentCreate from "./routes/comment/CommentCreate";
 
 
 const router = createBrowserRouter([
@@ -158,10 +159,10 @@ const router = createBrowserRouter([
         path: "comments",
         element: <CommentIndex />
       },
-      /* {
+       {
         path: "comments/create",
         element: <CommentCreate />
-      },  */
+      },  
       /* {
         path: "comment/edit/:id",
         element: <CommentEdit />

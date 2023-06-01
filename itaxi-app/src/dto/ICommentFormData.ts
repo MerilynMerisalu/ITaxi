@@ -1,6 +1,6 @@
 interface ICommentFormData {
-
-    
+driveId: string,
+commentText: string
 
 }
 

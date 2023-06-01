@@ -2,10 +2,6 @@ body {
     background-color: f4f8fd;
 }
 .form-signin {
-    position: absolute;
-    left: 37%;
-    top: 20%;
-    min-width: 430px;
     max-width: 430px;
     padding: 15px;
     background: #f6f6f6;
