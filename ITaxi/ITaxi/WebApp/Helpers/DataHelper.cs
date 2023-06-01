@@ -178,7 +178,7 @@ public static class DataHelper
                     Email = "kati@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "22356891",
-                    
+
                 };
                 appUser.UserName = appUser.Email;
 
@@ -510,8 +510,10 @@ public static class DataHelper
                         .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("38806237921"))
                         .Result!.Id,
                     RideDateTime = context.Schedules.FirstOrDefaultAsync(s =>
-                        s.Driver!.PersonalIdentifier!.Equals("38806237921")).Result!
-                        .StartDateAndTime.AddMinutes(45), //.ToUniversalTime(), CS: Suspect that the value is already UTC, so we don'ˇt need to translate against
+                            s.Driver!.PersonalIdentifier!.Equals("38806237921")).Result!
+                        .StartDateAndTime
+                        .AddMinutes(
+                            45), //.ToUniversalTime(), CS: Suspect that the value is already UTC, so we don'ˇt need to translate against
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
@@ -525,7 +527,7 @@ public static class DataHelper
                         .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("38806237921"))
                         .Result!.Id,
                     RideDateTime = context.Schedules.FirstOrDefaultAsync(s =>
-                        s.Driver!.PersonalIdentifier!.Equals("38806237921")).Result!
+                            s.Driver!.PersonalIdentifier!.Equals("38806237921")).Result!
                         .StartDateAndTime, //.ToUniversalTime(), CS: Suspect that the value is already UTC, so we don'ˇt need to translate against
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
@@ -542,8 +544,10 @@ public static class DataHelper
                         .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("36605138911"))
                         .Result!.Id,
                     RideDateTime = context.Schedules.FirstOrDefaultAsync(s =>
-                        s.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!
-                        .StartDateAndTime.AddMinutes(90), //.ToUniversalTime(), CS: the value is already UTC, so we don't need to translate again
+                            s.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!
+                        .StartDateAndTime
+                        .AddMinutes(
+                            90), //.ToUniversalTime(), CS: the value is already UTC, so we don't need to translate again
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
@@ -557,7 +561,7 @@ public static class DataHelper
                         .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("36605138911"))
                         .Result!.Id,
                     RideDateTime = context.Schedules.FirstOrDefaultAsync(s =>
-                        s.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!
+                            s.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!
                         .StartDateAndTime, //.ToUniversalTime(), CS: the value is already UTC, so we don't need to translate again
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
@@ -603,7 +607,7 @@ public static class DataHelper
                 };
                 await context.Customers.AddAsync(customer);
                 await context.SaveChangesAsync();
-                
+
                 appUser = new AppUser
                 {
                     Id = new Guid(),
@@ -648,12 +652,13 @@ public static class DataHelper
                 {
                     Id = new Guid(),
                     DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("38806237921")).Result.Id,
-                    VehicleId = context.Vehicles.FirstOrDefaultAsync(v => v.Driver!.PersonalIdentifier!.Equals("38806237921"))
+                    VehicleId = context.Vehicles
+                        .FirstOrDefaultAsync(v => v.Driver!.PersonalIdentifier!.Equals("38806237921"))
                         .Result!.Id,
                     CustomerId = context.Customers.Include(c => c.AppUser)
-                        .SingleOrDefaultAsync(c => c.AppUser!.FirstName.Equals("Maarika") 
+                        .SingleOrDefaultAsync(c => c.AppUser!.FirstName.Equals("Maarika")
                                                    && c.AppUser.LastName.Equals("Mätas"))
-                                                    .Result!.Id,
+                        .Result!.Id,
                     CityId = city.Id,
                     ScheduleId = context.Schedules.Include(s => s.Driver)
                         .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("38806237921"))
@@ -670,7 +675,7 @@ public static class DataHelper
                 };
                 booking.UpdatedBy = booking.CreatedBy;
                 booking.UpdatedAt = booking.CreatedAt;
-                
+
                 rideTime1.Booking = booking;
                 rideTime1.IsTaken = true;
                 booking.PickUpDateAndTime = rideTime1.RideDateTime;
@@ -685,7 +690,7 @@ public static class DataHelper
                         .Id,
                     Booking = booking,
                     StatusOfDrive = StatusOfDrive.Awaiting,
-                    
+
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
@@ -696,12 +701,13 @@ public static class DataHelper
                 {
                     Id = new Guid(),
                     DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("36605138911")).Result.Id,
-                    VehicleId = context.Vehicles.FirstOrDefaultAsync(v => v.Driver!.PersonalIdentifier!.Equals("36605138911"))
+                    VehicleId = context.Vehicles
+                        .FirstOrDefaultAsync(v => v.Driver!.PersonalIdentifier!.Equals("36605138911"))
                         .Result!.Id,
                     CustomerId = context.Customers.Include(c => c.AppUser)
-                        .SingleOrDefaultAsync(c => c.AppUser!.FirstName.Equals("Kristjan") 
+                        .SingleOrDefaultAsync(c => c.AppUser!.FirstName.Equals("Kristjan")
                                                    && c.AppUser.LastName.Equals("Suursalu"))
-                                                    .Result!.Id,
+                        .Result!.Id,
                     CityId = city.Id,
                     ScheduleId = context.Schedules.Include(s => s.Driver)
                         .SingleOrDefaultAsync(s => s.Driver!.PersonalIdentifier!.Equals("36605138911"))
@@ -718,7 +724,7 @@ public static class DataHelper
                 };
                 booking.UpdatedBy = booking.CreatedBy;
                 booking.UpdatedAt = booking.CreatedAt;
-                
+
                 rideTime2.Booking = booking;
                 rideTime2.IsTaken = true;
                 booking.PickUpDateAndTime = rideTime2.RideDateTime;
@@ -726,7 +732,7 @@ public static class DataHelper
                 await context.Bookings.AddAsync(booking);
                 await context.SaveChangesAsync();
 
-                 drive = new Drive
+                drive = new Drive
                 {
                     Id = new Guid(),
                     DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("36605138911")).Result
@@ -740,7 +746,7 @@ public static class DataHelper
                 await context.Drives.AddAsync(drive);
                 await context.SaveChangesAsync();
 
-                var comment = new Comment
+                /*var comment = new Comment
                 {
                     Id = new Guid(),
                     CommentText = "Jäin teenusega rahule!",
@@ -763,7 +769,9 @@ public static class DataHelper
                 };
                 await context.Comments.AddAsync(comment);
                 await context.SaveChangesAsync();
+            }*/
             }
+
         }
     }
 }

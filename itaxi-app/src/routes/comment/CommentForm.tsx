@@ -50,13 +50,13 @@ const CommentForm = ({
         axios.defaults.headers.common["Accept-Language"] = language;
     }, [language]);
     function handleChange(
-        event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+        event: ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
     ) {
         setValues((currentValues) => {
 
             return {
                 ...currentValues,
-                 [event.target.name]: value,
+                 //[event.target.name]: value,
             };
         });
     }
@@ -84,13 +84,17 @@ const CommentForm = ({
                             <div className="form-group">
                                 <label className="control-label" html-for="DriveId">Drive</label>
                                 <select className="form-control" id="DriveId" name="driveId"
-                                value={values.driveId}>
-                                    <option>There are no drives to select from</option>
+                                value={values.driveId}
+                                onChange={(e) => handleChange(e)}>
+                                    {drives ? <option>{driveViews}</option>: <option>There are no drives to select from</option>}
+                                    
                                 </select>
                             </div>
                             <div className="form-group">
                                 <label className="control-label" html-for="CommentText">Comment</label>
-                                <textarea className="form-control" id="CommentText" maxLength={1000} name="commentText">
+                                <textarea className="form-control" id="CommentText"  maxLength={1000} name="commentText"
+                                value={values.commentText}
+                                onChange={(e) => handleChange(e)}>
                                 </textarea>
                                 <span className="text-danger field-validation-valid"></span>
                             </div>
