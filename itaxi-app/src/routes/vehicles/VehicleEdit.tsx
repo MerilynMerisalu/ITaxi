@@ -67,6 +67,7 @@ const VehicleEdit = () => {
             console.warn('Vehicle create not OK', status)
         }
     }
+    
     return (
         <div className="container">
             <main role="main" className="pb-3">

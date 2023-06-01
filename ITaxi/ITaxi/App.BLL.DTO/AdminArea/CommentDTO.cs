@@ -15,6 +15,8 @@ public class CommentDTO: DomainEntityMetaId
     /// </summary>
     public string DriveCustomerStr { get; set; }
 
+    public string DriveTimeAndDriver { get; set; }
+
     /// <summary>
     /// Description of the Driver 
     /// </summary>

@@ -26,6 +26,7 @@ public class DrivesController : ControllerBase
 
     // GET: api/Drives
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<Drive>>> GetDrives()
     {
         var userId = User.GettingUserId();

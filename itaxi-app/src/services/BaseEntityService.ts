@@ -6,6 +6,7 @@ import { AnyCnameRecord } from "dns";
 import { IVehicleFormData } from "../dto/IVehicleFormData";
 import { IScheduleFormData } from "../dto/IScheduleFormData";
 import { ICommentFormData } from "../dto/ICommentFormData";
+import { IRideTimeFormData } from "../dto/IRideTimeFormData";
 
 export abstract class BaseEntityService<TEntity extends IBaseEntity> extends BaseService {
   constructor(baseUrl: string) {
@@ -130,7 +131,7 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
     }
   }
 
-  async create(body: IVehicleFormData | IScheduleFormData| ICommentFormData): Promise<number | undefined> {
+  async create(body: IVehicleFormData | IScheduleFormData| ICommentFormData | IRideTimeFormData): Promise<number | undefined> {
     console.log('body', body)
     try {
       let user = IdentityService.getCurrentUser();
@@ -156,7 +157,7 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
       return undefined;
     }
   }
-  async edit(id: string, body: IVehicleFormData| IScheduleFormData): Promise<number | undefined> {
+  async edit(id: string, body: IVehicleFormData| IScheduleFormData | ICommentFormData): Promise<number | undefined> {
     console.log('body', body)
     try {
       let user = IdentityService.getCurrentUser();

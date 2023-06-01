@@ -1,7 +1,8 @@
 interface ICommentFormData {
-driveId: string,
+driveId?: string,
 commentText: string
-
+driverName?: string
+driveTimeAndDriver?: string
 }
 
 export type { ICommentFormData }

@@ -25,4 +25,6 @@ public class Comment : DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Comment),
         Name = "CommentName")]
     public string? CommentText { get; set; }
+
+    public string DriveTimeAndDriver { get; set; } = default!;
 }

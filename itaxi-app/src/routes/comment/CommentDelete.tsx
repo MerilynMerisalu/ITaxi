@@ -4,12 +4,11 @@ import { JwtContext } from '../Root';
 import { IComment } from '../../domain/IComment';
 import { CommentService } from '../../services/CommentService';
 
-
+const commentService = new CommentService();
 const CommentDelete = () => {
     const { id } = useParams();
     const { jwtLoginResponse, setJwtLoginResponse } = useContext(JwtContext);
     const [data, setData] = useState<IComment | null>(null)
-    const commentService = new CommentService();
     const navigate = useNavigate()
     console.log('data test:', data)
     useEffect(() => {

@@ -35,6 +35,7 @@ const CommentCreate = () => {
                 driveId: "",
                 commentText: ""
               }}
+              buttonLabel='Create'
             />
           </div>
         </div>

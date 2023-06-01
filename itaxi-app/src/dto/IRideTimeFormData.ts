@@ -5,6 +5,7 @@ interface IRideTimeFormData {
     
     rideTimes?: string[],
     selectedRideTimes: string[] 
+    isTaken: boolean
 
 }
 

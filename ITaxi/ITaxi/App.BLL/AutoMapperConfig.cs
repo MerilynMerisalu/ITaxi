@@ -66,9 +66,15 @@ public class AutoMapperConfig: Profile
             ;
         CreateMap<App.BLL.DTO.AdminArea.CommentDTO, App.DAL.DTO.AdminArea.CommentDTO>()
             .ReverseMap()
-            .ForMember(x => x.DriveCustomerStr, m => m.MapFrom(dto => $"{dto!.Drive.Booking!.PickUpDateAndTime:g}"))
+            .ForMember(x => 
+                x.DriveCustomerStr, m =>
+                m.MapFrom(dto => $"{dto!.Drive.Booking!.PickUpDateAndTime:g}"))
             .ForMember(x => x.DriverName, m => m.MapFrom(dto => dto.Drive.Driver.AppUser.LastAndFirstName))
-            .ForMember(x => x.CustomerName, m => m.MapFrom(dto => dto.Drive.Booking.Customer.AppUser.LastAndFirstName))
+            .ForMember(x => x.CustomerName, m => 
+                m.MapFrom(dto => dto.Drive.Booking.Customer.AppUser.LastAndFirstName))
+            .ForMember(dto => dto.DriveTimeAndDriver, m => 
+                m.MapFrom(dto => $"{dto.Drive.Booking.PickUpDateAndTime:g} - {dto.Drive.Driver.AppUser.LastAndFirstName}"))
+            
 
             ;
         CreateMap<App.BLL.DTO.AdminArea.PhotoDTO, App.DAL.DTO.AdminArea.PhotoDTO>()
