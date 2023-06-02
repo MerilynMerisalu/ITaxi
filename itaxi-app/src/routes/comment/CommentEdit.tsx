@@ -27,6 +27,7 @@ const CommentEdit = (props: Props) => {
                         if (response) {
                            const formData = {
                             ...response,
+                            
                            }
                             setData(formData)
                         } else {
@@ -46,13 +47,13 @@ const CommentEdit = (props: Props) => {
         if (id == null){
             throw new Error('Cannot edit without id')
         }
-        const status = await service.edit(id, values)
+         const status = await service.edit(id, values) 
         console.log('status:', status)
         if (status === 204 || status === 200) {
             console.log('status ok')
             navigate("/comments");
         } else {
-            console.warn('Vehicle create not OK', status)
+            console.warn('Vehicle edit not OK', status)
         }
     }
     return (
@@ -64,13 +65,13 @@ const CommentEdit = (props: Props) => {
                 <hr />
                <div className="row">
           <div className="col-md-4">
-                        <CommentForm
+                        <CommentForm 
                             action={editAction}
                             initialValues={data}
                             driveDisabled
                             buttonLabel='Save'
                         />
-                    </div>
+            </div>
                 </div>
 
                 <div>

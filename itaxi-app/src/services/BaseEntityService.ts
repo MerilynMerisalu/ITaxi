@@ -170,7 +170,7 @@ export abstract class BaseEntityService<TEntity extends IBaseEntity> extends Bas
             }
           });
         console.log('response.status:', response.status)
-        if (response.status === 201) {
+        if (response.status === 204) {
           return response.status
         }
       }

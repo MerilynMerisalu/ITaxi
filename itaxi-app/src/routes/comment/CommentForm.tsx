@@ -78,47 +78,43 @@ const CommentForm = ({
     };
 
     return (
-        <div className="row">
-            <div className="col-md-4">
-                <form onSubmit={handleSubmit}>
-                    <div className="text-danger validation-summary-valid">
-                        <ul>
-                            <li style={{ display: "none" }}></li>
-                        </ul>
-                    </div>
-                    <div className="form-group">
-                        <label className="control-label" html-for="DriveId">Drive</label>
-                        <select
-                            className="form-control" id="DriveId" name="driveId"
-                            value={values.driveId}
-                            onChange={(e) => handleChange(e)}
-                            disabled={driveDisabled === true}
-                        >
-                            {drives ? driveViews : <option>There are no drives to select from</option>}
-
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label className="control-label" html-for="CommentText">Comment</label>
-                        <textarea
-                            className="form-control"
-                            id="CommentText"
-                            maxLength={1000}
-                            name="commentText"
-                            value={values.commentText}
-                            onChange={(e) => handleChange(e)}
-                        >
-                        </textarea>
-                        <span className="text-danger field-validation-valid"></span>
-                    </div>
-
-                    <div className="form-group">
-                        <input type="submit" value={buttonLabel} className="btn btn-primary" />
-                    </div>
-                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H6gnGQdd_VPhYRnzYmPi0ppYpety6eJOy6DHmoTxKQ87Nxy1WnDU3VfSTfVslNzBUt_TitgZofCx5tiJMTbYoGIPsOYoRz_j59Fecwcnh0iuk9uIVVCyfs6omFAtfti65YjHWtl--Aq_GWY9DrgSW-QtA-NFq1EXU3BfXKPdjWX0SwtPtMcBMTZTcQEF5Ewtw" /></form>
+        <form onSubmit={handleSubmit}>
+            <div className="text-danger validation-summary-valid">
+                <ul>
+                    <li style={{ display: "none" }}></li>
+                </ul>
             </div>
-        </div>
+            <div className="form-group">
+                <label className="control-label" html-for="DriveId">Drive</label>
+                <select
+                    className="form-control" id="DriveId" name="driveId"
+                    value={values.driveId}
+                    onChange={(e) => handleChange(e)}
+                    disabled={driveDisabled === true}
+                >
+                    {drives ? driveViews : <option>There are no drives to select from</option>}
 
+                </select>
+            </div>
+            <div className="form-group">
+                <label className="control-label" html-for="CommentText">Comment</label>
+                <textarea
+                    className="form-control"
+                    id="CommentText"
+                    maxLength={1000}
+                    name="commentText"
+                    value={values.commentText}
+                    onChange={(e) => handleChange(e)}
+                >
+                </textarea>
+                <span className="text-danger field-validation-valid"></span>
+            </div>
+
+            <div className="form-group">
+                <input type="submit" value={buttonLabel} className="btn btn-primary" />
+            </div>
+            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8H6gnGQdd_VPhYRnzYmPi0ppYpety6eJOy6DHmoTxKQ87Nxy1WnDU3VfSTfVslNzBUt_TitgZofCx5tiJMTbYoGIPsOYoRz_j59Fecwcnh0iuk9uIVVCyfs6omFAtfti65YjHWtl--Aq_GWY9DrgSW-QtA-NFq1EXU3BfXKPdjWX0SwtPtMcBMTZTcQEF5Ewtw" />
+            </form>
 
     );
 };
