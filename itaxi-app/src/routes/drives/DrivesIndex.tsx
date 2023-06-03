@@ -4,6 +4,9 @@ import { IDrive } from '../../domain/IDrive'
 import { JwtContext } from '../Root'
 import axios from 'axios'
 import { DriveService } from '../../services/DriveService'
+import { BookingService } from '../../services/BookingService'
+
+const bookingService = new BookingService();
 
 const driveService = new DriveService();
 const DrivesIndex = () => {
@@ -31,6 +34,7 @@ const DrivesIndex = () => {
         return padded.slice(-2)
     }
     console.log('language', language)
+    
 
     function formatDate(iso: string) {
         const date = new Date(iso)
@@ -61,9 +65,7 @@ const DrivesIndex = () => {
                 </form>
                 <p>
                     <a target="_blank" href="https://localhost:7026/DriverArea/Drives/Print">Create PDF</a>
-                    <p>
-                        <a target="_blank" href="https://localhost:7026/DriverArea/Drives/Print">would this owrk?</a>
-                    </p>
+                    
                 </p>
 
                 <table className="table">
@@ -166,31 +168,16 @@ const DrivesIndex = () => {
                                     <input checked={d.booking.hasAnAssistant} className="check-box" disabled={true} type="checkbox" />
                                 </td>
                                 <td>
-                                    {(() => {
-                                        switch (d.booking.statusOfBooking) {
-                                            case 1: return "Awaiting for Confirmation";
-                                            case 2: return "Accepted";
-                                            case 3: return "Declined";
-                                            default: return "Awaiting";
-                                        }
-                                    })()}
+                                    {bookingService.getBookingStatus(d.booking.statusOfBooking)}
                                 </td>
 
                                 <td>
-                                    {(() => {
-                                        switch (d.statusOfDrive) {
-                                            case 1: return "Awaiting for Confirmation";
-                                            case 2: return "Accepted";
-                                            case 3: return "Declined";
-                                            case 4: return "Started";
-                                            case 5: return "Finished";
-                                            default: return "Awaiting";
-                                        }
-                                    })()}
+                                    {driveService.getDriveStatus(d.statusOfDrive)}
                                 </td>
-
+                                    
+                                    
                                 <td>
-                                    {d.comment.commentText}
+                                    {d.comment?.commentText}
                                 </td>
 
                                 <td>

@@ -35,6 +35,6 @@ export interface IDrive extends IBaseEntity {
     },
     statusOfDrive: number,
     comment: {
-        commentText: string
+        commentText?: string
     }
 }

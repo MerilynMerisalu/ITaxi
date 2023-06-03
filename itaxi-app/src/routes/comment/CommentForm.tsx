@@ -67,7 +67,7 @@ const CommentForm = ({
     }
     const driveViews = drives?.map((option) => (
         <option key={option.id} value={option.id}>
-            {values.driveTimeAndDriver}
+            {values.driveDescription}
         </option>
     ));
 

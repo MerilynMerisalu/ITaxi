@@ -42,6 +42,7 @@ import DriveAccept from "./routes/drives/DriveAccept";
 import CommentCreate from "./routes/comment/CommentCreate";
 import CreateRideTime from "./routes/rideTimes/CreateRideTime";
 import CommentEdit from "./routes/comment/CommentEdit";
+import BookingDelete from "./routes/booking/BookingDelete";
 
 
 const router = createBrowserRouter([
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
       {
         path: "booking/decline/:id",
         element: <BookingDecline/>,
+      },
+      {
+        path: "booking/delete/:id",
+        element: <BookingDelete/>,
       },
       {
         path: "schedules",

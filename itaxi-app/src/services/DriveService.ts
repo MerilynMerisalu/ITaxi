@@ -9,6 +9,7 @@ import { IdentityService } from "./IdentityService";
     }
     
     getDriveStatus(statusOfDrive: number): string | undefined {
+      console.log(statusOfDrive)
         switch (statusOfDrive) {
           case 1: return "Awaiting for Confirmation";
           case 2: return "Accepted";

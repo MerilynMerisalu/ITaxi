@@ -61,10 +61,10 @@ const BookingIndex = () => {
 <p>
     <Link to="create">Create New</Link>
 </p>
-<form action="/CustomerArea/Bookings/SearchByCity" method="post">
+{/* <form action="/CustomerArea/Bookings/SearchByCity" method="post">
     <input type="text" name="search"/>
     <input type="submit" value="Search"/>
-</form>
+</form> */}
 <table className="table">
     <thead>
     <tr>
@@ -149,9 +149,10 @@ const BookingIndex = () => {
             </td> 
               
             <td>
-                <Link to={`/booking/details/${b.id}`}>Details</Link> |
-                {b.statusOfBooking !== 3 && <Link to={`/booking/decline/${b.id}`}>Decline{b.statusOfBooking}</Link>}
+                <Link to={`/booking/details/${b.id}`}>Details |</Link> 
+                {b.statusOfBooking !== 3 && <Link to={`/booking/decline/${b.id}`}>Decline</Link>} 
             </td>
+            <td>{b.statusOfBooking === 3 && <Link to={`/booking/delete/${b.id}`}>Delete</Link>}</td>
             
         </tr>
         ))}
