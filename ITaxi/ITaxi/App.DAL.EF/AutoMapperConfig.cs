@@ -305,6 +305,7 @@ public class AutoMapperConfig : Profile
             .ForMember(dto => dto.DriveEndDateAndTime,
                 x =>
                     x.MapFrom(m => m.DriveEndDateAndTime.ToLocalTime()));
+        
 
         // DTO => EF: Convert to Universal Time
         CreateMap<DriveDTO, App.Domain.Drive>()

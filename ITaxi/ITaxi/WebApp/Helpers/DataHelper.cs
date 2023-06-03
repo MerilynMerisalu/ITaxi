@@ -746,7 +746,7 @@ public static class DataHelper
                 await context.Drives.AddAsync(drive);
                 await context.SaveChangesAsync();
 
-                var comment = new Comment
+                /*var comment = new Comment
                 {
                     Id = new Guid(),
                     CommentText = "Jäin teenusega rahule!",
@@ -757,9 +757,10 @@ public static class DataHelper
                 };
                 await context.Comments.AddAsync(comment);
                 await context.SaveChangesAsync();
+                */
                 
 
-                comment = new Comment
+               var comment = new Comment
                 {
                     Id = new Guid(),
                     CommentText = "Takso hilines",

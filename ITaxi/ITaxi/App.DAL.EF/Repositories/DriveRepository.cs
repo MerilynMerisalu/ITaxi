@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using App.Contracts.DAL.IAppRepositories;
 using App.DAL.DTO.AdminArea;
 using App.Domain;
+using App.Enum.Enum;
 using Base.Contracts;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -242,6 +243,8 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
         if (drive != null)
         {
             drive.IsDriveAccepted = true;
+            drive.StatusOfDrive = StatusOfDrive.Accepted;
+            drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
             return drive;
         }
 
@@ -391,9 +394,8 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
     protected  IQueryable<Drive> CreateQuery(Guid? userId = null, string? roleName = null,
     bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes, showDeleted)
-            .IgnoreAutoIncludes(); // auto includes cause cyclical references in this query, so disable them
-        
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
+
         if (noTracking) query = query.AsNoTracking();
 
         if (roleName is "Admin")

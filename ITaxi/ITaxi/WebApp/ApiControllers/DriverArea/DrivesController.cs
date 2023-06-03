@@ -108,7 +108,7 @@ public class DrivesController : ControllerBase
         var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, userId, roleName, false);
         if (drive != null)
         {
-            await _appBLL.Drives.AcceptingDriveAsync(drive.Id, userId, roleName);
+           drive = await _appBLL.Drives.AcceptingDriveAsync(drive.Id, userId, roleName);
         }
 
         return NoContent();
