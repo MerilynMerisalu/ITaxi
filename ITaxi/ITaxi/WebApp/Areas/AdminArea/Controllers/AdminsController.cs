@@ -110,7 +110,6 @@ public class AdminsController : Controller
 
         vm.FirstName = admin.AppUser!.FirstName;
         vm.LastName = admin.AppUser!.LastName;
-#warning ask if there is a better way
         vm.DateOfBirth = admin.AppUser.DateOfBirth;
         vm.PersonalIdentifier = admin.PersonalIdentifier;
         vm.Gender = admin.AppUser!.Gender;
@@ -211,7 +210,7 @@ public class AdminsController : Controller
             admin.AppUser = null;
 
             var appUser = await _userManager.FindByIdAsync(admin.AppUserId.ToString());
-            await _userManager.RemoveFromRoleAsync(appUser, "Admin");
+            await _userManager.RemoveFromRoleAsync(appUser!, "Admin");
             _appBLL.Admins.Remove(admin);
             await _appBLL.SaveChangesAsync();
 

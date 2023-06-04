@@ -100,8 +100,6 @@ public class VehiclesController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-#warning ManufactureYears needs checking
-
         vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears(), 
             nameof(VehicleDTO.ManufactureYear));
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),

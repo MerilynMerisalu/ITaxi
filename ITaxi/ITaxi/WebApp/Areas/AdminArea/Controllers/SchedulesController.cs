@@ -47,9 +47,7 @@ public class SchedulesController : Controller
         vm.Id = schedule.Id;
         vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
         vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
-#warning Should this be a repository method
         vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
-#warning Should this be a repository method
         vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
         vm.CreatedBy = schedule.CreatedBy!;
         vm.CreatedAt = schedule.CreatedAt;
@@ -76,15 +74,11 @@ public class SchedulesController : Controller
         var vm = new CreateScheduleViewModel();
         var roleName = User.GettingUserRoleName();
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
-#warning "Magic string" code smell, fix it
             nameof(DriverDTO.Id), $"{nameof(DriverDTO.AppUser)}.{nameof(DriverDTO.AppUser.LastAndFirstName)}");
         /*vm.Vehicles = new SelectList(new VehicleDTO[0],
             nameof(VehicleDTO.Id), nameof(VehicleDTO.VehicleIdentifier));*/
         vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(),
             nameof(VehicleDTO.Id), nameof(VehicleDTO.VehicleIdentifier));
-#warning Schedule StartDateAndTime needs a custom validation
-
-#warning Schedule EndDateAndTime needs a custom validation
 
         return View(vm);
     }
@@ -100,9 +94,7 @@ public class SchedulesController : Controller
         {
             schedule.Id = Guid.NewGuid();
             schedule.DriverId = vm.DriverId;
-#warning Should this be a repository method
             schedule.StartDateAndTime = DateTime.Parse(vm.StartDateAndTime).ToUniversalTime();
-#warning Should this be a repository method
             schedule.EndDateAndTime = DateTime.Parse(vm.EndDateAndTime).ToUniversalTime();
             schedule.CreatedBy = User.Identity!.Name;
             schedule.CreatedAt = DateTime.Now.ToUniversalTime();
@@ -201,15 +193,12 @@ public class SchedulesController : Controller
 
         vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
         vm.DriversFullName = schedule.Driver!.AppUser!.LastAndFirstName;
-#warning Should this be a repository method
         vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
-#warning Should this be a repository method
         vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
         vm.CreatedBy = schedule.CreatedBy!;
         vm.CreatedAt = schedule.CreatedAt;
         vm.UpdatedBy = schedule.UpdatedBy!;
         vm.UpdatedAt = schedule.UpdatedAt;
-
 
         return View(vm);
     }

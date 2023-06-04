@@ -77,7 +77,6 @@ public class VehiclesController : Controller
         var vm = new CreateEditVehicleViewModel();
 
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
-#warning "Magic string" code smell, fix it
             nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
         vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears());
         vm.VehicleMarks = new SelectList(await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync()
@@ -118,8 +117,6 @@ public class VehiclesController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-#warning ManufactureYears needs checking
-
         vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears(), 
             nameof(VehicleDTO.ManufactureYear));
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
@@ -145,7 +142,6 @@ public class VehiclesController : Controller
         if (vehicle == null) return NotFound();
 
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
-#warning "Magic string" code smell, fix it
             nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
 
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),

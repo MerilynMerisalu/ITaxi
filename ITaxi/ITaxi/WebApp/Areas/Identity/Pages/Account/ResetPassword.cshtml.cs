@@ -1,6 +1,5 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
@@ -13,10 +12,17 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
+/// <summary>
+/// Reset password model controller
+/// </summary>
 public class ResetPasswordModel : PageModel
 {
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Reset password model constructor 
+    /// </summary>
+    /// <param name="userManager">Manager for users</param>
     public ResetPasswordModel(UserManager<AppUser> userManager)
     {
         _userManager = userManager;
@@ -29,6 +35,11 @@ public class ResetPasswordModel : PageModel
     [BindProperty]
     public InputModel Input { get; set; }
 
+    /// <summary>
+    /// On get method
+    /// </summary>
+    /// <param name="code">Code</param>
+    /// <returns>Page</returns>
     public IActionResult OnGet(string code = null)
     {
         if (code == null) return BadRequest("A code must be supplied for password reset.");
@@ -40,6 +51,10 @@ public class ResetPasswordModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// On post async method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid) return Page();

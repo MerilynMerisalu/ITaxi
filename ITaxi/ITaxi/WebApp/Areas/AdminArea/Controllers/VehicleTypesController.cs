@@ -111,7 +111,6 @@ public class VehicleTypesController : Controller
                 {
                     vehicleType.Id = vm.Id;
                     vehicleType.VehicleTypeName.SetTranslation(vm.VehicleTypeName);
-#warning Need to fix the implicit conversion operator to use the existing translation, if there is one
                     //vehicleType.VehicleTypeName = vm.VehicleTypeName;
                     vehicleType.UpdatedBy = User.Identity!.Name;
                     vehicleType.UpdatedAt = DateTime.Now.ToUniversalTime();

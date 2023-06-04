@@ -9,7 +9,6 @@ using System.Text;
 using System.Text.Encodings.Web;
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
 using App.Enum.Enum;
@@ -25,9 +24,11 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
+/// <summary>
+/// Register admin model controller
+/// </summary>
 public class RegisterAdminModel : PageModel
 {
-    //private readonly AppDbContext _context;
     private readonly IAppBLL _appBLL;
     private readonly IEmailSender _emailSender;
     private readonly IUserEmailStore<AppUser> _emailStore;
@@ -36,6 +37,15 @@ public class RegisterAdminModel : PageModel
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserStore<AppUser> _userStore;
 
+    /// <summary>
+    /// Register admin model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for the user's</param>
+    /// <param name="userStore">Store for the user's</param>
+    /// <param name="signInManager">Manager for the sign in</param>
+    /// <param name="logger">Logger for the register admin</param>
+    /// <param name="emailSender">Email sender for the admin</param>
+    /// <param name="appBLL">AppBLL</param>
     public RegisterAdminModel(
         UserManager<AppUser> userManager,
         IUserStore<AppUser> userStore,
@@ -54,6 +64,9 @@ public class RegisterAdminModel : PageModel
         nameof(CityDTO.Id), nameof(CityDTO.CityName));
     }
 
+    /// <summary>
+    /// List of cities
+    /// </summary>
     public SelectList? Cities { get; set; }
 
     /// <summary>
@@ -76,12 +89,21 @@ public class RegisterAdminModel : PageModel
     public IList<AuthenticationScheme>? ExternalLogins { get; set; }
 
 
+    /// <summary>
+    /// On get async method for admin registration
+    /// </summary>
+    /// <param name="returnUrl">Return url</param>
     public async Task OnGetAsync(string? returnUrl = null)
     {
         ReturnUrl = returnUrl;
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
 
+    /// <summary>
+    /// On post async method for admin registration
+    /// </summary>
+    /// <param name="returnUrl">Return url</param>
+    /// <returns>Url</returns>
     public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
@@ -90,7 +112,6 @@ public class RegisterAdminModel : PageModel
         {
             var user = new AppUser
             {
-#warning admin's dateOfBirth needs a custom validation rule
                 FirstName = Input.FirstName,
                 LastName = Input.LastName,
                 Gender = Input.Gender,
@@ -103,7 +124,6 @@ public class RegisterAdminModel : PageModel
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
             var result = await _userManager.CreateAsync(user, Input.Password);
-#warning ask if this is the right way to add a claim in my app context
             result = await _userManager.AddClaimAsync(user, new Claim("aspnet.firstname", user.FirstName));
             result = await _userManager.AddClaimAsync(user, new Claim("aspnet.lastname", user.LastName));
 
@@ -173,6 +193,9 @@ public class RegisterAdminModel : PageModel
     /// </summary>
     public class InputModel
     {
+        /// <summary>
+        /// Admin first name
+        /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [MaxLength(50, ErrorMessageResourceType = typeof(Common),
@@ -181,6 +204,9 @@ public class RegisterAdminModel : PageModel
         [Display(ResourceType = typeof(AdminRegister), Name = nameof(FirstName))]
         public string FirstName { get; set; } = default!;
 
+        /// <summary>
+        /// Admin last name
+        /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
@@ -190,31 +216,49 @@ public class RegisterAdminModel : PageModel
         public string LastName { get; set; } = default!;
 
 
+        /// <summary>
+        /// Admin gender
+        /// </summary>
         [Display(ResourceType = typeof(AdminRegister), Name = nameof(Gender))]
         [EnumDataType(typeof(Gender))]
         public Gender Gender { get; set; }
 
+        /// <summary>
+        /// Admin date of birth
+        /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.Date)]
         [Display(ResourceType = typeof(AdminRegister), Name = nameof(DateOfBirth))]
         public DateTime DateOfBirth { get; set; }
 
+        /// <summary>
+        /// Admin personal identifier
+        /// </summary>
         [StringLength(50)]
         [Display(ResourceType = typeof(AdminRegister), Name = nameof(PersonalIdentifier))]
         public string? PersonalIdentifier { get; set; }
 
+        /// <summary>
+        /// City id for admin
+        /// </summary>
         [DataType(DataType.Text)]
         [Display(ResourceType = typeof(AdminRegister), Name = "City")]
         public Guid CityId { get; set; }
 
 
+        /// <summary>
+        /// Admin address
+        /// </summary>
         [DataType(DataType.Text)]
         [StringLength(72, MinimumLength = 2, ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
         [Display(ResourceType = typeof(AdminRegister), Name = "AddressOfResidence")]
         public string Address { get; set; } = default!;
 
+        /// <summary>
+        /// Admin phone number
+        /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.PhoneNumber)]

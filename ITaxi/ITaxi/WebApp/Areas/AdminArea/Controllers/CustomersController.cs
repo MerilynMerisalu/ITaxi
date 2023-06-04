@@ -29,10 +29,8 @@ public class CustomersController : Controller
     // GET: AdminArea/Customers
     public async Task<IActionResult> Index()
     {
-#warning Should this be a repo method
         var res = await _appBLL.Customers.GettingAllOrderedCustomersAsync();
         
-
         return View(res);
     }
 
@@ -233,8 +231,7 @@ public class CustomersController : Controller
             {
                 await _userManager.RemoveFromRoleAsync(appUser, "Customer");
                 _appBLL.Customers.Remove(customer);
-
-#warning temporarily solution
+                
                 var claims = await _userManager.GetClaimsAsync(appUser);
                 await _userManager.RemoveClaimsAsync(appUser, claims);
                 await _userManager.DeleteAsync(appUser);

@@ -24,8 +24,6 @@ public class CitiesController : Controller
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.Cities.GetAllOrderedCitiesAsync();
-#warning Should this be a repo method
-
 
         return View(res);
     }
@@ -165,7 +163,6 @@ public class CitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-#warning Ask if that can be improved
         var city = await _appBLL.Cities.FirstOrDefaultAsync(id);
         if (city != null)
         {

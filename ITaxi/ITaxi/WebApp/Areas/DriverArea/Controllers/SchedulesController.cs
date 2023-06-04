@@ -25,20 +25,16 @@ public class SchedulesController : Controller
     // GET: DriverArea/Schedules
     public async Task<IActionResult> Index()
     {
-#warning Should this be a repository method
-
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var res = await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
         
-
         return View(res);
     }
 
     // GET: DriverArea/Schedules/Details/5
     public async Task<IActionResult> Details(Guid? id)
     {
-#warning create a custom 404 (Not found) page
         var vm = new DetailsDeleteScheduleViewModel();
         if (id == null) return NotFound();
 
@@ -50,16 +46,13 @@ public class SchedulesController : Controller
 
         vm.Id = schedule.Id;
         vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
-
-#warning Should this be a repository method
+        
         vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
-#warning Should this be a repository method
         vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
 
         return View(vm);
     }
-
-
+    
     // GET: DriverArea/Schedules/Create
     public async Task<IActionResult> Create()
     {
@@ -68,9 +61,6 @@ public class SchedulesController : Controller
         var roleName = User.GettingUserRoleName();
         vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
-#warning Schedule StartDateAndTime needs a custom validation
-
-#warning Schedule EndDateAndTime needs a custom validation
 
         return View(vm);
     }

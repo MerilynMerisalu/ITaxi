@@ -34,7 +34,7 @@ public class BookingsController : Controller
     public async Task<IActionResult> Index()
     {
         var roleName = User.GettingUserRoleName();
-#warning Should this be a repo method
+
         var res = await _appBLL.Bookings.GettingAllOrderedBookingsAsync(null, roleName);
         return View(res);
     }
@@ -74,11 +74,11 @@ public class BookingsController : Controller
 
     public class BookingSetDropDownListRequest
     {
-        public string ListType { get; set; }
-        public string Value { get; set; }
+        public string? ListType { get; set; }
+        public string? Value { get; set; }
 
-        public Guid VehicleTypeId { get; set; }
-        public Guid CityId { get; set; }
+        public Guid VehicleTypeId { get; set; } = default!;
+        public Guid CityId { get; set; } = default!;
 
         public int NumberOfPassengers { get; set; }
 
@@ -198,7 +198,6 @@ public class BookingsController : Controller
         var schedules = await _appBLL.Schedules
             .GettingAllOrderedSchedulesWithIncludesAsync(null, roleName);
         
-
         vm.Schedules = new SelectList(schedules,
             nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime));
         vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
@@ -207,7 +206,6 @@ public class BookingsController : Controller
             nameof(App.BLL.DTO.AdminArea.VehicleTypeDTO.Id), 
             nameof(App.BLL.DTO.AdminArea.VehicleTypeDTO.VehicleTypeName));
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
-#warning "Magic string" code smell, fix it
             nameof(App.BLL.DTO.AdminArea.DriverDTO.Id),
             $"{nameof(App.BLL.DTO.AdminArea.DriverDTO.AppUser)}.{nameof(
                 App.BLL.DTO.AdminArea.DriverDTO.AppUser.LastAndFirstName)}");
@@ -216,10 +214,8 @@ public class BookingsController : Controller
             nameof(App.BLL.DTO.AdminArea.VehicleDTO.VehicleIdentifier));
         vm.Customers = new SelectList(await _appBLL.Customers.GettingAllOrderedCustomersAsync(),
             nameof(App.BLL.DTO.AdminArea.CustomerDTO.Id),
-#warning "Magic string" code smell, fix it
             $"{nameof(App.BLL.DTO.AdminArea.CustomerDTO.AppUser)}." +
             $"{nameof(App.BLL.DTO.AdminArea.CustomerDTO.AppUser.LastAndFirstName)}");
-
 
         return View(vm);
     }
@@ -250,7 +246,6 @@ public class BookingsController : Controller
             booking.HasAnAssistant = vm.HasAnAssistant;
             booking.NumberOfPassengers = vm.NumberOfPassengers;
             booking.StatusOfBooking = StatusOfBooking.Awaiting;
-#warning Booking PickUpDateAndTime needs a custom validation
             booking.PickUpDateAndTime = DateTime.Parse(vm.PickUpDateAndTime).ToUniversalTime();
             
             booking.CreatedAt = DateTime.Now.ToUniversalTime();
@@ -282,7 +277,6 @@ public class BookingsController : Controller
             nameof(VehicleTypeDTO.Id), nameof(VehicleTypeDTO.VehicleTypeName)
             , nameof(vm.VehicleTypeId));
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
-#warning "Magic string" code smell, fix it
             nameof(App.BLL.DTO.AdminArea.DriverDTO.Id),
             $"{nameof(App.BLL.DTO.AdminArea.DriverDTO.AppUser)}." +
             $"{nameof(App.BLL.DTO.AdminArea.DriverDTO.AppUser.LastAndFirstName)}",
@@ -293,14 +287,12 @@ public class BookingsController : Controller
             nameof(vm.VehicleId));
         vm.Customers = new SelectList(await _appBLL.Customers.GettingAllOrderedCustomersAsync(),
             nameof(CustomerDTO.Id),
-#warning "Magic string" code smell, fix it
             $"{nameof(CustomerDTO.AppUser)}" +
             $".{nameof(CustomerDTO.AppUser.LastAndFirstName)}",
             nameof(vm.CustomerId));
 
         return View(vm);
     }
-
 
 // GET: AdminArea/Bookings/Edit/5
     /*public async Task<IActionResult> Edit(Guid? id)
@@ -471,15 +463,11 @@ public class BookingsController : Controller
             drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
             drive.UpdatedBy = User.Identity!.Name;
             drive.UpdatedAt = DateTime.Now.ToUniversalTime();
-#warning refactor into a common service for bookings
-#warning Add an EmailAddress Field to Driver with the "~Real"~address
-#warning Add a language field to Driver
+
             // Prepare Email Notification
             var mailRequest = new MailRequest();
-#warning Add Language Support for email templates
             mailRequest.Subject = $"Booking Declined: {booking.PickUpDateAndTime.ToLocalTime():g} {booking.PickupAddress}";
             mailRequest.ToEmail = "programmeerija88@gmail.com";
-#warning Include a link to quick login to the portal to see this booking in the email content
             mailRequest.Body = $"Booking Declined: {booking.PickUpDateAndTime.ToLocalTime():g} {booking.PickupAddress}";
 
             using (MailMessage mm = new MailMessage("testitaxi88@gmail.com", mailRequest.ToEmail))

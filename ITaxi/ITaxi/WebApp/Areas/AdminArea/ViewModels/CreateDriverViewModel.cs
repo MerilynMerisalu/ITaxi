@@ -28,7 +28,6 @@ public class CreateDriverViewModel
     [DataType(DataType.Date)]
     [Display(ResourceType = typeof(Driver), Name = "DateOfBirth")]
     [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:d}")]
-#warning Ask if it can be refactoried to use partial view
     public string DateOfBirth { get; set; } = default!;
 
 

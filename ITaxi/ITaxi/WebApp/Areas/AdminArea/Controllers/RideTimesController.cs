@@ -20,10 +20,6 @@ namespace WebApp.Areas.AdminArea.Controllers;
 public class RideTimesController : Controller
 {
     private readonly IAppBLL _appBLL;
-#warning Ask if this is the right way to get the user name of a logged in user
-#warning Ask how to get the user role using interface
-
-
     public RideTimesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
@@ -49,7 +45,6 @@ public class RideTimesController : Controller
         vm.Id = rideTime.Id;
         vm.Driver = rideTime.Schedule!.Driver!.AppUser!.LastAndFirstName;
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
-#warning Should it be a repository method
         vm.RideTime = rideTime.RideDateTime.ToString("t");
         vm.IsTaken = rideTime.IsTaken;
         vm.CreatedAt = rideTime.CreatedAt;
@@ -66,7 +61,6 @@ public class RideTimesController : Controller
         var roleName = User.GettingUserRoleName();
         var vm = new CreateRideTimeViewModel();
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
-#warning "Magic string" code smell, fix it
             nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
         vm.Schedules = new SelectList(new Schedule[0]
             , nameof(ScheduleDTO.Id), nameof(Schedule.ShiftDurationTime));
@@ -119,7 +113,6 @@ public class RideTimesController : Controller
             // But we leave this code here just in case the attribute is not in place.
             else
             {
-                #warning replace this string literal with a language resource
                 ModelState.AddModelError(nameof(vm.SelectedRideTimes), "Please select at least 1 time");
             }
         }
@@ -127,7 +120,6 @@ public class RideTimesController : Controller
         // After a Model Error, the VM is reset, so we need to rebuild the 
         // lists so that the user can continue to complete the form
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
-#warning "Magic string" code smell, fix it
             nameof(Driver.Id), "AppUser.LastAndFirstName");
 
         if (vm.DriverId != Guid.Empty)
@@ -160,8 +152,8 @@ public class RideTimesController : Controller
 
     public class SetDropDownListRequest
     {
-        public string ListType { get; set; }
-        public string Value { get; set; }
+        public string? ListType { get; set; }
+        public string? Value { get; set; }
     }
 
     /// <summary>
@@ -214,10 +206,9 @@ public class RideTimesController : Controller
             nameof(vm.RideTime), nameof(vm.RideTime));
 
         // we need to select one of these!
-#warning: like with the selection of the ScheduleId when the driver is change, you might want to select a specific ride time, not just the first one
+
         vm.RideTime = rideTimes.First();
-
-
+        
         return Ok(vm);
     }
 
@@ -320,7 +311,6 @@ public class RideTimesController : Controller
         vm.Driver = rideTime.Schedule.Driver!.AppUser!.LastAndFirstName;
         
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
-#warning Should it be a repository method
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
         vm.IsTaken = rideTime.IsTaken;
         vm.CreatedAt = rideTime.CreatedAt;

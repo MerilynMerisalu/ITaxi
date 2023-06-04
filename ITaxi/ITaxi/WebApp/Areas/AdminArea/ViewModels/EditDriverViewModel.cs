@@ -58,7 +58,6 @@ public class EditDriverViewModel
     [DataType(DataType.Date)]
     [Display(ResourceType = typeof(Driver), Name = "DriverLicenseExpiryDate")]
     [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:d}")]
-#warning DateTime input control does not support user changing the language yet
     public DateTime DriverLicenseExpiryDate { get; set; }
 
     public SelectList? Cities { get; set; }

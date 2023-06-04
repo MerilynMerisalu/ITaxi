@@ -24,6 +24,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
+/// <summary>
+/// Register customer model controller
+/// </summary>
 public class RegisterCustomerModel : PageModel
 {
     private readonly AppDbContext _context;
@@ -34,6 +37,15 @@ public class RegisterCustomerModel : PageModel
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserStore<AppUser> _userStore;
 
+    /// <summary>
+    /// Register customer model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for user's</param>
+    /// <param name="userStore">Store for user's</param>
+    /// <param name="signInManager">Sign in manager</param>
+    /// <param name="logger">Logger for customer register</param>
+    /// <param name="emailSender">Email sender</param>
+    /// <param name="context">DB context for customer registration</param>
     public RegisterCustomerModel(
         UserManager<AppUser> userManager,
         IUserStore<AppUser> userStore,
@@ -56,35 +68,43 @@ public class RegisterCustomerModel : PageModel
             nameof(DisabilityType.Id), nameof(DisabilityType.DisabilityTypeName));
     }
 
+    /// <summary>
+    /// Customer disability types
+    /// </summary>
     public SelectList? DisabilityTypes { get; set; }
 
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///  Input
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; } = default!;
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///  Return url
     /// </summary>
     public string? ReturnUrl { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///  External logins
     /// </summary>
     public IList<AuthenticationScheme>? ExternalLogins { get; set; }
-
-
+    
+    /// <summary>
+    /// On get async method
+    /// </summary>
+    /// <param name="returnUrl">Return url</param>
     public async Task OnGetAsync(string? returnUrl = null)
     {
         ReturnUrl = returnUrl;
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
 
+    /// <summary>
+    /// On post async method
+    /// </summary>
+    /// <param name="returnUrl">Return url</param>
+    /// <returns>Url</returns>
     public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
@@ -93,7 +113,6 @@ public class RegisterCustomerModel : PageModel
         {
             var user = new AppUser
             {
-#warning customer's dateOfBirth needs a custom validation rule
                 FirstName = Input.FirstName,
                 LastName = Input.LastName,
                 Gender = Input.Gender,
@@ -106,7 +125,7 @@ public class RegisterCustomerModel : PageModel
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
             var result = await _userManager.CreateAsync(user, Input.Password);
-#warning ask if this is the right way to add a claim in my app context
+
             result = await _userManager.AddClaimAsync(user, new Claim("aspnet.firstname", user.FirstName));
             result = await _userManager.AddClaimAsync(user, new Claim("aspnet.lastname", user.LastName));
 
@@ -171,11 +190,13 @@ public class RegisterCustomerModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///  Input model 
     /// </summary>
     public class InputModel
     {
+        /// <summary>
+        /// Customer first name
+        /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [MaxLength(50, ErrorMessageResourceType = typeof(Common),
@@ -184,6 +205,9 @@ public class RegisterCustomerModel : PageModel
         [Display(ResourceType = typeof(CustomerRegister), Name = nameof(FirstName))]
         public string FirstName { get; set; } = default!;
 
+        /// <summary>
+        /// Customer last name
+        /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
@@ -192,19 +216,31 @@ public class RegisterCustomerModel : PageModel
         [Display(ResourceType = typeof(CustomerRegister), Name = nameof(LastName))]
         public string LastName { get; set; } = default!;
 
+        /// <summary>
+        /// Customer gender
+        /// </summary>
         [Display(ResourceType = typeof(CustomerRegister), Name = nameof(Gender))]
         [EnumDataType(typeof(Gender))]
         public Gender Gender { get; set; }
 
+        /// <summary>
+        /// Customer date of birth
+        /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.Date)]
         [Display(ResourceType = typeof(CustomerRegister), Name = nameof(DateOfBirth))]
         public DateTime DateOfBirth { get; set; }
 
+        /// <summary>
+        /// Disability id for customer
+        /// </summary>
         [Display(ResourceType = typeof(CustomerRegister), Name = "DisabilityType")]
         public Guid DisabilityTypeId { get; set; }
 
+        /// <summary>
+        /// Customer phone number
+        /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.PhoneNumber)]
@@ -215,8 +251,7 @@ public class RegisterCustomerModel : PageModel
         public string PhoneNumber { get; set; } = default!;
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Customer email
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
@@ -225,8 +260,7 @@ public class RegisterCustomerModel : PageModel
         public string Email { get; set; } = default!;
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///  Customer password
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
@@ -238,8 +272,7 @@ public class RegisterCustomerModel : PageModel
         public string Password { get; set; } = default!;
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///  Customer password confirm
         /// </summary>
         
         [Required(ErrorMessageResourceType = typeof(Common),

@@ -272,7 +272,7 @@ public async Task<IActionResult> Accept(Guid? id)
     vm.StatusOfBooking = drive.Booking.StatusOfBooking;
     vm.StatusOfDrive = drive.StatusOfDrive;
     vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
-    #warning  needs refactoring
+  
     if (vm.IsDriveAccepted )
     {
         vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");

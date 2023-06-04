@@ -152,7 +152,7 @@ public class DriverLicenseCategoriesController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var driverLicenseCategory = await _appBLL.DriverLicenseCategories.FirstOrDefaultAsync(id);
-#warning Ask if this could be improved
+
         if (await _appBLL.DriverAndDriverLicenseCategories.HasAnyDriversAsync(id))
         {
             return Content("Entity cannot be deleted because it has dependent entities!");

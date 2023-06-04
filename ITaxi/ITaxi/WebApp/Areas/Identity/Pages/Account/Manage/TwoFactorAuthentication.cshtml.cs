@@ -10,12 +10,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
+/// <summary>
+/// Two factor authentication model controller
+/// </summary>
 public class TwoFactorAuthenticationModel : PageModel
 {
     private readonly ILogger<TwoFactorAuthenticationModel> _logger;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Two factor authentication model controller constructor
+    /// </summary>
+    /// <param name="userManager">Manager for user's</param>
+    /// <param name="signInManager">Sign in manager</param>
+    /// <param name="logger">Logger for two factor authentication</param>
     public TwoFactorAuthenticationModel(
         UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
         ILogger<TwoFactorAuthenticationModel> logger)
@@ -26,37 +35,36 @@ public class TwoFactorAuthenticationModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///  Has authenticator 
     /// </summary>
     public bool HasAuthenticator { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///  Recovery codes left
     /// </summary>
     public int RecoveryCodesLeft { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Is 2 fa enabled 
     /// </summary>
     [BindProperty]
     public bool Is2faEnabled { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Is machine remembered  
     /// </summary>
     public bool IsMachineRemembered { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Status message  
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
 
+    /// <summary>
+    /// On get async method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -70,6 +78,10 @@ public class TwoFactorAuthenticationModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// On post async method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnPostAsync()
     {
         var user = await _userManager.GetUserAsync(User);

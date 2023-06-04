@@ -18,12 +18,9 @@ namespace WebApp.Areas.AdminArea.Controllers;
 [Authorize(Roles = "Admin")]
 public class DriversController : Controller
 {
-    
     private readonly IAppBLL _appBLL;
-    #warning ask about it
+    
     private readonly UserManager<App.Domain.Identity.AppUser> _userManager;
-
-
     public DriversController(UserManager<App.Domain.Identity.AppUser> userManager, IAppBLL appBLL)
     {
         
@@ -143,7 +140,6 @@ public class DriversController : Controller
             vm.PersonalIdentifier = driver.PersonalIdentifier;
             vm.DateOfBirth = driver.AppUser!.DateOfBirth;
             vm.DriverLicenseNumber = driver.DriverLicenseNumber;
-#warning Ask if this should be a repository method
             vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
             vm.PhoneNumber = driver!.AppUser!.PhoneNumber;
             vm.Email = driver.AppUser!.Email;
@@ -275,14 +271,14 @@ public class DriversController : Controller
         {
             driver.AppUser = null;
             var appUser = await _userManager.FindByIdAsync(driver!.AppUserId.ToString());
-            await _userManager.RemoveFromRoleAsync(appUser, "Driver");
+            await _userManager.RemoveFromRoleAsync(appUser!, "Driver");
 
             await _appBLL.Drivers.RemoveAsync(driver.Id);
             await _appBLL.SaveChangesAsync();
-    #warning  temporarily solution
-            var claims = await _userManager.GetClaimsAsync(appUser);
-            await _userManager.RemoveClaimsAsync(appUser, claims);
-            await _userManager.DeleteAsync(appUser);
+            
+            var claims = await _userManager.GetClaimsAsync(appUser!);
+            await _userManager.RemoveClaimsAsync(appUser!, claims);
+            await _userManager.DeleteAsync(appUser!);
             await _appBLL.SaveChangesAsync();
         }
 

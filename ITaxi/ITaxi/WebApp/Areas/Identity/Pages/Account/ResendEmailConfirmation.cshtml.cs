@@ -18,12 +18,20 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
+/// <summary>
+/// Resend email confirmation model controller
+/// </summary>
 [AllowAnonymous]
 public class ResendEmailConfirmationModel : PageModel
 {
     private readonly IEmailSender _emailSender;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Resend email confirmation model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for user</param>
+    /// <param name="emailSender">Email sender</param>
     public ResendEmailConfirmationModel(UserManager<AppUser> userManager, IEmailSender emailSender)
     {
         _userManager = userManager;
@@ -37,10 +45,17 @@ public class ResendEmailConfirmationModel : PageModel
     [BindProperty]
     public InputModel Input { get; set; }
 
+    /// <summary>
+    /// On get method
+    /// </summary>
     public void OnGet()
     {
     }
 
+    /// <summary>
+    /// On post async method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid) return Page();

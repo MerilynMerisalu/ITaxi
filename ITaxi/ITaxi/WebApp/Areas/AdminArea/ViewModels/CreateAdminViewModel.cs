@@ -26,8 +26,6 @@ public class CreateAdminViewModel
 
     [Display(ResourceType = typeof(Admin), Name = "DateOfBirth")]
     [DataType(DataType.Date)]
-
-#warning Ask if it can be refactoried to use partial view
     public string DateOfBirth { get; set; } = default!;
 
     [StringLength(50, ErrorMessageResourceType = typeof(Common),

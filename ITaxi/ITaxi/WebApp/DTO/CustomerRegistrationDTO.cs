@@ -3,12 +3,16 @@ using WebApp.DTO.Identity;
 
 namespace WebApp.DTO;
 
+/// <summary>
+/// Customer registration DTO
+/// </summary>
 public class CustomerRegistrationDTO: RegisterDTO
 {
-    #warning Should there be a common DTO for all types of registrations
-
     public Guid Id { get; set; }
     
+    /// <summary>
+    /// Disability type id for the customer registration
+    /// </summary>
     [Required]
     public Guid DisabilityTypeId { get; set; }
 }

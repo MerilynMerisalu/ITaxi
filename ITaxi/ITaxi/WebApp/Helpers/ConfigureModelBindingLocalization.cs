@@ -5,24 +5,26 @@ using Microsoft.Extensions.Options;
 
 namespace WebApp.Helpers;
 
-/*public class ConfigureModelBindingLocalization: IConfigureOptions<MvcOptions>
-{
-    public void Configure(MvcOptions options)
-    {
-        options.ModelBindingMessageProvider.SetValueIsInvalidAccessor((value) => 
-            string.Format($"Value {0} is invalid", value));
-    }
-}*/
-
+/// <summary>
+/// Binding localization
+/// </summary>
 public class ConfigureModelBindingLocalization : IConfigureOptions<MvcOptions>
 {
     private readonly IServiceScopeFactory _serviceFactory;
 
+    /// <summary>
+    /// Constructor for the binding localization
+    /// </summary>
+    /// <param name="serviceFactory">Service factory</param>
     public ConfigureModelBindingLocalization(IServiceScopeFactory serviceFactory)
     {
         _serviceFactory = serviceFactory;
     }
 
+    /// <summary>
+    /// Binding localization configure
+    /// </summary>
+    /// <param name="options">Configure options</param>
     public void Configure(MvcOptions options)
     {
         using (var scope = _serviceFactory.CreateScope())

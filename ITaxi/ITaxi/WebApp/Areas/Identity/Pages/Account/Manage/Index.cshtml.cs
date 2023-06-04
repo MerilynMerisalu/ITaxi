@@ -113,10 +113,9 @@ public class IndexModel : PageModel
                     AddressOfResidence = admin.Address,
                     ImageFile = user.ProfileImage
                 };
-            #warning Ask if there is a better way to implement it
+            
             else if (driver != null)
             {
-#warning add the ability to change the list of driver license categories with js
                 SelectedDriverLicenseCategories = new SelectList(await
                         _context.DriverAndDriverLicenseCategories
                             .Include(d => d.Driver)

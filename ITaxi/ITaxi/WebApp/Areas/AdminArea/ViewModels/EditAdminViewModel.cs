@@ -30,8 +30,6 @@ public class EditAdminViewModel
 
     [Display(ResourceType = typeof(Admin), Name = "DateOfBirth")]
     [DataType(DataType.Date)]
-
-#warning Ask if itcan be refactoried to use partial view
     public DateTime DateOfBirth { get; set; } = default!;
 
     [StringLength(50, ErrorMessageResourceType = typeof(Common),

@@ -5,25 +5,41 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Controller for translations
+/// </summary>
 [Area("AdminArea")]
 public class LangStringsController : Controller
 {
     private readonly AppDbContext _context;
 
+    /// <summary>
+    /// Constructor for lang string controller
+    /// </summary>
+    /// <param name="context">DB context</param>
     public LangStringsController(AppDbContext context)
     {
         _context = context;
     }
 
     // GET: AdminArea/LangStrings
+    /// <summary>
+    /// Lang string index
+    /// </summary>
+    /// <returns>All lang strings</returns>
     public async Task<IActionResult> Index()
     {
-        return _context.LangStrings != null
+        return true
             ? View(await _context.LangStrings.ToListAsync())
             : Problem("Entity set 'AppDbContext.LangStrings'  is null.");
     }
 
     // GET: AdminArea/LangStrings/Details/5
+    /// <summary>
+    /// Lang string details method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Lang string str</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null || _context.LangStrings == null) return NotFound();
@@ -36,6 +52,10 @@ public class LangStringsController : Controller
     }
 
     // GET: AdminArea/LangStrings/Create
+    /// <summary>
+    /// Lang string GET create method
+    /// </summary>
+    /// <returns>Empty view</returns>
     public IActionResult Create()
     {
         return View();
@@ -44,6 +64,11 @@ public class LangStringsController : Controller
     // POST: AdminArea/LangStrings/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Lang string POST create method
+    /// </summary>
+    /// <param name="langStr">Adding lang string</param>
+    /// <returns>New lang string</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Id")] LangStr langStr)
@@ -60,6 +85,11 @@ public class LangStringsController : Controller
     }
 
     // GET: AdminArea/LangStrings/Edit/5
+    /// <summary>
+    /// Lang string GET edit method
+    /// </summary>
+    /// <param name="id">Lang string id</param>
+    /// <returns>Lang string</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         if (id == null || _context.LangStrings == null) return NotFound();
@@ -72,6 +102,12 @@ public class LangStringsController : Controller
     // POST: AdminArea/LangStrings/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Lang string POST edit method
+    /// </summary>
+    /// <param name="id">Lang string id</param>
+    /// <param name="langStr">Lang str for the new lang string</param>
+    /// <returns>Lang string</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, [Bind("Id")] LangStr langStr)
@@ -99,6 +135,11 @@ public class LangStringsController : Controller
     }
 
     // GET: AdminArea/LangStrings/Delete/5
+    /// <summary>
+    /// Lang string GET delete method
+    /// </summary>
+    /// <param name="id">Lang string id</param>
+    /// <returns>Deleted lang string</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null || _context.LangStrings == null) return NotFound();
@@ -111,6 +152,11 @@ public class LangStringsController : Controller
     }
 
     // POST: AdminArea/LangStrings/Delete/5
+    /// <summary>
+    /// Lang string POST delete method
+    /// </summary>
+    /// <param name="id">Lang string id</param>
+    /// <returns>Redirects the user to the index page</returns>
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]

@@ -9,8 +9,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.Helpers;
 
+/// <summary>
+/// Data helper 
+/// </summary>
 public static class DataHelper
 {
+    /// <summary>
+    /// Set up App data
+    /// </summary>
+    /// <param name="app">App</param>
+    /// <param name="env">Environment variable</param>
+    /// <param name="configuration">Configuration variable</param>
+    /// <exception cref="ApplicationException">Application exception</exception>
     public static async Task SetupAppData(IApplicationBuilder app, IWebHostEnvironment env,
         IConfiguration configuration)
     {
@@ -29,11 +39,8 @@ public static class DataHelper
         // can't connect - wrong user/pass
         // can connect - but no database
         // can connect - there is database
-
         // userManager and roleManager
-
-
-
+        
         if (userManager == null || roleManager == null) Console.Write("Cannot instantiate userManager or rolemanager!");
 
         if (configuration.GetValue<bool>("DataInitialization:DropDatabase"))
@@ -46,6 +53,14 @@ public static class DataHelper
             configuration.GetValue<bool>("DataInitialization:SeedData"));
     }
 
+    /// <summary>
+    /// Seeding data
+    /// </summary>
+    /// <param name="context">DB context</param>
+    /// <param name="userManager">Manager for the system users</param>
+    /// <param name="roleManager">Manager for the system roles</param>
+    /// <param name="seedIdentity">Identity seeding</param>
+    /// <param name="seedData">Data seeding</param>
     public static async Task SeedDatabase(AppDbContext context, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, bool seedIdentity, bool seedData)
     {
         if (seedIdentity)
@@ -72,43 +87,9 @@ public static class DataHelper
                             Console.WriteLine("Cant create role! Error: " + identityError.Description);
                 }
             }
-            /*var role = new AppRole
-            {
-                Name = "Admin"
-            };
-            role.NormalizedName = role.Name.ToUpper();*/
-            /*var result = roleManager!.CreateAsync(role).Result;
-            if (!result.Succeeded)
-                foreach (var identityError in result.Errors)
-                    Console.WriteLine("Cant create role! Error: " + identityError.Description);
-                    */
-
-            /*role = new AppRole
-            {
-                Name = "Driver"
-            };
-            role.NormalizedName = role.Name.ToUpper();*/
-            /*result = roleManager!.CreateAsync(role).Result;
-            if (!result.Succeeded)
-                foreach (var identityError in result.Errors)
-                    Console.WriteLine("Cant create role! Error: " + identityError.Description);
-                    */
-
-            /*role = new AppRole
-            {
-                Name = "Customer"
-            };
-            role.NormalizedName = role.Name.ToUpper();*/
-            /*result = roleManager!.CreateAsync(role).Result;
-            if (!result.Succeeded)
-                foreach (var identityError in result.Errors)
-                    Console.WriteLine("Cant create role! Error: " + identityError.Description);
-        }*/
 
             if (seedData)
             {
-                // Initialize all vehicle Types
-                //App.Resources.Areas.App.Domain.AdminArea.VehicleType.
                 var regularVehicleType = new VehicleType
                 {
                     Id = Guid.NewGuid(),
@@ -116,6 +97,7 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
+                
                 regularVehicleType.VehicleTypeName.SetTranslation("Tava", "et-EE");
                 await context.VehicleTypes.AddAsync(regularVehicleType);
                 var wheelChairVehicleType = new VehicleType
@@ -125,6 +107,7 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
+                
                 wheelChairVehicleType.VehicleTypeName.SetTranslation("Inva", "et-EE");
                 await context.VehicleTypes.AddAsync(wheelChairVehicleType);
                 await context.SaveChangesAsync();
@@ -139,6 +122,7 @@ public static class DataHelper
                     CreatedAt = DateTime.Now.ToUniversalTime(),
                     CreatedBy = "System",
                 };
+                
                 disabilityType.DisabilityTypeName.SetTranslation("Puudub", "et-EE");
                 await context.DisabilityTypes.AddAsync(disabilityType);
                 await context.SaveChangesAsync();
@@ -154,6 +138,7 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
+                
                 await context.Counties.AddAsync(county);
                 await context.SaveChangesAsync();
 
@@ -165,6 +150,7 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
+                
                 await context.Cities.AddAsync(city);
                 await context.SaveChangesAsync();
 
@@ -180,14 +166,13 @@ public static class DataHelper
                     PhoneNumber = "22356891",
 
                 };
+                
                 appUser.UserName = appUser.Email;
 
                 var result = userManager!.CreateAsync(appUser, "Katrinkass123$").Result;
-#warning ask if this is the right way to add a claim in my app context
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
-
-
+                
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant create user! Error: " + identityError.Description);
@@ -213,6 +198,7 @@ public static class DataHelper
                     CreatedAt = DateTime.Now.ToUniversalTime(),
                     CreatedBy = "System"
                 };
+                
                 await context.Admins.AddAsync(admin);
                 await context.SaveChangesAsync();
 
@@ -227,29 +213,27 @@ public static class DataHelper
                     EmailConfirmed = true,
                     PhoneNumber = "22356891"
                 };
+                
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Tiinakass123$").Result;
-
-#warning ask if this is the right way to add a claim in my app context
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
-
-
+                
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant create user! Error: " + identityError.Description);
                 result = userManager.AddToRoleAsync(appUser, "Admin").Result;
+                
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
-
                 result = userManager.AddToRoleAsync(appUser, "Admin").Result;
+                
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
-
-
+                
                 admin = new Admin
                 {
                     Id = new Guid(),
@@ -261,10 +245,10 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
+                
                 await context.Admins.AddAsync(admin);
                 await context.SaveChangesAsync();
-
-
+                
                 appUser = new AppUser
                 {
                     Id = new Guid(),
@@ -276,26 +260,27 @@ public static class DataHelper
                     EmailConfirmed = true,
                     PhoneNumber = "55358834"
                 };
+                
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Toomaskoer123$").Result;
-#warning ask if this is the right way to add a claim in my app context
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
-
-
+                
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant create user! Error: " + identityError.Description);
                 result = userManager.AddToRoleAsync(appUser, "Driver").Result;
+                
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
-
                 result = userManager.AddToRoleAsync(appUser, "Driver").Result;
+                
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
+                
                 var driver = new Driver
                 {
                     Id = new Guid(),
@@ -308,6 +293,7 @@ public static class DataHelper
                     Address = "Veerenni 13",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
+                
                 await context.Drivers.AddAsync(driver);
                 await context.SaveChangesAsync();
 
@@ -327,10 +313,10 @@ public static class DataHelper
                     DriverId = driver.Id,
                     DriverLicenseCategoryId = driverLicenseCategory.Id
                 };
+                
                 await context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategory);
                 await context.SaveChangesAsync();
-
-
+                
                 appUser = new AppUser
                 {
                     Id = new Guid(),
@@ -342,14 +328,13 @@ public static class DataHelper
                     EmailConfirmed = true,
                     PhoneNumber = "22447799"
                 };
+                
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Peepkoer123$").Result;
-#warning ask if this is the right way to add a claim in my app context
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
-
-
+                
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant create user! Error: " + identityError.Description);
@@ -583,7 +568,6 @@ public static class DataHelper
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Maarikakass123$").Result;
-#warning ask if this is the right way to add a claim in my app context
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
 
@@ -622,7 +606,6 @@ public static class DataHelper
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Kristjankoer123$").Result;
-#warning ask if this is the right way to add a claim in my app context
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
 

@@ -57,7 +57,7 @@ public class DrivesController : ControllerBase
     [HttpGet("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType(typeof(County), StatusCodes.Status200OK )] 
+    [ProducesResponseType(typeof(Drive), StatusCodes.Status200OK )] 
     [ProducesResponseType( StatusCodes.Status404NotFound )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

@@ -110,8 +110,6 @@ builder.Services
         {
             ValidIssuer = builder.Configuration["JWT:Issuer"],
             ValidAudience = builder.Configuration["JWT:Issuer"],
-
-#warning secret key not added to the generated jwt which makes it not verified
             ValidateAudience = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!)),
             ClockSkew = TimeSpan.Zero // remove delay of token when expire

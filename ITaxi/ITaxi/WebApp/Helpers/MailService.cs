@@ -4,16 +4,27 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 
 namespace WebApp.Helpers;
-
+/// <summary>
+/// Mail Service
+/// </summary>
 public class MailService : IMailService
 {
     private readonly MailSettings _mailSettings;
 
+    /// <summary>
+    /// Mail Service settings
+    /// </summary>
+    /// <param name="mailSettings">Mail settings</param>
     public MailService(IOptions<MailSettings> mailSettings)
     {
         _mailSettings = mailSettings.Value;
     }
 
+    /// <summary>
+    /// Mail Request 
+    /// </summary>
+    /// <param name="mailRequest">Mail request</param>
+    /// <returns>Response</returns>
     public async Task<string> SendEmailAsync(MailRequest mailRequest)
     {
         var email = new MimeMessage();

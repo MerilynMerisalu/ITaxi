@@ -7,17 +7,26 @@ using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rotativa.AspNetCore;
 
 namespace WebApp.ApiControllers.DriverArea;
 
+/// <summary>
+/// Api controller for drives
+/// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/DriverArea/[controller]")]
+[ApiVersion("1.0")]
 [Authorize(Roles = "Admin, Driver", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DrivesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
     private readonly IMapper _mapper;
+    
+    /// <summary>
+    /// Constructor for drives api controller
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
+    /// <param name="mapper">Mapper for mapping App.BLL.DTO.DriverArea.DriveDTO to Public.DTO.v1.DriverArea.Drive</param>
     public DrivesController(IAppBLL appBLL, IMapper mapper)
     {
         _appBLL = appBLL;
@@ -25,20 +34,39 @@ public class DrivesController : ControllerBase
     }
 
     // GET: api/Drives
+    /// <summary>
+    /// Gets all the drives
+    /// </summary>
+    /// <returns>List of drives with a statusCode 200OK or statusCode 403 or statusCode 401</returns>
     [HttpGet]
     [AllowAnonymous]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType( typeof( IEnumerable<Drive>), StatusCodes.Status200OK )] 
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<Drive>>> GetDrives()
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var res = await _appBLL.Drives.GettingAllOrderedDrivesWithIncludesAsync(userId, roleName);
-
         var results = res.Select(d => _mapper.Map<Drive>(d));
         return Ok(results);
     }
 
     // GET: api/Drives/5
-    [HttpGet("{id}")]
+    /// <summary>
+    /// Returns drive based on id
+    /// </summary>
+    /// <param name="id">Drive id, Guid</param>
+    /// <returns>Drive (TEntity) with statusCode 200 or statusCode 404 or statusCode 403 or statusCode 401</returns>
+    [HttpGet("{id:guid}")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(Drive), StatusCodes.Status200OK )] 
+    [ProducesResponseType( StatusCodes.Status404NotFound )] 
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<Drive>> GetDrive(Guid id)
     {
         var userId = User.GettingUserId();
@@ -49,58 +77,19 @@ public class DrivesController : ControllerBase
         
         return Ok(_mapper.Map<Drive>(drive));
     }
-
-
-// PUT: api/Drives/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    /*[HttpPut("{id}")]
-    public async Task<IActionResult> PutDrive(Guid id, Drive drive)
-    {
-        if (id != drive.Id) return BadRequest();
-
-
-        try
-        {
-            _appBLL.Drives.Update(drive);
-            await _appBLL.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!DriveExists(id))
-                return NotFound();
-            throw;
-        }
-
-        return NoContent();
-    }
-    */
-
-    // POST: api/Drives
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    /*[HttpPost]
-    public async Task<ActionResult<Drive>> PostDrive(Drive drive)
-    {
-        _appBLL.Drives.Add(drive);
-        await _appBLL.SaveChangesAsync();
-
-        return CreatedAtAction("GetDrive", new {id = drive.Id}, drive);
-    }
-    */
-
-    // DELETE: api/Drives/5
-    /*[HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteDrive(Guid id)
-    {
-        var drive = await _appBLL.Drives.FirstOrDefaultAsync(id);
-        if (drive == null) return NotFound();
-
-        _appBLL.Drives.Remove(drive);
-        await _appBLL.SaveChangesAsync();
-
-        return NoContent();
-    }*/
-    [HttpPut("{id}")]
     
+    /// <summary>
+    /// Accepting booking by the driver
+    /// </summary>
+    /// <param name="id">Drive id</param>
+    /// <returns>Returns 204</returns>
+    [HttpGet("Accept/{id:guid}")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(Drive), StatusCodes.Status200OK )] 
+    [ProducesResponseType( StatusCodes.Status404NotFound )] 
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Accept (Guid id)
     {
         var userId = User.GettingUserId();
@@ -114,29 +103,21 @@ public class DrivesController : ControllerBase
         return NoContent();
     }
     
+    /// <summary>
+    /// Checks if the ride exists
+    /// </summary>
+    /// <param name="id">Drive id</param>
+    /// <returns>Boolean</returns>
+    [HttpGet("{id:guid}")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(Drive), StatusCodes.Status200OK )] 
+    [ProducesResponseType( StatusCodes.Status404NotFound )] 
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     private bool DriveExists(Guid id)
     {
         return _appBLL.Drives.Exists(id);
     }
     
-    /*[Route("Print")]
-    [HttpGet]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<string> Print()
-    {
-        var roleName = User.GettingUserRoleName();
-        var userId = User.GettingUserId();
-    
-        var drives = await _appBLL.Drives.PrintAsync( userId, roleName );
-
-        var mappedDrives = drives.Select(d => _mapper.Map<Drive>(d));
-        return Url.ActionLink("Print")!  ; ;
-
-    }
-    */
-    
-    
-
 }

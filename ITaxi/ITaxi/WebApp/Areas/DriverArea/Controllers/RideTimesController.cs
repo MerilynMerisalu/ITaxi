@@ -49,8 +49,6 @@ public class RideTimesController : Controller
         vm.Id = rideTime.Id;
 
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
-#warning Should it be a repository method
-#warning Ridetime needs fixing
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
         vm.IsTaken = rideTime.IsTaken;
 
@@ -83,6 +81,7 @@ public class RideTimesController : Controller
     [HttpPost]
     public async Task<IActionResult> SetDropDownList([FromRoute] Guid id)
     {
+        await Task.CompletedTask;
         // Use the CreateRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
         var vm = new CreateRideTimeViewModel();
         vm.ScheduleId = id;
@@ -132,19 +131,15 @@ public class RideTimesController : Controller
 
                 await _appBLL.SaveChangesAsync();
             }
-#warning Needs custom validation to check that at least one ride time is chosen
 
             return RedirectToAction(nameof(Index));
         }
-
-
-#warning Selectlist of schedules must be recreated when something goes wrong with creating the record
+        
         vm.Schedules = new SelectList(await _appBLL.Schedules
                 .GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName),
             nameof(ScheduleDTO.Id),
             nameof(ScheduleDTO.ShiftDurationTime));
-#warning Selectable ride times must be recreated when something goes wrong with creating the record
-#warning Selected ride times remain so when something goes wrong with creating the record
+
         return View(vm);
     }
 
@@ -167,21 +162,18 @@ public class RideTimesController : Controller
             nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime));
         var schedules = await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
         vm.IsTaken = rideTime.IsTaken;
-#warning Ridetimes should be hidden and reappearing based on whether IsTaken is true or not
+
         var rideTimes = _appBLL.RideTimes.CalculatingRideTimes(rideTime.ScheduleId);
-#warning Ask if there is a better way to implement this
         var rideTimeList = new List<string>();
         foreach (var rideTimeLocal in rideTimes)
             rideTimeList.Add(DateTime.Parse(rideTimeLocal).ToString("t"));
 
         vm.RideTimes = new SelectList(rideTimeList);
         vm.ScheduleId = rideTime.ScheduleId;
-#warning Should it be a repository method
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
         return View(vm);
     }
-
-
+    
     // POST: DriverArea/RideTimes/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -237,7 +229,6 @@ public class RideTimesController : Controller
         rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
 
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
-#warning Should it be a repository method
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
         vm.IsTaken = rideTime.IsTaken;
 

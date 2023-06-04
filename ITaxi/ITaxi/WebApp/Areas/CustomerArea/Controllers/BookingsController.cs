@@ -192,7 +192,6 @@ public class BookingsController : Controller
             booking.HasAnAssistant = vm.HasAnAssistant;
             booking.NumberOfPassengers = vm.NumberOfPassengers;
             booking.StatusOfBooking = StatusOfBooking.Awaiting;
-#warning Booking PickUpDateAndTime needs a custom validation
             booking.PickUpDateAndTime = DateTime.Parse(vm.PickUpDateAndTime).ToUniversalTime();
 
             var rideTimeLookup =

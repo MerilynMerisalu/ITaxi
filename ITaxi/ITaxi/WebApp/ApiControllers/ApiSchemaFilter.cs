@@ -3,6 +3,9 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace WebApp.ApiControllers;
 
+/// <summary>
+/// ApiSchemaFilter
+/// </summary>
 public class ApiSchemaFilter : ISchemaFilter
 {
     /// <summary>
@@ -22,6 +25,11 @@ public class ApiSchemaFilter : ISchemaFilter
         //"App.Domain.Enum"
     };
     
+    /// <summary>
+    /// OpenApiSchema
+    /// </summary>
+    /// <param name="schema"></param>
+    /// <param name="context"></param>
     public void Apply(OpenApiSchema schema, SchemaFilterContext context)
     {
         var keys = context.SchemaRepository.Schemas.Keys

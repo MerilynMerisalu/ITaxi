@@ -114,7 +114,7 @@ public class BookingsController : ControllerBase
             return BadRequest("Api version is mandatory");
         }
         _appBLL.Bookings.Add(bookingDTO);
-#warning Needs checking
+
         var drive = new DriveDTO()
         {
             Id = new Guid(),
@@ -145,7 +145,6 @@ public class BookingsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteBooking(Guid id)
     {
-#warning Needs checking
         var booking = await _appBLL.Bookings.GettingBookingWithoutIncludesByIdAsync(id);
         if (booking == null) return NotFound();
 
