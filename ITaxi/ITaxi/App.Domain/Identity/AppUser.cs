@@ -45,7 +45,7 @@ public class AppUser : BaseUser
         ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-   public override string PhoneNumber { get; set; } = default!;
+    public override string? PhoneNumber { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.EmailAddress)]
@@ -53,7 +53,7 @@ public class AppUser : BaseUser
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     
-    public override string Email { get; set; } = default!;
+    public override string? Email { get; set; }
     public bool IsActive { get; set; }
 
     public ICollection<RefreshToken>? RefreshTokens { get; set; }

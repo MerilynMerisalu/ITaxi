@@ -31,10 +31,8 @@ public class AccountController : ControllerBase
     private readonly IConfiguration _configuration;
     private readonly ILogger<AccountController> _logger;
     private readonly Random _rand = new Random();
-    #warning code smell check it
-    [Obsolete("Move this code to AppBll", false)]
+    // TODO: Move this code to AppBll
     private readonly AppDbContext _context;
-    #warning code smell check it
     private readonly IAppBLL _appBLL;
 
     
@@ -548,7 +546,7 @@ public class AccountController : ControllerBase
             return BadRequest($"Cannot parse the token {e.Message}");
         }
         
-#warning  Validate token signature
+
 
         var userEmail = jwtToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
         if (userEmail == null)

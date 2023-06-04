@@ -11,7 +11,7 @@ public interface IRideTimeRepository : IEntityRepository<RideTimeDTO>, IRideTime
 
 public interface IRideTimeRepositoryCustom<TEntity>
 {
-    Task<IEnumerable<TEntity>?> GettingAllRideTimesWithoutIncludesAsync(bool noTracking = true);
+    Task<IEnumerable<TEntity?>> GettingAllRideTimesWithoutIncludesAsync(bool noTracking = true);
     IEnumerable<TEntity?> GettingAllRideTimesWithoutIncludes(bool noTracking = true);
     Task<TEntity?> GettingRideTimeWithoutIncludesByIdAsync(Guid id, bool noTracking = true);
     TEntity? GettingRideTimeWithoutIncludesById(Guid id, bool noTracking = true);

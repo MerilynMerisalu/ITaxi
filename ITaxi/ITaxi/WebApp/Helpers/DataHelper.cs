@@ -41,7 +41,7 @@ public static class DataHelper
 
         if (configuration.GetValue<bool>("DataInitialization:MigrateDatabase")) await context.Database.MigrateAsync();
 
-        await SeedDatabase(context, userManager, roleManager,
+        await SeedDatabase(context, userManager!, roleManager!,
             configuration.GetValue<bool>("DataInitialization:SeedIdentity"),
             configuration.GetValue<bool>("DataInitialization:SeedData"));
     }

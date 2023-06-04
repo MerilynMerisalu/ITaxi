@@ -20,6 +20,6 @@ public class JwtResponseDriverRegister
     
     public string[] RoleNames { get; set; } = default!;
 
-    public DriverDTO DriverDTO { get; set; }
-    public DriverAndDriverLicenseCategoryDTO DriverAndDriverLicenseCategoryDTO { get; set; }
+    public DriverDTO? DriverDTO { get; set; }
+    public DriverAndDriverLicenseCategoryDTO? DriverAndDriverLicenseCategoryDTO { get; set; }
 }

@@ -30,7 +30,6 @@ public class DriverDTO: DomainEntityMetaId
 
     [DataType(DataType.DateTime)]
     
-#warning DateTime input control does not support user changing the language yet.
     public DateTime DriverLicenseExpiryDate { get; set; }
 
     public int NumberOfDriverLicenseCategories { get; set; }

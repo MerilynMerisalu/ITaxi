@@ -159,7 +159,6 @@ public class CommentRepository : BaseEntityRepository<CommentDTO, App.Domain.Com
                 .Include(d => d.Drive)
                 .ThenInclude(d => d!.Driver)
                 .ThenInclude(d => d!.AppUser);
-            query = query;
             return query;
         }
 

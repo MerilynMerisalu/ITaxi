@@ -36,7 +36,6 @@ public class AppUser: DomainEntityId
     [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Admin), Name = nameof(DateOfBirth))]
     [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
-#warning DateTime input control does not support user changing the language yet.
     public DateTime DateOfBirth { get; set; }
 
     [NotMapped]

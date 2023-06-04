@@ -16,5 +16,5 @@ public class JwtResponseCustomerRegister
     public string LastAndFirstName => $"{LastName} {FirstName}";
     
     public string[] RoleNames { get; set; } = default!;
-    public CustomerDTO CustomerDTO { get; set; }
+    public CustomerDTO? CustomerDTO { get; set; }
 }

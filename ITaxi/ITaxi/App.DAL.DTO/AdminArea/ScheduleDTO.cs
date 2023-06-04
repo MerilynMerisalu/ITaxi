@@ -21,13 +21,14 @@ public class ScheduleDTO : DomainEntityMetaId
     public DateTime EndDateAndTime { get; set; }
     public string ShiftDurationTime => $"{StartDateAndTime:g} - {EndDateAndTime:g}";
 
-    public ICollection<RideTimeDTO>? RideTimes { get; set; }
+    public ICollection<RideTimeDTO>? RideTimes { get; set; } = new HashSet<RideTimeDTO>();
 
-    public ICollection<BookingDTO>? Bookings { get; set; }
+    public ICollection<BookingDTO>? Bookings { get; set; } = new HashSet<BookingDTO>();
     
     public int NumberOfRideTimes { get; set; }
-    #warning is it right
-    public int NumberOfTakenRideTimes => RideTimes.Count(r => r.IsTaken);
+    // calculated field expression
+    // Ideally I should put this in the mapping configuration and convert this to a simple property
+    public int NumberOfTakenRideTimes => RideTimes?.Count(r => r.IsTaken) ?? 0;
 
 
 }

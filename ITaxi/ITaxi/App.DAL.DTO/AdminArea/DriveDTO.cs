@@ -11,7 +11,7 @@ public class DriveDTO: DomainEntityMetaId
 
     public DriverDTO? Driver { get; set; }
 
-    public BookingDTO Booking { get; set; }
+    public BookingDTO? Booking { get; set; }
     
     public CommentDTO? Comment { get; set; }
 

@@ -186,7 +186,7 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
 
     public async Task<IEnumerable<DriveDTO?>> GettingAllDrivesForCommentsAsync(Guid? userId = null, string? roleName = null,bool noTracking = true)
     {
-#warning add a optional parameter to CreateQuery that allows the order by to be appended in that method
+// add a optional parameter to CreateQuery that allows the order by to be appended in that method
         var res = (await CreateQuery(userId, roleName, noTracking)
             .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
             .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)

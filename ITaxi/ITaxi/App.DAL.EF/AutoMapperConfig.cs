@@ -28,7 +28,7 @@ public class AutoMapperConfig : Profile
                 m =>
                     m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
             .ForMember(dto => dto.NumberOfCities, m
-                => m.MapFrom(x => x.Cities.Count()))
+                => m.MapFrom(x => x.Cities!.Count()))
             ;
 
         // DTO => EF: Convert to Universal Time

@@ -214,7 +214,7 @@ public class AdminsController : Controller
             await _userManager.RemoveFromRoleAsync(appUser, "Admin");
             _appBLL.Admins.Remove(admin);
             await _appBLL.SaveChangesAsync();
-#warning temporarily solution
+
             var claims = await _userManager.GetClaimsAsync(appUser);
             await _userManager.RemoveClaimsAsync(appUser, claims);
             await _userManager.DeleteAsync(appUser);

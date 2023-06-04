@@ -24,7 +24,7 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
         return Repository.GetAllCountiesOrderedByCountyName(noTracking).Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<bool> HasCities(Guid countyId)
+    public Task<bool> HasCities(Guid countyId)
     {
         throw new NotImplementedException();
     }

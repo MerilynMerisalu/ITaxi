@@ -36,7 +36,7 @@ public class DetailsDeleteAdminViewModel : AdminAreaBaseViewModel
 
     [Display(ResourceType = typeof(Admin), Name = nameof(City))]
 
-    public string City { get; set; }
+    public string City { get; set; }= default!;
 
     [Display(ResourceType = typeof(Admin), Name = "AddressOfResidence")]
     public string Address { get; set; } = default!;
@@ -45,7 +45,7 @@ public class DetailsDeleteAdminViewModel : AdminAreaBaseViewModel
     public string PhoneNumber { get; set; } = default!;
 
     [Display(ResourceType = typeof(Common), Name = "IsActive")]
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; }= default!;
 
     [Display(ResourceType = typeof(Common), Name = "Email")]
 

@@ -29,7 +29,6 @@ public class Driver: DomainEntityMetaId
     [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseExpiryDate")]
     [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
-#warning DateTime input control does not support user changing the language yet.
     public DateTime DriverLicenseExpiryDate { get; set; }
 
     public int NumberOfDriverLicenseCategories { get; set; }

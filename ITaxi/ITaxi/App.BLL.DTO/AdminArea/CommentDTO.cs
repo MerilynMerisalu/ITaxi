@@ -13,19 +13,19 @@ public class CommentDTO: DomainEntityMetaId
     /// Description of the Drive, to show the Customer
     /// It should be the formatted drive time.
     /// </summary>
-    public string DriveCustomerStr { get; set; }
+    public string DriveCustomerStr { get; set; } = default!;
 
-    public string DriveTimeAndDriver { get; set; }
+    public string DriveTimeAndDriver { get; set; } = default!;
 
     /// <summary>
     /// Description of the Driver 
     /// </summary>
-    public string DriverName { get; set; }
+    public string DriverName { get; set; } = default!;
     
     /// <summary>
     /// Description of the Customer 
     /// </summary>
-    public string CustomerName { get; set; }
+    public string CustomerName { get; set; } = default!;
     
     [MaxLength(1000)]
     [DataType(DataType.MultilineText)]

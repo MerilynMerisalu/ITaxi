@@ -30,10 +30,11 @@ public class CountiesController : ControllerBase
     /// <param name="appBLL">AppBLL</param>
     /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea.CountyDTO to Public.DTO.v1.AdminArea.County</param>
     /// <param name="logger"></param>
-    public CountiesController(IAppBLL appBLL, IMapper mapper)//<App.Public.DTO.v1.AdminArea.County, App.BLL.DTO.AdminArea>)
+    public CountiesController(IAppBLL appBLL, IMapper mapper, ILogger<CountiesController> logger)//<App.Public.DTO.v1.AdminArea.County, App.BLL.DTO.AdminArea>)
     {
         _appBLL = appBLL;
         _mapper = mapper;
+        _logger = logger;
     }
 
     // GET: api/counties

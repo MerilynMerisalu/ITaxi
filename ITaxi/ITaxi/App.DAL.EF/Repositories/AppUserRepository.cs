@@ -54,7 +54,7 @@ public class AppUserRepository : BaseEntityRepository<App.DAL.DTO.Identity.AppUs
      return base.CreateQuery(noTracking, noIncludes);
     }
 */
-    public AppUser Update(AppUser entity)
+    public override AppUser Update(AppUser entity)
     {
         // Deliberately NOT using Mapper to resolve the domain entity here
         // It is unclear exactly which property is causing trouble, but Mapper is assigning properties that we shouldn'ˇt be, perhaps the password?

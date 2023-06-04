@@ -36,7 +36,7 @@ public abstract class DomainEntityMetaId<TKey> : DomainEntityId<TKey>,
 
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    public bool IsDeleted { get; set; } = false;
+    
     
     [MaxLength(32)] public string? DeletedBy { get; set; }
     

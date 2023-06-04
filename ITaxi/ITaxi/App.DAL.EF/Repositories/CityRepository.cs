@@ -55,7 +55,6 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
 
     public async Task<bool> HasAnyCitiesAsync(Guid id, bool noTracking = true)
     {
-#warning violating of the DRY pattern
         return await CreateQuery(noTracking).AnyAsync(c => c.CountyId.Equals(id));
     }
 

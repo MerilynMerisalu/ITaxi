@@ -39,8 +39,10 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
         return Mapper.Map(Repository.Add(Mapper.Map(entity)!))!;
     }
 
-    public async Task<List<TBllEntity>> AddRangeAsync(List<TBllEntity> entities)
+    public virtual async Task<List<TBllEntity>> AddRangeAsync(List<TBllEntity> entities)
     {
+        await Task.CompletedTask;
+        
         var dalEntities = new List<TDalEntity>();
         foreach (var entity in entities)
         {
@@ -105,21 +107,16 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
     {
         return Repository.Exists(id);
     }
-#warning Ask about this
-    public bool Any(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
+    public virtual bool Any(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
     {
-        throw new NotImplementedException();
-        //return Repository.CreateQuery(noTracking).Any(filter, noTracking);
+        throw new NotImplementedException("Inheriting classes should Implement this");
     }
 
-    //public Task<bool> AnyAsync(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
-    //{
-    //    return Repository.AnyAsync(filter, noTracking);
-    //}
-#warning Ask about this
-    public TBllEntity? SingleOrDefault(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
+    
+
+    public virtual TBllEntity? SingleOrDefault(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Inheriting classes should Implement this");
     }
 
     public TBllEntity? First(bool noTracking = true, bool noIncludes = false)
@@ -161,15 +158,18 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
         return Task.FromResult(Mapper.Map(t)!);
     }
 
-#warning Ask about this
-    public async Task<bool> AnyAsync(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
+
+    public virtual async Task<bool> AnyAsync(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
     {
-        throw new NotImplementedException();
+        await Task.CompletedTask;
+        throw new NotImplementedException("Inheriting classes should Implement this");
     }
-#warning Ask about this
+
+    
     public async Task<TBllEntity?> SingleOrDefaultAsync(Expression<Func<TBllEntity?, bool>> filter, bool noTracking = true)
     {
-        throw new NotImplementedException();
+        await Task.CompletedTask;
+        throw new NotImplementedException("Inheriting classes should Implement this");
     }
 
     public async Task<TBllEntity?> FirstAsync(bool noTracking = true, bool noIncludes = false)

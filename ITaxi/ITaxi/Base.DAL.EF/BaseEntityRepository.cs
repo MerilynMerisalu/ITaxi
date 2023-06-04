@@ -5,7 +5,7 @@ using Base.Contracts.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Base.DAL.EF;
-#warning do not fetch unnecessary data on every request
+
 public class BaseEntityRepository<TDalEntity, TDomainEntity, TDbContext> :
     BaseEntityRepository<TDalEntity, TDomainEntity, Guid, TDbContext>
     where TDalEntity : class, IDomainEntityId<Guid>
@@ -57,10 +57,11 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
 
     public virtual TDalEntity Update(TDalEntity entity)
     {
+       
         // Hack: remove the previous tracking!
         RepoDbContext.ChangeTracker.Clear();
 
-        return Mapper.Map(RepoDbSet.Update(Mapper.Map(entity)).Entity);
+        return Mapper.Map(RepoDbSet.Update(Mapper.Map(entity)!).Entity)!;
     }
 
     public virtual TDalEntity Remove(TDalEntity entity)

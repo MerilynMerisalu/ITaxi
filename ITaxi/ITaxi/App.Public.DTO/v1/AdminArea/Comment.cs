@@ -15,8 +15,8 @@ public class Comment : DomainEntityMetaId
     public Drive? Drive { get; set; }
 
     // this is mapping, so it should be in the automapper!
-    // we CAN NOT use readonly properties, not without making the relationships very inefficient
-    public string DriveCustomerStr { get; set; }
+    // I CAN NOT use readonly properties, not without making the relationships very inefficient
+    public string DriveCustomerStr { get; set; } = default!;
 
     [MaxLength(1000)]
     [DataType(DataType.MultilineText)]

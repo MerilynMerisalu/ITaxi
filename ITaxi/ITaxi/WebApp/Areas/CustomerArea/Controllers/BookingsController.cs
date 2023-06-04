@@ -1,12 +1,10 @@
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
 using App.Enum.Enum;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.CustomerArea.ViewModels;
 
 namespace WebApp.Areas.CustomerArea.Controllers;
@@ -47,7 +45,7 @@ public class BookingsController : Controller
     {
         // Use the EditRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
         var vm = new CreateBookingViewModel();
-        IEnumerable<ScheduleDTO> schedules = null;
+        //IEnumerable<ScheduleDTO>? schedules = null;
         //Guid id = Guid.Parse(value);
 
         if (parameters.ListType == nameof(BookingDTO.PickUpDateAndTime))
@@ -198,7 +196,7 @@ public class BookingsController : Controller
             booking.PickUpDateAndTime = DateTime.Parse(vm.PickUpDateAndTime).ToUniversalTime();
 
             var rideTimeLookup =
-                await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(vm.RideTimeId, userId, null, true, false);
+                await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(vm.RideTimeId, userId);
             booking.ScheduleId = rideTimeLookup!.ScheduleId;
             booking.DriverId = rideTimeLookup.Schedule!.DriverId;
             booking.VehicleId = rideTimeLookup.Schedule!.VehicleId;
@@ -209,7 +207,7 @@ public class BookingsController : Controller
             _appBLL.Bookings.Add(booking);
             
             // Assign the Drive via the implicit related object creation
-            var drive = new App.BLL.DTO.AdminArea.DriveDTO()
+            var drive = new DriveDTO()
             {
                 Id = new Guid(),
                 DriverId = booking.DriverId,
@@ -232,8 +230,8 @@ public class BookingsController : Controller
 
         
         vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
-            nameof(App.BLL.DTO.AdminArea.CityDTO.Id),
-            nameof(App.BLL.DTO.AdminArea.CityDTO.CityName), nameof(vm.CityId));
+            nameof(CityDTO.Id),
+            nameof(CityDTO.CityName), nameof(vm.CityId));
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleTypeDTO.Id), nameof(VehicleTypeDTO.VehicleTypeName)
             , nameof(vm.VehicleTypeId));

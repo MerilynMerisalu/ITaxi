@@ -37,39 +37,39 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
         _mapper = mapper;
     }
 
-    public virtual ICountyRepository Counties => _counties ?? new CountyRepository(UOWDbContext
+    public virtual ICountyRepository Counties => _counties ??= new CountyRepository(UOWDbContext
     , new CountyMapper(_mapper));
-    public virtual ICityRepository Cities => _cities ?? new CityRepository(UOWDbContext,
+    public virtual ICityRepository Cities => _cities ??= new CityRepository(UOWDbContext,
         new CityMapper(_mapper));
-    public virtual IAdminRepository Admins => _admins ?? new AdminRepository(UOWDbContext, new AdminMapper(_mapper));
-    public virtual IAppUserRepository AppUsers => _appUsers ?? new AppUserRepository(UOWDbContext, new AppUserMapper(_mapper));
-    public IBookingRepository Bookings => _bookings ?? new BookingRepository(UOWDbContext, new BookingMapper(_mapper));
-    public IDriverRepository Drivers => _drivers ?? new DriverRepository(UOWDbContext, new DriverMapper(_mapper));
+    public virtual IAdminRepository Admins => _admins ??= new AdminRepository(UOWDbContext, new AdminMapper(_mapper));
+    public virtual IAppUserRepository AppUsers => _appUsers ??= new AppUserRepository(UOWDbContext, new AppUserMapper(_mapper));
+    public IBookingRepository Bookings => _bookings ??= new BookingRepository(UOWDbContext, new BookingMapper(_mapper));
+    public IDriverRepository Drivers => _drivers ??= new DriverRepository(UOWDbContext, new DriverMapper(_mapper));
 
     public virtual IDriverLicenseCategoryRepository DriverLicenseCategories =>
-        _driverLicenseCategories ?? new DriverLicenseCategoryRepository(UOWDbContext, new DriverLicenseCategoryMapper(_mapper));
+        _driverLicenseCategories ??= new DriverLicenseCategoryRepository(UOWDbContext, new DriverLicenseCategoryMapper(_mapper));
 
     public IDriverAndDriverLicenseCategoryRepository DriverAndDriverLicenseCategories
-        => _driverAndDriverLicenseCategories ?? new DriverAndDriverLicenseCategoryRepository(UOWDbContext, new DriverAndDriverLicenseCategoryMapper(_mapper));
+        => _driverAndDriverLicenseCategories ??= new DriverAndDriverLicenseCategoryRepository(UOWDbContext, new DriverAndDriverLicenseCategoryMapper(_mapper));
 
 
     public IVehicleTypeRepository VehicleTypes
-        => _vehicleTypes ?? new VehicleTypeRepository(UOWDbContext, new VehicleTypeMapper(_mapper));
+        => _vehicleTypes ??= new VehicleTypeRepository(UOWDbContext, new VehicleTypeMapper(_mapper));
 
-    public IVehicleMarkRepository VehicleMarks => _vehicleMarks ?? new VehicleMarkRepository(UOWDbContext,
+    public IVehicleMarkRepository VehicleMarks => _vehicleMarks ??= new VehicleMarkRepository(UOWDbContext,
         new VehicleMarkMapper(_mapper));
 
-    public IVehicleModelRepository VehicleModels => _vehicleModels ?? new VehicleModelRepository(UOWDbContext, new VehicleModelMapper(_mapper));
-    public IVehicleRepository Vehicles => _vehicles ?? new VehicleRepository(UOWDbContext,
+    public IVehicleModelRepository VehicleModels => _vehicleModels ??= new VehicleModelRepository(UOWDbContext, new VehicleModelMapper(_mapper));
+    public IVehicleRepository Vehicles => _vehicles ??= new VehicleRepository(UOWDbContext,
         new VehicleMapper(_mapper));
-    public IScheduleRepository Schedules => _schedules ?? new ScheduleRepository(UOWDbContext, new ScheduleMapper(_mapper));
-    public IRideTimeRepository RideTimes => _rideTimes ?? new RideTimeRepository(UOWDbContext, new RideTimeMapper(_mapper));
-    public IDisabilityTypeRepository DisabilityTypes => _disabilityTypes ??
+    public IScheduleRepository Schedules => _schedules ??= new ScheduleRepository(UOWDbContext, new ScheduleMapper(_mapper));
+    public IRideTimeRepository RideTimes => _rideTimes ??= new RideTimeRepository(UOWDbContext, new RideTimeMapper(_mapper));
+    public IDisabilityTypeRepository DisabilityTypes => _disabilityTypes ??=
                                                         new DisabilityTypeRepository(UOWDbContext,
                                                             new DisabilityTypeMapper(_mapper));
-    public ICustomerRepository Customers => _customers ?? new CustomerRepository(UOWDbContext
+    public ICustomerRepository Customers => _customers ??= new CustomerRepository(UOWDbContext
     , new CustomerMapper(_mapper));
-    public IDriveRepository Drives => _drives ?? new DriveRepository(UOWDbContext, new DriveMapper(_mapper));
-    public ICommentRepository Comments => _comments ?? new CommentRepository(UOWDbContext, new CommentMapper(_mapper));
-    public IPhotoRepository Photos => _photos ?? new PhotoRepository(UOWDbContext, new PhotoMapper(_mapper));
+    public IDriveRepository Drives => _drives ??= new DriveRepository(UOWDbContext, new DriveMapper(_mapper));
+    public ICommentRepository Comments => _comments ??= new CommentRepository(UOWDbContext, new CommentMapper(_mapper));
+    public IPhotoRepository Photos => _photos ??= new PhotoRepository(UOWDbContext, new PhotoMapper(_mapper));
 }

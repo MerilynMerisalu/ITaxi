@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using NuGet.ContentModel;
 using WebApp.ApiControllers.AdminArea;
 using WebApp.Helpers;
@@ -70,11 +71,13 @@ public class CountiesControllerTests
         var uow = new AppUOW(_ctx, dalMapper);
         var appBll = new AppBLL(uow, bllMapper);
 
+        // TODO: could use Moq, but the logs are not useful in the test scenarios
+        var controllerLogger = new NullLogger<CountiesController>();
 
         #endregion Global Setup
         
         // Instantiate the controller
-        _controller = new CountiesController(appBll, v1Mapper);
+        _controller = new CountiesController(appBll, v1Mapper, controllerLogger);
         
         #region HttpContext Setup (Permissions)
         var user = new ClaimsPrincipal(new ClaimsIdentity(
@@ -134,7 +137,7 @@ public class CountiesControllerTests
     {
         // Call the Controller to get the data
         var response = await _controller.GetCounties();
-        var counties = (response.Result as OkObjectResult).Value as List<App.Public.DTO.v1.AdminArea.County>;
+        var counties = Assert.IsType<OkObjectResult>(response.Result).Value as List<App.Public.DTO.v1.AdminArea.County>;
         
         // Now verify the results
         Assert.NotNull(counties);
@@ -154,15 +157,17 @@ public class CountiesControllerTests
         // Call the Controller to POST the data
         var response = await _controller.PostCounty(county);
         Assert.NotNull(response);
-        Assert.Equal(201, (response.Result as CreatedAtActionResult).StatusCode);
+        var typedResult = Assert.IsType<CreatedAtActionResult>(response.Result);
+        Assert.Equal(201, typedResult.StatusCode);
 
-        var newCounty = (response.Result as CreatedAtActionResult).Value as App.BLL.DTO.AdminArea.CountyDTO;
+        var newCounty = typedResult.Value as App.BLL.DTO.AdminArea.CountyDTO;
         Assert.NotNull(newCounty);
         // I expect the controller to assign an Id and ignore what we pass in.
         Assert.NotEqual(county.Id, newCounty.Id);
         // Use the Id from the response object to query the database so I can check the created by field
         var dbCounty = _ctx.Counties.First(x => x.Id == newCounty.Id);
-        Assert.NotEmpty(dbCounty.CreatedBy);
+        Assert.NotNull(dbCounty);
+        Assert.NotEmpty(dbCounty.CreatedBy!);
         Assert.NotEqual(DateTime.MinValue, dbCounty.CreatedAt);
         
         
@@ -173,8 +178,9 @@ public class CountiesControllerTests
         };
         var noIdResponse = await _controller.PostCounty(countyNoId);
         Assert.NotNull(noIdResponse);
-        Assert.Equal(201, (noIdResponse.Result as CreatedAtActionResult).StatusCode);
-        var countyWithAssignedId = (noIdResponse.Result as CreatedAtActionResult).Value as App.BLL.DTO.AdminArea.CountyDTO;
+        var noIdCreatedResponse = Assert.IsType<CreatedAtActionResult>(noIdResponse.Result);
+        Assert.Equal(201, noIdCreatedResponse.StatusCode);
+        var countyWithAssignedId = noIdCreatedResponse.Value as App.BLL.DTO.AdminArea.CountyDTO;
         Assert.NotNull(countyWithAssignedId);
         Assert.NotEqual(Guid.Empty, countyWithAssignedId.Id);
     }
@@ -212,8 +218,9 @@ public class CountiesControllerTests
     {
         // Call the Controller to get the data
         var response = await _controller.GetCounties();
-        var counties = (response.Result as OkObjectResult).Value as List<App.Public.DTO.v1.AdminArea.County>;
+        var counties = Assert.IsType<OkObjectResult>(response.Result).Value as List<App.Public.DTO.v1.AdminArea.County>;
         
+        Assert.NotNull(counties);
         Assert.NotEmpty(counties);
         
         var countyToDelete = counties.First();
@@ -223,7 +230,8 @@ public class CountiesControllerTests
         
         // Now check, if we get all counties, there should be only 1
         var checkResponse = await _controller.GetCounties();
-        var checkCounties = (response.Result as OkObjectResult).Value as List<App.Public.DTO.v1.AdminArea.County>;
+        var countyResponse = Assert.IsType<OkObjectResult>(response.Result);
+        var checkCounties = countyResponse.Value as List<App.Public.DTO.v1.AdminArea.County>;
         
         Assert.NotNull(countyToDelete);
         

@@ -189,11 +189,6 @@ public class ScheduleRepository : BaseEntityRepository<ScheduleDTO, App.Domain.S
     {
         var numberOfRideTimesTaken = CreateQuery(userId, roleName, noTracking)
             .Select(d => d.RideTimes!.Where(rt => rt.IsTaken == true)).Count();
-        if (numberOfRideTimesTaken == null)
-        {
-            numberOfRideTimesTaken = 0;
-            return numberOfRideTimesTaken;
-        }
         return numberOfRideTimesTaken;
     }
 

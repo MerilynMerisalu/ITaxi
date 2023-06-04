@@ -14,7 +14,7 @@ public class RideTimeService: BaseEntityService<App.BLL.DTO.AdminArea.RideTimeDT
     {
     }
 
-    public async Task<IEnumerable<RideTimeDTO>?> GettingAllRideTimesWithoutIncludesAsync(bool noTracking = true)
+    public async Task<IEnumerable<RideTimeDTO?>> GettingAllRideTimesWithoutIncludesAsync(bool noTracking = true)
     {
         return (await Repository.GettingAllRideTimesWithoutIncludesAsync(noTracking))!.Select(e => Mapper.Map(e))!;
     }

@@ -17,14 +17,14 @@ public class VehicleTypeRepository : BaseEntityRepository<VehicleTypeDTO, Vehicl
 
     public async Task<IEnumerable<VehicleTypeDTO>> GetAllVehicleTypesOrderedAsync(bool noTracking = true)
     {
-#warning: special handling of OrderBy to account for language transalation
+        // special handling of OrderBy to account for language transalation
         var res = await CreateQuery(noTracking).ToListAsync();
         return res.OrderBy(x => (string)x.VehicleTypeName).ToList().Select(e => Mapper.Map(e))!;
     }
 
     public IEnumerable<VehicleTypeDTO> GetAllVehicleTypesOrdered(bool noTracking = true)
     {
-#warning: special handling of OrderBy to account for language transalation
+// special handling of OrderBy to account for language transalation
         return CreateQuery(noTracking)
             .ToList() // Bring into memory "Materialize"
             .OrderBy(v => v.VehicleTypeName).ToList().Select(e => Mapper.Map(e))!;
