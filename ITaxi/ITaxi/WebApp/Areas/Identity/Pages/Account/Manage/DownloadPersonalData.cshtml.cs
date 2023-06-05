@@ -11,11 +11,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
+/// <summary>
+/// Download personal data model
+/// </summary>
 public class DownloadPersonalDataModel : PageModel
 {
     private readonly ILogger<DownloadPersonalDataModel> _logger;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Download personal data model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for the user's</param>
+    /// <param name="logger">Logger for the user's</param>
     public DownloadPersonalDataModel(
         UserManager<AppUser> userManager,
         ILogger<DownloadPersonalDataModel> logger)
@@ -24,11 +32,19 @@ public class DownloadPersonalDataModel : PageModel
         _logger = logger;
     }
 
+    /// <summary>
+    /// On get method
+    /// </summary>
+    /// <returns>Not found</returns>
     public IActionResult OnGet()
     {
         return NotFound();
     }
 
+    /// <summary>
+    /// On post async method
+    /// </summary>
+    /// <returns>New file content result</returns>
     public async Task<IActionResult> OnPostAsync()
     {
         var user = await _userManager.GetUserAsync(User);

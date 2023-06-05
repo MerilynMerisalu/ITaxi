@@ -9,29 +9,43 @@ using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area vehicles controller
+/// </summary>
 [Area(nameof(AdminArea))]
 [Authorize(Roles = "Admin")]
 public class VehiclesController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Admin area vehicles controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public VehiclesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
-
     private string UserEmail => User.Identity!.Name!;
 
     // GET: AdminArea/Vehicles
+    /// <summary>
+    /// Admin area vehicles index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        
         var res = await _appBLL.Vehicles.GettingOrderedVehiclesAsync();
         
         return View(res);
     }
 
     // GET: AdminArea/Vehicles/Details/5
+    /// <summary>
+    /// Admin area vehicle GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null) return NotFound();
@@ -56,10 +70,15 @@ public class VehiclesController : Controller
         return View(vm);
     }
 
+    /// <summary>
+    /// Admin area vehicles set drop down list
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Status 200 OK</returns>
     [HttpPost("AdminArea/Vehicles/SetDropDownList/{id}")]
     public async Task<IActionResult> SetDropDownList([FromRoute]Guid id)
     {
-        // Use the EditRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
+        // Using the EditRideTimeViewModel because I want to send through the SelectLists and Ids that have now changed
         var vm = new CreateEditVehicleViewModel();
        
         // Select the VehicleMarks for the currently selected VehicleMarkId
@@ -72,6 +91,10 @@ public class VehiclesController : Controller
     }
 
     // GET: AdminArea/Vehicles/Create
+    /// <summary>
+    /// Admin area vehicle GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditVehicleViewModel();
@@ -93,6 +116,12 @@ public class VehiclesController : Controller
     // POST: AdminArea/Vehicles/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area vehicle POST method create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <param name="vehicle">Vehicle</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateEditVehicleViewModel vm, VehicleDTO vehicle)
@@ -132,6 +161,11 @@ public class VehiclesController : Controller
     }
 
     // GET: AdminArea/Vehicles/Edit/5
+    /// <summary>
+    /// Admin area vehicle GET method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new CreateEditVehicleViewModel();
@@ -158,7 +192,6 @@ public class VehiclesController : Controller
             nameof(VehicleModelDTO.Id),
             nameof(VehicleModelDTO.VehicleModelName));
 
-
         vm.Id = vehicle.Id;
         vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears());
         vm.ManufactureYear = vehicle.ManufactureYear;
@@ -176,6 +209,12 @@ public class VehiclesController : Controller
     // POST: AdminArea/Vehicles/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area vehicle POST method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleViewModel vm)
@@ -218,6 +257,11 @@ public class VehiclesController : Controller
     }
 
     // GET: AdminArea/Vehicles/Delete/5
+    /// <summary>
+    /// Admin area vehicle GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null) return NotFound();
@@ -243,6 +287,11 @@ public class VehiclesController : Controller
     }
 
     // POST: AdminArea/Vehicles/Delete/5
+    /// <summary>
+    /// Admin area vehicle POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
@@ -268,6 +317,11 @@ public class VehiclesController : Controller
     }
 
     // GET: AdminArea/Vehicle/Gallery/5
+    /// <summary>
+    /// Admin area vehicle GET method gallery
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Gallery(Guid? id)
     {
         if (id == null) return NotFound();

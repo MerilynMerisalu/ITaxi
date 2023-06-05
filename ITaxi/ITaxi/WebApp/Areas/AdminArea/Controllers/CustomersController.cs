@@ -2,7 +2,6 @@
 
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,21 +11,31 @@ using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area customer controller 
+/// </summary>
 [Area(nameof(AdminArea))]
 public class CustomersController : Controller
 {
     private readonly IAppBLL _appBLL;
-    
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Admin area customer controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
+    /// <param name="userManager">Manager for the user's</param>
     public CustomersController(IAppBLL appBLL, UserManager<AppUser> userManager)
     {
         _appBLL = appBLL;
         _userManager = userManager;
-        
     }
 
     // GET: AdminArea/Customers
+    /// <summary>
+    /// Admin area customer controller index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.Customers.GettingAllOrderedCustomersAsync();
@@ -35,6 +44,11 @@ public class CustomersController : Controller
     }
 
     // GET: AdminArea/Customers/Details/5
+    /// <summary>
+    /// Admin area customer controller GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeleteCustomerViewModel();
@@ -42,8 +56,7 @@ public class CustomersController : Controller
 
         var customer = await _appBLL.Customers.FirstOrDefaultAsync(id.Value);
         if (customer == null) return NotFound();
-
-
+        
         vm.Id = customer.Id;
         vm.FirstName = customer.AppUser!.FirstName;
         vm.LastName = customer.AppUser!.LastName;
@@ -57,12 +70,15 @@ public class CustomersController : Controller
         vm.CreatedAt = customer.CreatedAt;
         vm.UpdatedBy = customer.UpdatedBy!;
         vm.UpdatedAt = customer.UpdatedAt;
-
-
+        
         return View(vm);
     }
 
     // GET: AdminArea/Customers/Create
+    /// <summary>
+    /// Admin area customer controller GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Create()
     {
         var vm = new CreateCustomerViewModel();
@@ -75,6 +91,11 @@ public class CustomersController : Controller
     // POST: AdminArea/Customers/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area customer controller POST method create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateCustomerViewModel vm)
@@ -93,8 +114,7 @@ public class CustomersController : Controller
             EmailConfirmed = true
         };
         await _userManager.CreateAsync(appUser, vm.Password);
-
-
+        
         if (ModelState.IsValid)
         {
             customer.Id = Guid.NewGuid();
@@ -105,12 +125,16 @@ public class CustomersController : Controller
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-
+        
         return View(vm);
     }
 
     // GET: AdminArea/Customers/Edit/5
+    /// <summary>
+    /// Admin area customer controller GET method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new EditCustomerViewModel();
@@ -131,14 +155,19 @@ public class CustomersController : Controller
         vm.IsActive = customer.AppUser!.IsActive;
         vm.PhoneNumber = customer.AppUser!.PhoneNumber;
         vm.Email = customer.AppUser!.Email;
-
-
+        
         return View(vm);
     }
 
     // POST: AdminArea/Customers/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area customer controller POST method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditCustomerViewModel vm)
@@ -188,6 +217,11 @@ public class CustomersController : Controller
     }
 
     // GET: AdminArea/Customers/Delete/5
+    /// <summary>
+    /// Admin area customer controller GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeleteCustomerViewModel();
@@ -214,6 +248,11 @@ public class CustomersController : Controller
     }
 
     // POST: AdminArea/Customers/Delete/5
+    /// <summary>
+    /// Admin area customer controller POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]

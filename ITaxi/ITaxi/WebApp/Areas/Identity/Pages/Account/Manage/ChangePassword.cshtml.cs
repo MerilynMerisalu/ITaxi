@@ -11,12 +11,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
+/// <summary>
+/// Change password model
+/// </summary>
 public class ChangePasswordModel : PageModel
 {
     private readonly ILogger<ChangePasswordModel> _logger;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Change password model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for the user's</param>
+    /// <param name="signInManager">Sign in manager</param>
+    /// <param name="logger">Logger for the user's</param>
     public ChangePasswordModel(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
@@ -28,19 +37,21 @@ public class ChangePasswordModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Status message
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
 
+    /// <summary>
+    /// On get async method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -52,6 +63,10 @@ public class ChangePasswordModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// On post async method
+    /// </summary>
+    /// <returns></returns>
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid) return Page();
@@ -75,14 +90,12 @@ public class ChangePasswordModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input model
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// User current password
         /// </summary>
         [Required]
         [DataType(DataType.Password)]
@@ -90,8 +103,7 @@ public class ChangePasswordModel : PageModel
         public string OldPassword { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// User new password
         /// </summary>
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
@@ -101,8 +113,7 @@ public class ChangePasswordModel : PageModel
         public string NewPassword { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Confirm password
         /// </summary>
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]

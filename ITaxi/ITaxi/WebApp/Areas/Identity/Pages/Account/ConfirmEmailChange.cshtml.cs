@@ -12,11 +12,19 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
+/// <summary>
+/// Confirm email change model
+/// </summary>
 public class ConfirmEmailChangeModel : PageModel
 {
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Confirm email change model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for the user's</param>
+    /// <param name="signInManager">Sign in manager</param>
     public ConfirmEmailChangeModel(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
     {
         _userManager = userManager;
@@ -24,12 +32,18 @@ public class ConfirmEmailChangeModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Status message
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
 
+    /// <summary>
+    /// On get async method
+    /// </summary>
+    /// <param name="userId">User id</param>
+    /// <param name="email">User email</param>
+    /// <param name="code">Code</param>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnGetAsync(string userId, string email, string code)
     {
         if (userId == null || email == null || code == null) return RedirectToPage("/Index");

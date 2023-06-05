@@ -1,25 +1,35 @@
-
 #nullable enable
+
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area photos controller
+/// </summary>
 [Area(nameof(AdminArea))]
 public class PhotosController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Admin area photos controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public PhotosController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
 
     // GET: AdminArea/Photos
+    /// <summary>
+    /// Admin area photos controller index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.Photos.GetAllPhotosWithIncludesAsync();
@@ -27,6 +37,11 @@ public class PhotosController : Controller
     }
 
     // GET: AdminArea/Photos/Details/5
+    /// <summary>
+    /// Admin area photos controller GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeletePhotoViewModel();
@@ -42,6 +57,10 @@ public class PhotosController : Controller
     }
 
     // GET: AdminArea/Photos/Create
+    /// <summary>
+    /// Admin area photos controller GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public IActionResult Create()
     {
         var vm = new CreateEditPhotoViewModel();
@@ -51,6 +70,12 @@ public class PhotosController : Controller
     // POST: AdminArea/Photos/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area photos controller POST method create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <param name="photo">Photo</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateEditPhotoViewModel vm, PhotoDTO photo)
@@ -64,12 +89,16 @@ public class PhotosController : Controller
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         
         return View(vm);
     }
 
     // GET: AdminArea/Photos/Edit/5
+    /// <summary>
+    /// Admin area photos controller GET method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new CreateEditPhotoViewModel();
@@ -84,6 +113,12 @@ public class PhotosController : Controller
     // POST: AdminArea/Photos/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area photos controller POST method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditPhotoViewModel vm)
@@ -107,12 +142,16 @@ public class PhotosController : Controller
 
             return RedirectToAction(nameof(Index));
         }
-
         
         return View(vm);
     }
 
     // GET: AdminArea/Photos/Delete/5
+    /// <summary>
+    /// Admin area photos controller GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeletePhotoViewModel();
@@ -125,6 +164,11 @@ public class PhotosController : Controller
     }
 
     // POST: AdminArea/Photos/Delete/5
+    /// <summary>
+    /// Admin area photos controller POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]

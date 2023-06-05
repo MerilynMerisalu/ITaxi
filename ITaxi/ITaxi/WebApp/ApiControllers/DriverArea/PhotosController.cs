@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.DriverArea;
 
+/// <summary>
+/// Driver area photos controller
+/// </summary>
 [ApiController]
 [Route("api/v{version:apiVersion}/DriverArea/[controller]")]
 [Authorize(Roles = "Admin, Driver", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -16,12 +19,20 @@ public class PhotosController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Driver area photos controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public PhotosController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
 
     // GET: api/Photos
+    /// <summary>
+    /// Driver area photos controller photos GET method
+    /// </summary>
+    /// <returns>Status 200 OK</returns>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PhotoDTO>>> GetPhotos()
     {
@@ -33,6 +44,11 @@ public class PhotosController : ControllerBase
     }
 
     // GET: api/Photos/5
+    /// <summary>
+    /// Driver area photos controller photos GET method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Photo</returns>
     [HttpGet("{id}")]
     public async Task<ActionResult<PhotoDTO>> GetPhoto(Guid id)
     {
@@ -48,6 +64,12 @@ public class PhotosController : ControllerBase
 
     // PUT: api/Photos/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    /// <summary>
+    /// Driver area photos controller photos PUT method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="photo">Photo</param>
+    /// <returns>204 no content response</returns>
     [HttpPut("{id}")]
     public async Task<IActionResult> PutPhoto(Guid id, PhotoDTO? photo)
     {
@@ -75,6 +97,11 @@ public class PhotosController : ControllerBase
 
     // POST: api/Photos
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    /// <summary>
+    /// Driver area photos controller photos POST method
+    /// </summary>
+    /// <param name="photo">Photo</param>
+    /// <returns>Created 201 response</returns>
     [HttpPost]
     public async Task<ActionResult<PhotoDTO>> PostPhoto([FromBody]PhotoDTO photo)
     {
@@ -100,11 +127,15 @@ public class PhotosController : ControllerBase
         return CreatedAtAction("GetPhoto", new
         {
             id = photo.Id,
-            version = HttpContext.GetRequestedApiVersion()!.ToString(),
-        }, photo);
-    }
+            version = HttpContext.GetRequestedApiVersion()!.ToString()}, photo);
+        }
 
     // DELETE: api/Photos/5
+    /// <summary>
+    /// Driver area photos controller photos delete method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>204 no content response</returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePhoto(Guid id)
     {

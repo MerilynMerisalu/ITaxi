@@ -1,31 +1,41 @@
 #nullable enable
 
+using System.Diagnostics;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
-using App.DAL.DTO.AdminArea;
 using App.Domain;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
 using DriverDTO = App.BLL.DTO.AdminArea.DriverDTO;
 using ScheduleDTO = App.BLL.DTO.AdminArea.ScheduleDTO;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area ride times controller
+/// </summary>
 [Area(nameof(AdminArea))]
 [Authorize(Roles = "Admin")]
 public class RideTimesController : Controller
 {
     private readonly IAppBLL _appBLL;
+    
+    /// <summary>
+    /// Admin area ride times controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public RideTimesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
 
     // GET: AdminArea/RideTimes
+    /// <summary>
+    /// Admin area ride times controller index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.RideTimes.GettingAllOrderedRideTimesAsync(null, null);
@@ -34,6 +44,11 @@ public class RideTimesController : Controller
     }
 
     // GET: AdminArea/RideTimes/Details/5
+    /// <summary>
+    /// Admin area ride times controller GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeleteRideTimeViewModel();
@@ -56,6 +71,10 @@ public class RideTimesController : Controller
     }
 
     // GET: AdminArea/RideTimes/Create
+    /// <summary>
+    /// Admin area ride times controller GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Create()
     {
         var roleName = User.GettingUserRoleName();
@@ -72,6 +91,11 @@ public class RideTimesController : Controller
     // POST: AdminArea/RideTimes/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area ride times controller POST method create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateRideTimeViewModel vm)
@@ -93,7 +117,6 @@ public class RideTimesController : Controller
                         Id = Guid.NewGuid(),
                         DriverId = vm.DriverId,
                         ScheduleId = vm.ScheduleId,
-                        
                         RideDateTime = rideDateAndTime.ToUniversalTime(),
                         IsTaken = vm.IsTaken,
                         CreatedBy = User.Identity!.Name,
@@ -110,21 +133,21 @@ public class RideTimesController : Controller
             }
             // custom validation to check that at least one ride time is chosen
             // This logic has been replicated in RequiredAtLeastOneSelectionAttribute
-            // But we leave this code here just in case the attribute is not in place.
+            // But I leave this code here just in case the attribute is not in place.
             else
             {
                 ModelState.AddModelError(nameof(vm.SelectedRideTimes), "Please select at least 1 time");
             }
         }
 
-        // After a Model Error, the VM is reset, so we need to rebuild the 
+        // After a Model Error, the VM is reset, so I need to rebuild the 
         // lists so that the user can continue to complete the form
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
             nameof(Driver.Id), "AppUser.LastAndFirstName");
 
         if (vm.DriverId != Guid.Empty)
         {
-            // we can only set the schedules after the driver has been selected.
+            // I can only set the schedules after the driver has been selected.
             var schedules = await _appBLL.Schedules.GettingTheScheduleByDriverIdAsync(vm.DriverId, null, null);
             foreach (var schedule in schedules)
             {
@@ -132,8 +155,7 @@ public class RideTimesController : Controller
                 schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
             }
 
-            vm.Schedules = new SelectList(
-                schedules,
+            vm.Schedules = new SelectList(schedules,
                 nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
 
             if (vm.ScheduleId != Guid.Empty)
@@ -141,59 +163,70 @@ public class RideTimesController : Controller
                 // Select the RideTimes form the currently selected schedule, for the current driver
                 var rideTimesList = _appBLL.RideTimes.GettingRemainingRideTimesByScheduleId(vm.ScheduleId);
                 
-                // the times in schedules have already been converted!
+                // The times in schedules have already been converted!
                 vm.RideTimes = new SelectList(rideTimesList.Select(x => new {RideTime = x}), "RideTime", "RideTime");
             }
         }
 
         return View(vm);
-    
-}
+    }
 
+    /// <summary>
+    /// Admin area ride times controller set drop down list request
+    /// </summary>
     public class SetDropDownListRequest
     {
+        /// <summary>
+        /// Admin area ride times controller set drop down list request list type
+        /// </summary>
         public string? ListType { get; set; }
+        /// <summary>
+        /// Admin area ride times controller set drop down list request value
+        /// </summary>
         public string? Value { get; set; }
     }
 
     /// <summary>
     /// Generic method that will update the VM to reflect the new SelectLists if any need to be changed
     /// </summary>
-    /// <param name="listType">the dropdownlist that has been changed</param>
-    /// <param name="value">The currently selected item value</param>
-    /// <returns></returns>
+    
+    
+    /// <param name="parameters">Parameters</param>
+    /// <returns>Status 200 OK</returns>
     [HttpPost]
     public async Task<IActionResult> SetDropDownList([FromBody] SetDropDownListRequest parameters)
     {
-        // Use the EditRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
+        // Using the EditRideTimeViewModel because I want to send through the SelectLists and Ids that have now changed
         var vm = new EditRideTimeViewModel();
-        IEnumerable<ScheduleDTO> schedules = null;
-        //Guid id = Guid.Parse(value);
+        IEnumerable<ScheduleDTO>? schedules; 
 
         if (parameters.ListType == nameof(RideTime.DriverId))
         {
-            // refresh the list of schedules for the selected driver
-            // the value, represents the current DriverId
-            var driverId = Guid.Parse(parameters.Value);
+            // Refresh the list of schedules for the selected driver
+            // The value, represents the current DriverId
+            var driverId = Guid.Parse(parameters.Value!);
 
             schedules = await _appBLL.Schedules.GettingTheScheduleByDriverIdAsync(driverId, null);
  
             //_appBLL.Schedules.
+            var scheduleDtos = schedules.ToList();
             vm.Schedules = new SelectList(
-                schedules,
+                scheduleDtos,
                 nameof(Schedule.Id), nameof(Schedule.ShiftDurationTime));
 
-            // For now select the first schedule, later you might want to pick the schedule that is closest or overlaps with the previous selection
-            vm.ScheduleId = schedules.FirstOrDefault().Id;
+            // Select the first schedule, later if I want to pick the schedule that is closest or overlaps with the previous selection
+            vm.ScheduleId = scheduleDtos.FirstOrDefault()!.Id;
         }
+        // listType The dropdown list that has been changed
         else if (parameters.ListType == nameof(RideTime.ScheduleId))
         {
-            vm.ScheduleId = Guid.Parse(parameters.Value);
+            //value The currently selected item value
+            if (parameters.Value != null) vm.ScheduleId = Guid.Parse(parameters.Value);
 
             // reload the schedules, but just the current one so we can rebuild the ride times
             schedules = new[] {await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(vm.ScheduleId, null)}!;
 
-            // NOTE: we do not need to rebuild the SelectList for schedules, only the RideTimes
+            // NOTE: I do not need to rebuild the SelectList for schedules, only the RideTimes
         }
 
         // Always refresh the RideTimes, if the DriverId or the ScheduleId are changed
@@ -201,100 +234,22 @@ public class RideTimesController : Controller
         // Select the RideTimes form the currently selected schedule, for the current driver
         var rideTimes = _appBLL.RideTimes.GettingRemainingRideTimesByScheduleId(vm.ScheduleId);
 
-        // the times in schedules have already been converted!
+        // The times in schedules have already been converted!
         vm.RideTimes = new SelectList(rideTimes.Select(x => new {RideTime = x}),
             nameof(vm.RideTime), nameof(vm.RideTime));
 
-        // we need to select one of these!
-
+        // I need to select one of these!
         vm.RideTime = rideTimes.First();
         
         return Ok(vm);
     }
-
-    // GET: AdminArea/RideTimes/Edit/5
-    /*public async Task<IActionResult> Edit(Guid? id)
-    {
-        var vm = new EditRideTimeViewModel();
-        if (id == null) return NotFound();
-
-        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id.Value);
-        if (rideTime == null) return NotFound();
-
-        vm.Id = rideTime.Id;
-        vm.DriverId = rideTime.DriverId;
-        vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
-#warning "Magic string" code smell, fix it
-            nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
-
-        vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
-        
-        var schedules = await _appBLL.Schedules.GettingTheScheduleByDriverIdAsync(rideTime.DriverId, null, null);
-        foreach (var schedule in schedules)
-        {
-            schedule.StartDateAndTime = schedule.StartDateAndTime.ToLocalTime();
-            schedule.EndDateAndTime = schedule.EndDateAndTime.ToLocalTime();
-        }
-
-        vm.Schedules = new SelectList(
-            schedules,
-            nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime));
-        
-        vm.IsTaken = rideTime.IsTaken;
-#warning Ridetimes should be hidden and reappearing based on whether IsTaken is true or not
-        // Select the RideTimes form the currently selected schedule, for the current driver
-        var rideTimes = _appBLL.RideTimes.CalculatingRideTimes(rideTime.ScheduleId);
-        vm.RideTimes = new SelectList(rideTimes.Select(x => new { RideTime = x }), 
-            nameof(vm.RideTime), nameof(vm.RideTime));
-        vm.ScheduleId = rideTime.ScheduleId;
-       
-        return View(vm);
-    }
-
-    // POST: AdminArea/RideTimes/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid? id, EditRideTimeViewModel vm)
-    {
-        
-        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id!.Value);
-        
-        if (rideTime == null)
-        {
-            return NotFound();
-        }
-
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                rideTime.Id = id.Value;
-                rideTime.DriverId = vm.DriverId;
-                rideTime.ScheduleId = vm.ScheduleId;
-                rideTime.RideDateTime = DateTime.Parse(vm.RideTime).ToUniversalTime();
-                rideTime.IsTaken = vm.IsTaken;
-                rideTime.UpdatedBy = User.Identity!.Name!;
-                rideTime.UpdatedAt = DateTime.Now.ToUniversalTime();
-
-                _appBLL.RideTimes.Update(rideTime);
-                await _appBLL.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RideTimeExists(rideTime.Id))
-                    return NotFound();
-                throw;
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        return View(vm);
-    }*/
-
+    
     // GET: AdminArea/RideTimes/Delete/5
+    /// <summary>
+    /// Admin area ride times controller GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeleteRideTimeViewModel();
@@ -303,13 +258,10 @@ public class RideTimesController : Controller
         var rideTime =  await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id.Value);
         if (rideTime == null) return NotFound();
 
-        
-
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
         rideTime.Schedule!.EndDateAndTime = rideTime.Schedule.EndDateAndTime.ToLocalTime();
 
         vm.Driver = rideTime.Schedule.Driver!.AppUser!.LastAndFirstName;
-        
         vm.Schedule = rideTime.Schedule!.ShiftDurationTime;
         vm.RideTime = rideTime.RideDateTime.ToLocalTime().ToString("t");
         vm.IsTaken = rideTime.IsTaken;
@@ -318,11 +270,15 @@ public class RideTimesController : Controller
         vm.UpdatedAt = rideTime.UpdatedAt;
         vm.CreatedBy = rideTime.CreatedBy!;
 
-
         return View(vm);
     }
 
     // POST: AdminArea/RideTimes/Delete/5
+    /// <summary>
+    /// Admin area ride times controller POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirection to index</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]

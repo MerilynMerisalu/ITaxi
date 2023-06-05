@@ -1,8 +1,5 @@
 #nullable enable
 using App.Contracts.BLL;
-using App.Contracts.DAL;
-using App.DAL.DTO.AdminArea;
-using App.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
@@ -10,26 +7,41 @@ using DisabilityTypeDTO = App.BLL.DTO.AdminArea.DisabilityTypeDTO;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area disability types controller
+/// </summary>
 [Area(nameof(AdminArea))]
 public class DisabilityTypesController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Admin area disability types controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public DisabilityTypesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
 
     // GET: AdminArea/DisabilityTypes
+    /// <summary>
+    /// Admin area disability types index
+    /// </summary>
+    /// <returns>View with data</returns>
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.DisabilityTypes.GetAllOrderedDisabilityTypesAsync();
-
-
+        
         return View(res);
     }
 
     // GET: AdminArea/DisabilityTypes/Details/5
+    /// <summary>
+    /// Admin area disability type details 
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View model</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeleteDisabilityTypeViewModel();
@@ -50,6 +62,10 @@ public class DisabilityTypesController : Controller
     }
 
     // GET: AdminArea/DisabilityTypes/Create
+    /// <summary>
+    /// Admin area disability type create GET method
+    /// </summary>
+    /// <returns>View model</returns>
     public IActionResult Create()
     {
         var vm = new CreateEditDisabilityTypeViewModel();
@@ -59,6 +75,11 @@ public class DisabilityTypesController : Controller
     // POST: AdminArea/DisabilityTypes/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area disability type create POST method
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <returns>View model</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateEditDisabilityTypeViewModel vm)
@@ -79,6 +100,11 @@ public class DisabilityTypesController : Controller
     }
 
     // GET: AdminArea/DisabilityTypes/Edit/5
+    /// <summary>
+    /// Admin area disability type edit GET method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View model</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new CreateEditDisabilityTypeViewModel();
@@ -94,6 +120,12 @@ public class DisabilityTypesController : Controller
     // POST: AdminArea/DisabilityTypes/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area disability type edit POST method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="vm">View model</param>
+    /// <returns>View model</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditDisabilityTypeViewModel vm)
@@ -114,7 +146,6 @@ public class DisabilityTypesController : Controller
                     _appBLL.DisabilityTypes.Update(disabilityType);
                     await _appBLL.SaveChangesAsync();
                 }
-
                 
             }
             catch (DbUpdateConcurrencyException)
@@ -131,6 +162,11 @@ public class DisabilityTypesController : Controller
     }
 
     // GET: AdminArea/DisabilityTypes/Delete/5
+    /// <summary>
+    /// Admin area disability type delete GET method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View model</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeleteDisabilityTypeViewModel();
@@ -145,12 +181,16 @@ public class DisabilityTypesController : Controller
         vm.CreatedAt = disabilityType.CreatedAt;
         vm.UpdatedBy = disabilityType.UpdatedBy!;
         vm.UpdatedAt = disabilityType.UpdatedAt;
-
-
+        
         return View(vm);
     }
 
     // POST: AdminArea/DisabilityTypes/Delete/5
+    /// <summary>
+    /// Admin area disability type delete POST method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index page</returns>
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]

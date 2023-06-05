@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
+/// <summary>
+/// Enable authenticator model
+/// </summary>
 public class EnableAuthenticatorModel : PageModel
 {
     private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
@@ -21,6 +24,12 @@ public class EnableAuthenticatorModel : PageModel
     private readonly UrlEncoder _urlEncoder;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Enable authenticator model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for the user's</param>
+    /// <param name="logger">Logger</param>
+    /// <param name="urlEncoder">Url encoder</param>
     public EnableAuthenticatorModel(
         UserManager<AppUser> userManager,
         ILogger<EnableAuthenticatorModel> logger,
@@ -32,38 +41,37 @@ public class EnableAuthenticatorModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Enable authenticator model shared key
     /// </summary>
     public string SharedKey { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Enable authenticator model authenticator url
     /// </summary>
     public string AuthenticatorUri { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Enable authenticator model recovery codes
     /// </summary>
     [TempData]
     public string[] RecoveryCodes { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Enable authenticator model status message
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Enable authenticator model input
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
 
+    /// <summary>
+    /// Enable authenticator model on get async method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -74,6 +82,10 @@ public class EnableAuthenticatorModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// Enable authenticator model on post async method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnPostAsync()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -156,14 +168,12 @@ public class EnableAuthenticatorModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Enable authenticator model input model
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Enable authenticator model input model code
         /// </summary>
         [Required]
         [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",

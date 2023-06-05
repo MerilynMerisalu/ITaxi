@@ -10,11 +10,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
+/// <summary>
+/// Disable 2 fa model
+/// </summary>
 public class Disable2faModel : PageModel
 {
     private readonly ILogger<Disable2faModel> _logger;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Disable 2 fa model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for the user's</param>
+    /// <param name="logger">Logger for the user's</param>
     public Disable2faModel(
         UserManager<AppUser> userManager,
         ILogger<Disable2faModel> logger)
@@ -24,12 +32,16 @@ public class Disable2faModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Status message
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
 
+    /// <summary>
+    /// On get method
+    /// </summary>
+    /// <returns>Page</returns>
+    /// <exception cref="InvalidOperationException">Invalid operation exception</exception>
     public async Task<IActionResult> OnGet()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -41,6 +53,11 @@ public class Disable2faModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// On post async method
+    /// </summary>
+    /// <returns>Page</returns>
+    /// <exception cref="InvalidOperationException">Invalid operation exception</exception>
     public async Task<IActionResult> OnPostAsync()
     {
         var user = await _userManager.GetUserAsync(User);

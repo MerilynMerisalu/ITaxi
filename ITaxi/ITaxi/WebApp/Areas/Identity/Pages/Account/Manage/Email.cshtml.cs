@@ -15,12 +15,21 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
+/// <summary>
+/// Email model
+/// </summary>
 public class EmailModel : PageModel
 {
     private readonly IEmailSender _emailSender;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Email model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for the user's</param>
+    /// <param name="signInManager">Sign in manager</param>
+    /// <param name="emailSender">Email sender</param>
     public EmailModel(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
@@ -32,27 +41,23 @@ public class EmailModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Email model email
     /// </summary>
     public string Email { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Email model is email confirmed
     /// </summary>
     public bool IsEmailConfirmed { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Email model email status message
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Email model input
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
@@ -70,6 +75,10 @@ public class EmailModel : PageModel
         IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
     }
 
+    /// <summary>
+    /// Email model on get async method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -79,6 +88,10 @@ public class EmailModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// Email model on post change email async method
+    /// </summary>
+    /// <returns>Redirect to page</returns>
     public async Task<IActionResult> OnPostChangeEmailAsync()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -114,6 +127,10 @@ public class EmailModel : PageModel
         return RedirectToPage();
     }
 
+    /// <summary>
+    /// Email model on post send verification email async method
+    /// </summary>
+    /// <returns>Redirect to page</returns>
     public async Task<IActionResult> OnPostSendVerificationEmailAsync()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -144,14 +161,12 @@ public class EmailModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///  Email input model
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Email input model new email
         /// </summary>
         [Required]
         [EmailAddress]

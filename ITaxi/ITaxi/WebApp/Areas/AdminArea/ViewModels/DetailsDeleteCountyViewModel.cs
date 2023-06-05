@@ -3,11 +3,19 @@ using App.Resources.Areas.App.Domain.AdminArea;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
+/// <summary>
+/// Details delete county view model
+/// </summary>
 public class DetailsDeleteCountyViewModel : AdminAreaBaseViewModel
 {
+    /// <summary>
+    /// County id
+    /// </summary>
     public Guid Id { get; set; }
 
-    [Display(ResourceType = typeof(County),
-        Name = nameof(CountyName))]
+    /// <summary>
+    /// County name
+    /// </summary>
+    [Display(ResourceType = typeof(County), Name = nameof(CountyName))]
     public string CountyName { get; set; } = default!;
 }

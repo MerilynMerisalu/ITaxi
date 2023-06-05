@@ -17,6 +17,9 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
+/// <summary>
+/// External login model
+/// </summary>
 [AllowAnonymous]
 public class ExternalLoginModel : PageModel
 {
@@ -27,6 +30,14 @@ public class ExternalLoginModel : PageModel
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserStore<AppUser> _userStore;
 
+    /// <summary>
+    /// External login model constructor
+    /// </summary>
+    /// <param name="signInManager">Sign in manager</param>
+    /// <param name="userManager">Manager for the user's</param>
+    /// <param name="userStore">Store for the user's</param>
+    /// <param name="logger">Logger for the user's</param>
+    /// <param name="emailSender">Email sender</param>
     public ExternalLoginModel(
         SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
@@ -43,36 +54,42 @@ public class ExternalLoginModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Provider display name
     /// </summary>
     public string ProviderDisplayName { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Return url
     /// </summary>
     public string ReturnUrl { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Error message
     /// </summary>
     [TempData]
     public string ErrorMessage { get; set; }
 
+    /// <summary>
+    /// On get method
+    /// </summary>
+    /// <returns>Page</returns>
     public IActionResult OnGet()
     {
         return RedirectToPage("./Login");
     }
 
+    /// <summary>
+    /// On post method
+    /// </summary>
+    /// <param name="provider">Provider</param>
+    /// <param name="returnUrl">Return url</param>
+    /// <returns>New challenge result</returns>
     public IActionResult OnPost(string provider, string returnUrl = null)
     {
         // Request a redirect to the external login provider.
@@ -81,6 +98,12 @@ public class ExternalLoginModel : PageModel
         return new ChallengeResult(provider, properties);
     }
 
+    /// <summary>
+    /// On get callback async method
+    /// </summary>
+    /// <param name="returnUrl">Return url</param>
+    /// <param name="remoteError">remote error</param>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
     {
         returnUrl = returnUrl ?? Url.Content("~/");
@@ -119,6 +142,11 @@ public class ExternalLoginModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// On post confirmation async method
+    /// </summary>
+    /// <param name="returnUrl">Return url</param>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
     {
         returnUrl = returnUrl ?? Url.Content("~/");
@@ -196,14 +224,12 @@ public class ExternalLoginModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input model
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Email
         /// </summary>
         [Required]
         [EmailAddress]

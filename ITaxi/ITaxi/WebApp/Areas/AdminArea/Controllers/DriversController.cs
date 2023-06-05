@@ -1,8 +1,6 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
-using App.BLL.DTO.Identity;
 using App.Contracts.BLL;
-using Base.Contracts.DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,26 +8,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
 
-
-
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area drivers controller
+/// </summary>
 [Area(nameof(AdminArea))]
 [Authorize(Roles = "Admin")]
 public class DriversController : Controller
 {
     private readonly IAppBLL _appBLL;
-    
     private readonly UserManager<App.Domain.Identity.AppUser> _userManager;
+    
+    /// <summary>
+    /// Admin area drivers controller constructor
+    /// </summary>
+    /// <param name="userManager">Manager for the user's</param>
+    /// <param name="appBLL">AppBLL</param>
     public DriversController(UserManager<App.Domain.Identity.AppUser> userManager, IAppBLL appBLL)
     {
-        
         _userManager = userManager;
         _appBLL = appBLL;
-        
     }
 
     // GET: AdminArea/Drivers
+    /// <summary>
+    /// Admin area drivers controller index
+    /// </summary>
+    /// <returns>iVew to the response</returns>
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync();
@@ -38,6 +44,11 @@ public class DriversController : Controller
     }
 
     // GET: AdminArea/Drivers/Details/5
+    /// <summary>
+    /// Admin area drivers controller details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeleteDriverViewModel();
@@ -66,27 +77,36 @@ public class DriversController : Controller
             vm.UpdatedBy = driver.UpdatedBy!;
             vm.UpdatedAt = driver.UpdatedAt;
         }
-
         return View(vm);
     }
 
     // GET: AdminArea/Drivers/Create
+    /// <summary>
+    /// Admin area drivers controller GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Create()
     {
         var vm = new CreateDriverViewModel();
         vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(), 
-            nameof(App.BLL.DTO.AdminArea.CityDTO.Id),
-            nameof(App.BLL.DTO.AdminArea.CityDTO.CityName));
+            nameof(CityDTO.Id),
+            nameof(CityDTO.CityName));
         vm.DriverLicenseCategories = new SelectList(
             await _appBLL.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
-            nameof(App.BLL.DTO.AdminArea.DriverLicenseCategoryDTO.Id), 
-            nameof(App.BLL.DTO.AdminArea.DriverLicenseCategoryDTO.DriverLicenseCategoryName));
+            nameof(DriverLicenseCategoryDTO.Id), 
+            nameof(DriverLicenseCategoryDTO.DriverLicenseCategoryName));
         return View(vm);
     }
 
     // POST: AdminArea/Drivers/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area drivers controller POST method create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <param name="driver">Driver</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateDriverViewModel vm, DriverDTO driver)
@@ -115,6 +135,11 @@ public class DriversController : Controller
     }
 
     // GET: AdminArea/Drivers/Edit/5
+    /// <summary>
+    /// Admin area drivers controller GET method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         if (id == null) return NotFound();
@@ -144,13 +169,18 @@ public class DriversController : Controller
             vm.PhoneNumber = driver!.AppUser!.PhoneNumber;
             vm.Email = driver.AppUser!.Email;
         }
-
         return View(vm);
     }
 
     // POST: AdminArea/Drivers/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area drivers controller POST method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditDriverViewModel vm)
@@ -184,10 +214,8 @@ public class DriversController : Controller
                             };
                             _appBLL.DriverAndDriverLicenseCategories.Add(driverAndDriverLicenseCategory);
                         }
-                        
                     }
                     
-
                     appuser.FirstName = vm.FirstName;
                     appuser.LastName = vm.LastName;
                     appuser.Gender = vm.Gender;
@@ -222,6 +250,11 @@ public class DriversController : Controller
     }
 
     // GET: AdminArea/Drivers/Delete/5
+    /// <summary>
+    /// Admin area drivers controller GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeleteDriverViewModel();
@@ -253,6 +286,11 @@ public class DriversController : Controller
     }
 
     // POST: AdminArea/Drivers/Delete/5
+    /// <summary>
+    /// Admin area drivers controller POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
@@ -266,13 +304,11 @@ public class DriversController : Controller
         await _appBLL.DriverAndDriverLicenseCategories.
             RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(id, noTracking);
         
-
         if (driver != null)
         {
             driver.AppUser = null;
             var appUser = await _userManager.FindByIdAsync(driver!.AppUserId.ToString());
             await _userManager.RemoveFromRoleAsync(appUser!, "Driver");
-
             await _appBLL.Drivers.RemoveAsync(driver.Id);
             await _appBLL.SaveChangesAsync();
             

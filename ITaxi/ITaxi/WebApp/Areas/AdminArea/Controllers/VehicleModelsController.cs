@@ -9,18 +9,29 @@ using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area vehicle models controller
+/// </summary>
 [Area(nameof(AdminArea))]
 [Authorize(Roles = "Admin")]
 public class VehicleModelsController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Admin area vehicle models controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public VehicleModelsController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
 
     // GET: AdminArea/VehicleModels
+    /// <summary>
+    /// Admin area vehicle models index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.VehicleModels.GetAllAsync();
@@ -29,6 +40,11 @@ public class VehicleModelsController : Controller
     }
 
     // GET: AdminArea/VehicleModels/Details/5
+    /// <summary>
+    /// Admin area vehicle models GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeleteVehicleModelViewModel();
@@ -48,6 +64,10 @@ public class VehicleModelsController : Controller
     }
 
     // GET: AdminArea/VehicleModels/Create
+    /// <summary>
+    /// Admin area vehicle models GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditVehicleModelViewModel();
@@ -60,6 +80,12 @@ public class VehicleModelsController : Controller
     // POST: AdminArea/VehicleModels/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area vehicle model POST method create
+    /// </summary>
+    /// <param name="vm">View models</param>
+    /// <param name="vehicleModel">Vehicle model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateEditVehicleModelViewModel vm, VehicleModelDTO vehicleModel)
@@ -80,6 +106,11 @@ public class VehicleModelsController : Controller
     }
 
     // GET: AdminArea/VehicleModels/Edit/5
+    /// <summary>
+    /// Admin area vehicle model GET method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new CreateEditVehicleModelViewModel();
@@ -99,6 +130,12 @@ public class VehicleModelsController : Controller
     // POST: AdminArea/VehicleModels/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area vehicle model POST method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleModelViewModel vm)
@@ -135,6 +172,11 @@ public class VehicleModelsController : Controller
     }
 
     // GET: AdminArea/VehicleModels/Delete/5
+    /// <summary>
+    /// Admin area vehicle model GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeleteVehicleModelViewModel();
@@ -154,6 +196,11 @@ public class VehicleModelsController : Controller
     }
 
     // POST: AdminArea/VehicleModels/Delete/5
+    /// <summary>
+    /// Admin area vehicle model POST method delete 
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]

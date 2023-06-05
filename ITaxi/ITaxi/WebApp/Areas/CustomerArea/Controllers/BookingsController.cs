@@ -63,7 +63,7 @@ public class BookingsController : Controller
             }
 
             // Value in this case IS the pickupDateAndTime
-            parameters.PickupDateAndTime = DateTime.Parse(parameters.Value);
+            parameters.PickupDateAndTime = DateTime.Parse(parameters!.Value!);
             if (parameters.PickupDateAndTime == DateTime.MinValue)
             {
                 // Do nothing, this will show the message to re-select the time entry
@@ -116,7 +116,7 @@ public class BookingsController : Controller
         // the user is forced to enter a Pickup Date Time that matches an existing Ride Time
         if (parameters.ListType == "RideTimeId")
         {
-            var rideTimeId = Guid.Parse(parameters.Value);
+            var rideTimeId = Guid.Parse(parameters.Value!);
             var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(rideTimeId);
 
             vm.RideTimeId = rideTimeId;

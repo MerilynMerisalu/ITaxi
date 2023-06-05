@@ -1,7 +1,7 @@
 #nullable enable
+
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,27 +10,42 @@ using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area counties controller
+/// </summary>
 [Area(nameof(AdminArea))]
 [Authorize(Roles = "Admin")]
 public class CountiesController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Admin area counties controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public CountiesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
 
     // GET: AdminArea/Counties
+    /// <summary>
+    /// Admin area counties controller index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
-
-
+        
         return View(res);
     }
 
     // GET: AdminArea/Counties/Details/5
+    /// <summary>
+    /// Admin area counties controller GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeleteCountyViewModel();
@@ -50,7 +65,10 @@ public class CountiesController : Controller
     }
 
     // GET: AdminArea/Counties/Create
-
+    /// <summary>
+    /// Admin area counties controller GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public IActionResult Create()
     {
         var vm = new CreateEditCountyViewModel();
@@ -60,6 +78,11 @@ public class CountiesController : Controller
     // POST: AdminArea/Counties/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area counties controller POST method create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateEditCountyViewModel vm)
@@ -79,6 +102,11 @@ public class CountiesController : Controller
     }
 
     // GET: AdminArea/Counties/Edit/5
+    /// <summary>
+    /// Admin area counties controller GET method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new CreateEditCountyViewModel();
@@ -96,6 +124,12 @@ public class CountiesController : Controller
     // POST: AdminArea/Counties/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area counties controller POST method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditCountyViewModel vm)
@@ -126,6 +160,11 @@ public class CountiesController : Controller
     }
 
     // GET: AdminArea/Counties/Delete/5
+    /// <summary>
+    /// Admin area counties controller GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeleteCountyViewModel();
@@ -144,6 +183,11 @@ public class CountiesController : Controller
     }
 
     // POST: AdminArea/Counties/Delete/5
+    /// <summary>
+    /// Admin area counties controller POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]

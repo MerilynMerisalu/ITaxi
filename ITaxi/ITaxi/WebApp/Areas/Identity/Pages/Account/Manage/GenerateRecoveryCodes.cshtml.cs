@@ -10,11 +10,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
+/// <summary>
+/// Generate Recovery codes model
+/// </summary>
 public class GenerateRecoveryCodesModel : PageModel
 {
     private readonly ILogger<GenerateRecoveryCodesModel> _logger;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Generate Recovery codes model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for the user's</param>
+    /// <param name="logger">Logger for the user's</param>
     public GenerateRecoveryCodesModel(
         UserManager<AppUser> userManager,
         ILogger<GenerateRecoveryCodesModel> logger)
@@ -24,19 +32,22 @@ public class GenerateRecoveryCodesModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Recovery codes
     /// </summary>
     [TempData]
     public string[] RecoveryCodes { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Status message
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
 
+    /// <summary>
+    /// On get async method
+    /// </summary>
+    /// <returns>Page</returns>
+    /// <exception cref="InvalidOperationException">Invalid operation exception</exception>
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -50,6 +61,11 @@ public class GenerateRecoveryCodesModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// On post async method
+    /// </summary>
+    /// <returns>Page</returns>
+    /// <exception cref="InvalidOperationException">Invalid operation exception</exception>
     public async Task<IActionResult> OnPostAsync()
     {
         var user = await _userManager.GetUserAsync(User);

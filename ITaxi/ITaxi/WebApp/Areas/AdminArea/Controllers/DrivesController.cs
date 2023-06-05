@@ -1,8 +1,7 @@
 #nullable enable
+
 using App.Contracts.BLL;
-using App.Contracts.DAL;
 using App.Enum.Enum;
-using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,19 +10,29 @@ using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area drives controller
+/// </summary>
 [Area(nameof(AdminArea))]
 [Authorize(Roles = "Admin")]
 public class DrivesController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Admin area drives controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public DrivesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
-
     }
 
     // GET: AdminArea/Drives
+    /// <summary>
+    /// Admin area drives controller index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
         var roleName = User.GettingUserRoleName();
@@ -33,6 +42,11 @@ public class DrivesController : Controller
     }
 
     // GET: AdminArea/Drives/Details/5
+    /// <summary>
+    /// Admin area drives controller GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var roleName = User.GettingUserRoleName();
@@ -58,7 +72,6 @@ public class DrivesController : Controller
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
         vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("G");
-
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
         vm.IsDriveAccepted = drive.IsDriveAccepted;
@@ -75,138 +88,19 @@ public class DrivesController : Controller
             vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("G");
 
         if (drive.IsDriveFinished) vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToString("G");
-
-
+        
         vm.CreatedBy = drive.CreatedBy!;
         vm.CreatedAt = drive.CreatedAt;
         vm.UpdatedBy = drive.UpdatedBy!;
         vm.UpdatedAt = drive.UpdatedAt;
-
-
+        
         return View(vm);
     }
 
-
-
-// GET: AdminArea/Drives/Create
-/*
-public IActionResult Create()
-{
-    ViewData["DriverId"] = new SelectList(_appBLL.Drivers, "Id", "Address");
-    return View();
-}
-*/
-
-// POST: AdminArea/Drives/Create
-// To protect from overposting attacks, enable the specific properties you want to bind to.
-// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-/*[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Create([Bind("DriverId,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Drive drive)
-{
-    if (ModelState.IsValid)
-    {
-        drive.Id = Guid.NewGuid();
-        _appBLL.Add(drive);
-        await _appBLL.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
-    }
-    ViewData["DriverId"] = new SelectList(_appBLL.Drivers, "Id", "Address", drive.DriverId);
-    return View(drive);
-}*/
-
-// GET: AdminArea/Drives/Edit/5
-/*
-public async Task<IActionResult> Edit(Guid? id)
-{
-    if (id == null)
-    {
-        return NotFound();
-    }
-
-    var drive = await _appBLL.Drives.FindAsync(id);
-    if (drive == null)
-    {
-        return NotFound();
-    }
-    ViewData["DriverId"] = new SelectList(_appBLL.Drivers, "Id", "Address", drive.DriverId);
-    return View(drive);
-}
-*/
-
-// POST: AdminArea/Drives/Edit/5
-// To protect from overposting attacks, enable the specific properties you want to bind to.
-// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-/*
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Edit(Guid id, [Bind("DriverId,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] Drive drive)
-{
-    if (id != drive.Id)
-    {
-        return NotFound();
-    }
-
-    if (ModelState.IsValid)
-    {
-        try
-        {
-            _appBLL.Update(drive);
-            await _appBLL.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!DriveExists(drive.Id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-        return RedirectToAction(nameof(Index));
-    }
-    ViewData["DriverId"] = new SelectList(_appBLL.Drivers, "Id", "Address", drive.DriverId);
-    return View(drive);
-}
-*/
-
-// GET: AdminArea/Drives/Delete/5
-/*public async Task<IActionResult> Delete(Guid? id)
-{
-    if (id == null)
-    {
-        return NotFound();
-    }
-
-    var drive = await _appBLL.Drives
-        .Include(d => d.Driver)
-        .FirstOrDefaultAsync(m => m.Id == id);
-    if (drive == null)
-    {
-        return NotFound();
-    }
-
-    return View(drive);
-}*/
-
-// POST: AdminArea/Drives/Delete/5
-/*[HttpPost, ActionName("Delete")]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> DeleteConfirmed(Guid id)
-{
-    var drive = await _appBLL.Drives.FindAsync(id);
-    _appBLL.Drives.Remove(drive);
-    await _appBLL.SaveChangesAsync();
-    return RedirectToAction(nameof(Index));
-}*/
-
-
 /// <summary>
-///     Search drives by inserted date
+/// Search drives by inserted date
 /// </summary>
-/// <param name="search">date</param>
+/// <param name="search">Date</param>
 /// <returns>An index view with search results</returns>
 [HttpPost]
 public async Task<IActionResult> SearchByDateAsync([FromForm] DateTime search)
@@ -217,23 +111,24 @@ public async Task<IActionResult> SearchByDateAsync([FromForm] DateTime search)
 }
 
 /// <summary>
-///     Generates a pdf view of drives
+/// Generates a pdf view of drives
 /// </summary>
 /// <returns>A pdf of drives</returns>
 public async Task<IActionResult> Print()
 {
     var roleName = User.GettingUserRoleName();
     
-    
         var drives = await _appBLL.Drives.PrintAsync( null, roleName );
         
         return new ViewAsPdf("PrintDrives", drives);
-    
-
-    
 }
 
 // GET: AdminArea/Drives/Accept/5
+/// <summary>
+/// Admin area drives controller GET method accept
+/// </summary>
+/// <param name="id">Id</param>
+/// <returns>View</returns>
 public async Task<IActionResult> Accept(Guid? id)
 {
     if (id == null) return NotFound();
@@ -287,20 +182,22 @@ public async Task<IActionResult> Accept(Guid? id)
     vm.CreatedAt = drive.CreatedAt;
     vm.UpdatedBy = drive.UpdatedBy!;
     vm.UpdatedAt = drive.UpdatedAt;
-
-
+    
     return View(vm);
 }
 
 // POST: AdminArea/Bookings/Accept/5
+/// <summary>
+/// Admin area drives controller POST method accept
+/// </summary>
+/// <param name="id">Id</param>
+/// <returns>Redirect to index</returns>
 [HttpPost]
 [ActionName(nameof(Accept))]
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> AcceptConfirmed(Guid id)
 {
     var roleName = User.GettingUserRoleName();
-    
-
     var drive = await _appBLL.Drives.AcceptingDriveAsync(id, null, roleName, noIncludes:true);
     if (drive == null) return NotFound();
 
@@ -312,14 +209,12 @@ public async Task<IActionResult> AcceptConfirmed(Guid id)
     _appBLL.Drives.Update(drive);
     await _appBLL.SaveChangesAsync();
     
-
     var booking = await _appBLL.Bookings.GettingBookingByDriveIdAsync(id, noTracking:true);
+    
     if (booking != null)
     {
         booking.StatusOfBooking = StatusOfBooking.Accepted;
         booking.ConfirmedBy = User.GettingUserName();
-
-
         booking.UpdatedAt = DateTime.Now.ToUniversalTime();
         _appBLL.Bookings.Update(booking);
         await _appBLL.SaveChangesAsync();
@@ -329,6 +224,11 @@ public async Task<IActionResult> AcceptConfirmed(Guid id)
 }
 
 // GET: AdminArea/Drives/Decline/5
+/// <summary>
+/// Admin area drives controller GET method decline
+/// </summary>
+/// <param name="id">Id</param>
+/// <returns>View</returns>
 public async Task<IActionResult> Decline(Guid? id)
 {
     if (id == null) return NotFound();
@@ -356,12 +256,16 @@ public async Task<IActionResult> Decline(Guid? id)
     vm.CreatedAt = drive.CreatedAt;
     vm.UpdatedBy = drive.UpdatedBy!;
     vm.UpdatedAt = drive.UpdatedAt;
-
-
+    
     return View(vm);
 }
 
 // POST: AdminArea/Drives/Decline/5
+/// <summary>
+/// Admin area drives controller POST method decline
+/// </summary>
+/// <param name="id">Id</param>
+/// <returns>Redirect to index</returns>
 [HttpPost]
 [ActionName(nameof(Decline))]
 [ValidateAntiForgeryToken]
@@ -403,6 +307,11 @@ public async Task<IActionResult> DeclineConfirmed(Guid id)
 }
 
 // GET: AdminArea/Drives/StartDrive/5
+/// <summary>
+/// Admin area drives controller GET method start drive
+/// </summary>
+/// <param name="id">Id</param>
+/// <returns>View</returns>
 public async Task<IActionResult> StartDrive(Guid? id)
 {
     if (id == null) return NotFound();
@@ -433,7 +342,12 @@ public async Task<IActionResult> StartDrive(Guid? id)
     return View(vm);
 }
 
-// POST: AdminArea/Bookings/Start/5
+// POST: AdminArea/Drives/Start/5
+/// <summary>
+/// Admin area drives controller POST method start
+/// </summary>
+/// <param name="id">Id</param>
+/// <returns>Redirect to index</returns>
 [HttpPost]
 [ActionName(nameof(StartDrive))]
 [ValidateAntiForgeryToken]
@@ -454,6 +368,11 @@ public async Task<IActionResult> StartConfirmed(Guid id)
 }
 
 // GET: AdminArea/Drives/EndDrive/5
+/// <summary>
+/// Admin area drives controller GET method end drive
+/// </summary>
+/// <param name="id">Id</param>
+/// <returns>View</returns>
 public async Task<IActionResult> EndDrive(Guid? id)
 {
     if (id == null) return NotFound();
@@ -487,15 +406,18 @@ public async Task<IActionResult> EndDrive(Guid? id)
 
 
 // POST: AdminArea/Drives/EndDrive/5
+/// <summary>
+/// Admin area drives controller POST method end drive
+/// </summary>
+/// <param name="id">Id</param>
+/// <returns>Redirect to index</returns>
 [HttpPost]
 [ActionName(nameof(EndDrive))]
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> EndDriveConfirmed(Guid id)
 {
     var roleName = User.GettingUserRoleName();
-    
-
-   var drive = await _appBLL.Drives.EndingDriveAsync(id, null, roleName);
+    var drive = await _appBLL.Drives.EndingDriveAsync(id, null, roleName);
     if (drive == null) return NotFound();
 
     drive.IsDriveFinished = true;
@@ -505,8 +427,7 @@ public async Task<IActionResult> EndDriveConfirmed(Guid id)
 
     _appBLL.Drives.Update(drive);
     await _appBLL.SaveChangesAsync();
-
-
+    
     return RedirectToAction(nameof(Index));
 }
 }

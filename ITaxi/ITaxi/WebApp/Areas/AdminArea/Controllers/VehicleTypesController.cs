@@ -6,21 +6,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
 
-
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area vehicle types controller
+/// </summary>
 [Authorize(Roles = "Admin")]
 [Area(nameof(AdminArea))]
 public class VehicleTypesController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Admin area vehicle types controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public VehicleTypesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
 
     // GET: AdminArea/VehicleTypes
+    /// <summary>
+    /// Admin area vehicle types index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync();
@@ -29,6 +39,11 @@ public class VehicleTypesController : Controller
     }
 
     // GET: AdminArea/VehicleTypes/Details/5
+    /// <summary>
+    /// Admin area vehicle type GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeleteVehicleTypeViewModel();
@@ -47,6 +62,10 @@ public class VehicleTypesController : Controller
     }
 
     // GET: AdminArea/VehicleTypes/Create
+    /// <summary>
+    /// Admin area vehicle type GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public IActionResult Create()
     {
         var vm = new CreateEditVehicleTypeViewModel();
@@ -56,6 +75,11 @@ public class VehicleTypesController : Controller
     // POST: AdminArea/VehicleTypes/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area vehicle type POST method create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateEditVehicleTypeViewModel vm)
@@ -76,6 +100,11 @@ public class VehicleTypesController : Controller
     }
 
     // GET: AdminArea/VehicleTypes/Edit/5
+    /// <summary>
+    /// Admin area vehicle type GET method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new CreateEditVehicleTypeViewModel();
@@ -95,6 +124,12 @@ public class VehicleTypesController : Controller
     // POST: AdminArea/VehicleTypes/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area vehicle type POST method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleTypeViewModel vm)
@@ -111,7 +146,6 @@ public class VehicleTypesController : Controller
                 {
                     vehicleType.Id = vm.Id;
                     vehicleType.VehicleTypeName.SetTranslation(vm.VehicleTypeName);
-                    //vehicleType.VehicleTypeName = vm.VehicleTypeName;
                     vehicleType.UpdatedBy = User.Identity!.Name;
                     vehicleType.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _appBLL.VehicleTypes.Update(vehicleType);
@@ -132,6 +166,11 @@ public class VehicleTypesController : Controller
     }
 
     // GET: AdminArea/VehicleTypes/Delete/5
+    /// <summary>
+    /// Admin area vehicle type GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeleteVehicleTypeViewModel();
@@ -151,6 +190,11 @@ public class VehicleTypesController : Controller
     }
 
     // POST: AdminArea/VehicleTypes/Delete/5
+    /// <summary>
+    /// Admin area vehicle type POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]

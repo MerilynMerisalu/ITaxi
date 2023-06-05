@@ -16,11 +16,19 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
+/// <summary>
+/// Forgot password model controller
+/// </summary>
 public class ForgotPasswordModel : PageModel
 {
     private readonly IEmailSender _emailSender;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Forgot password model controller constructor
+    /// </summary>
+    /// <param name="userManager">Manager for user's</param>
+    /// <param name="emailSender">Email sender</param>
     public ForgotPasswordModel(UserManager<AppUser> userManager, IEmailSender emailSender)
     {
         _userManager = userManager;
@@ -28,12 +36,15 @@ public class ForgotPasswordModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
 
+    /// <summary>
+    /// On post async method
+    /// </summary>
+    /// <returns>Redirect to page</returns>
     public async Task<IActionResult> OnPostAsync()
     {
         if (ModelState.IsValid)
@@ -56,7 +67,7 @@ public class ForgotPasswordModel : PageModel
             await _emailSender.SendEmailAsync(
                 Input.Email,
                 "Reset Password",
-                $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
 
             return RedirectToPage("./ForgotPasswordConfirmation");
         }
@@ -65,14 +76,13 @@ public class ForgotPasswordModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input model
     /// </summary>
     public class InputModel
     {
+        
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Email
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]

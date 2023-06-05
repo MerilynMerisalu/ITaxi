@@ -8,21 +8,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
 
-
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area comments controller
+/// </summary>
 [Authorize(Roles = "Admin")]
 [Area(nameof(AdminArea))]
 public class CommentsController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Admin area comments controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public CommentsController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
 
     // GET: AdminArea/Comments
+    /// <summary>
+    /// Admin area comments index
+    /// </summary>
+    /// <returns>Index page view with data</returns>
     public async Task<IActionResult> Index()
     {
         var roleName = User.GettingUserRoleName();
@@ -31,6 +41,11 @@ public class CommentsController : Controller
     }
 
     // GET: AdminArea/Comments/Details/5
+    /// <summary>
+    /// Admin area comment details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View model</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeleteCommentViewModel();
@@ -50,24 +65,24 @@ public class CommentsController : Controller
         vm.CreatedBy = comment.CreatedBy!;
         vm.UpdatedAt = comment.UpdatedAt;
         vm.UpdatedBy = comment.UpdatedBy!;
-
-
+        
         return View(vm);
     }
 
     // GET: AdminArea/Comments/Create
+    /// <summary>
+    /// Admin area comment create
+    /// </summary>
+    /// <returns>View model</returns>
     public async Task<IActionResult> Create()
     {
         var vm = new CreateCommentViewModel();
 
         var roleName = User.GettingUserRoleName();
         var drives = await _appBLL.Drives.GettingDrivesWithoutCommentAsync(null, roleName);
-        /*foreach (var drive in drives)
-        {
-            if (drive != null) drive.Booking!.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
-        }*/
+        
         vm.Drives = new SelectList(drives,
-            nameof(App.BLL.DTO.AdminArea.DriveDTO.Id), nameof(App.BLL.DTO.AdminArea.DriveDTO.DriveDescription));
+            nameof(DriveDTO.Id), nameof(DriveDTO.DriveDescription));
 
         return View(vm);
     }
@@ -75,6 +90,11 @@ public class CommentsController : Controller
     // POST: AdminArea/Comments/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area comment create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <returns>View model</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateCommentViewModel vm)
@@ -97,12 +117,16 @@ public class CommentsController : Controller
         vm.Drives = new SelectList(await _appBLL.Drives.GettingDrivesWithoutCommentAsync(null, roleName),
             nameof(DriverDTO.Id),
             nameof(BookingDTO.DriveTime));
-
-
+        
         return View(vm);
     }
 
     // GET: AdminArea/Comments/Edit/5
+    /// <summary>
+    /// Admin area comment edit GET method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View model</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         var roleName = User.GettingUserRoleName();
@@ -114,8 +138,7 @@ public class CommentsController : Controller
 
         vm.Id = comment.Id;
         vm.Id = comment.Id;
-        // comment.Drive!.Booking!.PickUpDateAndTime = comment.Drive.Booking.PickUpDateAndTime.ToLocalTime();
-        
+
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.DriveId = comment.DriveId;
         vm.DriveTimeAndDriver = $"{comment.DriveCustomerStr} - {comment.DriverName}";
@@ -126,6 +149,12 @@ public class CommentsController : Controller
     // POST: AdminArea/Comments/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area comment edit POST method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="vm">View model</param>
+    /// <returns>View model</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditCommentViewModel vm)
@@ -163,6 +192,11 @@ public class CommentsController : Controller
     }
 
     // GET: AdminArea/Comments/Delete/5
+    /// <summary>
+    /// Admin area comment delete GET method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View model</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeleteCommentViewModel();
@@ -186,6 +220,11 @@ public class CommentsController : Controller
     }
 
     // POST: AdminArea/Comments/Delete/5
+    /// <summary>
+    /// Admin area comment delete POST method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect user to Comment index page</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]

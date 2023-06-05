@@ -9,18 +9,29 @@ using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area cities controller
+/// </summary>
 [Area(nameof(AdminArea))]
 [Authorize(Roles = "Admin")]
 public class CitiesController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Admin area cities controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public CitiesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
 
     // GET: AdminArea/Cities
+    /// <summary>
+    /// Admin area cities index
+    /// </summary>
+    /// <returns></returns>
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.Cities.GetAllOrderedCitiesAsync();
@@ -29,6 +40,11 @@ public class CitiesController : Controller
     }
 
     // GET: AdminArea/Cities/Details/5
+    /// <summary>
+    /// Admin area cities details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View model</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null) return NotFound();
@@ -44,12 +60,15 @@ public class CitiesController : Controller
         vm.CreatedBy = city.CreatedBy!;
         vm.UpdatedBy = User.Identity!.Name!;
         vm.UpdatedAt = city.UpdatedAt;
-
-
+        
         return View(vm);
     }
 
     // GET: AdminArea/Cities/Create
+    /// <summary>
+    /// Admin area city create
+    /// </summary>
+    /// <returns>View model</returns>
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditCityViewModel();
@@ -62,6 +81,12 @@ public class CitiesController : Controller
     // POST: AdminArea/Cities/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area city create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <param name="city">City</param>
+    /// <returns>View with view model</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateEditCityViewModel vm, CityDTO city)
@@ -77,12 +102,16 @@ public class CitiesController : Controller
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-
+        
         return View(vm);
     }
 
     // GET: AdminArea/Cities/Edit/5
+    /// <summary>
+    /// Admin area city edit GET method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View with view model</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new CreateEditCityViewModel();
@@ -102,6 +131,12 @@ public class CitiesController : Controller
     // POST: AdminArea/Cities/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area city edit POST method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="vm">View model</param>
+    /// <returns>View with view model</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditCityViewModel vm)
@@ -116,7 +151,6 @@ public class CitiesController : Controller
             {
                 city.Id = id;
                 city.CountyId = vm.CountyId;
-                //city.County = await _appBLL.Counties.FirstOrDefaultAsync(vm.CountyId);
                 city.CityName = vm.CityName;
                 city.UpdatedBy = User.Identity!.Name;
                 city.UpdatedAt = DateTime.Now;
@@ -137,6 +171,11 @@ public class CitiesController : Controller
     }
 
     // GET: AdminArea/Cities/Delete/5
+    /// <summary>
+    /// Admin area city delete GET method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View with view model</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeleteCityViewModel();
@@ -152,12 +191,16 @@ public class CitiesController : Controller
         vm.CreatedBy = city.CreatedBy!;
         vm.UpdatedBy = city.UpdatedBy!;
         vm.UpdatedAt = city.UpdatedAt;
-
-
+        
         return View(vm);
     }
 
     // POST: AdminArea/Cities/Delete/5
+    /// <summary>
+    /// Admin area city delete POST method
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect user to cities index page</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
@@ -176,12 +219,10 @@ public class CitiesController : Controller
             }
             await _appBLL.SaveChangesAsync();
         }
-
-
-
-
+        
         return RedirectToAction(nameof(Index));
     }
+    
 
     private bool CityExists(Guid id)
     {

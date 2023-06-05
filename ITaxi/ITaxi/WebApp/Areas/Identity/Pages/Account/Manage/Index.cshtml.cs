@@ -18,6 +18,9 @@ using Index = App.Resources.Areas.Identity.Pages.Account.Manage.Index;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
+/// <summary>
+/// Index model for account management
+/// </summary>
 public class IndexModel : PageModel
 {
     private readonly AppDbContext _context;
@@ -25,6 +28,13 @@ public class IndexModel : PageModel
     private readonly UserManager<AppUser> _userManager;
     private readonly IWebHostEnvironment _webHostEnvironment;
 
+    /// <summary>
+    /// Index model account management constructor
+    /// </summary>
+    /// <param name="userManager">Manager for user's</param>
+    /// <param name="signInManager">Sign in manager</param>
+    /// <param name="context">DB context</param>
+    /// <param name="webHostEnvironment">Web host environment</param>
     public IndexModel(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager, AppDbContext context,
@@ -37,8 +47,7 @@ public class IndexModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Users name 
     /// </summary>
 
     [Display(ResourceType = typeof(Index),
@@ -46,23 +55,39 @@ public class IndexModel : PageModel
     public string Username { get; set; } = default!;
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Status message
     /// </summary>
     [TempData]
     public string? StatusMessage { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; } = default!;
+    /// <summary>
+    /// List of cities
+    /// </summary>
     public SelectList? Cities { get; set; }
 
+    /// <summary>
+    /// List of changed driver license categories
+    /// </summary>
     public ICollection<Guid>? ChangedDriverLicenseCategoriesList { get; set; }
+    
+    /// <summary>
+    /// List of selected driver license categories
+    /// </summary>
     public SelectList? SelectedDriverLicenseCategories { get; set; }
+    
+    /// <summary>
+    /// List of driver license categories
+    /// </summary>
     public SelectList? DriverLicenseCategories { get; set; }
+    
+    /// <summary>
+    /// List of disability types
+    /// </summary>
     public SelectList? DisabilityTypes { get; set; }
     private async Task LoadAsync(AppUser user)
     {
@@ -86,7 +111,6 @@ public class IndexModel : PageModel
             .ToListAsync(), nameof(City.Id), 
             nameof(City.CityName));
         
-
             DisabilityTypes = new SelectList(await _context.DisabilityTypes
                 .Include(t => t.DisabilityTypeName)
                 .ThenInclude(t => t.Translations)
@@ -94,10 +118,8 @@ public class IndexModel : PageModel
                 .Select(c => new {c.Id, c.DisabilityTypeName})
                 .ToListAsync(), nameof(DisabilityType.Id),
             nameof(DisabilityType.DisabilityTypeName));
-        
-            
 
-        Username = userName!;
+            Username = userName!;
 
         if (User.IsInRole(nameof(Admin)) || User.IsInRole(nameof(Driver)))
             if (admin != null )
@@ -174,16 +196,23 @@ public class IndexModel : PageModel
             Input.PhotoPath = Path.Combine(_webHostEnvironment.WebRootPath + "/Images/icons8-selfies-50.png");
     }
 
+    /// <summary>
+    /// On get async method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
-
         await LoadAsync(user);
         return Page();
     }
 
+    /// <summary>
+    /// On post async method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnPostAsync()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -279,8 +308,6 @@ public class IndexModel : PageModel
                 driver.DriverLicenseExpiryDate = Input.DriverLicenseExpiryDate;
             }
             
-            
-
             if (Input.ChangedDriverLicenseCategoriesList != null)
             {
                 foreach (var driverAndDriverLicenseCategory in Input.ChangedDriverLicenseCategoriesList!)
@@ -299,11 +326,9 @@ public class IndexModel : PageModel
             
             driver.UpdatedBy = User.Identity!.Name;
             driver.UpdatedAt = DateTime.Now.ToUniversalTime();
-
-
+            
             _context.Drivers.Update(driver);
             await _context.SaveChangesAsync();
-
         }
 
         if (customer != null )
@@ -330,7 +355,7 @@ public class IndexModel : PageModel
     }
 
     /// <summary>
-    ///     Setting a profile image for an user
+    /// Setting a profile image for an user
     /// </summary>
     /// <returns>IActionResult</returns>
     private async Task<IActionResult> SavingImage()
@@ -355,57 +380,79 @@ public class IndexModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///  Input model
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Phone number
         /// </summary>
         [Phone]
         [Display(ResourceType = typeof(Index), Name = nameof(PhoneNumber))]
         public string PhoneNumber { get; set; } = default!;
 
+        /// <summary>
+        /// First name
+        /// </summary>
         [StringLength(50, MinimumLength = 1)]
         [DataType(DataType.Text)]
         [Display(ResourceType = typeof(Index),
             Name = nameof(FirstName))]
         public string FirstName { get; set; } = default!;
 
+        /// <summary>
+        /// Last name
+        /// </summary>
         [StringLength(50, MinimumLength = 1)]
         [DataType(DataType.Text)]
         [Display(ResourceType = typeof(Index),
             Name = nameof(LastName))]
         public string LastName { get; set; } = default!;
-
-
+        
+        /// <summary>
+        /// Gender
+        /// </summary>
         [EnumDataType(typeof(Gender))]
         [Display(ResourceType = typeof(Index),
             Name = nameof(Gender))]
         public Gender Gender { get; set; }
 
+        /// <summary>
+        /// Date of birth
+        /// </summary>
         [DataType(DataType.Date)]
         [Display(ResourceType = typeof(Index), Name = "DateOfBirth")]
         public DateTime DateOfBirth { get; set; }
 
+        /// <summary>
+        /// Personal identifier
+        /// </summary>
         [StringLength(50, MinimumLength = 1)]
         [Display(ResourceType = typeof(Index), Name = "PersonalIdentifier")]
         public string? PersonalIdentifier { get; set; }
 
+        /// <summary>
+        /// City id for user's profile page
+        /// </summary>
         [Display(ResourceType = typeof(Index), Name = "City")]
         public Guid? CityId { get; set; }
 
+        /// <summary>
+        /// Address of residence
+        /// </summary>
         [StringLength(50, MinimumLength = 1)]
         [Display(ResourceType = typeof(Index), Name = "AddressOfResidence")]
         public string? AddressOfResidence { get; set; } 
         
+        /// <summary>
+        /// Disability id for user's profile page
+        /// </summary>
         [Display(ResourceType = typeof(Index), Name = "DisabilityType")]
-        
         public Guid? DisabilityId { get; set; }
         
-        
+        /// <summary>
+        /// Driver license number
+        /// </summary>
         [MaxLength(15, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
         [MinLength(2, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMinLength")]
         [StringLength(15, MinimumLength = 2, ErrorMessageResourceType = typeof(Common),
@@ -413,22 +460,39 @@ public class IndexModel : PageModel
         [Display(ResourceType = typeof(Index), Name = "DriverLicenseNumber")]
         public string? DriverLicenseNumber { get; set; }
 
+        /// <summary>
+        /// List of selected driver license categories for the user's profile page
+        /// </summary>
         [Display(ResourceType = typeof(Index), Name = "SelectedDriverLicenseCategories")]
         public SelectList? SelectedDriverLicenseCategories { get; set; }
 
+        /// <summary>
+        /// Driver license categories
+        /// </summary>
         [Display(ResourceType = typeof(Index), Name = "DriverLicenseCategories")]
         public SelectList? DriverLicenseCategories { get; set; }
 
+        /// <summary>
+        /// List of changed driver license categories for the user's profile page
+        /// </summary>
         public List<Guid>? ChangedDriverLicenseCategoriesList  { get; set; }
         
+        /// <summary>
+        /// Driver license expiry date
+        /// </summary>
         [DataType(DataType.Date)]
         [Display(ResourceType = typeof(Index), Name = "DriverLicenseExpiryDate")]
         public DateTime DriverLicenseExpiryDate { get; set; }
-
         
+        /// <summary>
+        /// Image file
+        /// </summary>
         [Display(ResourceType = typeof(Index), Name = "ProfileImage")]
         public IFormFile? ImageFile { get; set; }
 
+        /// <summary>
+        /// The path to a user photo
+        /// </summary>
         [Display(ResourceType = typeof(Index), Name = "ProfileImage")]
         public string PhotoPath { get; set; } = "icons8-selfies-50.png";
     }

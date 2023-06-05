@@ -18,8 +18,11 @@ using WebApp.DTO;
 using WebApp.DTO.Identity;
 using AppUser = App.Domain.Identity.AppUser;
 
-
 namespace WebApp.ApiControllers.Identity;
+
+/// <summary>
+/// Account controller
+/// </summary>
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/identity/[controller]/[action]")]
 [ApiController]
@@ -31,11 +34,19 @@ public class AccountController : ControllerBase
     private readonly IConfiguration _configuration;
     private readonly ILogger<AccountController> _logger;
     private readonly Random _rand = new Random();
-    // TODO: Move this code to AppBll
     private readonly AppDbContext _context;
     private readonly IAppBLL _appBLL;
 
     
+    /// <summary>
+    /// Account controller constructor
+    /// </summary>
+    /// <param name="signInManager">Manager sign in</param>
+    /// <param name="userManager">Manager for user's</param>
+    /// <param name="configuration">Configuration</param>
+    /// <param name="logger">Logger</param>
+    /// <param name="context">Context</param>
+    /// <param name="appBLL">AppBLL</param>
     public AccountController(SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
         IConfiguration configuration,
@@ -54,7 +65,7 @@ public class AccountController : ControllerBase
     /// Customer registration api endpoint
     /// </summary>
     /// <param name="customerRegistrationDTO">Customer registration DTO which holds data for the registration</param>
-    /// <returns>JwtResponseCustomerRegister</returns>
+    /// <returns>Jwt response customer register</returns>
     [HttpPost]
     public async Task<ActionResult<JwtResponseCustomerRegister>> RegisterCustomerDTO
         (CustomerRegistrationDTO customerRegistrationDTO)
@@ -158,6 +169,7 @@ public class AccountController : ControllerBase
             
             DisabilityTypeId = customerRegistrationDTO.DisabilityTypeId
         };
+        
         var roles =  await _userManager.GetRolesAsync(appUser);
         var res = new JwtResponseCustomerRegister()
         {
@@ -176,7 +188,7 @@ public class AccountController : ControllerBase
     /// Admin registration api endpoint
     /// </summary>
     /// <param name="adminRegistrationDTO">Admin registration DTO which holds data for the registration</param>
-    /// <returns>JwtResponseAdminRegister</returns>
+    /// <returns>Jwt response admin register</returns>
     [HttpPost]
     public async Task<ActionResult<JwtResponseAdminRegister>> RegisterAdminDTO(AdminRegistration adminRegistrationDTO)
     {
@@ -221,7 +233,6 @@ public class AccountController : ControllerBase
             {
                 refreshToken
             }
-
         };
 
         var result = await _userManager.CreateAsync(appUser, adminRegistrationDTO.Password);
@@ -258,9 +269,10 @@ public class AccountController : ControllerBase
             audience: _configuration["JWT:Issuer"]!,
             expirationDateTime: refreshToken.TokenExpirationDateAndTime
         );
+        
         await _userManager.AddToRoleAsync(appUser, "Admin");
       
-        var admin = new App.BLL.DTO.AdminArea.AdminDTO()
+        var admin = new AdminDTO()
         {
             Id = new Guid(),
             AppUserId = appUser.Id,
@@ -270,6 +282,7 @@ public class AccountController : ControllerBase
             CreatedAt = DateTime.Now.ToUniversalTime(),
             UpdatedAt = DateTime.Now.ToUniversalTime()
         };
+        
         _appBLL.Admins.Add(admin);
         await _appBLL.SaveChangesAsync();
 
@@ -285,6 +298,7 @@ public class AccountController : ControllerBase
             UpdatedAt = admin.UpdatedAt,
             UpdatedBy = admin.UpdatedBy
         };
+        
         var res = new JwtResponseAdminRegister()
         {
             Token = jwt,
@@ -295,11 +309,12 @@ public class AccountController : ControllerBase
             
         return Ok(res);
     }
+    
 /// <summary>
 /// Admin registration api endpoint
 /// </summary>
 /// <param name="driverRegistrationDto">Admin registration DTO which holds data for the registration</param>
-/// <returns>JwtResponseAdminRegister</returns>
+/// <returns>Jwt response admin register</returns>
     [HttpPost]
     public async Task<ActionResult<JwtResponseDriverRegister>> RegisterDriverDTO(DriverRegistrationDTO driverRegistrationDto)
     {
@@ -344,7 +359,6 @@ public class AccountController : ControllerBase
             {
                 refreshToken
             }
-
         };
 
         var result = await _userManager.CreateAsync(appUser, driverRegistrationDto.Password);
@@ -384,8 +398,7 @@ public class AccountController : ControllerBase
             expirationDateTime: refreshToken.TokenExpirationDateAndTime
         );
         
-      
-        var driver = new App.BLL.DTO.AdminArea.DriverDTO()
+        var driver = new DriverDTO()
         {
             Id = new Guid(),
             AppUserId = appUser.Id,
@@ -400,15 +413,14 @@ public class AccountController : ControllerBase
         };
         _appBLL.Drivers.Add(driver);
         await _appBLL.SaveChangesAsync();
-
-        // Need to re-get the new driver Id
+        
         var driverFromDb = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(driver.AppUserId);
         driver.Id = driverFromDb.Id;
         
         if (driverRegistrationDto.DriverLicenseCategories != null)
             foreach (var driverLicenseCategoryId in driverRegistrationDto.DriverLicenseCategories)
             {
-                var driverAndDriverLicenseCategory = new App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO()
+                var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategoryDTO()
                 {
                     Id = new Guid(),
                     DriverLicenseCategoryId = driverLicenseCategoryId,
@@ -423,9 +435,8 @@ public class AccountController : ControllerBase
         var driverLicenseCategoryNames =
             await _appBLL.DriverAndDriverLicenseCategories
                 .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver.Id);
-            
-
-        var driverDto = new App.BLL.DTO.AdminArea.DriverDTO()
+        
+        var driverDto = new DriverDTO()
         {
             Id = driver.Id,
             AppUserId = driver.AppUserId,
@@ -441,6 +452,7 @@ public class AccountController : ControllerBase
             UpdatedAt = driver.UpdatedAt,
             UpdatedBy = driver.UpdatedBy
         };
+        
         var roles =  await _userManager.GetRolesAsync(appUser);
         var res = new JwtResponseDriverRegister()
         {
@@ -451,20 +463,20 @@ public class AccountController : ControllerBase
             LastName = appUser.LastName,
             RoleNames = roles.ToArray(),
             
-            DriverAndDriverLicenseCategoryDTO = new App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO()
+            DriverAndDriverLicenseCategoryDTO = new DriverAndDriverLicenseCategoryDTO()
             {
                 DriverLicenseCategoryNames = driverLicenseCategoryNames!
             }
-            
         };
             
         return Ok(res);
     }
+
 /// <summary>
 /// Log in api endpoint
 /// </summary>
 /// <param name="loginData">Supply email and password</param>
-/// <returns></returns>
+/// <returns>Status 200 OK response</returns>
     [HttpPost]
     public async Task<ActionResult<JwtResponse>> LogIn([FromBody] LoginDTO loginData)
     {
@@ -500,13 +512,13 @@ public class AccountController : ControllerBase
             audience: _configuration["JWT:Issuer"]!,
             expirationDateTime: DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")));
         
-        
         var refreshToken = new RefreshToken
         {
             TokenExpirationDateAndTime = DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes"))
                 .ToUniversalTime()
             
         };
+        
         await _context.Entry(appUser)
             .Collection(a => a.RefreshTokens!).Query().ToListAsync();
         appUser.RefreshTokens!.Add(refreshToken);
@@ -523,6 +535,7 @@ public class AccountController : ControllerBase
         };
         return Ok(res);
     }
+
 /// <summary>
 /// Generating a refresh token to grant access without reentering credentials
 /// </summary>
@@ -539,15 +552,12 @@ public class AccountController : ControllerBase
             {
                 return BadRequest("No token"); 
             }
-
         }
         catch (Exception e)
         {
             return BadRequest($"Cannot parse the token {e.Message}");
         }
         
-
-
         var userEmail = jwtToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
         if (userEmail == null)
         {
@@ -565,17 +575,18 @@ public class AccountController : ControllerBase
         if (appUser.RefreshTokens == null)
         {
             return Problem("Refresh token collection is null");
-
         }
 
         if (appUser.RefreshTokens!.Count == 0)
         {
             return Problem("Refresh token collection is empty! No valid refresh tokens found!");
         }
+        
         if (appUser.RefreshTokens!.Count != 1)
         {
             return Problem("More than one valid token found");
         }
+        
         var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
 
         if (claimsPrincipal == null)
@@ -604,9 +615,7 @@ public class AccountController : ControllerBase
 
             await _context.SaveChangesAsync();
         }
-
         
-
         var res = new JwtResponse()
         {
             Token = jwt,
@@ -616,10 +625,14 @@ public class AccountController : ControllerBase
         };
         
         return Ok(res);
-        
     }
 
-#pragma warning disable 612, 618 
+    /// <summary>
+    /// Get refresh tokens method
+    /// </summary>
+    /// <param name="appUser">App user</param>
+    /// <param name="token">Token</param>
+    /// <returns>Refresh token</returns>
     protected async Task<List<RefreshToken>> GetRefreshTokens(AppUser appUser, string token)
     {
         return await _context.Entry(appUser).Collection(u => u.RefreshTokens!)                               

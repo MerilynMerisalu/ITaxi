@@ -11,12 +11,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
+/// <summary>
+/// External logins model
+/// </summary>
 public class ExternalLoginsModel : PageModel
 {
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserStore<AppUser> _userStore;
 
+    /// <summary>
+    /// External logins model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for the user's</param>
+    /// <param name="signInManager">Sign in manager</param>
+    /// <param name="userStore">Store for the user's</param>
     public ExternalLoginsModel(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
@@ -28,30 +37,30 @@ public class ExternalLoginsModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Current logins
     /// </summary>
     public IList<UserLoginInfo> CurrentLogins { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Other logins
     /// </summary>
     public IList<AuthenticationScheme> OtherLogins { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    ///  Show remove button
     /// </summary>
     public bool ShowRemoveButton { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Status message
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
 
+    /// <summary>
+    /// On get async method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -70,6 +79,12 @@ public class ExternalLoginsModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// On post remove login async method
+    /// </summary>
+    /// <param name="loginProvider">Login provider</param>
+    /// <param name="providerKey">Provider key</param>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnPostRemoveLoginAsync(string loginProvider, string providerKey)
     {
         var user = await _userManager.GetUserAsync(User);
@@ -87,6 +102,11 @@ public class ExternalLoginsModel : PageModel
         return RedirectToPage();
     }
 
+    /// <summary>
+    /// On post link login async method
+    /// </summary>
+    /// <param name="provider">Provider</param>
+    /// <returns>New challenge result</returns>
     public async Task<IActionResult> OnPostLinkLoginAsync(string provider)
     {
         // Clear the existing external cookie to ensure a clean login process
@@ -100,6 +120,11 @@ public class ExternalLoginsModel : PageModel
         return new ChallengeResult(provider, properties);
     }
 
+    /// <summary>
+    /// On get link login callback async method
+    /// </summary>
+    /// <returns>Page</returns>
+    /// <exception cref="InvalidOperationException">Invalid operation exception</exception>
     public async Task<IActionResult> OnGetLinkLoginCallbackAsync()
     {
         var user = await _userManager.GetUserAsync(User);

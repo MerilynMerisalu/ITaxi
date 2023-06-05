@@ -1,47 +1,58 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
-
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area schedules controller
+/// </summary>
 [Area(nameof(AdminArea))]
 [Authorize(Roles = "Admin")]
 public class SchedulesController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Admin area schedules controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public SchedulesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
 
     // GET: AdminArea/Schedules
+    /// <summary>
+    /// Admin area schedules controller index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-
-        var res = await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(null, null);
+        var res = await _appBLL.Schedules
+            .GettingAllOrderedSchedulesWithIncludesAsync(null, null);
         
         return View(res);
     }
 
     // GET: AdminArea/Schedules/Details/5
+    /// <summary>
+    /// Admin area schedules controller GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeleteScheduleViewModel();
         if (id == null) return NotFound();
 
         var roleName = User.GettingUserRoleName();
-
         var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id.Value );
-
         if (schedule == null) return NotFound();
 
         vm.Id = schedule.Id;
@@ -57,6 +68,11 @@ public class SchedulesController : Controller
         return View(vm);
     }
     
+    /// <summary>
+    /// Admin area schedules controller set drop down list
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Status 200 OK</returns>
     [HttpPost]
     public async Task<IActionResult> SetDropDownList([FromRoute]Guid id)
     {
@@ -65,18 +81,19 @@ public class SchedulesController : Controller
         vm.Vehicles = new SelectList(vehicles, nameof(VehicleDTO.Id),
             nameof(VehicleDTO.VehicleIdentifier));
         return Ok(vm);
-
     }
 
     // GET: AdminArea/Schedules/Create
+    /// <summary>
+    /// Admin area schedules controller GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Create()
     {
         var vm = new CreateScheduleViewModel();
         var roleName = User.GettingUserRoleName();
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
             nameof(DriverDTO.Id), $"{nameof(DriverDTO.AppUser)}.{nameof(DriverDTO.AppUser.LastAndFirstName)}");
-        /*vm.Vehicles = new SelectList(new VehicleDTO[0],
-            nameof(VehicleDTO.Id), nameof(VehicleDTO.VehicleIdentifier));*/
         vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(),
             nameof(VehicleDTO.Id), nameof(VehicleDTO.VehicleIdentifier));
 
@@ -86,6 +103,12 @@ public class SchedulesController : Controller
     // POST: AdminArea/Schedules/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area schedules controller POST method create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <param name="schedule">Schedule</param>
+    /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateScheduleViewModel vm, ScheduleDTO schedule)
@@ -105,84 +128,13 @@ public class SchedulesController : Controller
 
         return View(vm);
     }
-
-    // GET: AdminArea/Schedules/Edit/5
-    /*public async Task<IActionResult> Edit(Guid? id)
-    {
-        
-        var vm = new EditScheduleViewModel();
-        if (id == null) return NotFound();
-
-        var schedule = await _appBLL.Schedules.FirstOrDefaultAsync(id.Value);
-        if (schedule == null) return NotFound();
-
-        vm.Id = schedule.Id;
-
-        vm.DriverId = schedule.DriverId;
-        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingVehiclesByDriverIdAsync(vm.DriverId),
-            nameof(VehicleDTO.Id),
-            nameof(VehicleDTO.VehicleIdentifier));
-        vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g"));
-        vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"));
-        vm.VehicleId = schedule.VehicleId;
-        vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
-#warning "Magic string" code smell, fix it
-            nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
-
-        return View(vm);
-    }
-    */
-
-    // POST: AdminArea/Schedules/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    /*[HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, EditScheduleViewModel vm)
-    {
-        
-        var schedule = await _appBLL.Schedules.FirstOrDefaultAsync(id, true, true);
-
-        if (schedule != null && id != schedule.Id) return NotFound();
-
-
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                if (schedule != null)
-                {
-                    schedule.Id = id;
-
-                    schedule.DriverId = vm.DriverId;
-                    schedule.VehicleId = vm.VehicleId;
-#warning Should this be a repository method
-                    schedule.StartDateAndTime = vm.StartDateAndTime;
-#warning Should this be a repository method
-                    schedule.EndDateAndTime = vm.EndDateAndTime;
-                    schedule.UpdatedAt = DateTime.Now;
-                    schedule.UpdatedBy = User.Identity!.Name;
-
-
-                    _appBLL.Schedules.Update(schedule);
-                    await _appBLL.SaveChangesAsync();
-                }
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (schedule != null && !ScheduleExists(schedule.Id))
-                    return NotFound();
-                throw;
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        return View(vm);
-    }
-    */
-
+    
     // GET: AdminArea/Schedules/Delete/5
+    /// <summary>
+    /// Admin area schedules controller GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeleteScheduleViewModel();
@@ -204,6 +156,11 @@ public class SchedulesController : Controller
     }
 
     // POST: AdminArea/Schedules/Delete/5
+    /// <summary>
+    /// Admin area schedules controller POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]

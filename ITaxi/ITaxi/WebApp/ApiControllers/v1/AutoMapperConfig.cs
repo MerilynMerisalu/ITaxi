@@ -1,22 +1,30 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using Base.Domain;
 
 namespace WebApp.ApiControllers.v1;
 
+/// <summary>
+/// LangStr type converter
+/// </summary>
 public class LangStrTypeConverter : ITypeConverter<LangStr, string>
 {
     private IHttpContextAccessor _httpContext;
+    
+    /// <summary>
+    /// LangStr type converter constructor
+    /// </summary>
+    /// <param name="context">Context</param>
     public LangStrTypeConverter(IHttpContextAccessor context)
     {
         _httpContext = context;
     }
+    
     /// <summary>
     /// Convert a LangStr to string using the current Http Request Language
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="destination"></param>
-    /// <param name="context"></param>
+    /// <param name="source">Source</param>
+    /// <param name="destination">Destination</param>
+    /// <param name="context">Context</param>
     /// <returns></returns>
     public string Convert(LangStr source, string destination, ResolutionContext context)
     {
@@ -24,8 +32,14 @@ public class LangStrTypeConverter : ITypeConverter<LangStr, string>
         return source.Translate(lang)!; // the underlying string can be null, even if there are translations!
     }
 }
+/// <summary>
+/// Auto mapper config
+/// </summary>
 public class AutoMapperConfig: Profile
 {
+    /// <summary>
+    /// Configuration for maps
+    /// </summary>
     public AutoMapperConfig()
     {
         // Globally convert all LangStr using Request Headers, not the current Thread!
@@ -46,30 +60,25 @@ public class AutoMapperConfig: Profile
                 App.BLL.DTO.AdminArea.DriverLicenseCategoryDTO>().ReverseMap();
         
         CreateMap<App.Public.DTO.v1.Identity.AdminRegistration,
-                WebApp.DTO.AdminRegistrationDTO>().ReverseMap();
+                DTO.AdminRegistrationDTO>().ReverseMap();
         
         CreateMap<App.Public.DTO.v1.AdminArea.Driver, App.BLL.DTO.AdminArea.DriverDTO>().ReverseMap();
-        
+       
         CreateMap<App.Public.DTO.v1.AdminArea.DisabilityType, App.BLL.DTO.AdminArea.DisabilityTypeDTO>().ReverseMap();
        
         CreateMap<App.Public.DTO.v1.AdminArea.Vehicle, App.BLL.DTO.AdminArea.VehicleDTO>().ReverseMap();
-        
         CreateMap<App.Public.DTO.v1.DriverArea.Vehicle, App.BLL.DTO.AdminArea.VehicleDTO>().ReverseMap();
         
-        CreateMap<App.Public.DTO.v1.AdminArea.Driver, App.BLL.DTO.AdminArea.DriverDTO>()
-            .ReverseMap();
-
         CreateMap<App.Public.DTO.v1.AdminArea.DriverAndDriverLicenseCategory,
                 App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO>().ReverseMap();
         
-        CreateMap<App.Public.DTO.v1.AdminArea.VehicleType, App.BLL.DTO.AdminArea.VehicleTypeDTO>().ReverseMap()
-;        
+        CreateMap<App.Public.DTO.v1.AdminArea.VehicleType, App.BLL.DTO.AdminArea.VehicleTypeDTO>().ReverseMap();  
+        
          CreateMap<App.Public.DTO.v1.AdminArea.VehicleMark, App.BLL.DTO.AdminArea.VehicleMarkDTO>().ReverseMap();
         
         CreateMap<App.Public.DTO.v1.AdminArea.VehicleModel, App.BLL.DTO.AdminArea.VehicleModelDTO>().ReverseMap();
 
         CreateMap<App.Public.DTO.v1.AdminArea.Schedule, App.BLL.DTO.AdminArea.ScheduleDTO>().ReverseMap();
-        
         CreateMap<App.Public.DTO.v1.DriverArea.Schedule, App.BLL.DTO.AdminArea.ScheduleDTO>().ReverseMap();
        
         CreateMap<App.Public.DTO.v1.AdminArea.RideTime, App.BLL.DTO.AdminArea.RideTimeDTO>().ReverseMap();
@@ -87,6 +96,5 @@ public class AutoMapperConfig: Profile
         CreateMap<App.Public.DTO.v1.CustomerArea.Comment, App.BLL.DTO.AdminArea.CommentDTO>().ReverseMap();
         
         CreateMap<App.BLL.DTO.AdminArea.PhotoDTO, App.DAL.DTO.AdminArea.PhotoDTO>().ReverseMap();
-        
     }
 }

@@ -12,22 +12,34 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
+/// <summary>
+/// Confirm email model
+/// </summary>
 public class ConfirmEmailModel : PageModel
 {
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Confirm email model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for the user's</param>
     public ConfirmEmailModel(UserManager<AppUser> userManager)
     {
         _userManager = userManager;
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Status message
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
 
+    /// <summary>
+    /// On get async method
+    /// </summary>
+    /// <param name="userId">User id</param>
+    /// <param name="code">Code</param>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnGetAsync(string userId, string code)
     {
         if (userId == null || code == null) return RedirectToPage("/Index");

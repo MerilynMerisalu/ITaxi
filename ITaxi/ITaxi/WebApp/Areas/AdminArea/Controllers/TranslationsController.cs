@@ -6,24 +6,41 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
+/// <summary>
+/// Admin area translations controller
+/// </summary>
 [Area("AdminArea")]
 public class TranslationsController : Controller
 {
     private readonly AppDbContext _context;
 
+    /// <summary>
+    /// Admin area translations controller constructor
+    /// </summary>
+    /// <param name="context">Context</param>
     public TranslationsController(AppDbContext context)
     {
         _context = context;
     }
 
     // GET: AdminArea/Translations
+    /// <summary>
+    /// Admin area translations controller index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        var appDbContext = _context.Translations.Include(t => t.LangStr);
+        var appDbContext = _context.Translations
+            .Include(t => t.LangStr);
         return View(await appDbContext.ToListAsync());
     }
 
     // GET: AdminArea/Translations/Details/5
+    /// <summary>
+    /// Admin area translations controller GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null || _context.Translations == null) return NotFound();
@@ -37,6 +54,10 @@ public class TranslationsController : Controller
     }
 
     // GET: AdminArea/Translations/Create
+    /// <summary>
+    /// Admin area translations controller GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public IActionResult Create()
     {
         ViewData["LangStrId"] = new SelectList(_context.LangStrings, "Id", "Id");
@@ -46,6 +67,11 @@ public class TranslationsController : Controller
     // POST: AdminArea/Translations/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area translations controller POST method create
+    /// </summary>
+    /// <param name="translation">Translation</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Culture,Value,LangStrId,Id")] Translation translation)
@@ -63,6 +89,11 @@ public class TranslationsController : Controller
     }
 
     // GET: AdminArea/Translations/Edit/5
+    /// <summary>
+    /// Admin area translations controller GET method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         if (id == null || _context.Translations == null) return NotFound();
@@ -76,6 +107,12 @@ public class TranslationsController : Controller
     // POST: AdminArea/Translations/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Admin area translations controller POST method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="translation">Translation</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, [Bind("Culture,Value,LangStrId,Id")] Translation translation)
@@ -104,6 +141,11 @@ public class TranslationsController : Controller
     }
 
     // GET: AdminArea/Translations/Delete/5
+    /// <summary>
+    /// Admin area translations controller GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null || _context.Translations == null) return NotFound();
@@ -117,6 +159,11 @@ public class TranslationsController : Controller
     }
 
     // POST: AdminArea/Translations/Delete/5
+    /// <summary>
+    /// Admin area translations controller POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]

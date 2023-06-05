@@ -14,11 +14,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
+/// <summary>
+/// Login model
+/// </summary>
 public class LoginModel : PageModel
 {
     private readonly ILogger<LoginModel> _logger;
     private readonly SignInManager<AppUser> _signInManager;
 
+    /// <summary>
+    /// Login model constructor
+    /// </summary>
+    /// <param name="signInManager">Sign in manager</param>
+    /// <param name="logger">Logger for the user's</param>
     public LoginModel(SignInManager<AppUser> signInManager, ILogger<LoginModel> logger)
     {
         _signInManager = signInManager;
@@ -26,31 +34,31 @@ public class LoginModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; } = default!;
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// External logins
     /// </summary>
     public IList<AuthenticationScheme>? ExternalLogins { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Return url
     /// </summary>
     public string? ReturnUrl { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Error message
     /// </summary>
     [TempData]
     public string ErrorMessage { get; set; } = default!;
 
+    /// <summary>
+    /// On get async method
+    /// </summary>
+    /// <param name="returnUrl">Return url</param>
     public async Task OnGetAsync(string? returnUrl = null)
     {
         if (!string.IsNullOrEmpty(ErrorMessage)) ModelState.AddModelError(string.Empty, ErrorMessage);
@@ -65,6 +73,11 @@ public class LoginModel : PageModel
         ReturnUrl = returnUrl;
     }
 
+    /// <summary>
+    /// On post async method
+    /// </summary>
+    /// <param name="returnUrl">Return url</param>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
@@ -99,26 +112,22 @@ public class LoginModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input model
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Email
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [EmailAddress(ErrorMessageResourceType = typeof(Common)
             , ErrorMessageResourceName = "ErrorMessageEmail")]
         [Display(ResourceType = typeof(Login), Name = nameof(Email))]
-
         public string Email { get; set; } = default!;
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Password
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common)
             , ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
@@ -127,8 +136,7 @@ public class LoginModel : PageModel
         public string Password { get; set; } = default!;
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Remember me
         /// </summary>
         [Display(ResourceType = typeof(Login), Name = nameof(RememberMe))]
         public bool RememberMe { get; set; }
