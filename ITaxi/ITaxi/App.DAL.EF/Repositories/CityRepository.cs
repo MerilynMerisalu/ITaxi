@@ -95,13 +95,13 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
         return Mapper.Map(CreateQuery(noTracking).SingleOrDefault(e => e.Id.Equals(filter)));
     }
 
-    public override CityDTO Remove(CityDTO entity)
+    public override CityDTO Remove(CityDTO entity, bool hardDelete = false)
     {
         if (RepoDbContext.Admins.Any(x => x.CityId == entity.Id) ||
             RepoDbContext.Bookings.Any(x => x.CityId == entity.Id) ||
             RepoDbContext.Drivers.Any(x => x.CityId == entity.Id))
             throw new ApplicationException("Entity cannot be deleted because it has dependent entities!");
-        return base.Remove(entity);
+        return base.Remove(entity, hardDelete);
     }
     protected override IQueryable<City> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {

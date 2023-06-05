@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		..\..\.gitignore = ..\..\.gitignore
 		..\..\docker-compose-sql.yml = ..\..\docker-compose-sql.yml
 		..\..\README.md = ..\..\README.md
+		..\..\Dockerfile = ..\..\Dockerfile
+		..\..\.dockerignore = ..\..\.dockerignore
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base.Resources", "Base.Resources\Base.Resources.csproj", "{CED2F58D-49D4-4A57-81C7-E40B2E12CD86}"

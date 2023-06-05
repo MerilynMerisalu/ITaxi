@@ -64,39 +64,44 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         return Mapper.Map(RepoDbSet.Update(Mapper.Map(entity)!).Entity)!;
     }
 
-    public virtual TDalEntity Remove(TDalEntity entity)
+    public virtual TDalEntity Remove(TDalEntity entity, bool hardDelete = false)
     {
-        // This is HARD Delete:
-        //return Mapper.Map(RepoDbSet.Remove(Mapper.Map(entity)!).Entity)!;
-        
-        // I can't just edit the entity that is provided
-        // I need re-fetch the entity from THIS context (not whatever is passed in)
-        var data = RepoDbSet.Find(entity.Id);
-        if (data == null)
-            // TODO: implement custom exception for entity not found
-            throw new NullReferenceException($"Entity {typeof(TDalEntity).Name} with id {entity.Id} was not found");
-        
-        // To implement soft delete, set the IsDeleted Flag
-        data.IsDeleted = true;
-
-        if (data is IDomainEntityMeta meta)
+        if (hardDelete)
         {
-            meta.DeletedAt = DateTime.Now.ToUniversalTime();
-            meta.DeletedBy = "?";
+            // This is HARD Delete:
+            return Mapper.Map(RepoDbSet.Remove(Mapper.Map(entity)!).Entity)!;
         }
-        
-        // TODO: also set the DeletedBy and DeletedAt
-        
-        return Mapper.Map(RepoDbSet.Update(data).Entity)!;
+        else
+        {
+            // I can't just edit the entity that is provided
+            // I need re-fetch the entity from THIS context (not whatever is passed in)
+            var data = RepoDbSet.Find(entity.Id);
+            if (data == null)
+                // TODO: implement custom exception for entity not found
+                throw new NullReferenceException($"Entity {typeof(TDalEntity).Name} with id {entity.Id} was not found");
+
+            // To implement soft delete, set the IsDeleted Flag
+            data.IsDeleted = true;
+
+            if (data is IDomainEntityMeta meta)
+            {
+                meta.DeletedAt = DateTime.Now.ToUniversalTime();
+                meta.DeletedBy = "?";
+            }
+
+            // TODO: also set the DeletedBy and DeletedAt
+
+            return Mapper.Map(RepoDbSet.Update(data).Entity)!;
+        }
     }
 
-    public virtual TDalEntity Remove(TKey id)
+    public virtual TDalEntity Remove(TKey id, bool hardDelete = false)
     {
         var entity = FirstOrDefault(id, noTracking:true, noIncludes:true);
         if (entity == null)
             // TODO: implement custom exception for entity not found
             throw new NullReferenceException($"Entity {typeof(TDalEntity).Name} with id {id} was not found");
-        return Remove(entity);
+        return Remove(entity, hardDelete);
     }
 
     public virtual List<TDalEntity> RemoveAll(List<TDalEntity> entities)

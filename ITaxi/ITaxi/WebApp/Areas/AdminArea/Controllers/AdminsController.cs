@@ -211,11 +211,12 @@ public class AdminsController : Controller
 
             var appUser = await _userManager.FindByIdAsync(admin.AppUserId.ToString());
             await _userManager.RemoveFromRoleAsync(appUser!, "Admin");
-            _appBLL.Admins.Remove(admin);
             await _appBLL.SaveChangesAsync();
 
             var claims = await _userManager.GetClaimsAsync(appUser);
             await _userManager.RemoveClaimsAsync(appUser, claims);
+
+           _appBLL.Admins.Remove(admin.Id, true);
             await _userManager.DeleteAsync(appUser);
             await _appBLL.SaveChangesAsync();
         }

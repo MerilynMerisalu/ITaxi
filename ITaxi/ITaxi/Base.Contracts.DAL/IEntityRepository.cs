@@ -15,8 +15,8 @@ public interface IEntityRepository<TEntity, TKey>
     TEntity Add(TEntity entity);
     Task<List<TEntity>> AddRangeAsync(List<TEntity> entities);
     TEntity Update(TEntity entity);
-    TEntity Remove(TEntity entity);
-    TEntity Remove(TKey id);
+    TEntity Remove(TEntity entity, bool hardDelete = false);
+    TEntity Remove(TKey id, bool hardDelete = false);
 
 
     List<TEntity> RemoveAll(List<TEntity> entities);

@@ -63,14 +63,14 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
         return Mapper.Map(Repository.Update(Mapper.Map(entity)!))!;
     }
 
-    public TBllEntity Remove(TBllEntity entity)
+    public TBllEntity Remove(TBllEntity entity, bool hardDelete = false)
     {
-        return Mapper.Map(Repository.Remove(Mapper.Map(entity)!))!;
+        return Mapper.Map(Repository.Remove(Mapper.Map(entity)!, hardDelete))!;
     }
 
-    public TBllEntity Remove(TKey id)
+    public TBllEntity Remove(TKey id, bool hardDelete = false)
     {
-        return Mapper.Map(Repository.Remove(id))!;
+        return Mapper.Map(Repository.Remove(id, hardDelete))!;
     }
 
     public List<TBllEntity> RemoveAll(List<TBllEntity> entities)
