@@ -10,12 +10,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
+/// <summary>
+/// Reset authenticator model 
+/// </summary>
 public class ResetAuthenticatorModel : PageModel
 {
     private readonly ILogger<ResetAuthenticatorModel> _logger;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Reset authenticator model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for user's</param>
+    /// <param name="signInManager">Sign in manager</param>
+    /// <param name="logger">Logger for user's</param>
     public ResetAuthenticatorModel(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
@@ -27,12 +36,15 @@ public class ResetAuthenticatorModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Status message
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
 
+    /// <summary>
+    /// Reset authenticator on get method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnGet()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -41,6 +53,10 @@ public class ResetAuthenticatorModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// Reset authenticator on post async method
+    /// </summary>
+    /// <returns></returns>
     public async Task<IActionResult> OnPostAsync()
     {
         var user = await _userManager.GetUserAsync(User);

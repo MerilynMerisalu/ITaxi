@@ -11,12 +11,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
+/// <summary>
+/// Login with 2 fa model
+/// </summary>
 public class LoginWith2faModel : PageModel
 {
     private readonly ILogger<LoginWith2faModel> _logger;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Login with 2 fa model constructor
+    /// </summary>
+    /// <param name="signInManager">Manager for sign in</param>
+    /// <param name="userManager">Manager for user's</param>
+    /// <param name="logger">Logger for user's</param>
     public LoginWith2faModel(
         SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
@@ -28,24 +37,28 @@ public class LoginWith2faModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Remember me
     /// </summary>
     public bool RememberMe { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Return url
     /// </summary>
     public string ReturnUrl { get; set; }
 
+    /// <summary>
+    /// Login with 2 fa model on get async method
+    /// </summary>
+    /// <param name="rememberMe">Remember me</param>
+    /// <param name="returnUrl">Return url</param>
+    /// <returns>Page</returns>
+    /// <exception cref="InvalidOperationException">Invalid operation exception</exception>
     public async Task<IActionResult> OnGetAsync(bool rememberMe, string returnUrl = null)
     {
         // Ensure the user has gone through the username & password screen first
@@ -59,6 +72,13 @@ public class LoginWith2faModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// Login with 2 fa model on post async method
+    /// </summary>
+    /// <param name="rememberMe">Remember me</param>
+    /// <param name="returnUrl">Return url</param>
+    /// <returns>Page</returns>
+    /// <exception cref="InvalidOperationException">Invalid operation exception</exception>
     public async Task<IActionResult> OnPostAsync(bool rememberMe, string returnUrl = null)
     {
         if (!ModelState.IsValid) return Page();
@@ -94,14 +114,12 @@ public class LoginWith2faModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input model
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Two factor code
         /// </summary>
         [Required]
         [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
@@ -111,8 +129,7 @@ public class LoginWith2faModel : PageModel
         public string TwoFactorCode { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        ///  Remember machine
         /// </summary>
         [Display(Name = "Remember this machine")]
         public bool RememberMachine { get; set; }

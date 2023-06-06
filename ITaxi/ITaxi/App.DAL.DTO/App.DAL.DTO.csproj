@@ -12,7 +12,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="DriverArea" />
+      <Compile Remove="DriverArea\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="DriverArea\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="DriverArea\**" />
     </ItemGroup>
 
 </Project>

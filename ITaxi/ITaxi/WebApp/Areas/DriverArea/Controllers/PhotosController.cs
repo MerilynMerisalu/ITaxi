@@ -7,22 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.DriverArea.ViewModels;
 
-
 namespace WebApp.Areas.DriverArea.Controllers;
 
+/// <summary>
+/// Driver area photos controller
+/// </summary>
 [Area("DriverArea")]
 [Authorize(Roles = "Admin, Driver")]
 public class PhotosController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Driver area photos controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public PhotosController( IAppBLL appBLL)
     {
         _appBLL = appBLL;
-        
     }
 
     // GET: DriverArea/Photos
+    /// <summary>
+    /// Driver area photos index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
         var userId = User.GettingUserId();
@@ -32,6 +41,11 @@ public class PhotosController : Controller
     }
 
     // GET: DriverArea/Photos/Details/5
+    /// <summary>
+    /// Driver area photos GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeletePhotoViewModel();
@@ -48,13 +62,16 @@ public class PhotosController : Controller
     }
 
     // GET: DriverArea/Photos/Create
+    /// <summary>
+    /// Driver area photos GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Create()
     {
         var userId = User.GettingUserId();
         var vm = new CreateEditPhotoViewModel();
         vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId),
-            nameof(VehicleDTO.Id)
-            , nameof(VehicleDTO.VehicleIdentifier));
+            nameof(VehicleDTO.Id), nameof(VehicleDTO.VehicleIdentifier));
         
         return View(vm);
     }
@@ -62,6 +79,11 @@ public class PhotosController : Controller
     // POST: DriverArea/Photos/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Driver area photos POST method create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateEditPhotoViewModel vm)
@@ -77,12 +99,16 @@ public class PhotosController : Controller
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         
         return View(vm);
     }
 
     // GET: DriverArea/Photos/Edit/5
+    /// <summary>
+    /// Driver area photos GET method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new CreateEditPhotoViewModel();
@@ -104,6 +130,12 @@ public class PhotosController : Controller
     // POST: DriverArea/Photos/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Driver area photos POST method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id,
@@ -137,12 +169,15 @@ public class PhotosController : Controller
 
             return RedirectToAction(nameof(Index));
         }
-
-        
         return View(vm);
     }
 
     // GET: DriverArea/Photos/Delete/5
+    /// <summary>
+    /// Driver area photos GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeletePhotoViewModel();
@@ -155,12 +190,16 @@ public class PhotosController : Controller
     }
 
     // POST: DriverArea/Photos/Delete/5
+    /// <summary>
+    /// Driver area photos POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        
         var photo = await _appBLL.Photos.FirstOrDefaultAsync(id);
         if (photo != null) _appBLL.Photos.Remove(photo);
 

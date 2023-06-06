@@ -1,38 +1,53 @@
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
 using App.Domain;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.DriverArea.ViewModels;
 
 namespace WebApp.Areas.DriverArea.Controllers;
 
+/// <summary>
+/// Driver area schedules controller
+/// </summary>
 [Area(nameof(DriverArea))]
 [Authorize(Roles = "Admin, Driver")]
 public class SchedulesController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Driver area schedules controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public SchedulesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
 
     // GET: DriverArea/Schedules
+    /// <summary>
+    /// Driver area schedules index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var res = await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
+        var res = await _appBLL.Schedules
+            .GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
         
         return View(res);
     }
 
     // GET: DriverArea/Schedules/Details/5
+    /// <summary>
+    /// Driver area schedules GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeleteScheduleViewModel();
@@ -46,7 +61,6 @@ public class SchedulesController : Controller
 
         vm.Id = schedule.Id;
         vm.VehicleIdentifier = schedule.Vehicle!.VehicleIdentifier;
-        
         vm.StartDateAndTime = schedule.StartDateAndTime.ToString("g");
         vm.EndDateAndTime = schedule.EndDateAndTime.ToString("g");
 
@@ -54,6 +68,10 @@ public class SchedulesController : Controller
     }
     
     // GET: DriverArea/Schedules/Create
+    /// <summary>
+    /// Driver area schedules GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Create()
     {
         var vm = new CreateScheduleViewModel();
@@ -68,6 +86,12 @@ public class SchedulesController : Controller
     // POST: DriverArea/Schedules/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Driver area schedules POST method create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <param name="schedule">Schedule</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateScheduleViewModel vm, ScheduleDTO schedule)
@@ -96,72 +120,12 @@ public class SchedulesController : Controller
         return View(vm);
     }
 
-    // GET: DriverArea/Schedules/Edit/5
-    /*public async Task<IActionResult> Edit(Guid? id)
-    {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
-        var vm = new EditScheduleViewModel();
-        if (id == null) return NotFound();
-
-        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id.Value,userId, roleName);
-        if (schedule == null) return NotFound();
-
-        vm.Id = schedule.Id;
-
-        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
-            nameof(Vehicle.Id),
-            nameof(Vehicle.VehicleIdentifier));
-        vm.StartDateAndTime = DateTime.Parse(schedule.StartDateAndTime.ToString("g"));
-        vm.EndDateAndTime = DateTime.Parse(schedule.EndDateAndTime.ToString("g"))
-            ;
-        vm.VehicleId = schedule.VehicleId;
-
-        return View(vm);
-    }
-    */
-
-    // POST: DriverArea/Schedules/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    /*[HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, EditScheduleViewModel vm)
-    {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
-        var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id, userId, roleName );
-        if (schedule == null || schedule.Id != id) return NotFound();
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                schedule.Id = id;
-                schedule.VehicleId = vm.VehicleId;
-                schedule.StartDateAndTime = vm.StartDateAndTime.ToUniversalTime();
-                schedule.EndDateAndTime = vm.EndDateAndTime.ToUniversalTime();
-                schedule.UpdatedBy = User.Identity!.Name;
-                schedule.UpdatedAt = DateTime.Now.ToUniversalTime();
-                _appBLL.Schedules.Update(schedule);
-                await _appBLL.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ScheduleExists(schedule.Id))
-                    return NotFound();
-                throw;
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(),
-            nameof(schedule.Vehicle.Id), nameof(schedule.Vehicle.VehicleIdentifier),
-            nameof(schedule.VehicleId));
-        return View(vm);
-    }*/
-
     // GET: DriverArea/Schedules/Delete/5
+    /// <summary>
+    /// Driver area schedules GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeleteScheduleViewModel();
@@ -182,6 +146,11 @@ public class SchedulesController : Controller
     }
 
     // POST: DriverArea/Schedules/Delete/5
+    /// <summary>
+    /// Driver area schedules POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]

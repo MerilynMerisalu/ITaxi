@@ -1,7 +1,5 @@
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
-
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,29 +9,44 @@ using WebApp.Areas.DriverArea.ViewModels;
 
 namespace WebApp.Areas.DriverArea.Controllers;
 
+/// <summary>
+/// Driver area ride times controller
+/// </summary>
 [Area(nameof(DriverArea))]
 [Authorize(Roles = "Admin, Driver")]
 public class RideTimesController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Driver area ride times controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public RideTimesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
 
     // GET: DriverArea/RideTimes
+    /// <summary>
+    /// Driver area ride times GET method index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var res = await _appBLL.RideTimes.GettingAllOrderedRideTimesAsync(userId, roleName);
-
-
+        
         return View(res);
     }
 
     // GET: DriverArea/RideTimes/Details/5
+    /// <summary>
+    /// Driver area ride times GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeleteRideTimeViewModel();
@@ -56,6 +69,10 @@ public class RideTimesController : Controller
     }
 
     // GET: DriverArea/RideTimes/Create
+    /// <summary>
+    /// Driver area ride times GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Create()
     {
         var vm = new CreateRideTimeViewModel();
@@ -68,30 +85,29 @@ public class RideTimesController : Controller
         var schedules = await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
  
         vm.RideTimes = new SelectList(new string[0]);
-
-
+        
         return View(vm);
     }
     
     /// <summary>
     /// Generic method that will update the VM to reflect the new SelectLists if any need to be changed
     /// </summary>
-    /// <param name="id">the Id (Guid) of the selected RideTime</param>
-    /// <returns></returns>
+    /// <param name="id">The Id (Guid) of the selected RideTime</param>
+    /// <returns>Status 200 OK</returns>
     [HttpPost]
     public async Task<IActionResult> SetDropDownList([FromRoute] Guid id)
     {
         await Task.CompletedTask;
-        // Use the CreateRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
+        // Using the CreateRideTimeViewModel because I want to send through the SelectLists and Ids that have now changed
         var vm = new CreateRideTimeViewModel();
         vm.ScheduleId = id;
 
-        // Always refresh the RideTimes, if the DriverId or the ScheduleId are changed
+        // Always refreshing the RideTimes, if the DriverId or the ScheduleId are changed
         // => because the ScheduleId is ALWAYS changed when the DriverId is changed.
         // Select the RideTimes form the currently selected schedule, for the current driver
         var rideTimes = _appBLL.RideTimes.GettingRemainingRideTimesByScheduleId(vm.ScheduleId);
 
-        // the times in schedules have already been converted!
+        // The times in schedules have already been converted!
         vm.RideTimes = new SelectList(rideTimes.Select(x => new {RideTime = x}),
             "RideTime", "RideTime");
 
@@ -101,6 +117,11 @@ public class RideTimesController : Controller
     // POST: DriverArea/RideTimes/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Driver area ride times POST method create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateRideTimeViewModel vm)
@@ -144,6 +165,11 @@ public class RideTimesController : Controller
     }
 
     // GET: DriverArea/RideTimes/Edit/5
+    /// <summary>
+    /// Driver area ride times GET method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         var userId = User.GettingUserId();
@@ -177,6 +203,12 @@ public class RideTimesController : Controller
     // POST: DriverArea/RideTimes/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Driver area ride times POST method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditRideTimeViewModel vm)
@@ -215,6 +247,11 @@ public class RideTimesController : Controller
     }
 
     // GET: DriverArea/RideTimes/Delete/5
+    /// <summary>
+    /// Driver area ride times GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeleteRideTimeViewModel();
@@ -234,9 +271,13 @@ public class RideTimesController : Controller
 
         return View(vm);
     }
-
-
+    
     // POST: DriverArea/RideTimes/Delete/5
+    /// <summary>
+    /// Driver area ride times POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
@@ -247,8 +288,7 @@ public class RideTimesController : Controller
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-
-
+    
     private bool RideTimeExists(Guid id)
     {
         return _appBLL.RideTimes.Exists(id);

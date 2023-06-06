@@ -14,12 +14,20 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
+/// <summary>
+/// Register confirmation model
+/// </summary>
 [AllowAnonymous]
 public class RegisterConfirmationModel : PageModel
 {
     private readonly IEmailSender _sender;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Register confirmation model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for user's</param>
+    /// <param name="sender">Sender</param>
     public RegisterConfirmationModel(UserManager<AppUser> userManager, IEmailSender sender)
     {
         _userManager = userManager;
@@ -27,23 +35,26 @@ public class RegisterConfirmationModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Email
     /// </summary>
     public string Email { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Display confirm account link
     /// </summary>
     public bool DisplayConfirmAccountLink { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Email confirmation url
     /// </summary>
     public string EmailConfirmationUrl { get; set; }
 
+    /// <summary>
+    /// Register confirmation on get async method
+    /// </summary>
+    /// <param name="email">Email</param>
+    /// <param name="returnUrl">Return url</param>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
     {
         if (email == null) return RedirectToPage("/Index");

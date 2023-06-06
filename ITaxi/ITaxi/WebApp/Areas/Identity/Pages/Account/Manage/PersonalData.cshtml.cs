@@ -8,11 +8,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
+/// <summary>
+/// Personal data model
+/// </summary>
 public class PersonalDataModel : PageModel
 {
     private readonly ILogger<PersonalDataModel> _logger;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Personal data model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for user's</param>
+    /// <param name="logger">Logger for user's</param>
     public PersonalDataModel(
         UserManager<AppUser> userManager,
         ILogger<PersonalDataModel> logger)
@@ -21,6 +29,10 @@ public class PersonalDataModel : PageModel
         _logger = logger;
     }
 
+    /// <summary>
+    /// Personal data on get method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnGet()
     {
         var user = await _userManager.GetUserAsync(User);

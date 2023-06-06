@@ -11,12 +11,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
+/// <summary>
+/// Delete personal data model
+/// </summary>
 public class DeletePersonalDataModel : PageModel
 {
     private readonly ILogger<DeletePersonalDataModel> _logger;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Delete personal data model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for user's</param>
+    /// <param name="signInManager">Sign in manager</param>
+    /// <param name="logger">Logger for user's</param>
     public DeletePersonalDataModel(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
@@ -28,18 +37,20 @@ public class DeletePersonalDataModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Require password
     /// </summary>
     public bool RequirePassword { get; set; }
 
+    /// <summary>
+    /// Delete personal data on get method
+    /// </summary>
+    /// <returns></returns>
     public async Task<IActionResult> OnGet()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -49,6 +60,11 @@ public class DeletePersonalDataModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// Delete personal data on post method
+    /// </summary>
+    /// <returns>Page</returns>
+    /// <exception cref="InvalidOperationException">Invalid operation exception</exception>
     public async Task<IActionResult> OnPostAsync()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -74,14 +90,12 @@ public class DeletePersonalDataModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input model
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Password
         /// </summary>
         [Required]
         [DataType(DataType.Password)]

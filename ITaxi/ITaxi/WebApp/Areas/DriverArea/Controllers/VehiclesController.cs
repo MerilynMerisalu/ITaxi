@@ -8,23 +8,32 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.DriverArea.ViewModels;
 
-
 namespace WebApp.Areas.DriverArea.Controllers;
 
+/// <summary>
+/// Driver area vehicles controller
+/// </summary>
 [Authorize(Roles = "Admin, Driver")]
 [Area(nameof(DriverArea))]
 public class VehiclesController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Driver area vehicles controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public VehiclesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
-
     private string UserEmail => User.Identity!.Name!;
 
     // GET: AdminArea/Vehicles
+    /// <summary>
+    /// Driver area vehicles index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
         var userId = User.GettingUserId();
@@ -34,6 +43,11 @@ public class VehiclesController : Controller
     }
 
     // GET: AdminArea/Vehicles/Details/5
+    /// <summary>
+    /// Driver area vehicles GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null) return NotFound();
@@ -57,6 +71,10 @@ public class VehiclesController : Controller
     }
 
     // GET: AdminArea/Vehicles/Create
+    /// <summary>
+    /// Driver area vehicles GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditVehicleViewModel();
@@ -75,6 +93,12 @@ public class VehiclesController : Controller
     // POST: AdminArea/Vehicles/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Driver area vehicles POST method create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <param name="vehicle">Vehicles</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateEditVehicleViewModel vm, VehicleDTO vehicle)
@@ -115,6 +139,11 @@ public class VehiclesController : Controller
     }
 
     // GET: AdminArea/Vehicles/Edit/5
+    /// <summary>
+    /// Driver area vehicles GET method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new CreateEditVehicleViewModel();
@@ -152,6 +181,12 @@ public class VehiclesController : Controller
     // POST: AdminArea/Vehicles/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Driver area vehicles POST method edit
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleViewModel vm)
@@ -190,12 +225,16 @@ public class VehiclesController : Controller
 
             return RedirectToAction(nameof(Index));
         }
-
-
+        
         return View(vm);
     }
 
     // GET: AdminArea/Vehicles/Delete/5
+    /// <summary>
+    /// Driver area vehicles GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null) return NotFound();
@@ -218,6 +257,11 @@ public class VehiclesController : Controller
     }
 
     // POST: AdminArea/Vehicles/Delete/5
+    /// <summary>
+    /// Driver area vehicles POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
@@ -231,8 +275,6 @@ public class VehiclesController : Controller
             if (await _appBLL.Vehicles.HasAnySchedulesAnyAsync(vehicle.Id) || await _appBLL.Vehicles.HasAnyBookingsAnyAsync(vehicle.Id))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
-
-                
             }
 
             await _appBLL.Vehicles.RemoveAsync(vehicle.Id);
@@ -248,6 +290,11 @@ public class VehiclesController : Controller
     }
 
     // GET: DriverArea/Vehicle/Gallery/5
+    /// <summary>
+    /// Driver area vehicles GET method gallery
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Gallery(Guid? id)
     {
         if (id == null) return NotFound();

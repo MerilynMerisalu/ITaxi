@@ -11,12 +11,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
+/// <summary>
+/// Login with recovery code model
+/// </summary>
 public class LoginWithRecoveryCodeModel : PageModel
 {
     private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Login with recovery code model constructor
+    /// </summary>
+    /// <param name="signInManager">Manager for sign in</param>
+    /// <param name="userManager">Manager for user's</param>
+    /// <param name="logger">Logger for user's</param>
     public LoginWithRecoveryCodeModel(
         SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
@@ -28,18 +37,22 @@ public class LoginWithRecoveryCodeModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Return url
     /// </summary>
     public string ReturnUrl { get; set; }
 
+    /// <summary>
+    /// Login with recovery code on get async method
+    /// </summary>
+    /// <param name="returnUrl">Return url</param>
+    /// <returns>Page</returns>
+    /// <exception cref="InvalidOperationException">Invalid operation exception</exception>
     public async Task<IActionResult> OnGetAsync(string returnUrl = null)
     {
         // Ensure the user has gone through the username & password screen first
@@ -51,6 +64,12 @@ public class LoginWithRecoveryCodeModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// Login with recovery code on post async method
+    /// </summary>
+    /// <param name="returnUrl">Return url</param>
+    /// <returns>Page</returns>
+    /// <exception cref="InvalidOperationException">Invalid operation exception</exception>
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
     {
         if (!ModelState.IsValid) return Page();
@@ -82,14 +101,12 @@ public class LoginWithRecoveryCodeModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input model
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Recovery code
         /// </summary>
         [BindProperty]
         [Required]

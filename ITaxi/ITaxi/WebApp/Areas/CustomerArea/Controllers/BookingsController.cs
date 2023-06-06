@@ -9,48 +9,54 @@ using WebApp.Areas.CustomerArea.ViewModels;
 
 namespace WebApp.Areas.CustomerArea.Controllers;
 
+/// <summary>
+/// Customer area booking controller
+/// </summary>
 [Area(nameof(CustomerArea))]
 [Authorize(Roles = "Admin, Customer")]
 public class BookingsController : Controller
 {
     private readonly IAppBLL _appBLL;
 
+    /// <summary>
+    /// Customer area booking controller constructor
+    /// </summary>
+    /// <param name="appBLL">AppBLL</param>
     public BookingsController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
-
-
+    
     // GET: CustomerArea/Bookings
+    /// <summary>
+    /// Customer area booking index
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var res = await _appBLL.Bookings.GettingAllOrderedBookingsAsync(userId, roleName);
         
-        
         return View(res);
-        
     }
-    
-    
-         /// <summary>
+
+    /// <summary>
     /// Generic method that will update the VM to reflect the new SelectLists if any need to be changed
     /// </summary>
-    /// <param name="listType">the dropdownlist that has been changed</param>
-    /// <param name="value">The currently selected item value</param>
-    /// <returns></returns>
+    /// <param name="parameters">Parameters</param>
+    /// <returns>Status 200 OK</returns>
     [HttpPost]
     public async Task<IActionResult> SetDropDownList([FromBody] AdminArea.Controllers.BookingsController.BookingSetDropDownListRequest parameters)
     {
-        // Use the EditRideTimeViewModel because we want to send through the SelectLists and Ids that have now changed
+        // Using the EditRideTimeViewModel because I want to send through the SelectLists and Ids that have now changed
         var vm = new CreateBookingViewModel();
-        //IEnumerable<ScheduleDTO>? schedules = null;
-        //Guid id = Guid.Parse(value);
-
+        
+        // ListType:The dropdownlist that has been changed
+        // Value: The currently selected item value
         if (parameters.ListType == nameof(BookingDTO.PickUpDateAndTime))
         {
-            // If the UI provides a RideTimeId, then we need to clear or release this time first
+            // If the UI provides a RideTimeId, then I need to clear or release this time first
             if (parameters.RideTimeId.HasValue && parameters.RideTimeId != Guid.Empty)
             {
                 var rideTime =
@@ -66,14 +72,14 @@ public class BookingsController : Controller
             parameters.PickupDateAndTime = DateTime.Parse(parameters!.Value!);
             if (parameters.PickupDateAndTime == DateTime.MinValue)
             {
-                // Do nothing, this will show the message to re-select the time entry
+                // Doing nothing, this will show the message to re-select the time entry
             }
             else
             {
                 parameters.PickupDateAndTime = parameters.PickupDateAndTime.ToUniversalTime();
 
-                // We want to find the nearest available ride date and time
-                // First we get a list of the available ride times
+                // I want to find the nearest available ride date and time
+                // First i get a list of the available ride times
                 var bestTimes = await _appBLL.RideTimes.GettingBestAvailableRideTimeAsync(parameters.PickupDateAndTime,
                     parameters.CityId, parameters.NumberOfPassengers, parameters.VehicleTypeId, true);
                 if (bestTimes.Any())
@@ -85,11 +91,8 @@ public class BookingsController : Controller
                         bestTime.Schedule.EndDateAndTime = bestTime.Schedule.EndDateAndTime.ToLocalTime();
 
                         vm.RideTimeId = bestTime.Id;
-                        
                         vm.ScheduleId = bestTime.ScheduleId;
-                        
                         vm.DriverId = bestTime.DriverId;
-                        
                         vm.VehicleId = bestTime.Schedule!.VehicleId;
                     }
                     else
@@ -111,8 +114,8 @@ public class BookingsController : Controller
             }
         }
 
-        // This is not currently in use, this is theoretically what we would do if the user was
-        // forced to select a specific RideTime, we have changed this and instead
+        // This is not currently in use, this is theoretically what I would do if the user was
+        // forced to select a specific RideTime, I have changed this and instead
         // the user is forced to enter a Pickup Date Time that matches an existing Ride Time
         if (parameters.ListType == "RideTimeId")
         {
@@ -120,29 +123,29 @@ public class BookingsController : Controller
             var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(rideTimeId);
 
             vm.RideTimeId = rideTimeId;
-            
             vm.ScheduleId = rideTime!.ScheduleId;
-            
             vm.DriverId = rideTime.DriverId;
             vm.VehicleId = rideTime.Schedule!.VehicleId;
         }
-
         return Ok(vm);
     }
 
     // GET: CustomerArea/Bookings/Details/5
+    /// <summary>
+    /// Customer area booking GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeleteBookingViewModel();
         if (id == null) return NotFound();
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-
         var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, userId, roleName);
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
-
         vm.City = booking.City!.CityName;
         vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
         vm.AdditionalInfo = booking.AdditionalInfo;
@@ -158,6 +161,10 @@ public class BookingsController : Controller
     }
 
     // GET: CustomerArea/Bookings/Create
+    /// <summary>
+    /// Customer area booking GET method create
+    /// </summary>
+    /// <returns>View</returns>
     public async Task<IActionResult> Create()
     {
         var vm = new CreateBookingViewModel();
@@ -172,12 +179,16 @@ public class BookingsController : Controller
     // POST: CustomerArea/Bookings/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    /// <summary>
+    /// Customer area booking POST method create
+    /// </summary>
+    /// <param name="vm">View model</param>
+    /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
-    
     public async Task<IActionResult> Create(CreateBookingViewModel vm)
     {
-        var booking = new App.BLL.DTO.AdminArea.BookingDTO();
+        var booking = new BookingDTO();
         if (ModelState.IsValid)
         {
             var userId = User.GettingUserId();
@@ -214,7 +225,6 @@ public class BookingsController : Controller
             };
             _appBLL.Drives.Add(drive);
             
-
             var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(vm.RideTimeId, null, null, true, true);
             if (rideTime != null)
             {
@@ -226,7 +236,6 @@ public class BookingsController : Controller
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         
         vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
             nameof(CityDTO.Id),
@@ -237,115 +246,19 @@ public class BookingsController : Controller
         
         return View(vm);
     }
-    // GET: AdminArea/Bookings/Edit/5
-    /*public async Task<IActionResult> Edit(Guid? id)
-    {
-        var vm = new EditBookingViewModel();
-        if (id == null) return NotFound();
-
-        var userId = User.GettingUserId();
-        
-        var roleName = User.GettingUserRoleName();
-        var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, userId, roleName);
-        if (booking == null) return NotFound();
-
-
-        vm.Cities = new SelectList(await _appBLL.Cities.GetAllCitiesWithoutCountyAsync()
-            , nameof(City.Id), nameof(City.CityName));
-        vm.AdditionalInfo = booking.AdditionalInfo;
-        vm.CityId = booking.CityId;
-        vm.DestinationAddress = booking.DestinationAddress;
-        vm.PickupAddress = booking.PickupAddress;
-        vm.VehicleTypes = new SelectList(
-            await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
-            nameof(VehicleType.Id)
-            , nameof(VehicleType.VehicleTypeName));
-        vm.HasAnAssistant = booking.HasAnAssistant;
-        vm.NumberOfPassengers = booking.NumberOfPassengers;
-        vm.VehicleTypeId = booking.VehicleTypeId;
-        vm.PickUpDateAndTime = booking.PickUpDateAndTime;
-        return View(vm);
-    }
-    */
-    
-
-    // POST: AdminArea/Bookings/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    
-    //[HttpPost]
-   // [ValidateAntiForgeryToken]
-    /*public async Task<IActionResult> Edit(Guid id, EditBookingViewModel vm)
-    {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
-        var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName, false);
-        if (booking != null && id != booking.Id) return NotFound();
-
-        if (ModelState.IsValid)
-        {
-            var customerId = _appBLL.Customers
-                .SingleOrDefaultAsync(c => c!.AppUserId.Equals(userId)).Result!.Id;
-            try
-            {
-                if (booking != null)
-                {
-                    booking.Id = id;
-                    booking.CityId = vm.CityId;
-                    booking.CustomerId = customerId;
-                    booking.DriverId = _appBLL.Drivers.FirstAsync().Result!.Id;
-#warning needs fixing
-                    booking.ScheduleId =  _appBLL.Schedules.FirstAsync().Result!.Id;
-#warning needs fixing
-                    booking.VehicleId = _appBLL.Vehicles.FirstAsync().Result!.Id;
-                    booking.AdditionalInfo = vm.AdditionalInfo;
-                    booking.DestinationAddress = vm.DestinationAddress;
-                    booking.PickupAddress = vm.PickupAddress;
-                    booking.VehicleTypeId = vm.VehicleTypeId;
-                    booking.HasAnAssistant = vm.HasAnAssistant;
-                    booking.NumberOfPassengers = vm.NumberOfPassengers;
-                    booking.StatusOfBooking = StatusOfBooking.Awaiting;
-                    booking.PickUpDateAndTime = vm.PickUpDateAndTime;
-
-
-                    _appBLL.Bookings.Update(booking);
-                }
-
-                var drive = await _appBLL.Drives
-                    .SingleOrDefaultAsync(d => d!.Booking!.Id.Equals(booking!.Id), false);
-                if (drive != null)
-                {
-                    if (booking != null)
-                    {
-                        drive.DriverId = booking.DriverId;
-                        drive.Booking = booking;
-                    }
-
-                    _appBLL.Drives.Update(drive);
-                    await _appBLL.SaveChangesAsync();
-                }
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (booking != null && !BookingExists(booking.Id))
-                    return NotFound();
-                throw;
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        return View(vm);
-    }*/
 
     // GET: CustomerArea/Bookings/Decline/5
+    /// <summary>
+    /// Customer area booking GET method decline
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Decline(Guid? id)
     {
         var vm = new DeclineBookingViewModel();
         if (id == null) return NotFound();
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-
         var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, userId, roleName);
         if (booking == null) return NotFound();
 
@@ -359,12 +272,16 @@ public class BookingsController : Controller
         vm.NumberOfPassengers = booking.NumberOfPassengers;
         vm.StatusOfBooking = booking.StatusOfBooking;
         vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToString("g");
-
-
+        
         return View(vm);
     }
 
     // POST: AdminArea/Bookings/Decline/5
+    /// <summary>
+    /// Customer area booking POST method decline
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName(nameof(Decline))]
     [ValidateAntiForgeryToken]
@@ -379,9 +296,13 @@ public class BookingsController : Controller
         }
         return RedirectToAction(nameof(Index));
     }
-
-
+    
     // GET: CustomerArea/Bookings/Delete/5
+    /// <summary>
+    /// Customer area booking GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
     public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeleteBookingViewModel();
@@ -390,6 +311,7 @@ public class BookingsController : Controller
         var roleName = User.GettingUserRoleName();
         var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, userId, roleName, false);
         if (booking == null) return NotFound();
+        
         vm.Id = booking.Id;
         vm.City = booking.City!.CityName;
         vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
@@ -403,9 +325,13 @@ public class BookingsController : Controller
         vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToString("g");
         return View(vm);
     }
-
-
+    
     // POST: CustomerArea/Bookings/Delete/5
+    /// <summary>
+    /// Customer area booking POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
     [HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
@@ -431,7 +357,7 @@ public class BookingsController : Controller
     }
 
     /// <summary>
-    ///     Search records by city name
+    /// Search records by city name
     /// </summary>
     /// <param name="search">City name</param>
     /// <returns>An index view with search results</returns>
@@ -443,5 +369,4 @@ public class BookingsController : Controller
         var results = await _appBLL.Bookings.SearchByCityAsync(search, userId, roleName);
         return View(nameof(Index), results);
     }
-    
 }

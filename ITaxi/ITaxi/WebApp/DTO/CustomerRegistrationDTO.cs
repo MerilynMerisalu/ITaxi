@@ -8,6 +8,9 @@ namespace WebApp.DTO;
 /// </summary>
 public class CustomerRegistrationDTO: RegisterDTO
 {
+    /// <summary>
+    /// Id
+    /// </summary>
     public Guid Id { get; set; }
     
     /// <summary>

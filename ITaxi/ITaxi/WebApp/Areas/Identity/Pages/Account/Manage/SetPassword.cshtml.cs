@@ -11,11 +11,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
+/// <summary>
+/// Set password model
+/// </summary>
 public class SetPasswordModel : PageModel
 {
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
 
+    /// <summary>
+    /// Set password model constructor
+    /// </summary>
+    /// <param name="userManager">Manager for user's</param>
+    /// <param name="signInManager">Sign in manager</param>
     public SetPasswordModel(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager)
@@ -25,19 +33,21 @@ public class SetPasswordModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Status message
     /// </summary>
     [TempData]
     public string StatusMessage { get; set; }
 
+    /// <summary>
+    /// Set password on get async method
+    /// </summary>
+    /// <returns>Page</returns>
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);
@@ -50,6 +60,10 @@ public class SetPasswordModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// Set password on post async method
+    /// </summary>
+    /// <returns>Redirect to page</returns>
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid) return Page();
@@ -71,14 +85,12 @@ public class SetPasswordModel : PageModel
     }
 
     /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
+    /// Input model
     /// </summary>
     public class InputModel
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// New password
         /// </summary>
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
@@ -88,8 +100,7 @@ public class SetPasswordModel : PageModel
         public string NewPassword { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Confirm password
         /// </summary>
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
