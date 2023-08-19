@@ -131,9 +131,21 @@ public static class DataHelper
                     context.DisabilityTypes.Include(x => x.DisabilityTypeName.Translations).FirstOrDefault();
                 Debug.WriteLine(testDisabilityType);
 
+                var country = new Country()
+                {
+                    Id = new Guid(),
+                    CountryName = "Estonia",
+                    CreatedBy = "System",
+                    CreatedAt = DateTime.Now.ToUniversalTime()
+                };
+                await context.Countries.AddAsync(country);
+                await context.SaveChangesAsync();
+                
                 var county = new County
                 {
                     Id = new Guid(),
+                    CountryId =  context.Countries!
+                        .SingleOrDefault(c => c.CountryName.Equals("Estonia"))!.Id,
                     CountyName = "Harjumaa",
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()

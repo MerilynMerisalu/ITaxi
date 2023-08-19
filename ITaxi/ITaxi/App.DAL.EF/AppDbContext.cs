@@ -16,6 +16,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 
     public DbSet<LangStr> LangStrings { get; set; } = default!;
     public DbSet<Translation> Translations { get; set; } = default!;
+    public DbSet<Country> Countries { get; set; } = default!;
     public DbSet<County> Counties { get; set; } = default!;
     public DbSet<City> Cities { get; set; } = default!;
     public DbSet<Photo> Photos { get; set; } = default!;

@@ -11,5 +11,8 @@ public class County : DomainEntityMetaId
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     public string CountyName { get; set; } = default!;
 
+    public Guid CountryId { get; set; }
+    public Country? Country { get; set; }
+
     public ICollection<City>? Cities { get; set; }
 }
