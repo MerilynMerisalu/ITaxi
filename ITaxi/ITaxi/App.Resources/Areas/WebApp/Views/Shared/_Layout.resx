@@ -93,4 +93,7 @@
     <data name="Photos" xml:space="preserve">
         <value>Photos</value>
     </data>
+    <data name="Countries" xml:space="preserve">
+        <value>Countries</value>
+    </data>
 </root>

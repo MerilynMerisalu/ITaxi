@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Base.Domain;
 using Base.Resources;
 
@@ -10,9 +11,11 @@ public class Country: DomainEntityMetaId
         ErrorMessageResourceName = nameof(Common.RequiredAttributeErrorMessage))]
     [MaxLength(50, ErrorMessageResourceType =typeof(Common),
         ErrorMessageResourceName = nameof(Common.ErrorMessageStringLengthMax))]
-    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
+    /*[StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = nameof(Common.ErrorMessageStringLengthMinMax))]
-    public string CountryName { get; set; } = default!;
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Country), Name = nameof(CountryName))]*/
+    public LangStr CountryName { get; set; } = default!;
 
     public ICollection<County>? Counties { get; set; }
+    
 }

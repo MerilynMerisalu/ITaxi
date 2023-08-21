@@ -46,7 +46,7 @@
         <value>Date and Time of the Decline </value>
     </data>
     <data name="IsDeleted" xml:space="preserve">
-        <value>Is Deleted</value>
+        <value>Is Deleted?</value>
     </data>
     <data name="DeletedBy" xml:space="preserve">
         <value>Deleted By</value>

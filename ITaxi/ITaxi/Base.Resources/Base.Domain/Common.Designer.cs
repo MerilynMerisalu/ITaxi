@@ -114,7 +114,7 @@ namespace App.Resources.Areas.App.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Is Deleted.
+        ///   Looks up a localized string similar to Is Deleted?.
         /// </summary>
         public static string IsDeleted {
             get {

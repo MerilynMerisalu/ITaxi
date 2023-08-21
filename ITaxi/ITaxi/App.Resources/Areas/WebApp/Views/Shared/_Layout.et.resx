@@ -84,4 +84,7 @@
     <data name="Photos" xml:space="preserve">
         <value>Fotod</value>
     </data>
+    <data name="Countries" xml:space="preserve">
+        <value>Riigid</value>
+    </data>
 </root>

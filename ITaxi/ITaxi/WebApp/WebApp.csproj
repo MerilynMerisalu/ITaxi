@@ -143,6 +143,11 @@
         <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Details.cshtml" />
         <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Edit.cshtml" />
         <_ContentIncludedByDefault Remove="Areas\Test\Views\Vehicles\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Countries\Create.cshtml" />
+        <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Countries\Delete.cshtml" />
+        <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Countries\Details.cshtml" />
+        <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Countries\Edit.cshtml" />
+        <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Countries\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

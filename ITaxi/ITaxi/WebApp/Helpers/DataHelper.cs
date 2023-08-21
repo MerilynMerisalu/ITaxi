@@ -130,6 +130,8 @@ public static class DataHelper
                 var testDisabilityType =
                     context.DisabilityTypes.Include(x => x.DisabilityTypeName.Translations).FirstOrDefault();
                 Debug.WriteLine(testDisabilityType);
+                
+                
 
                 var country = new Country()
                 {
@@ -138,6 +140,7 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
+                country.CountryName.SetTranslation("Eesti", "et-EE");
                 await context.Countries.AddAsync(country);
                 await context.SaveChangesAsync();
                 
@@ -145,7 +148,8 @@ public static class DataHelper
                 {
                     Id = new Guid(),
                     CountryId =  context.Countries!
-                        .SingleOrDefault(c => c.CountryName.Equals("Estonia"))!.Id,
+                        //.SingleOrDefault(c => c.CountryName.Equals("Estonia"))!.Id,
+                        .SingleOrDefault(c => c.CountryName.Translations!.Any(t => t.Value.Equals("Estonia")))!.Id,
                     CountyName = "Harjumaa",
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
