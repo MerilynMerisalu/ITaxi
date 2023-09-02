@@ -153,6 +153,14 @@
     <ItemGroup>
       <None Remove="Areas\AdminArea\Views\Schedules\_schedules.js" />
     </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Areas\AdminArea\Views\Countries\Create.cshtml" />
+      <UpToDateCheckInput Remove="Areas\AdminArea\Views\Countries\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Areas\AdminArea\Views\Countries\Details.cshtml" />
+      <UpToDateCheckInput Remove="Areas\AdminArea\Views\Countries\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Areas\AdminArea\Views\Countries\Index.cshtml" />
+    </ItemGroup>
     <PropertyGroup>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>

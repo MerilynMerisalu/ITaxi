@@ -18,7 +18,7 @@ public class AdminAreaBaseViewModel
     /// Created by
     /// </summary>
     [Display(ResourceType = typeof(Common), Name = nameof(CreatedBy))]
-    public string CreatedBy { get; set; } = default!;
+    public string? CreatedBy { get; set; }
 
     /// <summary>
     /// Updated at
@@ -30,5 +30,5 @@ public class AdminAreaBaseViewModel
     /// Updated by
     /// </summary>
     [Display(ResourceType = typeof(Common), Name = nameof(UpdatedBy))]
-    public string UpdatedBy { get; set; } = default!;
+    public string? UpdatedBy { get; set; } 
 }

@@ -23,9 +23,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Countries
         public async Task<IActionResult> Index()
         {
-              return _context.Countries != null ? 
-                          View(await GetQuery().ToListAsync()) :
-                          Problem("Entity set 'AppDbContext.Countries'  is null.");
+            return View(await _context.Countries.Include(c => c.CountryName)
+                .ThenInclude(c => c.Translations).ToListAsync());
         }
 
         // GET: AdminArea/Countries/Details/5
@@ -36,7 +35,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var country = await GetQuery()
+            var country = await _context.Countries
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
@@ -159,12 +158,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
         private bool CountryExists(Guid id)
         {
-          return (GetQuery()?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-
-        private IQueryable<Country> GetQuery()
-        {
-            return _context.Countries.Include(c => c.CountryName.Translations);
+          return (_context.Countries?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
