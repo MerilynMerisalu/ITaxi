@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
@@ -30,19 +31,28 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Countries/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.Countries == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var country = await _context.Countries
+            var vm = new DetailsDeleteCountryViewModel();
+            var country = await _context.Countries.Include(c => c.CountryName)
+                .ThenInclude(c => c.Translations)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
                 return NotFound();
             }
 
-            return View(country);
+            vm.Id = country.Id;
+            vm.CountryName = country.CountryName;
+            vm.CreatedBy = country.CreatedBy!;
+            vm.CreatedAt = country.CreatedAt.ToLocalTime().ToString("g");
+            vm.UpdatedBy = country.UpdatedBy!;
+            vm.UpdatedAt = country.UpdatedAt.ToLocalTime().ToString("g");
+
+            return View(vm);
         }
 
         // GET: AdminArea/Countries/Create
