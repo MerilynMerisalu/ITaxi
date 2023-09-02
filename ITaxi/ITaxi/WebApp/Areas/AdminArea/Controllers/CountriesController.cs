@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -25,10 +26,10 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Countries
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Countries
+            return View(await _context.Countries.OrderBy(c => c.CountryName)
                 .Include(c => c.CountryName)
                     .ThenInclude(c => c.Translations)
-                .OrderBy(c => c.CountryName.Translations).ToListAsync());
+                .ToListAsync());
         }
 
         // GET: AdminArea/Countries/Details/5
@@ -100,12 +101,20 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var country = await _context.Countries.FindAsync(id);
+            var vm = new CreateEditCountryViewModel();
+            var country = await _context.Countries
+                .Include(c => c.CountryName)
+                    .ThenInclude(c =>c.Translations)
+                .FirstOrDefaultAsync(c => c.Id.Equals(id));
             if (country == null)
             {
                 return NotFound();
             }
-            return View(country);
+
+            vm.Id = country.Id;
+            vm.CountryName = country.CountryName;
+            
+            return View(vm);
         }
 
         // POST: AdminArea/Countries/Edit/5
@@ -113,9 +122,13 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,DeletedBy,DeletedAt,Id,IsDeleted")] Country country)
+        public async Task<IActionResult> Edit(Guid id, CreateEditCountryViewModel vm)
         {
-            if (id != country.Id)
+            var country = await _context.Countries
+                .Include(c => c.CountryName)
+                .ThenInclude(c => c.Translations)
+                .FirstOrDefaultAsync(c => c.Id.Equals(id));
+            if (country != null && id != country.Id)
             {
                 return NotFound();
             }
@@ -124,12 +137,19 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 try
                 {
-                    _context.Update(country);
+                    if (country != null)
+                    {
+                        country.CountryName.SetTranslation(vm.CountryName, CultureInfo.CurrentUICulture.Name); 
+                        country.UpdatedBy = User.GettingUserEmail();
+                        country.UpdatedAt = DateTime.Now.ToUniversalTime();
+                        _context.Update(country);
+                    }
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CountryExists(country.Id))
+                    if (country != null && !CountryExists(country.Id))
                     {
                         return NotFound();
                     }
@@ -140,13 +160,13 @@ namespace WebApp.Areas.AdminArea.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(country);
+            return View(vm);
         }
 
         // GET: AdminArea/Countries/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.Countries == null)
+            if (id == null )
             {
                 return NotFound();
             }
