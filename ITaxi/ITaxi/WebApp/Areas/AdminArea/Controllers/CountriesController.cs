@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Base.Extensions;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers
@@ -24,8 +25,10 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Countries
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Countries.Include(c => c.CountryName)
-                .ThenInclude(c => c.Translations).ToListAsync());
+            return View(await _context.Countries
+                .Include(c => c.CountryName)
+                    .ThenInclude(c => c.Translations)
+                .OrderBy(c => c.CountryName.Translations).ToListAsync());
         }
 
         // GET: AdminArea/Countries/Details/5
@@ -37,8 +40,9 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var vm = new DetailsDeleteCountryViewModel();
-            var country = await _context.Countries.Include(c => c.CountryName)
-                .ThenInclude(c => c.Translations)
+            var country = await _context.Countries
+                .Include(c => c.CountryName)
+                    .ThenInclude(c => c.Translations)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
@@ -58,7 +62,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Countries/Create
         public IActionResult Create()
         {
-            return View();
+            var vm = new CreateEditCountryViewModel();
+            return View(vm);
         }
 
         // POST: AdminArea/Countries/Create
@@ -66,22 +71,31 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,DeletedBy,DeletedAt,Id,IsDeleted")] Country country)
+        public async Task<IActionResult> Create(CreateEditCountryViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                country.Id = Guid.NewGuid();
-                _context.Add(country);
+                var country = new Country()
+                {
+                    Id = new Guid(),
+                    CountryName = vm.CountryName,
+                    CreatedBy = User.GettingUserEmail(),
+                    CreatedAt = DateTime.Now.ToUniversalTime(),
+                    UpdatedBy = User.GettingUserEmail(),
+                    UpdatedAt = DateTime.Now.ToUniversalTime()
+                };
+                
+                _context.Countries.Add(country);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(country);
+            return View(vm);
         }
 
         // GET: AdminArea/Countries/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null || _context.Countries == null)
+            if (id == null )
             {
                 return NotFound();
             }
