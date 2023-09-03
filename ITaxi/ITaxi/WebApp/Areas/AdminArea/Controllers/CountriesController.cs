@@ -171,14 +171,24 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
+            var vm = new DetailsDeleteCountryViewModel();
             var country = await _context.Countries
+                .Include(c => c.CountryName)
+                    .ThenInclude(c => c.Translations )
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (country == null)
             {
                 return NotFound();
             }
 
-            return View(country);
+            vm.Id = country.Id;
+            vm.CountryName = country.CountryName;
+            vm.CreatedBy = country.CreatedBy!;
+            vm.CreatedAt = country.CreatedAt.ToLocalTime().ToString("g");
+            vm.UpdatedBy = country.UpdatedBy!;
+            vm.UpdatedAt = country.CreatedAt.ToLocalTime().ToString("g");
+
+            return View(vm);
         }
 
         // POST: AdminArea/Countries/Delete/5
@@ -186,11 +196,12 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.Countries == null)
-            {
-                return Problem("Entity set 'AppDbContext.Countries'  is null.");
-            }
+            
             var country = await _context.Countries.FindAsync(id);
+            if (await _context.Counties.AnyAsync(c => c.CountryId.Equals(country!.Id)))
+            {
+                return Content("Entity cannot be deleted because it has depended entities");
+            }
             if (country != null)
             {
                 _context.Countries.Remove(country);
