@@ -2,8 +2,13 @@ using System.Globalization;
 using System.Text;
 using App.BLL;
 using App.Contracts.BLL;
+using App.Contracts.BLL.Services;
 using App.Contracts.DAL;
+using App.Contracts.DAL.IAppRepositories;
+using App.DAL.DTO.AdminArea;
 using App.DAL.EF;
+using App.DAL.EF.Repositories;
+using App.Domain;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -29,6 +34,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IAppUnitOfWork, AppUOW>();
 builder.Services.AddScoped<IAppBLL, AppBLL>();
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 /*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<AppDbContext>();*/
 builder.Services.AddIdentity<AppUser, AppRole>(
