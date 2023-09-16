@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using App.Contracts.DAL.IAppRepositories;
+using App.DAL.DTO.AdminArea;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Countries
         public async Task<IActionResult> Index()
         {
-            return View(await _countryRepository.GetAllCountriesOrderedByCountryNameAsync());
+            var res = (await _countryRepository.GetAllCountriesOrderedByCountryNameAsync())
+                .Select(c => _mapper.Map<CountryDTO>(c));
+            return View(res);
         }
 
         // GET: AdminArea/Countries/Details/5
