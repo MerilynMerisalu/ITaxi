@@ -134,7 +134,7 @@ public class CountiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditCountyViewModel vm)
     {
-        var county = await _appBLL.Counties.FirstOrDefaultAsync(id, true);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id, true, noIncludes:true);
         if (ModelState.IsValid)
             if (county != null && county.Id.Equals(id))
             {

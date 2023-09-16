@@ -1,38 +1,57 @@
 using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.DAL.DTO.AdminArea;
+using App.Public.DTO.v1.AdminArea;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Base.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers.AdminArea
 {
-    [Route("api/adminArea/[controller]")]
+    [Route("api/v{version:apiVersion}/AdminArea/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class CountriesController : ControllerBase
     {
 
         private readonly IAppBLL _appBLL;
         private readonly IMapper _mapper;
+        private readonly ILogger<CountriesController> _logger;
 
-        public CountriesController( IMapper mapper, IAppBLL appBLL)
+        public CountriesController( IMapper mapper, IAppBLL appBLL, ILogger<CountriesController> logger)
         {
             _mapper = mapper;
             _appBLL = appBLL;
+            _logger = logger;
         }
 
         // GET: api/Countries
         [HttpGet]
-        public async Task<IEnumerable<App.BLL.DTO.AdminArea.CountryDTO>> GetCountries()
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType( typeof( IEnumerable<Country>), StatusCodes.Status200OK )] 
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IEnumerable<Country>>GetCountries()
         {
-          return (await _appBLL.Countries.GetAllCountriesOrderedByCountryNameAsync())
-              .Select(e => _mapper.Map<App.BLL.DTO.AdminArea.CountryDTO>(e));
+          var res = await _appBLL.Countries.GetAllCountriesOrderedByCountryNameAsync();
+          return res.Select(c => _mapper.Map<Country>(c));
         }
 
         // GET: api/Countries/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<App.BLL.DTO.AdminArea.CountryDTO>> GetCountry(Guid id)
+        [HttpGet("{id:guid}")]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(Country), StatusCodes.Status200OK )] 
+        [ProducesResponseType( StatusCodes.Status404NotFound )] 
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<Country>> GetCountry(Guid id)
         {
 
             var country = await _appBLL.Countries.FirstOrDefaultAsync(id);
@@ -42,13 +61,20 @@ namespace WebApp.ApiControllers.AdminArea
                 return NotFound();
             }
 
-            return _mapper.Map<App.BLL.DTO.AdminArea.CountryDTO>(country);
+            return _mapper.Map<Country>(country);
         }
 
         // PUT: api/Countries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCountry(Guid id, App.BLL.DTO.AdminArea.CountryDTO countryDto)
+        [HttpPut("{id:guid}")]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PutCountry(Guid id, Country countryDto)
         {
             if (id != countryDto.Id)
             {
@@ -89,24 +115,34 @@ namespace WebApp.ApiControllers.AdminArea
         // POST: api/Countries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CountryDTO>> PostCountry(App.BLL.DTO.AdminArea.CountryDTO country)
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(Country), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<Country>> PostCountry(Country country)
         {
             country.CreatedBy = User.GettingUserEmail();
             country.CreatedAt = DateTime.Now.ToUniversalTime();
             country.UpdatedBy = User.GettingUserEmail();
             country.UpdatedAt = DateTime.Now.ToUniversalTime();
-            _appBLL.Countries.Add(country);
+            _appBLL.Countries.Add(_mapper.Map<App.BLL.DTO.AdminArea.CountryDTO>(country));
             await _appBLL.SaveChangesAsync();
 
             return CreatedAtAction("GetCountry", new { id = country.Id }, country);
         }
 
         // DELETE: api/Countries/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteCountry(Guid id)
         {
 
-            var country = await _appBLL.Countries.FirstOrDefaultAsync(id, noIncludes: true);
+            var country = await _appBLL.Countries.FirstOrDefaultAsync(id, noIncludes: true, noTracking:true);
             if (country == null)
             {
                 return NotFound();
@@ -117,7 +153,10 @@ namespace WebApp.ApiControllers.AdminArea
 
             return NoContent();
         }
-
+        
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         private bool CountryExists(Guid id)
         {
             return _appBLL.Countries.Exists(id);

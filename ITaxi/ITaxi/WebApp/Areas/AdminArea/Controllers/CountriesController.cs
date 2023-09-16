@@ -1,13 +1,12 @@
+using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Contracts.DAL;
-using App.DAL.DTO.AdminArea;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.Domain;
 using AutoMapper;
 using Base.Extensions;
 using WebApp.Areas.AdminArea.ViewModels;
-using CountryDTO = App.BLL.DTO.AdminArea.CountryDTO;
+
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
@@ -15,19 +14,19 @@ namespace WebApp.Areas.AdminArea.Controllers
     public class CountriesController : Controller
     {
         private readonly IAppBLL _appBLL;
-        private readonly IMapper _mapper;
         
-        public CountriesController(IMapper mapper, IAppBLL appBLL)
+        
+        public CountriesController( IAppBLL appBLL)
         {
-            _mapper = mapper;
+            
             _appBLL = appBLL;
         }
 
         // GET: AdminArea/Countries
         public async Task<IActionResult> Index()
         {
-            var res = await _appBLL.Countries.GetAllCountriesOrderedByCountryNameAsync(); 
-            return View(res.Select(c => _mapper.Map<App.BLL.DTO.AdminArea.CountryDTO>(c)));
+            var res = await _appBLL.Countries.GetAllCountriesOrderedByCountryNameAsync();
+            return View(res);
         }
 
         // GET: AdminArea/Countries/Details/5
@@ -71,7 +70,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             if (ModelState.IsValid)
             {
-                var country = new Country()
+                var country = new CountryDTO()
                 {
                     Id = new Guid(),
                     CountryName = vm.CountryName,
@@ -81,7 +80,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                     UpdatedAt = DateTime.Now.ToUniversalTime()
                 };
                 
-                _appBLL.Countries.Add(_mapper.Map<CountryDTO>(country));
+                _appBLL.Countries.Add(country);
                 await _appBLL.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -97,7 +96,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var vm = new CreateEditCountryViewModel();
-            var country = await _appBLL.Countries.FirstOrDefaultAsync(id.Value);
+            var country = await _appBLL.Countries.FirstOrDefaultAsync(id.Value, noIncludes:true, noTracking:true);
             if (country == null)
             {
                 return NotFound();
