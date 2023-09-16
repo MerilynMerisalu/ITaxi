@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.Contracts.DAL;
 using App.DAL.DTO.AdminArea;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.DAL.EF.Repositories;
-using App.Domain;
 using AutoMapper;
 using Base.Extensions;
 
@@ -18,22 +11,22 @@ namespace WebApp.ApiControllers.AdminArea
     [ApiController]
     public class CountriesController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        private readonly CountryRepository _repo;
+        
+        private readonly IAppUnitOfWork _uow;
         private readonly IMapper _mapper;
 
-        public CountriesController(AppDbContext context, CountryRepository repo, IMapper mapper)
+        public CountriesController( IMapper mapper, IAppUnitOfWork uow)
         {
-            _context = context;
-            _repo = repo;
+            
             _mapper = mapper;
+            _uow = uow;
         }
 
         // GET: api/Countries
         [HttpGet]
         public async Task<IEnumerable<CountryDTO>> GetCountries()
         {
-          return (await _repo.GetAllCountriesOrderedByCountryNameAsync()).Select(e => _mapper.Map<CountryDTO>(e));
+          return (await _uow.Countries.GetAllCountriesOrderedByCountryNameAsync()).Select(e => _mapper.Map<CountryDTO>(e));
         }
 
         // GET: api/Countries/5
@@ -41,7 +34,7 @@ namespace WebApp.ApiControllers.AdminArea
         public async Task<ActionResult<CountryDTO>> GetCountry(Guid id)
         {
 
-            var country = await _repo.FirstOrDefaultAsync(id);
+            var country = await _uow.Countries.FirstOrDefaultAsync(id);
 
             if (country == null)
             {
@@ -61,7 +54,7 @@ namespace WebApp.ApiControllers.AdminArea
                 return BadRequest();
             }
 
-            var country = await _repo.FirstOrDefaultAsync(id, noIncludes: true);
+            var country = await _uow.Countries.FirstOrDefaultAsync(id, noIncludes: true);
             
 
             try
@@ -71,8 +64,8 @@ namespace WebApp.ApiControllers.AdminArea
                     country.CountryName = countryDto.CountryName;
                     country.UpdatedBy = User.GettingUserEmail();
                     country.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _context.Countries.Add((_mapper.Map<Country>(country)));
-                    await _context.SaveChangesAsync();
+                    _uow.Countries.Update(country);
+                    await _uow.SaveChangesAsync();
                 }
 
                 
@@ -101,8 +94,8 @@ namespace WebApp.ApiControllers.AdminArea
             country.CreatedAt = DateTime.Now.ToUniversalTime();
             country.UpdatedBy = User.GettingUserEmail();
             country.UpdatedAt = DateTime.Now.ToUniversalTime();
-            _context.Countries.Add(_mapper.Map<Country>(country));
-            await _context.SaveChangesAsync();
+            _uow.Countries.Add(country);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetCountry", new { id = country.Id }, country);
         }
@@ -112,21 +105,21 @@ namespace WebApp.ApiControllers.AdminArea
         public async Task<IActionResult> DeleteCountry(Guid id)
         {
 
-            var country = await _repo.FirstOrDefaultAsync(id, noIncludes: true);
+            var country = await _uow.Countries.FirstOrDefaultAsync(id, noIncludes: true);
             if (country == null)
             {
                 return NotFound();
             }
 
-            _context.Countries.Remove(_mapper.Map<Country>(country));
-            await _context.SaveChangesAsync();
+            await _uow.Countries.RemoveAsync(country.Id);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool CountryExists(Guid id)
         {
-            return _repo.Exists(id);
+            return _uow.Countries.Exists(id);
         }
     }
 }

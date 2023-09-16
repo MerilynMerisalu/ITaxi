@@ -1,15 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using App.Contracts.DAL.IAppRepositories;
+using App.Contracts.DAL;
 using App.DAL.DTO.AdminArea;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.DAL.EF.Repositories;
 using App.Domain;
 using AutoMapper;
 using Base.Extensions;
@@ -20,20 +12,19 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Area("AdminArea")]
     public class CountriesController : Controller
     {
-        private readonly AppDbContext _context;
-        private readonly CountryRepository _countryRepository;
+        private readonly IAppUnitOfWork _uow;
         private readonly IMapper _mapper;
-        public CountriesController(AppDbContext context, IMapper mapper)
+        
+        public CountriesController(IAppUnitOfWork uow, IMapper mapper)
         {
-            _context = context;
+            _uow = uow;
             _mapper = mapper;
         }
 
         // GET: AdminArea/Countries
         public async Task<IActionResult> Index()
         {
-            var res = (await _countryRepository.GetAllCountriesOrderedByCountryNameAsync())
-                .Select(c => _mapper.Map<CountryDTO>(c));
+            var res = await _uow.Countries.GetAllCountriesOrderedByCountryNameAsync(); 
             return View(res);
         }
 
@@ -46,7 +37,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var vm = new DetailsDeleteCountryViewModel();
-            var country = await _countryRepository.FirstOrDefaultAsync(id.Value);
+            var country = await _uow.Countries.FirstOrDefaultAsync(id.Value);
             if (country == null)
             {
                 return NotFound();
@@ -88,8 +79,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                     UpdatedAt = DateTime.Now.ToUniversalTime()
                 };
                 
-                _countryRepository.Add(_mapper.Map<App.DAL.DTO.AdminArea.CountryDTO>(country));
-                await _context.SaveChangesAsync();
+                _uow.Countries.Add(_mapper.Map<CountryDTO>(country));
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(vm);
@@ -104,7 +95,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var vm = new CreateEditCountryViewModel();
-            var country = await _countryRepository.FirstOrDefaultAsync(id.Value);
+            var country = await _uow.Countries.FirstOrDefaultAsync(id.Value);
             if (country == null)
             {
                 return NotFound();
@@ -123,7 +114,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditCountryViewModel vm)
         {
-            var country = await _countryRepository.FirstOrDefaultAsync(id, noIncludes:true);
+            var country = await _uow.Countries.FirstOrDefaultAsync(id, noIncludes:true);
             if (country != null && id != country.Id)
             {
                 return NotFound();
@@ -138,10 +129,11 @@ namespace WebApp.Areas.AdminArea.Controllers
                         country.CountryName = vm.CountryName;
                         country.UpdatedBy = User.GettingUserEmail();
                         country.UpdatedAt = DateTime.Now.ToUniversalTime();
-                        _context.Update(country);
+                        _uow.Countries.Update(country);
+                        await _uow.SaveChangesAsync();
                     }
 
-                    await _context.SaveChangesAsync();
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -168,15 +160,18 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var vm = new DetailsDeleteCountryViewModel();
-            var country = await _countryRepository.RemoveAsync(id.Value);
-            
+            var country = await _uow.Countries.FirstOrDefaultAsync(id.Value);
 
-            vm.Id = country.Id;
-            vm.CountryName = country.CountryName;
-            vm.CreatedBy = country.CreatedBy!;
-            vm.CreatedAt = country.CreatedAt.ToLocalTime().ToString("g");
-            vm.UpdatedBy = country.UpdatedBy!;
-            vm.UpdatedAt = country.CreatedAt.ToLocalTime().ToString("g");
+
+            if (country != null)
+            {
+                vm.Id = country.Id;
+                vm.CountryName = country.CountryName;
+                vm.CreatedBy = country.CreatedBy!;
+                vm.CreatedAt = country.CreatedAt.ToLocalTime().ToString("g");
+                vm.UpdatedBy = country.UpdatedBy!;
+                vm.UpdatedAt = country.CreatedAt.ToLocalTime().ToString("g");
+            }
 
             return View(vm);
         }
@@ -187,16 +182,16 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
 
-            var country = await _countryRepository.FirstOrDefaultAsync(id, noIncludes: true);
-            await _countryRepository.RemoveAsync(country!.Id);
+            var country = await _uow.Countries.FirstOrDefaultAsync(id, noIncludes: true);
+            await _uow.Countries.RemoveAsync(country!.Id);
             
-            await _context.SaveChangesAsync();
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CountryExists(Guid id)
         {
-            return _countryRepository.Exists(id);
+            return _uow.Countries.Exists(id);
         }
     }
 }

@@ -34,9 +34,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IAppUnitOfWork, AppUOW>();
 builder.Services.AddScoped<IAppBLL, AppBLL>();
-/*builder.Services.AddScoped<ICountryRepository, CountryRepository>()*/;
-/*builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<AppDbContext>();*/
 builder.Services.AddIdentity<AppUser, AppRole>(
         options => options.SignIn.RequireConfirmedAccount = true)
     .AddDefaultTokenProviders()

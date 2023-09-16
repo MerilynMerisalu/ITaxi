@@ -15,8 +15,8 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     private IAppUserRepository? _appUsers;
     private IBookingRepository? _bookings;
     private ICityRepository? _cities;
-     private ICommentRepository? _comments;
-
+    private ICommentRepository? _comments;
+    private ICountryRepository? _countries;
     private ICountyRepository? _counties;
     private ICustomerRepository? _customers;
     private IDisabilityTypeRepository? _disabilityTypes;
@@ -37,6 +37,8 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
         _mapper = mapper;
     }
 
+    public virtual ICountryRepository Countries => _countries ??=
+        new CountryRepository(UOWDbContext, new CountryMapper(_mapper));
     public virtual ICountyRepository Counties => _counties ??= new CountyRepository(UOWDbContext
     , new CountyMapper(_mapper));
     public virtual ICityRepository Cities => _cities ??= new CityRepository(UOWDbContext,

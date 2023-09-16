@@ -5,6 +5,7 @@ namespace App.Contracts.DAL;
 
 public interface IAppUnitOfWork : IUnitOfWork
 {
+    ICountryRepository Countries { get; }
     ICountyRepository Counties { get; }
     ICityRepository Cities { get; }
     IAdminRepository Admins { get; }

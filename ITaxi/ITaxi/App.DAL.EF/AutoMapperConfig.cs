@@ -18,6 +18,19 @@ public class AutoMapperConfig : Profile
     }
     public AutoMapperConfig()
     {
+        #region Country Mapping
+
+        // Convert from EF => DTO: Convert to Local Time
+        CreateMap<App.Domain.Country, CountryDTO>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
+        
+
+        #endregion
         #region County Mapping
         // Convert from EF => DTO: Convert to Local Time
         CreateMap<App.Domain.County, CountyDTO>()
