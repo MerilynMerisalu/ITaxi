@@ -1,3 +1,4 @@
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.DAL.DTO.AdminArea;
 using Microsoft.AspNetCore.Mvc;
@@ -11,50 +12,50 @@ namespace WebApp.ApiControllers.AdminArea
     [ApiController]
     public class CountriesController : ControllerBase
     {
-        
-        private readonly IAppUnitOfWork _uow;
+
+        private readonly IAppBLL _appBLL;
         private readonly IMapper _mapper;
 
-        public CountriesController( IMapper mapper, IAppUnitOfWork uow)
+        public CountriesController( IMapper mapper, IAppBLL appBLL)
         {
-            
             _mapper = mapper;
-            _uow = uow;
+            _appBLL = appBLL;
         }
 
         // GET: api/Countries
         [HttpGet]
-        public async Task<IEnumerable<CountryDTO>> GetCountries()
+        public async Task<IEnumerable<App.BLL.DTO.AdminArea.CountryDTO>> GetCountries()
         {
-          return (await _uow.Countries.GetAllCountriesOrderedByCountryNameAsync()).Select(e => _mapper.Map<CountryDTO>(e));
+          return (await _appBLL.Countries.GetAllCountriesOrderedByCountryNameAsync())
+              .Select(e => _mapper.Map<App.BLL.DTO.AdminArea.CountryDTO>(e));
         }
 
         // GET: api/Countries/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CountryDTO>> GetCountry(Guid id)
+        public async Task<ActionResult<App.BLL.DTO.AdminArea.CountryDTO>> GetCountry(Guid id)
         {
 
-            var country = await _uow.Countries.FirstOrDefaultAsync(id);
+            var country = await _appBLL.Countries.FirstOrDefaultAsync(id);
 
             if (country == null)
             {
                 return NotFound();
             }
 
-            return country;
+            return _mapper.Map<App.BLL.DTO.AdminArea.CountryDTO>(country);
         }
 
         // PUT: api/Countries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCountry(Guid id, CountryDTO countryDto)
+        public async Task<IActionResult> PutCountry(Guid id, App.BLL.DTO.AdminArea.CountryDTO countryDto)
         {
             if (id != countryDto.Id)
             {
                 return BadRequest();
             }
 
-            var country = await _uow.Countries.FirstOrDefaultAsync(id, noIncludes: true);
+            var country = await _appBLL.Countries.FirstOrDefaultAsync(id, noIncludes: true);
             
 
             try
@@ -64,8 +65,8 @@ namespace WebApp.ApiControllers.AdminArea
                     country.CountryName = countryDto.CountryName;
                     country.UpdatedBy = User.GettingUserEmail();
                     country.UpdatedAt = DateTime.Now.ToUniversalTime();
-                    _uow.Countries.Update(country);
-                    await _uow.SaveChangesAsync();
+                    _appBLL.Countries.Update(country);
+                    await _appBLL.SaveChangesAsync();
                 }
 
                 
@@ -88,14 +89,14 @@ namespace WebApp.ApiControllers.AdminArea
         // POST: api/Countries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CountryDTO>> PostCountry(CountryDTO country)
+        public async Task<ActionResult<CountryDTO>> PostCountry(App.BLL.DTO.AdminArea.CountryDTO country)
         {
             country.CreatedBy = User.GettingUserEmail();
             country.CreatedAt = DateTime.Now.ToUniversalTime();
             country.UpdatedBy = User.GettingUserEmail();
             country.UpdatedAt = DateTime.Now.ToUniversalTime();
-            _uow.Countries.Add(country);
-            await _uow.SaveChangesAsync();
+            _appBLL.Countries.Add(country);
+            await _appBLL.SaveChangesAsync();
 
             return CreatedAtAction("GetCountry", new { id = country.Id }, country);
         }
@@ -105,21 +106,21 @@ namespace WebApp.ApiControllers.AdminArea
         public async Task<IActionResult> DeleteCountry(Guid id)
         {
 
-            var country = await _uow.Countries.FirstOrDefaultAsync(id, noIncludes: true);
+            var country = await _appBLL.Countries.FirstOrDefaultAsync(id, noIncludes: true);
             if (country == null)
             {
                 return NotFound();
             }
 
-            await _uow.Countries.RemoveAsync(country.Id);
-            await _uow.SaveChangesAsync();
+            await _appBLL.Countries.RemoveAsync(country.Id);
+            await _appBLL.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool CountryExists(Guid id)
         {
-            return _uow.Countries.Exists(id);
+            return _appBLL.Countries.Exists(id);
         }
     }
 }

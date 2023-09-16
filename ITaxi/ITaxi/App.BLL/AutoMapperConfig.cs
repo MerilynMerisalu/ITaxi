@@ -5,6 +5,9 @@ public class AutoMapperConfig: Profile
 {
     public AutoMapperConfig()
     {
+        CreateMap<App.BLL.DTO.AdminArea.CountryDTO, App.DAL.DTO.AdminArea.CountryDTO>()
+            .ReverseMap();
+
         CreateMap<App.BLL.DTO.AdminArea.CountyDTO, App.DAL.DTO.AdminArea.CountyDTO>()
             .ReverseMap();
 
