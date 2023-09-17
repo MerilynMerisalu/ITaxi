@@ -21,4 +21,7 @@
     <data name="NumberOfCities" xml:space="preserve">
         <value>Linnade arv</value>
     </data>
+    <data name="Country" xml:space="preserve">
+        <value>Riik</value>
+    </data>
 </root>

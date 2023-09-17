@@ -13,14 +13,16 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
     {
     }
 
-    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryNameAsync(bool noTracking = true)
+    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryNameAsync(bool noTracking = true,
+        bool noIncludes = false)
     {
-        return (await CreateQuery(noTracking).ToListAsync()).Select(c => Mapper.Map(c))!;
+        return (await CreateQuery(noTracking, noIncludes).ToListAsync()).Select(c => Mapper.Map(c))!;
     }
 
-    public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryName(bool noTracking = true)
+    public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryName(bool noTracking = true,
+    bool noIncludes = false )
     {
-        return CreateQuery(noTracking).Select(c => Mapper.Map(c))!;
+        return CreateQuery(noTracking, noIncludes).Select(c => Mapper.Map(c))!;
     }
 
     public async Task<bool> HasAnyCountiesAsync(Guid id, bool noTracking = true)

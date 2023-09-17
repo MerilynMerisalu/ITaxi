@@ -13,15 +13,15 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
     {
     }
 
-    public async Task<IEnumerable<CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true)
+    public async Task<IEnumerable<CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true, bool noIncludes = false)
     {
-        return (await Repository.GetAllCountiesOrderedByCountyNameAsync(noTracking))
+        return (await Repository.GetAllCountiesOrderedByCountyNameAsync(noTracking, noIncludes))
             .Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<CountyDTO> GetAllCountiesOrderedByCountyName(bool noTracking = true)
+    public IEnumerable<CountyDTO> GetAllCountiesOrderedByCountyName(bool noTracking = true, bool noIncludes = false)
     {
-        return Repository.GetAllCountiesOrderedByCountyName(noTracking).Select(e => Mapper.Map(e))!;
+        return Repository.GetAllCountiesOrderedByCountyName(noTracking, noIncludes).Select(e => Mapper.Map(e))!;
     }
 
     public Task<bool> HasCities(Guid countyId)

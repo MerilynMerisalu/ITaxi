@@ -13,6 +13,12 @@ public class CountyDTO : DomainEntityMetaId
         , Name = nameof(CountyName))]
     public string CountyName { get; set; } = default!;
 
+    public Guid CountryId { get; set; }
+    public CountryDTO? Country { get; set; }
+    
+    
+
+
     
     public int NumberOfCities { get; set; }
 }

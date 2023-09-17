@@ -50,7 +50,7 @@ public class CountiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<County>>> GetCounties()
     {
-        var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
+        var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync(noIncludes:false);
         return Ok(res.Select(x => _mapper.Map<County>(x)).ToList());
     }
 
@@ -136,6 +136,8 @@ public class CountiesController : ControllerBase
         var dto = _mapper.Map<CountyDTO>(county);
         
         dto.Id = Guid.NewGuid();
+        dto.CountryId = county.CountryId;
+        dto.CountyName = county.CountyName;
         dto.CreatedBy = User.GettingUserEmail();
         dto.UpdatedBy = User.GettingUserEmail();
         dto.CreatedAt = DateTime.Now.ToUniversalTime();

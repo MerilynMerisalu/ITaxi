@@ -30,4 +30,7 @@
     <data name="NumberOfCities" xml:space="preserve">
         <value>Number of Cities</value>
     </data>
+    <data name="Country" xml:space="preserve">
+        <value>Country</value>
+    </data>
 </root>

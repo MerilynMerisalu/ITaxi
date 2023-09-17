@@ -26,9 +26,9 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
     }
 
     public async Task<IEnumerable<CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(
-        bool noTracking = true)
+        bool noTracking = true, bool noIncludes = false)
     {
-        return (await CreateQuery(noTracking).OrderBy(c => c.CountyName).ToListAsync())
+        return (await CreateQuery(noTracking, noIncludes).OrderBy(c => c.CountyName).ToListAsync())
             .Select(e => Mapper.Map(e)!);
     }
 
@@ -36,9 +36,9 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
     {
         return await RepoDbContext.Cities.AnyAsync(x => x.CountyId == countyId);
     }
-    public IEnumerable<CountyDTO> GetAllCountiesOrderedByCountyName(bool noTracking = true)
+    public IEnumerable<CountyDTO> GetAllCountiesOrderedByCountyName(bool noTracking = true, bool noIncludes = false)
     {
-        return (CreateQuery(noTracking).OrderBy(c => c.CountyName).ToList()
+        return (CreateQuery(noTracking, noIncludes).OrderBy(c => c.CountyName).ToList()
             .Select(e => Mapper.Map(e))!);
     }
 
@@ -46,7 +46,9 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
     protected override IQueryable<App.Domain.County> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
         var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
-        if (!noIncludes) query = query.Include(x => x.Cities);
+        if (!noIncludes) query = query.Include(x => x.Cities)
+            .Include(x => x.Country)
+            .ThenInclude(x => x!.CountryName);
         if (noTracking) query = query.AsNoTracking();
 
         return query;
