@@ -1,3 +1,4 @@
+using System.Globalization;
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using Microsoft.AspNetCore.Mvc;
@@ -70,16 +71,13 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             if (ModelState.IsValid)
             {
-                var country = new CountryDTO()
-                {
-                    Id = new Guid(),
-                    CountryName = vm.CountryName,
-                    CreatedBy = User.GettingUserEmail(),
-                    CreatedAt = DateTime.Now.ToUniversalTime(),
-                    UpdatedBy = User.GettingUserEmail(),
-                    UpdatedAt = DateTime.Now.ToUniversalTime()
-                };
-                
+                var country = new CountryDTO();
+                country.Id = Guid.NewGuid();
+                country.CountryName = vm.CountryName;
+                country.CreatedBy = User.GettingUserEmail();
+                country.CreatedAt = DateTime.Now.ToUniversalTime();
+                country.UpdatedBy = User.GettingUserEmail();
+                country.UpdatedAt = DateTime.Now.ToUniversalTime();
                 _appBLL.Countries.Add(country);
                 await _appBLL.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -29,7 +29,17 @@ public class AutoMapperConfig : Profile
                 m =>
                     m.MapFrom(x => x.UpdatedAt.ToLocalTime()));
         
+        // DTO => EF: Convert to Universal Time
+        CreateMap<CountryDTO, App.Domain.Country>()
+            .ForMember(db => db.CreatedAt,
+                dto =>
+                    dto.MapFrom(x => x.CreatedAt.ToUniversalTime()))
+            .ForMember(db => db.UpdatedAt,
+                dto =>
+                    dto.MapFrom(x => x.UpdatedAt.ToUniversalTime()));
+        
 
+        
         #endregion
         #region County Mapping
         // Convert from EF => DTO: Convert to Local Time
