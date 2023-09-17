@@ -125,7 +125,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 {
                     if (country != null)
                     {
-                        country.CountryName = vm.CountryName;
+                        country.CountryName.SetTranslation(vm.CountryName); 
                         country.UpdatedBy = User.GettingUserEmail();
                         country.UpdatedAt = DateTime.Now.ToUniversalTime();
                         _appBLL.Countries.Update(country);
