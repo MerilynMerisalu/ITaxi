@@ -25,4 +25,14 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
         return Repository.GetAllCountriesOrderedByCountryName(noTracking)
             .Select(e => Mapper.Map(e))!;
     }
+
+    public async Task<bool> HasAnyCountiesAsync(Guid id, bool noTracking = true)
+    {
+        return await Repository.HasAnyCountiesAsync(id, noTracking);
+    }
+
+    public bool HasAnyCounties(Guid id, bool noTracking = true)
+    {
+        return Repository.HasAnyCounties(id, noTracking);
+    }
 }

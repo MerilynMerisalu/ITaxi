@@ -184,6 +184,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
 
             var country = await _appBLL.Countries.FirstOrDefaultAsync(id, noIncludes: true);
+            if (await _appBLL.Countries.HasAnyCountiesAsync(id))
+                return Content("Entity cannot be deleted because it has dependent entities!");
+
             await _appBLL.Countries.RemoveAsync(country!.Id);
             
             await _appBLL.SaveChangesAsync();

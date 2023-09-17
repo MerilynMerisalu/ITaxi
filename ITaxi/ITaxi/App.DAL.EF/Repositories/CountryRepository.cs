@@ -23,6 +23,16 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
         return CreateQuery(noTracking).Select(c => Mapper.Map(c))!;
     }
 
+    public async Task<bool> HasAnyCountiesAsync(Guid id, bool noTracking = true)
+    {
+        return await RepoDbContext.Counties.AnyAsync(c => c.CountryId.Equals(id));
+    }
+
+    public bool HasAnyCounties(Guid id, bool noTracking = true)
+    {
+        return RepoDbContext.Counties.Any(c => c.CountryId.Equals(id));
+    }
+
     protected override IQueryable<Country> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
         if (noTracking)
