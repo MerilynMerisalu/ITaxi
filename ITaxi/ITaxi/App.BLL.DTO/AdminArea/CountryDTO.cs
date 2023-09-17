@@ -11,6 +11,6 @@ public class CountryDTO: DomainEntityMetaId
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Country)
         , Name = nameof(CountryName))]
-    public string CountryName { get; set; } = default!;
+    public LangStr CountryName { get; set; } = default!;
 
 }
