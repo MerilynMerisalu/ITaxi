@@ -172,7 +172,7 @@ public class CountiesController : ControllerBase
         if (county == null) return NotFound();
         if (await _appBLL.Cities.HasAnyCitiesAsync(county.Id))
         {
-            
+            return Content("Entity cannot be deleted because it has dependent entities!");
         }
         await _appBLL.Counties.RemoveAsync(county.Id);
         await _appBLL.SaveChangesAsync();
