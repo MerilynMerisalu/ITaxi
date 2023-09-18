@@ -122,6 +122,7 @@ namespace WebApp.ApiControllers.AdminArea
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<Country>> PostCountry(Country country)
         {
+            country.Id = Guid.NewGuid();
             country.CreatedBy = User.GettingUserEmail();
             country.CreatedAt = DateTime.Now.ToUniversalTime();
             country.UpdatedBy = User.GettingUserEmail();
@@ -147,6 +148,9 @@ namespace WebApp.ApiControllers.AdminArea
             {
                 return NotFound();
             }
+            if (await _appBLL.Countries.HasAnyCountiesAsync(id))
+                return Content("Entity cannot be deleted because it has dependent entities!");
+
 
             await _appBLL.Countries.RemoveAsync(country.Id);
             await _appBLL.SaveChangesAsync();
