@@ -6,12 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using App.Domain;
 using AutoMapper;
 using Base.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using WebApp.Areas.AdminArea.ViewModels;
 
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
     [Area("AdminArea")]
+    [Authorize(Roles = nameof(Admin))]
     public class CountriesController : Controller
     {
         private readonly IAppBLL _appBLL;
