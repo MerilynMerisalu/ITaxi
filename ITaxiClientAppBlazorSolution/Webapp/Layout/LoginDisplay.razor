@@ -1,0 +1,39 @@
+﻿@using Base.Service.Contracts
+@* @using Microsoft.AspNetCore.Components.WebAssembly.Authentication *@
+@inject NavigationManager Navigation
+@inject IAppState AppState
+
+@* <AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity?.Name!
+        <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
+    </Authorized>
+    <NotAuthorized>
+        <a href="login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView> *@
+
+@if (AppState.IsLoggedIn)
+{
+    <div>Hello, @AppState.AuthResponse.FirstName</div>
+    <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
+}
+else
+{
+    <a href="login">Log in</a>
+}
+
+@code{
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        AppState.OnAuthResponseChanged += () => StateHasChanged();
+    }
+
+    public void BeginLogOut()
+    {
+        //Navigation.NavigateToLogout("authentication/logout");
+    }
+}

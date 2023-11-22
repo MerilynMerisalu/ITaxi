@@ -1,0 +1,60 @@
+﻿@page "/vehicles/index"
+@using ITaxi.Public.DTO.v1.DriverArea
+@using ITaxi.Service
+@inject VehicleService service;
+<h1>Index</h1>
+<p>
+    <a href="./Create">Create New</a>
+</p>
+@if (Vehicles == null)
+{
+    <p>...Loading</p>
+}
+else
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>Vehicle Type</th>
+            <th>Vehicle Mark</th>
+            <th>Vehicle Model</th>
+            <th>Vehicle Plate Number</th>
+            <th>Manufacture Year</th>
+            <th>Number of Seats</th>
+            <th>Vehicle Availability</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Vehicles)
+        {
+            <tr>
+                <td>@item.VehicleType</td>
+                <td>@item.VehicleMark?.VehicleMarkName</td>
+                <td>@item.VehicleModel?.VehicleModelName</td>
+                <td>@item.VehiclePlateNumber</td>
+                <td>@item.ManufactureYear</td>
+                <td>@item.NumberOfSeats</td>
+                <td>@item.VehicleAvailability</td>
+                <td>
+                    <a href="./Edit">Edit</a>
+                    <a href="./Details">Details</a>
+                    <a href="./Delete">Delete</a>
+                    <a href="./Gallery">Gallery</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+@code {
+    IEnumerable<Vehicle>? Vehicles = new List<Vehicle>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Don't bother calling base, it doesn't do anything anyway in razor pages :P
+        //return base.OnInitializedAsync();
+
+        Vehicles = (await service.GetAllVehiclesAsync()).ToList();
+    }
+}

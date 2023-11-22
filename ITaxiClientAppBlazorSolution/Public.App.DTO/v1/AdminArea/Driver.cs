@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Public.DTO.v1.Identity;
-using Base.Domain;
+using ITaxi.Public.DTO.v1.Identity;
 using Base.Resources;
 
-namespace App.Public.DTO.v1.AdminArea;
-public class Driver: DomainEntityMetaId
+namespace ITaxi.Public.DTO.v1.AdminArea;
+public class Driver
 {
+    public Guid Id { get; set; }
     public Guid AppUserId { get; set; }
     public AppUser? AppUser { get; set; }
 
@@ -14,9 +14,6 @@ public class Driver: DomainEntityMetaId
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "PersonalIdentifier")]
     public string? PersonalIdentifier { get; set; }
-
-    //[Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseCategories")]
-    //public ICollection<DriverAndDriverLicenseCategory>? DriverLicenseCategories { get; set; }
 
     [MaxLength(15, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [MinLength(2, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMinLength")]
