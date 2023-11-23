@@ -23,6 +23,14 @@ namespace Base.Service
             return await Client.GetFromJsonAsync<IEnumerable<TEntity?>>(GetEndpointUrl());
         }
 
- 
+        public async Task<TEntity?> GetEntityByIdAsync(Guid id)
+        {
+            return await Client.GetFromJsonAsync<TEntity?>(GetEndpointUrl()  + id);
+        }
+
+        public async Task<TEntity?> RemoveEntityAsync(Guid id)
+        {
+            return await Client.DeleteFromJsonAsync<TEntity?>(GetEndpointUrl() + id);
+        }
     }
 }

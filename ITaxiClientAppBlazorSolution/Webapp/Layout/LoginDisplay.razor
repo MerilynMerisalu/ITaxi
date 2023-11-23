@@ -15,8 +15,8 @@
 
 @if (AppState.IsLoggedIn)
 {
-    <div>Hello, @AppState.AuthResponse.FirstName</div>
-    <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
+    <div>Hello, @AppState.AuthResponse.FirstAndLastName!</div>
+    <button class="nav-link btn btn-link" @onclick="LogOut">Log out</button>
 }
 else
 {
@@ -32,8 +32,14 @@ else
         AppState.OnAuthResponseChanged += () => StateHasChanged();
     }
 
-    public void BeginLogOut()
+    public void LogOut()
     {
-        //Navigation.NavigateToLogout("authentication/logout");
+        var token = AppState.AuthResponse.Token;
+        token = null;
+        AppState.AuthResponse = null!;
+       
+
+        Navigation.NavigateTo("/");
+        AppState.OnAuthResponseChanged += () => StateHasChanged();
     }
 }

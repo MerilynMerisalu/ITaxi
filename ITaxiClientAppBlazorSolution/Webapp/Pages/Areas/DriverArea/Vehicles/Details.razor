@@ -1,5 +1,70 @@
-﻿<h3>Details</h3>
+﻿@page "/Vehicles/details/{Id:guid}"
+@using BlazorWebApp.Services
+@using ITaxi.Public.DTO.v1.DriverArea
+@using ITaxi.Service
+@inject VehicleService service
+<PageTitle>Vehicle Details</PageTitle>
+<h1>Details</h1>
+@if (vehicle == null)
+{
+    <p>...Loading</p>
+}
+<div>
+    <h4>Vehicle</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Vehicle Type
+        </dt>
+        <dd class="col-sm-10">
+            @vehicle?.VehicleType
+        </dd>
+        <dt class="col-sm-2">
+            Vehicle Mark
+        </dt>
+        <dd class="col-sm-10">
+            @vehicle?.VehicleMark
+        </dd>
+        <dt class="col-sm-2">
+            Vehicle Model
+        </dt>
+        <dd class="col-sm-10">
+            @vehicle?.VehicleModel
+        </dd>
+        <dt class="col-sm-2">
+            Manufacture Year
+        </dt>
+        <dd class="col-sm-10">
+            @vehicle?.ManufactureYear
+        </dd>
+        <dt class="col-sm-2">
+            Number of Seats
+        </dt>
+        <dd class="col-sm-10">
+            @vehicle?.NumberOfSeats
+        </dd>
+        <dt class="col-sm-2">
+            Vehicle Availability
+        </dt>
+        <dd class="col-sm-10">
+            @vehicle?.VehicleAvailability
+        </dd>
+    </dl>
+
+
+</div>
 
 @code {
+
+    [Parameter]
+    public Guid Id { get; set; }
+    Vehicle? vehicle;
+    protected override async Task OnInitializedAsync()
+    {
+       
+        StateHasChanged();
+        vehicle = await service.GetVehicleByIdAsync(Id);
+        await base.OnInitializedAsync();
+    }
 
 }

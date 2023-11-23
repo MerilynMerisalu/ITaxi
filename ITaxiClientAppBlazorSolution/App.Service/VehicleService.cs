@@ -9,6 +9,8 @@ namespace ITaxi.Service
     public interface IVehicleService
     {
         Task<IEnumerable<Vehicle?>> GetAllVehiclesAsync();
+        Task<Vehicle?> GetVehicleByIdAsync(Guid id);
+        Task<Vehicle?> DeleteVehicleByIdAsync(Guid id);
     }
     public class VehicleService : BaseEntityService<Vehicle, Guid>, IVehicleService
     {
@@ -16,13 +18,21 @@ namespace ITaxi.Service
         {
         }
 
-        protected override string EndpointUri => "/driverarea/vehicles";
+        protected override string EndpointUri => "/driverarea/vehicles/";
+
+        public Task<Vehicle?> DeleteVehicleByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<IEnumerable<Vehicle?>> GetAllVehiclesAsync()
         {
             return await base.GetAllAsync();
         }
 
- 
+        public async Task<Vehicle?> GetVehicleByIdAsync(Guid id)
+        {
+            return await base.GetEntityByIdAsync(id);
+        }
     }
 }

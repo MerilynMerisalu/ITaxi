@@ -1,5 +1,69 @@
-﻿<h3>Delete</h3>
+﻿@page "/Vehicles/Delete/{Id:guid}"
+@inject VehicleService service
+@using ITaxi.Public.DTO.v1.DriverArea
+@using ITaxi.Service
+
+<PageTitle>Vehicle Delete</PageTitle>
+<h1>Delete</h1>
+
+<h3>Are You Sure You Want To Delete This?</h3>
+<div>
+    <h4>Vehicle</h4>
+    <hr />
+    <dl class="row">
+
+    <dt class="col-sm-2">
+        Vehicle Type
+    </dt>
+    <dd class="col-sm-10">
+        @* @Html.DisplayFor(model => model!.VehicleType) *@
+    </dd>
+    <dt class="col-sm-2">
+        Vehicle Mark
+    </dt>
+    <dd class="col-sm-10">
+        @* @Html.DisplayFor(model => model.VehicleMark) *@
+    </dd>
+    <dt class="col-sm-2">
+        Vehicle Model
+    </dt>
+    <dd class="col-sm-10">
+        @* @Html.DisplayFor(model => model.VehicleModel) *@
+    </dd>
+    <dt class="col-sm-2">
+        Vehicle Plate Number
+    </dt>
+    <dd class="col-sm-10">
+        @* @Html.DisplayFor(model => model.VehiclePlateNumber) *@
+    </dd>
+    <dt class="col-sm-2">
+        Manufacture Year
+    </dt>
+    <dd class="col-sm-10">
+        @* @Html.DisplayFor(model => model.ManufactureYear) *@
+    </dd>
+    <dt class="col-sm-2">
+        Number Of Seats
+    </dt>
+    <dd class="col-sm-10">
+        @* @Html.DisplayFor(model => model.NumberOfSeats) *@
+    </dd>
+    <dt class="col-sm-2">
+        Vehicle Availability
+    </dt>
+    <dd class="col-sm-10">
+        @* @Html.DisplayFor(model => model.VehicleAvailability) *@
+    </dd>
+
+</dl>
+    <form>
+        <button style="background-color:red">Delete</button>
+    </form>
+</div>
 
 @code {
+    [Parameter]
+    public Guid Id { get; set; }
 
+    
 }

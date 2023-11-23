@@ -18,4 +18,9 @@ public class VehicleModel
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.VehicleModel), Name = "VehicleMarkName")]
     public VehicleMark? VehicleMark { get; set; }
+
+    public override string ToString()
+    {
+        return this.VehicleModelName;
+    }
 }

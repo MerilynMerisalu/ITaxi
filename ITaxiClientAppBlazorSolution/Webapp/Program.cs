@@ -13,8 +13,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddSingleton<IAppState, AppState>();
 builder.Services.AddTransient<ITaxiAuthTokenHandler>();
-builder.Services.AddHttpClient("Auth", config => config.BaseAddress = new Uri("https://localhost:44308/api/v1.0/"));
-builder.Services.AddHttpClient("API", config => config.BaseAddress = new Uri("https://localhost:44308/api/v1.0/"))
+builder.Services.AddHttpClient("Auth", config => config.BaseAddress = new Uri("https://localhost:7026/api/v1.0/"));
+builder.Services.AddHttpClient("API", config => config.BaseAddress = new Uri("https://localhost:7026/api/v1.0/"))
     .AddHttpMessageHandler<ITaxiAuthTokenHandler>();
 //builder.Services.AddOidcAuthentication(options =>
 //{

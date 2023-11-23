@@ -9,40 +9,41 @@
 <EditForm Model="@this" OnSubmit="Login">
     <label for="username">Username</label>
     <InputText @bind-Value="_userName" placeholder="User Name" name="username"></InputText>
-    <br/>
+    <br />
     <label for="password">Password</label>
     <InputText type="password" placeholder="Password" @bind-Value="_password" name="password"></InputText>
-    <br/>
+    <br />
     <button type="submit">Login</button>
 </EditForm>
 @code {
-    string _userName;
-    string _password;
+        string _userName;
+        string _password;
 
-    public async Task Login()
-    {
-        var token = await AuthenticateToken(_userName, _password);
-        _appState.AuthResponse = token;
-
-        Nav.NavigateTo("/");
-    }
-
-    private async Task<AuthResponse> AuthenticateToken(string username, string password)
-    {
-        AuthResponse authResponse = new AuthResponse();
-        var client = this._httpClientFactory.CreateClient("Auth");
-
-        client.DefaultRequestHeaders.Clear();
-        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-        client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
-        var response = await client.PostAsJsonAsync($"{client.BaseAddress!.ToString().TrimEnd('/')}/identity/account/login", new { Email = _userName, Password = _password });
-        if (response.IsSuccessStatusCode)
+        public async Task Login()
         {
-            authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
+            var token = await AuthenticateToken(_userName, _password);
+            _appState.AuthResponse = token;
 
+            Nav.NavigateTo("/");
         }
 
-        return authResponse;
-    }
+        private async Task<AuthResponse> AuthenticateToken(string username, string password)
+        {
+            AuthResponse authResponse = new AuthResponse();
+            var client = this._httpClientFactory.CreateClient("Auth");
 
-}
+            client.DefaultRequestHeaders.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+            var response = await client.PostAsJsonAsync($"{client.BaseAddress!.ToString().TrimEnd('/')}/identity/account/login", new { Email = _userName, Password = _password });
+            if (response.IsSuccessStatusCode)
+            {
+                authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
+
+            }
+
+            return authResponse;
+        }
+
+
+ }
