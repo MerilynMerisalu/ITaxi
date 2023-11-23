@@ -1,5 +1,27 @@
-﻿<h3>Gallery</h3>
+﻿@page "/Vehicles/gallery/{Id:guid}"
+@using BlazorWebApp.Services
+@using ITaxi.Public.DTO.v1.DriverArea
+@using ITaxi.Service
+@inject VehicleService service
+<PageTitle>@vehicle?.VehicleIdentifier Gallery</PageTitle>
+<h1>@vehicle?.VehicleIdentifier Gallery</h1>
+@if (vehicle == null)
+{
+    <p>...Loading</p>
+}
+<div>
+    <h4>@vehicle?.VehicleIdentifier</h4>
+    <hr />
+</div>
 
 @code {
-
+    [Parameter]
+    public Guid Id { get; set; }
+    Vehicle? vehicle;
+    protected override async Task OnInitializedAsync()
+    {
+        StateHasChanged();
+        vehicle = await service.GetVehicleByIdAsync(Id);
+        await base.OnInitializedAsync();
+    }
 }

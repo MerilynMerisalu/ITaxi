@@ -62,7 +62,6 @@
     Vehicle? vehicle;
     protected override async Task OnInitializedAsync()
     {
-       
         StateHasChanged();
         vehicle = await service.GetVehicleByIdAsync(Id);
         await base.OnInitializedAsync();

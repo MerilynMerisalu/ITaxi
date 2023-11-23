@@ -20,9 +20,9 @@ namespace ITaxi.Service
 
         protected override string EndpointUri => "/driverarea/vehicles/";
 
-        public Task<Vehicle?> DeleteVehicleByIdAsync(Guid id)
+        public async Task<Vehicle?> DeleteVehicleByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await base.RemoveEntityAsync(id);
         }
 
         public async Task<IEnumerable<Vehicle?>> GetAllVehiclesAsync()

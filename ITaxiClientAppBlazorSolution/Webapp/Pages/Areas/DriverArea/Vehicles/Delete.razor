@@ -1,7 +1,9 @@
 ﻿@page "/Vehicles/Delete/{Id:guid}"
 @inject VehicleService service
+@inject NavigationManager navManager
 @using ITaxi.Public.DTO.v1.DriverArea
 @using ITaxi.Service
+
 
 <PageTitle>Vehicle Delete</PageTitle>
 <h1>Delete</h1>
@@ -16,54 +18,74 @@
         Vehicle Type
     </dt>
     <dd class="col-sm-10">
-        @* @Html.DisplayFor(model => model!.VehicleType) *@
+        @vehicle?.VehicleType
     </dd>
     <dt class="col-sm-2">
         Vehicle Mark
     </dt>
     <dd class="col-sm-10">
-        @* @Html.DisplayFor(model => model.VehicleMark) *@
+        @vehicle?.VehicleMark
     </dd>
     <dt class="col-sm-2">
         Vehicle Model
     </dt>
     <dd class="col-sm-10">
-        @* @Html.DisplayFor(model => model.VehicleModel) *@
+        @vehicle?.VehicleModel
     </dd>
     <dt class="col-sm-2">
         Vehicle Plate Number
     </dt>
     <dd class="col-sm-10">
-        @* @Html.DisplayFor(model => model.VehiclePlateNumber) *@
+        @vehicle?.VehiclePlateNumber
     </dd>
     <dt class="col-sm-2">
         Manufacture Year
     </dt>
     <dd class="col-sm-10">
-        @* @Html.DisplayFor(model => model.ManufactureYear) *@
+        @vehicle?.ManufactureYear
     </dd>
     <dt class="col-sm-2">
         Number Of Seats
     </dt>
     <dd class="col-sm-10">
-        @* @Html.DisplayFor(model => model.NumberOfSeats) *@
+        @vehicle?.NumberOfSeats
     </dd>
     <dt class="col-sm-2">
         Vehicle Availability
     </dt>
     <dd class="col-sm-10">
-        @* @Html.DisplayFor(model => model.VehicleAvailability) *@
+        @vehicle?.VehicleAvailability
     </dd>
 
 </dl>
     <form>
-        <button style="background-color:red">Delete</button>
+        <button @onclick="() =>DeleteVehicleAsync()" style="background-color:red">Delete</button>
     </form>
 </div>
 
 @code {
     [Parameter]
     public Guid Id { get; set; }
+    Vehicle? vehicle;
+    protected async override Task OnInitializedAsync()
+    {
+        StateHasChanged();
+        vehicle = await service.GetVehicleByIdAsync(Id);
+        await base.OnInitializedAsync();
+    }
 
+    private async Task DeleteVehicleAsync()
+    {
+        StateHasChanged();
+        // vehicle = await service.GetVehicleByIdAsync(Id);
+        
+           vehicle = await service.DeleteVehicleByIdAsync(Id);
+            
+            navManager.NavigateTo("/vehicles/index");
+        
+        
+      
+    }
     
+
 }

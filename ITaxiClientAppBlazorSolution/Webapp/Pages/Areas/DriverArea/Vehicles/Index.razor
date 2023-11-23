@@ -1,6 +1,7 @@
 ﻿@page "/vehicles/index"
 @using ITaxi.Public.DTO.v1.DriverArea
 @using ITaxi.Service
+
 @inject VehicleService service;
 <h1>Index</h1>
 <p>
@@ -39,7 +40,7 @@ else
                     <a href="./Edit">Edit</a>
                     <a href="@($"Vehicles/Details/{item.Id}")">Details</a>
                     <a href="@($"Vehicles/Delete/{item.Id}")">Delete</a>
-                    <a href="./Gallery">Gallery</a>
+                    <a href="@($"Vehicles/Gallery/{item.Id}")">Gallery</a>
                 </td>
             </tr>
         }
