@@ -69,23 +69,28 @@
     Vehicle? vehicle;
     protected async override Task OnInitializedAsync()
     {
-        StateHasChanged();
         vehicle = await service.GetVehicleByIdAsync(Id);
         await base.OnInitializedAsync();
     }
 
     private async Task DeleteVehicleAsync()
     {
-        StateHasChanged();
+        _errorMessage = null!;
         // vehicle = await service.GetVehicleByIdAsync(Id);
-        
-           vehicle = await service.DeleteVehicleByIdAsync(Id);
-            
-            navManager.NavigateTo("/vehicles/index");
-        
-        
-      
-    }
-    
 
+        try
+        {
+            vehicle = await service.DeleteVehicleByIdAsync(Id);
+            StateHasChanged();
+
+            navManager.NavigateTo("/vehicles/index");
+        }
+        catch(Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+
+    }
+
+    private string _errorMessage = String.Empty;
 }

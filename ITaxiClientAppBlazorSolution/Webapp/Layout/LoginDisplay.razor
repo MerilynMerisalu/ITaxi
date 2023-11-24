@@ -34,12 +34,8 @@ else
 
     public void LogOut()
     {
-        var token = AppState.AuthResponse.Token;
-        token = null;
         AppState.AuthResponse = null!;
-       
-
         Navigation.NavigateTo("/");
-        AppState.OnAuthResponseChanged += () => StateHasChanged();
+       
     }
 }
