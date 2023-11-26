@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="v1\DriverArea\" />
     <Folder Include="v1\AdminArea\" />
-    <Folder Include="v1\Identity\" />
   </ItemGroup>
 
   <ItemGroup>

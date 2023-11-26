@@ -10,7 +10,7 @@ namespace ITaxi.Service
     {
         Task<IEnumerable<Vehicle?>> GetAllVehiclesAsync();
         Task<Vehicle?> GetVehicleByIdAsync(Guid id);
-        Task<Vehicle?> DeleteVehicleByIdAsync(Guid id);
+        Task DeleteVehicleByIdAsync(Guid id);
     }
     public class VehicleService : BaseEntityService<Vehicle, Guid>, IVehicleService
     {
@@ -20,9 +20,9 @@ namespace ITaxi.Service
 
         protected override string EndpointUri => "/driverarea/vehicles/";
 
-        public async Task<Vehicle?> DeleteVehicleByIdAsync(Guid id)
+        public async Task DeleteVehicleByIdAsync(Guid id)
         {
-            return await base.RemoveEntityAsync(id);
+            await base.RemoveEntityAsync(id);
         }
 
         public async Task<IEnumerable<Vehicle?>> GetAllVehiclesAsync()

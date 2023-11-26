@@ -59,7 +59,7 @@
 
 </dl>
     <form>
-        <button @onclick="() =>DeleteVehicleAsync()" style="background-color:red">Delete</button>
+        <button @onclick="DeleteVehicleAsync" style="background-color:red">Delete</button>
     </form>
 </div>
 
@@ -80,10 +80,8 @@
 
         try
         {
-            vehicle = await service.DeleteVehicleByIdAsync(Id);
-            StateHasChanged();
-
-            navManager.NavigateTo("/vehicles/index");
+            await service.DeleteVehicleByIdAsync(Id);
+            //navManager.NavigateTo("/vehicles/index");
         }
         catch(Exception ex)
         {
