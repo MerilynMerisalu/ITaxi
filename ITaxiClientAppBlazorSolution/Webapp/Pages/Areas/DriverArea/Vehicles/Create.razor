@@ -1,6 +1,40 @@
 ﻿@page "/vehicle/Create"
-<h3>Create</h3>
+@using ITaxi.Public.DTO.v1.AdminArea
+@using ITaxi.Service
+@inject VehicleTypeService vehicleTypesService
 
+<h1>Create</h1>
+<h4>Vehicle</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form>
+            <div class="form-group">
+                <label for="VehicleTypeId" class="control-label">
+                    Vehicle Type
+                </label>
+                 <select class="form-control">
+                    <option selected disabled value="-1">Please Select</option>
+                    
+                   @*  @if (VehicleTypes != null )
+                    {
+                        foreach (var option in VehicleTypes)
+                        {
+                            <option value="@option.Id">@option.VehicleTypeName</option>
+                        }
+                    } *@
+                    
+                </select> 
+            </div> 
+        </form>
+    </div>
+</div>
 @code {
-
+     List<VehicleType>? VehicleTypes = new List<VehicleType>();
+    public Guid VehicleTypeId { get; set; }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     VehicleTypes = (await vehicleTypesService.GetAllVehicleTypesAsync()).ToList();
+        
+    // }
 }
