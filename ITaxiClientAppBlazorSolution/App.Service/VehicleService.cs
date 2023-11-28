@@ -16,7 +16,8 @@ namespace ITaxi.Service
     }
     public class VehicleService : BaseEntityService<Vehicle, Guid>, IVehicleService
     {
-        public VehicleService(IHttpClientFactory clientProvider, IAppState appState) : base(clientProvider.CreateClient("API"), appState)
+        public VehicleService(IHttpClientFactory clientProvider, IAppState appState) : 
+            base(clientProvider.CreateClient("API"), appState)
         {
         }
         protected virtual string ManufactureYearsEndPointUri => "GetManufactureYears";

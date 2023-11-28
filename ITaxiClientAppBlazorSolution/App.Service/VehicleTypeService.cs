@@ -16,9 +16,12 @@ namespace ITaxi.Service
     }
     public class VehicleTypeService : BaseEntityService<VehicleType, Guid>, IVehicleType
     {
-        public VehicleTypeService(HttpClient client, IAppState appState) : base(client, appState)
+        public VehicleTypeService(IHttpClientFactory ClientPrivider, IAppState appState) : 
+            base(ClientPrivider.CreateClient("API"), appState)
         {
+
         }
+        
 
         protected override string EndpointUri => "/adminarea/vehicletypes/";
 
