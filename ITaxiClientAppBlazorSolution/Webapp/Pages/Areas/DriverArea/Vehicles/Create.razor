@@ -35,13 +35,13 @@
                 </label>
                 <select class="form-control" >
                     <option selected value="-1">Please Select</option>
-                @* @if (VehicleMarks != null)
+                 @if (VehicleMarks != null)
                 {
                     foreach (var option in VehicleMarks)
                     {
                         <option value="@option.Id">@option.VehicleMarkName</option>
                     }
-                } *@
+                } 
                 </select>
             <label for="VehicleModelId" class="control-label">
                 Vehicle Model
@@ -81,7 +81,7 @@
 </div>
 @code {
      List<VehicleType>? VehicleTypes = new List<VehicleType>();
-    // List<VehicleMark>? VehicleMarks = new List<VehicleMark>();
+     List<VehicleMark>? VehicleMarks = new List<VehicleMark>();
     // List<VehicleModel>? VehicleModels = new List<VehicleModel>();
     public Guid VehicleTypeId { get; set; }
     public Guid VehicleMarkId { get; set; }
@@ -93,7 +93,7 @@
     protected override async Task OnInitializedAsync()
     {
          VehicleTypes = (await vehicleTypesService.GetAllVehicleTypesAsync()).ToList();
-        // VehicleMarks = (await vehicleMarksService.GetAllVehicleMarksAsync()).ToList();
+         VehicleMarks = (await vehicleMarksService.GetAllVehicleMarksAsync()).ToList();
         // VehicleModels = (await vehicleModelService.GetAllVehicleModelsAsync()).ToList();
         ManuFactureYears = ( await vehicleService.GetManufactureYears()).ToList();
 

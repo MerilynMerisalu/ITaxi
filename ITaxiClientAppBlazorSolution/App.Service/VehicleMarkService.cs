@@ -15,7 +15,8 @@ namespace ITaxi.Service
     }
     public class VehicleMarkService : BaseEntityService<VehicleMark, Guid>, IVehicleMark
     {
-        public VehicleMarkService(HttpClient client, IAppState appState) : base(client, appState)
+        public VehicleMarkService(IHttpClientFactory clientProvider, IAppState appState) : 
+            base(clientProvider.CreateClient("API"), appState)
         {
         }
 
