@@ -1,8 +1,11 @@
 ﻿@page "/vehicle/Create"
 @using ITaxi.Public.DTO.v1.AdminArea
 @using ITaxi.Service
+@using System.ComponentModel.DataAnnotations
 @inject VehicleTypeService vehicleTypesService
-
+@inject VehicleMarkService vehicleMarksService
+@inject VehicleModelService vehicleModelService
+@inject VehicleService vehicleService
 <h1>Create</h1>
 <h4>Vehicle</h4>
 <hr />
@@ -13,7 +16,7 @@
                 <label for="VehicleTypeId" class="control-label">
                     Vehicle Type
                 </label>
-                 <select class="form-control">
+                 <select class="form-control" >
                     <option selected disabled value="-1">Please Select</option>
                     
                    @*  @if (VehicleTypes != null )
@@ -22,19 +25,77 @@
                         {
                             <option value="@option.Id">@option.VehicleTypeName</option>
                         }
-                    } *@
-                    
+                    } 
+                     *@
                 </select> 
             </div> 
+            
+                <label for="VehicleMarkId" class="control-label">
+                    Vehicle Mark
+                </label>
+                <select class="form-control" >
+                    <option selected disabled value="-1">Please Select</option>
+                @* @if (VehicleMarks != null)
+                {
+                    foreach (var option in VehicleMarks)
+                    {
+                        <option value="@option.Id">@option.VehicleMarkName</option>
+                    }
+                } *@
+                </select>
+            <label for="VehicleModelId" class="control-label">
+                Vehicle Model
+            </label>
+            <select class="form-control">
+                <option selected disabled value="-1">Please Select</option>
+                @* @if (VehicleMarks != null)
+                {
+                    foreach (var option in VehicleModels)
+                    {
+                        <option value="@option.Id">@option.VehicleModelName</option>
+                    }
+                } *@
+            </select>
+            <div class="form-group">
+                <label for="VehiclePlateNumber" class="control-label">Vehicle Plate Number</label>
+                <input @bind-value="VehiclePlateNumber" class="form-control" />
+            </div>
+            <label for="VehicleManufactureYear" class="control-label">
+                Vehicle Manufacture Year
+            </label>
+            <select class="form-control" @bind="VehicleManufactureYear">
+                <option selected value="-1">Please Select</option>
+                 @if (ManuFactureYears != null)
+                {
+                    
+                    foreach (var option in ManuFactureYears)
+                    {
+                        <option value="@option">@option</option>
+                    }
+                }
+                
+            </select>
+
         </form>
     </div>
 </div>
 @code {
-     List<VehicleType>? VehicleTypes = new List<VehicleType>();
+    // List<VehicleType>? VehicleTypes = new List<VehicleType>();
+    // List<VehicleMark>? VehicleMarks = new List<VehicleMark>();
+    // List<VehicleModel>? VehicleModels = new List<VehicleModel>();
     public Guid VehicleTypeId { get; set; }
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     VehicleTypes = (await vehicleTypesService.GetAllVehicleTypesAsync()).ToList();
-        
-    // }
+    public Guid VehicleMarkId { get; set; }
+    public Guid VehicleModelId { get; set; }
+    public int VehicleManufactureYear { get; set; }
+    public List<int> ManuFactureYears = new List<int>();
+    [Required]
+    public string VehiclePlateNumber { get; set; } = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        // VehicleTypes = (await vehicleTypesService.GetAllVehicleTypesAsync()).ToList();
+        // VehicleMarks = (await vehicleMarksService.GetAllVehicleMarksAsync()).ToList();
+        // VehicleModels = (await vehicleModelService.GetAllVehicleModelsAsync()).ToList();
+        ManuFactureYears = ( await vehicleService.GetManufactureYears()).ToList();
+
+    }
 }

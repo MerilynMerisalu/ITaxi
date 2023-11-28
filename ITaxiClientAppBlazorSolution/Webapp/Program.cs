@@ -25,4 +25,6 @@ builder.Services.AddHttpClient("API", config => config.BaseAddress = new Uri("ht
 
 builder.Services.AddTransient<VehicleService>();
 builder.Services.AddTransient<VehicleTypeService>();
+builder.Services.AddTransient<VehicleMarkService>();
+builder.Services.AddTransient<VehicleModelService>();
 await builder.Build().RunAsync();

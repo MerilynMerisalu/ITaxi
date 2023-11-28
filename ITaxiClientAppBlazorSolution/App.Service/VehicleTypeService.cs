@@ -20,11 +20,11 @@ namespace ITaxi.Service
         {
         }
 
-        protected override string EndpointUri => "/adminarea/vehicletypes";
+        protected override string EndpointUri => "/adminarea/vehicletypes/";
 
         public async Task<IEnumerable<VehicleType?>> GetAllVehicleTypesAsync()
         {
-            return await base.GetAllAsync();
+            return (await base.GetAllAsync()).ToList();
         }
     }
 }
