@@ -77,13 +77,15 @@
                 
             </select>
             <label for="NumberOfSeats" class="control-label">Number of Seats</label>
-            <input @bind-value="NumberOfSeats" class="form-control" min="2" max="6"/>
+            <MeInputNumber @bind-Value="NumberOfSeats" class="form-control" Min="2" Max="6">
+
+            </MeInputNumber>
             
             <label for="VehicleAvailabity" class="control-label">Vehicle Availability</label>
             <div>
                 
             <InputSelect @bind-Value="VehicleAvailability" class="form-class">
-                    @* <option selected value="-1">Please Select</option> *@
+                     <option selected="selected">Please Select</option> 
                 @foreach (var option in Enum.GetValues(typeof(VehicleAvailability)))
                 {
                     <option value="@option">@option</option>
@@ -106,12 +108,12 @@
     public Guid VehicleModelId { get; set; }
     public int VehicleManufactureYear { get; set; }
     public List<int> ManuFactureYears = new List<int>();
-    public int NumberOfSeats { get; set; }
+    public int? NumberOfSeats { get; set; } = 2;
     [Required]
     public string VehiclePlateNumber { get; set; } = default!;
     [Required]
     [EnumDataType(typeof(VehicleAvailability))]
-    public VehicleAvailability VehicleAvailability { get; set; }
+    public VehicleAvailability? VehicleAvailability { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

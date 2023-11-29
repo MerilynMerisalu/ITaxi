@@ -11,6 +11,7 @@ namespace ITaxi.Service
     {
         Task<IEnumerable<Vehicle?>> GetAllVehiclesAsync();
         Task<Vehicle?> GetVehicleByIdAsync(Guid id);
+        Task<Vehicle> AddVehicle(Vehicle vehicle);
         Task DeleteVehicleByIdAsync(Guid id);
         Task<IEnumerable<int>> GetManufactureYears();
     }
@@ -22,6 +23,11 @@ namespace ITaxi.Service
         }
         protected virtual string ManufactureYearsEndPointUri => "GetManufactureYears";
         protected override string EndpointUri => "driverarea/vehicles/";
+
+        public Task<Vehicle> AddVehicle(Vehicle vehicle)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task DeleteVehicleByIdAsync(Guid id)
         {
