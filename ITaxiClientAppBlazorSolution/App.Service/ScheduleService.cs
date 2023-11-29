@@ -11,7 +11,8 @@ namespace ITaxi.Service
 {
     public interface IScheduleService
     {
-        Task<IEnumerable<Schedule>> GetAllSchedulesAsync();
+        Task<IEnumerable<Schedule?>> GetAllSchedulesAsync();
+        Task<Schedule?> GetScheduleByIdAsync(Guid id);
     }
     public class ScheduleService : BaseEntityService<Schedule, Guid>, IScheduleService
     {
@@ -22,9 +23,14 @@ namespace ITaxi.Service
 
         protected override string EndpointUri => "driverarea/schedules/";
 
-        public async Task<IEnumerable<Schedule>> GetAllSchedulesAsync()
+        public async Task<IEnumerable<Schedule?>> GetAllSchedulesAsync()
         {
             return await base.GetAllAsync();
+        }
+
+        public async Task<Schedule?> GetScheduleByIdAsync(Guid id)
+        {
+            return await base.GetEntityByIdAsync(id);
         }
     }
 }

@@ -1,8 +1,65 @@
 ﻿@page "/Schedules/Details/{Id:guid}"
+@using ITaxi.Service
+@using Public.App.DTO.v1.DriverArea
+@inject ScheduleService service
+<PageTitle>Schedule Details</PageTitle>
 <h1>Details</h1>
+@if (schedule == null)
+{
+    <p>...Loading</p>
+}
+<div>
+    <h4>Schedule</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Vehicle
+        </dt>
+        <dd class="col-sm-10">
+            @schedule?.Vehicle?.VehicleIdentifier
+        </dd>
+        <dt class="col-sm-2">
+            Schedule Start Date and Time
+        </dt>
+        <dd class="col-sm-10">
+            @schedule?.StartDateAndTime.ToString("f")
+        </dd>
+        <dt class="col-sm-2">
+            Schedule End Date and Time
+        </dt>
+        <dd class="col-sm-10">
+            @schedule?.EndDateAndTime.ToString("f")
+        </dd>
+        <dt class="col-sm-2">
+            Number of Ride Times
+        </dt>
+        <dd class="col-sm-10">
+            @schedule?.NumberOfRideTimes
+        </dd>
+        <dt class="col-sm-2">
+            Number of Ride Times Taken
+        </dt>
+        <dd class="col-sm-10">
+            @schedule?.NumberOfTakenRideTimes
+        </dd>
+        
+    </dl>
 
+
+</div>
+<a href="/schedules/index">Back To List</a>
 
 @code {
+
     [Parameter]
     public Guid Id { get; set; }
+    Schedule? schedule;
+    protected override async Task OnInitializedAsync()
+    {
+        StateHasChanged();
+        schedule = await service.GetScheduleByIdAsync(Id);
+        await base.OnInitializedAsync();
+    }
+
 }
+
