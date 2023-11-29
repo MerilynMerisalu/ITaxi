@@ -1,4 +1,5 @@
 ﻿@page "/vehicle/Create"
+@using ITaxi.Enum.Enum
 @using ITaxi.Public.DTO.v1.AdminArea
 @using ITaxi.Service
 @using System.ComponentModel.DataAnnotations
@@ -46,15 +47,15 @@
             <label for="VehicleModelId" class="control-label">
                 Vehicle Model
             </label>
-            <select class="form-control">
-                <option selected disabled value="-1">Please Select</option>
-                @* @if (VehicleMarks != null)
+            <select class="form-control" @bind="VehicleModelId">
+                <option selected value="-1">Please Select</option>
+                 @if (VehicleModels != null)
                 {
                     foreach (var option in VehicleModels)
                     {
                         <option value="@option.Id">@option.VehicleModelName</option>
                     }
-                } *@
+                } 
             </select>
             <div class="form-group">
                 <label for="VehiclePlateNumber" class="control-label">Vehicle Plate Number</label>
@@ -75,26 +76,48 @@
                 }
                 
             </select>
-
+            <label for="NumberOfSeats" class="control-label">Number of Seats</label>
+            <input @bind-value="NumberOfSeats" class="form-control" min="2" max="6"/>
+            
+            <label for="VehicleAvailabity" class="control-label">Vehicle Availability</label>
+            <div>
+                
+            <InputSelect @bind-Value="VehicleAvailability" class="form-class">
+                    @* <option selected value="-1">Please Select</option> *@
+                @foreach (var option in Enum.GetValues(typeof(VehicleAvailability)))
+                {
+                    <option value="@option">@option</option>
+                }
+            </InputSelect>
+            </div>
         </form>
+        <div class="form-group">
+            <br />
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
     </div>
 </div>
 @code {
-     List<VehicleType>? VehicleTypes = new List<VehicleType>();
-     List<VehicleMark>? VehicleMarks = new List<VehicleMark>();
-    // List<VehicleModel>? VehicleModels = new List<VehicleModel>();
+    List<VehicleType>? VehicleTypes = new List<VehicleType>();
+    List<VehicleMark>? VehicleMarks = new List<VehicleMark>();
+    List<VehicleModel>? VehicleModels = new List<VehicleModel>();
     public Guid VehicleTypeId { get; set; }
     public Guid VehicleMarkId { get; set; }
     public Guid VehicleModelId { get; set; }
     public int VehicleManufactureYear { get; set; }
     public List<int> ManuFactureYears = new List<int>();
+    public int NumberOfSeats { get; set; }
     [Required]
     public string VehiclePlateNumber { get; set; } = default!;
+    [Required]
+    [EnumDataType(typeof(VehicleAvailability))]
+    public VehicleAvailability VehicleAvailability { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
          VehicleTypes = (await vehicleTypesService.GetAllVehicleTypesAsync()).ToList();
          VehicleMarks = (await vehicleMarksService.GetAllVehicleMarksAsync()).ToList();
-        // VehicleModels = (await vehicleModelService.GetAllVehicleModelsAsync()).ToList();
+        VehicleModels = (await vehicleModelService.GetAllVehicleModelsAsync()).ToList();
         ManuFactureYears = ( await vehicleService.GetManufactureYears()).ToList();
 
     }

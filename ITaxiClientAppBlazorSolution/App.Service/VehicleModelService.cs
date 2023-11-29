@@ -15,7 +15,8 @@ namespace ITaxi.Service
     }
     public class VehicleModelService : BaseEntityService<VehicleModel, Guid>, IVehicleModel
     {
-        public VehicleModelService(HttpClient client, IAppState appState) : base(client, appState)
+        public VehicleModelService(IHttpClientFactory clientProvider, IAppState appState) : 
+            base(clientProvider.CreateClient("API"), appState)
         {
         }
 

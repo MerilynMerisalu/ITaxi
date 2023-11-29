@@ -1,4 +1,5 @@
 ﻿using ITaxi.Resources.Areas.App.Domain;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -22,6 +23,7 @@ public enum VehicleAvailability
     Available = 1,
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "InAvailable")]
+    
     InAvailable
 }
 
