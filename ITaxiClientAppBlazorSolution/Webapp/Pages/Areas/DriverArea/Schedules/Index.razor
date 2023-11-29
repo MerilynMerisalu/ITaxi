@@ -1,0 +1,60 @@
+﻿@page "/schedules/index"
+@using ITaxi.Service
+@using Public.App.DTO.v1.DriverArea
+@inject ScheduleService scheduleService
+<PageTitle>Index</PageTitle>
+
+
+<h1>Index</h1>
+<p>
+    <a href="/schedule/Create">Create New</a>
+</p>
+@if (Schedules == null)
+{
+    <p>...Loading</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Vehicle</th>
+                <th>Schedule Start Date And Time</th>
+                <th>Schedule End Date And Time</th>
+                <th>Number of Ride Times</th>
+                <th>Number of Ride Times Taken</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Schedules)
+            {
+                <tr>
+                    <td>@item.Vehicle?.VehicleIdentifier</td>
+                    <td>@item.StartDateAndTime.ToString("g")</td>
+                    <td>@item.EndDateAndTime.ToString("g")</td>
+                    <td>@item.NumberOfRideTimes</td>
+                    <td>@item.NumberOfTakenRideTimes</td>
+                    
+                    <td>
+                        <a href="@($"Schedules/Edit/{item.Id}")">Edit</a>
+                        <a href="@($"Schedules/Details/{item.Id}")">Details</a>
+                        <a href="@($"Schedules/Delete/{item.Id}")">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    IEnumerable<Schedule>? Schedules = new List<Schedule>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Don't bother calling base, it doesn't do anything anyway in razor pages :P
+        //return base.OnInitializedAsync();
+
+        Schedules = (await scheduleService.GetAllSchedulesAsync()).ToList();
+    }
+}

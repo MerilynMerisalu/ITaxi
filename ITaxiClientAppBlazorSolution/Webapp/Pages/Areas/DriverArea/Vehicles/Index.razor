@@ -37,7 +37,7 @@ else
                 <td>@item.NumberOfSeats</td>
                 <td>@item.VehicleAvailability</td>
                 <td>
-                    <a href="./Edit">Edit</a>
+                    <a href="@($"Vehicles/Edit/{item.Id}")">Edit</a>
                     <a href="@($"Vehicles/Details/{item.Id}")">Details</a>
                     <a href="@($"Vehicles/Delete/{item.Id}")">Delete</a>
                     <a href="@($"Vehicles/Gallery/{item.Id}")">Gallery</a>

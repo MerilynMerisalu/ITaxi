@@ -27,4 +27,5 @@ builder.Services.AddTransient<VehicleService>();
 builder.Services.AddTransient<VehicleTypeService>();
 builder.Services.AddTransient<VehicleMarkService>();
 builder.Services.AddTransient<VehicleModelService>();
+builder.Services.AddTransient<ScheduleService>();
 await builder.Build().RunAsync();

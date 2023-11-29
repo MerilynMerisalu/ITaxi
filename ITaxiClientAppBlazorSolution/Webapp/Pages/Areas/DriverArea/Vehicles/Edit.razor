@@ -1,5 +1,152 @@
-﻿<h3>Edit</h3>
+﻿@page "/vehicles/Edit/{Id:guid}"
+@using ITaxi.Enum.Enum
+@using ITaxi.Public.DTO.v1.AdminArea
+@using ITaxi.Public.DTO.v1.DriverArea
+@using ITaxi.Service
+@using System.ComponentModel.DataAnnotations
+@inject VehicleService vehicleService
+@inject VehicleTypeService vehicleTypeService
+@inject VehicleMarkService vehicleMarksService
+@inject VehicleModelService vehicleModelService
+
+<PageTitle>Vehicle Edit</PageTitle>
+<h1>Edit</h1>
+@if(vehicle == null)
+{
+    <p>Loading ...</p>
+}
+else {
+    <h4>Vehicle</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm Model=@this>
+                <div class="form-group">
+                    <label for="VehicleTypeId" class="control-label">
+                        Vehicle Type
+                    </label>
+                    <select class="form-control" @bind="VehicleTypeId">
+
+                        
+                        @if (VehicleTypes != null)
+                        {
+                            @if (vehicle.VehicleTypeId != Guid.Empty)
+                            {
+                                <option selected="selected" value="@vehicle?.VehicleTypeId">
+                                    @vehicle?.VehicleType?.VehicleTypeName
+                                </option>
+                                foreach (var option in VehicleTypes)
+                                {
+
+                                    <option value="@option.Id">@option.VehicleTypeName</option>
+                                }
+                            }
+                            
+                        }
+
+                    </select>
+                </div>
+
+                <label for="VehicleMarkId" class="control-label">
+                    Vehicle Mark
+                </label>
+                <select class="form-control">
+                    <option selected value="-1">Please Select</option>
+                    @if (VehicleMarks != null)
+                    {
+                        foreach (var option in VehicleMarks)
+                        {
+                            <option value="@option.Id">@option.VehicleMarkName</option>
+                        }
+                    }
+                </select>
+                <label for="VehicleModelId" class="control-label">
+                    Vehicle Model
+                </label>
+                <select class="form-control" @bind="VehicleModelId">
+                    <option selected value="-1">Please Select</option>
+                    @if (VehicleModels != null)
+                    {
+                        foreach (var option in VehicleModels)
+                        {
+                            <option value="@option.Id">@option.VehicleModelName</option>
+                        }
+                    }
+                </select>
+                <div class="form-group">
+                    <label for="VehiclePlateNumber" class="control-label">Vehicle Plate Number</label>
+                    <input @bind-value="VehiclePlateNumber" class="form-control" />
+                </div>
+                <label for="VehicleManufactureYear" class="control-label">
+                    Vehicle Manufacture Year
+                </label>
+                <select class="form-control" @bind="VehicleManufactureYear">
+                    <option selected value="-1">Please Select</option>
+                    @if (ManuFactureYears != null)
+                    {
+
+                        foreach (var option in ManuFactureYears)
+                        {
+                            <option value="@option">@option</option>
+                        }
+                    }
+
+                </select>
+                <label for="NumberOfSeats" class="control-label">Number of Seats</label>
+                <MeInputNumber @bind-Value="NumberOfSeats" class="form-control" Min="2" Max="6">
+
+                </MeInputNumber>
+
+                <label for="VehicleAvailabity" class="control-label">Vehicle Availability</label>
+                <div>
+
+                    <InputSelect @bind-Value="VehicleAvailability" class="form-class">
+                        <option selected="selected">Please Select</option>
+                        @foreach (var option in Enum.GetValues(typeof(VehicleAvailability)))
+                        {
+                            <option value="@option">@option</option>
+                        }
+                    </InputSelect>
+                </div>
+            </EditForm>
+            <div class="form-group">
+                <br />
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
 
 @code {
+
+    [Parameter]
+    public Guid Id { get; set; }
+    public Vehicle? vehicle; 
+    List<VehicleType>? VehicleTypes = new List<VehicleType>();
+    List<VehicleMark>? VehicleMarks = new List<VehicleMark>();
+    List<VehicleModel>? VehicleModels = new List<VehicleModel>();
+    public Guid VehicleTypeId { get; set; }
+    public Guid VehicleMarkId { get; set; }
+    public Guid VehicleModelId { get; set; }
+    public int VehicleManufactureYear { get; set; }
+    public List<int> ManuFactureYears = new List<int>();
+    public int? NumberOfSeats { get; set; } = 2;
+    [Required]
+    public string VehiclePlateNumber { get; set; } = default!;
+    [Required]
+    [EnumDataType(typeof(VehicleAvailability))]
+    public VehicleAvailability? VehicleAvailability { get; set; }
+
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+         vehicle = (await vehicleService.GetVehicleByIdAsync(Id));
+        List<VehicleType>? VehicleTypes = new List<VehicleType>();
+        List<VehicleMark>? VehicleMarks = new List<VehicleMark>();
+        List<VehicleModel>? VehicleModels = new List<VehicleModel>();
+        
+    }
 
 }
