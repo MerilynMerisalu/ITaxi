@@ -1,0 +1,90 @@
+﻿<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="DriverArea" xml:space="preserve">
+        <value>Tegevused</value>
+    </data>
+    <data name="CustomerArea" xml:space="preserve">
+        <value>Tegevused</value>
+    </data>
+    <data name="AdminArea" xml:space="preserve">
+        <value>Tegevused</value>
+    </data>
+    <data name="Admins" xml:space="preserve">
+        <value>Administraatorid</value>
+    </data>
+    <data name="AdminSection" xml:space="preserve">
+        <value>Administraatori Sektsioon</value>
+    </data>
+    <data name="Counties" xml:space="preserve">
+        <value>Maakonnad</value>
+    </data>
+    <data name="Cities" xml:space="preserve">
+        <value>Linnad</value>
+    </data>
+    <data name="DriverLicenseCategories" xml:space="preserve">
+        <value>Autojuhilubade Kategooriad</value>
+    </data>
+    <data name="Drivers" xml:space="preserve">
+        <value>Autojuhid</value>
+    </data>
+    <data name="Customers" xml:space="preserve">
+        <value>Kliendid</value>
+    </data>
+    <data name="DriverSection" xml:space="preserve">
+        <value>Autojuhi Sektsioon</value>
+    </data>
+    <data name="VehicleTypes" xml:space="preserve">
+        <value>Sõidukite Tüübid</value>
+    </data>
+    <data name="VehicleMarks" xml:space="preserve">
+        <value>Sõidukite Margid</value>
+    </data>
+    <data name="VehicleModels" xml:space="preserve">
+        <value>Sõidukite Mudelid</value>
+    </data>
+    <data name="Vehicles" xml:space="preserve">
+        <value>Sõidukid</value>
+    </data>
+    <data name="Schedules" xml:space="preserve">
+        <value>Sõidugraafikud</value>
+    </data>
+    <data name="RideTimes" xml:space="preserve">
+        <value>Sõiduajad</value>
+    </data>
+    <data name="Drives" xml:space="preserve">
+        <value>Sõidud</value>
+    </data>
+    <data name="CustomerSection" xml:space="preserve">
+        <value>Kliendi Sektsioon</value>
+    </data>
+    <data name="DisabilityTypes" xml:space="preserve">
+        <value>Puuete Liigid</value>
+    </data>
+    <data name="Bookings" xml:space="preserve">
+        <value>Broneeringud</value>
+    </data>
+    <data name="Comments" xml:space="preserve">
+        <value>Kommentaarid</value>
+    </data>
+    <data name="Photos" xml:space="preserve">
+        <value>Fotod</value>
+    </data>
+    <data name="Countries" xml:space="preserve">
+        <value>Riigid</value>
+    </data>
+</root>

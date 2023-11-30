@@ -1,0 +1,19 @@
+@using App.Resources.Areas.App.Domain.CustomerArea
+@using Base.Resources
+@model WebApp.Areas.CustomerArea.ViewModels.DetailsDeleteBookingViewModel
+
+@{
+    ViewData["Title"] = Common.Details;
+}
+
+<h1>@Common.Details</h1>
+
+<div>
+    <h4>@Booking.BookingName</h4>
+    <hr/>
+    <partial name="CustomerArea/PartialViews/_DetailsDeleteBooking" model="Model"/>
+</div>
+<div>
+    @*<a asp-action="Edit" asp-route-id="@Model?.Id">@Common.Edit</a> |*@
+    <a asp-action="Index">@Common.BackToList</a>
+</div>

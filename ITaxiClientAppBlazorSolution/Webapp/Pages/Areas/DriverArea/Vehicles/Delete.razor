@@ -1,0 +1,94 @@
+﻿@page "/Vehicles/Delete/{Id:guid}"
+@inject VehicleService service
+@inject NavigationManager navManager
+@using ITaxi.Public.DTO.v1.DriverArea
+@using ITaxi.Service
+
+
+<PageTitle>Vehicle Delete</PageTitle>
+<h1>Delete</h1>
+
+<h3>Are You Sure You Want To Delete This?</h3>
+<div>
+    <h4>Vehicle</h4>
+    <hr />
+    <dl class="row">
+
+    <dt class="col-sm-2">
+        Vehicle Type
+    </dt>
+    <dd class="col-sm-10">
+        @vehicle?.VehicleType
+    </dd>
+    <dt class="col-sm-2">
+        Vehicle Mark
+    </dt>
+    <dd class="col-sm-10">
+        @vehicle?.VehicleMark
+    </dd>
+    <dt class="col-sm-2">
+        Vehicle Model
+    </dt>
+    <dd class="col-sm-10">
+        @vehicle?.VehicleModel
+    </dd>
+    <dt class="col-sm-2">
+        Vehicle Plate Number
+    </dt>
+    <dd class="col-sm-10">
+        @vehicle?.VehiclePlateNumber
+    </dd>
+    <dt class="col-sm-2">
+        Manufacture Year
+    </dt>
+    <dd class="col-sm-10">
+        @vehicle?.ManufactureYear
+    </dd>
+    <dt class="col-sm-2">
+        Number Of Seats
+    </dt>
+    <dd class="col-sm-10">
+        @vehicle?.NumberOfSeats
+    </dd>
+    <dt class="col-sm-2">
+        Vehicle Availability
+    </dt>
+    <dd class="col-sm-10">
+        @vehicle?.VehicleAvailability
+    </dd>
+
+</dl>
+    <form>
+        <button @onclick="DeleteVehicleAsync" style="background-color:red">Delete</button>
+    </form>
+</div>
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+    Vehicle? vehicle;
+    protected async override Task OnInitializedAsync()
+    {
+        vehicle = await service.GetVehicleByIdAsync(Id);
+        await base.OnInitializedAsync();
+    }
+
+    private async Task DeleteVehicleAsync()
+    {
+        _errorMessage = null!;
+        // vehicle = await service.GetVehicleByIdAsync(Id);
+
+        try
+        {
+            await service.DeleteVehicleByIdAsync(Id);
+            //navManager.NavigateTo("/vehicles/index");
+        }
+        catch(Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+
+    }
+
+    private string _errorMessage = String.Empty;
+}

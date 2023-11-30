@@ -1,0 +1,60 @@
+@using App.Domain.Identity
+@using Base.Extensions
+@using Base.Resources.Views.Shared
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@inject SignInManager<AppUser> SignInManager
+
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            
+            <img alt="Default Profile Photo" style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="~/Images/icons8-selfies-50.png">
+            
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                @* ReSharper disable once ConditionIsAlwaysTrueOrFalse *@
+                @if (User != null)
+                {
+                    @string.Format(_LoginPartial.GreetingLoggedInUser, User.GettingUserName() + "!")
+                    
+                }
+                else
+                {
+                    @string.Format(_LoginPartial.GreetingAnonymousUser + "!")
+                    
+                }
+
+            </a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">
+                <button type="submit" class="nav-link btn btn-link text-dark">@_LoginPartial.Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterAdmin">
+                @App.Resources.Areas.WebApp.Views.Shared._LoginPartial.RegisterAdmin
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterDriver">
+                @App.Resources.Areas.WebApp.Views.Shared._LoginPartial.RegisterDriver
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/RegisterCustomer">
+                @App.Resources.Areas.WebApp.Views.Shared._LoginPartial.RegisterCustomer
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">@_LoginPartial.Login</a>
+        </li>
+    }
+</ul>

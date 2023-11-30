@@ -1,0 +1,21 @@
+@using Base.Resources
+@using App.Resources.Areas.App.Domain.AdminArea
+@model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteCountryViewModel
+
+@{
+    ViewData["Title"] = Common.Details;
+}
+
+<h1>@Common.Details</h1>
+
+<div>
+    <h4>@Country.CountryName</h4>
+    <hr />
+    <dl class="row">
+        <partial name="AdminArea/PartialViews/_DetailsDeleteCountry" model="Model"/>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">@Common.Edit</a> |
+    <a asp-action="Index">@Common.BackToList</a>
+</div>

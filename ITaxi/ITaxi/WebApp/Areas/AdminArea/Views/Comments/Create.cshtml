@@ -1,0 +1,49 @@
+@using App.Resources.Areas.App.Domain.AdminArea
+@using Base.Resources
+@model WebApp.Areas.AdminArea.ViewModels.CreateCommentViewModel
+
+@{
+    ViewData["Title"] = Common.Create;
+}
+
+<h1>@Common.Create</h1>
+
+<h4>@Comment.CommentName</h4>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DriveId" class="control-label"></label>
+                <select asp-for="DriveId" class="form-control" asp-items="Model.Drives">
+                    @if (Model.Drives == null || !Model.Drives.Any())
+                    {
+                        <option>@Comment.NoDrives</option>
+                    }
+                    else
+                    {
+                        <options asp-items="@Model.Drives"/>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CommentText" class="control-label"></label>
+                <textarea asp-for="CommentText" class="form-control"></textarea>
+                <span asp-validation-for="CommentText" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="@Common.Create" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@Common.BackToList</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -1,0 +1,26 @@
+@model WebApp.Areas.AdminArea.ViewModels.DetailsDeletePhotoViewModel
+
+@{
+    Layout = Layout;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <title>Details</title>
+</head>
+<body>
+
+<div>
+    <h4>Photo</h4>
+    <hr/>
+    <partial name="AdminArea/PartialViews/_DetailsDeletePhoto" model="Model"/>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+</body>
+</html>

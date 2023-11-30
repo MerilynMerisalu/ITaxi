@@ -1,0 +1,50 @@
+@*@using App.Resources.Areas.App.Domain.DriverArea
+@using Base.Resources
+@model WebApp.Areas.DriverArea.ViewModels.EditRideTimeViewModel
+
+@{
+    ViewData["Title"] = Common.Edit;
+}
+
+<h1>@Common.Edit</h1>
+
+<h4>@RideTime.RideDateAndTime</h4>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="ScheduleId" class="control-label"></label>
+                <select asp-for="ScheduleId" class="form-control" asp-items="Model.Schedules">
+                    <option>@Common.PleaseSelect</option>
+                </select>
+                <span asp-validation-for="ScheduleId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RideTime" class="control-label"></label>
+                <select asp-for="RideTime" class="form-control" asp-items="Model.RideTimes"></select>
+                <span asp-validation-for="RideTime" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsTaken"/> @Html.DisplayNameFor(model => model.IsTaken)
+                </label>
+            </div>
+
+            <input type="hidden" asp-for="Id"/>
+            <div class="form-group">
+                <input type="submit" value="@Common.Save" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@Common.BackToList</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}*@

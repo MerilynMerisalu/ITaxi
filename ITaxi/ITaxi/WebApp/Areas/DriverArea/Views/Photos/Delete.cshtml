@@ -1,0 +1,45 @@
+@using Base.Resources
+@using App.Resources.Areas.App.Domain.DriverArea
+@model WebApp.Areas.DriverArea.ViewModels.DetailsDeletePhotoViewModel
+
+@{
+    Layout = Layout;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <title>@Common.Delete</title>
+</head>
+<body>
+
+<h3>@Common.AreYouSureYouWantToDeleteThis</h3>
+<div>
+    <h4>@Photo.PhotoName</h4>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PhotoURL)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PhotoURL)
+        </dd>
+        
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id"/>
+        <input type="submit" value="@Common.Delete" class="btn btn-danger"/> |
+        <a asp-action="Index">@Common.BackToList</a>
+    </form>
+</div>
+</body>
+</html>

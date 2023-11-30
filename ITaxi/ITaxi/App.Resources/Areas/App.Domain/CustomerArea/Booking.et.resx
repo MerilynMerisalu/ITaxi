@@ -1,0 +1,73 @@
+﻿<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+
+    <data name="VehicleType" xml:space="preserve">
+        <value>Sõidukitüüp</value>
+    </data>
+    <data name="Vehicle" xml:space="preserve">
+        <value>Sõiduk</value>
+    </data>
+    <data name="City" xml:space="preserve">
+        <value>Linn</value>
+    </data>
+    <data name="PickUpDateAndTime" xml:space="preserve">
+        <value>Sõidu toimumiskuupäev ja -kellaaeg</value>
+    </data>
+    <data name="PickupAddress" xml:space="preserve">
+        <value>Lähtekoha aadress</value>
+    </data>
+    <data name="DestinationAddress" xml:space="preserve">
+        <value>Sihtkoha aadress</value>
+    </data>
+    <data name="NumberOfPassengers" xml:space="preserve">
+        <value>Reisijate arv</value>
+    </data>
+    <data name="HasAnAssistant" xml:space="preserve">
+        <value>Abistaja olemasolu?</value>
+    </data>
+    <data name="AdditionalInfo" xml:space="preserve">
+        <value>Lisainfo</value>
+    </data>
+    <data name="StatusOfBooking" xml:space="preserve">
+        <value>Broneeringu olek</value>
+    </data>
+    <data name="AwaitingForConfirmation" xml:space="preserve">
+        <value>Kinnituse ootel</value>
+    </data>
+    <data name="Accepted" xml:space="preserve">
+        <value>Kinnitatud</value>
+    </data>
+    <data name="InProgress" xml:space="preserve">
+        <value>Toimumas</value>
+    </data>
+    <data name="Finished" xml:space="preserve">
+        <value>Lõpetatud</value>
+    </data>
+    <data name="Declined" xml:space="preserve">
+        <value>Tühistatud</value>
+    </data>
+    <data name="BookingName" xml:space="preserve">
+        <value>Broneering</value>
+    </data>
+    <data name="Decline" xml:space="preserve">
+        <value>Tühista</value>
+    </data>
+    <data name="AreYouSureYouWantToDeclineThis" xml:space="preserve">
+        <value>Kas olete kindel, et soovite antud broneeringu tühistada?</value>
+    </data>
+</root>

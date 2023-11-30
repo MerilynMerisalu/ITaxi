@@ -1,0 +1,61 @@
+@using Base.Resources
+@model IEnumerable<App.BLL.DTO.AdminArea.ScheduleDTO>
+
+@{
+    ViewData["Title"] = Common.Index;
+}
+
+<h1>@Common.Index</h1>
+
+<p>
+    <a asp-action="Create">@Common.CreateNew</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Vehicle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDateAndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDateAndTime)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.NumberOfRideTimes)
+        </th>*@
+        
+        <th>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Vehicle!.VehicleIdentifier)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDateAndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDateAndTime)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.NumberOfRideTimes)
+            </td>*@
+            
+
+            <td>
+                @*<a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |*@
+                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
