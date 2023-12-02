@@ -1,8 +1,83 @@
-﻿@page "/Schedules/Delete/{Id:guid}"
+﻿@page "/schedules/Delete/{Id:guid}"
+@inject ScheduleService service
+@inject NavigationManager navManager
+@using ITaxi.Public.DTO.v1.DriverArea
+@using ITaxi.Service
+@using Public.App.DTO.v1.DriverArea
+
+
+<PageTitle>Schedule Delete</PageTitle>
 <h1>Delete</h1>
 
+<h3>Are You Sure You Want To Delete This?</h3>
+<div>
+    <h4>Schedule</h4>
+    <hr />
+    <dl class="row">
+
+    <dt class="col-sm-2">
+        Vehicle
+    </dt>
+    <dd class="col-sm-10">
+        @schedule?.Vehicle?.VehicleIdentifier
+    </dd>
+    <dt class="col-sm-2">
+        Schedule Start Date and Time 
+    </dt>
+    <dd class="col-sm-10">
+        @schedule?.StartDateAndTime.ToString("f")
+    </dd>
+    <dt class="col-sm-2">
+        Schedule End Date And Time
+    </dt>
+    <dd class="col-sm-10">
+        @schedule?.EndDateAndTime.ToString("f")
+    </dd>
+    <dt class="col-sm-2">
+        Number of Ride Times
+    </dt>
+    <dd class="col-sm-10">
+        @schedule?.NumberOfRideTimes
+    </dd>
+    <dt class="col-sm-2">
+        Number of Ride Times Taken
+    </dt>
+    <dd class="col-sm-10">
+        @schedule?.NumberOfTakenRideTimes
+    </dd>
+    
+</dl>
+    <form>
+        <button @onclick="DeleteScheduleAsync" class="btn btn-danger">Delete</button>
+    </form>
+</div>
 
 @code {
     [Parameter]
     public Guid Id { get; set; }
-}
+    Schedule? schedule;
+    protected async override Task OnInitializedAsync()
+    {
+        schedule = await service.GetScheduleByIdAsync(Id);
+        await base.OnInitializedAsync();
+    }
+
+    private async Task DeleteScheduleAsync()
+    {
+       // _errorMessage = null!;
+        // schedule = await service.GetscheduleByIdAsync(Id);
+
+        try
+        {
+            await service.DeleteScheduleByIdAsync(Id);
+            navManager.NavigateTo("/schedules/index");
+        }
+        catch(Exception ex)
+        {
+           // _errorMessage = ex.Message;
+        }
+
+    }
+
+    //private string _errorMessage = String.Empty;
+  }

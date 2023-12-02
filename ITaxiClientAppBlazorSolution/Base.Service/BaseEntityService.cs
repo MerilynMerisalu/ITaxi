@@ -28,9 +28,9 @@ namespace Base.Service
             return await Client.GetFromJsonAsync<TEntity?>(GetEndpointUrl()  + id);
         }
 
-        public virtual async Task RemoveEntityAsync(Guid id)
+        public virtual async Task<TEntity> RemoveEntityAsync(Guid id)
         {
-            await Client.DeleteFromJsonAsync<TEntity?>(GetEndpointUrl() + id);
+            return await Client.DeleteFromJsonAsync<TEntity?>(GetEndpointUrl() + id);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace ITaxi.Service
     {
         Task<IEnumerable<Schedule?>> GetAllSchedulesAsync();
         Task<Schedule?> GetScheduleByIdAsync(Guid id);
+        Task DeleteScheduleByIdAsync(Guid id);
     }
     public class ScheduleService : BaseEntityService<Schedule, Guid>, IScheduleService
     {
@@ -22,6 +23,11 @@ namespace ITaxi.Service
         }
 
         protected override string EndpointUri => "driverarea/schedules/";
+
+        public async Task DeleteScheduleByIdAsync(Guid id)
+        {
+            await base.RemoveEntityAsync(id);
+        }
 
         public async Task<IEnumerable<Schedule?>> GetAllSchedulesAsync()
         {

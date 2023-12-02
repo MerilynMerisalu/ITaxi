@@ -1,0 +1,55 @@
+﻿@page "/ridetimes/index"
+@using ITaxi.Service
+@using Public.App.DTO.v1.DriverArea
+@inject RideTimeService service
+
+<PageTitle>Ride Times Index</PageTitle>
+<h1>Index</h1>
+
+<p>
+    <a href="/ridetimes/create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Schedule
+            </th>
+            <th>
+                Ride Time
+            </th>
+            <th>
+                Is Taken?
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in rideTimes)
+        {
+            <tr>
+                <td>@item.Schedule!.ShiftDurationTime</td>
+                <td>@item.RideDateTime.ToString("t")</td>
+                <td><MudCheckBox @bind-Checked="@item.IsTaken"></MudCheckBox></td>
+                <td>
+                    <a href="@($"Ridetimes/Details/{item.Id}")">Details</a> |
+                    @if (item!.IsTaken)
+                    {
+                        <a hidden="hidden" href="#">Delete</a>
+                    }
+                    else
+                    {
+                        <a href="#">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+    public List<RideTime>? rideTimes { get; set; } = new List<RideTime>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        rideTimes = (await service.GetAllRideTimesAsync()).ToList();
+    }
+}
