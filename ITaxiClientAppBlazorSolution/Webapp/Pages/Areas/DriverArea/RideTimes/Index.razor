@@ -32,13 +32,17 @@
                 <td>@item.RideDateTime.ToString("t")</td>
                 <td><MudCheckBox @bind-Checked="@item.IsTaken"></MudCheckBox></td>
                 <td>
-                    <a href="@($"ridetimes/Details/{item.Id}")">Details</a> |
+                    
                     @if (item!.IsTaken)
                     {
+                        <a href="@($"ridetimes/Details/{item.Id}")">Details</a>
+ 
                         <a hidden="hidden" href="#">Delete</a>
                     }
                     else
                     {
+                        <p><a href="@($"ridetimes/Details/{item.Id}")">Details</a> |</p>
+
                         <a href="@($"ridetimes/Delete/{item.Id}")">Delete</a>
                     }
                 </td>
