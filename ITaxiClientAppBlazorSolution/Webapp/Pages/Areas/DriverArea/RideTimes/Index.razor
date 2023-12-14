@@ -9,7 +9,7 @@
 <p>
     <a href="/ridetimes/create">Create New</a>
 </p>
-<table class="table">
+<MudSimpleTable Style="overflow-x:auto">
     <thead>
         <tr>
             <th>
@@ -21,6 +21,7 @@
             <th>
                 Is Taken?
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -31,20 +32,20 @@
                 <td>@item.RideDateTime.ToString("t")</td>
                 <td><MudCheckBox @bind-Checked="@item.IsTaken"></MudCheckBox></td>
                 <td>
-                    <a href="@($"Ridetimes/Details/{item.Id}")">Details</a> |
+                    <a href="@($"ridetimes/Details/{item.Id}")">Details</a> |
                     @if (item!.IsTaken)
                     {
                         <a hidden="hidden" href="#">Delete</a>
                     }
                     else
                     {
-                        <a href="#">Delete</a>
+                        <a href="@($"ridetimes/Delete/{item.Id}")">Delete</a>
                     }
                 </td>
             </tr>
         }
     </tbody>
-</table>
+</MudSimpleTable>
 @code {
     public List<RideTime>? rideTimes { get; set; } = new List<RideTime>();
 
