@@ -15,12 +15,12 @@
 
 @if (AppState.IsLoggedIn)
 {
-    <div>Hello, @AppState.AuthResponse.FirstAndLastName!</div>
-    <button class="nav-link btn btn-link" @onclick="LogOut">Log out</button>
+    <div >Hello, @AppState.AuthResponse.FirstAndLastName!</div>
+    <MudIconButton Icon=@Icons.Material.Filled.Logout OnClick="LogOut" class="nav-link btn btn-link" >Log out</MudIconButton>
 }
 else
 {
-    <a href="login">Log in</a>
+    <MudIconButton Icon=@Icons.Material.Filled.Login Edge="Edge.End"  class="nav-link btn btn-link">Log in</MudIconButton>
 }
 
 @code{

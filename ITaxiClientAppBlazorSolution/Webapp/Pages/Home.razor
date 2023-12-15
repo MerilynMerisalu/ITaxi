@@ -1,12 +1,22 @@
 ﻿@page "/"
-
+@inject NavigationManager Navigation
+@using Base.Service.Contracts
+@inject IAppState AppState
 
 <MudLayout>
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudText Typo="Typo.h5" Class="ml-3">ITaxi</MudText>
         <MudSpacer />
-        <MudIconButton Href="/login" Icon="@Icons.Material.Filled.Login" Color="Color.Inherit" Edge="Edge.End" />
+        @if (AppState.IsLoggedIn)
+        {
+            <div>Hello, @AppState.AuthResponse.FirstAndLastName!</div>
+            <MudIconButton Icon=@Icons.Material.Filled.Logout OnClick="LogOut" class="nav-link btn btn-link">Log out</MudIconButton>
+        }
+        else
+        {
+            <MudIconButton Href="/login" Icon=@Icons.Material.Filled.Login Edge="Edge.End" class="nav-link btn btn-link">Log in</MudIconButton>
+        }
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Docked" Elevation="2">
         
@@ -24,5 +34,12 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    public void LogOut()
+    {
+        AppState.AuthResponse = null!;
+        Navigation.NavigateTo("/");
+
     }
 }
