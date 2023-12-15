@@ -12,6 +12,7 @@ namespace ITaxi.Service
     public interface IRideTime
     {
         Task<IEnumerable<RideTime?>> GetAllRideTimesAsync();
+        Task<RideTime?> GetRideTimeByIdAsync(Guid id);
     }
 
     public class RideTimeService : BaseEntityService<RideTime, Guid>, IRideTime
@@ -26,6 +27,11 @@ namespace ITaxi.Service
         public async Task<IEnumerable<RideTime?>> GetAllRideTimesAsync()
         {
             return (await base.GetAllAsync()).ToList();
+        }
+
+        public async Task<RideTime?> GetRideTimeByIdAsync(Guid id)
+        {
+            return (await base.GetEntityByIdAsync(id));
         }
     }
 }

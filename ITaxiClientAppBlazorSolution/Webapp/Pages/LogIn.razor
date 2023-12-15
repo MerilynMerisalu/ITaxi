@@ -7,22 +7,23 @@
 @inject IHttpClientFactory _httpClientFactory
 @inject IAppState _appState
 @inject NavigationManager Nav
-<h3>Log In</h3>
-<EditForm EditContext="editContext" OnSubmit="@Login">
-    <ValidationSummary  />
+
+<h1>Log In</h1>
+<MudText Color="Color.Error">
+    <EditForm EditContext="editContext" OnSubmit="@Login">
+    <ValidationSummary />
     <DataAnnotationsValidator />
-    <label for="email">Email</label>
-    <InputText @bind-Value="Email" placeholder="Email" name="email"></InputText>
+    <MudTextField Label="Email" For="@(() => this.Email)" @bind-Value="Email" placeholder="Email" name="email"></MudTextField>
     <ValidationMessage For="() => viewModel.Email" />
     <br />
-    <label for="password">Password</label>
-    <InputText type="password" placeholder="Password" @bind-Value="viewModel.Password" name="password"></InputText>
+    <MudTextField Label="Password" For="@(() => this.Password)" InputType="InputType.Password" type="password" placeholder="Password" @bind-Value="viewModel.Password" name="password"></MudTextField>
     <ValidationMessage For="() => viewModel.Password" />
     <br />
-    <button type="submit">Login</button>
+    <MudButton ButtonType="ButtonType.Button" OnClick=Login Variant="Variant.Filled" Color="Color.Primary">Log In</MudButton>
     <ValidationMessage For="() => viewModel.IsAuthenicated" />
-    
-</EditForm>
+
+    </EditForm>
+</MudText>
 @code {
     private EditContext editContext;
     private ValidationMessageStore errorMessages;
@@ -37,7 +38,7 @@
 
     #region Properties
 
-    [Required(AllowEmptyStrings = false, ErrorMessage = "Email is required!")]
+    [Required(AllowEmptyStrings = false)]
     [EmailAddress]
     public string Email { get => viewModel.Email; set => viewModel.Email = value; }
 
@@ -52,7 +53,7 @@
     {
         IsAuthenicated = false;
         errorMessages.Clear();
-        if(editContext.Validate())
+        if (editContext.Validate())
         {
             var token = await AuthenticateToken(Email, Password);
             if (token.Token != null)
@@ -63,7 +64,7 @@
                     IsAuthenicated = true;
                     Nav.NavigateTo("/");
                 }
-                catch 
+                catch
                 {
                     // Ignore errors, assume login failed
 

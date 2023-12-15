@@ -1,8 +1,28 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Class="ml-3">ITaxi</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Docked" Elevation="2">
+        
+    </MudDrawer>
+    <MudMainContent>
+        <MudText Typo="Typo.h1" GutterBottom="true">Welcome!</MudText>
+        <MudText Class="mb-8">Welcome to ITaxi, powered by MudBlazor!</MudText>
+       
+    </MudMainContent>
+</MudLayout>
 
+@code {
+    bool _drawerOpen = true;
 
-Welcome to your new app.
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}

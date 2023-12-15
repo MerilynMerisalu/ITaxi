@@ -1,8 +1,52 @@
 ﻿@page "/ridetimes/details/{id:guid}"
+@using ITaxi.Service
+@using Public.App.DTO.v1.DriverArea
+@inject RideTimeService service
+<h1>Details</h1>
 
-<h3>Details</h3>
+@if(rideTime == null)
+{
+    <p>
+        <i>Loading...</i>
+    </p>
+}
+else
+{
+    <div>
+        <h4>Ride Date and Time</h4>
+        <hr />
+        <dl class="row">
 
-@code {
+            <dt class="col-sm-2">
+                Schedule
+            </dt>
+            <dd class="col-sm-10">
+                @rideTime.Schedule?.ShiftDurationTime
+            </dd>
+            <dt class="col-sm-2">
+                Ride Date and Time
+            </dt>
+            <dd class="col-sm-10">
+                @rideTime.RideDateTime.ToString("g")
+            </dd>
+            <dt class="col-sm-2">
+                Is Taken?
+            </dt>
+            <dd class="col-sm-10">
+                <MudCheckBox @bind-Checked="rideTime.IsTaken"></MudCheckBox>
+            </dd>
+
+        </dl>
+        <MudLink Underline = "Underline.Always" Href="/ridetimes/index">Back to List</MudLink>
+    </div>
+}
+
+    @code {
     [Parameter]
     public Guid Id { get; set; }
+    RideTime rideTime; 
+    protected override async Task OnInitializedAsync()
+    {
+         rideTime = await service.GetRideTimeByIdAsync(Id);
+    }
 }
