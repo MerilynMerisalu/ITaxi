@@ -7,21 +7,22 @@
 <h1>Index</h1>
 
 <p>
-    <a href="/ridetimes/create">Create New</a>
+    <MudLink Underline="Underline.Always" Href="/ridetimes/create">Create New</MudLink>
 </p>
+<br />
 <MudSimpleTable Style="overflow-x:auto">
     <thead>
         <tr>
-            <th>
+            <MudTh Style="font-weight:bolder; color:black" >
                 Schedule
-            </th>
-            <th>
+            </MudTh>
+            <MudTh Style="font-weight:bolder; color:black">
                 Ride Time
-            </th>
-            <th>
+            </MudTh>
+            <MudTh Style="font-weight:bolder; color:black">
                 Is Taken?
-            </th>
-            <th></th>
+            </MudTh>
+            <MudTh></MudTh>
         </tr>
     </thead>
     <tbody>
@@ -35,15 +36,17 @@
                     
                     @if (item!.IsTaken)
                     {
-                        <a href="@($"ridetimes/Details/{item.Id}")">Details</a>
+                        <MudLink Underline="Underline.Always" Href="@($"ridetimes/Details/{item.Id}")">Details</MudLink>
  
-                        <a hidden="hidden" href="#">Delete</a>
+                        <MudLink hidden="hidden" href="#">Delete</MudLink>
                     }
                     else
                     {
-                        <p><a href="@($"ridetimes/Details/{item.Id}")">Details</a> |</p>
+                        <p>
+                            <MudLink Underline="Underline.Always" Href="@($"ridetimes/Details/{item.Id}")">Details</MudLink> |
+                        </p>
 
-                        <a href="@($"ridetimes/Delete/{item.Id}")">Delete</a>
+                        <MudLink Underline="Underline.Always" Href="@($"ridetimes/Delete/{item.Id}")">Delete</MudLink>
                     }
                 </td>
             </tr>
