@@ -33,4 +33,5 @@ builder.Services.AddTransient<VehicleMarkService>();
 builder.Services.AddTransient<VehicleModelService>();
 builder.Services.AddTransient<ScheduleService>();
 builder.Services.AddTransient<RideTimeService>();
+builder.Services.AddTransient<BookingService>();
 await builder.Build().RunAsync();

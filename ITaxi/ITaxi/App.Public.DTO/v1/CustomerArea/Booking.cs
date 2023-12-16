@@ -9,21 +9,11 @@ namespace App.Public.DTO.v1.CustomerArea;
 
 public class Booking : DomainEntityMetaId
 {
-    // public Guid ScheduleId { get; set; }
-
-    // [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = nameof(Schedule))]
-    // public ScheduleDTO? Schedule { get; set; }
-    
     public Guid DriverId { get; set; }
     
-     //[Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = "" )]
+     
      public Driver? Driver { get; set; }
      public Guid CustomerId { get; set; }
-    
-    // [Display(ResourceType = typeof(Booking), Name = nameof(Customer))]
-
-     /*public Customer? Customer { get; set; }*/
-    
     public Guid VehicleTypeId { get; set; }
     public VehicleType? VehicleType { get; set; }
     public Guid VehicleId { get; set; }
@@ -59,14 +49,8 @@ public class Booking : DomainEntityMetaId
 
     [MaxLength(1000, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     [DataType(DataType.MultilineText)]
-    // [Display(ResourceType = typeof(Booking), Name = nameof(AdditionalInfo))]
     public string? AdditionalInfo { get; set; }
-     //[Display(ResourceType = typeof(Booking), Name = "StatusOfBooking")]
-     public StatusOfBooking StatusOfBooking { get; set; }
-
-    // public Guid? DriveId { get; set; }
-    // public DriveDTO? Drive { get; set; }
-
+    public StatusOfBooking StatusOfBooking { get; set; }
     public string DriveTime => $"{PickUpDateAndTime:g}";
 
     public bool IsDeclined { get; set; }
@@ -76,8 +60,5 @@ public class Booking : DomainEntityMetaId
 
     public string DeclineDateAndTimeCustomerView => $"{DeclineDateAndTime:g}";
 
-    // public string? ConfirmedBy { get; set; }
-    
-    // public string? DeclinedBy { get; set; }
     
 }
