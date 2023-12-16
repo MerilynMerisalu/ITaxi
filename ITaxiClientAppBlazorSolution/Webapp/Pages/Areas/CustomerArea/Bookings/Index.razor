@@ -59,8 +59,15 @@ else
                 
                 
                 <MudTd>
-
-                    <MudNavLink Href=""></MudNavLink>
+                @if (context?.IsDeclined == true)
+                {
+                    <p><MudNavLink Href=@($"/bookings/Delete/{context.Id}")>Delete</MudNavLink>|</p>
+                }
+                else
+                {
+                    <MudNavLink Href=@($"/bookings/Decline/{context!.Id}")>Decline</MudNavLink>
+                }
+                <MudNavLink Href=@($"/bookings/Details/{context!.Id}")>Details</MudNavLink>
                 </MudTd>
             </RowTemplate>
             <PagerContent>

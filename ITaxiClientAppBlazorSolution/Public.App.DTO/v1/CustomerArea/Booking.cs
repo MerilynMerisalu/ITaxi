@@ -13,6 +13,7 @@ namespace Public.App.DTO.v1.CustomerArea
 {
     public class Booking
     {
+        public Guid Id { get; set; }
         public Driver? Driver { get; set; }
         public Guid CustomerId { get; set; }
 
