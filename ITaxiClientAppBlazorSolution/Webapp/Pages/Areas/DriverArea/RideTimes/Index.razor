@@ -36,10 +36,10 @@ else
             @foreach (var item in rideTimes)
             {
                 <tr>
-                    <td>@item.Schedule!.ShiftDurationTime</td>
-                    <td>@item.RideDateTime.ToString("t")</td>
-                    <td><MudCheckBox @bind-Checked="@item.IsTaken"></MudCheckBox></td>
-                    <td>
+                    <MudTd>@item?.Schedule?.ShiftDurationTime</MudTd>
+                    <MudTd>@item?.RideDateTime.ToString("t")</MudTd>
+                    <MudTd><MudCheckBox @bind-Checked="@item!.IsTaken"></MudCheckBox></MudTd>
+                    <MudTd>
 
                         @if (item!.IsTaken)
                         {
@@ -55,7 +55,7 @@ else
 
                             <MudLink Underline="Underline.Always" Href="@($"ridetimes/Delete/{item.Id}")">Delete</MudLink>
                         }
-                    </td>
+                    </MudTd>
                 </tr>
             }
         </tbody>
@@ -63,7 +63,7 @@ else
 }
 
 @code {
-    public List<RideTime>? rideTimes { get; set; } = new List<RideTime>();
+    public List<RideTime?> rideTimes { get; set; } = new List<RideTime?>();
 
     protected override async Task OnInitializedAsync()
     {

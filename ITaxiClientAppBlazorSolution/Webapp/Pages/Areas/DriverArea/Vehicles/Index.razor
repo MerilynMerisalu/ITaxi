@@ -5,47 +5,50 @@
 @inject VehicleService service;
 <h1>Index</h1>
 <p>
-    <a href="/vehicle/Create">Create New</a>
+    <MudLink Href="/vehicle/Create">Create New</MudLink>
 </p>
 @if (Vehicles == null)
 {
-    <p>...Loading</p>
+    <p>
+        <i>Loading ...</i>
+    </p>
 }
 else
 {
-<table class="table">
+    <MudSimpleTable Style="overflow-x:auto">
     <thead>
         <tr>
-            <th>Vehicle Type</th>
-            <th>Vehicle Mark</th>
-            <th>Vehicle Model</th>
-            <th>Vehicle Plate Number</th>
-            <th>Manufacture Year</th>
-            <th>Number of Seats</th>
-            <th>Vehicle Availability</th>
+           <MudTh Style="font-weight:bolder; color:black" >Vehicle Type</MudTh>
+           <MudTh Style="font-weight:bolder; color:black">Vehicle Mark</MudTh>
+           <MudTh Style="font-weight:bolder; color:black">Vehicle Model</MudTh>
+           <MudTh Style="font-weight:bolder; color:black">Vehicle Plate Number</MudTh>
+           <MudTh Style="font-weight:bolder; color:black">Manufacture Year</MudTh>
+           <MudTh Style="font-weight:bolder; color:black">Number of Seats</MudTh>
+           <MudTh Style="font-weight:bolder; color:black">Vehicle Availability</MudTh>
+           <MudTh Style="font-weight:bolder; color:black"></MudTh>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Vehicles)
         {
             <tr>
-                <td>@item.VehicleType</td>
-                <td>@item.VehicleMark?.VehicleMarkName</td>
-                <td>@item.VehicleModel?.VehicleModelName</td>
-                <td>@item.VehiclePlateNumber</td>
-                <td>@item.ManufactureYear</td>
-                <td>@item.NumberOfSeats</td>
-                <td>@item.VehicleAvailability</td>
-                <td>
-                    <a href="@($"Vehicles/Edit/{item.Id}")">Edit</a>
-                    <a href="@($"Vehicles/Details/{item.Id}")">Details</a>
-                    <a href="@($"Vehicles/Delete/{item.Id}")">Delete</a>
-                    <a href="@($"Vehicles/Gallery/{item.Id}")">Gallery</a>
-                </td>
+                <MudTd>@item.VehicleType</MudTd>
+                <MudTd>@item.VehicleMark?.VehicleMarkName</MudTd>
+                <MudTd>@item.VehicleModel?.VehicleModelName</MudTd>
+                <MudTd>@item.VehiclePlateNumber</MudTd>
+                <MudTd>@item.ManufactureYear</MudTd>
+                <MudTd>@item.NumberOfSeats</MudTd>
+                <MudTd>@item.VehicleAvailability</MudTd>
+                 <MudTd>
+                    <MudLink Underline="Underline.Always" Href="@($"Vehicles/Edit/{item.Id}")">Edit</MudLink>
+                    <MudLink Underline="Underline.Always" Href="@($"Vehicles/Details/{item.Id}")">Details</MudLink>
+                    <MudLink Underline="Underline.Always" Href="@($"Vehicles/Delete/{item.Id}")">Delete</MudLink>
+                    <MudLink Underline="Underline.Always" Href="@($"Vehicles/Gallery/{item.Id}")">Gallery</MudLink>
+                </MudTd>
             </tr>
         }
     </tbody>
-</table>
+</MudSimpleTable>
 }
 
 @code {
