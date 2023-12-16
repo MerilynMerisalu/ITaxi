@@ -1,6 +1,100 @@
 ﻿@page "/bookings/index/";
-<h3>Index</h3>
+@using ITaxi.Service
+@using Public.App.DTO.v1.CustomerArea
+@using ITaxi.Enum.Enum;
+@inject BookingService service
+<h1>Index</h1>
 
-@code {
-
+@if (bookings == null)
+{
+    <p>
+        <i>Loading ...</i>
+    </p>
 }
+else
+{
+    <MudTable Items="@bookings" Filter="new Func<Booking?,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1">
+        <ToolBarContent>
+            <MudTextField @bind-Value="searchString1" Placeholder="Search"
+                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
+                          IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        
+    
+        <HeaderContent>
+            <MudTh>Driver</MudTh>
+            <MudTh>Vehicle Type</MudTh>
+            <MudTh>Vehicle</MudTh>
+            <MudTh>City</MudTh>
+            <MudTh>Pickup Date and Time</MudTh>
+            <MudTh>Pickup Address</MudTh>
+            <MudTh>Destination Address</MudTh>
+            <MudTh>Number of Passengers</MudTh>
+            <MudTh>Has an Assistent?</MudTh>
+            <MudTh>Additional Info</MudTh>
+            <MudTh>Status of Booking</MudTh>
+            @foreach (var item in bookings)
+        {
+            @if (item?.StatusOfBooking == StatusOfBooking.Declined)
+            {
+                    <MudTh>Deline Date and Time</MudTh>
+            }
+        }
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Driver">@context?.Driver?.AppUser?.FirstAndLastName</MudTd>
+                <MudTd DataLabel="Vehicle Type">@context?.VehicleType?.VehicleTypeName</MudTd>
+                <MudTd DataLabel="Vehicle">@context?.Vehicle?.VehicleIdentifier</MudTd>
+                <MudTd DataLabel="City">@context?.City?.CityName</MudTd>
+                <MudTd DataLabel="Pickup Date And Time">@context?.PickUpDateAndTime.ToString("g")</MudTd>
+                <MudTd DataLabel="Pickup Address">@context?.PickupAddress</MudTd>
+                <MudTd DataLabel="Destination Address">@context?.DestinationAddress</MudTd>
+                <MudTd DataLabel="Number of Paasengers">@context?.NumberOfPassengers</MudTd>
+                <MudTd DataLabel="Has an Assistent"><MudCheckBox @bind-Checked="context!.HasAnAssistant"></MudCheckBox></MudTd>
+                <MudTd DataLabel="Status of Booking">@context?.StatusOfBooking</MudTd>
+                @if (context?.IsDeclined == true)
+            {
+                <MudTd DataLabel="Deline Date and Time">@context?.DeclineDateAndTime.ToString("g")</MudTd>
+            }
+                
+                
+                <MudTd>
+
+                    <MudNavLink Href=""></MudNavLink>
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager />
+            </PagerContent>
+        </MudTable>
+}
+
+
+
+    @code {
+    private IEnumerable<Booking?> bookings = new List<Booking?>();
+    private string searchString1 = "";
+    private Booking? selectedItem1 = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        bookings = (await service.GetAllBookingsAsync());
+    }
+
+    private bool FilterFunc1(Booking? element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(Booking? element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element!.City!.CityName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        
+        
+        return false;
+    }
+
+    }
+    
+
+    

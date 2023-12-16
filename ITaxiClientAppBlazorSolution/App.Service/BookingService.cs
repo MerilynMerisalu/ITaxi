@@ -22,7 +22,7 @@ namespace ITaxi.Service
         {
         }
 
-        protected override string EndpointUri => "/custumerarea/bookings/";
+        protected override string EndpointUri => "/customerArea/bookings/";
 
         public async Task<IEnumerable<Booking?>> GetAllBookingsAsync()
         {
