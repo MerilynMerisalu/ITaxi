@@ -7,7 +7,7 @@
 
 <h1>Index</h1>
 <p>
-    <a href="/schedule/Create">Create New</a>
+    <MudLink Href="/schedule/Create">Create New</MudLink>
 </p>
 @if (Schedules == null)
 {
@@ -15,14 +15,14 @@
 }
 else
 {
-    <table class="table">
+    <MudSimpleTable Style="overflow-x:auto" >
         <thead>
             <tr>
-                <th>Vehicle</th>
-                <th>Schedule Start Date And Time</th>
-                <th>Schedule End Date And Time</th>
-                <th>Number of Ride Times</th>
-                <th>Number of Ride Times Taken</th>
+                <MudTh Style="font-weight:bolder; color:black">Vehicle</MudTh>
+                <MudTh Style="font-weight:bolder; color:black">Schedule Start Date And Time</MudTh>
+                <MudTh Style="font-weight:bolder; color:black">Schedule End Date And Time</MudTh>
+                <MudTh Style="font-weight:bolder; color:black">Number of Ride Times</MudTh>
+                <MudTh Style="font-weight:bolder; color:black">Number of Ride Times Taken</MudTh>
                 
             </tr>
         </thead>
@@ -30,21 +30,20 @@ else
             @foreach (var item in Schedules)
             {
                 <tr>
-                    <td>@item.Vehicle?.VehicleIdentifier</td>
-                    <td>@item.StartDateAndTime.ToString("g")</td>
-                    <td>@item.EndDateAndTime.ToString("g")</td>
-                    <td>@item.NumberOfRideTimes</td>
-                    <td>@item.NumberOfTakenRideTimes</td>
+                    <MudTd>@item.Vehicle?.VehicleIdentifier</MudTd>
+                    <MudTd>@item.StartDateAndTime.ToString("g")</MudTd>
+                    <MudTd>@item.EndDateAndTime.ToString("g")</MudTd>
+                    <MudTd>@item.NumberOfRideTimes</MudTd>
+                    <MudTd>@item.NumberOfTakenRideTimes</MudTd>
                     
-                    <td>
-                        <a href="@($"Schedules/Edit/{item.Id}")">Edit</a>
-                        <a href="@($"Schedules/Details/{item.Id}")">Details</a>
-                        <a href="@($"Schedules/Delete/{item.Id}")">Delete</a>
-                    </td>
+                    <MudTd>
+                        <MudLink Underline="Underline.Always" Href="@($"Schedules/Details/{item.Id}")">Details</MudLink>
+                        <MudLink Underline="Underline.Always" Href="@($"Schedules/Delete/{item.Id}")">Delete</MudLink>
+                    </MudTd>
                 </tr>
             }
         </tbody>
-    </table>
+    </MudSimpleTable>
 }
 
 @code {
