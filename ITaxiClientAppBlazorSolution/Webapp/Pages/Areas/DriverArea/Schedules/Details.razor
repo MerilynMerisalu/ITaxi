@@ -8,46 +8,43 @@
 {
     <p>...Loading</p>
 }
-<div>
-    <h4>Schedule</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            Vehicle
-        </dt>
-        <dd class="col-sm-10">
-            @schedule?.Vehicle?.VehicleIdentifier
-        </dd>
-        <dt class="col-sm-2">
-            Schedule Start Date and Time
-        </dt>
-        <dd class="col-sm-10">
-            @schedule?.StartDateAndTime.ToString("f")
-        </dd>
-        <dt class="col-sm-2">
-            Schedule End Date and Time
-        </dt>
-        <dd class="col-sm-10">
-            @schedule?.EndDateAndTime.ToString("f")
-        </dd>
-        <dt class="col-sm-2">
-            Number of Ride Times
-        </dt>
-        <dd class="col-sm-10">
-            @schedule?.NumberOfRideTimes
-        </dd>
-        <dt class="col-sm-2">
-            Number of Ride Times Taken
-        </dt>
-        <dd class="col-sm-10">
-            @schedule?.NumberOfTakenRideTimes
-        </dd>
-        
-    </dl>
+else
+{
+    <div>
+        <h4>Schedule</h4>
+        <hr />
+        <MudSimpleTable Style="overflow-x: auto; border:none">
+            <thead>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle</MudTh>
+                    <MudTd Style="border:none">@schedule?.Vehicle?.VehicleIdentifier</MudTd>
+                    </tr>
+                    <tr>
+                        <MudTh Style="font-weight:bolder; color:black; border:none">Start Date and Time</MudTh>
+                        <MudTd Style="border:none">@schedule!.StartDateAndTime.ToString("g")</MudTd>
+                    </tr>
+                    <tr>
+                        <MudTh Style="font-weight:bolder; color:black; border:none">End Date and Time</MudTh>
+                        <MudTd Style="border:none">@schedule?.EndDateAndTime.ToString("g")</MudTd>
+                    </tr>
+                    <tr>
+                        <MudTh Style="font-weight:bolder; color:black; border:none">Number of Ride Times</MudTh>
+                        <MudTd Style="border:none">@schedule?.NumberOfRideTimes</MudTd>
+                    </tr>
+                    <tr>
+                        <MudTh Style="font-weight:bolder; color:black; border:none">Number of Ride Times Taken</MudTh>
+                        <MudTd Style="border:none">@schedule?.NumberOfTakenRideTimes</MudTd>
+                    </tr>
 
+                </thead>
+                <tbody>
+                </tbody>
+            </MudSimpleTable>
 
-</div>
-<a href="/schedules/index">Back To List</a>
+        </div>
+}
+
+    <MudLink Underline="Underline.Always" Href="/schedules/index">Back To List</MudLink>
 
 @code {
 
