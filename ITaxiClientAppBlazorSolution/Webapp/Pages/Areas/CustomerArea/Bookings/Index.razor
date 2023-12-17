@@ -61,13 +61,13 @@ else
                 <MudTd>
                 @if (context?.IsDeclined == true)
                 {
-                    <p><MudNavLink Href=@($"/bookings/Delete/{context.Id}")>Delete</MudNavLink>|</p>
+                    <p><MudLink Underline = "Underline.Always" Href=@($"/bookings/Delete/{context.Id}")>Delete</MudLink>|</p>
                 }
                 else
                 {
-                    <MudNavLink Href=@($"/bookings/Decline/{context!.Id}")>Decline</MudNavLink>
+                    <MudLink Underline="Underline.Always" Href=@($"/bookings/Decline/{context!.Id}")>Decline</MudLink>
                 }
-                <MudNavLink Href=@($"/bookings/Details/{context!.Id}")>Details</MudNavLink>
+                <MudLink Underline="Underline.Always" Href=@($"/bookings/Details/{context!.Id}")>Details</MudLink>
                 </MudTd>
             </RowTemplate>
             <PagerContent>
