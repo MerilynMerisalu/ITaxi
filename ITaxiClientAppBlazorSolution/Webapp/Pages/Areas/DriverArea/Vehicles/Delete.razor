@@ -12,54 +12,45 @@
 <div>
     <h4>Vehicle</h4>
     <hr />
-    <dl class="row">
+    <MudSimpleTable Style="overflow-x: auto; border:none">
+        <thead>
+            <tr>
+                <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle Type</MudTh>
+                <MudTd Style="border:none">@vehicle?.VehicleType?.VehicleTypeName</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle Mark</MudTh>
+                    <MudTd Style="border:none">@vehicle?.VehicleMark?.VehicleMarkName</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle Model</MudTh>
+                    <MudTd Style="border:none">@vehicle?.VehicleModel?.VehicleModelName</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle Plate Number</MudTh>
+                    <MudTd Style="border:none">@vehicle?.VehiclePlateNumber</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle Manufacture Year</MudTh>
+                    <MudTd Style="border:none">@vehicle?.ManufactureYear</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Number of Seats</MudTh>
+                    <MudTd Style="border:none">@vehicle?.NumberOfSeats</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle Availability</MudTh>
+                    <MudTd Style="border:none">
+                        @vehicle?.VehicleAvailability
+                </MudTd>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </MudSimpleTable>
 
-    <dt class="col-sm-2">
-        Vehicle Type
-    </dt>
-    <dd class="col-sm-10">
-        @vehicle?.VehicleType
-    </dd>
-    <dt class="col-sm-2">
-        Vehicle Mark
-    </dt>
-    <dd class="col-sm-10">
-        @vehicle?.VehicleMark
-    </dd>
-    <dt class="col-sm-2">
-        Vehicle Model
-    </dt>
-    <dd class="col-sm-10">
-        @vehicle?.VehicleModel
-    </dd>
-    <dt class="col-sm-2">
-        Vehicle Plate Number
-    </dt>
-    <dd class="col-sm-10">
-        @vehicle?.VehiclePlateNumber
-    </dd>
-    <dt class="col-sm-2">
-        Manufacture Year
-    </dt>
-    <dd class="col-sm-10">
-        @vehicle?.ManufactureYear
-    </dd>
-    <dt class="col-sm-2">
-        Number Of Seats
-    </dt>
-    <dd class="col-sm-10">
-        @vehicle?.NumberOfSeats
-    </dd>
-    <dt class="col-sm-2">
-        Vehicle Availability
-    </dt>
-    <dd class="col-sm-10">
-        @vehicle?.VehicleAvailability
-    </dd>
-
-</dl>
     <form>
-        <button @onclick="DeleteVehicleAsync" class="btn btn-danger">Delete</button>
+        <MudButton OnClick="DeleteVehicleAsync" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton>
     </form>
 </div>
 
@@ -81,7 +72,7 @@
         try
         {
             await service.DeleteVehicleByIdAsync(Id);
-            //navManager.NavigateTo("/vehicles/index");
+            navManager.NavigateTo("/vehicles/index");
         }
         catch(Exception ex)
         {

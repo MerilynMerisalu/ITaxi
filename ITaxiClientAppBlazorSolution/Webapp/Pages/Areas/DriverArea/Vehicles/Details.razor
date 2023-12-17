@@ -12,48 +12,47 @@
 <div>
     <h4>Vehicle</h4>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            Vehicle Type
-        </dt>
-        <dd class="col-sm-10">
-            @vehicle?.VehicleType
-        </dd>
-        <dt class="col-sm-2">
-            Vehicle Mark
-        </dt>
-        <dd class="col-sm-10">
-            @vehicle?.VehicleMark
-        </dd>
-        <dt class="col-sm-2">
-            Vehicle Model
-        </dt>
-        <dd class="col-sm-10">
-            @vehicle?.VehicleModel
-        </dd>
-        <dt class="col-sm-2">
-            Manufacture Year
-        </dt>
-        <dd class="col-sm-10">
-            @vehicle?.ManufactureYear
-        </dd>
-        <dt class="col-sm-2">
-            Number of Seats
-        </dt>
-        <dd class="col-sm-10">
-            @vehicle?.NumberOfSeats
-        </dd>
-        <dt class="col-sm-2">
-            Vehicle Availability
-        </dt>
-        <dd class="col-sm-10">
-            @vehicle?.VehicleAvailability
-        </dd>
-    </dl>
+    <MudSimpleTable Style="overflow-x: auto; border:none">
+        <thead>
+            <tr>
+                <MudTh Style="font-weight:bolder; color:black; border:none" >Vehicle Type</MudTh>
+                <MudTd Style="border:none">@vehicle?.VehicleType?.VehicleTypeName</MudTd>
+            </tr>
+            <tr>
+                <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle Mark</MudTh>
+                <MudTd Style="border:none">@vehicle?.VehicleMark?.VehicleMarkName</MudTd>
+            </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle Model</MudTh>
+                    <MudTd Style="border:none">@vehicle?.VehicleModel?.VehicleModelName</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle Plate Number</MudTh>
+                    <MudTd Style="border:none">@vehicle?.VehiclePlateNumber</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle Manufacture Year</MudTh>
+                    <MudTd Style="border:none">@vehicle?.ManufactureYear</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Number of Seats</MudTh>
+                    <MudTd Style="border:none">@vehicle?.NumberOfSeats</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle Availability</MudTh>
+                    <MudTd Style="border:none">
+                        @vehicle?.VehicleAvailability
+                    </MudTd>
+                </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </MudSimpleTable>
 
 
 </div>
-<a href="/vehicles/index">Back To List</a>
+<MudLink Underline="Underline.Always" Href="/vehicles/index">Back To List</MudLink>
 
 @code {
 
