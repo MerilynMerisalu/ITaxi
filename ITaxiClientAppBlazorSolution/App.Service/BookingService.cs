@@ -4,6 +4,7 @@ using Public.App.DTO.v1.CustomerArea;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,8 @@ namespace ITaxi.Service
     {
         Task<IEnumerable<Booking?>> GetAllBookingsAsync();
         Task<Booking?> GetBookingByIdAsync(Guid id);
+        Task RemoveBookingByIdAsync(Guid id);
+        Task<Booking?> DeclineBookingById(Guid id);
     }
 
     public class BookingService : BaseEntityService<Booking, Guid>, IBookingService
@@ -21,8 +24,14 @@ namespace ITaxi.Service
             base(clientProvider.CreateClient("API"), appState)
         {
         }
-
+        protected virtual string DelineBookingEndPointUri => "Decline";
         protected override string EndpointUri => "/customerArea/bookings/";
+
+        public async Task<Booking?> DeclineBookingById(Guid id)
+        {
+            return (await Client.GetFromJsonAsync<Booking?>
+                (Client.BaseAddress + EndpointUri + DelineBookingEndPointUri));
+        }
 
         public async Task<IEnumerable<Booking?>> GetAllBookingsAsync()
         {
@@ -32,6 +41,11 @@ namespace ITaxi.Service
         public async Task<Booking?> GetBookingByIdAsync(Guid id)
         {
             return await base.GetEntityByIdAsync(id);
+        }
+
+        public async Task RemoveBookingByIdAsync(Guid id)
+        {
+             await base.RemoveEntityAsync(id);
         }
     }
 }

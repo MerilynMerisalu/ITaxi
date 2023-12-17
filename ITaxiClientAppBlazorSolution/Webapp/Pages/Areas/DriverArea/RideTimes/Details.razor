@@ -15,28 +15,26 @@ else
     <div>
         <h4>Ride Date and Time</h4>
         <hr />
-        <dl class="row">
+        <MudSimpleTable Style="overflow-x: auto; border:none">
+            <thead>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Schedule</MudTh>
+                    <MudTd Style="border:none">@rideTime?.Schedule?.ShiftDurationTime</MudTd>
+                    </tr>
+                    <tr>
+                        <MudTh Style="font-weight:bolder; color:black; border:none">Ride Date and Time</MudTh>
+                        <MudTd Style="border:none">@rideTime?.RideDateTime.ToString("g")</MudTd>
+                    </tr>
+                    <tr>
+                        <MudTh Style="font-weight:bolder; color:black; border:none">Is Taken?</MudTh>
+                        <MudTd Style="border:none"><MudCheckBox @bind-Checked="rideTime.IsTaken"></MudCheckBox></MudTd>
+                    </tr>
+                    
+            </thead>
+            <tbody>
+            </tbody>
+        </MudSimpleTable>
 
-            <dt class="col-sm-2">
-                Schedule
-            </dt>
-            <dd class="col-sm-10">
-                @rideTime.Schedule?.ShiftDurationTime
-            </dd>
-            <dt class="col-sm-2">
-                Ride Date and Time
-            </dt>
-            <dd class="col-sm-10">
-                @rideTime.RideDateTime.ToString("g")
-            </dd>
-            <dt class="col-sm-2">
-                Is Taken?
-            </dt>
-            <dd class="col-sm-10">
-                <MudCheckBox @bind-Checked="rideTime.IsTaken"></MudCheckBox>
-            </dd>
-
-        </dl>
         <MudLink Underline = "Underline.Always" Href="/ridetimes/index">Back to List</MudLink>
     </div>
 }

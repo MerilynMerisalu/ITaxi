@@ -13,6 +13,7 @@ namespace ITaxi.Service
     {
         Task<IEnumerable<RideTime?>> GetAllRideTimesAsync();
         Task<RideTime?> GetRideTimeByIdAsync(Guid id);
+        Task DeleteRideTimeByIdAsync(Guid id);
     }
 
     public class RideTimeService : BaseEntityService<RideTime, Guid>, IRideTime
@@ -23,6 +24,11 @@ namespace ITaxi.Service
         }
 
         protected override string EndpointUri => "/driverarea/ridetimes/";
+
+        public async Task DeleteRideTimeByIdAsync(Guid id)
+        {
+             await base.RemoveEntityAsync(id);
+        }
 
         public async Task<IEnumerable<RideTime?>> GetAllRideTimesAsync()
         {
