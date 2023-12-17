@@ -49,7 +49,7 @@ else
                 <MudTd DataLabel="Pickup Date And Time">@context?.PickUpDateAndTime.ToString("g")</MudTd>
                 <MudTd DataLabel="Pickup Address">@context?.PickupAddress</MudTd>
                 <MudTd DataLabel="Destination Address">@context?.DestinationAddress</MudTd>
-                <MudTd DataLabel="Number of Paasengers">@context?.NumberOfPassengers</MudTd>
+                <MudTd DataLabel="Number of Passengers">@context?.NumberOfPassengers</MudTd>
                 <MudTd DataLabel="Has an Assistent"><MudCheckBox @bind-Checked="context!.HasAnAssistant"></MudCheckBox></MudTd>
                 <MudTd DataLabel="Status of Booking">@context?.StatusOfBooking</MudTd>
                 @if (context?.IsDeclined == true)

@@ -1,7 +1,88 @@
 ﻿@page "/bookings/Details/{Id:guid}"
-<h3>Details</h3>
+@using BlazorWebApp.Services
+
+@using ITaxi.Service
+@using Public.App.DTO.v1.CustomerArea
+@inject BookingService service
+<PageTitle>Booking Details</PageTitle>
+<h1>Details</h1>
+@if (booking == null)
+{
+    <p>...Loading</p>
+}
+<div>
+    <h4>Booking</h4>
+    <hr />
+    <MudSimpleTable Style="overflow-x: auto; border:none">
+        <thead>
+            <tr>
+                <MudTh Style="font-weight:bolder; color:black; border:none">Driver</MudTh>
+                <MudTd Style="border:none">@booking?.Driver?.AppUser?.FirstAndLastName</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle Type</MudTh>
+                    <MudTd Style="border:none">@booking?.VehicleType?.VehicleTypeName</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle</MudTh>
+                    <MudTd Style="border:none">@booking?.Vehicle?.VehicleIdentifier</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">City</MudTh>
+                    <MudTd Style="border:none">@booking?.City?.CityName</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Pickup Date and Time</MudTh>
+                    <MudTd Style="border:none">@booking?.PickUpDateAndTime.ToString("g")</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Pickup Address</MudTh>
+                    <MudTd Style="border:none">@booking?.PickupAddress</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Destination Address</MudTh>
+                    <MudTd Style="border:none">@booking?.DestinationAddress</MudTd>
+                </tr>
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Number of Passengers</MudTh>
+                    <MudTd Style="border:none">@booking?.NumberOfPassengers</MudTd>
+                </tr>
+                
+                <tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Has An Assistent?</MudTh>
+                    <MudTd Style="border:none">
+                        <MudCheckBox @bind-Checked="booking!.HasAnAssistant"></MudCheckBox>
+                </MudTd>
+            </tr>
+            <tr>
+                <MudTh Style="font-weight:bolder; color:black; border:none">Status of Booking</MudTh>
+                <MudTd Style="border:none">@booking?.StatusOfBooking</MudTd>
+             </tr>
+                @if (booking?.IsDeclined == true)
+            {
+                <MudTh Style="font-weight:bolder; color:black; border:none">Booking Decline Date And Time</MudTh>
+                <MudTd Style="border:none">@booking?.DeclineDateAndTime.ToString("g")</MudTd>
+            }
+
+        </thead>
+        <tbody>
+        </tbody>
+    </MudSimpleTable>
+
+
+</div>
+<MudLink Underline="Underline.Always" Href="/bookings/index">Back To List</MudLink>
 
 @code {
+
     [Parameter]
     public Guid Id { get; set; }
+    Booking? booking;
+    protected override async Task OnInitializedAsync()
+    {
+        StateHasChanged();
+        booking = await service.GetBookingByIdAsync(Id);
+        await base.OnInitializedAsync();
+    }
+
 }
