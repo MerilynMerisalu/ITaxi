@@ -1,6 +1,8 @@
 ﻿@page "/Vehicles/Delete/{Id:guid}"
 @inject VehicleService service
 @inject NavigationManager navManager
+@inject ISnackbar snackbar
+
 @using ITaxi.Public.DTO.v1.DriverArea
 @using ITaxi.Service
 
@@ -12,6 +14,11 @@
 <div>
     <h4>Vehicle</h4>
     <hr />
+    @if (string.IsNullOrWhiteSpace(_errorMessage) == false)
+    {
+        <MudAlert Severity="@Severity.Error">@_errorMessage</MudAlert>
+    }
+
     <MudSimpleTable Style="overflow-x: auto; border:none">
         <thead>
             <tr>
@@ -72,9 +79,10 @@
         try
         {
             await service.DeleteVehicleByIdAsync(Id);
+            snackbar.Add("Vehicle deleted successfully", Severity.Success);
             navManager.NavigateTo("/vehicles/index");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _errorMessage = ex.Message;
         }

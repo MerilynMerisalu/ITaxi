@@ -60,12 +60,12 @@ else
                     <MudTh Style="font-weight:bolder; color:black; border:none">Status of Booking</MudTh>
                     <MudTd Style="border:none">@booking?.StatusOfBooking</MudTd>
                 </tr>
-                @if (booking?.IsDeclined == true)
+                @if (booking?.StatusOfBooking == ITaxi.Enum.Enum.StatusOfBooking.Declined)
             {
                 <MudTh Style="font-weight:bolder; color:black; border:none">Booking Decline Date And Time</MudTh>
                 <MudTd Style="border:none">@booking?.DeclineDateAndTime.ToString("g")</MudTd>
             }
-
+           
         </thead>
         <tbody>
         </tbody>

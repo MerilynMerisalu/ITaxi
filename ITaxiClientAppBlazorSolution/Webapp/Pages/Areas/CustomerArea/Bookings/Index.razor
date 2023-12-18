@@ -13,14 +13,16 @@
 }
 else
 {
+    var showDeclineColumn = bookings.Any(x => x?.StatusOfBooking == StatusOfBooking.Declined);
+
     <MudTable Items="@bookings" Filter="new Func<Booking?,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1">
         <ToolBarContent>
             <MudTextField @bind-Value="searchString1" Placeholder="Search"
                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
                           IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
-        
-    
+
+
         <HeaderContent>
             <MudTh>Driver</MudTh>
             <MudTh>Vehicle Type</MudTh>
@@ -33,13 +35,12 @@ else
             <MudTh>Has an Assistent?</MudTh>
             <MudTh>Additional Info</MudTh>
             <MudTh>Status of Booking</MudTh>
-            @foreach (var item in bookings)
-        {
-            @if (item?.StatusOfBooking == StatusOfBooking.Declined)
+            @if (showDeclineColumn)
             {
-                    <MudTh>Deline Date and Time</MudTh>
+                <MudTh>Deline Date and Time</MudTh>
             }
-        }
+            <MudTh>Actions</MudTh>
+
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Driver">@context?.Driver?.AppUser?.FirstAndLastName</MudTd>
@@ -51,36 +52,36 @@ else
                 <MudTd DataLabel="Destination Address">@context?.DestinationAddress</MudTd>
                 <MudTd DataLabel="Number of Passengers">@context?.NumberOfPassengers</MudTd>
                 <MudTd DataLabel="Has an Assistent"><MudCheckBox @bind-Checked="context!.HasAnAssistant"></MudCheckBox></MudTd>
+                <MudTd DataLabel="Number of Passengers">@context?.AdditionalInfo</MudTd>
                 <MudTd DataLabel="Status of Booking">@context?.StatusOfBooking</MudTd>
-                @if (context?.IsDeclined == true)
+                @if (showDeclineColumn)
             {
                 <MudTd DataLabel="Deline Date and Time">@context?.DeclineDateAndTime.ToString("g")</MudTd>
             }
-                
-                
-                <MudTd>
-                @if (context?.IsDeclined == true)
+
+
+            <MudTd>
+                @if (context?.StatusOfBooking == StatusOfBooking.Declined)
                 {
-                    <p><MudLink Underline = "Underline.Always" Href=@($"/bookings/Delete/{context.Id}")>Delete</MudLink>|</p>
+                    <MudLink Underline="Underline.Always" Href=@($"/bookings/Delete/{context.Id}")>Delete</MudLink>
                 }
                 else
                 {
-                    <p>
                     <MudLink Underline="Underline.Always" Href=@($"/bookings/Decline/{context!.Id}")>Decline</MudLink>
-                     |</p>
                 }
+                <MudText> | </MudText>
                 <MudLink Underline="Underline.Always" Href=@($"/bookings/Details/{context!.Id}")>Details</MudLink>
-                </MudTd>
-            </RowTemplate>
-            <PagerContent>
-                <MudTablePager />
-            </PagerContent>
-        </MudTable>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
 }
 
 
 
-    @code {
+@code {
     private IEnumerable<Booking?> bookings = new List<Booking?>();
     private string searchString1 = "";
     private Booking? selectedItem1 = null;
@@ -98,12 +99,12 @@ else
             return true;
         if (element!.City!.CityName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
-        
-        
+
+
         return false;
     }
 
     }
-    
 
-    
+
+

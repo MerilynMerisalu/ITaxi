@@ -130,6 +130,7 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
             return null;
         }
         booking.StatusOfBooking = StatusOfBooking.Declined;
+        booking.IsDeclined = true;
         booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
         
         var user = await RepoDbContext.Users.FirstOrDefaultAsync(x => x.Id == userId!.Value);
