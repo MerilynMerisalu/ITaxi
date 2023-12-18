@@ -65,7 +65,9 @@ else
                 }
                 else
                 {
+                    <p>
                     <MudLink Underline="Underline.Always" Href=@($"/bookings/Decline/{context!.Id}")>Decline</MudLink>
+                     |</p>
                 }
                 <MudLink Underline="Underline.Always" Href=@($"/bookings/Details/{context!.Id}")>Details</MudLink>
                 </MudTd>

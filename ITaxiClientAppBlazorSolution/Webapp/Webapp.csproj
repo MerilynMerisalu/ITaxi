@@ -24,4 +24,8 @@
     <ProjectReference Include="..\App.Service\ITaxi.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Areas\DriverArea\Drives\" />
+  </ItemGroup>
+
 </Project>
