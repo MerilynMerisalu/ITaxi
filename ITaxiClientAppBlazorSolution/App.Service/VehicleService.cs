@@ -24,9 +24,9 @@ namespace ITaxi.Service
         protected virtual string ManufactureYearsEndPointUri => "GetManufactureYears";
         protected override string EndpointUri => "driverarea/vehicles/";
 
-        public Task<Vehicle> AddVehicle(Vehicle vehicle)
+        public async Task<Vehicle> AddVehicle(Vehicle vehicle)
         {
-            throw new NotImplementedException();
+            return await base.AddEntity(vehicle);
         }
 
         public async Task DeleteVehicleByIdAsync(Guid id)

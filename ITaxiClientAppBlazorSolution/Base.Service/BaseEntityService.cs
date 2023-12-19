@@ -18,6 +18,13 @@ namespace Base.Service
         {
         }
 
+        public async Task<TEntity> AddEntity(TEntity entity)
+        {
+            var response = await Client.PostAsJsonAsync<TEntity?>(GetEndpointUrl(),entity);
+            var result = await response.Content.ReadFromJsonAsync<TEntity>();
+            return result;
+        }
+
         public virtual async Task<IEnumerable<TEntity?>> GetAllAsync()
         {
             return await Client.GetFromJsonAsync<IEnumerable<TEntity?>>(GetEndpointUrl());

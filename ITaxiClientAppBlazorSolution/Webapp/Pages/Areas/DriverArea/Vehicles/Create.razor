@@ -3,125 +3,117 @@
 @using ITaxi.Public.DTO.v1.AdminArea
 @using ITaxi.Service
 @using System.ComponentModel.DataAnnotations
+@using Microsoft.Extensions.Localization
+@using Webapp.ViewModels
 @inject VehicleTypeService vehicleTypesService
 @inject VehicleMarkService vehicleMarksService
 @inject VehicleModelService vehicleModelService
 @inject VehicleService vehicleService
+@inject NavigationManager nav;
+@inject ISnackbar snackbar
+
 <PageTitle>Vehicle Create</PageTitle>
 <h1>Create</h1>
 <h4>Vehicle</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form>
-            <div class="form-group">
-                <label for="VehicleTypeId" class="control-label">
-                    Vehicle Type
-                </label>
-                 <select class="form-control" @bind="VehicleTypeId" >
-                    <option selected value="-1">Please Select</option>
-                    
-                     @if (VehicleTypes != null )
-                    {
-                        foreach (var option in VehicleTypes)
-                        {
-                            <option value="@option.Id">@option.VehicleTypeName</option>
-                        }
-                    } 
-                     
-                </select> 
-            </div> 
-            
-                <label for="VehicleMarkId" class="control-label">
-                    Vehicle Mark
-                </label>
-                <select class="form-control" >
-                    <option selected value="-1">Please Select</option>
-                 @if (VehicleMarks != null)
+        <EditForm Model="_vm" OnValidSubmit="Submit">
+            <FluentValidationValidator />
+            <MudSelect @bind-Value="@_vm.Type" For="@( () => _vm.Type)" Label="Vehicle Type" Placeholder="Please select a type" AnchorOrigin="Origin.CenterCenter">
+                @if (VehicleTypes != null)
                 {
-                    foreach (var option in VehicleMarks)
+                    foreach (var option in VehicleTypes)
                     {
-                        <option value="@option.Id">@option.VehicleMarkName</option>
-                    }
-                } 
-                </select>
-            <label for="VehicleModelId" class="control-label">
-                Vehicle Model
-            </label>
-            <select class="form-control" @bind="VehicleModelId">
-                <option selected value="-1">Please Select</option>
-                 @if (VehicleModels != null)
-                {
-                    foreach (var option in VehicleModels)
-                    {
-                        <option value="@option.Id">@option.VehicleModelName</option>
-                    }
-                } 
-            </select>
-            <div class="form-group">
-                <label for="VehiclePlateNumber" class="control-label">Vehicle Plate Number</label>
-                <input @bind-value="VehiclePlateNumber" class="form-control" />
-            </div>
-            <label for="VehicleManufactureYear" class="control-label">
-                Vehicle Manufacture Year
-            </label>
-            <select class="form-control" @bind="VehicleManufactureYear">
-                <option selected value="-1">Please Select</option>
-                 @if (ManuFactureYears != null)
-                {
-                    
-                    foreach (var option in ManuFactureYears)
-                    {
-                        <option value="@option">@option</option>
+                        <MudSelectItem Value="@option">@option.VehicleTypeName</MudSelectItem>
                     }
                 }
-                
-            </select>
-            <label for="NumberOfSeats" class="control-label">Number of Seats</label>
-            <MudNumericField @bind-Value="NumberOfSeats" class="form-control" Min="2" Max="6">
+               
+            </MudSelect>
 
-            </MudNumericField>
-            
-            <label for="VehicleAvailabity" class="control-label">Vehicle Availability</label>
-            <div>
-                
-            <InputSelect @bind-Value="VehicleAvailability" class="form-class">
-                     <option selected="selected">Please Select</option> 
-                @foreach (var option in Enum.GetValues(typeof(VehicleAvailability)))
-                {
-                    <option value="@option">@option</option>
-                }
-            </InputSelect>
-            </div>
-        </form>
-        <div class="form-group">
-            <br />
-            <input type="submit" value="Create" class="btn btn-primary" />
-        </div>
+            <MudSelect @bind-Value="@_vm.Mark" For="@( () => _vm.Mark)" Label="Vehicle Mark" Placeholder="Please select a mark" AnchorOrigin="Origin.CenterCenter">
+                    @if (VehicleTypes != null)
+                    {
+                        foreach (var option in VehicleMarks)
+                        {
+                            <MudSelectItem Value="@option">@option.VehicleMarkName</MudSelectItem>
+                        }
+                    }
+
+                </MudSelect>
+
+            @if (_vm.Mark != null)
+            {
+                <MudSelect @bind-Value="@_vm.Model" For="@( () => _vm.Model)" Label="Vehicle Model" Placeholder="Please select a model" AnchorOrigin="Origin.CenterCenter">
+                    @if (VehicleTypes != null)
+                    {
+                        foreach (var option in VehicleModels.Where(x => x.VehicleMarkId == _vm.Mark.Id))
+                        {
+                            <MudSelectItem Value="@option">@option.VehicleModelName</MudSelectItem>
+                        }
+                    }
+
+                </MudSelect>
+            }
+
+            <MudTextField @bind-Value="_vm.VehiclePlateNumber" For="@( () =>  _vm.VehiclePlateNumber)" Label="Plate number" />
+            <MudSelect @bind-Value="@_vm.VehicleManufactureYear" For="@( () => _vm.VehicleManufactureYear)" Label="Manufacture Year" Placeholder="Please select a manufacture year" AnchorOrigin="Origin.CenterCenter">
+              
+                    @foreach (var option in ManuFactureYears)
+                    {
+                        <MudSelectItem T="int?" Value="@option"></MudSelectItem>
+                    }
+
+            </MudSelect>
+            <MudNumericField @bind-Value="_vm.NumberOfSeats" For="@( () => _vm.NumberOfSeats)" Min="2" Max="6" />
+            <MudSelect @bind-Value="@_vm.VehicleAvailability" For="@( () => _vm.VehicleAvailability)" Label="Vehicle Availability" Placeholder="Please select a availability" AnchorOrigin="Origin.CenterCenter">
+                    @foreach (var option in Enum.GetValues<VehicleAvailability>())
+                    {
+                    <MudSelectItem T="VehicleAvailability?" Value="@option">@option</MudSelectItem>
+                    }
+
+            </MudSelect>
+               
+            <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary">Create</MudButton>
+        
+        </EditForm>
     </div>
 </div>
 @code {
-    List<VehicleType>? VehicleTypes = new List<VehicleType>();
-    List<VehicleMark>? VehicleMarks = new List<VehicleMark>();
-    List<VehicleModel>? VehicleModels = new List<VehicleModel>();
-    public Guid VehicleTypeId { get; set; }
-    public Guid VehicleMarkId { get; set; }
-    public Guid VehicleModelId { get; set; }
-    public int VehicleManufactureYear { get; set; }
-    public List<int> ManuFactureYears = new List<int>();
-    public int? NumberOfSeats { get; set; } = 2;
-    [Required]
-    public string VehiclePlateNumber { get; set; } = default!;
-    [Required]
-    [EnumDataType(typeof(VehicleAvailability))]
-    public VehicleAvailability? VehicleAvailability { get; set; }
+    private CreateVehicleViewModel _vm = new();
+   
+     List<VehicleType>? VehicleTypes = new List<VehicleType>();
+     List<VehicleMark>? VehicleMarks = new List<VehicleMark>();
+     List<VehicleModel>? VehicleModels = new List<VehicleModel>();
+    
+     public List<int> ManuFactureYears = new List<int>();
+    
 
     protected override async Task OnInitializedAsync()
     {
-         VehicleTypes = (await vehicleTypesService.GetAllVehicleTypesAsync()).ToList();
-         VehicleMarks = (await vehicleMarksService.GetAllVehicleMarksAsync()).ToList();
+        VehicleTypes = (await vehicleTypesService.GetAllVehicleTypesAsync()).ToList();
+        VehicleMarks = (await vehicleMarksService.GetAllVehicleMarksAsync()).ToList();
         VehicleModels = (await vehicleModelService.GetAllVehicleModelsAsync()).ToList();
         ManuFactureYears = ( await vehicleService.GetManufactureYears()).ToList();
 
+    }
+    
+
+    private async Task Submit()
+    {
+        await vehicleService.AddEntity(new ITaxi.Public.DTO.v1.DriverArea.Vehicle
+            {
+                VehicleTypeId = _vm.Type.Id,
+                VehicleMarkId = _vm.Mark.Id,
+                VehicleModelId = _vm.Model.Id,
+                VehiclePlateNumber = _vm.VehiclePlateNumber,
+                ManufactureYear = _vm.VehicleManufactureYear.Value,
+                NumberOfSeats = _vm.NumberOfSeats,
+                VehicleAvailability = _vm.VehicleAvailability.Value,
+
+
+            });
+        snackbar.Add("Vehicle created successfully", Severity.Success);
+            nav.NavigateTo("/vehicles/index");
     }
 }
