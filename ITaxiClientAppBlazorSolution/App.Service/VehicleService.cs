@@ -3,22 +3,25 @@ using Base.Service;
 using System.Net.Http;
 using Base.Service.Contracts;
 using System.Net.Http.Json;
+using Public.App.DTO.v1;
+using System.Net.Http.Headers;
 
 namespace ITaxi.Service
 {
-    
+
     public interface IVehicleService
     {
         Task<IEnumerable<Vehicle?>> GetAllVehiclesAsync();
         Task<Vehicle?> GetVehicleByIdAsync(Guid id);
         Task<Vehicle> AddVehicle(Vehicle vehicle);
-        Task UpdateVehicle(Guid Id,Vehicle vehicle);
+        Task UpdateVehicle(Vehicle vehicle);
         Task DeleteVehicleByIdAsync(Guid id);
         Task<IEnumerable<int>> GetManufactureYears();
+        Task UploadGallery(Guid vehicleId, string fileName, byte[] data);
     }
     public class VehicleService : BaseEntityService<Vehicle, Guid>, IVehicleService
     {
-        public VehicleService(IHttpClientFactory clientProvider, IAppState appState) : 
+        public VehicleService(IHttpClientFactory clientProvider, IAppState appState) :
             base(clientProvider.CreateClient("API"), appState)
         {
         }
@@ -51,9 +54,23 @@ namespace ITaxi.Service
             return await base.GetEntityByIdAsync(id);
         }
 
-        public async Task UpdateVehicle(Guid id,Vehicle vehicle)
+        public async Task UpdateVehicle(Vehicle vehicle)
         {
-             await base.UpdateEntityAsync(id,vehicle);
+            await base.UpdateEntityAsync(vehicle);
+        }
+
+        public async Task UploadGallery(Guid vehicleId, string fileName, byte[] data)
+        {
+            var form = new MultipartFormDataContent
+            {
+                {new ByteArrayContent(data), "file", fileName  }
+            };
+
+            var response = await Client.PostAsync($"{GetEndpointUrl()}Gallery/{vehicleId}", form);
+            if (response.IsSuccessStatusCode == false)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+            }
         }
     }
 }

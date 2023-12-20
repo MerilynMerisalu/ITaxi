@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace Public.App.DTO.v1.DriverArea
 {
-    public class Schedule
+    public class Schedule : Entity
     {
-        public Guid Id { get; set; }
+        
         public Guid UserId { get; set; }
         public Driver? Driver { get; set; }
         [Display(ResourceType = typeof(ITaxi.Resources.Areas.App.Domain.DriverArea.Schedule), Name = "Vehicle")]

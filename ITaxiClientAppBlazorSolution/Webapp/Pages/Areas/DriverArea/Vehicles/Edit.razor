@@ -132,7 +132,7 @@ else
         vehicle.ManufactureYear = _vm.VehicleManufactureYear.Value;
         vehicle.NumberOfSeats = _vm.NumberOfSeats;
         vehicle.VehicleAvailability = _vm.VehicleAvailability.Value;
-        await vehicleService.UpdateEntityAsync(Id, vehicle); 
+        await vehicleService.UpdateEntityAsync( vehicle); 
         snackbar.Add("Vehicle updated successfully", Severity.Success);
         nav.NavigateTo("/vehicles/index");
     }

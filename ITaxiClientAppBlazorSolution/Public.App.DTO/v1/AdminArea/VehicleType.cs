@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Base.Resources;
+using Public.App.DTO.v1;
 
 namespace ITaxi.Public.DTO.v1.AdminArea;
 
-public class VehicleType 
+public class VehicleType : Entity
 {
-    public Guid Id { get; set; }
+    
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]

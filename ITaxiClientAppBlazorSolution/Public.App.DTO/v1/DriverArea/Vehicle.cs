@@ -3,12 +3,12 @@ using ITaxi.Enum.Enum;
 using ITaxi.Public.DTO.v1.AdminArea;
 using Base.Domain;
 using Base.Resources;
+using Public.App.DTO.v1;
 
 namespace ITaxi.Public.DTO.v1.DriverArea;
 
-public class Vehicle
+public class Vehicle : Entity
 {
-    public Guid Id { get; set; }
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "Driver")]
     public Guid DriverId { get; set; }
 

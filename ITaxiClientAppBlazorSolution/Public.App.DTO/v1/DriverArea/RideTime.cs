@@ -10,9 +10,9 @@ using Public.App.DTO.v1.CustomerArea;
 
 namespace Public.App.DTO.v1.DriverArea
 {
-    public class RideTime
+    public class RideTime: Entity
     {
-        public Guid Id { get; set; }
+        
         public Guid DriverId { get; set; }
 
         /*public DriverDTO? Driver { get; set; }

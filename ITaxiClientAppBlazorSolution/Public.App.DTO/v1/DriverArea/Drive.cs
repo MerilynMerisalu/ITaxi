@@ -12,9 +12,9 @@ using System.Xml.Linq;
 
 namespace Public.App.DTO.v1.DriverArea
 {
-    public class Drive
+    public class Drive: Entity
     {
-        public Guid Id { get; set; }
+        
         [Display(ResourceType = typeof(ITaxi.Resources.Areas.App.Domain.AdminArea.Driver), Name = "JobTitle")]
         public Guid DriverId { get; set; }
         public Booking? Booking { get; set; }

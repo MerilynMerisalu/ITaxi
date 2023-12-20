@@ -1,13 +1,15 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using App.Domain;
 using AutoMapper;
+using Azure.Storage.Blobs;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using App.Public.DTO.v1.DriverArea;
+using Vehicle = App.Public.DTO.v1.DriverArea.Vehicle;
 
 namespace WebApp.ApiControllers.DriverArea;
 
@@ -222,6 +224,42 @@ public class VehiclesController : ControllerBase
         var res =  _appBLL.Vehicles.GettingManufactureYears();
         
         return Ok(res);
+    }
+    
+    // <summary>
+    /// Gets all manufacture years for driver area vehicles create and edit
+    /// </summary>
+    /// <returns>List of ints</returns>
+    [Route("Gallery/{vehicleId:guid}")]
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<Photo>> Gallery(
+        [FromRoute]Guid vehicleId,IFormFile file)
+    {
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(vehicleId);
+        if (vehicle == null) return NotFound();
+
+        
+        var client = new BlobServiceClient("UseDevelopmentStorage=true");
+        var container = client.GetBlobContainerClient("vehicles");
+        var blob = container.GetBlobClient(file.FileName);
+        await blob.UploadAsync(file.OpenReadStream());
+
+        //create photo entity in database
+
+        var photo = new Photo()
+        {
+            //Vehicle = vehicle,
+            Title = file.FileName,
+            PhotoURL = blob.Uri.ToString(),
+        };
+
+        //await _appBLL.SaveChangesAsync();
+        
+        return photo;
     }
 }
 

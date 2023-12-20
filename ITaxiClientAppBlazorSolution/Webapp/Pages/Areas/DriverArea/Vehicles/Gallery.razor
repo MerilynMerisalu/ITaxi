@@ -2,6 +2,7 @@
 @using BlazorWebApp.Services
 @using ITaxi.Public.DTO.v1.DriverArea
 @using ITaxi.Service
+@using Webapp.Helpers
 @inject VehicleService service
 <PageTitle>@vehicle?.VehicleIdentifier Gallery</PageTitle>
 <h1>@vehicle?.VehicleIdentifier Gallery</h1>
@@ -14,14 +15,75 @@
     <hr />
 </div>
 
+@* <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="true" ShowBullets="@true" EnableSwipeGesture="@true" AutoCycle="@true" TData="object">
+    @foreach(var item in vehicle.Photos)
+    {
+        <MudCarouselItem Color="@Color.Primary">
+            <MudImage Src="@item.PhotoURL" Width="350" Fluid="true" />
+        </MudCarouselItem>
+    }
+   
+</MudCarousel> *@
+
+
+<MudFileUpload T="IReadOnlyList<IBrowserFile>" FilesChanged="ReadFiles" Accept="image/*">
+    <ButtonTemplate>
+        <MudButton HtmlTag="label"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Filled.CloudUpload"
+                   for="@context.Id">
+            Multiple Files
+        </MudButton>
+    </ButtonTemplate>
+</MudFileUpload>
+
+<MudStack Row="true" Class="flex-wrap">
+    @foreach(var item in _filesToBeUploaded)
+    {
+        <MudImage Width="250" Fluid="true" Src="@item.GetDataUri()" />
+    }
+</MudStack>
+
+<MudButton StartIcon="@Icons.Material.Filled.Upload" OnClick="UploadFiles">Submit</MudButton>
+
 @code {
+    private const int _maxFileSize = 3 * 1024 * 1024;
     [Parameter]
     public Guid Id { get; set; }
+    [Inject] private ISnackbar Snackbar { get; set; }
+
     Vehicle? vehicle;
     protected override async Task OnInitializedAsync()
     {
         StateHasChanged();
         vehicle = await service.GetVehicleByIdAsync(Id);
         await base.OnInitializedAsync();
+    }
+
+    private List<FileUploadViewModel> _filesToBeUploaded = new();
+
+    private async Task ReadFiles(IReadOnlyList<IBrowserFile> files)
+    {
+        foreach (var file in files)
+        {
+            if (file.Size > _maxFileSize)
+            {
+                Snackbar.Add("File is to big", Severity.Error);
+            }
+            else
+            {
+                var model = await FileUploadViewModel.FromIBrowserFile(file, _maxFileSize);
+                _filesToBeUploaded.Add(model);
+            }
+        }
+    }
+
+    private async Task UploadFiles()
+    {
+        foreach(var item in _filesToBeUploaded)
+        {
+            await service.UploadGallery(Id,item.Name,item.Data);
+        }
     }
 }

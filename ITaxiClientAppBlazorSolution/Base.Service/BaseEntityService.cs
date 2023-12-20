@@ -1,6 +1,7 @@
 ﻿
 using Base.Service.Contracts;
 using BlazorWebApp.Services;
+using Public.App.DTO.v1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 namespace Base.Service
 {
     public abstract class BaseEntityService<TEntity, TKey> : MVCBaseService, IBaseEntityService<TEntity, TKey>
-        where TEntity : class
+        where TEntity : Entity<TKey>
         where TKey : IEquatable<TKey>
     {
         protected BaseEntityService(HttpClient client, IAppState appState) : base(client, appState)
@@ -46,9 +47,9 @@ namespace Base.Service
             //return await Client.DeleteFromJsonAsync<TEntity?>(GetEndpointUrl() + id);
         }
 
-        public async Task UpdateEntityAsync(Guid id,TEntity entity)
+        public async Task UpdateEntityAsync(TEntity entity)
         {
-            var response = await Client.PutAsJsonAsync<TEntity?>(GetEndpointUrl() + id, entity);
+            var response = await Client.PutAsJsonAsync<TEntity?>(GetEndpointUrl() + entity.Id, entity);
            
             
         }
