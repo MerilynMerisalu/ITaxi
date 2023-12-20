@@ -12,7 +12,7 @@ namespace ITaxi.Service
         Task<IEnumerable<Vehicle?>> GetAllVehiclesAsync();
         Task<Vehicle?> GetVehicleByIdAsync(Guid id);
         Task<Vehicle> AddVehicle(Vehicle vehicle);
-        Task<Vehicle> UpdateVehicle(Vehicle vehicle);
+        Task UpdateVehicle(Guid Id,Vehicle vehicle);
         Task DeleteVehicleByIdAsync(Guid id);
         Task<IEnumerable<int>> GetManufactureYears();
     }
@@ -51,9 +51,9 @@ namespace ITaxi.Service
             return await base.GetEntityByIdAsync(id);
         }
 
-        public async Task<Vehicle> UpdateVehicle(Vehicle vehicle)
+        public async Task UpdateVehicle(Guid id,Vehicle vehicle)
         {
-            return await base.UpdateEntityAsync(vehicle);
+             await base.UpdateEntityAsync(id,vehicle);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Webapp.ViewModels
 {
     public class CreateVehicleViewModel
     {
+        public Guid VehicleTypeId { get; set; }
         private VehicleMark? mark;
 
         public VehicleType? Type { get; set; }

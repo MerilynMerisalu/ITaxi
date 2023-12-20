@@ -46,11 +46,11 @@ namespace Base.Service
             //return await Client.DeleteFromJsonAsync<TEntity?>(GetEndpointUrl() + id);
         }
 
-        public async Task<TEntity> UpdateEntityAsync(TEntity entity)
+        public async Task UpdateEntityAsync(Guid id,TEntity entity)
         {
-            var response = await Client.PutAsJsonAsync<TEntity?>(GetEndpointUrl(), entity);
-            var result = await response.Content.ReadFromJsonAsync<TEntity>();
-            return result;
+            var response = await Client.PutAsJsonAsync<TEntity?>(GetEndpointUrl() + id, entity);
+           
+            
         }
     }
 }
