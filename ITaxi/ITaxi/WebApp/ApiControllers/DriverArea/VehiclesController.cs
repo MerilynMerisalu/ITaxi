@@ -1,4 +1,5 @@
 #nullable enable
+using App.BLL;
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Domain;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Photo = App.Public.DTO.v1.AdminArea.Photo;
 using Vehicle = App.Public.DTO.v1.DriverArea.Vehicle;
 
 namespace WebApp.ApiControllers.DriverArea;
@@ -226,10 +228,12 @@ public class VehiclesController : ControllerBase
         return Ok(res);
     }
     
-    // <summary>
-    /// Gets all manufacture years for driver area vehicles create and edit
+    /// <summary>
+    /// Adds photos to a vehicle gallery
     /// </summary>
-    /// <returns>List of ints</returns>
+    /// <param name="vehicleId">Vehicle Id</param>
+    /// <param name="file">Photo</param>
+    /// <returns>Photos</returns>
     [Route("Gallery/{vehicleId:guid}")]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -252,12 +256,18 @@ public class VehiclesController : ControllerBase
 
         var photo = new Photo()
         {
-            //Vehicle = vehicle,
+            
             Title = file.FileName,
             PhotoURL = blob.Uri.ToString(),
+            Vehicle = vehicle,
+            VehicleId = vehicle.Id,
+            AppUserId = User.GettingUserId(),
+            CreatedBy = User.GettingUserEmail(),
+            CreatedAt = DateTime.Now.ToUniversalTime()
         };
+        _appBLL.Photos.Add(_mapper.Map<PhotoDTO>(photo));
 
-        //await _appBLL.SaveChangesAsync();
+        await _appBLL.SaveChangesAsync();
         
         return photo;
     }
