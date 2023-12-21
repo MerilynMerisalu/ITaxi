@@ -1,7 +1,40 @@
-﻿@page "/Schedule/Create"
-<h3>Create</h3>
+﻿@page "/Schedules/Create"
+@using ITaxi.Public.DTO.v1.DriverArea
+@using ITaxi.Service
+@using Webapp.ViewModels
+@inject VehicleService vehicleService
+<div class="row">
+    <div class="col-md-4">
+        <EditForm Model="@vm" OnValidSubmit="Submit">
+            <FluentValidationValidator />
+            <MudSelect @bind-Value="@vm.Vehicle" Label="Vehicle" Placeholder="Please select a vehicle" AnchorOrigin="Origin.CenterCenter">
+                @if (vehicles != null)
+                {
+                    foreach (var option in vehicles)
+                    {
+                        <MudSelectItem Value="@option">@option?.VehicleIdentifier</MudSelectItem>
+                    }
+                }
+
+            </MudSelect>
+            <MudButton OnClick="Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
+
+        </EditForm>
+    </div>
+</div>
+
 
 
 @code {
+    public CreateEditScheduleViewModel vm = new CreateEditScheduleViewModel();
+    List<Vehicle?> vehicles;
+    protected override async Task OnInitializedAsync()
+    {
+        vehicles = (await vehicleService.GetAllVehiclesByDriverIdAsync()).ToList();
+    }
+    private async Task Submit()
+    {
+        
+    }
 
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Vehicle = App.Public.DTO.v1.DriverArea.Vehicle;
 
 namespace WebApp.ApiControllers.DriverArea;
 
@@ -42,7 +43,7 @@ public class VehiclesController : ControllerBase
     [HttpGet]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType( typeof( IEnumerable<Vehicle>), StatusCodes.Status200OK )] 
+    [ProducesResponseType( typeof( IEnumerable<App.Public.DTO.v1.DriverArea.Vehicle>), StatusCodes.Status200OK )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     
@@ -268,5 +269,24 @@ public class VehiclesController : ControllerBase
         
         return photo;
     }
+    
+    /// <summary>
+    /// Gets all vehicles by driverId
+    /// </summary>
+    /// <returns>List Vehicles</returns>
+    [Route("GetVehiclesByDriverId/")]
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehiclesByDriverId()
+    {
+        var userId = User.GettingUserId();
+        var driver = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(userId); 
+        var res = await _appBLL.Vehicles.GettingVehiclesByDriverIdAsync(driver.Id, userId);
+        
+        return Ok(res.Select(e => _mapper.Map<Vehicle>(e)));
+    }
+
 }
 

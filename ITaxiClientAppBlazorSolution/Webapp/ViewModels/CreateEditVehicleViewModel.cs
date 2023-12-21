@@ -4,7 +4,7 @@ using ITaxi.Public.DTO.v1.AdminArea;
 
 namespace Webapp.ViewModels
 {
-    public class CreateVehicleViewModel
+    public class CreateEditVehicleViewModel
     {
         public Guid VehicleTypeId { get; set; }
         private VehicleMark? mark;
@@ -29,7 +29,7 @@ namespace Webapp.ViewModels
         public VehicleAvailability? VehicleAvailability { get; set; }
     }
 
-    public class CreateVehicleViewModelValidator : AbstractValidator<CreateVehicleViewModel>
+    public class CreateVehicleViewModelValidator : AbstractValidator<CreateEditVehicleViewModel>
     {
         public CreateVehicleViewModelValidator()
         {

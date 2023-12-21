@@ -11,6 +11,7 @@ namespace ITaxi.Service
 
     public interface IVehicleService
     {
+        Task<IEnumerable<Vehicle?>> GetAllVehiclesByDriverIdAsync();
         Task<IEnumerable<Vehicle?>> GetAllVehiclesAsync();
         Task<Vehicle?> GetVehicleByIdAsync(Guid id);
         Task<Vehicle> AddVehicle(Vehicle vehicle);
@@ -26,6 +27,7 @@ namespace ITaxi.Service
         {
         }
         protected virtual string ManufactureYearsEndPointUri => "GetManufactureYears";
+        protected virtual string VehiclesByDriverEndPointUri => "GetVehiclesByDriverId";
         protected override string EndpointUri => "driverarea/vehicles/";
 
         public async Task<Vehicle> AddVehicle(Vehicle vehicle)
@@ -41,6 +43,12 @@ namespace ITaxi.Service
         public async Task<IEnumerable<Vehicle?>> GetAllVehiclesAsync()
         {
             return await base.GetAllAsync();
+        }
+
+        public async Task<IEnumerable<Vehicle?>> GetAllVehiclesByDriverIdAsync()
+        {
+            return (await Client.GetFromJsonAsync<IEnumerable<Vehicle?>>
+                (Client.BaseAddress + EndpointUri + VehiclesByDriverEndPointUri)).ToList();
         }
 
         public async Task<IEnumerable<int>> GetManufactureYears()
