@@ -9,22 +9,29 @@
 @if (vehicle == null)
 {
     <p>...Loading</p>
+    return;
 }
 <div>
     <h4>@vehicle?.VehicleIdentifier</h4>
     <hr />
 </div>
 
-@* <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="true" ShowBullets="@true" EnableSwipeGesture="@true" AutoCycle="@true" TData="object">
-    @foreach(var item in vehicle.Photos)
-    {
-        <MudCarouselItem Color="@Color.Primary">
-            <MudImage Src="@item.PhotoURL" Width="350" Fluid="true" />
-        </MudCarouselItem>
-    }
-   
-</MudCarousel> *@
+@if (vehicle.VehiclePhotos == null || vehicle.VehiclePhotos.Any () == false)
+{
+    <MudAlert Severity="Severity.Info">No images yet</MudAlert>
+}
+else
+{
+    <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="true" ShowBullets="@true" EnableSwipeGesture="@true" AutoCycle="@true" TData="object">
+        @foreach (var item in vehicle.VehiclePhotos)
+        {
+            <MudCarouselItem Color="@Color.Primary">
+                <MudImage Src="@item.PhotoURL" Width="350" Fluid="true" />
+            </MudCarouselItem>
+        }
 
+    </MudCarousel>
+}
 
 <MudFileUpload T="IReadOnlyList<IBrowserFile>" FilesChanged="ReadFiles" Accept="image/*">
     <ButtonTemplate>
@@ -85,5 +92,9 @@
         {
             await service.UploadGallery(Id,item.Name,item.Data);
         }
+
+        _filesToBeUploaded.Clear();
+
+        vehicle = await service.GetVehicleByIdAsync(Id);
     }
 }

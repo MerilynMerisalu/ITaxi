@@ -247,7 +247,8 @@ public class VehiclesController : ControllerBase
         
         var client = new BlobServiceClient("UseDevelopmentStorage=true");
         var container = client.GetBlobContainerClient("vehicles");
-        var blob = container.GetBlobClient(file.FileName);
+        var fileExtension = Path.GetExtension(file.FileName);
+        var blob = container.GetBlobClient($"{Guid.NewGuid()}{fileExtension}");
         await blob.UploadAsync(file.OpenReadStream());
 
         //create photo entity in database

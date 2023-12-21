@@ -216,6 +216,7 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
                     .Include(v => v.VehicleType)
                     .ThenInclude(v => v!.VehicleTypeName)
                     .ThenInclude(v => v.Translations)
+                    .Include(v => v.VehiclePhotos)
                     .AsSplitQuery();
             }
             else if (roleName.Equals("Driver"))
@@ -226,7 +227,9 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
                     .Include(v => v.VehicleModel)
                     .Include(v => v.VehicleType)
                     .ThenInclude(v => v!.VehicleTypeName)
-                    .ThenInclude(v => v.Translations).Where(u => u.Driver!.AppUserId.Equals(userId));
+                    .ThenInclude(v => v.Translations)
+                    .Include(v => v.VehiclePhotos)
+                    .Where(u => u.Driver!.AppUserId.Equals(userId));
             }
         }
         return query;

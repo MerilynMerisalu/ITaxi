@@ -97,6 +97,6 @@ public class AutoMapperConfig: Profile
         CreateMap<App.Public.DTO.v1.AdminArea.Comment, App.BLL.DTO.AdminArea.CommentDTO>().ReverseMap();
         CreateMap<App.Public.DTO.v1.CustomerArea.Comment, App.BLL.DTO.AdminArea.CommentDTO>().ReverseMap();
         
-        CreateMap<App.BLL.DTO.AdminArea.PhotoDTO, App.DAL.DTO.AdminArea.PhotoDTO>().ReverseMap();
+        CreateMap<App.Public.DTO.v1.AdminArea.Photo, App.BLL.DTO.AdminArea.PhotoDTO>().ReverseMap();
     }
 }

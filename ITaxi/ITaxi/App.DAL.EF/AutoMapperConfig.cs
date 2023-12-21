@@ -371,7 +371,7 @@ public class AutoMapperConfig : Profile
                     dto.MapFrom(x => x.UpdatedAt.ToUniversalTime()))
             ;
         // Convert from EF => DTO: Convert to Local Time
-        CreateMap<App.Domain.Photo, Photo>()
+        CreateMap<App.Domain.Photo, PhotoDTO>()
             .ForMember(dto => dto.CreatedAt,
                 m =>
                     m.MapFrom(x => x.CreatedAt.ToLocalTime()))

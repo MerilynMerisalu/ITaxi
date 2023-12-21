@@ -17,6 +17,10 @@
                 }
 
             </MudSelect>
+            <InputDate TValue="DateTime?" @bind-Value="vm.StartDateAndTime" Type="InputDateType.DateTimeLocal"  />
+        @*     <MudTextField @bind-Value="vm.StartDateAndTime" @bind-Value:format="dd.MM.yyyy HH:mm" Format="dd.MM.yyyy HH:mm" Culture=System.Globalization.CultureInfo.CurrentUICulture
+                          InputType="@InputType.DateTimeLocal" For="@( () => vm.StartDateAndTime)" />
+ *@
             <MudButton OnClick="Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
 
         </EditForm>
@@ -32,9 +36,9 @@
     {
         vehicles = (await vehicleService.GetAllVehiclesByDriverIdAsync()).ToList();
     }
+
     private async Task Submit()
     {
-        
     }
 
 }

@@ -4,6 +4,7 @@ using ITaxi.Public.DTO.v1.AdminArea;
 using Base.Domain;
 using Base.Resources;
 using Public.App.DTO.v1;
+using Public.App.DTO.v1.AdminArea;
 
 namespace ITaxi.Public.DTO.v1.DriverArea;
 
@@ -65,6 +66,6 @@ public class Vehicle : Entity
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleAvailability")]
     public VehicleAvailability VehicleAvailability { get; set; }
 
-   
-    
+    public ICollection<Photo>? VehiclePhotos { get; set; }
+
 }

@@ -66,6 +66,6 @@ public class Vehicle: DomainEntityMetaId
 
     // public ICollection<Schedule>? Schedules { get; set; }
 
-    // public ICollection<Photo>? VehiclePhotos { get; set; }
+    public ICollection<Photo>? VehiclePhotos { get; set; }
     
 }
