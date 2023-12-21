@@ -6,6 +6,10 @@ namespace Webapp.ViewModels
     {
         public Guid VehicleId { get; set; }
         public Vehicle? Vehicle { get; set; }
-        public DateTime? StartDateAndTime { get; set; } 
+        //public DateTime? StartDateAndTime { get; set; } 
+        public DateTime? EndDateAndTime { get; set; }
+        public DateTime? StartDate { get; set; }
+        public TimeOnly StartTime { get; set;}
+        
     }
 }
