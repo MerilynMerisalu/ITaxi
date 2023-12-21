@@ -2,7 +2,7 @@
 using App.BLL;
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
-using App.Domain;
+using App.Public.DTO.v1.AdminArea;
 using AutoMapper;
 using Azure.Storage.Blobs;
 using Base.Extensions;
@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Photo = App.Public.DTO.v1.AdminArea.Photo;
-using Vehicle = App.Public.DTO.v1.DriverArea.Vehicle;
+
+
 
 namespace WebApp.ApiControllers.DriverArea;
 
