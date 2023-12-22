@@ -17,10 +17,9 @@
                 }
 
             </MudSelect>
-            <MudTextField T="DateTime?" Format="s" Label="Start Date and Time" InputType="InputType.DateTimeLocal" />
-           @*  <MudDatePicker PickerVariant="PickerVariant.Inline" Label="Start Date"/>
-
-            <MudTimePicker PickerVariant="PickerVariant.Inline" Label="Start Time" AmPm="false" Editable=true />
+            <MudTextField T="DateTime?" Format="s" Label="Start Date and Time" @bind-Value="@vm.StartDateAndTime" InputType="InputType.DateTimeLocal" />
+            <MudTextField T="DateTime?" Format="s" Label="End Date and Time" @bind-Value="@vm.EndDateAndTime" InputType="InputType.DateTimeLocal" />
+           @*  
              *@
             <p>
             <MudButton OnClick="Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
