@@ -1,4 +1,4 @@
-﻿using ITaxi.Public.DTO.v1.DriverArea;
+﻿using Public.App.DTO.v1.DriverArea;
 
 namespace Webapp.ViewModels
 {

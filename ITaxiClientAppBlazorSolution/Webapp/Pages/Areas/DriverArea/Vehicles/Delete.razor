@@ -1,12 +1,9 @@
 ﻿@page "/Vehicles/Delete/{Id:guid}"
+@using ITaxi.Service
+@using Public.App.DTO.v1.DriverArea
 @inject VehicleService service
 @inject NavigationManager navManager
 @inject ISnackbar snackbar
-
-@using ITaxi.Public.DTO.v1.DriverArea
-@using ITaxi.Service
-
-
 <PageTitle>Vehicle Delete</PageTitle>
 <h1>Delete</h1>
 

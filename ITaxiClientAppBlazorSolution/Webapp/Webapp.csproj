@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="NewFolder\" />
     <Folder Include="Pages\Areas\DriverArea\Drives\" />
   </ItemGroup>
 

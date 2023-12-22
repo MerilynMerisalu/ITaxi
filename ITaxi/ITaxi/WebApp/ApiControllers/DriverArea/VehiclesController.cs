@@ -241,7 +241,7 @@ public class VehiclesController : ControllerBase
     public async Task<ActionResult<Photo>> Gallery(
         [FromRoute]Guid vehicleId,IFormFile file)
     {
-        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(vehicleId);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithoutIncludesByIdAsync(vehicleId);
         if (vehicle == null) return NotFound();
 
         
@@ -255,16 +255,16 @@ public class VehiclesController : ControllerBase
 
         var photo = new Photo()
         {
-            
+            Id = Guid.NewGuid(),
             Title = file.FileName,
             PhotoURL = blob.Uri.ToString(),
-            Vehicle = vehicle,
             VehicleId = vehicle.Id,
             AppUserId = User.GettingUserId(),
             CreatedBy = User.GettingUserEmail(),
             CreatedAt = DateTime.Now.ToUniversalTime()
         };
-        _appBLL.Photos.Add(_mapper.Map<PhotoDTO>(photo));
+        var dbEntry = _mapper.Map<PhotoDTO>(photo);
+        _appBLL.Photos.Add(dbEntry);
 
         await _appBLL.SaveChangesAsync();
         

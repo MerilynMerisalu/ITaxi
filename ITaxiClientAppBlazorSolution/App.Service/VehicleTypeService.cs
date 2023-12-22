@@ -1,6 +1,6 @@
 ﻿using Base.Service;
 using Base.Service.Contracts;
-using ITaxi.Public.DTO.v1.AdminArea;
+using Public.App.DTO.v1.AdminArea;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -2,22 +2,22 @@
 using Base.Resources;
 using Public.App.DTO.v1;
 
-namespace ITaxi.Public.DTO.v1.AdminArea;
+namespace Public.App.DTO.v1.AdminArea;
 
 public class VehicleType : Entity
 {
-    
+
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.VehicleType), Name = "VehicleTypeName")]
+    [Display(ResourceType = typeof(ITaxi.Resources.Areas.App.Domain.AdminArea.VehicleType), Name = "VehicleTypeName")]
     public string VehicleTypeName { get; set; } = default!;
 
     public override string ToString()
     {
-        return this.VehicleTypeName;
+        return VehicleTypeName;
     }
 
 

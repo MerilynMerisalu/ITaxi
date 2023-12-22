@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Base.Resources;
 
-namespace ITaxi.Public.DTO.v1.AdminArea;
+namespace Public.App.DTO.v1.AdminArea;
 
 public class City
 {

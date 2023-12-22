@@ -4,7 +4,7 @@ using ITaxi.Enum.Enum;
 using Base.Resources;
 
 
-namespace ITaxi.Public.DTO.v1.Identity;
+namespace Public.App.DTO.v1.Identity;
 
 public class AppUser
 {
@@ -12,21 +12,21 @@ public class AppUser
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    
+
     public string FirstName { get; set; } = default!;
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    
+
     public string LastName { get; set; } = default!;
 
     public string FirstAndLastName => $"{FirstName} {LastName}";
 
-    
+
     public string LastAndFirstName => $"{LastName} {FirstName}";
-    
+
     [EnumDataType(typeof(Gender))]
     public Gender Gender { get; set; }
 
@@ -44,14 +44,14 @@ public class AppUser
         ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-   public string PhoneNumber { get; set; } = default!;
+    public string PhoneNumber { get; set; } = default!;
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.EmailAddress)]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    
+
     public string Email { get; set; } = default!;
     public bool IsActive { get; set; }
 

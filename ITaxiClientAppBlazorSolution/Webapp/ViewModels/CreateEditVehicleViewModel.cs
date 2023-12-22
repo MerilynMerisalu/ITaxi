@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using ITaxi.Enum.Enum;
-using ITaxi.Public.DTO.v1.AdminArea;
+using Public.App.DTO.v1.AdminArea;
 
 namespace Webapp.ViewModels
 {

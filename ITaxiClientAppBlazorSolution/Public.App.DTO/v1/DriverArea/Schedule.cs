@@ -1,6 +1,5 @@
 ﻿using Base.Resources;
-using ITaxi.Public.DTO.v1.AdminArea;
-using ITaxi.Public.DTO.v1.DriverArea;
+using Public.App.DTO.v1.AdminArea;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

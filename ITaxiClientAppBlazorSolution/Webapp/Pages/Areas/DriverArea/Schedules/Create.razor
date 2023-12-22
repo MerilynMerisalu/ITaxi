@@ -1,8 +1,12 @@
 ﻿@page "/Schedules/Create"
-@using ITaxi.Public.DTO.v1.DriverArea
+
 @using ITaxi.Service
+@using Public.App.DTO.v1.DriverArea
 @using Webapp.ViewModels
 @inject VehicleService vehicleService
+@inject ScheduleService service
+@inject ISnackbar snackbar
+@inject NavigationManager nav
 <div class="row">
     <div class="col-md-4">
         <EditForm Model="@vm" OnValidSubmit="Submit">
@@ -40,6 +44,14 @@
 
     private async Task Submit()
     {
+        await service.AddSchedule(new Schedule()
+            {
+                VehicleId = vm.Vehicle.Id,
+                StartDateAndTime = vm.StartDateAndTime!.Value,
+                EndDateAndTime = vm.EndDateAndTime!.Value
+            });
+        snackbar.Add("Schedule created successfully", Severity.Success);
+        nav.NavigateTo("/schedules/index");
     }
 
 }

@@ -1,10 +1,10 @@
-﻿using ITaxi.Public.DTO.v1.DriverArea;
-using Base.Service;
+﻿using Base.Service;
 using System.Net.Http;
 using Base.Service.Contracts;
 using System.Net.Http.Json;
 using Public.App.DTO.v1;
 using System.Net.Http.Headers;
+using Public.App.DTO.v1.DriverArea;
 
 namespace ITaxi.Service
 {
