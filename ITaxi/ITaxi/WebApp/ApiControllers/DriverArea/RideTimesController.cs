@@ -175,12 +175,17 @@ public class RideTimesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteRideTime(Guid id)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
         if (rideTime == null) return NotFound();
+        if (rideTime.IsTaken)
+        {
+            return BadRequest("Schedule cannot be deleted!");
+        }
 
         await _appBLL.RideTimes.RemoveAsync(rideTime.Id);
         await _appBLL.SaveChangesAsync();
