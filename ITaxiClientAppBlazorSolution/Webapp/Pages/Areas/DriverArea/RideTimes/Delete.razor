@@ -5,17 +5,23 @@
 @using Public.App.DTO.v1.DriverArea
 
 
-<PageTitle>rideTime Delete</PageTitle>
+<PageTitle>RideTime Delete</PageTitle>
 <h1>Delete</h1>
+<h3>Are You Sure You Want To Delete This?</h3>
+@if (string.IsNullOrWhiteSpace(_errorMessage) == false)
+{
+    <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+}
 @if (rideTime == null)
 {
     <p>
         <i>Loading ...</i>
     </p>
 }
+
 else
 {
-    <h3>Are You Sure You Want To Delete This?</h3>
+    
     <MudSimpleTable Style="overflow-x: auto; border:none">
         <thead>
             <tr>
@@ -54,8 +60,8 @@ else
 
     private async Task DeleteRideTimeAsync()
     {
-        // _errorMessage = null!;
-        // rideTime = await service.GetrideTimeByIdAsync(Id);
+         _errorMessage = null!;
+        
 
         try
         {
@@ -64,10 +70,10 @@ else
         }
         catch (Exception ex)
         {
-            // _errorMessage = ex.Message;
+             _errorMessage = ex.Message;
         }
 
     }
 
-    //private string _errorMessage = String.Empty;
+    private string _errorMessage = String.Empty;
 }
