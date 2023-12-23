@@ -194,6 +194,8 @@ public class SchedulesController : ControllerBase
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
         var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id, userId, roleName);
+        if (await _appBLL.RideTimes.HasScheduleAnyAsync(id) || await _appBLL.Bookings.HasAnyScheduleAsync(id))
+            return BadRequest("Schedule cannot be deleted!");
         if (schedule == null) return NotFound();
 
         await _appBLL.Schedules.RemoveAsync(schedule.Id);

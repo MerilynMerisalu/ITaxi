@@ -1,54 +1,58 @@
 ﻿@page "/schedules/Delete/{Id:guid}"
 @inject ScheduleService service
 @inject NavigationManager navManager
-
 @using ITaxi.Service
 @using Public.App.DTO.v1.DriverArea
-
-
+@inject ISnackbar snackbar
 <PageTitle>Schedule Delete</PageTitle>
 <h1>Delete</h1>
-@if(schedule == null)
-{
-    <p>
-        <i>Loading ...</i>
-    </p>
-}
-else
-{
-    <h3>Are You Sure You Want To Delete This?</h3>
-    <MudSimpleTable Style="overflow-x: auto; border:none">
-        <thead>
-            <tr>
-                <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle</MudTh>
-                <MudTd Style="border:none">@schedule?.Vehicle?.VehicleIdentifier</MudTd>
-                </tr>
+<h3>Are You Sure You Want To Delete This?</h3>
+<div>
+    <h4>Schedule</h4>
+    <hr />
+    @if (string.IsNullOrWhiteSpace(_errorMessage) == false)
+    {
+        <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+    }
+    @if (schedule == null)
+    {
+        <p><i>Loading ...</i></p>
+    }
+    else
+    {
+        <MudSimpleTable Style="overflow-x: auto; border:none">
+            <thead>
                 <tr>
-                    <MudTh Style="font-weight:bolder; color:black; border:none">Start Date and Time</MudTh>
-                    <MudTd Style="border:none">@schedule!.StartDateAndTime.ToString("g")</MudTd>
-                </tr>
-                <tr>
-                    <MudTh Style="font-weight:bolder; color:black; border:none">End Date and Time</MudTh>
-                    <MudTd Style="border:none">@schedule?.EndDateAndTime.ToString("g")</MudTd>
-                </tr>
-                <tr>
-                    <MudTh Style="font-weight:bolder; color:black; border:none">Number of Ride Times</MudTh>
-                    <MudTd Style="border:none">@schedule?.NumberOfRideTimes</MudTd>
-                </tr>
-                <tr>
-                    <MudTh Style="font-weight:bolder; color:black; border:none">Number of Ride Times Taken</MudTh>
-                    <MudTd Style="border:none">@schedule?.NumberOfTakenRideTimes</MudTd>
-                </tr>
+                    <MudTh Style="font-weight:bolder; color:black; border:none">Vehicle</MudTh>
+                    <MudTd Style="border:none">@schedule?.Vehicle?.VehicleIdentifier</MudTd>
+                    </tr>
+                    <tr>
+                        <MudTh Style="font-weight:bolder; color:black; border:none">Start Date and Time</MudTh>
+                        <MudTd Style="border:none">@schedule!.StartDateAndTime.ToString("g")</MudTd>
+                    </tr>
+                    <tr>
+                        <MudTh Style="font-weight:bolder; color:black; border:none">End Date and Time</MudTh>
+                        <MudTd Style="border:none">@schedule?.EndDateAndTime.ToString("g")</MudTd>
+                    </tr>
+                    <tr>
+                        <MudTh Style="font-weight:bolder; color:black; border:none">Number of Ride Times</MudTh>
+                        <MudTd Style="border:none">@schedule?.NumberOfRideTimes</MudTd>
+                    </tr>
+                    <tr>
+                        <MudTh Style="font-weight:bolder; color:black; border:none">Number of Ride Times Taken</MudTh>
+                        <MudTd Style="border:none">@schedule?.NumberOfTakenRideTimes</MudTd>
+                    </tr>
 
-            </thead>
-            <tbody>
-            </tbody>
-        </MudSimpleTable>
+                </thead>
+                <tbody>
+                </tbody>
+            </MudSimpleTable>
+    }
+
     <MudForm>
         <MudButton OnClick="DeleteScheduleAsync" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton>
     </MudForm>
-}
-
+</div>
 
 
 @code {
@@ -63,20 +67,21 @@ else
 
     private async Task DeleteScheduleAsync()
     {
-       // _errorMessage = null!;
+        _errorMessage = null!;
         // schedule = await service.GetscheduleByIdAsync(Id);
 
         try
         {
             await service.DeleteScheduleByIdAsync(Id);
+            snackbar.Add("Schedule deleted successfully", Severity.Success);
             navManager.NavigateTo("/schedules/index");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-           // _errorMessage = ex.Message;
+            _errorMessage = ex.Message;
         }
 
     }
 
-    //private string _errorMessage = String.Empty;
-  }
+    private string _errorMessage = String.Empty;
+}
