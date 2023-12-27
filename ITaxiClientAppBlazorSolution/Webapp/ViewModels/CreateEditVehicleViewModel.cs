@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using ITaxi.Enum.Enum;
 using Public.App.DTO.v1.AdminArea;
+using Webapp.ViewModels;
 
 namespace Webapp.ViewModels
 {
@@ -29,16 +30,6 @@ namespace Webapp.ViewModels
         public VehicleAvailability? VehicleAvailability { get; set; }
     }
 
-    public class CreateVehicleViewModelValidator : AbstractValidator<CreateEditVehicleViewModel>
-    {
-        public CreateVehicleViewModelValidator()
-        {
-            RuleFor(x => x.Type).NotEmpty();
-            RuleFor(x => x.Mark).NotEmpty();
-            RuleFor(x => x.Model).NotEmpty();
-            RuleFor(x => x.VehicleManufactureYear).NotEmpty();
-            RuleFor(x => x.VehicleAvailability).NotEmpty();
-            RuleFor(x => x.VehiclePlateNumber).NotEmpty().MaximumLength(10);
-        }
-    }
+    
 }
+

@@ -72,7 +72,7 @@ else
                     }
 
                 </MudSelect>
-                <MudNumericField @bind-Value="_vm.NumberOfSeats" For="@( () => _vm.NumberOfSeats)" Min="2" Max="6" />
+                <MudNumericField @bind-Value="_vm.NumberOfSeats" T="int" For="@( () => _vm.NumberOfSeats)" Label="Number of Seats" Min="2" Max="6" />
                 <MudSelect @bind-Value="@_vm.VehicleAvailability" For="@( () => _vm.VehicleAvailability)" Label="Vehicle Availability" Placeholder="Please select a availability" AnchorOrigin="Origin.CenterCenter">
                     @foreach (var option in Enum.GetValues<VehicleAvailability>())
                     {
