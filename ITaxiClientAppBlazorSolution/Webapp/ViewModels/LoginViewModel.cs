@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BlazorWebApp.Services;
+using System.ComponentModel.DataAnnotations;
 using Webapp.Helpers;
 
 namespace Webapp.ViewModels
@@ -12,5 +13,6 @@ namespace Webapp.ViewModels
         public string Password { get; set; } = default!;
         //[AuthorizeHelper]
         public bool IsAuthenicated { get; set; } = false;
+       //public string Token { get; set; }
     }
 }

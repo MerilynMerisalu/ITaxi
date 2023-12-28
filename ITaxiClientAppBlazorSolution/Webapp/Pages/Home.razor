@@ -15,7 +15,10 @@
         }
         else
         {
+            <MudIconButton Href="/registerDriver" Style="color:white" class="nav-link btn btn-link">Register Driver</MudIconButton>
+            <MudIconButton Href="/registerCustomer" Style="color:white" class="nav-link btn btn-link">Register Customer</MudIconButton>
             <MudIconButton Href="/login" Icon=@Icons.Material.Filled.Login Edge="Edge.End" class="nav-link btn btn-link">Log in</MudIconButton>
+            
         }
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Docked" Elevation="2">

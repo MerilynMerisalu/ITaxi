@@ -10,16 +10,16 @@
 
 <h1>Log In</h1>
 <MudText Color="Color.Error">
-    <EditForm EditContext="editContext" OnSubmit="@Login">
+    <EditForm EditContext="editContext" OnValidSubmit="@Login">
     <ValidationSummary />
-    <DataAnnotationsValidator />
+    <FluentValidationValidator></FluentValidationValidator>
     <MudTextField Label="Email" For="@(() => this.Email)" @bind-Value="Email" placeholder="Email" name="email"></MudTextField>
     <ValidationMessage For="() => viewModel.Email" />
     <br />
     <MudTextField Label="Password" For="@(() => this.Password)" InputType="InputType.Password" type="password" placeholder="Password" @bind-Value="viewModel.Password" name="password"></MudTextField>
     <ValidationMessage For="() => viewModel.Password" />
     <br />
-    <MudButton ButtonType="ButtonType.Button" OnClick=Login Variant="Variant.Filled" Color="Color.Primary">Log In</MudButton>
+    <MudButton ButtonType="ButtonType.Submit" OnClick=Login Variant="Variant.Filled" Color="Color.Primary">Log In</MudButton>
     <ValidationMessage For="() => viewModel.IsAuthenicated" />
 
     </EditForm>
@@ -60,19 +60,21 @@
             {
                 try
                 {
+                    //viewModel.Token = token.Token;
                     _appState.AuthResponse = token;
                     IsAuthenicated = true;
                     Nav.NavigateTo("/");
                 }
                 catch
                 {
-                    // Ignore errors, assume login failed
+
 
                 }
 
             }
             else
             {
+                viewModel.IsAuthenicated = false;
                 errorMessages.Add(() => viewModel.IsAuthenicated, "Email and / or password wrong!");
             }
         }
