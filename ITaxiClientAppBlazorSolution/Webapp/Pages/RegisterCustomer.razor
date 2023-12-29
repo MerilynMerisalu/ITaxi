@@ -1,7 +1,56 @@
 ﻿@page "/registerCustomer"
+@using ITaxi.Enum.Enum
+@using ITaxi.Service
+@using Public.App.DTO.v1.AdminArea
+@using Webapp.ViewModels
+@inject DisabilityTypeService disabilityTypeService
 
 <h1>Register Customer</h1>
 
-@code {
+<EditForm Model="vm" OnValidSubmit="Submit">
+    <FluentValidationValidator></FluentValidationValidator>
+    <ValidationSummary style="color:red"></ValidationSummary>
 
+    <MudTextField @bind-Value="vm.FirstName" For="@( () =>  vm.FirstName)" Label="First Name" />
+    <MudTextField @bind-Value="vm.LastName" For="@( () =>  vm.LastName)" Label="Last Name" />
+    <MudSelect @bind-Value="@vm.Gender" For="@( () => vm.Gender)" Label="Gender" Placeholder="Please Select a Gender" AnchorOrigin="Origin.CenterCenter">
+        @foreach (var option in Enum.GetValues<Gender>())
+        {
+            <MudSelectItem T="Gender?" Value="@option">@option</MudSelectItem>
+        }
+
+    </MudSelect>
+    <MudTextField T="DateTime?" Format="yyyy-MM-dd" Label="Date of Birth"  InputType="InputType.Date"/>
+    <MudSelect @bind-Value="@vm.DisabilityType" For="@( () => vm.DisabilityType)" Label="Disability Type" Placeholder="Please select a disability type"
+               AnchorOrigin="Origin.CenterCenter">
+        @if (DisabilityTypes != null)
+        {
+            foreach (var option in DisabilityTypes)
+            {
+                <MudSelectItem Value="@option">@option.DisabilityTypeName</MudSelectItem>
+
+            }
+        }
+
+    </MudSelect>
+    <MudTextField T="string" Label="Phone Number" Placeholder="Phone Number" InputType="InputType.Telephone" @bind-Value="vm.PhoneNumber"/>
+    <MudTextField T="string" Label="Email" Placeholder="Email" InputType="InputType.Email" @bind-Value="vm.EmailAddress" />
+    <MudTextField T="string" Label="Password" Placeholder="Password" InputType="InputType.Password" @bind-Value="vm.Password" />
+    <MudTextField T="string" Label="Confirm Password" InputType="InputType.Password" Placeholder="Confirm Password" @bind-Value="vm.ConfirmPassword" />
+    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
+</EditForm>
+
+@code {
+    
+    public RegisterCustomerViewModel vm { get; set; } = new RegisterCustomerViewModel();
+    public List<DisabilityType?>?DisabilityTypes { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        
+        DisabilityTypes = (await disabilityTypeService.GetAllDisabilityTypesAsync()).ToList();
+    }
+    private async Task Submit()
+    {
+        
+    }
 }
