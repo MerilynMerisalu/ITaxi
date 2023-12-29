@@ -10,7 +10,8 @@
 <div class="row">
     <div class="col-md-4">
         <EditForm Model="@vm" OnValidSubmit="Submit">
-            <FluentValidationValidator />
+            <FluentValidationValidator></FluentValidationValidator>
+            <ValidationSummary style="color:red"></ValidationSummary>
             <MudSelect @bind-Value="@vm.Vehicle" Label="Vehicle" Placeholder="Please select a vehicle" AnchorOrigin="Origin.CenterCenter">
                 @if (vehicles != null)
                 {
@@ -23,10 +24,9 @@
             </MudSelect>
             <MudTextField T="DateTime?" Format="s" Label="Start Date and Time" @bind-Value="@vm.StartDateAndTime" InputType="InputType.DateTimeLocal" />
             <MudTextField T="DateTime?" Format="s" Label="End Date and Time" @bind-Value="@vm.EndDateAndTime" InputType="InputType.DateTimeLocal" />
-           @*  
-             *@
+          
             <p>
-            <MudButton OnClick="Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" OnClick="Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
             </p>
         </EditForm>
     </div>
@@ -35,7 +35,7 @@
 
 
 @code {
-    public CreateEditScheduleViewModel vm = new CreateEditScheduleViewModel();
+    public CreateScheduleViewModel vm = new CreateScheduleViewModel();
     List<Vehicle?> vehicles;
     protected override async Task OnInitializedAsync()
     {
