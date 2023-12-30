@@ -11,7 +11,7 @@ namespace ITaxi.Service
 {
     public interface IDisabilityTypeService
     {
-        Task<List<DisabilityType?>?> GetAllDisabilityTypesAsync();
+        Task<IEnumerable<DisabilityType?>?> GetAllDisabilityTypesAsync();
     }
 
     public class DisabilityTypeService : BaseEntityService<DisabilityType, Guid>, IDisabilityTypeService
@@ -23,9 +23,9 @@ namespace ITaxi.Service
 
         protected override string EndpointUri => "adminarea/disabilityTypes/";
 
-        public async Task<List<DisabilityType?>?> GetAllDisabilityTypesAsync()
+        public async Task<IEnumerable<DisabilityType?>?> GetAllDisabilityTypesAsync()
         {
-            return (await base.GetAllAsync()).ToList();
+            return (await base.GetAllAsync());
         }
     }
 }

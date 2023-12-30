@@ -54,7 +54,7 @@ else
                 <tr>
                     <MudTh Style="font-weight:bolder; color:black; border:none">Has An Assistent?</MudTh>
                     <MudTd Style="border:none">
-                        <MudCheckBox @bind-Checked="booking!.HasAnAssistant"></MudCheckBox>
+                        <MudCheckBox @bind-Value="booking!.HasAnAssistant"></MudCheckBox>
                     </MudTd>
                 </tr>
                 <tr>
@@ -99,7 +99,7 @@ else
             await service.RemoveBookingByIdAsync(Id);
             navManager.NavigateTo("/bookings/index");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // _errorMessage = ex.Message;
         }

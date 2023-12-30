@@ -24,8 +24,8 @@
     </EditForm>
 </MudText>
 @code {
-    private EditContext editContext;
-    private ValidationMessageStore errorMessages;
+    private EditContext? editContext;
+    private ValidationMessageStore? errorMessages;
     private LoginViewModel viewModel = new LoginViewModel();
 
     protected override void OnInitialized()
@@ -51,8 +51,8 @@
     public async Task Login()
     {
         IsAuthenicated = null;
-        errorMessages.Clear();
-        if (editContext.Validate())
+        errorMessages!.Clear();
+        if (editContext!.Validate())
         {
             var token = await AuthenticateToken(Email, Password);
             if (token.Token != null)
@@ -97,7 +97,7 @@
 
         }
 
-        return authResponse;
+        return authResponse!;
     }
 
 

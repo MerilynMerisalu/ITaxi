@@ -28,7 +28,7 @@
         {
             foreach (var option in DisabilityTypes)
             {
-                <MudSelectItem Value="@option">@option.DisabilityTypeName</MudSelectItem>
+                <MudSelectItem Value="@option">@option?.DisabilityTypeName</MudSelectItem>
 
             }
         }
@@ -44,7 +44,7 @@
 @code {
     
     public RegisterCustomerViewModel vm { get; set; } = new RegisterCustomerViewModel();
-    public List<DisabilityType?>?DisabilityTypes { get; set; }
+    public IEnumerable<DisabilityType?>?DisabilityTypes { get; set; }
     protected override async Task OnInitializedAsync()
     {
         
