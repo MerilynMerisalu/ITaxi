@@ -17,8 +17,11 @@ namespace Webapp.Validators
             RuleFor(c => c.LastName).MinimumLength(1);
             RuleFor(c => c.LastName).MaximumLength(50);
             RuleFor(c => c.Gender).NotNull();
-            RuleFor(c => c.DateOfBirth).NotNull();
-            RuleFor(c => c.DateOfBirth).LessThanOrEqualTo(DateTime.Today.Date);
+            
+            RuleFor(c => c.DateOfBirth).PastDate();
+      
+            // RuleFor(c => DateTime.Parse(c.DateOfBirth).Date).LessThanOrEqualTo(DateTime.Today);
+            //RuleFor(c => c.DateOfBirth).NotNull().Must(BeInPast).WithMessage("aaa");
             RuleFor(c => c.DisabilityType).NotEmpty();
             RuleFor(c => c.PhoneNumber)
             .NotEmpty()
@@ -30,6 +33,9 @@ namespace Webapp.Validators
             RuleFor(c => c.Password).Password();
             RuleFor(c => c.ConfirmPassword).Equal(c => c.Password).WithMessage(Common.ErrorMessageComparePasswords);
         }
+
+       
+       
     }
 
 }

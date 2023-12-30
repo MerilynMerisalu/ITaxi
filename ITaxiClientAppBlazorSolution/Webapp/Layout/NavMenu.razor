@@ -19,7 +19,7 @@
         </div>
         @if (AppState.IsLoggedIn)
         {
-            @if (AppState.AuthResponse.RoleNames.Contains("Driver"))
+            @if (AuthResponse?.RoleNames.Contains("Driver") == true)
             {
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="/vehicles/index">
@@ -38,7 +38,7 @@
                     </NavLink>
                 </div>
             }
-            else if (AppState.AuthResponse.RoleNames.Contains("Customer"))
+            else if (AuthResponse?.RoleNames.Contains("Customer") == true)
             {
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="/bookings/index">
@@ -60,6 +60,9 @@
 </div>
 
 @code {
+
+    [CascadingParameter]
+    public IAuthResponse? AuthResponse { get; set; }
 
     protected override void OnInitialized()
     {

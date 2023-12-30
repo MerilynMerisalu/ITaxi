@@ -15,7 +15,7 @@
 
 @if (AppState.IsLoggedIn)
 {
-    <div >Hello, @AppState.AuthResponse.FirstAndLastName!</div>
+    <div >Hello, @AuthResponse?.FirstAndLastName!</div>
     <MudIconButton Icon=@Icons.Material.Filled.Logout OnClick="LogOut" class="nav-link btn btn-link" >Log out</MudIconButton>
 }
 else
@@ -24,6 +24,8 @@ else
 }
 
 @code{
+    [CascadingParameter]
+    public IAuthResponse? AuthResponse { get; set; }
 
     protected override void OnInitialized()
     {
@@ -32,9 +34,9 @@ else
         AppState.OnAuthResponseChanged += () => StateHasChanged();
     }
 
-    public void LogOut()
+    public async Task LogOut()
     {
-        AppState.AuthResponse = null!;
+        await AppState.ResetAuthState();
         Navigation.NavigateTo("/");
        
     }

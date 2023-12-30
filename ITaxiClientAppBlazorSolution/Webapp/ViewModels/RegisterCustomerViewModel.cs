@@ -9,7 +9,8 @@ namespace Webapp.ViewModels
         public string FirstName { get; set; } = default!;
         public string LastName { get; set; } = default!;
         public Gender? Gender { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? DateOfBirth { get; set; } = default!;
         public DisabilityType? DisabilityType { get; set; }
         
         [Phone]

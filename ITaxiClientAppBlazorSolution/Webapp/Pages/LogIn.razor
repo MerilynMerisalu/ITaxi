@@ -45,13 +45,13 @@
     [Required(AllowEmptyStrings = false, ErrorMessage = "Password is required")]
     public string Password { get => viewModel.Password; set => viewModel.Password = value; }
 
-    public bool IsAuthenicated { get => viewModel.IsAuthenicated; set => viewModel.IsAuthenicated = value; }
+    public bool? IsAuthenicated { get => viewModel.IsAuthenicated; set => viewModel.IsAuthenicated = value; }
 
     #endregion Properties
 
     public async Task Login()
     {
-        IsAuthenicated = false;
+        IsAuthenicated = null;
         errorMessages.Clear();
         if (editContext.Validate())
         {
@@ -61,7 +61,7 @@
                 try
                 {
                     //viewModel.Token = token.Token;
-                    _appState.AuthResponse = token;
+                    await _appState.SetAuthResponse(token);
                     IsAuthenicated = true;
                     Nav.NavigateTo("/");
                 }
@@ -75,7 +75,8 @@
             else
             {
                 viewModel.IsAuthenicated = false;
-                errorMessages.Add(() => viewModel.IsAuthenicated, "Email and / or password wrong!");
+                editContext.Validate();
+                // errorMessages.Add(() => viewModel.IsAuthenicated, "Email and / or password wrong!");
             }
         }
 

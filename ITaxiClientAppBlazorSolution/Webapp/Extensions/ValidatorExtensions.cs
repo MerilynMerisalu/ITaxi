@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Webapp.Extensions
 {
@@ -14,6 +15,14 @@ namespace Webapp.Extensions
                 .Matches("[A-Z]").WithMessage("Password must include a lowercase letter")
                 .Matches("[0-9]").WithMessage("Password must include a numeric character")
                 .Matches("[^a-zA-Z0-9]").WithMessage("Password must include a non-alpha-numeric character");
+            return options;
+        }
+
+        public static IRuleBuilder<T, DateTime?> PastDate<T>(this IRuleBuilder<T, DateTime?> ruleBuilder)
+        {
+            var options = ruleBuilder
+                .NotEmpty()
+                .LessThanOrEqualTo(DateTime.Today).WithMessage("aaa");
             return options;
         }
     }

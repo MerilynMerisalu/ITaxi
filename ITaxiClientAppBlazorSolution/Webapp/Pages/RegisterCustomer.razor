@@ -20,7 +20,8 @@
         }
 
     </MudSelect>
-    <MudTextField T="DateTime?" Format="yyyy-MM-dd" Label="Date of Birth"  InputType="InputType.Date"/>
+    <MudDatePicker Label="Date of Birth" Editable="true" @bind-Date="vm.DateOfBirth" Placeholder="Select Date" For="@(() => vm.DateOfBirth)"
+                   MaxDate="DateTime.Today" />
     <MudSelect @bind-Value="@vm.DisabilityType" For="@( () => vm.DisabilityType)" Label="Disability Type" Placeholder="Please select a disability type"
                AnchorOrigin="Origin.CenterCenter">
         @if (DisabilityTypes != null)

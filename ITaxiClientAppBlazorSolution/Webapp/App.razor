@@ -1,14 +1,34 @@
 ﻿@using Base.Service.Contracts
 @inject IAppState AppState
-<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />   
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
-</Router>
+<CascadingValue Value="_authResponse">
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p role="alert">Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingValue>
+
+@code {
+    private IAuthResponse? _authResponse;
+    [Inject] private IAppState State { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _authResponse = await State.GetAuthResponse();
+
+        AppState.OnAuthResponseChanged += async () =>
+        {
+            _authResponse = await State.GetAuthResponse();
+            StateHasChanged();
+        };
+
+    }
+
+}

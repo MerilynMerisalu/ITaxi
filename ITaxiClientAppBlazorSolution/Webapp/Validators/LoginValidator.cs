@@ -5,10 +5,17 @@ namespace Webapp.Validators
 {
     public class LoginValidator: AbstractValidator<LoginViewModel>
     {
-        public LoginValidator() { 
-        RuleFor(x => x.Email).NotEmpty();
-        RuleFor(x => x.Password).NotEmpty();
-        RuleFor(x => x.IsAuthenicated).Equal(false);
+        public LoginValidator()
+        {
+            When(x => x.IsAuthenicated == false, () =>
+            {
+                RuleFor(x => x.Email).Must(x => false).WithMessage("invalid username or password");
+                RuleFor(x => x.Password).Must(x => false).WithMessage("invalid username or password");
+            }).Otherwise(() =>
+            {
+                RuleFor(x => x.Email).NotEmpty();
+                RuleFor(x => x.Password).NotEmpty();
+            });
         }
     }
 }

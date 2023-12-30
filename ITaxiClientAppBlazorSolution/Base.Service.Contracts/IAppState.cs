@@ -5,7 +5,9 @@
         #region Auth State
 
         bool IsLoggedIn { get; }
-        IAuthResponse AuthResponse { get; set; }
+        Task<IAuthResponse?> GetAuthResponse();
+        Task SetAuthResponse(IAuthResponse response);
+        Task ResetAuthState();
         event Action OnAuthResponseChanged;
 
         #endregion Auth State

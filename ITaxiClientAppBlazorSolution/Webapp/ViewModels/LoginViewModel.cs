@@ -12,7 +12,7 @@ namespace Webapp.ViewModels
         [Required(AllowEmptyStrings = false, ErrorMessage = "Password is required!")]
         public string Password { get; set; } = default!;
         //[AuthorizeHelper]
-        public bool IsAuthenicated { get; set; } = false;
+        public bool? IsAuthenicated { get; set; } = false;
        //public string Token { get; set; }
     }
 }
