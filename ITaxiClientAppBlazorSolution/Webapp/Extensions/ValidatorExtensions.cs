@@ -22,7 +22,7 @@ namespace Webapp.Extensions
         {
             var options = ruleBuilder
                 .NotEmpty()
-                .LessThanOrEqualTo(DateTime.Today).WithMessage("aaa");
+                .LessThanOrEqualTo(DateTime.Today).WithMessage("Date of Birth cannot be greater than today's date.");
             return options;
         }
     }

@@ -9,8 +9,8 @@ namespace Webapp.Validators
         {
             When(x => x.IsAuthenicated == false, () =>
             {
-                RuleFor(x => x.Email).Must(x => false).WithMessage("invalid username or password");
-                RuleFor(x => x.Password).Must(x => false).WithMessage("invalid username or password");
+                RuleFor(x => x.Email).Must(x => false).WithMessage("Email and / or password wrong!");
+                
             }).Otherwise(() =>
             {
                 RuleFor(x => x.Email).NotEmpty();
