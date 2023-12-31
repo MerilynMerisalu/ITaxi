@@ -26,8 +26,7 @@ namespace Webapp.Validators
             RuleFor(c => c.PhoneNumber)
             .NotEmpty()
             .MinimumLength(6)
-            .MaximumLength(20)
-            .Matches(new Regex(@"((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}"));
+            .MaximumLength(20);
             RuleFor(c => c.EmailAddress).NotEmpty();
             RuleFor(c => c.EmailAddress).EmailAddress();
             RuleFor(c => c.Password).Password();

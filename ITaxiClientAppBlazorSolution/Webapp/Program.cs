@@ -37,4 +37,5 @@ builder.Services.AddTransient<ScheduleService>();
 builder.Services.AddTransient<RideTimeService>();
 builder.Services.AddTransient<BookingService>();
 builder.Services.AddTransient<DisabilityTypeService>();
+builder.Services.AddTransient<RegisterService>();
 await builder.Build().RunAsync();
