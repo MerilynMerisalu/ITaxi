@@ -1,15 +1,16 @@
 ﻿
 using Base.Service.Contracts;
+using BlazorWebApp.Services;
+using System.Net.Http.Json;
+using System.Net.Http;
+
 
 namespace Webapp.Services
 {
-    public class ITaxiAuthTokenHandler : DelegatingHandler
+    public class ITaxiAuthTokenHandler(IAppState appState) : DelegatingHandler
     {
-        private readonly IAppState _appState;
-        public ITaxiAuthTokenHandler(IAppState appState)
-        {
-            _appState = appState;
-        }
+        private readonly IAppState _appState = appState;
+
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
@@ -21,5 +22,7 @@ namespace Webapp.Services
             }
             return await base.SendAsync(request, cancellationToken);
         }
+
+
     }
 }

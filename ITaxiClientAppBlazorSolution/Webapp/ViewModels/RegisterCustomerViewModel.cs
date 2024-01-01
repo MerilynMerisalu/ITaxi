@@ -1,6 +1,7 @@
 ﻿using ITaxi.Enum.Enum;
 using Public.App.DTO.v1.AdminArea;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Webapp.ViewModels
 {
@@ -23,5 +24,7 @@ namespace Webapp.ViewModels
 
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; } = default!;
+
+        public bool IsAuthenicated { get ; set; } = default!;
     }
 }
