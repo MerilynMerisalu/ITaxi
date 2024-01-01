@@ -25,7 +25,7 @@ namespace ITaxi.Service
         }
 
         protected override string EndpointUri => "identity/Account/";
-        protected virtual string RegisterEndPointUri => Client.BaseAddress + EndpointUri +  "GetManufactureYears";
+        protected virtual string RegisterEndPointUri => Client.BaseAddress + EndpointUri +  "RegisterCustomerDTO";
 
         public async Task<RegisterCustomerJWTResponse?> RegisterCustomer(RegisterCustomer customer)
         {
