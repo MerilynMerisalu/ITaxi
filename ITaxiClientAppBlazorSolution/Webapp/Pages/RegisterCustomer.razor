@@ -4,6 +4,7 @@
 @using ITaxi.Enum.Enum
 @using ITaxi.Service
 @using Public.App.DTO.v1.AdminArea
+@using Webapp.Services
 @using Webapp.ViewModels
 @inject DisabilityTypeService disabilityTypeService
 @inject RegisterService service
@@ -76,8 +77,8 @@
                 Email = vm.EmailAddress,
                 Password = vm.Password
             });
-
-        var token = await AuthenticateToken(vm.EmailAddress, vm.Password);
+            var validator = new ITaxiAuthTokenHandler(_appState, _httpClientFactory);
+        var token = await validator.AuthenticateToken(vm.EmailAddress, vm.Password);
         if (token != null)
         {
             await _appState.SetAuthResponse(token);
@@ -86,23 +87,6 @@
         }
         
     }
-    private async Task<AuthResponse> AuthenticateToken(string email, string password)
-    {
-        AuthResponse authResponse = new AuthResponse();
-
-        var client = this._httpClientFactory.CreateClient("Auth");
-
-        client.DefaultRequestHeaders.Clear();
-        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-        client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
-        var response = await client.PostAsJsonAsync($"{client.BaseAddress!.ToString().TrimEnd('/')}/identity/account/login", new { Email = vm.EmailAddress, Password = vm.Password });
-        if (response.IsSuccessStatusCode)
-        {
-            authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
-
-        }
-
-        return authResponse!;
-    }
+    
    
 }

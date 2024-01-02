@@ -3,6 +3,7 @@
 @using System.Net.Http
 @using BlazorWebApp.Services
 @using System.ComponentModel.DataAnnotations
+@using Webapp.Services
 @using Webapp.ViewModels
 @inject IHttpClientFactory _httpClientFactory
 @inject IAppState _appState
@@ -54,7 +55,8 @@
         errorMessages!.Clear();
         if (editContext!.Validate())
         {
-            var token = await AuthenticateToken(Email, Password);
+            var validator = new ITaxiAuthTokenHandler(_appState, _httpClientFactory);
+            var token = await validator.AuthenticateToken(Email, Password);
             if (token.Token != null)
             {
                 try
@@ -81,24 +83,24 @@
 
     }
 
-    private async Task<AuthResponse> AuthenticateToken(string email, string password)
-    {
-        AuthResponse authResponse = new AuthResponse();
+    // private async Task<AuthResponse> AuthenticateToken(string email, string password)
+    // {
+    //     AuthResponse authResponse = new AuthResponse();
 
-        var client = this._httpClientFactory.CreateClient("Auth");
+    //     var client = this._httpClientFactory.CreateClient("Auth");
 
-        client.DefaultRequestHeaders.Clear();
-        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-        client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
-        var response = await client.PostAsJsonAsync($"{client.BaseAddress!.ToString().TrimEnd('/')}/identity/account/login", new { Email = Email, Password = Password });
-        if (response.IsSuccessStatusCode)
-        {
-            authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
+    //     client.DefaultRequestHeaders.Clear();
+    //     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+    //     client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+    //     var response = await client.PostAsJsonAsync($"{client.BaseAddress!.ToString().TrimEnd('/')}/identity/account/login", new { Email = Email, Password = Password });
+    //     if (response.IsSuccessStatusCode)
+    //     {
+    //         authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
 
-        }
+    //     }
 
-        return authResponse!;
-    }
+    //     return authResponse!;
+    // }
 
 
 }
