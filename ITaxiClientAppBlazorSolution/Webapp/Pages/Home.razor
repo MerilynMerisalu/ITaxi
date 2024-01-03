@@ -33,7 +33,7 @@
 
 @code {
     bool _drawerOpen = true;
-
+    public bool? IsAuthenicated { get; set; }
     [CascadingParameter]
     public IAuthResponse? AuthResponse { get; set; }
 
@@ -44,7 +44,11 @@
 
     public async Task LogOut()
     {
-        await AppState.ResetAuthState();
+        await AppState.SetAuthResponse(null);
+        
+         await AppState.ResetAuthState();
+        IsAuthenicated = false;
+        
         Navigation.NavigateTo("/");
 
     }

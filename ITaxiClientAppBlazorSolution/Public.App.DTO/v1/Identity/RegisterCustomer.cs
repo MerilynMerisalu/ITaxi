@@ -9,7 +9,7 @@ namespace Public.App.DTO.v1.Identity
 {
     public class RegisterCustomer: Register
     {
-        //public Guid Id { get; set; }
+        
         /// <summary>
         /// Disability type id for the customer registration
         /// </summary>

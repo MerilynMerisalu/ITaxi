@@ -15,6 +15,7 @@ namespace ITaxi.Service
     public interface IRegisterService
     {
         Task<RegisterCustomerJWTResponse?> RegisterCustomer(RegisterCustomer customer);
+        Task<RegisterDriverJWTResponse?> RegisterDriver(RegisterDriver driver);
     }
 
     public class RegisterService : BaseEntityService<Register, Guid>, IRegisterService
@@ -25,12 +26,20 @@ namespace ITaxi.Service
         }
 
         protected override string EndpointUri => "identity/Account/";
-        protected virtual string RegisterEndPointUri => Client.BaseAddress + EndpointUri +  "RegisterCustomerDTO";
+        protected virtual string RegisterCustomerEndPointUri => Client.BaseAddress + EndpointUri +  "RegisterCustomerDTO";
+        protected virtual string RegisterDriverEndPointUri => Client.BaseAddress + EndpointUri + "RegisterDriverDTO";
 
         public async Task<RegisterCustomerJWTResponse?> RegisterCustomer(RegisterCustomer customer)
         {
-            var response = await Client.PostAsJsonAsync(RegisterEndPointUri, customer);
+            var response = await Client.PostAsJsonAsync(RegisterCustomerEndPointUri, customer);
             var result = await response.Content.ReadFromJsonAsync<RegisterCustomerJWTResponse>();
+            return result;
+        }
+
+        public async Task<RegisterDriverJWTResponse?> RegisterDriver(RegisterDriver driver)
+        {
+            var response = await Client.PostAsJsonAsync(RegisterDriverEndPointUri, driver);
+            var result = await response.Content.ReadFromJsonAsync<RegisterDriverJWTResponse>();
             return result;
         }
     }

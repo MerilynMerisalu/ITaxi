@@ -311,7 +311,7 @@ public class AccountController : ControllerBase
     }
     
 /// <summary>
-/// Admin registration api endpoint
+/// Driver registration api endpoint
 /// </summary>
 /// <param name="driverRegistrationDto">Admin registration DTO which holds data for the registration</param>
 /// <returns>Jwt response admin register</returns>

@@ -46,6 +46,7 @@ namespace BlazorWebApp.Services
         {
             _response = null;
             await _service.RemoveItemAsync(_authKey);
+           
         }
 
         #endregion Auth State
