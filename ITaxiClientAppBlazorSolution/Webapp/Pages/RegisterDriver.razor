@@ -9,8 +9,8 @@
 <EditForm Model="vm" OnValidSubmit="Submit">
     <FluentValidationValidator></FluentValidationValidator>
     <ValidationSummary style="color:red"></ValidationSummary>
-    <MudTextField @bind-Value="vm.FirstName" For="@( () =>  vm.FirstName)" Label="First Name" />
-    <MudTextField @bind-Value="vm.LastName" For="@( () =>  vm.LastName)" Label="Last Name" />
+    <MudTextField @bind-Value="vm.FirstName" For="@( () => vm.FirstName)" Label="First Name" Placeholder="First Name" />
+    <MudTextField @bind-Value="vm.LastName" For="@( () => vm.LastName)" Label="Last Name" Placeholder="Last Name" />
     <MudSelect @bind-Value="@vm.Gender" For="@( () => vm.Gender)" Label="Gender" Placeholder="Please Select a Gender" AnchorOrigin="Origin.CenterCenter">
         @foreach (var option in Enum.GetValues<Gender>())
         {
