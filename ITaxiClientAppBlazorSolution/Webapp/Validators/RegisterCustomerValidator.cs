@@ -17,7 +17,6 @@ namespace Webapp.Validators
             RuleFor(c => c.LastName).MinimumLength(1);
             RuleFor(c => c.LastName).MaximumLength(50);
             RuleFor(c => c.Gender).NotNull();
-            
             RuleFor(c => c.DateOfBirth).PastDate();
       
             // RuleFor(c => DateTime.Parse(c.DateOfBirth).Date).LessThanOrEqualTo(DateTime.Today);

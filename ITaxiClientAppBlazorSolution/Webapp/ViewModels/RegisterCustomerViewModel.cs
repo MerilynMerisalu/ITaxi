@@ -7,8 +7,7 @@ namespace Webapp.ViewModels
 {
     public class RegisterCustomerViewModel: RegisterViewModel
     {
-        
-        public DisabilityType? DisabilityType { get; set; }
+       public DisabilityType? DisabilityType { get; set; }
         
     }
 }

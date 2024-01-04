@@ -3,9 +3,9 @@ using Base.Resources;
 
 namespace Public.App.DTO.v1.AdminArea;
 
-public class City
+public class City: Entity
 {
-    public Guid Id { get; set; }
+    
     public Guid CountyId { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]

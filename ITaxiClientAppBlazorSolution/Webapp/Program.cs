@@ -28,7 +28,7 @@ builder.Services.AddMudServices();
 //    // For more information, see https://aka.ms/blazor-standalone-auth
 //    builder.Configuration.Bind("Local", options.ProviderOptions);
 //});
-
+builder.Services.AddTransient<CityService>();
 builder.Services.AddTransient<VehicleService>();
 builder.Services.AddTransient<VehicleTypeService>();
 builder.Services.AddTransient<VehicleMarkService>();

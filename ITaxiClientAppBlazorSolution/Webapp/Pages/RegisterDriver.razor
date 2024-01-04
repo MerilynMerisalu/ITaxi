@@ -1,6 +1,51 @@
 ﻿@page "/registerDriver"
-<h3>RegisterDriver</h3>
+@using ITaxi.Enum.Enum
+@using ITaxi.Service
+@using Public.App.DTO.v1.AdminArea
+@using Webapp.ViewModels
+@inject CityService cityService
+
+<h1>Register Driver</h1>
+<EditForm Model="vm" OnValidSubmit="Submit">
+    <FluentValidationValidator></FluentValidationValidator>
+    <ValidationSummary style="color:red"></ValidationSummary>
+    <MudTextField @bind-Value="vm.FirstName" For="@( () =>  vm.FirstName)" Label="First Name" />
+    <MudTextField @bind-Value="vm.LastName" For="@( () =>  vm.LastName)" Label="Last Name" />
+    <MudSelect @bind-Value="@vm.Gender" For="@( () => vm.Gender)" Label="Gender" Placeholder="Please Select a Gender" AnchorOrigin="Origin.CenterCenter">
+        @foreach (var option in Enum.GetValues<Gender>())
+        {
+            <MudSelectItem T="Gender?" Value="@option">@option</MudSelectItem>
+        }
+
+    </MudSelect>
+    <MudDatePicker Label="Date of Birth" Editable="true" @bind-Date="vm.DateOfBirth" Placeholder="Select Date" For="@(() => vm.DateOfBirth)"
+                   MaxDate="DateTime.Today" />
+    <MudSelect @bind-Value="@vm.City" For="@( () => vm.City)" Label="City" Placeholder="Please Select a City" 
+        AnchorOrigin="Origin.CenterCenter">
+        @if (Cities != null)
+        {
+            @foreach (var option in Cities)
+            {
+                <MudSelectItem T="City?" Value="@option">@option.CityName</MudSelectItem>
+            }
+        }
+        
+
+    </MudSelect>
+
+    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
+</EditForm>
 
 @code {
+    public IEnumerable<City?>? Cities { get; set; } = new List<City>();
+    public RegisterDriverViewModel vm { get; set; } = new();
 
+    protected override async Task OnInitializedAsync()
+    {
+        Cities = (await cityService.GetAllCitiesAsync()).ToList();
+    }
+    private async Task Submit()
+    {
+        
+    }
 }
