@@ -20,13 +20,14 @@
     </MudSelect>
     <MudDatePicker Label="Date of Birth" Editable="true" @bind-Date="vm.DateOfBirth" Placeholder="Select Date" For="@(() => vm.DateOfBirth)"
                    MaxDate="DateTime.Today" />
+    <MudTextField @bind-Value="vm.PersonalIdentifier" For="@( () =>  vm.PersonalIdentifier)" Placeholder="Personal Identifier" Label="Personal Identifier" />
     <MudSelect @bind-Value="@vm.City" For="@( () => vm.City)" Label="City" Placeholder="Please Select a City" 
         AnchorOrigin="Origin.CenterCenter">
         @if (Cities != null)
         {
             @foreach (var option in Cities)
             {
-                <MudSelectItem T="City?" Value="@option">@option.CityName</MudSelectItem>
+                <MudSelectItem T="City?" Value="@option">@option?.CityName</MudSelectItem>
             }
         }
         

@@ -17,6 +17,7 @@ namespace Webapp.Validators
             RuleFor(d => d.Gender).NotNull();
             RuleFor(d => d.DateOfBirth).PastDate();
             RuleFor(d => d.PersonalIdentifier).MaximumLength(11);
+            RuleFor(d => d.City).NotNull();
            
         }
     }
