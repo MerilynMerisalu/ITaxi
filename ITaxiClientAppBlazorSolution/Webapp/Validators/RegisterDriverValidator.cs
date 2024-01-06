@@ -18,7 +18,9 @@ namespace Webapp.Validators
             RuleFor(d => d.DateOfBirth).PastDate();
             RuleFor(d => d.PersonalIdentifier).MaximumLength(11);
             RuleFor(d => d.City).NotNull();
-           
+            RuleFor(d => d.Address).NotNull();
+            RuleFor(d => d.DriverLicenseNumber).NotEmpty();
+            RuleFor(d => d.DriverLicenseExpiryDate).FutureDate();
         }
     }
 }

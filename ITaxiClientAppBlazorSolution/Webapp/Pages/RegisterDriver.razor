@@ -21,19 +21,22 @@
     <MudDatePicker Label="Date of Birth" Editable="true" @bind-Date="vm.DateOfBirth" Placeholder="Select Date" For="@(() => vm.DateOfBirth)"
                    MaxDate="DateTime.Today" />
     <MudTextField @bind-Value="vm.PersonalIdentifier" For="@( () =>  vm.PersonalIdentifier)" Placeholder="Personal Identifier" Label="Personal Identifier" />
-    <MudSelect @bind-Value="@vm.City" For="@( () => vm.City)" Label="City" Placeholder="Please Select a City" 
-        AnchorOrigin="Origin.CenterCenter">
+    <MudSelect @bind-Value="@vm.City" For="@( () => vm.City)" Label="City" Placeholder="Please select a disability type"
+               AnchorOrigin="Origin.CenterCenter">
         @if (Cities != null)
         {
-            @foreach (var option in Cities)
+            foreach (var option in Cities)
             {
-                <MudSelectItem T="City?" Value="@option">@option?.CityName</MudSelectItem>
+                <MudSelectItem Value="@option">@option?.CityName</MudSelectItem>
+
             }
         }
-        
 
     </MudSelect>
-
+    <MudTextField @bind-Value="vm.Address" For="@( () => vm.Address)" Label="Address" Placeholder="Address" />
+    <MudTextField @bind-Value="vm.DriverLicenseNumber" For="@( () => vm.DriverLicenseNumber)" Label="Driver License Number" Placeholder="Driver License Number" />
+    <MudDatePicker Label="Driver License Expiry Date" Editable="true" @bind-Date="vm.DriverLicenseExpiryDate" Placeholder="Select Date" For="@(() => vm.DriverLicenseExpiryDate)"
+                   MinDate="DateTime.Today" />
     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
 </EditForm>
 

@@ -25,5 +25,12 @@ namespace Webapp.Extensions
                 .LessThanOrEqualTo(DateTime.Today).WithMessage("Date of Birth cannot be greater than today's date.");
             return options;
         }
+        public static IRuleBuilder<T, DateTime?> FutureDate<T>(this IRuleBuilder<T, DateTime?> ruleBuilder)
+        {
+            var options = ruleBuilder
+                .NotEmpty()
+                .GreaterThanOrEqualTo(DateTime.Today).WithMessage("Driver license expiry date cannot be less than today's date.");
+            return options;
+        }
     }
 }
