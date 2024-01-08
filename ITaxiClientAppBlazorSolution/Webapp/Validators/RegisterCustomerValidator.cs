@@ -19,8 +19,7 @@ namespace Webapp.Validators
             RuleFor(c => c.Gender).NotNull();
             RuleFor(c => c.DateOfBirth).PastDate();
       
-            // RuleFor(c => DateTime.Parse(c.DateOfBirth).Date).LessThanOrEqualTo(DateTime.Today);
-            //RuleFor(c => c.DateOfBirth).NotNull().Must(BeInPast).WithMessage("aaa");
+            
             RuleFor(c => c.DisabilityType).NotEmpty();
             RuleFor(c => c.PhoneNumber)
             .NotEmpty()

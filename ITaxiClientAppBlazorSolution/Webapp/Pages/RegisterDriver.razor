@@ -4,7 +4,7 @@
 @using Public.App.DTO.v1.AdminArea
 @using Webapp.ViewModels
 @inject CityService cityService
-
+@inject DriverLicenseCategoryService driverLicenseCategoryService
 <h1>Register Driver</h1>
 <EditForm Model="vm" OnValidSubmit="Submit">
     <FluentValidationValidator></FluentValidationValidator>
@@ -21,7 +21,7 @@
     <MudDatePicker Label="Date of Birth" Editable="true" @bind-Date="vm.DateOfBirth" Placeholder="Select Date" For="@(() => vm.DateOfBirth)"
                    MaxDate="DateTime.Today" />
     <MudTextField @bind-Value="vm.PersonalIdentifier" For="@( () =>  vm.PersonalIdentifier)" Placeholder="Personal Identifier" Label="Personal Identifier" />
-    <MudSelect @bind-Value="@vm.City" For="@( () => vm.City)" Label="City" Placeholder="Please select a disability type"
+    <MudSelect @bind-Value="@vm.City" For="@( () => vm.City)" Label="City" Placeholder="Please select a city"
                AnchorOrigin="Origin.CenterCenter">
         @if (Cities != null)
         {
@@ -37,16 +37,59 @@
     <MudTextField @bind-Value="vm.DriverLicenseNumber" For="@( () => vm.DriverLicenseNumber)" Label="Driver License Number" Placeholder="Driver License Number" />
     <MudDatePicker Label="Driver License Expiry Date" Editable="true" @bind-Date="vm.DriverLicenseExpiryDate" Placeholder="Select Date" For="@(() => vm.DriverLicenseExpiryDate)"
                    MinDate="DateTime.Today" />
+    <MudSelect T="DriverLicenseCategory" @bind-Value="@vm.DriverLicenseCategories" MultiSelection="true"
+               MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))" For="@( () => vm.DriverLicenseCategories)"
+               Label="Driver License Categories" Placeholder="Please select driver license categories"
+               AnchorOrigin="Origin.CenterCenter">
+        @if (DriverLicenseCategories != null)
+        {
+            foreach (var option in DriverLicenseCategories)
+            {
+                <MudSelectItem Value="@option">@option?.DriverLicenseCategoryName</MudSelectItem>
+
+            }
+        }
+
+    </MudSelect>
+    <MudTextField T="string" Label="Phone Number" Placeholder="Phone Number" For="@(() => vm.PhoneNumber)"
+                  InputType="InputType.Telephone" @bind-Value="vm.PhoneNumber" />
+    <MudTextField T="string" Label="Email" Placeholder="Email" For="@(() => vm.EmailAddress)"
+                  InputType="InputType.Email" @bind-Value="vm.EmailAddress" />
+    <MudTextField T="string" Label="Password" Placeholder="Password" For="@(() => vm.Password)"
+                  InputType="InputType.Password" @bind-Value="vm.Password" />
+    <MudTextField T="string" Label="Confirm Password" For="@(() => vm.ConfirmPassword)"
+                  InputType="InputType.Password" Placeholder="Confirm Password" @bind-Value="vm.ConfirmPassword" />
+
     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
 </EditForm>
 
 @code {
     public IEnumerable<City?>? Cities { get; set; } = new List<City>();
+    public IEnumerable<DriverLicenseCategory?>? DriverLicenseCategories { get; set; } = new List<DriverLicenseCategory>();
     public RegisterDriverViewModel vm { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         Cities = (await cityService.GetAllCitiesAsync()).ToList();
+        DriverLicenseCategories = (await driverLicenseCategoryService.GetAllDriverLicenseCategoriesAsync()).ToList();
+    }
+
+    private string GetMultiSelectionText(List<string> selectedValues)
+    {
+        if(selectedValues.Count == 0)
+        {
+            return $"{selectedValues.Count} driver license categories has been selected ";
+        }
+        if (selectedValues.Count == 1)
+        {
+            return $"{selectedValues.Count} driver license category has been selected ";
+        }
+        else
+        {
+            return $"{selectedValues.Count} driver license categories have been selected ";
+        }
+
+        
     }
     private async Task Submit()
     {

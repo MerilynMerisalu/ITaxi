@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Base.Resources;
+using FluentValidation;
 using Webapp.Extensions;
 using Webapp.ViewModels;
 
@@ -21,6 +22,15 @@ namespace Webapp.Validators
             RuleFor(d => d.Address).NotNull();
             RuleFor(d => d.DriverLicenseNumber).NotEmpty();
             RuleFor(d => d.DriverLicenseExpiryDate).FutureDate();
+            //RuleFor(d => d.SelectedDriverLicenseCategories).NotNull();
+            RuleFor(c => c.PhoneNumber)
+            .NotEmpty()
+            .MinimumLength(6)
+            .MaximumLength(20);
+            RuleFor(c => c.EmailAddress).NotEmpty();
+            RuleFor(c => c.EmailAddress).EmailAddress();
+            RuleFor(c => c.Password).Password();
+            RuleFor(c => c.ConfirmPassword).Equal(c => c.Password).WithMessage(Common.ErrorMessageComparePasswords);
         }
     }
 }
