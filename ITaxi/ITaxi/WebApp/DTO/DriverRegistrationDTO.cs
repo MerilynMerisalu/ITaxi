@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using App.Public.DTO.v1.AdminArea;
 using WebApp.DTO.Identity;
 
 namespace WebApp.DTO;
@@ -34,7 +35,7 @@ public class DriverRegistrationDTO : RegisterDTO
     /// </summary>
     public Guid DriverLicenseCategoryId { get; set; }
       
-    /*public Guid[]? DriverLicenseCategoryIds { get; set; }  */
+    public Guid[]? DriverLicenseCategoryIds { get; set; }  
 
     /// <summary>
     /// Driver license number
@@ -54,5 +55,5 @@ public class DriverRegistrationDTO : RegisterDTO
     /// <summary>
     /// Driver license categories
     /// </summary>
-    public List<Guid>? DriverLicenseCategories { get; set; }
+    //public List<Guid>? DriverLicenseCategories { get; set; }
 }

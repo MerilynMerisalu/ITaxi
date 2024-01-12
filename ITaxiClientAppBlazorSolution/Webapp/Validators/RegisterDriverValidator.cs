@@ -22,6 +22,9 @@ namespace Webapp.Validators
             RuleFor(d => d.Address).NotNull();
             RuleFor(d => d.DriverLicenseNumber).NotEmpty();
             RuleFor(d => d.DriverLicenseExpiryDate).FutureDate();
+            RuleFor(d => d.DriverLicenseCategoriesForValidation)
+                .Must((model, property) => model.SelectedDriverLicenseCategories.Any())
+                .WithMessage("select at least one license");
             //RuleFor(d => d.SelectedDriverLicenseCategories).NotNull();
             RuleFor(c => c.PhoneNumber)
             .NotEmpty()

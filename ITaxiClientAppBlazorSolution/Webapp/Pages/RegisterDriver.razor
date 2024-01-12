@@ -1,10 +1,17 @@
 ﻿@page "/registerDriver"
+@using Base.Service.Contracts
 @using ITaxi.Enum.Enum
 @using ITaxi.Service
 @using Public.App.DTO.v1.AdminArea
+@using Webapp.Services
 @using Webapp.ViewModels
 @inject CityService cityService
 @inject DriverLicenseCategoryService driverLicenseCategoryService
+@inject RegisterService service
+@inject NavigationManager nav
+@inject IAppState _appState
+@inject IHttpClientFactory _httpClientFactory
+@inject ISnackbar bar;
 <h1>Register Driver</h1>
 <EditForm Model="vm" OnValidSubmit="Submit">
     <FluentValidationValidator></FluentValidationValidator>
@@ -37,20 +44,22 @@
     <MudTextField @bind-Value="vm.DriverLicenseNumber" For="@( () => vm.DriverLicenseNumber)" Label="Driver License Number" Placeholder="Driver License Number" />
     <MudDatePicker Label="Driver License Expiry Date" Editable="true" @bind-Date="vm.DriverLicenseExpiryDate" Placeholder="Select Date" For="@(() => vm.DriverLicenseExpiryDate)"
                    MinDate="DateTime.Today" />
-    <MudSelect T="DriverLicenseCategory" @bind-Value="@vm.DriverLicenseCategories" MultiSelection="true"
-               MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))" For="@( () => vm.DriverLicenseCategories)"
+    <MudSelect T="DriverLicenseCategory" @bind-SelectedValues="@vm.SelectedDriverLicenseCategories" MultiSelection="true"
+               MultiSelectionTextFunc="@(GetMultiSelectionText)"
+               For="@( () => vm.DriverLicenseCategoriesForValidation)"
                Label="Driver License Categories" Placeholder="Please select driver license categories"
                AnchorOrigin="Origin.CenterCenter">
         @if (DriverLicenseCategories != null)
         {
-            foreach (var option in DriverLicenseCategories)
+            foreach (var options in DriverLicenseCategories)
             {
-                <MudSelectItem Value="@option">@option?.DriverLicenseCategoryName</MudSelectItem>
+                <MudSelectItem T="DriverLicenseCategory" Value="@options">@options?.DriverLicenseCategoryName</MudSelectItem>
 
             }
         }
 
     </MudSelect>
+    
     <MudTextField T="string" Label="Phone Number" Placeholder="Phone Number" For="@(() => vm.PhoneNumber)"
                   InputType="InputType.Telephone" @bind-Value="vm.PhoneNumber" />
     <MudTextField T="string" Label="Email" Placeholder="Email" For="@(() => vm.EmailAddress)"
@@ -65,6 +74,7 @@
 
 @code {
     public IEnumerable<City?>? Cities { get; set; } = new List<City>();
+    
     public IEnumerable<DriverLicenseCategory?>? DriverLicenseCategories { get; set; } = new List<DriverLicenseCategory>();
     public RegisterDriverViewModel vm { get; set; } = new();
 
@@ -89,10 +99,35 @@
             return $"{selectedValues.Count} driver license categories have been selected ";
         }
 
-        
+
     }
+    
     private async Task Submit()
     {
-        
+
+        var driverJwt = await service.RegisterDriver(new Public.App.DTO.v1.Identity.RegisterDriver()
+            {
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                Gender = vm.Gender.Value,
+                DateOfBirth = vm.DateOfBirth.Value.ToString(),
+                PersonalIdentifier = vm.PersonalIdentifier,
+                CityId = vm.City.Id,
+                Address = vm.Address,
+                DriverLicenseNumber = vm.DriverLicenseNumber,
+                DriverLicenseCategoryIds = vm.SelectedDriverLicenseCategories.Select(x => x.Id).ToArray(),
+                DriverLicenseExpiryDate = vm.DriverLicenseExpiryDate.Value.ToString(),
+                PhoneNumber = vm.PhoneNumber,
+                Email = vm.EmailAddress,
+                Password = vm.Password
+            });
+        var validator = new ITaxiAuthTokenHandler(_appState, _httpClientFactory);
+        var token = await validator.AuthenticateToken(vm.EmailAddress, vm.Password);
+        if (token != null)
+        {
+            await _appState.SetAuthResponse(token);
+            vm.IsAuthenicated = true;
+            nav.NavigateTo("/");
+        }
     }
 }

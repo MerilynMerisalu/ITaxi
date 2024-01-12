@@ -35,7 +35,7 @@ namespace Public.App.DTO.v1.Identity
         /// </summary>
         public Guid DriverLicenseCategoryId { get; set; }
 
-        /*public Guid[]? DriverLicenseCategoryIds { get; set; }  */
+        public Guid[]? DriverLicenseCategoryIds { get; set; }  
 
         /// <summary>
         /// Driver license number
@@ -55,6 +55,6 @@ namespace Public.App.DTO.v1.Identity
         /// <summary>
         /// Driver license categories
         /// </summary>
-        public List<Guid>? DriverLicenseCategories { get; set; }
+        //public List<Guid>? SelectedDriverLicenseCategories { get; set; }
     }
 }

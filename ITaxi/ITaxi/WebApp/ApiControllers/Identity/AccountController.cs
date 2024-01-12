@@ -417,8 +417,8 @@ public class AccountController : ControllerBase
         var driverFromDb = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(driver.AppUserId);
         driver.Id = driverFromDb.Id;
         
-        if (driverRegistrationDto.DriverLicenseCategories != null)
-            foreach (var driverLicenseCategoryId in driverRegistrationDto.DriverLicenseCategories)
+        if (driverRegistrationDto.DriverLicenseCategoryIds != null)
+            foreach (var driverLicenseCategoryId in driverRegistrationDto.DriverLicenseCategoryIds)
             {
                 var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategoryDTO()
                 {
@@ -443,7 +443,7 @@ public class AccountController : ControllerBase
             Address = driver.Address,
             PersonalIdentifier = driver.PersonalIdentifier,
             CityId = driver.CityId,
-            NumberOfDriverLicenseCategories = driverRegistrationDto.DriverLicenseCategories!.Count,
+            NumberOfDriverLicenseCategories = driverRegistrationDto.DriverLicenseCategoryIds!.Length,
             
             DriverLicenseNumber = driver.DriverLicenseNumber,
             DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate,

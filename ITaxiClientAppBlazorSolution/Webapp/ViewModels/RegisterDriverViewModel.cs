@@ -11,7 +11,8 @@ namespace Webapp.ViewModels
         public string DriverLicenseNumber { get; set; } = default!;
         [DataType(DataType.Date)]
         public DateTime? DriverLicenseExpiryDate { get; set; }
-        public DriverLicenseCategory? DriverLicenseCategories { get; set; }
-        public List<Guid?>? SelectedDriverLicenseCategories { get; set; }
+        public DriverLicenseCategory? DriverLicenseCategoriesForValidation { get; set; }
+
+        public IEnumerable<DriverLicenseCategory?> SelectedDriverLicenseCategories { get; set; } = Array.Empty<DriverLicenseCategory>();
     }
 }
