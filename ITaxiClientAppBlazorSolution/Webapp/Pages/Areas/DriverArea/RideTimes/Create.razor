@@ -1,7 +1,43 @@
 ﻿@page "/ridetimes/create"
-
+@using ITaxi.Service
+@using Public.App.DTO.v1.DriverArea
+@using Webapp.ViewModels
+@inject RideTimeService service
+@inject ScheduleService scheduleService
+@inject NavigationManager nav
+@inject ISnackbar snackbar
 <h3>Create</h3>
+<div class="row">
+    <div class="col-md-4">
+        <EditForm Model="@vm" OnValidSubmit="Submit">
+            <FluentValidationValidator></FluentValidationValidator>
+            <ValidationSummary style="color:red"></ValidationSummary>
+            <MudSelect @bind-Value="@vm.Schedule" Label="Schedule" Placeholder="Please Select a Schedule" AnchorOrigin="Origin.CenterCenter">
+                @if (Schedules != null)
+                {
+                    foreach (var option in Schedules)
+                    {
+                        <MudSelectItem Value="@option">@option?.ShiftDurationTime</MudSelectItem>
+                    }
+                }
 
+            </MudSelect>
+            <p>
+                <MudButton ButtonType="ButtonType.Submit" OnClick="Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
+            </p>
+        </EditForm>
+        </div>
+        </div>
 @code {
+    public CreateRideTimeViewModel vm { get; set; } = new CreateRideTimeViewModel();
+    public IEnumerable<Schedule?>? Schedules { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        Schedules = (await scheduleService.GetAllSchedulesAsync()).ToList();
+    }
 
+    public async Task Submit()
+    {
+        
+    }
 }
