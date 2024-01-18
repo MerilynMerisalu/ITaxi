@@ -19,6 +19,13 @@ namespace Base.Service
         {
         }
 
+        public async Task<List<TEntity?>> AddEntitiesAsync(List<TEntity?> entities)
+        {
+            var response = await Client.PostAsJsonAsync<List<TEntity?>>(GetEndpointUrl(), entities);
+            var result = await response.Content.ReadFromJsonAsync<List<TEntity?>>();
+            return result.ToList();
+        }
+
         public async Task<TEntity> AddEntity(TEntity entity)
         {
             var response = await Client.PostAsJsonAsync<TEntity?>(GetEndpointUrl(),entity);

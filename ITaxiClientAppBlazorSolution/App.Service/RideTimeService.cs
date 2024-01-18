@@ -13,6 +13,7 @@ namespace ITaxi.Service
     {
         Task<IEnumerable<RideTime?>> GetAllRideTimesAsync();
         Task<RideTime?> GetRideTimeByIdAsync(Guid id);
+        Task<List<RideTime?>> AddRideTimesAsync(List<RideTime?>? rideTimes);
         Task DeleteRideTimeByIdAsync(Guid id);
     }
 
@@ -24,6 +25,11 @@ namespace ITaxi.Service
         }
 
         protected override string EndpointUri => "/driverarea/ridetimes/";
+
+        public async Task<List<RideTime?>> AddRideTimesAsync(List<RideTime?>? rideTimes)
+        {
+            return (await base.AddEntitiesAsync(rideTimes)).ToList();
+        }
 
         public async Task DeleteRideTimeByIdAsync(Guid id)
         {

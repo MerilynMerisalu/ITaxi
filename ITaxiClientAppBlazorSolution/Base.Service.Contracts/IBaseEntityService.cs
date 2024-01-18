@@ -23,6 +23,8 @@
         Task<TEntity?>GetEntityByIdAsync(Guid id);
         Task RemoveEntityAsync(Guid id);
         Task<TEntity> AddEntity(TEntity entity);
-        Task UpdateEntityAsync( TEntity entity);
+        Task UpdateEntityAsync(TEntity entity);
+        Task<List<TEntity?>> AddEntitiesAsync(List<TEntity?> entities);
+
     }
 }

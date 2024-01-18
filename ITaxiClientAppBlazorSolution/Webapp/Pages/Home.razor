@@ -10,7 +10,9 @@
         <MudSpacer />
         @if (AppState.IsLoggedIn)
         {
-            <div>Hello, @AuthResponse?.FirstAndLastName!</div>
+            <div>
+               <MudNavLink Href="/profile">Hello, @AuthResponse?.FirstAndLastName!</MudNavLink>
+                </div>
             <MudIconButton Icon=@Icons.Material.Filled.Logout OnClick="LogOut" class="nav-link btn btn-link">Log out</MudIconButton>
         }
         else
