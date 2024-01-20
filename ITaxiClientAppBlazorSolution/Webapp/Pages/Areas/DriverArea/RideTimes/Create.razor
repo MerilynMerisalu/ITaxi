@@ -22,6 +22,21 @@
                 }
 
             </MudSelect>
+            @* <MudSelect T="DriverLicenseCategory" @bind-SelectedValues="@vm.SelectedDriverLicenseCategories" MultiSelection="true"
+                       MultiSelectionTextFunc="@(GetMultiSelectionText)"
+                       For="@( () => vm.DriverLicenseCategoriesForValidation)"
+                       Label="Driver License Categories" Placeholder="Please select driver license categories"
+                       AnchorOrigin="Origin.CenterCenter">
+                @if (DriverLicenseCategories != null)
+                {
+                    foreach (var options in DriverLicenseCategories)
+                    {
+                        <MudSelectItem T="DriverLicenseCategory" Value="@options">@options?.DriverLicenseCategoryName</MudSelectItem>
+
+                    }
+                }
+
+            </MudSelect> *@
             <p>
                 <MudButton ButtonType="ButtonType.Submit" OnClick="Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
             </p>
@@ -31,6 +46,7 @@
 @code {
     public CreateRideTimeViewModel vm { get; set; } = new CreateRideTimeViewModel();
     public IEnumerable<Schedule?>? Schedules { get; set; }
+    public IEnumerable<RideTime?>? RideTimes { get; set; }
     protected override async Task OnInitializedAsync()
     {
         Schedules = (await scheduleService.GetAllSchedulesAsync()).ToList();

@@ -22,8 +22,10 @@
                 }
 
             </MudSelect>
-            <MudTextField T="DateTime?" Format="s" Label="Start Date and Time" @bind-Value="@vm.StartDateAndTime" InputType="InputType.DateTimeLocal" />
-            <MudTextField T="DateTime?" Format="s" Label="End Date and Time" @bind-Value="@vm.EndDateAndTime" InputType="InputType.DateTimeLocal" />
+            <MudTextField T="DateTime?" Format="s" For="@( () => vm.StartDateAndTime)"
+                Label="Start Date and Time" @bind-Value="@vm.StartDateAndTime" InputType="InputType.DateTimeLocal" />
+            <MudTextField T="DateTime?" Format="s" For="@( () => vm.EndDateAndTime)"
+                Label="End Date and Time" @bind-Value="@vm.EndDateAndTime" InputType="InputType.DateTimeLocal" />
           
             <p>
             <MudButton ButtonType="ButtonType.Submit" OnClick="Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>

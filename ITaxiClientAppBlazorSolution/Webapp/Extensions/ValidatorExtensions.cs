@@ -18,18 +18,25 @@ namespace Webapp.Extensions
             return options;
         }
 
-        public static IRuleBuilder<T, DateTime?> PastDate<T>(this IRuleBuilder<T, DateTime?> ruleBuilder)
+        public static IRuleBuilder<T, DateTime?> PastDate<T>(this IRuleBuilder<T, DateTime?> ruleBuilder, string message)
         {
             var options = ruleBuilder
                 .NotEmpty()
-                .LessThanOrEqualTo(DateTime.Today).WithMessage("Date of Birth cannot be greater than today's date.");
+                .LessThanOrEqualTo(DateTime.Today).WithMessage(message);
             return options;
         }
-        public static IRuleBuilder<T, DateTime?> FutureDate<T>(this IRuleBuilder<T, DateTime?> ruleBuilder)
+        public static IRuleBuilder<T, DateTime?> FutureDate<T>(this IRuleBuilder<T, DateTime?> ruleBuilder, string message)
         {
             var options = ruleBuilder
                 .NotEmpty()
-                .GreaterThanOrEqualTo(DateTime.Today).WithMessage("Driver license expiry date cannot be less than today's date.");
+                .GreaterThanOrEqualTo(DateTime.Today).WithMessage(message);
+            return options;
+        }
+        public static IRuleBuilder<T, DateTime?> FutureDateAndTime<T>(this IRuleBuilder<T, DateTime?> ruleBuilder, string message)
+        {
+            var options = ruleBuilder
+                .NotEmpty()
+                .GreaterThanOrEqualTo(DateTime.Now).WithMessage(message);
             return options;
         }
     }

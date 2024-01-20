@@ -16,15 +16,15 @@ namespace Webapp.Validators
             RuleFor(d => d.LastName).MinimumLength(1);
             RuleFor(d => d.LastName).MaximumLength(50);
             RuleFor(d => d.Gender).NotNull();
-            RuleFor(d => d.DateOfBirth).PastDate();
+            RuleFor(d => d.DateOfBirth).PastDate("Date of Birth cannot be greater than today's date.");
             RuleFor(d => d.PersonalIdentifier).MaximumLength(11);
             RuleFor(d => d.City).NotNull();
             RuleFor(d => d.Address).NotNull();
             RuleFor(d => d.DriverLicenseNumber).NotEmpty();
-            RuleFor(d => d.DriverLicenseExpiryDate).FutureDate();
+            RuleFor(d => d.DriverLicenseExpiryDate).FutureDate("Driver license expiry date cannot be less than today's date.");
             RuleFor(d => d.DriverLicenseCategoriesForValidation)
                 .Must((model, property) => model.SelectedDriverLicenseCategories.Any())
-                .WithMessage("select at least one license");
+                .WithMessage("Select at least one license");
             //RuleFor(d => d.SelectedDriverLicenseCategories).NotNull();
             RuleFor(c => c.PhoneNumber)
             .NotEmpty()
