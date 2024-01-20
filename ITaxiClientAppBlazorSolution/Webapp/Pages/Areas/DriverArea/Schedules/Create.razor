@@ -12,7 +12,8 @@
         <EditForm Model="@vm" OnValidSubmit="Submit">
             <FluentValidationValidator></FluentValidationValidator>
             <ValidationSummary style="color:red"></ValidationSummary>
-            <MudSelect @bind-Value="@vm.Vehicle" Label="Vehicle" Placeholder="Please select a vehicle" AnchorOrigin="Origin.CenterCenter">
+            <MudSelect @bind-Value="@vm.Vehicle" Label="Vehicle" For="@( () => vm.Vehicle)" Placeholder="Please select a vehicle"
+                       AnchorOrigin="Origin.CenterCenter">
                 @if (vehicles != null)
                 {
                     foreach (var option in vehicles)
@@ -28,7 +29,7 @@
                 Label="End Date and Time" @bind-Value="@vm.EndDateAndTime" InputType="InputType.DateTimeLocal" />
           
             <p>
-            <MudButton ButtonType="ButtonType.Submit" OnClick="Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
+            <MudButton ButtonType="ButtonType.Submit"  Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
             </p>
         </EditForm>
     </div>
