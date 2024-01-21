@@ -13,6 +13,7 @@ namespace Webapp.ViewModels
         public DateTime? DriverLicenseExpiryDate { get; set; }
         public DriverLicenseCategory? DriverLicenseCategoriesForValidation { get; set; }
 
-        public IEnumerable<DriverLicenseCategory?> SelectedDriverLicenseCategories { get; set; } = Array.Empty<DriverLicenseCategory>();
+        public IEnumerable<DriverLicenseCategory?> SelectedDriverLicenseCategories { get; set; } = 
+            Array.Empty<DriverLicenseCategory>();
     }
 }

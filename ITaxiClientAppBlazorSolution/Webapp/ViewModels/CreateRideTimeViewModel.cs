@@ -6,7 +6,8 @@ namespace Webapp.ViewModels
     {
         public Guid ScheduleId { get; set; }
         public Schedule? Schedule { get; set; }
-
+        public RideTime? RideTimeForValidation { get; set; }
+        public IEnumerable<RideTime?> SelectedRideTimes { get; set; } = Array.Empty<RideTime>();
 
 
     }

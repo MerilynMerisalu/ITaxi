@@ -266,6 +266,13 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
         return RepoDbContext.RideTimes.Any(r => r.ScheduleId.Equals(id));
     }
 
+    public async Task<IEnumerable<string>>? GettingAllRideTimesAvailableAsync(Guid scheduleId, Guid userId, string? roleName = null, bool noTracking = true)
+    {
+        return (await CreateQuery(userId, roleName, noTracking, true)
+            .Where(rt => rt.ScheduleId.Equals(scheduleId) && rt.IsTaken == false)
+            .Select(rt => rt.RideDateTime.ToString("t")).ToListAsync());
+    }
+
     public async Task<IEnumerable<RideTimeDTO>> GetAllAsync(Guid? userId = null, string? roleName = null,
         bool noTracking = true)
     {

@@ -75,6 +75,28 @@ public class RideTimesController : ControllerBase
         
         return Ok(_mapper.Map<RideTime>(rideTime));
     }
+    
+    // GET: api/RideTimes
+    /// <summary>
+    /// Gets all the ride times
+    /// </summary>
+    /// <returns>List of ride times with a statusCode 200OK or statusCode 403 or statusCode 401</returns>
+    [HttpGet("GetAvailableRideTimes")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType( typeof( IEnumerable<RideTime>), StatusCodes.Status200OK )] 
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    
+    public async Task<ActionResult<IEnumerable<string?>>> GetAvailableRideTimes(Guid scheduleId)
+    {
+        var userId = User.GettingUserId();
+        var roleName = User.GettingUserRoleName();
+        var res = await _appBLL.RideTimes.GettingAllRideTimesAvailableAsync(scheduleId, userId, roleName);
+       
+        return Ok(res);
+    }
+
 
     // PUT: api/RideTimes/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

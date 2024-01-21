@@ -59,4 +59,7 @@ public interface IRideTimeRepositoryCustom<TEntity>
     List<string> GettingRemainingRideTimesByScheduleId(Guid scheduleId);
     Task<bool> HasScheduleAnyAsync(Guid id, bool noTracking = true);
     bool HasScheduleAny(Guid id, bool noTracking = true);
+    Task<IEnumerable<string>>? GettingAllRideTimesAvailableAsync(
+        Guid scheduleId, Guid userId, string? roleName = null,
+        bool noTracking = true);
 }

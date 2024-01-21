@@ -22,21 +22,25 @@
                 }
 
             </MudSelect>
-            @* <MudSelect T="DriverLicenseCategory" @bind-SelectedValues="@vm.SelectedDriverLicenseCategories" MultiSelection="true"
-                       MultiSelectionTextFunc="@(GetMultiSelectionText)"
-                       For="@( () => vm.DriverLicenseCategoriesForValidation)"
-                       Label="Driver License Categories" Placeholder="Please select driver license categories"
-                       AnchorOrigin="Origin.CenterCenter">
-                @if (DriverLicenseCategories != null)
-                {
-                    foreach (var options in DriverLicenseCategories)
+            @if (vm.Schedule != null)
+            {
+                <MudSelect T="RideTime" @bind-SelectedValues="@vm.SelectedRideTimes" MultiSelection="true"
+                           MultiSelectionTextFunc="@(GetMultiSelectionText)"
+                           For="@( () => vm.RideTimeForValidation)"
+                           Label="Ride Times" Placeholder="Please select ride times "
+                           AnchorOrigin="Origin.CenterCenter">
+                    @if (vm.Schedule != null)
                     {
-                        <MudSelectItem T="DriverLicenseCategory" Value="@options">@options?.DriverLicenseCategoryName</MudSelectItem>
-
+                        foreach (var option in AvailableRideTimes)
+                        {
+                            <MudSelectItem Value="@option">@option</MudSelectItem>
+                        }
                     }
-                }
 
-            </MudSelect> *@
+                </MudSelect>
+                
+            }
+             
             <p>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary">Create</MudButton>
             </p>
@@ -46,11 +50,40 @@
 @code {
     public CreateRideTimeViewModel vm { get; set; } = new CreateRideTimeViewModel();
     public IEnumerable<Schedule?>? Schedules { get; set; }
-    public IEnumerable<RideTime?>? RideTimes { get; set; }
+    public IEnumerable<string?>? AvailableRideTimes { get; set; }
     protected override async Task OnInitializedAsync()
     {
         Schedules = (await scheduleService.GetAllSchedulesAsync()).ToList();
+
+
     }
+    protected async override Task OnParametersSetAsync()
+    {
+        if(vm.Schedule != null)
+        {
+            
+         AvailableRideTimes = (await service.GetAllAvailableRideTimesAsync(vm.Schedule.Id)).ToList();
+            
+        }
+    }
+    private string GetMultiSelectionText(List<string> selectedValues)
+    {
+        if (selectedValues.Count == 0)
+        {
+            return $"{selectedValues.Count} ride times has been selected ";
+        }
+        if (selectedValues.Count == 1)
+        {
+            return $"{selectedValues.Count} ride time has been selected ";
+        }
+        else
+        {
+            return $"{selectedValues.Count} ride times have been selected ";
+        }
+
+
+    }
+     
 
     public async Task Submit()
     {

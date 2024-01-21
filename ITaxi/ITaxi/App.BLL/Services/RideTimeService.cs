@@ -119,4 +119,9 @@ public class RideTimeService: BaseEntityService<App.BLL.DTO.AdminArea.RideTimeDT
     {
         return Repository.HasScheduleAny(id, noTracking);
     }
+
+    public async Task<IEnumerable<string>>? GettingAllRideTimesAvailableAsync(Guid scheduleId, Guid userId, string? roleName = null, bool noTracking = true)
+    {
+        return (await Repository.GettingAllRideTimesAvailableAsync(scheduleId, userId, roleName, noTracking)).ToList();
+    }
 }
