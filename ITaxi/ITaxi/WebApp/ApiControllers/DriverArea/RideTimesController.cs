@@ -84,17 +84,18 @@ public class RideTimesController : ControllerBase
     [HttpGet("GetAvailableRideTimes")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType( typeof( IEnumerable<RideTime>), StatusCodes.Status200OK )] 
+    [ProducesResponseType( typeof( IEnumerable<string>), StatusCodes.Status200OK )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     
-    public async Task<ActionResult<IEnumerable<string?>>> GetAvailableRideTimes(Guid scheduleId)
+    public Task<ActionResult<IEnumerable<string?>>> GetAvailableRideTimes(
+        [FromBody]Guid scheduleId)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var res = await _appBLL.RideTimes.GettingAllRideTimesAvailableAsync(scheduleId, userId, roleName);
+        var res =  _appBLL.RideTimes.GettingRemainingRideTimesByScheduleId(scheduleId);
        
-        return Ok(res);
+        return Task.FromResult<ActionResult<IEnumerable<string?>>>(Ok(res));
     }
 
 
