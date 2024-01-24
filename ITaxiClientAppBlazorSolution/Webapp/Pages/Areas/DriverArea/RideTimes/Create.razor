@@ -12,7 +12,7 @@
         <EditForm Model="@vm" OnValidSubmit="Submit">
             <FluentValidationValidator></FluentValidationValidator>
             <ValidationSummary style="color:red"></ValidationSummary>
-            <MudSelect @bind-Value="@vm.Schedule" For="@(() => vm.Schedule)" Label="Schedule" Placeholder="Please Select a Schedule" AnchorOrigin="Origin.CenterCenter">
+            <MudSelect @bind-Value="@vm.Schedule" For="@(() => vm.Schedule)" @bind-Value:after="CheckScheduleIdValue" Label="Schedule" Placeholder="Please Select a Schedule" AnchorOrigin="Origin.CenterCenter">
                 @if (Schedules != null)
                 {
                     foreach (var option in Schedules)
@@ -22,20 +22,19 @@
                 }
 
             </MudSelect>
-            @if (vm.Schedule != null)
+            @if (vm.Schedule != null && AvailableRideTimes != null)
             {
-                <MudSelect T="RideTime" @bind-SelectedValues="@vm.SelectedRideTimes" MultiSelection="true"
+                <MudSelect T="string" @bind-SelectedValues="@vm.SelectedRideTimes"  MultiSelection="true"
                            MultiSelectionTextFunc="@(GetMultiSelectionText)"
                            For="@( () => vm.RideTimeForValidation)"
                            Label="Ride Times" Placeholder="Please select ride times "
                            AnchorOrigin="Origin.CenterCenter">
-                    @if (vm.Schedule != null)
-                    {
-                        foreach (var option in AvailableRideTimes)
+                  
+                        @foreach (var option in AvailableRideTimes)
                         {
                             <MudSelectItem Value="@option">@option</MudSelectItem>
                         }
-                    }
+                  
 
                 </MudSelect>
                 
@@ -59,12 +58,7 @@
     }
     protected async override Task OnParametersSetAsync()
     {
-        if(vm.Schedule != null)
-        {
-            
-         AvailableRideTimes = (await service.GetAllAvailableRideTimesAsync(vm.Schedule.Id)).ToList();
-            
-        }
+        await CheckScheduleIdValue();
     }
     private string GetMultiSelectionText(List<string> selectedValues)
     {
@@ -83,8 +77,19 @@
 
 
     }
-     
 
+    public async Task CheckScheduleIdValue()
+    {
+
+        if (vm.Schedule != null)
+        {
+            
+            AvailableRideTimes = (await service.GettingRemainingRideTimesByScheduleId(vm.Schedule.Id)).ToList();
+            vm.SelectedRideTimes = new List<string>();
+
+        }
+        
+    }
     public async Task Submit()
     {
         

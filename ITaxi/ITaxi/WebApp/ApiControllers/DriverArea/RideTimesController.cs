@@ -89,7 +89,7 @@ public class RideTimesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     
     public Task<ActionResult<IEnumerable<string?>>> GetAvailableRideTimes(
-        [FromBody]Guid scheduleId)
+        [FromQuery]Guid scheduleId)
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();

@@ -14,7 +14,7 @@ namespace ITaxi.Service
     public interface IRideTime
     {
         Task<IEnumerable<RideTime?>> GetAllRideTimesAsync();
-        Task<IEnumerable<string?>> GetAllAvailableRideTimesAsync(Guid scheduleId);
+        Task<List<string?>> GettingRemainingRideTimesByScheduleId(Guid scheduleId);
         Task<RideTime?> GetRideTimeByIdAsync(Guid id);
         Task<List<RideTime?>> AddRideTimesAsync(List<RideTime?>? rideTimes);
         Task DeleteRideTimeByIdAsync(Guid id);
@@ -39,10 +39,10 @@ namespace ITaxi.Service
              await base.RemoveEntityAsync(id);
         }
 
-        public async Task<IEnumerable<string?>> GetAllAvailableRideTimesAsync(Guid scheduleId)
+        public async Task<List<string?>> GettingRemainingRideTimesByScheduleId(Guid scheduleId)
         {
 
-            return await Client.GetFromJsonAsync<IEnumerable<string?>>(GetEndpointUrl() + AvailableRideTimesUri + "?scheduleid=" + scheduleId);
+            return (await Client.GetFromJsonAsync<List<string?>>(GetEndpointUrl() + AvailableRideTimesUri + "?scheduleid=" + scheduleId)).ToList();
 
         }
 
