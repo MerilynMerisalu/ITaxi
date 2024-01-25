@@ -9,6 +9,9 @@ namespace Webapp.Validators
         public RideTimeValidator()
         {
             RuleFor(rt => rt.Schedule).NotNull();
+            RuleFor(rt => rt.RideTimeForValidation)
+                .Must((model, property) => model.SelectedRideTimes.Any())
+                .WithMessage("Select at least one ride time");
         }
     }
 }
