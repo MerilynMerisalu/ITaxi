@@ -29,6 +29,7 @@ namespace Public.App.DTO.v1.DriverArea
         [Display(ResourceType = typeof(ITaxi.Resources.Areas.App.Domain.DriverArea.RideTime), Name = "RideDateAndTime")]
         [DisplayFormat(DataFormatString = "{0:t}")]
         public DateTime RideDateTime { get; set; }
+        
 
         [Display(ResourceType = typeof(ITaxi.Resources.Areas.App.Domain.DriverArea.RideTime), Name = "IsTaken")]
         
@@ -39,5 +40,6 @@ namespace Public.App.DTO.v1.DriverArea
         [ForeignKey(nameof(Booking))]
         public Guid? BookingId { get; set; }
         public Booking? Booking { get; set; }
+        public IEnumerable<DateTime?>? SelectedRideTimes { get; set; }
     }
 }

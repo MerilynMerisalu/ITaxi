@@ -164,8 +164,11 @@ public class RideTimesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<RideTime>> PostRideTime([FromBody]RideTime rideTime)
     {
+        var userId = User.GettingUserId();
+        var driverId =  _appBLL.Drivers.GettingDriverByAppUserIdAsync(userId).Result.Id;
         var rideTimeDTO = new RideTimeDTO();
         rideTimeDTO.Id = Guid.NewGuid();
+        rideTimeDTO.DriverId = driverId;
         rideTimeDTO.RideDateTime = rideTime.RideDateTime;
         rideTimeDTO.ScheduleId = rideTime.ScheduleId;
         rideTimeDTO.CreatedBy = User.GettingUserEmail();

@@ -8,6 +8,8 @@ namespace Webapp.ViewModels
         public Schedule? Schedule { get; set; }
         public string? RideTimeForValidation { get; set; }
         public IEnumerable<string?> SelectedRideTimes { get; set; } = Array.Empty<string>();
+        public IEnumerable<DateTime?> SelectedRideTimesDateTime { get; set; } = Array.Empty<DateTime?>();
+        public bool IsTaken { get; set; }
 
 
     }

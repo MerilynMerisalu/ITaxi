@@ -26,7 +26,7 @@
             {
                 <MudSelect T="string" @bind-SelectedValues="@vm.SelectedRideTimes"  MultiSelection="true"
                            MultiSelectionTextFunc="@(GetMultiSelectionText)"
-                           For="@( () => vm.RideTimeForValidation)"
+                           
                            Label="Ride Times" Placeholder="Please select ride times "
                            AnchorOrigin="Origin.CenterCenter">
                   
@@ -37,7 +37,7 @@
                   
 
                 </MudSelect>
-                
+                <MudCheckBox @bind-Value="@vm.IsTaken"> Is Taken</MudCheckBox>
             }
              
             <p>
@@ -83,15 +83,27 @@
 
         if (vm.Schedule != null)
         {
-            
+
             AvailableRideTimes = (await service.GettingRemainingRideTimesByScheduleId(vm.Schedule.Id)).ToList();
             vm.SelectedRideTimes = new List<string>();
 
         }
-        
+
     }
     public async Task Submit()
     {
-        
+
+        foreach (var item in vm.SelectedRideTimes)
+        {
+            await service.AddEntity(new RideTime()
+                {
+                    ScheduleId = vm.Schedule.Id,
+                    RideDateTime = DateTime.Parse(item),
+                    IsTaken = vm.IsTaken
+                });
+        }
+        snackbar.Add("Ride time(s) created successfully", Severity.Success);
+        nav.NavigateTo("/rideTimes/index");
     }
 }
+ 
