@@ -24,7 +24,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApp;
 using WebApp.ApiControllers;
 using WebApp.Helpers;
-using AutoMapperConfig = WebApp.ApiControllers.v1.AutoMapperConfig;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,7 +102,11 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 builder.Services.AddAutoMapper(typeof(App.DAL.EF.AutoMapperConfig),
     typeof(App.BLL.AutoMapperConfig),
-    typeof(AutoMapperConfig));
+    typeof(WebApp.ApiControllers.v1.AutoMapperConfig));
+/*builder.Services.AddAutoMapper(
+    typeof(App.DAL.EF.AutoMapperConfig));*/
+
+
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddCookie(options => { options.SlidingExpiration = true; })

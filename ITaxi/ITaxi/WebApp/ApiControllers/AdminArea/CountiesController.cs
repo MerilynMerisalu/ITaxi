@@ -99,10 +99,11 @@ public class CountiesController : ControllerBase
         {
             return NotFound();
         }
-        
+
+        countyDTO.CountryId = county.CountryId;
         countyDTO.CountyName = county.CountyName;
         countyDTO.UpdatedBy = User.Identity!.Name;
-        countyDTO.UpdatedAt = DateTime.Now;
+        countyDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
         _appBLL.Counties.Update(countyDTO);
         await _appBLL.SaveChangesAsync();
         return NoContent();

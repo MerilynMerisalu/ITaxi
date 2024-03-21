@@ -2,9 +2,11 @@
 
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using App.Public.DTO.v1.AdminArea;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
 
@@ -69,9 +71,11 @@ public class CountiesController : Controller
     /// Admin area counties controller GET method create
     /// </summary>
     /// <returns>View</returns>
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
         var vm = new CreateEditCountyViewModel();
+        var countries = await _appBLL.Countries.GetAllCountriesOrderedByCountryNameAsync();
+        vm.Countries = new SelectList(countries, nameof(Country.Id), nameof(Country.CountryName));
         return View(vm);
     }
 
@@ -91,8 +95,10 @@ public class CountiesController : Controller
         {
             var county = new CountyDTO();
             county.Id = Guid.NewGuid();
+            county.CountryId = vm.CountryId;
             county.CountyName = vm.CountyName;
             county.CreatedBy = User.GettingUserEmail();
+            county.CreatedAt = DateTime.Now.ToUniversalTime();
             _appBLL.Counties.Add(county);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -140,9 +146,10 @@ public class CountiesController : Controller
             {
                 try
                 {
+                    county.CountryId = vm.CountryId;
                     county.CountyName = vm.CountyName;
                     county.UpdatedBy = User.GettingUserEmail();
-                    county.UpdatedAt = DateTime.Now;
+                    county.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _appBLL.Counties.Update(county);
                     await _appBLL.SaveChangesAsync();
                 }

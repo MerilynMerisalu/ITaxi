@@ -14,12 +14,16 @@
     <thead>
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.Country.CountryName)
+        </th>
+
+        <th>
             @Html.DisplayNameFor(model => model.CountyName)
         </th>
         @*<th>
             @Html.DisplayNameFor(model => model.NumberOfCities)
         </th>*@
-        
+
         <th>
             @Html.DisplayNameFor(model => model.CreatedBy)
         </th>
@@ -42,12 +46,16 @@
     {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Country!.CountryName)
+            </td>
+            
+            <td>
                 @Html.DisplayFor(modelItem => item.CountyName)
             </td>
             @*<td>
                 @Html.DisplayFor(modelItem => item.NumberOfCities)
             </td>*@
-            
+
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
             </td>
@@ -60,8 +68,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
-            
-            
+
 
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |

@@ -1,5 +1,12 @@
-﻿@model WebApp.Areas.AdminArea.ViewModels.CreateEditCountyViewModel
+﻿@using Base.Resources
+@model WebApp.Areas.AdminArea.ViewModels.CreateEditCountyViewModel
 
+<div class="form-group">
+    <label asp-for="CountryId" class="control-label"></label>
+    <select asp-for="CountryId" class="form-control" asp-items="Model.Countries">
+        <option value="">@Common.PleaseSelect</option>
+    </select>
+</div>
 
 <div class="form-group">
     <label asp-for="CountyName" class="control-label"></label>
