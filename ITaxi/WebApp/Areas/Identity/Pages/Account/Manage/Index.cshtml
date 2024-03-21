@@ -1,0 +1,174 @@
+﻿@page
+@using App.Domain
+@using App.Enum.Enum
+@using Base.Resources
+@using Index = App.Resources.Areas.Identity.Pages.Account.Manage.Index
+@model IndexModel
+@{
+    ViewData["Title"] = Index.Profile;
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage"/>
+<div class="row">
+    <div class="col-md-6">
+        <form id="profile-form" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-floating">
+                <input asp-for="Username" class="form-control" disabled/>
+                <label asp-for="Username" class="form-label"></label>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Input.FirstName" class="form-control"/>
+                <label asp-for="Input.FirstName" class="form-label"></label>
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Input.LastName" class="form-control"/>
+                <label asp-for="Input.LastName" class="form-label"></label>
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <select asp-for="Input.Gender" class="form-control" asp-items="Html.GetEnumSelectList<Gender>()">
+                    <option value="">@Common.PleaseSelect</option>
+                </select>
+                <label asp-for="Input.Gender" class="form-label"></label>
+                <span asp-validation-for="Input.Gender" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Input.DateOfBirth" class="form-control" disabled/>
+                <label asp-for="Input.DateOfBirth" class="form-label"></label>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Input.PhoneNumber" class="form-control"/>
+                <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
+
+            @if (User.IsInRole(nameof(Admin)) || User.IsInRole(nameof(Driver)))
+            {
+                <div class="form-floating">
+                    <input asp-for="Input.PersonalIdentifier" class="form-control"/>
+                    <label asp-for="Input.PersonalIdentifier" class="form-label"></label>
+                    <span asp-validation-for="Input.PersonalIdentifier" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.CityId"></label>
+                    <select asp-for="Input.CityId" class="form-control" asp-items="Model.Cities">
+                        <option>@Common.PleaseSelect</option>
+                    </select>
+                    <span asp-validation-for="Input.CityId" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating">
+                    <input asp-for="Input.AddressOfResidence" class="form-control"/>
+                    <label asp-for="Input.AddressOfResidence" class="form-label"></label>
+                    <span asp-validation-for="Input.AddressOfResidence" class="text-danger"></span>
+                </div>
+            }
+            @if (User.IsInRole(nameof(Driver)))
+            {
+                <div class="form-floating">
+                    <input asp-for="Input.DriverLicenseNumber" class="form-control"/>
+                    <label asp-for="Input.DriverLicenseNumber" class="form-label"></label>
+                    <span asp-validation-for="Input.DriverLicenseNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating">
+                    <input asp-for="Input.DriverLicenseExpiryDate" class="form-control"/>
+                    <label asp-for="Input.DriverLicenseExpiryDate" class="form-label"></label>
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="Input.SelectedDriverLicenseCategories"></label>
+                    <select multiple="multiple" asp-for="Input.SelectedDriverLicenseCategories" class="form-control"
+                            asp-items="Model.SelectedDriverLicenseCategories">
+                    </select>
+                    <span asp-validation-for="Input.SelectedDriverLicenseCategories" class="text-danger"></span>
+                </div>
+                <a id="addingDriverLicenseCategories" style="color: #0dcaf0; " onclick="ToggleTextBoxVisibility(true)">@Index.AddNew</a> 
+            }
+            
+            <div class="form-group">
+                <label id="licenseCategoriesLabel" asp-for="Input.DriverLicenseCategories" hidden="hidden"></label>
+                <select id="licenseCategories" multiple="multiple" asp-for="Input.ChangedDriverLicenseCategoriesList" class="form-control" 
+                        hidden="hidden"
+                        asp-items="Model.DriverLicenseCategories">
+                </select>
+                
+                <span asp-validation-for="Input.DriverLicenseCategories" class="text-danger"></span>
+                
+            </div>
+            <a id="hideLink" style="color: #0dcaf0; " onclick="ToggleTextBoxVisibility(false)" hidden="hidden">@Index.Hide</a> 
+            
+            @if (User.IsInRole(nameof(Customer)))
+            {
+                <div class="form-group">
+                    <label asp-for="Input.DisabilityId"></label>
+                    <select asp-for="Input.DisabilityId" class="form-control" asp-items="Model.DisabilityTypes">
+                        <option>@Common.PleaseSelect</option>
+                    </select>
+                    <span asp-validation-for="Input.DisabilityId" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-floating">
+                <input asp-for="Input.ImageFile" class="form-control"/>
+                <label asp-for="Input.ImageFile" accept="image\png, image\jpeg" class="form-label"></label>
+                <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
+            </div>
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">@Common.Save</button>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <img alt="@Index.ProfileImage" src="@Model.Input.PhotoPath" height="300" width="300"/>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+    
+    /** 
+    * Show or Hide the Text Box
+    * param visible {boolean} flag that sets the visibility
+    */
+    function ToggleTextBoxVisibility(visible) {
+          let linklabel = document.getElementById("licenseCategoriesLabel")
+         let addingTextBox = document.getElementById("licenseCategories")
+         let linkHref = document.getElementById("addingDriverLicenseCategories");
+         let hideLink = document.getElementById("hideLink");
+          
+         linklabel.hidden = !visible;
+         addingTextBox.hidden = !visible;
+         hideLink.hidden = !visible;
+         linkHref.hidden = visible;
+    }
+    function ShowingTextBox() {
+      let linklabel = document.getElementById("licenseCategoriesLabel")
+     let addingTextBox = document.getElementById("licenseCategories")
+     let linkHref = document.getElementById("addingDriverLicenseCategories");
+     let hideLink = document.getElementById("hideLink");
+      
+     linklabel.hidden = false;
+     addingTextBox.hidden = false;
+     hideLink.hidden = false;
+     linkHref.hidden = true;
+     
+    }
+     function HidingTextBox() {
+       let linklabel = document.getElementById("licenseCategoriesLabel")
+       let addingTextBox = document.getElementById("licenseCategories")
+       let linkHref = document.getElementById("addingDriverLicenseCategories");
+       let hideLink = document.getElementById("hideLink");
+             
+       linklabel.hidden = true;
+       addingTextBox.hidden = true;
+       hideLink.hidden = true;
+       linkHref.hidden = false;
+            
+           
+     }
+    </script>
+    <partial name="_ValidationScriptsPartial"/>
+}
