@@ -22,6 +22,11 @@ public class CreateEditCountyViewModel
     [Display(ResourceType = typeof(County), Name = "Country")]
     public Guid CountryId { get; set; }
 
+    //[Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(County), Name = "Country")]
+    public string? CountryName { get; set; }
     /// <summary>
     /// List of counties
     /// </summary>

@@ -35,6 +35,25 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
         return RepoDbContext.Counties.Any(c => c.CountryId.Equals(id));
     }
 
+    public async Task<IEnumerable<CountryDTO>> GetAllCountiesOrderedByCountryNameAsync(bool noTracking = true, bool noIncludes = false)
+    {
+        // special handling of OrderBy to account for language transalation
+        return (await CreateQuery(noTracking)
+            .ToListAsync()) // Bring into memory "Materialize"
+            .OrderBy(v => v.CountryName)
+            .ToList().Select(e => Mapper.Map(e))!;
+    }
+
+    public IEnumerable<CountryDTO> GetAllCountiesOrderedByCountryName(bool noTracking = true, bool noIncludes = false)
+    {
+        // special handling of OrderBy to account for language transalation
+        return CreateQuery(noTracking)
+            .ToList() // Bring into memory "Materialize"
+            .OrderBy(v => v.CountryName)
+            
+            .ToList().Select(e => Mapper.Map(e))!;
+    }
+
     protected override IQueryable<Country> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
         if (noTracking)

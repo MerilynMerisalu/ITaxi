@@ -6,6 +6,15 @@ namespace App.DAL.EF;
 
 public class AutoMapperProfile: Profile
 {
+    // DateTime to UTC Converter
+    public class ToUtcFormatter : IValueConverter<DateTime, DateTime>
+    {
+        public DateTime Convert(DateTime localSource, ResolutionContext context) => localSource.ToUniversalTime();
+    }
+    public class ToLocalFormatter : IValueConverter<DateTime, DateTime>
+    {
+        public DateTime Convert(DateTime dbSource, ResolutionContext context) => dbSource.ToLocalTime();
+    }
     public AutoMapperProfile()
     {
         CreateMap<App.Domain.Country, CountryDTO>()
@@ -55,14 +64,14 @@ public class AutoMapperProfile: Profile
         #region City Mapping
         // Convert from EF => DTO: Convert to Local Time
         CreateMap<App.Domain.City, CityDTO>()
-            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
-            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
+            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
+            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
             ;
 
         // DTO => EF: Convert to Universal Time
         CreateMap<CityDTO, App.Domain.City>()
-            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
-            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
+            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
+            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
             ;       
        
         #endregion City Mapping
@@ -70,14 +79,14 @@ public class AutoMapperProfile: Profile
         #region Admin Mapping
         // Convert from EF => DTO: Convert to Local Time
         CreateMap<App.Domain.Admin, AdminDTO>()
-            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
-            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
+            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
+            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
             ;
 
         // DTO => EF: Convert to Universal Time
         CreateMap<AdminDTO, App.Domain.Admin>()
-            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
-            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
+            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
+            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
             ;       
        
         #endregion Admin Mapping
@@ -85,14 +94,14 @@ public class AutoMapperProfile: Profile
         #region DriverLicenseCategory Mapping
         // Convert from EF => DTO: Convert to Local Time
         CreateMap<App.Domain.DriverLicenseCategory, DriverLicenseCategoryDTO>()
-            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
-            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
+            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
+            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
             ;
 
         // DTO => EF: Convert to Universal Time
         CreateMap<DriverLicenseCategoryDTO, App.Domain.DriverLicenseCategory>()
-            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
-            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
+            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
+            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
             ;       
        
         #endregion DriverLicenseCategory Mapping
@@ -100,14 +109,14 @@ public class AutoMapperProfile: Profile
         #region Driver Mapping
         // Convert from EF => DTO: Convert to Local Time
         CreateMap<App.Domain.Driver, DriverDTO>()
-            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
-            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
+            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
+            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
             ;
 
         // DTO => EF: Convert to Universal Time
         CreateMap<DriverDTO, App.Domain.Driver>()
-            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
-            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
+            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
+            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
             ;       
        
         #endregion Driver Mapping
@@ -115,14 +124,14 @@ public class AutoMapperProfile: Profile
         #region DriverAndLicenseCategory Mapping
         // Convert from EF => DTO: Convert to Local Time
         CreateMap<App.Domain.VehicleType, VehicleTypeDTO>()
-            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
-            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
+            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
+            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
             ;
 
         // DTO => EF: Convert to Universal Time
         CreateMap<VehicleTypeDTO, App.Domain.VehicleType>()
-            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
-            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
+            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
+            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
             ;       
        
         #endregion DriverAndLicenseCategory Mapping
@@ -133,14 +142,14 @@ public class AutoMapperProfile: Profile
         #region VehicleMark Mapping
         // Convert from EF => DTO: Convert to Local Time
         CreateMap<App.Domain.VehicleMark, VehicleMarkDTO>()
-            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
-            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
+            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
+            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
             ;
 
         // DTO => EF: Convert to Universal Time
         CreateMap<VehicleMarkDTO, App.Domain.VehicleMark>()
-            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
-            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
+            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
+            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
             ;       
        
         #endregion VehicleMark Mapping
@@ -148,14 +157,14 @@ public class AutoMapperProfile: Profile
         #region VehicleModel Mapping
         // Convert from EF => DTO: Convert to Local Time
         CreateMap<App.Domain.VehicleModel, VehicleModelDTO>()
-            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
-            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
+            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
+            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
             ;
 
         // DTO => EF: Convert to Universal Time
         CreateMap<VehicleModelDTO, App.Domain.VehicleModel>()
-            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
-            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
+            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
+            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
             ;       
        
         #endregion VehicleModel Mapping
@@ -163,14 +172,14 @@ public class AutoMapperProfile: Profile
         #region Vehicle Mapping
         // Convert from EF => DTO: Convert to Local Time
         CreateMap<App.Domain.Vehicle, VehicleDTO>()
-            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
-            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new AutoMapperConfig.ToLocalFormatter()))
+            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
+            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
             ;
 
         // DTO => EF: Convert to Universal Time
         CreateMap<VehicleDTO, App.Domain.Vehicle>()
-            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
-            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new AutoMapperConfig.ToUtcFormatter()))
+            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
+            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
             ;       
        
         #endregion Vehicle Mapping

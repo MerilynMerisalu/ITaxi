@@ -14,6 +14,7 @@ public interface ICountryRepositoryCustom<TEntity>
     IEnumerable<TEntity> GetAllCountriesOrderedByCountryName(bool noTracking = true, bool noIncludes = false);
     Task<bool> HasAnyCountiesAsync(Guid id, bool noTracking = true);
     bool HasAnyCounties(Guid id, bool noTracking = true);
+    
 
 
 }

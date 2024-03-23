@@ -14,5 +14,5 @@ public class VehicleTypeDTO: DomainEntityMetaId
     public LangStr VehicleTypeName { get; set; } = default!;
 
 
-   // public ICollection<VehicleDTO>? Vehicles { get; set; }
+   
 }

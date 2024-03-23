@@ -4,6 +4,7 @@ using App.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240322160221_CountryLangSTRAddedToCounty")]
+    partial class CountryLangSTRAddedToCounty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -311,6 +314,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("CountryId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CountryNameId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("CountyName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -340,6 +346,8 @@ namespace App.DAL.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
+
+                    b.HasIndex("CountryNameId");
 
                     b.ToTable("Counties");
                 });
@@ -1372,13 +1380,18 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.County", b =>
                 {
-                    b.HasOne("App.Domain.Country", "Country")
+                    b.HasOne("App.Domain.Country", null)
                         .WithMany("Counties")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Country");
+                    b.HasOne("Base.Domain.LangStr", "CountryName")
+                        .WithMany()
+                        .HasForeignKey("CountryNameId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CountryName");
                 });
 
             modelBuilder.Entity("App.Domain.Customer", b =>

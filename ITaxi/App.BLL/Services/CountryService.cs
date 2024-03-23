@@ -37,4 +37,14 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
     {
         return Repository.HasAnyCounties(id, noTracking);
     }
+
+    public async Task<IEnumerable<CountryDTO>> GetAllCountiesOrderedByCountryNameAsync(bool noTracking = true, bool noIncludes = false)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<CountryDTO> GetAllCountiesOrderedByCountryName(bool noTracking = true, bool noIncludes = false)
+    {
+        throw new NotImplementedException();
+    }
 }

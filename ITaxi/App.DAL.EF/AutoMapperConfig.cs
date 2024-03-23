@@ -7,7 +7,7 @@ namespace App.DAL.EF;
 
 public class AutoMapperConfig : Profile
 {
-    // DateTime to UTC Converter
+    /*// DateTime to UTC Converter
     public class ToUtcFormatter : IValueConverter<DateTime, DateTime>
     {
         public DateTime Convert(DateTime localSource, ResolutionContext context) => localSource.ToUniversalTime();
@@ -15,9 +15,9 @@ public class AutoMapperConfig : Profile
     public class ToLocalFormatter : IValueConverter<DateTime, DateTime>
     {
         public DateTime Convert(DateTime dbSource, ResolutionContext context) => dbSource.ToLocalTime();
-    }
-    public AutoMapperConfig()
-    {
+    }*/
+    // public AutoMapperConfig()
+    /*{
         #region Country Mapping
 
         // Convert from EF => DTO: Convert to Local Time
@@ -392,5 +392,5 @@ public class AutoMapperConfig : Profile
 
 
         CreateMap<AppUser, App.Domain.Identity.AppUser>().ReverseMap();
-    }
+    }*/
 }
