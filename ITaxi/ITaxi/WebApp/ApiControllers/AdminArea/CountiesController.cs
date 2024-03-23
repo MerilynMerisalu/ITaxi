@@ -50,7 +50,7 @@ public class CountiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<County>>> GetCounties()
     {
-        var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync(noIncludes:false);
+        var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
         return Ok(res.Select(x => _mapper.Map<County>(x)).ToList());
     }
 

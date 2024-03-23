@@ -56,6 +56,7 @@ public class CountiesController : Controller
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value);
         if (county == null) return NotFound();
 
+       // vm.CountryName = county.Country.CountryName;
         vm.CountyName = county.CountyName;
         vm.CreatedAt = county.CreatedAt;
         vm.CreatedBy = county.CreatedBy!;
@@ -118,10 +119,14 @@ public class CountiesController : Controller
         var vm = new CreateEditCountyViewModel();
         if (id == null) return NotFound();
 
-        var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value, noIncludes:false);
+        var countries = await _appBLL.Countries.GetAllCountriesOrderedByCountryNameAsync();
+        vm.Countries = new SelectList(countries,nameof(Country.Id), nameof(Country.CountryName),
+            nameof(county.CountryId));
 
         if (county == null) return NotFound();
-
+        vm.CountryId = county.CountryId;
+        //vm.CountryName = county.Country.CountryName ;
         vm.CountyName = county.CountyName;
 
         return View(vm);
@@ -179,8 +184,9 @@ public class CountiesController : Controller
 
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value);
         if (county == null) return NotFound();
-
-        vm.CountyName = county.CountyName;
+       // vm.CountryName = county.Country.CountryName;
+       vm.CountryName = county.Country.CountryName;
+           vm.CountyName = county.CountyName;
         vm.CreatedAt = county.CreatedAt;
         vm.CreatedBy = county.CreatedBy ?? "";
         vm.UpdatedAt = county.UpdatedAt;

@@ -14,11 +14,11 @@ public class CountyDTO : DomainEntityMetaId
     public string CountyName { get; set; } = default!;
 
     public Guid CountryId { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.County),
+        Name = nameof(Country))]
     public CountryDTO? Country { get; set; }
-    
-    
 
-
+    
     
     public int NumberOfCities { get; set; }
 }

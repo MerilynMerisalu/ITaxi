@@ -18,4 +18,11 @@ public class DetailsDeleteCountyViewModel : AdminAreaBaseViewModel
     /// </summary>
     [Display(ResourceType = typeof(County), Name = nameof(CountyName))]
     public string CountyName { get; set; } = default!;
+    
+    /// <summary>
+    /// County name
+    /// </summary>
+    [Display(ResourceType = typeof(County), Name = "Country")]
+    public string CountryName { get; set; } = default!;
+    
 }

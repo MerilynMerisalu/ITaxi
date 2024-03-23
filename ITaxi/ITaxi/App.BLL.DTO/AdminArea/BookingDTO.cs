@@ -25,6 +25,7 @@ public class BookingDTO: DomainEntityMetaId
     public CustomerDTO? Customer { get; set; }
     
     public Guid VehicleTypeId { get; set; }
+    [Display(ResourceType = typeof(Booking), Name = nameof(VehicleType))]
     public VehicleTypeDTO? VehicleType { get; set; }
     public Guid VehicleId { get; set; }
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(Vehicle))]
