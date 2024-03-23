@@ -56,7 +56,7 @@ public class CountiesController : Controller
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value);
         if (county == null) return NotFound();
 
-       // vm.CountryName = county.Country.CountryName;
+        vm.CountryName = county.Country.CountryName;
         vm.CountyName = county.CountyName;
         vm.CreatedAt = county.CreatedAt;
         vm.CreatedBy = county.CreatedBy!;
