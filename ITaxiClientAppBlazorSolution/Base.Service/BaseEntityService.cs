@@ -46,11 +46,11 @@ namespace Base.Service
         public virtual async Task RemoveEntityAsync(Guid id)
         {
             var response = await Client.DeleteAsync(GetEndpointUrl() + id);
-            if(response.IsSuccessStatusCode == false)
+            /* if(response.IsSuccessStatusCode == false)
             {
                 var message = await response.Content.ReadAsStringAsync();
                 throw new Exception(message);
-            }
+            } */
             //return await Client.DeleteFromJsonAsync<TEntity?>(GetEndpointUrl() + id);
         }
 
