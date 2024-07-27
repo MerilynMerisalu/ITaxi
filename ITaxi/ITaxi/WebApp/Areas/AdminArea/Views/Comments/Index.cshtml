@@ -26,6 +26,9 @@
             @Html.DisplayNameFor(model => model.CommentText)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.StarRating)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.CreatedAt)
         </th>
         <th>
@@ -34,7 +37,7 @@
         <th>
             @Html.DisplayNameFor(model => model.UpdatedAt)
         </th>
-
+        
         <th></th>
     </tr>
     </thead>
@@ -48,8 +51,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CustomerName)
             </td>
-
-
+            
             <td>
                 @Html.DisplayFor(modelItem => item.DriverName)
             </td>
@@ -58,6 +60,9 @@
                 @Html.DisplayFor(modelItem => item.CommentText)
             </td>
 
+            <td>
+                @Html.DisplayFor(modelItem => item.StarRating)
+            </td>
 
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)

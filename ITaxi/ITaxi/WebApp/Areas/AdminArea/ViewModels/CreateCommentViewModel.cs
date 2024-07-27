@@ -44,4 +44,10 @@ public class CreateCommentViewModel
     /// Drive time and driver
     /// </summary>
     public string? DriveTimeAndDriver { get; set; }
+    
+    /// <summary>
+    /// Rating for the drive
+    /// </summary>
+    [Range(minimum:0, maximum:5)]
+    public int? StarRating { get; set; }
 }

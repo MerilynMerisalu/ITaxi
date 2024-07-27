@@ -26,5 +26,6 @@ public class Comment : DomainEntityMetaId
         Name = "CommentName")]
     public string? CommentText { get; set; }
 
+    
     public string DriveTimeAndDriver { get; set; } = default!;
 }

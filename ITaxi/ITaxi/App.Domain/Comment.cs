@@ -12,4 +12,6 @@ public class Comment : DomainEntityMetaId
     [MaxLength(1000)]
     [DataType(DataType.MultilineText)]
     public string? CommentText { get; set; }
+    [Range(minimum:0, maximum:5)]
+    public int? Rating { get; set; }
 }

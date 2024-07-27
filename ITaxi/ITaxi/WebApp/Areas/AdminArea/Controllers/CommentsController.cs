@@ -105,6 +105,11 @@ public class CommentsController : Controller
         {
             comment.Id = Guid.NewGuid();
             comment.DriveId = vm.DriveId;
+            if (vm.StarRating >= 0)
+            {
+                comment.StarRating = vm.StarRating;
+            }
+            
             comment.CommentText = vm.CommentText;
             comment.CreatedBy = User.Identity!.Name;
             comment.CreatedAt = DateTime.Now.ToUniversalTime();
