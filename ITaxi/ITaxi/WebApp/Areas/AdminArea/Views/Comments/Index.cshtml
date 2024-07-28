@@ -29,6 +29,9 @@
             @Html.DisplayNameFor(model => model.StarRating)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.CreatedAt)
         </th>
         <th>
@@ -63,10 +66,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.StarRating)
             </td>
-
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedBy)
             </td>

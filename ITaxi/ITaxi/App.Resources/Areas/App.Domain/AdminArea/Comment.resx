@@ -33,4 +33,13 @@
     <data name="NoDrives" xml:space="preserve">
         <value>There are no drives to select from</value>
     </data>
+    <data name="Rating" xml:space="preserve">
+        <value>Drive Rating</value>
+    </data>
+    <data name="Driver" xml:space="preserve">
+        <value>Driver </value>
+    </data>
+    <data name="Customer" xml:space="preserve">
+        <value>Customer</value>
+    </data>
 </root>

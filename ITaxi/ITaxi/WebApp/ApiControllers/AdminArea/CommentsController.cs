@@ -97,7 +97,10 @@ public class CommentsController : ControllerBase
 
         if (commentDTO != null)
         {
-            commentDTO.StarRating = comment.StarRating;
+            if (commentDTO.StarRating >= 0)
+            {
+                comment.StarRating = commentDTO.StarRating;
+            }
             commentDTO.CommentText = comment.CommentText;
             commentDTO.DriveId = comment.DriveId;
             commentDTO.UpdatedBy = User.GettingUserEmail();

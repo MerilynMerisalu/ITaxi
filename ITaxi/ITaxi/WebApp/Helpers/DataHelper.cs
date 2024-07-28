@@ -763,6 +763,7 @@ public static class DataHelper
                 {
                     Id = new Guid(),
                     CommentText = "Takso hilines",
+                    StarRating = 3,
                     Drive = await context.Drives.Include(d => d.Driver)
                         .SingleOrDefaultAsync(d => d.Driver!.PersonalIdentifier!.Equals("36605138911")),
                     CreatedBy = "System",

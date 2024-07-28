@@ -69,6 +69,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer.
+        /// </summary>
+        public static string Customer {
+            get {
+                return ResourceManager.GetString("Customer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Date and Time of the Drive.
         /// </summary>
         public static string Drive {
@@ -78,11 +87,29 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Driver .
+        /// </summary>
+        public static string Driver {
+            get {
+                return ResourceManager.GetString("Driver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are no drives to select from.
         /// </summary>
         public static string NoDrives {
             get {
                 return ResourceManager.GetString("NoDrives", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drive Rating.
+        /// </summary>
+        public static string Rating {
+            get {
+                return ResourceManager.GetString("Rating", resourceCulture);
             }
         }
     }

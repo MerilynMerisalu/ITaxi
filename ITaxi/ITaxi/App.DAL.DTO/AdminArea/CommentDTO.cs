@@ -6,8 +6,7 @@ namespace App.DAL.DTO.AdminArea;
 public class CommentDTO: DomainEntityMetaId
 {
     
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Comment),
-        Name = "Drive")]
+   
     public Guid? DriveId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Comment),
@@ -20,5 +19,9 @@ public class CommentDTO: DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Comment),
         Name = "CommentName")]
     public string? CommentText { get; set; }
+    
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Comment), Name = "Rating")]
+    [Range(minimum:0, maximum:5)]
+    public int? StarRating { get; set; }
 
 }

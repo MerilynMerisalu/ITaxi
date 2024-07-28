@@ -24,4 +24,13 @@
     <data name="NoDrives" xml:space="preserve">
         <value>Kommenteeritavaid sõite pole</value>
     </data>
+    <data name="Rating" xml:space="preserve">
+        <value>Sõidu hinne</value>
+    </data>
+    <data name="Driver" xml:space="preserve">
+        <value>Autojuht</value>
+    </data>
+    <data name="Customer" xml:space="preserve">
+        <value>Klient</value>
+    </data>
 </root>

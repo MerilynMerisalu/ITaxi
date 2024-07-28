@@ -12,11 +12,15 @@ public class BookingDTO: DomainEntityMetaId
     public ScheduleDTO? Schedule { get; set; }
 
     public Guid DriverId { get; set; }
+    
+    
     public DriverDTO? Driver { get; set; }
+    
 
     
     public Guid CustomerId { get; set; }
-
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking),
+        Name = nameof(Customer))]
     public CustomerDTO? Customer { get; set; }
     
     public Guid VehicleTypeId { get; set; }
