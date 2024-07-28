@@ -49,5 +49,6 @@ public class CreateCommentViewModel
     /// Rating for the drive
     /// </summary>
     [Range(minimum:0, maximum:5)]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Comment), Name = "Rating")]
     public int? StarRating { get; set; }
 }
