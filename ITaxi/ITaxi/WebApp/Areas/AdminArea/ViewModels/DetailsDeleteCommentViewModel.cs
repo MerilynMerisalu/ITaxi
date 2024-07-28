@@ -30,6 +30,10 @@ public class DetailsDeleteCommentViewModel : AdminAreaBaseViewModel
     /// </summary>
     [Display(ResourceType = typeof(Comment), Name = nameof(Drive))]
     public string Drive { get; set; } = default!;
+    
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Comment), Name = "Rating")]
+    [Range(minimum:0, maximum:5)]
+    public int? StarRating { get; set; }
 
     /// <summary>
     /// Comment text

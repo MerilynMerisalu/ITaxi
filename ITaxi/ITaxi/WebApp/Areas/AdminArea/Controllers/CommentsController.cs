@@ -61,6 +61,7 @@ public class CommentsController : Controller
         vm.CustomerName = comment.CustomerName;
         vm.DriverName = comment.DriverName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
+        if (comment.StarRating != null) vm.StarRating = comment.StarRating;
         vm.CreatedAt = comment.CreatedAt;
         vm.CreatedBy = comment.CreatedBy!;
         vm.UpdatedAt = comment.UpdatedAt;
@@ -216,6 +217,7 @@ public class CommentsController : Controller
         vm.CustomerName = comment.CustomerName;
         vm.DriverName = comment.DriverName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
+        if (comment.StarRating != null) vm.StarRating = comment.StarRating;
         vm.CreatedAt = comment.CreatedAt;
         vm.CreatedBy = comment.CreatedBy!;
         vm.UpdatedAt = comment.UpdatedAt;
