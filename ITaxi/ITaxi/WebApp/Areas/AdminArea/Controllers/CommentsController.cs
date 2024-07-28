@@ -144,7 +144,7 @@ public class CommentsController : Controller
 
         vm.Id = comment.Id;
         vm.Id = comment.Id;
-
+        if (comment.StarRating != null) vm.StarRating = comment.StarRating;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.DriveId = comment.DriveId;
         vm.DriveTimeAndDriver = $"{comment.DriveCustomerStr} - {comment.DriverName}";
@@ -176,6 +176,7 @@ public class CommentsController : Controller
                 if (comment != null)
                 {
                     comment.Id = id;
+                    comment.StarRating = vm.StarRating;
                     comment.CommentText = vm.CommentText;
                     comment.UpdatedBy = User.Identity!.Name;
                     comment.UpdatedAt = DateTime.Now.ToUniversalTime();
