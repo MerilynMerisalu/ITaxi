@@ -5,7 +5,6 @@ using App.Contracts.BLL;
 using App.Contracts.BLL.Services;
 using App.Contracts.DAL;
 using App.Contracts.DAL.IAppRepositories;
-using App.DAL.DTO.AdminArea;
 using App.DAL.EF;
 using App.DAL.EF.Repositories;
 using App.Domain;

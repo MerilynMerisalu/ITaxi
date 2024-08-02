@@ -1,6 +1,5 @@
 using App.Contracts.BLL;
 using App.Contracts.DAL;
-using App.DAL.DTO.AdminArea;
 using App.Public.DTO.v1.AdminArea;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
