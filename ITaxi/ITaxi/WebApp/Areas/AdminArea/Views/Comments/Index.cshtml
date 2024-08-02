@@ -1,4 +1,5 @@
 @using Base.Resources
+@using Syncfusion.EJ2.Inputs
 
 
 @model IEnumerable<App.BLL.DTO.AdminArea.CommentDTO>
@@ -66,7 +67,7 @@
             </td>
 
             <td>
-                    
+              <ejs-rating id="rating" value="item.StarRating.Value" readOnly=true></ejs-rating>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
