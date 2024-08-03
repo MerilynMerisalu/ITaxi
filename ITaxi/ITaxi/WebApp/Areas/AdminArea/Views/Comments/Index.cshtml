@@ -28,6 +28,7 @@
         <th>
             @Html.DisplayNameFor(model => model.CommentText)
         </th>
+        
         <th>
             @Html.DisplayNameFor(model => model.StarRating)
         </th>
@@ -65,10 +66,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CommentText)
             </td>
-
-            <td>
-              <ejs-rating id="rating" value="item.StarRating.Value" readOnly=true></ejs-rating>
-            </td>
+            @if (item.StarRating != null)
+            {
+                <td>
+                    <ejs-rating id="rating" value="item.StarRating.Value" 
+                                readOnly=true></ejs-rating>
+                </td>
+            }
+            
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
             </td>

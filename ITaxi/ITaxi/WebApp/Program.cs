@@ -1,3 +1,4 @@
+using System.Configuration;
 using System.Globalization;
 using System.Text;
 using App.BLL;
@@ -23,7 +24,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApp;
 using WebApp.ApiControllers;
 using WebApp.Helpers;
-
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -138,6 +139,10 @@ builder.Services.AddCors(options =>
 } );
 
 var app = builder.Build();
+//Register Syncfusion license
+Syncfusion.Licensing.SyncfusionLicenseProvider
+    .RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NCaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXdec3VTRmZdWUJwVkA=");
+
 Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
 Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
 
