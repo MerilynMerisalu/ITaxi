@@ -47,4 +47,6 @@ public class CommentDTO: DomainEntityMetaId
     /// </summary>
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Comment), Name = "Rating")]
     public int? StarRating { get; set; }
+
+    
 }
