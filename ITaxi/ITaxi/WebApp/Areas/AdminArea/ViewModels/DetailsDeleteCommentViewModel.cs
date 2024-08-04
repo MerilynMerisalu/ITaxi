@@ -32,7 +32,7 @@ public class DetailsDeleteCommentViewModel : AdminAreaBaseViewModel
     public string Drive { get; set; } = default!;
     
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Comment), Name = "Rating")]
-    [Range(minimum:0, maximum:5)]
+    [Range(minimum:1, maximum:5)]
     public int? StarRating { get; set; }
 
     /// <summary>
