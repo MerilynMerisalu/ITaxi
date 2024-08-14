@@ -106,9 +106,10 @@ public class CommentsController : Controller
         {
             comment.Id = Guid.NewGuid();
             comment.DriveId = vm.DriveId;
-            if (vm.StarRating >= 0)
+            if (vm.StarRating > 0)
             {
                 comment.StarRating = vm.StarRating;
+                
             }
             
             comment.CommentText = vm.CommentText;
@@ -240,7 +241,13 @@ public class CommentsController : Controller
     {
         var roleName = User.GettingUserRoleName();
         var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, null, roleName, noIncludes:true);
-        if (comment != null) await _appBLL.Comments.RemoveAsync(comment.Id);
+        var drive = await _appBLL.Drives.SingleOrDefaultAsync(d => d.Comment.Id == comment.Id);
+        if (comment != null)
+        {
+            drive.Comment = null;
+            await _appBLL.Comments.RemoveAsync(comment.Id);
+        }
+            
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }

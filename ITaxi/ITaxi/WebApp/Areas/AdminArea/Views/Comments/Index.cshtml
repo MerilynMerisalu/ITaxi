@@ -14,6 +14,7 @@
 <p>
     <a asp-action="Create">@Common.CreateNew</a>
 </p>
+
 <table class="table">
     <thead>
     <tr>
@@ -29,9 +30,12 @@
         <th>
             @Html.DisplayNameFor(model => model.CommentText)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StarRating)
-        </th>
+        
+            <th>
+                @Html.DisplayNameFor(model => model.StarRating)
+            </th>
+        
+        
         <th>
             @Html.DisplayNameFor(model => model.CreatedBy)
         </th>
@@ -66,17 +70,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CommentText)
             </td>
-            @if (item.StarRating == null)
+            @if (item.StarRating > 0)
             {
                 <td>
-                    <ejs-rating id="rating" visible="false" readOnly="true"></ejs-rating>
+                    <ejs-rating id="rating" readOnly="true"
+                                value="item.StarRating.Value"></ejs-rating>
                 </td>
             }
             else
             {
-                <td>
-                    <ejs-rating id="rating" visible="true" readOnly="true" value="item.StarRating.Value" ></ejs-rating>
-                </td>
+                <td></td>
             }
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)

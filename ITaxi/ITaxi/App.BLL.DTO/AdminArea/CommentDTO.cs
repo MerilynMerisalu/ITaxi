@@ -42,6 +42,7 @@ public class CommentDTO: DomainEntityMetaId
         Name = "CommentName")]
     public string? CommentText { get; set; }
    
+    
     /// <summary>
     /// Rating for the drive
     /// </summary>

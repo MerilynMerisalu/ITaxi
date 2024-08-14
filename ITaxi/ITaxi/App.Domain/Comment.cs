@@ -13,6 +13,8 @@ public class Comment : DomainEntityMetaId
     [MaxLength(1000)]
     [DataType(DataType.MultilineText)]
     public string? CommentText { get; set; }
+
+    
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Comment), Name = "Rating")]
     [Range(minimum:0, maximum:5)]
     public int? StarRating { get; set; }
