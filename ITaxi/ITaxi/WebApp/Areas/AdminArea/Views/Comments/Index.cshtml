@@ -73,7 +73,7 @@
             @if (item.StarRating > 0)
             {
                 <td>
-                    <ejs-rating id="rating" readOnly="true"
+                    <ejs-rating id="rating-@item.Id" readOnly="true"
                                 value="item.StarRating.Value"></ejs-rating>
                 </td>
             }
