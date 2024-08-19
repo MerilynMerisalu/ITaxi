@@ -157,15 +157,38 @@ public class DriveService: BaseEntityService<App.BLL.DTO.AdminArea.DriveDTO, App
         bool noIncludes = true)
     {
         return Mapper.Map(
-            await Repository.GettingDriveByBookingIdAsync(bookingId, userId, roleName, noTracking, noIncludes));
+            await Repository.
+                GettingDriveByBookingIdAsync(bookingId, userId, roleName
+                    , noTracking, noIncludes));
     }
 
     public DriveDTO? GettingDriveByBookingId(Guid bookingId, Guid? userId = null, string? roleName = null, bool noTracking = true,
         bool noIncludes = true)
     {
         return Mapper.Map(
-             Repository.GettingDriveByBookingId(bookingId, userId, roleName, noTracking, noIncludes));
+             Repository.
+                 GettingDriveByBookingId(bookingId, userId, 
+                     roleName, noTracking, noIncludes));
     }
+
+    /*public async Task<DriveDTO?> GettingDriveByCommentIdAsync(Guid commentId
+        , Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = false)
+    {
+        return Mapper.Map(
+            await Repository.GettingDriveByCommentIdAsync(commentId, userId, roleName
+                , noTracking, noIncludes));
+    }
+
+    public DriveDTO? GettingDriveByCommentId(Guid commentId, 
+        Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = false)
+    {
+        return Mapper.Map(
+            Repository.
+                GettingDriveByCommentId(commentId, userId, 
+                    roleName, noTracking, noIncludes));
+    }*/
 
 
     public async Task<DriveDTO?> GettingDriveAsync(Guid bookingId, Guid? userId = null, string? roleName = null, 

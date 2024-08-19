@@ -111,6 +111,8 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         {
             domainEntities.Add(Mapper.Map(entity)!);
         }
+
+       
         // This is HARD delete:
         //RepoDbSet.RemoveRange(domainEntities);
         
@@ -207,13 +209,15 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         return await CreateQuery().AnyAsync(a => a.Id.Equals(id));
     }
 
-    public virtual async Task<TDalEntity> RemoveAsync(TKey id)
+    
+
+    public virtual async Task<TDalEntity> RemoveAsync(TKey id, bool hardDelete = false)
     {
         var entity = await FirstOrDefaultAsync(id);
         if (entity == null)
             // TODO: implement custom exception for entity not found
             throw new NullReferenceException($"Entity {typeof(TDalEntity).Name} with id {id} was not found");
-        return Remove(entity);
+        return Remove(entity, hardDelete);
     }
 
     public virtual async Task<bool> AnyAsync(Expression<Func<TDalEntity?, bool>> filter, bool noTracking = true)

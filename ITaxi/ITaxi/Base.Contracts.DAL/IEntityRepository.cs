@@ -34,7 +34,7 @@ public interface IEntityRepository<TEntity, TKey>
     Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false);
     Task<IEnumerable<TEntity>> GetAllAsync(bool noTracking = true);
     Task<bool> ExistsAsync(TKey id);
-    Task<TEntity> RemoveAsync(TKey id);
+    Task<TEntity> RemoveAsync(TKey id, bool hardDelete = false);
     Task<bool> AnyAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
     Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
     Task<TEntity?> FirstAsync(bool noTracking = true, bool noIncludes = false);

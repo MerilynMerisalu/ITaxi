@@ -152,9 +152,9 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
         return (await Repository.ExistsAsync(id));
     }
 
-    public Task<TBllEntity> RemoveAsync(TKey id)
+    public Task<TBllEntity> RemoveAsync(TKey id, bool hardDelete = false)
     {
-        var t = Repository.Remove(id);
+        var t = Repository.Remove(id, hardDelete);
         return Task.FromResult(Mapper.Map(t)!);
     }
 

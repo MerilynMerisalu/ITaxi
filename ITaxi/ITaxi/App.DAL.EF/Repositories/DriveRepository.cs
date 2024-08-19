@@ -360,6 +360,21 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
             .FirstOrDefault(d => d.Booking!.Id.Equals(bookingId)));
     }
 
+    public async Task<DriveDTO?> GettingDriveByCommentIdAsync(Guid commentId, Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = false)
+    {
+        var res =  Mapper.Map(await CreateQuery(userId, roleName, noTracking, noIncludes)
+            .FirstOrDefaultAsync(d => d.Comment!.Id.Equals(commentId)));
+        return res;
+    }
+
+    public DriveDTO? GettingDriveByCommentId(Guid commentId, Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = false)
+    {
+        return Mapper.Map(CreateQuery(userId, roleName, noTracking, noIncludes)
+            .FirstOrDefault(d => d.Comment!.Id.Equals(commentId)));
+    }
+
     public DriveDTO? GettingDrive(Guid bookingId, Guid? userId = null, string? roleName = null, 
         bool noTracking = true, bool noIncludes = false)
     {

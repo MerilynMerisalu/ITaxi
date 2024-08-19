@@ -53,6 +53,8 @@ public interface IDriveRepositoryCustom<TEntity>
     TEntity? GettingDriveByBookingId(Guid bookingId, Guid? userId = null, string? roleName = null, 
         bool noTracking = true,bool noIncludes = false );
     
-    
-    
+    /*Task<TEntity?> GettingDriveByCommentIdAsync(Guid commentId, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = false);
+    TEntity? GettingDriveByCommentId(Guid commentId, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true,bool noIncludes = false );*/
 }
