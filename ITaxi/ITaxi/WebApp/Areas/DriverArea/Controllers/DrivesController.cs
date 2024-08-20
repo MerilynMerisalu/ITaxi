@@ -66,7 +66,10 @@ public class DrivesController : Controller
         vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
 
         if (drive.Comment?.CommentText != null) vm.CommentText = drive.Comment.CommentText;
-
+        if (drive.Comment?.StarRating > 0)
+        {
+            vm.StarRating = drive.Comment.StarRating;
+        }
         vm.DestinationAddress = drive.Booking.DestinationAddress;
         vm.PickupAddress = drive.Booking.PickupAddress;
         vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;

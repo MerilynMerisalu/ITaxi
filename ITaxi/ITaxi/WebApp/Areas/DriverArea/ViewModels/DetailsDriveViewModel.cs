@@ -81,6 +81,13 @@ public class DetailsDriveViewModel
     public bool HasAnAssistant { get; set; }
     
     /// <summary>
+    /// Rating for the drive
+    /// </summary>
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Comment), Name = "Rating")]
+    [Range(minimum:1, maximum:5)]
+    public int? StarRating { get; set; }
+    
+    /// <summary>
     /// Comment text
     /// </summary>
     [Display(ResourceType = typeof(Drive), Name = "Comment")]

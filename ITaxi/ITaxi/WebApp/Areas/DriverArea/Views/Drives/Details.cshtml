@@ -91,6 +91,20 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CommentText)
         </dd>
+        @if (Model.StarRating > 0)
+        {
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StarRating)
+        </dt>
+        <dd class="col-sm-10">
+            <td>
+                <ejs-rating id="rating" value="@Model.StarRating.Value"
+                            readOnly=true></ejs-rating>
+            </td>
+        </dd>
+        }
+        
+
         @if (Model.IsDriveAccepted)
         {
             <dt class="col-sm-2">
