@@ -68,6 +68,9 @@
     <th>
         @Html.DisplayNameFor(model => model.Comment)
     </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Comment!.StarRating)
+    </th>
     @{
         var hasAnyAccepted = Model.Any(x => x.IsDriveAccepted);
         var hasAnyDeclined = Model.Any(x => x.IsDriveDeclined);
@@ -171,10 +174,20 @@
         <td>
             @Html.DisplayFor(modelItem => item.StatusOfDrive)
         </td>
-
         <td>
             @Html.DisplayFor(modelItem => item.Comment!.CommentText)
         </td>
+        @if (item.Comment?.StarRating > 0)
+        {
+        <td>
+            <ejs-rating id="rating-@item.Comment.Id" readOnly="true"
+                        value="item.Comment.StarRating.Value"></ejs-rating>
+        </td>
+        }
+        else
+        {
+        <td></td>
+        }
 
         @if (hasAnyAccepted)
         {

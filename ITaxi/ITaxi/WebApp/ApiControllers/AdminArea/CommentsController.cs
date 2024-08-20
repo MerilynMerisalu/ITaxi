@@ -143,6 +143,10 @@ public class CommentsController : ControllerBase
         }
 
         var commentDTO = new CommentDTO();
+        if (commentDTO.StarRating >= 0)
+        {
+            comment.StarRating = commentDTO.StarRating;
+        }
         commentDTO.CommentText = comment.CommentText;
         commentDTO.DriveId = comment.DriveId;
         commentDTO.CreatedBy = User.GettingUserEmail();
@@ -176,7 +180,12 @@ public class CommentsController : ControllerBase
     {
         var comment = await _appBLL.Comments.GettingCommentWithoutIncludesAsync(id);
         if (comment == null) return NotFound();
-
+        if (comment.DriveId != null)
+        {
+            comment.DriveId = null;
+            _appBLL.Comments.Update(comment);
+            await _appBLL.SaveChangesAsync();
+        }
        await _appBLL.Comments.RemoveAsync(comment.Id);
         await _appBLL.SaveChangesAsync();
 
