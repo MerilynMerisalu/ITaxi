@@ -64,6 +64,10 @@ public class CommentsController : Controller
         vm.Drive = comment.DriveCustomerStr;
         vm.DriverName = comment.DriverName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
+        if (comment.StarRating > 0)
+        {
+            vm.StarRating = comment.StarRating.Value;
+        }
         
         return View(vm);
     }
@@ -215,6 +219,8 @@ public class CommentsController : Controller
 
         vm.DriverName = comment.DriverName;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
+        if (comment.StarRating > 0)
+            vm.StarRating = comment.StarRating.Value;
         
         return View(vm);
     }

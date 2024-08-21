@@ -25,6 +25,13 @@ public class DetailsDeleteCommentViewModel
     [Display(ResourceType = typeof(Comment),
         Name = nameof(Drive))]
     public string Drive { get; set; } = default!;
+    
+    /// <summary>
+    /// Rating for the drive
+    /// </summary>
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Comment), Name = "Rating")]
+    [Range(minimum:1, maximum:5)]
+    public int? StarRating { get; set; }
 
     /// <summary>
     /// Comment text
