@@ -44,8 +44,6 @@ public class CreateCommentViewModel
     /// Drive time and driver
     /// </summary>
     public string? DriveTimeAndDriver { get; set; }
-
-   
     
     /// <summary>
     /// Rating for the drive
