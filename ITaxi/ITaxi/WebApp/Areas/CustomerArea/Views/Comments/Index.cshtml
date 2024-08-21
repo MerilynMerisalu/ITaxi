@@ -23,8 +23,9 @@
         <th>
             @Html.DisplayNameFor(model => model.CommentText)
         </th>
-
-
+        <th>
+            @Html.DisplayNameFor(model => model.StarRating)
+        </th>
         <th></th>
     </tr>
     </thead>
@@ -44,6 +45,17 @@
                 @Html.DisplayFor(modelItem => item.CommentText)
             </td>
 
+            @if (item.StarRating > 0)
+            {
+            <td>
+                <ejs-rating id="rating-@item.Id" readOnly="true"
+                            value="item.StarRating.Value"></ejs-rating>
+            </td>
+            }
+            else
+            {
+            <td></td>
+            }
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |

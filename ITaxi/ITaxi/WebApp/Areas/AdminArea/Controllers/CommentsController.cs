@@ -178,8 +178,15 @@ public class CommentsController : Controller
                 if (comment != null)
                 {
                     comment.Id = id;
-                    comment.StarRating = vm.StarRating;
-                    comment.CommentText = vm.CommentText;
+                    if (comment.StarRating != vm.StarRating)
+                    {
+                        if (vm.StarRating > 0)
+                        {
+                            comment.StarRating = vm.StarRating;
+                        }
+                    } 
+                    if (comment.CommentText != vm.CommentText)
+                        comment.CommentText = vm.CommentText;
                     comment.UpdatedBy = User.Identity!.Name;
                     comment.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _appBLL.Comments.Update(comment);
