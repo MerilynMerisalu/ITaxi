@@ -86,7 +86,8 @@ public class CommentsController : Controller
         var drives = await _appBLL.Drives.GettingDrivesWithoutCommentAsync(userId, roleName);
         foreach (var drive in drives)
         {
-            if (drive != null) drive.Booking!.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
+            if (drive != null && drive.Booking != null)
+                drive.Booking.PickUpDateAndTime = drive.Booking.PickUpDateAndTime.ToLocalTime();
         }
         vm.Drives = new SelectList(drives,
             nameof(Drive.Id), nameof(Drive.DriveDescription));
@@ -113,9 +114,9 @@ public class CommentsController : Controller
             comment.Id = Guid.NewGuid();
             comment.DriveId = vm.DriveId;
             comment.CommentText = vm.CommentText;
-            if (vm.StarRating!.Value > 0)
+            if (vm.StarRating != null && vm.StarRating.Value > 0)
             {
-                comment.StarRating = vm.StarRating!.Value;
+                comment.StarRating = vm.StarRating.Value;
             }
             comment.CreatedBy = User.Identity!.Name;
             comment.CreatedAt = DateTime.Now.ToUniversalTime();
@@ -150,7 +151,7 @@ public class CommentsController : Controller
 
         vm.Id = comment.Id;
         vm.DriveTimeAndDriver = $"{comment.DriveCustomerStr} - {comment.DriverName}";
-        
+        if (comment.StarRating != null) vm.StarRating = comment.StarRating.Value;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.DriveId = comment.DriveId;
         
@@ -183,12 +184,24 @@ public class CommentsController : Controller
                 {
                     comment.Id = id;
                     comment.CommentText = vm.CommentText;
+                    if (comment.StarRating != null
+                        && vm.StarRating != null
+                        && vm.StarRating.Value != comment.StarRating.Value
+                        && vm.StarRating.Value > 0)
+                    {
+                            comment.StarRating = vm.StarRating!.Value;
+                    }
                     comment.UpdatedBy = User.Identity!.Name;
                     comment.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _appBLL.Comments.Update(comment);
+                
+
+                    await _appBLL.SaveChangesAsync();
                 }
 
-                await _appBLL.SaveChangesAsync();
+                
+                
+                    
             }
             catch (DbUpdateConcurrencyException)
             {

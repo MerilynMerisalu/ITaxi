@@ -38,4 +38,11 @@ public class EditCommentViewModel
     [DataType(DataType.MultilineText)]
     [Display(ResourceType = typeof(Comment), Name = "CommentName")]
     public string CommentText { get; set; } = default!;
+    
+    /// <summary>
+    /// Rating for the drive
+    /// </summary>
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Comment), Name = "Rating")]
+    public int? StarRating { get; set; }
+
 }
