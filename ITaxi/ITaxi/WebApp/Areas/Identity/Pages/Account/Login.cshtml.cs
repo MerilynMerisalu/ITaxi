@@ -134,11 +134,16 @@ public class LoginModel : PageModel
         [DataType(DataType.Password)]
         [Display(ResourceType = typeof(Login), Name = nameof(Password))]
         public string Password { get; set; } = default!;
+        /// <summary>
+        /// Show / hide password
+        /// </summary>
+        public bool ShowPassword { get; set; } = default;
 
         /// <summary>
         /// Remember me
         /// </summary>
         [Display(ResourceType = typeof(Login), Name = nameof(RememberMe))]
         public bool RememberMe { get; set; }
+
     }
 }

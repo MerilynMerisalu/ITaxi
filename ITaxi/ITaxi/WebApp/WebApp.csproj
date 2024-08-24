@@ -49,6 +49,7 @@
     <ItemGroup>
         <Folder Include="Areas\AdminArea\Views" />
         <Folder Include="Areas\Identity" />
+        <Folder Include="Images\Icons\" />
         <Folder Include="wwwroot\Images" />
     </ItemGroup>
 
