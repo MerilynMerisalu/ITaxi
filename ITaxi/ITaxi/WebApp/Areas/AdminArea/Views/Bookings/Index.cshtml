@@ -46,9 +46,29 @@
         <th>
             @Html.DisplayNameFor(model => model!.PickupAddress)
         </th>
+         <th>
+            @Html.DisplayNameFor(model => model!.NeedAssitanceLeavingTheBuilding)
+         </th>
+            @if(Model.Any(model => model!.NeedAssitanceLeavingTheBuilding == true))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model!.PickupFloorNumber)
+                </th>
+            }
+            
         <th>
             @Html.DisplayNameFor(model => model!.DestinationAddress)
         </th>
+        <th>
+           @Html.DisplayNameFor(model => model!.NeedAssitanceEnteringTheBuilding)
+        </th>
+            @if (Model.Any(model => model!.NeedAssitanceEnteringTheBuilding == true))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model!.DestinationFloorNumber)
+                </th>
+            }
+        
         <th>
             @Html.DisplayNameFor(model => model!.NumberOfPassengers)
         </th>
@@ -111,8 +131,28 @@
                 @Html.DisplayFor(modelItem => item!.PickupAddress)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item!.NeedAssitanceLeavingTheBuilding)
+             </td>
+                @if(item!.NeedAssitanceLeavingTheBuilding == true)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item!.PickupFloorNumber)
+                    </td>
+                }
+                
+            <td>
                 @Html.DisplayFor(modelItem => item!.DestinationAddress)
             </td>
+             <td>
+                @Html.DisplayFor(modelItem => item!.NeedAssitanceEnteringTheBuilding)
+             </td>
+             @if (item!.NeedAssitanceEnteringTheBuilding == true)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item!.DestinationFloorNumber)
+                    </td>
+                }
+             
             <td>
                 @Html.DisplayFor(modelItem => item!.NumberOfPassengers)
             </td>

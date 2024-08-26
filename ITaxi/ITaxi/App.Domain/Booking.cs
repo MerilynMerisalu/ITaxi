@@ -30,10 +30,17 @@ public class Booking : DomainEntityMetaId
 
     [DataType(DataType.DateTime)]
     public DateTime PickUpDateAndTime { get; set; }
-
+    
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     public string PickupAddress { get; set; } = default!;
+    public bool NeedAssitanceLeavingTheBuilding { get; set; }
+
+    [Range(minimum: 0, maximum: 35)]
+    public int PickupFloorNumber { get; set; }
+    public bool NeedAssitanceEnteringTheBuilding { get; set; }
+    [Range(minimum: 0, maximum: 35)]
+    public int DestinationFloorNumber { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
