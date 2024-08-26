@@ -47,9 +47,9 @@
             @Html.DisplayNameFor(model => model!.PickupAddress)
         </th>
          <th>
-            @Html.DisplayNameFor(model => model!.NeedAssitanceLeavingTheBuilding)
+            @Html.DisplayNameFor(model => model!.NeedAssistanceLeavingTheBuilding)
          </th>
-            @if(Model.Any(model => model!.NeedAssitanceLeavingTheBuilding == true))
+            @if(Model.Any(model => model!.NeedAssistanceLeavingTheBuilding == true))
             {
                 <th>
                     @Html.DisplayNameFor(model => model!.PickupFloorNumber)
@@ -60,9 +60,9 @@
             @Html.DisplayNameFor(model => model!.DestinationAddress)
         </th>
         <th>
-           @Html.DisplayNameFor(model => model!.NeedAssitanceEnteringTheBuilding)
+           @Html.DisplayNameFor(model => model!.NeedAssistanceEnteringTheBuilding)
         </th>
-            @if (Model.Any(model => model!.NeedAssitanceEnteringTheBuilding == true))
+            @if (Model.Any(model => model!.NeedAssistanceEnteringTheBuilding == true))
             {
                 <th>
                     @Html.DisplayNameFor(model => model!.DestinationFloorNumber)
@@ -131,9 +131,9 @@
                 @Html.DisplayFor(modelItem => item!.PickupAddress)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item!.NeedAssitanceLeavingTheBuilding)
+                @Html.DisplayFor(modelItem => item!.NeedAssistanceLeavingTheBuilding)
              </td>
-                @if(item!.NeedAssitanceLeavingTheBuilding == true)
+                @if(item!.NeedAssistanceLeavingTheBuilding == true)
                 {
                     <td>
                         @Html.DisplayFor(modelItem => item!.PickupFloorNumber)
@@ -144,9 +144,9 @@
                 @Html.DisplayFor(modelItem => item!.DestinationAddress)
             </td>
              <td>
-                @Html.DisplayFor(modelItem => item!.NeedAssitanceEnteringTheBuilding)
+                @Html.DisplayFor(modelItem => item!.NeedAssistanceEnteringTheBuilding)
              </td>
-             @if (item!.NeedAssitanceEnteringTheBuilding == true)
+             @if (item!.NeedAssistanceEnteringTheBuilding == true)
                 {
                     <td>
                         @Html.DisplayFor(modelItem => item!.DestinationFloorNumber)
