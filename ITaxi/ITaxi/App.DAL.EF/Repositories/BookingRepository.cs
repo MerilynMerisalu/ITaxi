@@ -134,7 +134,10 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
         booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
         
         var user = await RepoDbContext.Users.FirstOrDefaultAsync(x => x.Id == userId!.Value);
+        
         booking.DeclinedBy = user!.Email;
+        RepoDbSet.Update(booking);
+        await RepoDbContext.SaveChangesAsync();
         
         var drive = await RepoDbContext.Drives.FirstOrDefaultAsync(x => x.Id == booking.DriveId);
         if (drive != null)
@@ -145,8 +148,8 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
             RepoDbContext.Drives.Update(drive);
         }
        
-        await RepoDbContext.SaveChangesAsync();
-        
+        //await RepoDbContext.SaveChangesAsync();
+       // return Mapper.Map(booking);
         return await FirstOrDefaultAsync(id, userId, roleName, noTracking, noIncludes);
     }
 

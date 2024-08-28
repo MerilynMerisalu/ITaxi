@@ -49,26 +49,18 @@
          <th>
             @Html.DisplayNameFor(model => model!.NeedAssistanceLeavingTheBuilding)
          </th>
-            @if(Model.Any(model => model!.NeedAssistanceLeavingTheBuilding == true))
-            {
-                <th>
-                    @Html.DisplayNameFor(model => model!.PickupFloorNumber)
-                </th>
-            }
-            
+         <th>
+            @Html.DisplayNameFor(model => model!.PickupFloorNumber)
+         </th>
         <th>
             @Html.DisplayNameFor(model => model!.DestinationAddress)
         </th>
         <th>
            @Html.DisplayNameFor(model => model!.NeedAssistanceEnteringTheBuilding)
         </th>
-            @if (Model.Any(model => model!.NeedAssistanceEnteringTheBuilding == true))
-            {
-                <th>
-                    @Html.DisplayNameFor(model => model!.DestinationFloorNumber)
-                </th>
-            }
-        
+        <th>
+           @Html.DisplayNameFor(model => model!.DestinationFloorNumber)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model!.NumberOfPassengers)
         </th>
@@ -139,6 +131,12 @@
                         @Html.DisplayFor(modelItem => item!.PickupFloorNumber)
                     </td>
                 }
+                else
+                {
+                    <td>
+                    
+                    </td>
+                }
                 
             <td>
                 @Html.DisplayFor(modelItem => item!.DestinationAddress)
@@ -152,8 +150,12 @@
                         @Html.DisplayFor(modelItem => item!.DestinationFloorNumber)
                     </td>
                 }
-             
-            <td>
+                else
+                {
+                    <td>
+                    </td>
+                }
+                <td>
                 @Html.DisplayFor(modelItem => item!.NumberOfPassengers)
             </td>
             <td>
@@ -177,7 +179,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item!.UpdatedAt)
             </td>
-            @if (item!.IsDeclined)
+            @if (item!.IsDeclined == true)
             {
                 <td>
                     @Html.DisplayFor(modelItem => item.DeclineDateAndTime)

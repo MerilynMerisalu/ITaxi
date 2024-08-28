@@ -41,12 +41,22 @@ public class Booking: DomainEntityMetaId
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(PickupAddress))]
     public string PickupAddress { get; set; } = default!;
+    public bool NeedAssistanceLeavingTheBuilding { get; set; }
+
+    [Range(minimum: 0, maximum: 35)]
+    public int PickupFloorNumber { get; set; }
+    
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = 
         "ErrorMessageMaxLength")]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(DestinationAddress))]
     public string DestinationAddress { get; set; } = default!;
+
+    public bool NeedAssistanceEnteringTheBuilding { get; set; }
+    [Range(minimum: 0, maximum: 35)]
+    public int DestinationFloorNumber { get; set; }
+
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Range(1, 5, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]

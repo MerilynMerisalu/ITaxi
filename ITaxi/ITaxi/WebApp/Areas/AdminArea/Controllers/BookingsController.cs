@@ -390,7 +390,7 @@ public class BookingsController : Controller
     {
         var roleName = User.GettingUserRoleName();
         
-          var booking = await _appBLL.Bookings.BookingDeclineAsync(id, null, roleName, noIncludes:true, noTracking:true  );
+          var booking = await _appBLL.Bookings.BookingDeclineAsync(id, User.GettingUserId(), roleName, noIncludes:true, noTracking:true  );
             booking!.DeclineDateAndTime = DateTime.Now.ToUniversalTime();
             booking.IsDeclined = true;
             booking.DeclineDateAndTime = DateTime.Now.ToUniversalTime();

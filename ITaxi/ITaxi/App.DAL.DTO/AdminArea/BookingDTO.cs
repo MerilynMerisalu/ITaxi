@@ -36,11 +36,17 @@ public class BookingDTO: DomainEntityMetaId
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     public string PickupAddress { get; set; } = default!;
+    public bool NeedAssistanceLeavingTheBuilding { get; set; }
+
+    [Range(minimum: 0, maximum: 35)]
+    public int PickupFloorNumber { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     public string DestinationAddress { get; set; } = default!;
-
+    public bool NeedAssistanceEnteringTheBuilding { get; set; }
+    [Range(minimum: 0, maximum: 35)]
+    public int DestinationFloorNumber { get; set; }
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Range(1, 5, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
     public int NumberOfPassengers { get; set; }
