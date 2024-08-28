@@ -91,4 +91,16 @@
     <data name="DeclinedBy" xml:space="preserve">
         <value>Declined By</value>
     </data>
+    <data name="NeedAssistanceLeavingTheBuilding" xml:space="preserve">
+        <value>Do You Need Assistance Leaving the Building?</value>
+    </data>
+    <data name="PickupFloorNumber" xml:space="preserve">
+        <value>Pick Up Floor Number</value>
+    </data>
+    <data name="NeedAssistanceEnteringTheBuilding" xml:space="preserve">
+        <value>Do You Need Assistance Entering the Building?</value>
+    </data>
+    <data name="DestinationFloorNumber" xml:space="preserve">
+        <value>Destination Floor Number</value>
+    </data>
 </root>

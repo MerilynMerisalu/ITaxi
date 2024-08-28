@@ -81,4 +81,16 @@
     <data name="DeclinedBy" xml:space="preserve">
         <value>Tühistaja</value>
     </data>
+    <data name="NeedAssistanceLeavingTheBuilding" xml:space="preserve">
+        <value>Abivajadus lähtekohast väljumisel?</value>
+    </data>
+    <data name="PickupFloorNumber" xml:space="preserve">
+        <value>Lähtekoha korrus </value>
+    </data>
+    <data name="NeedAssistanceEnteringTheBuilding" xml:space="preserve">
+        <value>Abivajadus sihtkohta sisenemisel?</value>
+    </data>
+    <data name="DestinationFloorNumber" xml:space="preserve">
+        <value>Sihtkoha korrus</value>
+    </data>
 </root>

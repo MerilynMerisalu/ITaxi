@@ -41,20 +41,22 @@ public class Booking: DomainEntityMetaId
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(PickupAddress))]
     public string PickupAddress { get; set; } = default!;
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = "NeedAssistanceEnteringTheBuilding")]
     public bool NeedAssistanceLeavingTheBuilding { get; set; }
 
     [Range(minimum: 0, maximum: 35)]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = "PickupFloorNumber")]
     public int PickupFloorNumber { get; set; }
     
-
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = 
         "ErrorMessageMaxLength")]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(DestinationAddress))]
     public string DestinationAddress { get; set; } = default!;
-
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = "NeedAssistanceEnteringTheBuilding")]
     public bool NeedAssistanceEnteringTheBuilding { get; set; }
     [Range(minimum: 0, maximum: 35)]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = "DestinationFloorNumber")]
     public int DestinationFloorNumber { get; set; }
 
 
