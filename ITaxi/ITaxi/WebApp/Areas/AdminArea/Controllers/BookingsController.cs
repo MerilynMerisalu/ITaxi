@@ -295,7 +295,13 @@ public class BookingsController : Controller
             booking.VehicleId = vm.VehicleId;
             booking.AdditionalInfo = vm.AdditionalInfo;
             booking.DestinationAddress = vm.DestinationAddress;
+            booking.NeedAssistanceEnteringTheBuilding = vm.NeedAssistanceEnteringTheBuilding;
+            if (vm.NeedAssistanceEnteringTheBuilding) 
+                booking.DestinationFloorNumber = vm.DestinationFloorNumber;
             booking.PickupAddress = vm.PickupAddress;
+            booking.NeedAssistanceLeavingTheBuilding = vm.NeedAssistanceLeavingTheBuilding;
+            if (vm.NeedAssistanceLeavingTheBuilding)
+                booking.PickupFloorNumber = vm.PickupFloorNumber;
             booking.VehicleTypeId = vm.VehicleTypeId;
             booking.HasAnAssistant = vm.HasAnAssistant;
             booking.NumberOfPassengers = vm.NumberOfPassengers;
@@ -307,7 +313,7 @@ public class BookingsController : Controller
             booking.UpdatedBy = booking.CreatedBy;
             
             _appBLL.Bookings.Add(booking);
-
+            await _appBLL.SaveChangesAsync();
             var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(vm.RideTimeId, null, null, true, true);
             if (rideTime != null)
             {
