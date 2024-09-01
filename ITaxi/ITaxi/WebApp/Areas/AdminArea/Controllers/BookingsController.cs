@@ -566,4 +566,46 @@ public class BookingsController : Controller
         var results = await _appBLL.Bookings.SearchByCityAsync(search, null, roleName );
         return View(nameof(Index), results);
     }
+
+    public async Task<IActionResult> Test(Guid? id)
+    {
+        var vm = new DeclineBookingViewModel();
+        if (id == null) return NotFound();
+
+        var roleName = User.GettingUserRoleName();
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, null, roleName, noIncludes: false);
+        if (booking == null) return NotFound();
+
+        vm.Id = booking.Id;
+        
+        vm.PickupAddress = booking.PickupAddress;
+        vm.NeedAssistanceLeavingTheBuilding = booking.NeedAssistanceLeavingTheBuilding;
+        vm.PickupFloorNumber = booking.PickupFloorNumber;
+        vm.NeedAssistanceEnteringTheBuilding = booking.NeedAssistanceEnteringTheBuilding;
+        vm.DestinationFloorNumber = booking.DestinationFloorNumber;
+       
+        return View(vm);
+    }
+
+    public async Task<IActionResult> Test2(Guid? id)
+    {
+        var vm = new DeclineBookingViewModel();
+        if (id == null) return NotFound();
+
+        var roleName = User.GettingUserRoleName();
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, null, roleName, noIncludes: false);
+        if (booking == null) return NotFound();
+
+        vm.Id = booking.Id;
+
+        vm.PickupAddress = booking.PickupAddress;
+        vm.NeedAssistanceLeavingTheBuilding = booking.NeedAssistanceLeavingTheBuilding;
+        vm.PickupFloorNumber = booking.PickupFloorNumber;
+        vm.NeedAssistanceEnteringTheBuilding = booking.NeedAssistanceEnteringTheBuilding;
+        vm.DestinationFloorNumber = booking.DestinationFloorNumber;
+
+        return View(vm);
+    }
+
 }
+

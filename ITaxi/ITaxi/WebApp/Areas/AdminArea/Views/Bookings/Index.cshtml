@@ -198,8 +198,10 @@
                 {
                     <p style="display:inline"><a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |</p>
                 }
-                
 
+
+                    <a asp-action="Test2" asp-route-id="@item.Id">test2</a>
+                    <a asp-action="Test" asp-route-id="@item.Id">test</a>
                 @*<a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |*@
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a>
                 

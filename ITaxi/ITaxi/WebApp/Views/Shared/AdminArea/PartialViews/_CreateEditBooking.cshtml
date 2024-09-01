@@ -1,21 +1,21 @@
 ﻿@using Base.Resources
 @model WebApp.Areas.AdminArea.ViewModels.CreateBookingViewModel
 
-<div class="form-group">
+ <div class="form-group">
     <label asp-for="CustomerId" class="control-label"></label>
     <select asp-for="CustomerId" class="form-control" asp-items="Model.Customers">
         <option>@Common.PleaseSelect</option>
     </select>
 </div>
-
-<div class="form-group">
+ 
+ <div class="form-group">
     <label asp-for="NumberOfPassengers" class="control-label"></label>
     <input asp-for="NumberOfPassengers" class="form-control" min="1" max="5"/>
     <span asp-validation-for="NumberOfPassengers" class="text-danger"></span>
     <span id="NumberOfPassengersValidationSpan" class="text-danger field-validation-valid"></span>
 </div>
-
-<div class="form-group">
+ 
+ <div class="form-group">
     <label asp-for="VehicleTypeId" class="control-label"></label>
     <select asp-for="VehicleTypeId" class="form-control" asp-items="Model.VehicleTypes">
         <option>@Common.PleaseSelect</option>
@@ -23,84 +23,89 @@
     <span id="VehicleTypeIdClientValidationSpan" class="text-danger field-validation-valid"></span>
 </div>
 
-<div class="form-group">
+ <div class="form-group">
     <label asp-for="CityId" class="control-label"></label>
     <select asp-for="CityId" class="form-control" asp-items="Model.Cities">
         <option>@Common.PleaseSelect</option>
     </select>   
     <span id="CityIdClientValidationSpan" class="text-danger field-validation-valid"></span>
-</div>
+</div> 
 
-<div class="form-group">
+ <div class="form-group">
     <label asp-for="PickUpDateAndTime" class="control-label"></label>
     <input asp-for="PickUpDateAndTime" class="form-control" onchange="pickupDateAndTimeChanged(this.value)"/>
     <span asp-validation-for="PickUpDateAndTime" class="text-danger"></span>
     <span id="PickupValidationSpan" class="text-danger field-validation-valid"></span>
     <input asp-for="RideTimeId" hidden="hidden" />
-</div>
+</div> 
 
 <div class="form-group">
     <label asp-for="PickupAddress" class="control-label"></label>
     <input asp-for="PickupAddress" class="form-control"/>
     <span asp-validation-for="PickupAddress" class="text-danger"></span>
 </div>
-
+ 
 <div class="form-group form-check">
     <label class="form-check-label">
-        <input class="form-check-input" asp-for="NeedAssistanceLeavingTheBuilding" /> @Html.DisplayNameFor(model => model.NeedAssistanceLeavingTheBuilding)
+        <input id="NeedAssistanceLeavingTheBuilding" class="form-check-input" asp-for="NeedAssistanceLeavingTheBuilding" onchange="showHideTextBox()"/>  @Html.DisplayNameFor(model => model.NeedAssistanceLeavingTheBuilding)  
     </label>
-</div>
-<div class="form-group">
-    <label asp-for="PickupFloorNumber" class="control-label"></label>
-    <input asp-for="PickupFloorNumber" class="form-control" min="0" max="35" />
-    <span asp-validation-for="PickupFloorNumber" class="text-danger"></span>
-    <span id="PickupFloorNumber" class="text-danger field-validation-valid"></span>
-</div>
+    </div>
+   
+    <div class="form-group">
+        <label asp-for="PickupFloorNumber" id="PickupFloorLBL" class="control-label" style="display:none"></label>
+        <input asp-for="PickupFloorNumber" id="PickupFloorNumberTB" style="display:none;" class="form-control" min="0" max="35" />
+        <span asp-validation-for="PickupFloorNumber" class="text-danger"></span>
+        <span id="PickupFloorNumber" class="text-danger field-validation-valid"></span>
+    </div>
 
+ 
+ 
 <div class="form-group">
     <label asp-for="DestinationAddress" class="control-label"></label>
     <input asp-for="DestinationAddress" class="form-control"/>
     <span asp-validation-for="DestinationAddress" class="text-danger"></span>
-</div>
-<div class="form-group form-check">
+</div> 
+ <div class="form-group form-check">
     <label class="form-check-label">
-        <input class="form-check-input" asp-for="NeedAssistanceEnteringTheBuilding" /> @Html.DisplayNameFor(model => model.NeedAssistanceEnteringTheBuilding)
+        <input class="form-check-input" id="need_assistance_entering_building" asp-for="NeedAssistanceEnteringTheBuilding" /> @Html.DisplayNameFor(model => model.NeedAssistanceEnteringTheBuilding)
     </label>
-</div>
-<div class="form-group">
+</div> 
+ <div class="form-group">
     <label asp-for="DestinationFloorNumber" class="control-label"></label>
     <input asp-for="DestinationFloorNumber" class="form-control" min="0" max="35" />
     <span asp-validation-for="DestinationFloorNumber" class="text-danger"></span>
     <span id="DestinationFloorNumber" class="text-danger field-validation-valid"></span>
-</div>
-<div class="form-group">
+</div> 
+ <div class="form-group">
     <label asp-for="ScheduleId" class="control-label"></label>
     <select asp-for="ScheduleId" class="form-control" asp-items="Model.Schedules">
         <option>@Common.PleaseSelect</option>
     </select>
-</div>
+</div> 
 
-<div class="form-group">
+ <div class="form-group">
     <label asp-for="DriverId" class="control-label"></label>
     <select asp-for="DriverId" class="form-control" asp-items="Model.Drivers">
         <option>@Common.PleaseSelect</option>
     </select>
-</div>
+</div> 
 
-<div class="form-group">
+ <div class="form-group">
     <label asp-for="VehicleId" class="control-label"></label>
     <select asp-for="VehicleId" class="form-control" asp-items="Model.Vehicles">
         <option>@Common.PleaseSelect</option>
     </select>
 </div>
-
-<div class="form-group form-check">
+ 
+ <div class="form-group form-check">
     <label class="form-check-label">
         <input class="form-check-input" asp-for="HasAnAssistant"/> @Html.DisplayNameFor(model => model.HasAnAssistant)
     </label>
-</div>
+</div> 
 <div class="form-group">
     <label asp-for="AdditionalInfo" class="control-label"></label>
     <textarea asp-for="AdditionalInfo" class="form-control"></textarea>
     <span asp-validation-for="AdditionalInfo" class="text-danger"></span>
 </div>
+
+

@@ -118,7 +118,22 @@
                 });
             }
         }
-        
+       
+        function showHideTextBox() {
+            var pickupFloorLabel = document.getElementById("PickupFloorLBL");
+            var pickupFloorTextBox = document.getElementById("PickupFloorNumberTB");
+            if (pickupFloorTextBox.style.display == "none") {
+                pickupFloorLabel.style.display = "block";
+                pickupFloorTextBox.style.display = "block";
+                
+            }
+            else {
+                pickupFloorLabel.style.display = "none";
+                pickupFloorTextBox.style.display = "none";
+                
+            }
+        }
+       
     </script>
 
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
