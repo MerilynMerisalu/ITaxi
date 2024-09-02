@@ -13,119 +13,121 @@
     <a asp-action="Create">@Common.CreateNew</a>
 </p>
 <form action="@Url.Action("SearchByCity")" method="post">
-    <input type="text" name="search"/>
-    <input type="submit" value="@Common.Search"/>
+    <input type="text" name="search" />
+    <input type="submit" value="@Common.Search" />
 </form>
 <table class="table">
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model!.Customer)
-        </th>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model!.Customer)
+            </th>
 
-        <th>
-            @Html.DisplayNameFor(model => model!.Schedule)
-        </th>
-        
-        <th>
-            @Html.DisplayNameFor(model => model!.Driver)
-        </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.Schedule)
+            </th>
 
-        <th>
-            @Html.DisplayNameFor(model => model!.VehicleType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model!.Vehicle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model!.City)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model!.PickUpDateAndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model!.PickupAddress)
-        </th>
-         <th>
-            @Html.DisplayNameFor(model => model!.NeedAssistanceLeavingTheBuilding)
-         </th>
-         <th>
-            @Html.DisplayNameFor(model => model!.PickupFloorNumber)
-         </th>
-        <th>
-            @Html.DisplayNameFor(model => model!.DestinationAddress)
-        </th>
-        <th>
-           @Html.DisplayNameFor(model => model!.NeedAssistanceEnteringTheBuilding)
-        </th>
-        <th>
-           @Html.DisplayNameFor(model => model!.DestinationFloorNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model!.NumberOfPassengers)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model!.HasAnAssistant)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model!.AdditionalInfo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model!.StatusOfBooking)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model!.CreatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model!.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model!.UpdatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model!.UpdatedAt)
-        </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.Driver)
+            </th>
 
-        <th>
-            @Html.DisplayNameFor(model => model!.DeclineDateAndTime)
-        </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.VehicleType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.Vehicle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.PickUpDateAndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.PickupAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.NeedAssistanceLeavingTheBuilding)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.PickupFloorNumber)
+            </th>
 
-        <th></th>
-    </tr>
+            <th>
+                @Html.DisplayNameFor(model => model!.DestinationAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.NeedAssistanceEnteringTheBuilding)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.DestinationFloorNumber)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model!.NumberOfPassengers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.HasAnAssistant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.AdditionalInfo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.StatusOfBooking)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.UpdatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model!.UpdatedAt)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model!.DeclineDateAndTime)
+            </th>
+
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item!.Customer!.AppUser!.LastAndFirstName)
-            </td>
-            <td>
-                @Html.DisplayTextFor(modelItem => item!.Schedule!.ShiftDurationTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item!.Driver!.AppUser!.LastAndFirstName)
-            </td>
-            <td>
-                @Html.DisplayTextFor(modelItem => item!.VehicleType!.VehicleTypeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item!.Vehicle!.VehicleIdentifier)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item!.City!.CityName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item!.PickUpDateAndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item!.PickupAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item!.NeedAssistanceLeavingTheBuilding)
-             </td>
-                @if(item!.NeedAssistanceLeavingTheBuilding == true)
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item!.Customer!.AppUser!.LastAndFirstName)
+                </td>
+                <td>
+                    @Html.DisplayTextFor(modelItem => item!.Schedule!.ShiftDurationTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.Driver!.AppUser!.LastAndFirstName)
+                </td>
+                <td>
+                    @Html.DisplayTextFor(modelItem => item!.VehicleType!.VehicleTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.Vehicle!.VehicleIdentifier)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.City!.CityName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.PickUpDateAndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.PickupAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.NeedAssistanceLeavingTheBuilding)
+                </td>
+                @if (item!.NeedAssistanceLeavingTheBuilding == true)
                 {
                     <td>
                         @Html.DisplayFor(modelItem => item!.PickupFloorNumber)
@@ -134,17 +136,16 @@
                 else
                 {
                     <td>
-                    
                     </td>
                 }
-                
-            <td>
-                @Html.DisplayFor(modelItem => item!.DestinationAddress)
-            </td>
-             <td>
-                @Html.DisplayFor(modelItem => item!.NeedAssistanceEnteringTheBuilding)
-             </td>
-             @if (item!.NeedAssistanceEnteringTheBuilding == true)
+
+                <td>
+                    @Html.DisplayFor(modelItem => item!.DestinationAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.NeedAssistanceEnteringTheBuilding)
+                </td>
+                @if (item!.NeedAssistanceEnteringTheBuilding == true)
                 {
                     <td>
                         @Html.DisplayFor(modelItem => item!.DestinationFloorNumber)
@@ -156,57 +157,56 @@
                     </td>
                 }
                 <td>
-                @Html.DisplayFor(modelItem => item!.NumberOfPassengers)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item!.HasAnAssistant)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item!.AdditionalInfo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item!.StatusOfBooking)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item!.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item!.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item!.UpdatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item!.UpdatedAt)
-            </td>
-            @if (item!.IsDeclined == true)
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.DeclineDateAndTime)
+                    @Html.DisplayFor(modelItem => item!.NumberOfPassengers)
                 </td>
-
-            }
-            <td>
-
-            </td>
-            <td>
-                @if (item.StatusOfBooking == StatusOfBooking.Declined)
+                <td>
+                    @Html.DisplayFor(modelItem => item!.HasAnAssistant)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.AdditionalInfo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.StatusOfBooking)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.UpdatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.UpdatedAt)
+                </td>
+                @if (item!.IsDeclined == true)
                 {
-                     <p style="display:inline"><a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a> |</p>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeclineDateAndTime)
+                    </td>
+
                 }
-                else
-                {
-                    <p style="display:inline"><a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |</p>
-                }
+                <td>
+                </td>
+                <td>
+                    @if (item.StatusOfBooking == StatusOfBooking.Declined)
+                    {
+                        <p style="display:inline"><a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a> |</p>
+                    }
+                    else
+                    {
+                        <p style="display:inline"><a asp-action="Decline" asp-route-id="@item.Id">@Booking.Decline</a> |</p>
+                    }
 
 
                     <a asp-action="Test2" asp-route-id="@item.Id">test2</a>
                     <a asp-action="Test" asp-route-id="@item.Id">test</a>
-                @*<a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |*@
-                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a>
-                
-            </td>
-        </tr>
-    }
+                    @*<a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |*@
+                    <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a>
+
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

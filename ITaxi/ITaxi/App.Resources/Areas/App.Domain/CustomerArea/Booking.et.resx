@@ -70,4 +70,16 @@
     <data name="AreYouSureYouWantToDeclineThis" xml:space="preserve">
         <value>Kas olete kindel, et soovite antud broneeringu tühistada?</value>
     </data>
+    <data name="PickupFloorNumber" xml:space="preserve">
+        <value>Lähtekoha korrus</value>
+    </data>
+    <data name="NeedAssistanceLeavingTheBuilding" xml:space="preserve">
+        <value>Abivajadus lähtekohast väljumisel?</value>
+    </data>
+    <data name="DestinationFloorNumber" xml:space="preserve">
+        <value>Sihtkoha korruse number</value>
+    </data>
+    <data name="NeedAssistanceEnteringTheBuilding" xml:space="preserve">
+        <value>Abivajadus sihtkohta sisenemisel?</value>
+    </data>
 </root>
