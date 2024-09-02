@@ -1,7 +1,7 @@
 @using App.Resources.Areas.App.Domain.CustomerArea
 @using Base.Resources
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model WebApp.Areas.CustomerArea.ViewModels.CreateBookingViewModel 
+@model WebApp.Areas.CustomerArea.ViewModels.CreateBookingViewModel
 @{
     ViewData["Title"] = Common.Create;
 }
@@ -9,7 +9,7 @@
 <h1>@Common.Create</h1>
 
 <h4>@Booking.BookingName</h4>
-<hr/>
+<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -29,44 +29,66 @@
                 <span id="CityIdClientValidationSpan" class="text-danger field-validation-valid"></span>
             </div>
 
-            
             <div class="form-group">
                 <label asp-for="PickupAddress" class="control-label"></label>
-                <input asp-for="PickupAddress" class="form-control"/>
+                <input asp-for="PickupAddress" class="form-control" />
                 <span asp-validation-for="PickupAddress" class="text-danger"></span>
             </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input id="NeedAssistanceLeavingTheBuilding" class="form-check-input" asp-for="NeedAssistanceLeavingTheBuilding" onchange="showHidePickUpTextBox()" />  @Html.DisplayNameFor(model => model.NeedAssistanceLeavingTheBuilding)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="PickupFloorNumber" id="PickupFloorLBL" class="control-label" style="display:none"></label>
+                <input asp-for="PickupFloorNumber" id="PickupFloorNumberTB" style="display:none;" class="form-control" min="0" max="35" />
+                <span asp-validation-for="PickupFloorNumber" class="text-danger"></span>
+                <span id="PickupFloorNumber" class="text-danger field-validation-valid"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="DestinationAddress" class="control-label"></label>
-                <input asp-for="DestinationAddress" class="form-control"/>
+                <input asp-for="DestinationAddress" class="form-control" />
                 <span asp-validation-for="DestinationAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" id="need_assistance_entering_building" asp-for="NeedAssistanceEnteringTheBuilding" onchange="showHideDestinationTextBox()" /> @Html.DisplayNameFor(model => model.NeedAssistanceEnteringTheBuilding)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="DestinationFloorNumber" id="DestinationFloorLBL" style="display:none;" class="control-label"></label>
+                <input asp-for="DestinationFloorNumber" id="DestinationFloorNumberTB" style="display:none;" class="form-control" min="0" max="35" />
+                <span asp-validation-for="DestinationFloorNumber" class="text-danger"></span>
+                <span id="DestinationFloorNumber" class="text-danger field-validation-valid"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NumberOfPassengers" class="control-label"></label>
-                <input asp-for="NumberOfPassengers" class="form-control" min="1" max="5"/>
+                <input asp-for="NumberOfPassengers" class="form-control" min="1" max="5" />
                 <span asp-validation-for="NumberOfPassengers" class="text-danger"></span>
                 <span id="NumberOfPassengersValidationSpan" class="text-danger field-validation-valid"></span>
             </div>
             <div class="form-group">
-                            <label asp-for="PickUpDateAndTime" class="control-label"></label>
-                            <input onchange="pickupDateAndTimeChanged(this.value)" asp-for="PickUpDateAndTime" class="form-control"/>
-                            <span asp-validation-for="PickUpDateAndTime" class="text-danger"></span>
-                            <span id="PickupValidationSpan" class="text-danger field-validation-valid"></span>
-                            <input asp-for="RideTimeId" hidden="hidden" />
-                        </div>
+                <label asp-for="PickUpDateAndTime" class="control-label"></label>
+                <input onchange="pickupDateAndTimeChanged(this.value)" asp-for="PickUpDateAndTime" class="form-control" />
+                <span asp-validation-for="PickUpDateAndTime" class="text-danger"></span>
+                <span id="PickupValidationSpan" class="text-danger field-validation-valid"></span>
+                <input asp-for="RideTimeId" hidden="hidden" />
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="HasAnAssistant"/>
+                    <input class="form-check-input" asp-for="HasAnAssistant" />
                     @Html.DisplayNameFor(model => model.HasAnAssistant)
                 </label>
             </div>
-            
+
             <div class="form-group">
                 <label asp-for="AdditionalInfo" class="control-label"></label>
                 <textarea asp-for="AdditionalInfo" class="form-control"></textarea>
                 <span asp-validation-for="AdditionalInfo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="@Common.Create" class="btn btn-primary"/>
+                <input type="submit" value="@Common.Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -77,28 +99,28 @@
 </div>
 
 @section Scripts {
-<script>
-    
-        function setPickupTime (value) {
+    <script>
+
+        function setPickupTime(value) {
             document.getElementById('PickUpDateAndTime').value = value;
             pickupDateAndTimeChanged(value);
         }
-        
-        function pickupDateAndTimeChanged (value) {
-    
-            let content = { 
+
+        function pickupDateAndTimeChanged(value) {
+
+            let content = {
                 listType: 'PickUpDateAndTime',
                 value: value.toString(),
                 vehicleTypeId: document.getElementById('VehicleTypeId').value.toString(),
                 cityId: document.getElementById('CityId').value.toString(),
-                numberOfPassengers: document.getElementById('NumberOfPassengers').value               
+                numberOfPassengers: document.getElementById('NumberOfPassengers').value
             };
             // Only include RideTime if one was previously selected
             let rideTime = document.getElementById('RideTimeId').value;
             //alert(rideTime);
             if (rideTime && rideTime != undefined && rideTime != "" && rideTime != "undefined")
                 content.rideTimeId = rideTime;
-            
+
             // reset client-side validation messages
             clearClientErrorMessage('VehicleTypeIdClientValidationSpan');
             clearClientErrorMessage('CityIdClientValidationSpan');
@@ -106,18 +128,18 @@
             clearClientErrorMessage('PickupValidationSpan');
             let hasError = false;
             if (content.vehicleTypeId.length === 0 || content.vehicleTypeId === 'Please Select') {
-                 showClientErrorMessage('You must select the Vehicle Type first','VehicleTypeIdClientValidationSpan');
-                 hasError = true;
-            }
-            if( content.cityId.length === 0 || content.cityId === 'Please Select') {
-                 showClientErrorMessage('You must select the City first','CityIdClientValidationSpan');
-                 hasError = true;
-            }
-            if (Number(content.numberOfPassengers) === 0) {
-                showClientErrorMessage("You must enter number of passengers first!",'NumberOfPassengersValidationSpan');
+                showClientErrorMessage('You must select the Vehicle Type first', 'VehicleTypeIdClientValidationSpan');
                 hasError = true;
             }
-            if(hasError === false) {
+            if (content.cityId.length === 0 || content.cityId === 'Please Select') {
+                showClientErrorMessage('You must select the City first', 'CityIdClientValidationSpan');
+                hasError = true;
+            }
+            if (Number(content.numberOfPassengers) === 0) {
+                showClientErrorMessage("You must enter number of passengers first!", 'NumberOfPassengersValidationSpan');
+                hasError = true;
+            }
+            if (hasError === false) {
                 fetch('@Url.Action("SetDropDownList")', {
                     method: 'POST',
                     headers: {
@@ -127,11 +149,11 @@
                     body: JSON.stringify(content)
                 }).then(response => {
                     response.json().then(data => {
-                        
-                       if (data.scheduleId) {
-                       /*     PopulateDropDownList("ScheduleId", data.schedules, false, data.scheduleId);
-                            PopulateDropDownList("DriverId", data.drivers, false, data.driverId);
-                            PopulateDropDownList("VehicleId", data.vehicles, false, data.vehicleId);*/
+
+                        if (data.scheduleId) {
+                            /*     PopulateDropDownList("ScheduleId", data.schedules, false, data.scheduleId);
+                                 PopulateDropDownList("DriverId", data.drivers, false, data.driverId);
+                                 PopulateDropDownList("VehicleId", data.vehicles, false, data.vehicleId);*/
                             // we need to save this in the DOM
                             SetFieldValue("RideTimeId", data.rideTimeId);
                         }
@@ -146,7 +168,7 @@
                             if (data.rideTimes.length > 1)
                                 message += ` and <a style='text-decoration:underline;' onclick='setPickupTime("${data.rideTimes[1].value}")'>${data.rideTimes[1].text}</span>`;
                             showClientErrorMessage(message, 'PickupValidationSpan', true);
-                            
+
                             // clear the previous selections (if any)
                             //PopulateDropDownList("ScheduleId", [], false, undefined);
                             //PopulateDropDownList("DriverId", [], false, undefined);
@@ -162,14 +184,46 @@
                             //PopulateDropDownList("VehicleId", [], false, undefined);
                             SetFieldValue("RideTimeId", undefined);
                         }
-                    }, function (error){
+                    }, function (error) {
                         // should NEVER happen, just log it for now.
                         console.log(error);
-                        });
+                    });
                 });
             }
         }
-        
+
+
+        function showHidePickUpTextBox() {
+            var pickupFloorLabel = document.getElementById("PickupFloorLBL");
+            var pickupFloorTextBox = document.getElementById("PickupFloorNumberTB");
+            if (pickupFloorTextBox.style.display == "none") {
+                pickupFloorLabel.style.display = "block";
+                pickupFloorTextBox.style.display = "block";
+
+            }
+            else {
+                pickupFloorLabel.style.display = "none";
+                pickupFloorTextBox.style.display = "none";
+
+            }
+        }
+
+        function showHideDestinationTextBox() {
+            var destinationFloorLabel = document.getElementById("DestinationFloorLBL");
+            var destinationFloorTextBox = document.getElementById("DestinationFloorNumberTB");
+            if (destinationFloorTextBox.style.display == "none") {
+                destinationFloorLabel.style.display = "block";
+                destinationFloorTextBox.style.display = "block";
+
+            }
+            else {
+                destinationFloorLabel.style.display = "none";
+                destinationFloorTextBox.style.display = "none";
+
+            }
+        }
     </script>
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
