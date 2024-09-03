@@ -11,8 +11,8 @@
 
 
 <form action="@Url.Action("SearchByDate")" method="post">
-    <input type="date" name="search"/>
-    <input type="submit" value="@Common.Search"/>
+    <input type="date" name="search" />
+    <input type="submit" value="@Common.Search" />
 </form>
 <p>
     <a asp-action="Print" target="_blank">@App.Resources.Areas.App.Domain.Common.CreatePdf</a>
@@ -20,198 +20,233 @@
 
 <table class="table">
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Booking!.Schedule!.ShiftDurationTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Booking!.Customer)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Booking!.Customer!.DisabilityType)
-        </th>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Schedule!.ShiftDurationTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Customer!.DisabilityType)
+            </th>
 
-        <th>
-            @Html.DisplayNameFor(model => model.Booking!.PickUpDateAndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Booking!.City!.CityName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Booking!.PickupAddress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Booking!.DestinationAddress)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Booking!.VehicleType!.VehicleTypeName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Booking!.Vehicle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Booking!.NumberOfPassengers)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Booking!.HasAnAssistant)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Booking!.StatusOfBooking)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StatusOfDrive)
-        </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.PickUpDateAndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.City!.CityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.PickupAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.NeedAssistanceLeavingTheBuilding)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.PickupFloorNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.DestinationAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.NeedAssistanceEnteringTheBuilding)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.DestinationFloorNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.VehicleType!.VehicleTypeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Vehicle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.NumberOfPassengers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.HasAnAssistant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.StatusOfBooking)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StatusOfDrive)
+            </th>
 
-        <th>
-            @Html.DisplayNameFor(model => model.Comment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Comment!.StarRating)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
-        </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment!.StarRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DriveDeclineDateAndTime)
+            </th>
 
-        <th>
-            @Html.DisplayNameFor(model => model.DriveAcceptedDateAndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DriveStartDateAndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DriveEndDateAndTime)
-        </th>
-    <th></th>
-    </tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DriveAcceptedDateAndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DriveStartDateAndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DriveEndDateAndTime)
+            </th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Booking!.Schedule!.ShiftDurationTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.LastAndFirstName)
-            </td>
-            <td>
-                @Html.DisplayTextFor(modelItem => item.Booking!.Customer!.DisabilityType!.DisabilityTypeName)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.Schedule!.ShiftDurationTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.LastAndFirstName)
+                </td>
+                <td>
+                    @Html.DisplayTextFor(modelItem => item.Booking!.Customer!.DisabilityType!.DisabilityTypeName)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Booking!.PickUpDateAndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Booking!.City!.CityName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Booking!.PickupAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Booking!.DestinationAddress)
-            </td>
-            <td>
-                @Html.DisplayTextFor(modelItem => item.Booking!.Vehicle!.VehicleType!.VehicleTypeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Booking!.Vehicle!.VehicleIdentifier)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Booking!.NumberOfPassengers)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Booking!.HasAnAssistant)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Booking!.StatusOfBooking)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StatusOfDrive)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.Comment!.CommentText)
-            </td>
-
-            @if (item.Comment?.StarRating > 0)
-            {
-            <td>
-                <ejs-rating id="rating-@item.Comment.Id" readOnly="true"
-                            value="item.Comment.StarRating.Value"></ejs-rating>
-            </td>
-            }
-            else
-            {
-            <td></td>
-            }
-            <td>
-                @if (item.IsDriveDeclined || (item.IsDriveAccepted && item.IsDriveDeclined))
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.PickUpDateAndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.City!.CityName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.PickupAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.NeedAssistanceLeavingTheBuilding)
+                </td>
+                @if (item.Booking!.NeedAssistanceLeavingTheBuilding)
                 {
-                    @Html.DisplayFor(modelItem => item.DriveDeclinedDateTimeDriverView)
+                    <td>@item.Booking.PickupFloorNumber</td>
                 }
-            </td>
-            <td>
-                @if (item.IsDriveAccepted)
+                else
                 {
-                    @Html.DisplayFor(modelItem => item.DriveAcceptedDateTimeDriverView)
+                    <td></td>
                 }
-            </td>
-            <td>
-                @if (item.IsDriveStarted || (item.IsDriveAccepted && item.IsDriveStarted))
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.DestinationAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.NeedAssistanceEnteringTheBuilding)
+
+               </td>
+                @if (item.Booking!.NeedAssistanceEnteringTheBuilding)
                 {
-                    @Html.DisplayFor(modelItem => item.DriveStartedDateTimeDriverView)
+                    <td>@item.Booking.DestinationFloorNumber</td>
                 }
-            </td>
-            <td>
-                @if (item.IsDriveFinished)
+                else
                 {
-                    @Html.DisplayFor(modelItem => item.DriveEndDateTimeDriverView)
+                    <td></td>
                 }
-            </td>
+                <td>
+                    @Html.DisplayTextFor(modelItem => item.Booking!.Vehicle!.VehicleType!.VehicleTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.Vehicle!.VehicleIdentifier)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.NumberOfPassengers)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.HasAnAssistant)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.StatusOfBooking)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusOfDrive)
+                </td>
 
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment!.CommentText)
+                </td>
 
-            <td>
-                @if (item.StatusOfDrive == StatusOfDrive.Awaiting)
+                @if (item.Comment?.StarRating > 0)
                 {
-                    <p style="display: inline">
-                        <a asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
-                        |
-                    </p>
-                    <p style="display: inline"><a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> |</p>
+                    <td>
+                        <ejs-rating id="rating-@item.Comment.Id" readOnly="true"
+                                    value="item.Comment.StarRating.Value"></ejs-rating>
+                    </td>
                 }
-                @if (item.StatusOfDrive == StatusOfDrive.Declined || (item.StatusOfDrive == StatusOfDrive.Finished))
+                else
                 {
-                    <a hidden="hidden" asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
-                    <a hidden="hidden" asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a>
-                    <a hidden="hidden" asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a>
-                    <a hidden="hidden" asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a>
+                    <td></td>
                 }
+                <td>
+                    @if (item.IsDriveDeclined || (item.IsDriveAccepted && item.IsDriveDeclined))
+                    {
+                        @Html.DisplayFor(modelItem => item.DriveDeclinedDateTimeDriverView)
+                    }
+                </td>
+                <td>
+                    @if (item.IsDriveAccepted)
+                    {
+                        @Html.DisplayFor(modelItem => item.DriveAcceptedDateTimeDriverView)
+                    }
+                </td>
+                <td>
+                    @if (item.IsDriveStarted || (item.IsDriveAccepted && item.IsDriveStarted))
+                    {
+                        @Html.DisplayFor(modelItem => item.DriveStartedDateTimeDriverView)
+                    }
+                </td>
+                <td>
+                    @if (item.IsDriveFinished)
+                    {
+                        @Html.DisplayFor(modelItem => item.DriveEndDateTimeDriverView)
+                    }
+                </td>
 
 
-                @if (item.StatusOfDrive == StatusOfDrive.Accepted)
-                {
-                    <a hidden="hidden" asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
-                    <p style="display: inline">
-                        <a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> |
-                    </p>
-
-                    <p style="display: inline">
-                        <a asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a> |
-                    </p>
-                }
-                @if (item.StatusOfDrive == StatusOfDrive.Started)
-                {
-                    <a hidden="hidden" asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a>
-                    <p style="display: inline">
-                        <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a> |
-                    </p>
-                }
+                <td>
+                    @if (item.StatusOfDrive == StatusOfDrive.Awaiting)
+                    {
+                        <p style="display: inline">
+                            <a asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
+                            |
+                        </p>
+                        <p style="display: inline"><a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> |</p>
+                    }
+                    @if (item.StatusOfDrive == StatusOfDrive.Declined || (item.StatusOfDrive == StatusOfDrive.Finished))
+                    {
+                        <a hidden="hidden" asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
+                        <a hidden="hidden" asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a>
+                        <a hidden="hidden" asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a>
+                        <a hidden="hidden" asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a>
+                    }
 
 
-                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a>
+                    @if (item.StatusOfDrive == StatusOfDrive.Accepted)
+                    {
+                        <a hidden="hidden" asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
+                        <p style="display: inline">
+                            <a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> |
+                        </p>
 
-            </td>
-        </tr>
-    }
+                        <p style="display: inline">
+                            <a asp-action="StartDrive" asp-route-id="@item.Id">@Drive.InProgress</a> |
+                        </p>
+                    }
+                    @if (item.StatusOfDrive == StatusOfDrive.Started)
+                    {
+                        <a hidden="hidden" asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a>
+                        <p style="display: inline">
+                            <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a> |
+                        </p>
+                    }
+
+
+                    <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a>
+
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
