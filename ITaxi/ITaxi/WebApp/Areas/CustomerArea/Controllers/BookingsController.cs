@@ -331,7 +331,15 @@ public class BookingsController : Controller
         vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
         vm.AdditionalInfo = booking.AdditionalInfo;
         vm.DestinationAddress = booking.DestinationAddress;
+        vm.NeedAssistanceEnteringTheBuilding = booking.NeedAssistanceEnteringTheBuilding;
+        if (booking.NeedAssistanceEnteringTheBuilding)
+        {
+            vm.DestinationFloorNumber = booking.DestinationFloorNumber;
+        }
         vm.PickupAddress = booking.PickupAddress;
+        vm.NeedAssistanceLeavingTheBuilding = booking.NeedAssistanceLeavingTheBuilding;
+        if(booking.NeedAssistanceLeavingTheBuilding)
+            vm.PickupFloorNumber = booking.PickupFloorNumber;
         vm.VehicleType = booking.VehicleType!.VehicleTypeName;
         vm.HasAnAssistant = booking.HasAnAssistant;
         vm.NumberOfPassengers = booking.NumberOfPassengers;
@@ -353,13 +361,14 @@ public class BookingsController : Controller
     {
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
-        var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName );
-        var drive = await _appBLL.Drives.SingleOrDefaultAsync(d => d != null && d.Booking!.Id.Equals(id), false);
+        var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName, noIncludes:true );
+        var drive = await _appBLL.Drives.GettingDriveByBookingIdAsync(booking!.Id, noIncludes:true);
         var comment =
-            await _appBLL.Comments.SingleOrDefaultAsync(c => drive != null && c != null && c.DriveId.Equals(drive.Id),
-                false);
+            await _appBLL.Comments.GettingCommentByDriveIdAsync(drive!.Id, noIncludes:true);
         if (comment != null) await _appBLL.Comments.RemoveAsync(comment.Id);
+        await _appBLL.SaveChangesAsync();
         if (drive != null) await _appBLL.Drives.RemoveAsync(drive.Id);
+        await _appBLL.SaveChangesAsync();
         if (booking != null) await _appBLL.Bookings.RemoveAsync(booking.Id);
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
