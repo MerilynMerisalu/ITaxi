@@ -150,7 +150,15 @@ public class BookingsController : Controller
         vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
         vm.AdditionalInfo = booking.AdditionalInfo;
         vm.DestinationAddress = booking.DestinationAddress;
+        vm.NeedAssistanceEnteringTheBuilding = booking.NeedAssistanceEnteringTheBuilding;
+        if (booking.NeedAssistanceEnteringTheBuilding == true)
+            vm.DestinationFloorNumber = booking.DestinationFloorNumber;
         vm.PickupAddress = booking.PickupAddress;
+        vm.NeedAssistanceLeavingTheBuilding = booking.NeedAssistanceLeavingTheBuilding;
+        if (booking.NeedAssistanceLeavingTheBuilding)
+        {
+            vm.PickupFloorNumber = booking.PickupFloorNumber;
+        }
         vm.VehicleType = booking.VehicleType!.VehicleTypeName;
         vm.HasAnAssistant = booking.HasAnAssistant;
         vm.NumberOfPassengers = booking.NumberOfPassengers;
@@ -266,7 +274,13 @@ public class BookingsController : Controller
         vm.City = booking.City!.CityName;
         vm.AdditionalInfo = booking.AdditionalInfo;
         vm.DestinationAddress = booking.DestinationAddress;
+        vm.NeedAssistanceEnteringTheBuilding = booking.NeedAssistanceEnteringTheBuilding;
+        if (booking.NeedAssistanceLeavingTheBuilding)
+            vm.DestinationFloorNumber = booking.DestinationFloorNumber;
         vm.PickupAddress = booking.PickupAddress;
+        vm.NeedAssistanceLeavingTheBuilding = booking.NeedAssistanceLeavingTheBuilding;
+        if (booking.NeedAssistanceLeavingTheBuilding)
+            vm.PickupFloorNumber = booking.PickupFloorNumber;
         vm.VehicleType = booking.VehicleType!.VehicleTypeName;
         vm.HasAnAssistant = booking.HasAnAssistant;
         vm.NumberOfPassengers = booking.NumberOfPassengers;

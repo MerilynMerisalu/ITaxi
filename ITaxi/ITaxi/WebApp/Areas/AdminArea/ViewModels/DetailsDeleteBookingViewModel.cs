@@ -64,13 +64,13 @@ public class DetailsDeleteBookingViewModel : AdminAreaBaseViewModel
     /// <summary>
     /// Need assistance leaving the building
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = "NeedAssistanceEnteringTheBuilding")]
+    [Display(ResourceType = typeof(Booking), Name = nameof(NeedAssistanceLeavingTheBuilding))]
     public bool NeedAssistanceLeavingTheBuilding { get; set; }
     
     /// <summary>
     /// Pickup floor number
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = "PickupFloorNumber")]
+    [Display(ResourceType = typeof(Booking), Name = nameof(PickupFloorNumber))]
     public int PickupFloorNumber { get; set; }
     /// <summary>
     /// Needing assistance entering the building

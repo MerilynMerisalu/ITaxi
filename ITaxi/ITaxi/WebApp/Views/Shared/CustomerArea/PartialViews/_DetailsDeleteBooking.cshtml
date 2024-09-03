@@ -26,11 +26,41 @@
         @Html.DisplayFor(model => model.PickupAddress)
     </dd>
     <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.NeedAssistanceLeavingTheBuilding)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.NeedAssistanceLeavingTheBuilding)
+    </dd>
+    @if (Model.NeedAssistanceLeavingTheBuilding)
+    {
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PickupFloorNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PickupFloorNumber)
+        </dd>
+    }
+    <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.DestinationAddress)
     </dt>
     <dd class="col-sm-10">
         @Html.DisplayFor(model => model.DestinationAddress)
     </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.NeedAssistanceEnteringTheBuilding)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.NeedAssistanceEnteringTheBuilding)
+    </dd>
+    @if (Model.NeedAssistanceEnteringTheBuilding)
+    {
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DestinationFloorNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DestinationFloorNumber)
+        </dd>
+    }
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.NumberOfPassengers)
     </dt>
