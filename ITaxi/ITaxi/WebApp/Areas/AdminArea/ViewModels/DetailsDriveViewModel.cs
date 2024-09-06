@@ -57,10 +57,36 @@ public class DetailsDriveViewModel : AdminAreaBaseViewModel
     public string PickupAddress { get; set; } = default!;
 
     /// <summary>
+    /// Need assistance leaving the building
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(NeedAssistanceLeavingTheBuilding))]
+    public bool NeedAssistanceLeavingTheBuilding { get; set; }
+
+    /// <summary>
+    /// Pickup floor number
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(PickupFloorNumber))]
+    public int PickupFloorNumber { get; set; }
+    
+    /// <summary>
     /// Destination address
     /// </summary>
     [Display(ResourceType = typeof(Booking), Name = nameof(DestinationAddress))]
     public string DestinationAddress { get; set; } = default!;
+
+    /// <summary>
+    /// Needing assistance entering the building
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(NeedAssistanceEnteringTheBuilding))]
+    public bool NeedAssistanceEnteringTheBuilding { get; set; }
+    /// <summary>
+    /// Destination floor number
+    /// </summary>
+
+    [Display(ResourceType = typeof(Booking), Name = nameof(DestinationFloorNumber))]
+    public int DestinationFloorNumber { get; set; }
+
+
 
     /// <summary>
     /// Vehicle type

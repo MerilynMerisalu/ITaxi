@@ -419,7 +419,7 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
             {
                 return query;
             }
-            return query.Include(d => d.Booking)
+            query = query.Include(d => d.Booking)
                 .ThenInclude(d => d!.Schedule)
                 .Include(c => c.Booking)
                 .ThenInclude(c => c!.Customer)
@@ -432,7 +432,6 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
                 .Include(c => c.Booking)
                 .ThenInclude(c => c!.City)
                 .Include(b => b.Booking)
-                .Include(v => v.Booking)
                 .ThenInclude(v => v!.Vehicle)
                 .ThenInclude(v => v!.VehicleType)
                 .ThenInclude(c => c!.VehicleTypeName)
@@ -446,6 +445,7 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
                 .Include(c => c.Comment)
                 .Include(d => d.Driver)
                 .ThenInclude(d => d!.AppUser);
+            return query;
         }
 
         if (noIncludes)

@@ -287,7 +287,7 @@
                     }
                     @if (!item.IsDriveDeclined && !item.IsDriveStarted && !item.IsDriveFinished)
                     {
-                        <a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> <span>|</span>
+                        <a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> <span></span>
                     }
                     @if (item.IsDriveAccepted && !item.IsDriveDeclined && !item.IsDriveStarted && !item.IsDriveFinished)
                     {
@@ -297,7 +297,7 @@
                     {
                         <a asp-action="EndDrive" asp-route-id="@item.Id">@Drive.Finished</a> <span>|</span>
                     }
-                    <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a>
+                    @* <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> *@
                 </td>
             </tr>
         }
