@@ -1,4 +1,5 @@
-﻿using App.Domain;
+﻿using App.BLL.DTO.AdminArea;
+using App.Domain;
 
 namespace WebApp.Areas.DriverArea.ViewModels;
 
@@ -15,5 +16,5 @@ public class PrintDriveViewModel
     /// <summary>
     /// Drives
     /// </summary>
-    public IEnumerable<Drive>? Drives { get; set; }
+    public IEnumerable<DriveDTO>? Drives { get; set; }
 }
