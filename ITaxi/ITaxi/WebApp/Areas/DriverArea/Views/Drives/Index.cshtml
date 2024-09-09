@@ -212,7 +212,7 @@
                             <a asp-action="Accept" asp-route-id="@item.Id">@Drive.Accept</a>
                             |
                         </p>
-                        <p style="display: inline"><a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a> |</p>
+                        <p style="display: inline"><a asp-action="Decline" asp-route-id="@item.Id">@Drive.Decline</a></p>
                     }
                     @if (item.StatusOfDrive == StatusOfDrive.Declined || (item.StatusOfDrive == StatusOfDrive.Finished))
                     {
@@ -243,7 +243,7 @@
                     }
 
 
-                    <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a>
+                   @*  <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> *@
 
                 </td>
             </tr>
