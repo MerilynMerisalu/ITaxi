@@ -177,6 +177,15 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destination Floor Number.
+        /// </summary>
+        public static string DestinationFloorNumber {
+            get {
+                return ResourceManager.GetString("DestinationFloorNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disability Type.
         /// </summary>
         public static string DisabilityTypeName {
@@ -249,6 +258,24 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do You Need Help Entering the Building? .
+        /// </summary>
+        public static string NeedAssistanceEnteringTheBuilding {
+            get {
+                return ResourceManager.GetString("NeedAssistanceEnteringTheBuilding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do You Need Help Exiting the Building? .
+        /// </summary>
+        public static string NeedAssistanceLeavingTheBuilding {
+            get {
+                return ResourceManager.GetString("NeedAssistanceLeavingTheBuilding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of Passengers.
         /// </summary>
         public static string NumberOfPassengers {
@@ -272,6 +299,15 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         public static string PickupDateAndTime {
             get {
                 return ResourceManager.GetString("PickupDateAndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pickup Floor Number.
+        /// </summary>
+        public static string PickupFloorNumber {
+            get {
+                return ResourceManager.GetString("PickupFloorNumber", resourceCulture);
             }
         }
         
