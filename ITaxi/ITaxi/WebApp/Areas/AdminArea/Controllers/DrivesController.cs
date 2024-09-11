@@ -41,72 +41,7 @@ public class DrivesController : Controller
         return View(res);
     }
 
-    // GET: AdminArea/Drives/Details/5
-    /// <summary>
-    /// Admin area drives controller GET method details
-    /// </summary>
-    /// <param name="id">Id</param>
-    /// <returns>View</returns>
-    //public async Task<IActionResult> Details(Guid? id)
-    //{
-    //    var roleName = User.GettingUserRoleName();
-    //    var vm = new DetailsDriveViewModel();
-    //    if (id == null) return NotFound();
-
-    //    var drive = await _appBLL.Drives
-    //        .GettingFirstDriveAsync(id.Value, null, roleName);
-    //    if (drive == null) return NotFound();
-
-    //    vm.DriverLastAndFirstName = drive.Driver!.AppUser!.LastAndFirstName;
-    //    vm.City = drive.Booking!.City!.CityName;
-    //    drive.Booking.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime;
-    //    drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
-    //    vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
-    //    if (drive.Comment?.CommentText != null) vm.CommentText = drive.Comment.CommentText;
-
-    //    vm.DestinationAddress = drive.Booking.DestinationAddress;
-    //    vm.NeedAssistanceEnteringTheBuilding = drive.Booking!.NeedAssistanceEnteringTheBuilding;
-    //    if (vm.NeedAssistanceEnteringTheBuilding)
-    //    {
-    //        vm.DestinationFloorNumber = drive.Booking.DestinationFloorNumber;
-    //    }
-    //    vm.PickupAddress = drive.Booking.PickupAddress;
-    //    vm.NeedAssistanceLeavingTheBuilding = drive.Booking!.NeedAssistanceLeavingTheBuilding;
-    //    if (vm.NeedAssistanceLeavingTheBuilding)
-    //    {
-    //        vm.PickupFloorNumber = drive.Booking.PickupFloorNumber;
-    //    }
-    //    vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
-    //    vm.VehicleType = drive.Booking.VehicleType!.VehicleTypeName;
-    //    vm.HasAnAssistant = drive.Booking.HasAnAssistant;
-    //    vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
-    //    vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
-    //    vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("G");
-    //    vm.StatusOfBooking = drive.Booking.StatusOfBooking;
-    //    vm.StatusOfDrive = drive.StatusOfDrive;
-    //    vm.IsDriveAccepted = drive.IsDriveAccepted;
-    //    vm.IsDriveDeclined = drive.IsDriveDeclined;
-    //    vm.IsDriveStarted = drive.IsDriveStarted;
-    //    vm.IsDriveFinished = drive.IsDriveFinished;
-    //    if (drive.IsDriveAccepted)
-    //        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("G");
-
-    //    if (drive.IsDriveDeclined)
-    //        vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToString("G");
-
-    //    if (drive.IsDriveStarted)
-    //        vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("G");
-
-    //    if (drive.IsDriveFinished) vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToString("G");
-        
-    //    vm.CreatedBy = drive.CreatedBy!;
-    //    vm.CreatedAt = drive.CreatedAt;
-    //    vm.UpdatedBy = drive.UpdatedBy!;
-    //    vm.UpdatedAt = drive.UpdatedAt;
-        
-    //    return View(vm);
-    //}
-
+    
 /// <summary>
 /// Search drives by inserted date
 /// </summary>
