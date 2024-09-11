@@ -18,7 +18,7 @@
     <data name="DriveName" xml:space="preserve">
         <value>Sõit</value>
     </data>
-    <data name="Comment" xml:space="preserve">
+    <data name="CommentText" xml:space="preserve">
         <value>Kommentaar</value>
     </data>
     <data name="Decline" xml:space="preserve">
@@ -43,7 +43,7 @@
         <value>Sõidu täitmise alguskuupäev ja -kellaaeg</value>
     </data>
     <data name="FinishedDateAndTime" xml:space="preserve">
-        <value> Sõidu lõpetamise kuupäev ja -kellaaeg</value>
+        <value>Sõidu lõpetamise kuupäev ja -kellaaeg</value>
     </data>
     <data name="AcceptingDrive" xml:space="preserve">
         <value>Sõidu kinnitamine</value>
@@ -57,8 +57,8 @@
     <data name="SettingDriveIntoFinishedState" xml:space="preserve">
         <value>Lõpeta sõit</value>
     </data>
-    <data name="DriveStatus" xml:space="preserve">
-        <value>Sõidu olek</value>
+    <data name="StatusOfDrive" xml:space="preserve">
+        <value>Sõiduolek</value>
     </data>
     <data name="AwaitingForConfirmation" xml:space="preserve">
         <value>Kinnituse ootel</value>
@@ -71,5 +71,56 @@
     </data>
     <data name="Drives" xml:space="preserve">
         <value>Sõidud</value>
+    </data>
+    <data name="DestinationFloorNumber" xml:space="preserve">
+        <value>Sihtkoha korrus</value>
+    </data>
+    <data name="NeedAssistanceEnteringTheBuilding" xml:space="preserve">
+        <value>Abivajadus sihtkohta sisenemisel?</value>
+    </data>
+    <data name="NeedAssistanceLeavingTheBuilding" xml:space="preserve">
+        <value>Abivajadus lähtekohast väljumisel?</value>
+    </data>
+    <data name="PickupFloorNumber" xml:space="preserve">
+        <value>Lähtekoha korrus</value>
+    </data>
+    <data name="Schedule" xml:space="preserve">
+        <value>Vahetus</value>
+    </data>
+    <data name="ShiftDurationTime" xml:space="preserve">
+        <value>Vahetuse kestvus</value>
+    </data>
+    <data name="JobTitle" xml:space="preserve">
+        <value>Autojuht</value>
+    </data>
+    <data name="Customer" xml:space="preserve">
+        <value>Klient</value>
+    </data>
+    <data name="PickUpDateAndTime" xml:space="preserve">
+        <value>Sõidu toimumiskuupäev ja -kellaaeg</value>
+    </data>
+    <data name="City" xml:space="preserve">
+        <value>Linn</value>
+    </data>
+    <data name="PickupAddress" xml:space="preserve">
+        <value>Lähtekoha aadress</value>
+    </data>
+    <data name="DestinationAddress" xml:space="preserve">
+        <value>Sihtkoha aadress</value>
+    </data>
+    <data name="VehicleType" xml:space="preserve">
+        <value>Sõidukitüüp</value>
+    </data>
+    <data name="VehicleIdentifier" xml:space="preserve">
+        <value>Sõiduk</value>
+    </data>
+    <data name="NumberOfPassengers" xml:space="preserve">
+        <value>Reisijate arv</value>
+    </data>
+    <data name="HasAnAssistant" xml:space="preserve">
+        <value>Abistaja olemasolu?</value>
+    </data>
+    <data name="StatusOfBooking" xml:space="preserve">
+        <value>Broneeringu olek</value>
     </data>
 </root>

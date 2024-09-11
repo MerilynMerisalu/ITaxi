@@ -26,7 +26,7 @@
     <data name="DriveName" xml:space="preserve">
         <value>Drive</value>
     </data>
-    <data name="Comment" xml:space="preserve">
+    <data name="CommentText" xml:space="preserve">
         <value>Comment</value>
     </data>
     <data name="Decline" xml:space="preserve">
@@ -65,7 +65,7 @@
     <data name="SettingDriveIntoFinishedState" xml:space="preserve">
         <value>End the Drive</value>
     </data>
-    <data name="DriveStatus" xml:space="preserve">
+    <data name="StatusOfDrive" xml:space="preserve">
         <value>Status of Drive</value>
     </data>
     <data name="AwaitingForConfirmation" xml:space="preserve">
@@ -79,5 +79,56 @@
     </data>
     <data name="Drives" xml:space="preserve">
         <value>Drives</value>
+    </data>
+    <data name="NeedAssistanceLeavingTheBuilding" xml:space="preserve">
+        <value>Do You Need Assistance Leaving the Building?</value>
+    </data>
+    <data name="PickupFloorNumber" xml:space="preserve">
+        <value>Pick Up Floor Number</value>
+    </data>
+    <data name="NeedAssistanceEnteringTheBuilding" xml:space="preserve">
+        <value>Do You Need Assistance Entering the Building?</value>
+    </data>
+    <data name="DestinationFloorNumber" xml:space="preserve">
+        <value>Destination Floor Number</value>
+    </data>
+    <data name="Schedule" xml:space="preserve">
+        <value>Schedule</value>
+    </data>
+    <data name="ShiftDurationTime" xml:space="preserve">
+        <value>Shift Duration</value>
+    </data>
+    <data name="JobTitle" xml:space="preserve">
+        <value>Driver</value>
+    </data>
+    <data name="Customer" xml:space="preserve">
+        <value>Customer</value>
+    </data>
+    <data name="PickUpDateAndTime" xml:space="preserve">
+        <value>Pick Up Date and Time</value>
+    </data>
+    <data name="City" xml:space="preserve">
+        <value>City</value>
+    </data>
+    <data name="PickupAddress" xml:space="preserve">
+        <value>Pickup Address</value>
+    </data>
+    <data name="DestinationAddress" xml:space="preserve">
+        <value>Destination Address</value>
+    </data>
+    <data name="VehicleType" xml:space="preserve">
+        <value>Vehicle Type</value>
+    </data>
+    <data name="VehicleIdentifier" xml:space="preserve">
+        <value>Vehicle</value>
+    </data>
+    <data name="NumberOfPassengers" xml:space="preserve">
+        <value>Number of Passengers</value>
+    </data>
+    <data name="HasAnAssistant" xml:space="preserve">
+        <value>Has an Assistant?</value>
+    </data>
+    <data name="StatusOfBooking" xml:space="preserve">
+        <value>Status of Booking</value>
     </data>
 </root>

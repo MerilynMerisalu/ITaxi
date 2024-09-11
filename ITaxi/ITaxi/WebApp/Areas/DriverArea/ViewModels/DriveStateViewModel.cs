@@ -49,7 +49,15 @@ public class DriveStateViewModel
     /// </summary>
     [Display(ResourceType = typeof(Drive), Name = nameof(PickupAddress))]
     public string PickupAddress { get; set; } = default!;
+    //[Display(ResourceType = typeof(Drive), Name = )]
+    public bool NeedAssistanceLeavingTheBuilding { get; set; }
 
+    /// <summary>
+    /// Pick up floor number
+    /// </summary>
+    [Range(minimum: 0, maximum: 35)]
+    //[Display(ResourceType = typeof(Booking), Name = nameof(PickupFloorNumber))]
+    public int PickupFloorNumber { get; set; }
     /// <summary>
     /// Destination address
     /// </summary>

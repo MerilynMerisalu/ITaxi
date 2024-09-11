@@ -12,7 +12,7 @@ public class Drive
 
     public Booking? Booking { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = nameof(Comment))]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "CommentText")]
     public Comment? Comment { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "AcceptedDateAndTime")]
@@ -27,7 +27,7 @@ public class Drive
 
     public DateTime DriveStartDateAndTime { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "DriveStatus")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "StatusOfDrive")]
     public StatusOfDrive StatusOfDrive { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "FinishedDateAndTime")]

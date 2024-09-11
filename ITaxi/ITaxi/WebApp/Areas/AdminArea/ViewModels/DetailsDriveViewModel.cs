@@ -121,7 +121,7 @@ public class DetailsDriveViewModel : AdminAreaBaseViewModel
     /// <summary>
     /// Status of drive
     /// </summary>
-    [Display(ResourceType = typeof(Drive), Name = "DriveStatus")]
+    [Display(ResourceType = typeof(Drive), Name = "StatusOfDrive")]
     public StatusOfDrive StatusOfDrive { get; set; }
     
     /// <summary>

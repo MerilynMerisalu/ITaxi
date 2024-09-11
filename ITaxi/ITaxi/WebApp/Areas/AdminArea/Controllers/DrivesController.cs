@@ -157,7 +157,13 @@ public async Task<IActionResult> Accept(Guid? id)
     vm.DriverLastAndFirstName = drive.Driver!.AppUser!.LastAndFirstName;
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
-    vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("G");
+    vm.NeedAssistanceLeavingTheBuilding = drive.Booking!.NeedAssistanceLeavingTheBuilding;
+    if (drive.Booking!.NeedAssistanceLeavingTheBuilding)
+            vm.PickupFloorNumber = drive.Booking!.PickupFloorNumber;
+    vm.NeedAssistanceEnteringTheBuilding = drive.Booking!.NeedAssistanceEnteringTheBuilding;
+        if (drive.Booking!.NeedAssistanceEnteringTheBuilding)
+            vm.DestinationFloorNumber = drive.Booking!.DestinationFloorNumber; 
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("G");
     vm.PickupAddress = drive.Booking.PickupAddress;
     vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;

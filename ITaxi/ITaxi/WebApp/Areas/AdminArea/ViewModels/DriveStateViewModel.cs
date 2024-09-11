@@ -17,91 +17,114 @@ public class DriveStateViewModel : AdminAreaBaseViewModel
     /// <summary>
     /// Schedule 
     /// </summary>
-    [Display(ResourceType = typeof(Schedule), Name = "ScheduleName")]
+    [Display(ResourceType = typeof(Drive), Name = nameof(Schedule))]
     public string Schedule { get; set; } = default!;
 
     /// <summary>
     /// Shift duration time
     /// </summary>
-    [Display(ResourceType = typeof(Schedule), Name = nameof(ShiftDurationTime))]
+    [Display(ResourceType = typeof(Drive), Name = nameof(ShiftDurationTime))]
     public string ShiftDurationTime { get; set; } = default!;
 
     /// <summary>
     /// Driver last and first name
     /// </summary>
-    [Display(ResourceType = typeof(Driver), Name = "JobTitle")]
+    [Display(ResourceType = typeof(Drive), Name = "JobTitle")]
     public string DriverLastAndFirstName { get; set; } = default!;
 
     /// <summary>
     /// Customer last and first name
     /// </summary>
-    [Display(ResourceType = typeof(Customer), Name = "CustomerName")]
+    [Display(ResourceType = typeof(Drive), Name = "Customer")]
     public string CustomerLastAndFirstName { get; set; } = default!;
 
     /// <summary>
     /// Pick up date and time
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = "PickUpDateAndTime")]
+    [Display(ResourceType = typeof(Drive), Name = "PickUpDateAndTime")]
     public string PickupDateAndTime { get; set; } = default!;
 
     /// <summary>
     /// City
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = nameof(City))]
+    [Display(ResourceType = typeof(Drive), Name = nameof(City))]
     public string City { get; set; } = default!;
 
     /// <summary>
     /// Pick up address
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = nameof(PickupAddress))]
+    [Display(ResourceType = typeof(Drive), Name = nameof(PickupAddress))]
     public string PickupAddress { get; set; } = default!;
+    /// <summary>
+    /// Needing assistance leaving the building
+    /// </summary>
+    [Display(ResourceType = typeof(Drive), Name = nameof(NeedAssistanceLeavingTheBuilding))]
+    public bool NeedAssistanceLeavingTheBuilding { get; set; }
 
+    /// <summary>
+    /// Pick up floor number
+    /// </summary>
+    [Range(minimum: 0, maximum: 35)]
+    [Display(ResourceType = typeof(Drive), Name = nameof(PickupFloorNumber))]
+    public int PickupFloorNumber { get; set; }
     /// <summary>
     /// Destination address
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = nameof(DestinationAddress))]
+    [Display(ResourceType = typeof(Drive), Name = nameof(DestinationAddress))]
     public string DestinationAddress { get; set; } = default!;
+    /// <summary>
+    /// Needing assistance entering the building
+    /// </summary>
+    [Display(ResourceType = typeof(Drive), Name = nameof(NeedAssistanceEnteringTheBuilding))]
+    public bool NeedAssistanceEnteringTheBuilding { get; set; }
+    /// <summary>
+    /// Destination floor number
+    /// </summary>
 
+    [Display(ResourceType = typeof(Drive), Name = nameof(DestinationFloorNumber))]
+    public int DestinationFloorNumber { get; set; }
+
+    
     /// <summary>
     /// Vehicle type
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = nameof(VehicleType))]
+    [Display(ResourceType = typeof(Drive), Name = nameof(VehicleType))]
     public string VehicleType { get; set; } = default!;
 
     /// <summary>
     /// Vehicle identifier
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = "Vehicle")]
+    [Display(ResourceType = typeof(Drive), Name = nameof(VehicleIdentifier))]
     public string VehicleIdentifier { get; set; } = default!;
 
     /// <summary>
     /// Number of passengers
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = nameof(NumberOfPassengers))]
+    [Display(ResourceType = typeof(Drive), Name = nameof(NumberOfPassengers))]
     public int NumberOfPassengers { get; set; }
 
     /// <summary>
     /// Boolean has an assistant
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = nameof(HasAnAssistant))]
+    [Display(ResourceType = typeof(Drive), Name = nameof(HasAnAssistant))]
     public bool HasAnAssistant { get; set; }
 
     /// <summary>
     /// Status of booking
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = nameof(StatusOfBooking))]
+    [Display(ResourceType = typeof(Drive), Name = nameof(StatusOfBooking))]
     public StatusOfBooking StatusOfBooking { get; set; }
 
     /// <summary>
     /// Status of drive
     /// </summary>
-    [Display(ResourceType = typeof(Drive), Name = "DriveStatus")]
+    [Display(ResourceType = typeof(Drive), Name = nameof(StatusOfDrive))]
     public StatusOfDrive StatusOfDrive { get; set; }
     
     /// <summary>
     /// Comment text
     /// </summary>
-    [Display(ResourceType = typeof(Comment), Name = "CommentName")]
+    [Display(ResourceType = typeof(Drive), Name = nameof(CommentText))]
     public string CommentText { get; set; } = default!;
 
     /// <summary>
