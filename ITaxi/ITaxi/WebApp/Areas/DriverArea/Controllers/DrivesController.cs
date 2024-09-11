@@ -41,76 +41,7 @@ public class DrivesController : Controller
         return View(res);
     }
 
-    // GET: DriverArea/Drives/Details/5
-    /// <summary>
-    /// Driver area drives GET method details
-    /// </summary>
-    /// <param name="id">Id</param>
-    /// <returns>View</returns>
-    //public async Task<IActionResult> Details(Guid? id)
-    //{
-    //    var userId = User.GettingUserId();
-    //    var roleName = User.GettingUserRoleName();
-    //    var vm = new DetailsDriveViewModel();
-    //    if (id == null) return NotFound();
-
-    //    var drive = await _appBLL.Drives
-    //        .GettingFirstDriveAsync(id.Value, userId, roleName);
-    //    if (drive == null) return NotFound();
-        
-    //    vm.Id = drive.Id;
-    //    vm.City = drive.Booking!.City!.CityName;
-    //    drive.Booking.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime;
-    //    drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
-    //    vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
-    //    vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
-
-    //    if (drive.Comment?.CommentText != null) vm.CommentText = drive.Comment.CommentText;
-    //    if (drive.Comment?.StarRating > 0)
-    //    {
-    //        vm.StarRating = drive.Comment.StarRating;
-    //    }
-    //    vm.DestinationAddress = drive.Booking.DestinationAddress;
-    //    vm.PickupAddress = drive.Booking.PickupAddress;
-    //    vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
-    //    vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
-    //    vm.HasAnAssistant = drive.Booking.HasAnAssistant;
-    //    vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
-    //    vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
-    //    vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
-    //    vm.StatusOfBooking = drive.Booking.StatusOfBooking;
-    //    vm.StatusOfDrive = drive.StatusOfDrive;
-    //    vm.IsDriveAccepted = drive.IsDriveAccepted;
-    //    vm.IsDriveDeclined = drive.IsDriveDeclined;
-    //    vm.IsDriveStarted = drive.IsDriveStarted;
-    //    vm.IsDriveFinished = drive.IsDriveFinished;
-    //    if (vm.IsDriveAccepted)
-    //    {
-    //        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
-    //    }
-
-    //    if (vm.IsDriveDeclined)
-    //    {
-    //        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
-    //        vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToString("g");
-    //    }
-
-    //    if (vm.IsDriveStarted)
-    //    {
-    //        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
-    //        vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("g");
-    //    }
-
-    //    if (vm.IsDriveFinished)
-    //    {
-    //        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("g");
-    //        vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("g");
-    //        vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToString("g");
-    //    }
-        
-    //    return View(vm);
-    //}
-
+    
 /// <summary>
 /// Search drives by inserted date
 /// </summary>
