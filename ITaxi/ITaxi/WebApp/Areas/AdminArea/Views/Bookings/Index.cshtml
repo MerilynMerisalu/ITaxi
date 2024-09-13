@@ -52,7 +52,13 @@
             <th>
                 @Html.DisplayNameFor(model => model!.PickupFloorNumber)
             </th>
-
+            @if (Model.Any(model => model!.NeedAssistanceLeavingTheBuilding))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model!.HasAnElevatorInThePickupBuilding)
+                </th>
+            }
+            
             <th>
                 @Html.DisplayNameFor(model => model!.DestinationAddress)
             </th>
@@ -62,7 +68,12 @@
             <th>
                 @Html.DisplayNameFor(model => model!.DestinationFloorNumber)
             </th>
-            
+            @if(Model.Any(model => model!.NeedAssistanceEnteringTheBuilding))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model!.HasAnElevatorInTheDestinationBuilding)
+                </th>
+            } 
             <th>
                 @Html.DisplayNameFor(model => model!.NumberOfPassengers)
             </th>
@@ -132,16 +143,23 @@
                     <td>
                         @Html.DisplayFor(modelItem => item!.PickupFloorNumber)
                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item!.HasAnElevatorInThePickupBuilding)
+                    </td>
                 }
                 else
                 {
                     <td>
                     </td>
+                    <td>
+                    </td>
                 }
+                
 
                 <td>
                     @Html.DisplayFor(modelItem => item!.DestinationAddress)
                 </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item!.NeedAssistanceEnteringTheBuilding)
                 </td>
@@ -150,12 +168,18 @@
                     <td>
                         @Html.DisplayFor(modelItem => item!.DestinationFloorNumber)
                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item!.HasAnElevatorInTheDestinationBuilding)
+                    </td>
                 }
                 else
                 {
                     <td>
                     </td>
+                    <td>
+                    </td>
                 }
+                
                 <td>
                     @Html.DisplayFor(modelItem => item!.NumberOfPassengers)
                 </td>

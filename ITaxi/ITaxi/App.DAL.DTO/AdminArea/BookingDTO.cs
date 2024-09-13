@@ -12,11 +12,7 @@ public class BookingDTO: DomainEntityMetaId
     public ScheduleDTO? Schedule { get; set; }
 
     public Guid DriverId { get; set; }
-    
-    
     public DriverDTO? Driver { get; set; }
-    
-
     
     public Guid CustomerId { get; set; }
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking),
@@ -41,12 +37,20 @@ public class BookingDTO: DomainEntityMetaId
     [Range(minimum: 0, maximum: 35)]
     public int PickupFloorNumber { get; set; }
 
+    
+    public bool HasAnElevatorInThePickupBuilding { get; set; }
+    
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     public string DestinationAddress { get; set; } = default!;
     public bool NeedAssistanceEnteringTheBuilding { get; set; }
+    
     [Range(minimum: 0, maximum: 35)]
     public int DestinationFloorNumber { get; set; }
+    
+    public bool HasAnElevatorInTheDestinationBuilding { get; set; }
+
+    
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Range(1, 5, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
     public int NumberOfPassengers { get; set; }
