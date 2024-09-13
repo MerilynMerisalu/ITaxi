@@ -66,7 +66,12 @@ public class DetailsDeleteBookingViewModel : AdminAreaBaseViewModel
     /// </summary>
     [Display(ResourceType = typeof(Booking), Name = nameof(NeedAssistanceLeavingTheBuilding))]
     public bool NeedAssistanceLeavingTheBuilding { get; set; }
-    
+
+    /// <summary>
+    /// Does the pickup building have an elevator?
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(HasAnElevatorInThePickupBuilding))]
+    public bool HasAnElevatorInThePickupBuilding { get; set; }
     /// <summary>
     /// Pickup floor number
     /// </summary>
@@ -83,7 +88,11 @@ public class DetailsDeleteBookingViewModel : AdminAreaBaseViewModel
     
     [Display(ResourceType = typeof(Booking), Name = nameof(DestinationFloorNumber))]
     public int DestinationFloorNumber { get; set; }
-
+    /// <summary>
+    /// Does the destination building have an elevator?
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(HasAnElevatorInTheDestinationBuilding))]
+    public bool HasAnElevatorInTheDestinationBuilding { get; set; }
     /// <summary>
     /// Destination address
     /// </summary>

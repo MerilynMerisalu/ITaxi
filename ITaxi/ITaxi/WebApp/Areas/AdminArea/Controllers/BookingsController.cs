@@ -71,12 +71,17 @@ public class BookingsController : Controller
         vm.DestinationAddress = booking.DestinationAddress;
         vm.NeedAssistanceEnteringTheBuilding = booking.NeedAssistanceEnteringTheBuilding;
         if (booking.NeedAssistanceEnteringTheBuilding)
+        {
             vm.DestinationFloorNumber = booking.DestinationFloorNumber;
+            vm.HasAnElevatorInTheDestinationBuilding = booking.HasAnElevatorInTheDestinationBuilding;
+        }
+            
         vm.PickupAddress = booking.PickupAddress;
         vm.NeedAssistanceLeavingTheBuilding = booking.NeedAssistanceLeavingTheBuilding;
         if (booking.NeedAssistanceLeavingTheBuilding)
         {
             vm.PickupFloorNumber = booking.PickupFloorNumber;
+            vm.HasAnElevatorInThePickupBuilding = booking.HasAnElevatorInThePickupBuilding;
         }
         vm.VehicleType = booking.VehicleType!.VehicleTypeName;
         vm.HasAnAssistant = booking.HasAnAssistant;
@@ -495,13 +500,19 @@ public class BookingsController : Controller
         vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
         vm.AdditionalInfo = booking.AdditionalInfo;
         vm.DestinationAddress = booking.DestinationAddress;
+        vm.NeedAssistanceEnteringTheBuilding = booking.NeedAssistanceEnteringTheBuilding;
         if (booking.NeedAssistanceEnteringTheBuilding)
+        {
             vm.DestinationFloorNumber = booking.DestinationFloorNumber;
+            vm.HasAnElevatorInTheDestinationBuilding = booking.HasAnElevatorInTheDestinationBuilding;
+        }
+            
         vm.PickupAddress = booking.PickupAddress;
         vm.NeedAssistanceLeavingTheBuilding = booking.NeedAssistanceLeavingTheBuilding;
         if (booking.NeedAssistanceLeavingTheBuilding)
         {
-           vm.PickupFloorNumber = booking.PickupFloorNumber; 
+           vm.PickupFloorNumber = booking.PickupFloorNumber;
+           vm.HasAnElevatorInThePickupBuilding = booking.HasAnElevatorInThePickupBuilding;
         }
         vm.VehicleType = booking.VehicleType!.VehicleTypeName;
         vm.HasAnAssistant = booking.HasAnAssistant;
