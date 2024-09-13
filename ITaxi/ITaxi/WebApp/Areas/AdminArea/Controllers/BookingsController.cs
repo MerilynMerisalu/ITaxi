@@ -378,10 +378,14 @@ public class BookingsController : Controller
         vm.AdditionalInfo = booking.AdditionalInfo;
         vm.DestinationAddress = booking.DestinationAddress;
         vm.PickupAddress = booking.PickupAddress;
+        if (booking.NeedAssistanceLeavingTheBuilding)
+            vm.HasAnElevatorInThePickupBuilding = booking.HasAnElevatorInThePickupBuilding;
         vm.NeedAssistanceLeavingTheBuilding = booking.NeedAssistanceLeavingTheBuilding;
         vm.PickupFloorNumber = booking.PickupFloorNumber;
         vm.NeedAssistanceEnteringTheBuilding = booking.NeedAssistanceEnteringTheBuilding;
         vm.DestinationFloorNumber = booking.DestinationFloorNumber;
+        if (booking.NeedAssistanceEnteringTheBuilding)
+            vm.HasAnElevatorInTheDestinationBuilding = booking.HasAnElevatorInTheDestinationBuilding;
         vm.VehicleType = booking.VehicleType!.VehicleTypeName;
         vm.HasAnAssistant = booking.HasAnAssistant;
         vm.NumberOfPassengers = booking.NumberOfPassengers;
