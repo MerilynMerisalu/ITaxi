@@ -122,15 +122,22 @@
         function showHidePickUpTextBox() {
             var pickupFloorLabel = document.getElementById("PickupFloorLBL");
             var pickupFloorTextBox = document.getElementById("PickupFloorNumberTB");
+            var hasPickupBuildingElevatorLabel = document.getElementById("PickupBuildingElevatorLBL");
+            var hasPickupBuildingElevatorCheckBox = document.getElementById("PickupBuildingElevatorCB");
+            var hasPickupBuildingElevatorDiv = document.getElementById("PickupBuildingElevatorDiv");
             if (pickupFloorTextBox.style.display == "none") {
                 pickupFloorLabel.style.display = "block";
                 pickupFloorTextBox.style.display = "block";
-                
+                hasPickupBuildingElevatorLabel.style.display = "block";
+                hasPickupBuildingElevatorCheckBox.style.display = "block";
+                hasPickupBuildingElevatorDiv.style.display = "block";
             }
             else {
                 pickupFloorLabel.style.display = "none";
                 pickupFloorTextBox.style.display = "none";
-                
+                hasPickupBuildingElevatorLabel.style.display = "none";
+                hasPickupBuildingElevatorCheckBox.style.display = "none";
+                hasPickupBuildingElevatorDiv.style.display = "none";
             }
         }
        
