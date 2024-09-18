@@ -68,8 +68,7 @@ public class BookingDTO: DomainEntityMetaId
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(DestinationFloorNumber))]
 
     public int DestinationFloorNumber { get; set; }
-   
-
+    
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Range(1, 5, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
@@ -87,7 +86,7 @@ public class BookingDTO: DomainEntityMetaId
     public StatusOfBooking StatusOfBooking { get; set; }
 
     public Guid? DriveId { get; set; }
-    //public DriveDTO? Drive { get; set; }
+    
 
     public string DriveTime => $"{PickUpDateAndTime:g}";
 

@@ -50,6 +50,9 @@
                 @Html.DisplayNameFor(model => model.Booking!.PickupFloorNumber)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Booking!.HasAnElevatorInThePickupBuilding)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Booking!.DestinationAddress)
             </th>
             <th>
@@ -58,6 +61,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.DestinationFloorNumber)
             </th>
+             <th>
+                @Html.DisplayNameFor(model => model.Booking!.HasAnElevatorInTheDestinationBuilding)
+            </th> 
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.VehicleType!.VehicleTypeName)
             </th>
@@ -170,10 +176,12 @@
                 </td>
                 @if (item.Booking!.NeedAssistanceLeavingTheBuilding)
                 {
-                    <td>@item.Booking.PickupFloorNumber</td>
+                    <td>@Html.DisplayFor(modelItem => item.Booking!.PickupFloorNumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Booking!.HasAnElevatorInThePickupBuilding)</td>
                 }
                 else
                 {
+                    <td></td>
                     <td></td>
                 }
                 <td>
@@ -184,10 +192,12 @@
                 </td>
                 @if (item.Booking!.NeedAssistanceEnteringTheBuilding)
                 {
-                    <td>@item.Booking.DestinationFloorNumber</td>
+                    <td>@Html.DisplayFor(modelItem => item.Booking!.DestinationFloorNumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Booking!.HasAnElevatorInTheDestinationBuilding)</td>
                 }
                 else
                 {
+                    <td></td>
                     <td></td>
                 }
                 <td>
