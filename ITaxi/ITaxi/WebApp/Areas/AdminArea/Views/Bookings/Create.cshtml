@@ -120,11 +120,11 @@
         }
        
         function showHidePickUpTextBox() {
-            var pickupFloorLabel = document.getElementById("PickupFloorLBL");
-            var pickupFloorTextBox = document.getElementById("PickupFloorNumberTB");
-            var hasPickupBuildingElevatorLabel = document.getElementById("PickupBuildingElevatorLBL");
-            var hasPickupBuildingElevatorCheckBox = document.getElementById("PickupBuildingElevatorCB");
-            var hasPickupBuildingElevatorDiv = document.getElementById("PickupBuildingElevatorDiv");
+            let pickupFloorLabel = document.getElementById("PickupFloorLBL");
+            let pickupFloorTextBox = document.getElementById("PickupFloorNumberTB");
+            let hasPickupBuildingElevatorLabel = document.getElementById("PickupBuildingElevatorLBL");
+            let hasPickupBuildingElevatorCheckBox = document.getElementById("PickupBuildingElevatorCB");
+            let hasPickupBuildingElevatorDiv = document.getElementById("PickupBuildingElevatorDiv");
             if (pickupFloorTextBox.style.display == "none") {
                 pickupFloorLabel.style.display = "block";
                 pickupFloorTextBox.style.display = "block";
@@ -139,22 +139,33 @@
                 hasPickupBuildingElevatorCheckBox.style.display = "none";
                 hasPickupBuildingElevatorDiv.style.display = "none";
             }
+        
         }
        
         function showHideDestinationTextBox() {
-            var destinationFloorLabel = document.getElementById("DestinationFloorLBL");
-            var destinationFloorTextBox = document.getElementById("DestinationFloorNumberTB");
+            let destinationFloorLabel = document.getElementById("DestinationFloorLBL");
+            let destinationFloorTextBox = document.getElementById("DestinationFloorNumberTB");
+            let hasDestinationBuildingElevatorLabel = document.getElementById("DestinationBuildingElevatorLBL");
+            let hasDestinationBuildingElevatorCheckBox = document.getElementById("DestinationBuildingElevatorCB");
+            let hasDestinationBuildingElevatorDiv = document.getElementById("DestinationBuildingElevatorDiv");
             if (destinationFloorTextBox.style.display == "none") {
                 destinationFloorLabel.style.display = "block";
                 destinationFloorTextBox.style.display = "block";
-
+                hasDestinationBuildingElevatorLabel.style.display = "block";
+                hasDestinationBuildingElevatorCheckBox.style.display = "block";
+                hasDestinationBuildingElevatorDiv.style.display = "block";
             }
+                
             else {
-                destinationFloorLabel.style.display = "none";
-                destinationFloorTextBox.style.display = "none";
+                    destinationFloorLabel.style.display = "none";
+                    destinationFloorTextBox.style.display = "none";
+                    hasDestinationBuildingElevatorLabel.style.display = "none";
+                    hasDestinationBuildingElevatorCheckBox.style.display = "none";
+                    hasDestinationBuildingElevatorDiv.style.display = "none";
 
-            }
+                }
         }
+        
 
     </script>
 

@@ -301,12 +301,20 @@ public class BookingsController : Controller
             booking.AdditionalInfo = vm.AdditionalInfo;
             booking.DestinationAddress = vm.DestinationAddress;
             booking.NeedAssistanceEnteringTheBuilding = vm.NeedAssistanceEnteringTheBuilding;
-            if (vm.NeedAssistanceEnteringTheBuilding) 
+            if (vm.NeedAssistanceEnteringTheBuilding)
+            {
                 booking.DestinationFloorNumber = vm.DestinationFloorNumber;
+                booking.HasAnElevatorInTheDestinationBuilding = vm.HasAnElevatorInTheDestinationBuilding;
+            }
+                
             booking.PickupAddress = vm.PickupAddress;
             booking.NeedAssistanceLeavingTheBuilding = vm.NeedAssistanceLeavingTheBuilding;
             if (vm.NeedAssistanceLeavingTheBuilding)
+            {
                 booking.PickupFloorNumber = vm.PickupFloorNumber;
+                booking.HasAnElevatorInThePickupBuilding = vm.HasAnElevatorInThePickupBuilding;
+            }
+               
             booking.VehicleTypeId = vm.VehicleTypeId;
             booking.HasAnAssistant = vm.HasAnAssistant;
             booking.NumberOfPassengers = vm.NumberOfPassengers;
