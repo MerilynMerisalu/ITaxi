@@ -145,7 +145,7 @@
           <LastGenOutput>PDF.Designer.cs</LastGenOutput>
         </EmbeddedResource>
         <EmbeddedResource Update="Areas\App.Domain\AdminArea\PDF.resx">
-          <Generator>ResXFileCodeGenerator</Generator>
+          <Generator>PublicResXFileCodeGenerator</Generator>
           <LastGenOutput>PDF.Designer.cs</LastGenOutput>
         </EmbeddedResource>
         <EmbeddedResource Update="Areas\App.Domain\DriverArea\Photo.resx">
@@ -332,7 +332,7 @@
         <Compile Update="Areas\App.Domain\AdminArea\PDF.Designer.cs">
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
-          <DependentUpon>PDF.resx</DependentUpon>
+          <DependentUpon>PDFTranslation.resx</DependentUpon>
         </Compile>
         <Compile Update="Areas\App.Domain\DriverArea\Photo.Designer.cs">
           <DesignTime>True</DesignTime>

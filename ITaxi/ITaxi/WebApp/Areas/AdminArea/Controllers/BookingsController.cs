@@ -8,6 +8,7 @@ using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Rotativa.AspNetCore;
 using WebApp.Areas.AdminArea.ViewModels;
 using WebApp.Helpers;
 
@@ -589,6 +590,24 @@ public class BookingsController : Controller
         var results = await _appBLL.Bookings.SearchByCityAsync(search, null, roleName );
         return View(nameof(Index), results);
     }
+    /// <summary>
+    /// Generates a pdf view of bookings
+    /// </summary>
+    /// <returns>A pdf of bookings</returns>
+    
+    [HttpGet]
+    public async Task<IActionResult> Print()
+    {
+        var roleName = User.GettingUserRoleName();
+    
+        var bookings = await _appBLL.Bookings.PrintAsync( null, roleName );
+        
+        return new ViewAsPdf("PrintBookings", bookings) 
+        {
+            PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape
+        };
+    }
+
 
     
 }

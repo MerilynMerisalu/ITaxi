@@ -171,6 +171,13 @@
       <None Include="wwwroot\Images\Icons\eye-closed.svg" />
       <None Include="wwwroot\Images\Icons\eye.svg" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="Areas\AdminArea\Views\Bookings\PrintBookings.cshtml">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
     <PropertyGroup>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>

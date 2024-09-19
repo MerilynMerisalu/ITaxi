@@ -12,6 +12,9 @@
 <p>
     <a asp-action="Create">@Common.CreateNew</a>
 </p>
+<p>
+    <a href="@Url.Action("Print")" target="_blank">@PDF.BookingsTitle</a>
+</p>
 <form action="@Url.Action("SearchByCity")" method="post">
     <input type="text" name="search" />
     <input type="submit" value="@Common.Search" />

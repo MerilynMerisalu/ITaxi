@@ -116,5 +116,15 @@ public class BookingService : BaseEntityService<App.BLL.DTO.AdminArea.BookingDTO
     {
         return Mapper.Map(Repository.GettingBookingByDriveId(id, userId, roleName, noIncludes, noTracking))!;
     }
+
+    public async Task<IEnumerable<BookingDTO?>> PrintAsync(Guid? userId = null, string? roleName = null)
+    {
+        return (await Repository.PrintAsync(userId, roleName)).Select(e => Mapper.Map(e)).ToList();
+    }
+
+    public IEnumerable<BookingDTO?> Print(Guid id)
+    {
+        return Repository.Print(id).Select(e => Mapper.Map(e)).ToList();
+    }
 }
 

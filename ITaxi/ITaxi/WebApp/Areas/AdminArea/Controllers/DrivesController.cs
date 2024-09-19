@@ -63,9 +63,12 @@ public async Task<IActionResult> Print()
 {
     var roleName = User.GettingUserRoleName();
     
-        var drives = await _appBLL.Drives.PrintAsync( null, roleName );
+    var drives = await _appBLL.Drives.PrintAsync( null, roleName );
         
-        return new ViewAsPdf("PrintDrives", drives);
+    return new ViewAsPdf("PrintDrives", drives) 
+    {
+        PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape
+    };
 }
 
 // GET: AdminArea/Drives/Accept/5
