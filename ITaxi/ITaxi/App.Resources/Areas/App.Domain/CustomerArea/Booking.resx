@@ -97,4 +97,13 @@
     <data name="HasAnElevatorInThePickupBuilding" xml:space="preserve">
         <value>Does the Pickup Building Have an Elevator?</value>
     </data>
+    <data name="CreatePDF" xml:space="preserve">
+        <value>Create PDF</value>
+    </data>
+    <data name="DriversData" xml:space="preserve">
+        <value>Driver Information </value>
+    </data>
+    <data name="VehiclesData" xml:space="preserve">
+        <value>Vehicle's Data</value>
+    </data>
 </root>

@@ -1,0 +1,151 @@
+﻿@using App.BLL.DTO.Identity
+@using App.Resources.Areas.App.Domain.CustomerArea
+@using Base.Extensions
+@model IEnumerable<App.BLL.DTO.AdminArea.BookingDTO>
+
+
+@{
+    Layout = "_PrintLayout";
+    ViewData["Title"] = PDF.Title;
+}
+
+@{
+    var name = User.GettingUserName();
+    <h1>
+        @App.Resources.Areas.App.Domain.CustomerArea.PDF.Name: @name
+    </h1>
+}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PickUpDateAndTime)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.DriversData)
+            
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VehiclesData)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.PickupAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NeedAssistanceLeavingTheBuilding)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PickupFloorNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HasAnElevatorInThePickupBuilding)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DestinationAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NeedAssistanceEnteringTheBuilding)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DestinationFloorNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HasAnElevatorInTheDestinationBuilding)
+        </th>
+        
+
+        <th>
+            @Html.DisplayNameFor(model => model.NumberOfPassengers)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HasAnAssistant)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.AdditionalInfo)
+        </th>
+
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.PickUpDateAndTime)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.DriversData)
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.VehiclesData)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City!.CityName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.PickupAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NeedAssistanceLeavingTheBuilding)
+            </td>
+            @if (item.NeedAssistanceLeavingTheBuilding)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.PickupFloorNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HasAnElevatorInThePickupBuilding)
+                </td>
+            }
+            else
+            {
+                <td></td>
+                <td></td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.DestinationAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NeedAssistanceEnteringTheBuilding)
+            </td>
+            @if (item.NeedAssistanceEnteringTheBuilding)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.DestinationFloorNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HasAnElevatorInTheDestinationBuilding)
+                </td>
+            }
+            else
+            {
+                <td></td>
+                <td></td>
+            }
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfPassengers)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.HasAnAssistant)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdditionalInfo)
+            </td>
+
+        </tr>
+    }
+    </tbody>
+</table>

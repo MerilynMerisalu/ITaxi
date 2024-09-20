@@ -156,6 +156,10 @@
           <Generator>PublicResXFileCodeGenerator</Generator>
           <LastGenOutput>Country.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\CustomerArea\PDF.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>PDF.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -343,6 +347,11 @@
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
           <DependentUpon>Country.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\CustomerArea\PDF.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>PDF.resx</DependentUpon>
         </Compile>
     </ItemGroup>
 

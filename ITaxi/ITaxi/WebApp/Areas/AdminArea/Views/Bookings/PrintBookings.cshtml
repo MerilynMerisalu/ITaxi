@@ -11,68 +11,64 @@
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Schedule)
-            </th>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PickUpDateAndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DriversData)
+        </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.Driver)
-            </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VehiclesData)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Customer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.PickUpDateAndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VehicleType!.VehicleTypeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PickupAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NeedAssistanceLeavingTheBuilding)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PickupFloorNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HasAnElevatorInThePickupBuilding)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DestinationAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NeedAssistanceEnteringTheBuilding)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DestinationFloorNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HasAnElevatorInTheDestinationBuilding)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Customer!.AppUser!.PhoneNumber)
+        </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.PickupAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NeedAssistanceLeavingTheBuilding)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PickupFloorNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HasAnElevatorInThePickupBuilding)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DestinationAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NeedAssistanceEnteringTheBuilding)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DestinationFloorNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HasAnElevatorInTheDestinationBuilding)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer!.AppUser!.PhoneNumber)
-            </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumberOfPassengers)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HasAnAssistant)
+        </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.NumberOfPassengers)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HasAnAssistant)
-            </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AdditionalInfo)
+        </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.AdditionalInfo)
-            </th>
-
-        </tr>
+    </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)

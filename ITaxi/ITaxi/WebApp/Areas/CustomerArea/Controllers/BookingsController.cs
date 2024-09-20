@@ -5,6 +5,7 @@ using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Rotativa.AspNetCore;
 using WebApp.Areas.CustomerArea.ViewModels;
 
 namespace WebApp.Areas.CustomerArea.Controllers;
@@ -397,5 +398,16 @@ public class BookingsController : Controller
         var roleName = User.GettingUserRoleName();
         var results = await _appBLL.Bookings.SearchByCityAsync(search, userId, roleName);
         return View(nameof(Index), results);
+    }
+
+    /// <summary>
+    /// Adding a pdf view for customer's bookings
+    /// </summary>
+    /// <returns>pdf view for customer's bookings</returns>
+    public async Task<IActionResult> PrintAsync()
+    {
+        var userId = User.GettingUserId();
+        var bookings = await _appBLL.Bookings.GettingAllOrderedBookingsAsync(userId);
+        return new ViewAsPdf("PrintBookings", bookings);
     }
 }

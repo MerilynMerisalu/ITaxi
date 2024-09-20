@@ -100,4 +100,10 @@ public class BookingDTO: DomainEntityMetaId
     public string? ConfirmedBy { get; set; }
     
     public string? DeclinedBy { get; set; }
+    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.CustomerArea.Booking), Name = "DriversData")]
+    public string? DriversData => $"{Driver!.AppUser.FirstAndLastName}; {Common.PhoneNumber} {Driver.AppUser.PhoneNumber}";
+
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.CustomerArea.Booking), Name = "VehiclesData")]
+    public string? VehiclesData => $"{VehicleType.VehicleTypeName} {Vehicle.VehicleIdentifier}";
 }

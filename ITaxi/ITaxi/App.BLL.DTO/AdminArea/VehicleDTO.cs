@@ -49,8 +49,8 @@ public class VehicleDTO : DomainEntityMetaId
     public int NumberOfSeats { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleIdentifier")]
-    public string VehicleIdentifier => $"{VehicleMark?.VehicleMarkName} {VehicleModel?.VehicleModelName} " +
-                                       $"{VehiclePlateNumber} {VehicleType?.VehicleTypeName}";
+    public string VehicleIdentifier => $"{VehicleType?.VehicleTypeName} {VehicleMark?.VehicleMarkName} {VehicleModel?.VehicleModelName} " +
+                                       $"{VehiclePlateNumber}";
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Vehicle), Name = "VehicleAvailability")]
     public VehicleAvailability VehicleAvailability { get; set; }

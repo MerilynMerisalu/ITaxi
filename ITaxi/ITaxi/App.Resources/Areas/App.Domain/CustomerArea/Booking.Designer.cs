@@ -114,6 +114,15 @@ namespace App.Resources.Areas.App.Domain.CustomerArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create PDF.
+        /// </summary>
+        public static string CreatePDF {
+            get {
+                return ResourceManager.GetString("CreatePDF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Decline .
         /// </summary>
         public static string Decline {
@@ -146,6 +155,15 @@ namespace App.Resources.Areas.App.Domain.CustomerArea {
         public static string DestinationFloorNumber {
             get {
                 return ResourceManager.GetString("DestinationFloorNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Driver Information .
+        /// </summary>
+        public static string DriversData {
+            get {
+                return ResourceManager.GetString("DriversData", resourceCulture);
             }
         }
         
@@ -263,6 +281,15 @@ namespace App.Resources.Areas.App.Domain.CustomerArea {
         public static string Vehicle {
             get {
                 return ResourceManager.GetString("Vehicle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle&apos;s Data.
+        /// </summary>
+        public static string VehiclesData {
+            get {
+                return ResourceManager.GetString("VehiclesData", resourceCulture);
             }
         }
         
