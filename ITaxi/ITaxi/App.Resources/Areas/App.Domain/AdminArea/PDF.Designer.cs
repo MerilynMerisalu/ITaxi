@@ -69,6 +69,24 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Does the Destination Building Have an Elevator?.
+        /// </summary>
+        public static string HasAnElevatorInTheDestinationBuilding {
+            get {
+                return ResourceManager.GetString("HasAnElevatorInTheDestinationBuilding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Does the Pickup Building Have an Elevator?.
+        /// </summary>
+        public static string HasAnElevatorInThePickupBuilding {
+            get {
+                return ResourceManager.GetString("HasAnElevatorInThePickupBuilding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drives PDF.
         /// </summary>
         public static string Title {

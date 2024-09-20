@@ -123,4 +123,10 @@
     <data name="DestinationFloorNumber" xml:space="preserve">
         <value>Sihtkoha korrus</value>
     </data>
+    <data name="HasAnElevatorInTheDestinationBuilding" xml:space="preserve">
+        <value>Lifti olemaolu sihtkohas?</value>
+    </data>
+    <data name="HasAnElevatorInThePickupBuilding" xml:space="preserve">
+        <value>Lifti olemasolu lähtekohas?</value>
+    </data>
 </root>

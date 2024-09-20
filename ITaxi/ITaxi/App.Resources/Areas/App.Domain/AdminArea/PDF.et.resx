@@ -17,4 +17,10 @@
     <data name="BookingsTitle" xml:space="preserve">
         <value>Broneeringud PDF</value>
     </data>
+    <data name="HasAnElevatorInTheDestinationBuilding" xml:space="preserve">
+        <value>Lifti olemasolu sihtkohas?</value>
+    </data>
+    <data name="HasAnElevatorInThePickupBuilding" xml:space="preserve">
+        <value>Lifti olemasolu lähtekohas?</value>
+    </data>
 </root>

@@ -24,4 +24,10 @@
     <data name="BookingsTitle" xml:space="preserve">
         <value>Bookings PDF</value>
     </data>
+    <data name="HasAnElevatorInTheDestinationBuilding" xml:space="preserve">
+        <value>Does the Destination Building Have an Elevator?</value>
+    </data>
+    <data name="HasAnElevatorInThePickupBuilding" xml:space="preserve">
+        <value>Does the Pickup Building Have an Elevator?</value>
+    </data>
 </root>

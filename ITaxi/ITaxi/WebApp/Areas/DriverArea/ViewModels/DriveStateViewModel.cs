@@ -80,6 +80,20 @@ public class DriveStateViewModel
     public int DestinationFloorNumber { get; set; }
 
     /// <summary>
+    /// Does the destination building have an elevator
+    /// </summary>
+    [Display(ResourceType = typeof(Drive), Name = nameof(HasAnElevatorInTheDestinationBuilding))]
+    public bool HasAnElevatorInTheDestinationBuilding { get; set; }
+
+    /// <summary>
+    /// Does the pickup building have an elevator
+    /// </summary>
+
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.DriverArea.Drive), Name = nameof(HasAnElevatorInThePickupBuilding))]
+    public bool HasAnElevatorInThePickupBuilding { get; set; }
+
+
+    /// <summary>
     /// Vehicle type
     /// </summary>
     [Display(ResourceType = typeof(Drive), Name = nameof(VehicleType))]

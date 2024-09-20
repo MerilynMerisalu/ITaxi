@@ -82,4 +82,10 @@
     <data name="NeedAssistanceEnteringTheBuilding" xml:space="preserve">
         <value>Abivajadus sihtkohta sisenemisel?</value>
     </data>
+    <data name="HasAnElevatorInTheDestinationBuilding" xml:space="preserve">
+        <value>Lifti olemasolu sihtkohas?</value>
+    </data>
+    <data name="HasAnElevatorInThePickupBuilding" xml:space="preserve">
+        <value>Lifti olemasolu lähtekohas?</value>
+    </data>
 </root>
