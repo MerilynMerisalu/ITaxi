@@ -97,17 +97,25 @@ public async Task<IActionResult> Accept(Guid? id)
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceLeavingTheBuilding = drive.Booking!.NeedAssistanceLeavingTheBuilding;
     if (drive.Booking!.NeedAssistanceLeavingTheBuilding)
+        {
             vm.PickupFloorNumber = drive.Booking!.PickupFloorNumber;
+            vm.HasAnElevatorInThePickupBuilding = drive.Booking!.HasAnElevatorInThePickupBuilding;
+        }
+            
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking!.NeedAssistanceEnteringTheBuilding;
         if (drive.Booking!.NeedAssistanceEnteringTheBuilding)
-            vm.DestinationFloorNumber = drive.Booking!.DestinationFloorNumber; 
-        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("G");
-    vm.PickupAddress = drive.Booking.PickupAddress;
-    vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
-    vm.HasAnAssistant = drive.Booking.HasAnAssistant;
-    vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
-    vm.StatusOfBooking = drive.Booking.StatusOfBooking;
-    vm.StatusOfDrive = drive.StatusOfDrive;
+        {
+            vm.DestinationFloorNumber = drive.Booking!.DestinationFloorNumber;
+            vm.HasAnElevatorInTheDestinationBuilding = drive.Booking!.HasAnElevatorInTheDestinationBuilding;
+        }
+             
+   vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("G");
+   vm.PickupAddress = drive.Booking.PickupAddress;
+   vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
+   vm.HasAnAssistant = drive.Booking.HasAnAssistant;
+   vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
+   vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+   vm.StatusOfDrive = drive.StatusOfDrive;
     if (vm.IsDriveAccepted )
     {
         vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("G");
@@ -200,12 +208,20 @@ public async Task<IActionResult> Decline(Guid? id)
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
-    if(vm.NeedAssistanceEnteringTheBuilding)
-        vm.DestinationFloorNumber = drive.Booking.DestinationFloorNumber;
+        if (vm.NeedAssistanceEnteringTheBuilding)
+        {
+            vm.DestinationFloorNumber = drive.Booking.DestinationFloorNumber;
+            vm.HasAnElevatorInTheDestinationBuilding = drive.Booking.HasAnElevatorInTheDestinationBuilding;
+        }
+        
     vm.PickupAddress = drive.Booking.PickupAddress;
     vm.NeedAssistanceLeavingTheBuilding = drive.Booking.NeedAssistanceLeavingTheBuilding;
-    if(vm.NeedAssistanceLeavingTheBuilding)
-        vm.PickupFloorNumber = drive.Booking.PickupFloorNumber;
+    if(vm.NeedAssistanceLeavingTheBuilding) {
+       vm.PickupFloorNumber = drive.Booking.PickupFloorNumber;
+        vm.HasAnElevatorInThePickupBuilding = drive.Booking.HasAnElevatorInThePickupBuilding;
+
+    }
+        
     vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
@@ -288,12 +304,19 @@ public async Task<IActionResult> StartDrive(Guid? id)
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
-    if (vm.NeedAssistanceEnteringTheBuilding) 
-        vm.DestinationFloorNumber = drive.Booking.DestinationFloorNumber;
+    if (vm.NeedAssistanceEnteringTheBuilding)
+        {
+            vm.DestinationFloorNumber = drive.Booking.DestinationFloorNumber;
+            vm.HasAnElevatorInThePickupBuilding = drive.Booking.HasAnElevatorInTheDestinationBuilding;
+        }
+        
     vm.PickupAddress = drive.Booking.PickupAddress;
     vm.NeedAssistanceLeavingTheBuilding = drive.Booking.NeedAssistanceLeavingTheBuilding;
-    if (vm.NeedAssistanceLeavingTheBuilding)
-        vm.PickupFloorNumber = drive.Booking.PickupFloorNumber;
+    if (vm.NeedAssistanceLeavingTheBuilding) { 
+            vm.PickupFloorNumber = drive.Booking.PickupFloorNumber;
+            vm.HasAnElevatorInThePickupBuilding = drive.Booking.HasAnElevatorInThePickupBuilding; 
+        }
+        
     vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
@@ -356,11 +379,20 @@ public async Task<IActionResult> EndDrive(Guid? id)
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
-    if (vm.NeedAssistanceEnteringTheBuilding) 
-        vm.DestinationFloorNumber = drive.Booking.DestinationFloorNumber;
+    if (vm.NeedAssistanceEnteringTheBuilding)
+        {
+            vm.DestinationFloorNumber = drive.Booking.DestinationFloorNumber;
+            vm.HasAnElevatorInTheDestinationBuilding = drive.Booking.HasAnElevatorInTheDestinationBuilding;
+        }
+        
     vm.PickupAddress = drive.Booking.PickupAddress;
+        vm.NeedAssistanceLeavingTheBuilding = drive.Booking.NeedAssistanceLeavingTheBuilding;
     if (vm.NeedAssistanceLeavingTheBuilding)
-        vm.PickupFloorNumber = drive.Booking.PickupFloorNumber;
+        {
+            vm.PickupFloorNumber = drive.Booking.PickupFloorNumber;
+            vm.HasAnElevatorInThePickupBuilding = drive.Booking.HasAnElevatorInThePickupBuilding;
+        }
+        
     vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;

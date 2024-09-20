@@ -77,14 +77,27 @@ public class DriveStateViewModel : AdminAreaBaseViewModel
     /// </summary>
     [Display(ResourceType = typeof(Drive), Name = nameof(NeedAssistanceEnteringTheBuilding))]
     public bool NeedAssistanceEnteringTheBuilding { get; set; }
+   
     /// <summary>
     /// Destination floor number
     /// </summary>
-
+    
     [Display(ResourceType = typeof(Drive), Name = nameof(DestinationFloorNumber))]
     public int DestinationFloorNumber { get; set; }
 
-    
+    /// <summary>
+    /// Does the destination building have an elevator
+    /// </summary>
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(HasAnElevatorInTheDestinationBuilding))]
+    public bool HasAnElevatorInTheDestinationBuilding { get; set; }
+
+    /// <summary>
+    /// Does the pickup building have an elevator
+    /// </summary>
+
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(HasAnElevatorInThePickupBuilding))]
+    public bool HasAnElevatorInThePickupBuilding { get; set; }
+
     /// <summary>
     /// Vehicle type
     /// </summary>
