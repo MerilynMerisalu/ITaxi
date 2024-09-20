@@ -13,7 +13,19 @@ public class DeclineBookingViewModel
     /// Id
     /// </summary>
     public Guid Id { get; set; }
+/// <summary>
+/// Vehicle Information
+/// </summary>
 
+    [Display(ResourceType = typeof(Booking), Name = "VehiclesData")]
+    public string? VehicleData { get; set; }
+    /// <summary>
+    /// Driver Information
+    /// </summary>
+    
+    [Display(ResourceType = typeof(Booking), Name = "DriversData")]
+    public string? DriverData { get; set; }
+    
     /// <summary>
     /// Vehicle type
     /// </summary>
@@ -55,6 +67,16 @@ public class DeclineBookingViewModel
     /// </summary>
     [Display(ResourceType = typeof(Booking), Name = nameof(PickupFloorNumber))]
     public int PickupFloorNumber { get; set; }
+    /// <summary>
+    /// Does the pickup building have an elevator?
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(HasAnElevatorInThePickupBuilding))]
+    public bool HasAnElevatorInThePickupBuilding { get; set; }
+    /// <summary>
+    /// Does the destination building have an elevator?
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(HasAnElevatorInTheDestinationBuilding))]
+    public bool HasAnElevatorInTheDestinationBuilding { get; set; }
     /// <summary>
     /// Needing assistance entering the building
     /// </summary>
