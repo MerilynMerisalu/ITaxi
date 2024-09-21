@@ -137,6 +137,12 @@ builder.Services.AddCors(options =>
         policy.AllowAnyOrigin();
     });
 } );
+builder.Services.AddAuthentication().AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:Client"];
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    
+});
 
 var app = builder.Build();
 //Register Syncfusion license
