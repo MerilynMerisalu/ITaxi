@@ -15,6 +15,21 @@ public class DetailsDeleteBookingViewModel
     public Guid Id { get; set; }
 
     /// <summary>
+    /// Vehicle Information
+    /// </summary>
+
+    [Display(ResourceType = typeof(Booking), Name = "VehiclesData")]
+    public string? VehicleData { get; set; }
+
+    /// <summary>
+    /// Driver Information
+    /// </summary>
+
+    [Display(ResourceType = typeof(Booking), Name = "DriversData")]
+    public string? DriverData { get; set; }
+
+
+    /// <summary>
     /// Vehicle type
     /// </summary>
     [Display(ResourceType = typeof(Booking), Name = nameof(VehicleType))]
@@ -55,11 +70,13 @@ public class DetailsDeleteBookingViewModel
     /// </summary>
     [Display(ResourceType = typeof(Booking), Name = nameof(PickupFloorNumber))]
     public int PickupFloorNumber { get; set; }
+
     /// <summary>
     /// Needing assistance entering the building
     /// </summary>
     [Display(ResourceType = typeof(Booking), Name = nameof(NeedAssistanceEnteringTheBuilding))]
     public bool NeedAssistanceEnteringTheBuilding { get; set; }
+
     /// <summary>
     /// Destination floor number
     /// </summary>
@@ -67,6 +84,17 @@ public class DetailsDeleteBookingViewModel
     [Display(ResourceType = typeof(Booking), Name = nameof(DestinationFloorNumber))]
     public int DestinationFloorNumber { get; set; }
 
+    /// <summary>
+    /// Does the pickup building have an elevator?
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(HasAnElevatorInThePickupBuilding))]
+    public bool HasAnElevatorInThePickupBuilding { get; set; }
+
+    /// <summary>
+    /// Does the destination building have an elevator?
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(HasAnElevatorInTheDestinationBuilding))]
+    public bool HasAnElevatorInTheDestinationBuilding { get; set; }
 
     /// <summary>
     /// Destination address
@@ -81,7 +109,7 @@ public class DetailsDeleteBookingViewModel
     public int NumberOfPassengers { get; set; }
 
     /// <summary>
-    /// Ha an assistant
+    /// Has an assistant
     /// </summary>
     [Display(ResourceType = typeof(Booking), Name = nameof(HasAnAssistant))]
     public bool HasAnAssistant { get; set; }

@@ -148,7 +148,9 @@ public class BookingsController : Controller
 
         vm.Id = booking.Id;
         vm.City = booking.City!.CityName;
-        vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
+        
+        vm.VehicleData = booking.VehiclesData;
+        vm.DriverData = booking.DriversData;
         vm.AdditionalInfo = booking.AdditionalInfo;
         vm.DestinationAddress = booking.DestinationAddress;
         vm.NeedAssistanceEnteringTheBuilding = booking.NeedAssistanceEnteringTheBuilding;
@@ -160,7 +162,7 @@ public class BookingsController : Controller
         {
             vm.PickupFloorNumber = booking.PickupFloorNumber;
         }
-        vm.VehicleType = booking.VehicleType!.VehicleTypeName;
+        
         vm.HasAnAssistant = booking.HasAnAssistant;
         vm.NumberOfPassengers = booking.NumberOfPassengers;
         vm.StatusOfBooking = booking.StatusOfBooking;
@@ -295,8 +297,6 @@ public class BookingsController : Controller
             vm.PickupFloorNumber = booking.PickupFloorNumber;
             vm.HasAnElevatorInThePickupBuilding = booking.HasAnElevatorInThePickupBuilding;
         }
-            
-        vm.VehicleType = booking.VehicleType!.VehicleTypeName;
         vm.VehicleData = booking.VehiclesData;
         vm.DriverData = booking.DriversData;
         vm.HasAnAssistant = booking.HasAnAssistant;
@@ -345,19 +345,25 @@ public class BookingsController : Controller
         
         vm.Id = booking.Id;
         vm.City = booking.City!.CityName;
-        vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
+        vm.VehicleData = booking!.VehiclesData;
+        vm.VehicleType = booking!.VehicleType!.VehicleTypeName;
+        vm.DriverData = booking!.DriversData;
         vm.AdditionalInfo = booking.AdditionalInfo;
         vm.DestinationAddress = booking.DestinationAddress;
         vm.NeedAssistanceEnteringTheBuilding = booking.NeedAssistanceEnteringTheBuilding;
         if (booking.NeedAssistanceEnteringTheBuilding)
         {
             vm.DestinationFloorNumber = booking.DestinationFloorNumber;
-            
+            vm.HasAnElevatorInTheDestinationBuilding = booking.HasAnElevatorInTheDestinationBuilding;
         }
         vm.PickupAddress = booking.PickupAddress;
         vm.NeedAssistanceLeavingTheBuilding = booking.NeedAssistanceLeavingTheBuilding;
-        if(booking.NeedAssistanceLeavingTheBuilding)
+        if (booking.NeedAssistanceLeavingTheBuilding)
+        {
             vm.PickupFloorNumber = booking.PickupFloorNumber;
+            vm.HasAnElevatorInThePickupBuilding = booking.HasAnElevatorInThePickupBuilding;
+        }
+            
         vm.VehicleType = booking.VehicleType!.VehicleTypeName;
         vm.HasAnAssistant = booking.HasAnAssistant;
         vm.NumberOfPassengers = booking.NumberOfPassengers;
