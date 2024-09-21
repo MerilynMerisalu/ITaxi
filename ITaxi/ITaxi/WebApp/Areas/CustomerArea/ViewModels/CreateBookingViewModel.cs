@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Resources.Areas.App.Domain.AdminArea;
+
+using App.Resources.Areas.App.Domain.CustomerArea;
 using Base.Resources;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -63,6 +64,14 @@ public class CreateBookingViewModel
     [Display(ResourceType = typeof(Booking), Name = nameof(PickupFloorNumber))]
     public int PickupFloorNumber { get; set; }
 
+
+    /// <summary>
+    /// Does the pickup building have an elevator
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(HasAnElevatorInThePickupBuilding))]
+    public bool HasAnElevatorInThePickupBuilding { get; set; }
+
+
     /// <summary>
     /// Destination address
     /// </summary>
@@ -85,6 +94,11 @@ public class CreateBookingViewModel
     [Display(ResourceType = typeof(Booking), Name = nameof(DestinationFloorNumber))]
     public int DestinationFloorNumber { get; set; }
 
+    /// <summary>
+    /// Does the destination building have an elevator
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(HasAnElevatorInTheDestinationBuilding))]
+    public bool HasAnElevatorInTheDestinationBuilding { get; set; }
 
     /// <summary>
     /// Number of passengers

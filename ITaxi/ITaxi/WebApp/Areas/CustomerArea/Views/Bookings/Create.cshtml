@@ -40,12 +40,16 @@
                 </label>
             </div>
             <div class="form-group">
-                <label asp-for="PickupFloorNumber" id="PickupFloorLBL" class="control-label" style="display:none"></label>
-                <input asp-for="PickupFloorNumber" id="PickupFloorNumberTB" style="display:none;" class="form-control" min="0" max="35" />
+                <label asp-for="PickupFloorNumber" id="PickupFloorLBL" style="display:none;" class="control-label" ></label>
+                <input asp-for="PickupFloorNumber" id="PickupFloorNumberTB" style="display:none" class="form-control" min="0" max="35" />
                 <span asp-validation-for="PickupFloorNumber" class="text-danger"></span>
                 <span id="PickupFloorNumber" class="text-danger field-validation-valid"></span>
             </div>
-
+            <div id="PickupBuildingElevatorDiv" class="form-group form-check" style="display:none" >
+                <label class="form-check-label" id="PickupBuildingElevatorLBL">
+                    <input id="PickupBuildingElevatorCB" class="form-check-input" asp-for="HasAnElevatorInThePickupBuilding" />  @Html.DisplayNameFor(model => model.HasAnElevatorInThePickupBuilding)
+                </label>
+            </div>
             <div class="form-group">
                 <label asp-for="DestinationAddress" class="control-label"></label>
                 <input asp-for="DestinationAddress" class="form-control" />
@@ -61,6 +65,11 @@
                 <input asp-for="DestinationFloorNumber" id="DestinationFloorNumberTB" style="display:none;" class="form-control" min="0" max="35" />
                 <span asp-validation-for="DestinationFloorNumber" class="text-danger"></span>
                 <span id="DestinationFloorNumber" class="text-danger field-validation-valid"></span>
+            </div>
+            <div id="DestinationBuildingElevatorDiv" class="form-group form-check" style="display:none">
+                <label class="form-check-label" id="DestinationBuildingElevatorLBL">
+                    <input id="DestinationBuildingElevatorCB" class="form-check-input" asp-for="HasAnElevatorInTheDestinationBuilding" />  @Html.DisplayNameFor(model => model.HasAnElevatorInTheDestinationBuilding)
+                </label>
             </div>
             <div class="form-group">
                 <label asp-for="NumberOfPassengers" class="control-label"></label>
@@ -193,35 +202,54 @@
         }
 
 
+        
+
         function showHidePickUpTextBox() {
-            var pickupFloorLabel = document.getElementById("PickupFloorLBL");
-            var pickupFloorTextBox = document.getElementById("PickupFloorNumberTB");
+            let pickupFloorLabel = document.getElementById("PickupFloorLBL");
+            let pickupFloorTextBox = document.getElementById("PickupFloorNumberTB");
+            let hasPickupBuildingElevatorLabel = document.getElementById("PickupBuildingElevatorLBL");
+            let hasPickupBuildingElevatorCheckBox = document.getElementById("PickupBuildingElevatorCB");
+            let hasPickupBuildingElevatorDiv = document.getElementById("PickupBuildingElevatorDiv");
             if (pickupFloorTextBox.style.display == "none") {
                 pickupFloorLabel.style.display = "block";
                 pickupFloorTextBox.style.display = "block";
-
+                hasPickupBuildingElevatorLabel.style.display = "block";
+                hasPickupBuildingElevatorCheckBox.style.display = "block";
+                hasPickupBuildingElevatorDiv.style.display = "block";
             }
             else {
                 pickupFloorLabel.style.display = "none";
                 pickupFloorTextBox.style.display = "none";
-
+                hasPickupBuildingElevatorLabel.style.display = "none";
+                hasPickupBuildingElevatorCheckBox.style.display = "none";
+                hasPickupBuildingElevatorDiv.style.display = "none";
             }
+
         }
 
         function showHideDestinationTextBox() {
-            var destinationFloorLabel = document.getElementById("DestinationFloorLBL");
-            var destinationFloorTextBox = document.getElementById("DestinationFloorNumberTB");
+            let destinationFloorLabel = document.getElementById("DestinationFloorLBL");
+            let destinationFloorTextBox = document.getElementById("DestinationFloorNumberTB");
+            let hasDestinationBuildingElevatorLabel = document.getElementById("DestinationBuildingElevatorLBL");
+            let hasDestinationBuildingElevatorCheckBox = document.getElementById("DestinationBuildingElevatorCB");
+            let hasDestinationBuildingElevatorDiv = document.getElementById("DestinationBuildingElevatorDiv");
             if (destinationFloorTextBox.style.display == "none") {
                 destinationFloorLabel.style.display = "block";
                 destinationFloorTextBox.style.display = "block";
-
+                hasDestinationBuildingElevatorLabel.style.display = "block";
+                hasDestinationBuildingElevatorCheckBox.style.display = "block";
+                hasDestinationBuildingElevatorDiv.style.display = "block";
             }
+
             else {
                 destinationFloorLabel.style.display = "none";
                 destinationFloorTextBox.style.display = "none";
-
+                hasDestinationBuildingElevatorLabel.style.display = "none";
+                hasDestinationBuildingElevatorCheckBox.style.display = "none";
+                hasDestinationBuildingElevatorDiv.style.display = "none";
             }
         }
+
     </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
