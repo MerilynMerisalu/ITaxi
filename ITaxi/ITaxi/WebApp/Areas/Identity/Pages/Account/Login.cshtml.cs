@@ -4,13 +4,17 @@
 #nullable enable
 
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using App.Domain.Identity;
+using App.Enum.Enum;
 using Base.Resources;
 using Base.Resources.Identity.Pages.Account;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using WebApp.Controllers;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
@@ -21,6 +25,7 @@ public class LoginModel : PageModel
 {
     private readonly ILogger<LoginModel> _logger;
     private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
     /// <summary>
     /// Login model constructor
@@ -111,6 +116,58 @@ public class LoginModel : PageModel
         return Page();
     }
 
+
+    /// <summary>
+    /// A login using Google authenication
+    /// </summary>
+    /// <returns>Challenge result with properties</returns>
+    //public IActionResult GoogleLogin()
+    //{
+    //    string redirectUrl = Url.Action("GoogleResponse", "Account");
+    //    var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+    //    return new ChallengeResult("Google", properties);
+    //}
+
+    ///// <summary>
+    ///// A method for handling a Google response
+    ///// </summary>
+    ///// <returns>An IActionResult</returns>
+    //public async Task<IActionResult> GoogleResponse()
+    //{
+    //    ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+    //    if (info == null)
+    //        return RedirectToAction(nameof(Login));
+
+    //    var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+    //    string[] userInfo = { info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value };
+    //    if (result.Succeeded)
+    //        return RedirectToPage(nameof(Index), nameof(HomeController));
+    //    else
+    //    {
+    //        AppUser user = new AppUser
+    //        {
+    //            Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
+    //            UserName = info.Principal.FindFirst(ClaimTypes.Email).Value,
+    //            FirstName = info.Principal.FindFirst(ClaimTypes.GivenName).Value,
+    //            LastName = info.Principal.FindFirst(ClaimTypes.Surname).Value,
+    //            Gender = Enum.Parse<Gender>(info.Principal.FindFirst(ClaimTypes.Gender).Value),
+    //            DateOfBirth = DateTime.Parse(info.Principal.FindFirst(ClaimTypes.DateOfBirth).Value).Date,
+    //            PhoneNumber = info.Principal.FindFirst(ClaimTypes.MobilePhone).Value
+    //        };
+
+    //        IdentityResult identResult = await _userManager.CreateAsync(user);
+    //        if (identResult.Succeeded)
+    //        {
+    //            identResult = await _userManager.AddLoginAsync(user, info);
+    //            if (identResult.Succeeded)
+    //            {
+    //                await _signInManager.SignInAsync(user, false);
+    //                return RedirectToPage(nameof(Index), nameof(HomeController));
+    //            }
+    //        }
+    //        return Page();
+    //    }
+    //}
     /// <summary>
     /// Input model
     /// </summary>

@@ -1,5 +1,6 @@
 using System.Configuration;
 using System.Globalization;
+using System.Security.Claims;
 using System.Text;
 using App.BLL;
 using App.Contracts.BLL;
@@ -10,6 +11,10 @@ using App.DAL.EF;
 using App.DAL.EF.Repositories;
 using App.Domain;
 using App.Domain.Identity;
+using Google.Apis.Auth.OAuth2.Responses;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -25,6 +30,8 @@ using WebApp;
 using WebApp.ApiControllers;
 using WebApp.Helpers;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,7 +43,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IAppUnitOfWork, AppUOW>();
 builder.Services.AddScoped<IAppBLL, AppBLL>();
 builder.Services.AddIdentity<AppUser, AppRole>(
-        options => options.SignIn.RequireConfirmedAccount = true)
+        options => options.SignIn.RequireConfirmedAccount = false)
     .AddDefaultTokenProviders()
     .AddDefaultUI()
     .AddEntityFrameworkStores<AppDbContext>();
@@ -128,6 +135,7 @@ builder.Services
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
 builder.Services.AddTransient<IMailService, MailService>();
 
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name:"CorsAllowAll", policy =>
@@ -137,11 +145,25 @@ builder.Services.AddCors(options =>
         policy.AllowAnyOrigin();
     });
 } );
+
+JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
 builder.Services.AddAuthentication().AddGoogle(options =>
 {
     options.ClientId = builder.Configuration["Authentication:Google:Client"];
     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    options.UserInformationEndpoint = "https://www.googleapis.com/oauth2/v3/userinfo";
+    options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
+    options.Scope.Add("https://www.googleapis.com/auth/user.birthday.read");
+    options.Scope.Add("https://www.googleapis.com/auth/user.phonenumbers.read");
+    options.SaveTokens = true;
     
+    options.ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
+    options.ClaimActions.MapJsonKey(ClaimTypes.DateOfBirth, "birthdate");
+    options.ClaimActions.MapJsonKey(ClaimTypes.MobilePhone, "phoneNumbers");
+    options.ClaimActions.MapJsonKey("picture", "picture");
+
+  
 });
 
 var app = builder.Build();

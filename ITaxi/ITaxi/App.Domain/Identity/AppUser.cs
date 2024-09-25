@@ -27,9 +27,10 @@ public class AppUser : BaseUser
 
     
     public string LastAndFirstName => $"{LastName} {FirstName}";
-    
+
     [EnumDataType(typeof(Gender))]
-    public Gender Gender { get; set; }
+    
+    public Gender? Gender { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.DateTime)]

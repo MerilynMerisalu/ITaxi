@@ -128,7 +128,7 @@ public class IndexModel : PageModel
                     PhoneNumber = phoneNumber!,
                     FirstName = firstname,
                     LastName = lastName,
-                    Gender = gender,
+                    Gender = Enum.Parse<Gender>(gender.Value.ToString()),
                     DateOfBirth = dateOfBirth,
                     PersonalIdentifier = admin.PersonalIdentifier,
                     CityId = admin.CityId,
@@ -161,7 +161,7 @@ public class IndexModel : PageModel
                     PhoneNumber = phoneNumber!,
                     FirstName = firstname,
                     LastName = lastName,
-                    Gender = gender,
+                    Gender = Enum.Parse<Gender>(gender.Value.ToString()),
                     DateOfBirth = dateOfBirth,
                     PersonalIdentifier = driver.PersonalIdentifier,
                     CityId = driver.CityId,
@@ -182,7 +182,7 @@ public class IndexModel : PageModel
                     PhoneNumber = phoneNumber!,
                     FirstName = firstname,
                     LastName = lastName,
-                    Gender = gender,
+                    Gender = Enum.Parse<Gender>(gender.Value.ToString()),
                     DateOfBirth = dateOfBirth,
                     DisabilityId = customer.DisabilityTypeId,
                     ImageFile = user.ProfileImage
@@ -257,7 +257,7 @@ public class IndexModel : PageModel
 
         if (Input.LastName != user.LastName) user.LastName = Input.LastName;
 
-        if (Input.Gender != user.Gender) user.Gender = Input.Gender;
+        if (Input.Gender != user.Gender.Value) user.Gender = Input.Gender;
         if (admin != null)
         {
             if (Input.PersonalIdentifier != admin.PersonalIdentifier)

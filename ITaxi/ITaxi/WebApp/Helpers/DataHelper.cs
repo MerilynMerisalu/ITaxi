@@ -576,7 +576,7 @@ public static class DataHelper
                     FirstName = "Maarika",
                     LastName = "Mätas",
                     DateOfBirth = DateTime.Parse("2001-02-14"),
-                    Gender = Gender.Female,
+                    Gender = Enum.Parse<Gender>(Gender.Female.ToString()),
                     Email = "maarika.matas@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "66357754"
@@ -614,7 +614,7 @@ public static class DataHelper
                     FirstName = "Kristjan",
                     LastName = "Suursalu",
                     DateOfBirth = DateTime.Parse("2000-04-14"),
-                    Gender = Gender.Male,
+                    Gender = Enum.Parse<Gender>(Gender.Male.ToString()),
                     Email = "kristjan.suursalu@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "88452236"

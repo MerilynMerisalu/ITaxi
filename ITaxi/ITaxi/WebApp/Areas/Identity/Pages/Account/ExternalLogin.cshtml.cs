@@ -8,12 +8,25 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using App.Domain.Identity;
+using App.Enum.Enum;
+using App.Resources.Areas.Identity.Pages.Account.Manage;
+using Base.Resources;
+using Google.Apis.Auth.OAuth2.Responses;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using WebApp.ApiControllers.Identity;
+using WebApp.Controllers;
+using Microsoft.AspNetCore.Authentication;
+using Google.Apis;
+using Google.Apis.PeopleService.v1;
+using Index = System.Index;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
@@ -29,7 +42,7 @@ public class ExternalLoginModel : PageModel
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserStore<AppUser> _userStore;
-
+    private readonly HttpContext _httpContext;
     /// <summary>
     /// External login model constructor
     /// </summary>
@@ -51,6 +64,7 @@ public class ExternalLoginModel : PageModel
         _emailStore = GetEmailStore();
         _logger = logger;
         _emailSender = emailSender;
+        
     }
 
     /// <summary>
@@ -112,14 +126,14 @@ public class ExternalLoginModel : PageModel
             ErrorMessage = $"Error from external provider: {remoteError}";
             return RedirectToPage("./Login", new {ReturnUrl = returnUrl});
         }
-
+        
         var info = await _signInManager.GetExternalLoginInfoAsync();
         if (info == null)
         {
             ErrorMessage = "Error loading external login information.";
             return RedirectToPage("./Login", new {ReturnUrl = returnUrl});
         }
-
+        
         // Sign in the user with this external login provider if the user already has a login.
         var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
         if (result.Succeeded)
@@ -134,11 +148,37 @@ public class ExternalLoginModel : PageModel
         // If the user does not have an account, then ask the user to create an account.
         ReturnUrl = returnUrl;
         ProviderDisplayName = info.ProviderDisplayName;
+
+        var accessToken = info.AuthenticationTokens.FirstOrDefault(x => x.Name == "access_token")?.Value;
+
+        //// Retrieve the access token from the authentication properties
+        ////var accessToken = await _httpContext.GetTokenAsync("access_token");
+
+        //// Use the token to make an API call to the Google People API, for example
+        /*var peopleService = new PeopleServiceService(new BaseClientService.Initializer
+        {
+            HttpClientInitializer = new UserCredential(null, "user", new TokenResponse { AccessToken = accessToken }),
+            ApplicationName = "ITaxi",
+        });*/
+
+        //// Request detailed user info from the People API
+        //var request = peopleService.People.Get("people/me");
+        //request.PersonFields = "genders,birthdays,phoneNumbers";
+        //var person = await request.ExecuteAsync();
+
+        //// Now you can access additional user details
+        //var gender = person.Genders?.FirstOrDefault()?.Value;
+        //var birthday = person.Birthdays?.FirstOrDefault()?.Date;
+        //var phoneNumber = person.PhoneNumbers?.FirstOrDefault()?.Value;
+
         if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
-            Input = new InputModel
+          Input = new InputModel
             {
-                Email = info.Principal.FindFirstValue(ClaimTypes.Email)
-            };
+                Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
+                FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName),
+                LastName = info.Principal.FindFirstValue(ClaimTypes.Surname),
+                PhoneNumber = info.Principal.FindFirstValue(ClaimTypes.MobilePhone),
+          };
         return Page();
     }
 
@@ -147,7 +187,7 @@ public class ExternalLoginModel : PageModel
     /// </summary>
     /// <param name="returnUrl">Return url</param>
     /// <returns>Page</returns>
-    public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
+    public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = "/Home/Index")
     {
         returnUrl = returnUrl ?? Url.Content("~/");
         // Get the information about the user from the external login provider
@@ -201,6 +241,77 @@ public class ExternalLoginModel : PageModel
         ReturnUrl = returnUrl;
         return Page();
     }
+    public IActionResult GoogleLogin()
+    {
+        string redirectUrl = Url.Action("GoogleResponse", "Account");
+        var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+        return new ChallengeResult("Google", properties);
+    }
+
+    /// <summary>
+    /// A method for handling a Google response
+    /// </summary>
+    /// <returns>An IActionResult</returns>
+    public async Task<IActionResult> GoogleResponse()
+    {
+        ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+        if (info == null)
+            return RedirectToAction("Login", nameof(AccountController));
+        // Retrieve the access token from the authentication properties
+        var accessToken = await _httpContext.GetTokenAsync("access_token");
+
+        // Use the token to make an API call to the Google People API, for example
+        var peopleService = new PeopleServiceService(new BaseClientService.Initializer
+        {
+            HttpClientInitializer = new UserCredential(null, "user", new TokenResponse { AccessToken = accessToken }),
+            ApplicationName = "ITaxi",
+        });
+
+        // Request detailed user info from the People API
+        var request = peopleService.People.Get("people/me");
+        request.PersonFields = "genders,birthdays,phoneNumbers";
+        var person = await request.ExecuteAsync();
+
+        // Now you can access additional user details
+        var gender = person.Genders?.FirstOrDefault()?.Value;
+        var birthday = person.Birthdays?.FirstOrDefault()?.Date;
+        var phoneNumber = person.PhoneNumbers?.FirstOrDefault()?.Value;
+
+        var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+        string[] userInfo = { info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value , 
+            info.Principal.FindFirst(ClaimTypes.Gender).Value,
+            info.Principal.FindFirst(ClaimTypes.DateOfBirth).Value,
+            info.Principal.FindFirst(ClaimTypes.MobilePhone).Value};
+        if (result.Succeeded)
+            return RedirectToPage(nameof(Index), nameof(HomeController));
+        else
+        {
+            
+            
+            AppUser user = new AppUser
+            {
+                Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
+                FirstName = info.Principal.FindFirst(ClaimTypes.GivenName).Value,
+                LastName = info.Principal.FindFirst(ClaimTypes.Surname).Value,
+               // Gender = Enum.Parse<Gender>(info.Principal.FindFirst(ClaimTypes.Gender).Value),
+                //DateOfBirth = DateTime.Parse(info.Principal.FindFirstValue(ClaimTypes.DateOfBirth)).Date,
+                PhoneNumber = info.Principal.FindFirstValue(ClaimTypes.MobilePhone)
+            };
+
+            IdentityResult identResult = await _userManager.CreateAsync(user);
+            if (identResult.Succeeded)
+            {
+                identResult = await _userManager.AddLoginAsync(user, info);
+                if (identResult.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, false);
+                    return RedirectToPage(nameof(Index), nameof(HomeController));
+                }
+            }
+            return Page();
+        }
+    }
+
 
     private AppUser CreateUser()
     {
@@ -233,6 +344,41 @@ public class ExternalLoginModel : PageModel
         /// </summary>
         [Required]
         [EmailAddress]
+        [Display(ResourceType = typeof(ExternalLogin), Name = nameof(Email))]
         public string Email { get; set; }
+        /// <summary>
+        /// First Name
+        /// </summary>
+        [Required]
+        [Display(ResourceType = typeof(ExternalLogin), Name = nameof(FirstName))]
+        public string FirstName { get; set; } = default!;
+
+        /// <summary>
+        /// Last Name
+        /// </summary>
+        [Required]
+        [Display(ResourceType = typeof(ExternalLogin), Name = nameof(LastName))]
+        public string LastName { get; set; } = default!;
+
+        /// <summary>
+        /// Gender
+        /// </summary>
+        //[Required]
+        //public string Gender { get; set; } = default!;
+
+        /// <summary>
+        /// Date of Birth
+        /// </summary>
+        //[Required]
+        //[DataType(DataType.Date)]
+        //public DateTime? DateOfBirth { get; set; }
+
+        /// <summary>
+        /// Phone Number
+        /// </summary>
+        [Required]
+        [Phone]
+        [Display(ResourceType = typeof(ExternalLogin), Name = nameof(PhoneNumber))]
+        public string PhoneNumber { get; set; } = default!;
     }
 }

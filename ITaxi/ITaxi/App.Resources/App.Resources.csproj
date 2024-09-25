@@ -160,6 +160,10 @@
           <Generator>PublicResXFileCodeGenerator</Generator>
           <LastGenOutput>PDF.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Areas\Identity\Pages\Account\Manage\ExternalLogin.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>ExternalLogin.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -352,6 +356,11 @@
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
           <DependentUpon>PDF.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\Identity\Pages\Account\Manage\ExternalLogin.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>ExternalLogin.resx</DependentUpon>
         </Compile>
     </ItemGroup>
 

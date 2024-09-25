@@ -21,6 +21,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using WebApp.ApiControllers.Identity;
+using WebApp.Controllers;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
@@ -188,7 +190,7 @@ public class RegisterCustomerModel : PageModel
             throw new NotSupportedException("The default UI requires a user store with email support.");
         return (IUserEmailStore<AppUser>) _userStore;
     }
-
+    
     /// <summary>
     ///  Input model 
     /// </summary>
@@ -236,7 +238,7 @@ public class RegisterCustomerModel : PageModel
         /// Disability id for customer
         /// </summary>
         [Display(ResourceType = typeof(CustomerRegister), Name = "DisabilityType")]
-        public Guid DisabilityTypeId { get; set; }
+        public Guid? DisabilityTypeId { get; set; }
 
         /// <summary>
         /// Customer phone number
@@ -248,7 +250,7 @@ public class RegisterCustomerModel : PageModel
         [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
         [Display(ResourceType = typeof(CustomerRegister), Name = nameof(PhoneNumber))]
-        public string PhoneNumber { get; set; } = default!;
+        public string? PhoneNumber { get; set; } 
 
         /// <summary>
         /// Customer email

@@ -9,10 +9,10 @@ public enum Gender
     Custom = 1,
 
     [Display(ResourceType = typeof(Common), Name = "Female")]
-    Female,
+    Female = 2,
 
     [Display(ResourceType = typeof(Common), Name = "Male")]
-    Male
+    Male= 3
 }
 
 public enum VehicleAvailability

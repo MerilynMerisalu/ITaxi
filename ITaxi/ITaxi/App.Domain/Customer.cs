@@ -11,7 +11,7 @@ public class Customer : DomainEntityMetaId
     public AppUser? AppUser { get; set; }
     
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Customer), Name = "DisabilityType")]
-    public Guid DisabilityTypeId { get; set; }
+    public Guid? DisabilityTypeId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Customer), Name = "DisabilityType")]
     public DisabilityType? DisabilityType { get; set; }
