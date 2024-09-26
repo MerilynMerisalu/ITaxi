@@ -151,8 +151,8 @@ public class ExternalLoginModel : PageModel
         // Now you can access additional user details
         var gender = person.Genders?.FirstOrDefault()?.Value;
         var birthday = person.Birthdays?.FirstOrDefault()?.Date;
-        var phoneNumber = person.PhoneNumbers?.FirstOrDefault()?.Value;
-
+        var phoneNumber = person.PhoneNumbers.FirstOrDefault()?.Value;
+        //var pValue = phoneNumber.First();
         //////
 
         //var info = await _signInManager.GetExternalLoginInfoAsync();
@@ -207,7 +207,7 @@ public class ExternalLoginModel : PageModel
                 LastName = info.Principal.FindFirstValue(ClaimTypes.Surname),
                 Gender = Enum.Parse<Gender>(gender, true),
                 DateOfBirth = new DateTime(birthday.Year.Value, birthday.Month.Value, birthday.Day.Value), // DateTime.Parse($"{birthday.Year}-{birthday.Month}-{birthday.Day}")
-                  PhoneNumber = phoneNumber,
+                PhoneNumber = phoneNumber
             };
         return Page();
     }

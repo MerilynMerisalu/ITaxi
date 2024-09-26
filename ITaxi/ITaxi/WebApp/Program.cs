@@ -156,6 +156,7 @@ builder.Services.AddAuthentication().AddGoogle(options =>
     options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
     options.Scope.Add("https://www.googleapis.com/auth/user.birthday.read");
     options.Scope.Add("https://www.googleapis.com/auth/user.phonenumbers.read");
+    
     options.SaveTokens = true;
     
     options.ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
