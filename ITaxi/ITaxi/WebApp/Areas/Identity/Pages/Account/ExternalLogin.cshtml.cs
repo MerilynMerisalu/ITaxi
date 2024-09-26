@@ -126,13 +126,41 @@ public class ExternalLoginModel : PageModel
             ErrorMessage = $"Error from external provider: {remoteError}";
             return RedirectToPage("./Login", new {ReturnUrl = returnUrl});
         }
-        
-        var info = await _signInManager.GetExternalLoginInfoAsync();
+
+        //////
+        ///
+
+        ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
         if (info == null)
+            return RedirectToAction("Login", nameof(AccountController));
+        // Retrieve the access token from the authentication properties
+        var accessToken = info.AuthenticationTokens.FirstOrDefault(a => a.Name == "access_token").Value;
+        var credentials = GoogleCredential.FromAccessToken(accessToken);
+        // Use the token to make an API call to the Google People API, for example
+        var peopleService = new PeopleServiceService(new BaseClientService.Initializer
         {
-            ErrorMessage = "Error loading external login information.";
-            return RedirectToPage("./Login", new {ReturnUrl = returnUrl});
-        }
+            HttpClientInitializer = credentials,
+            ApplicationName = "ITaxi",
+        });
+
+        // Request detailed user info from the People API
+        var request = peopleService.People.Get("people/me");
+        request.PersonFields = "genders,birthdays,phoneNumbers";
+        var person = request.Execute(); // make this async
+
+        // Now you can access additional user details
+        var gender = person.Genders?.FirstOrDefault()?.Value;
+        var birthday = person.Birthdays?.FirstOrDefault()?.Date;
+        var phoneNumber = person.PhoneNumbers?.FirstOrDefault()?.Value;
+
+        //////
+
+        //var info = await _signInManager.GetExternalLoginInfoAsync();
+        //if (info == null)
+        //{
+        //    ErrorMessage = "Error loading external login information.";
+        //    return RedirectToPage("./Login", new {ReturnUrl = returnUrl});
+        //}
         
         // Sign in the user with this external login provider if the user already has a login.
         var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
@@ -149,7 +177,7 @@ public class ExternalLoginModel : PageModel
         ReturnUrl = returnUrl;
         ProviderDisplayName = info.ProviderDisplayName;
 
-        var accessToken = info.AuthenticationTokens.FirstOrDefault(x => x.Name == "access_token")?.Value;
+        //var accessToken = info.AuthenticationTokens.FirstOrDefault(x => x.Name == "access_token")?.Value;
 
         //// Retrieve the access token from the authentication properties
         ////var accessToken = await _httpContext.GetTokenAsync("access_token");
@@ -172,13 +200,15 @@ public class ExternalLoginModel : PageModel
         //var phoneNumber = person.PhoneNumbers?.FirstOrDefault()?.Value;
 
         if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
-          Input = new InputModel
+            Input = new InputModel
             {
                 Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
                 FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName),
                 LastName = info.Principal.FindFirstValue(ClaimTypes.Surname),
-                PhoneNumber = info.Principal.FindFirstValue(ClaimTypes.MobilePhone),
-          };
+                Gender = Enum.Parse<Gender>(gender, true),
+                DateOfBirth = new DateTime(birthday.Year.Value, birthday.Month.Value, birthday.Day.Value), // DateTime.Parse($"{birthday.Year}-{birthday.Month}-{birthday.Day}")
+                  PhoneNumber = phoneNumber,
+            };
         return Page();
     }
 
@@ -258,19 +288,19 @@ public class ExternalLoginModel : PageModel
         if (info == null)
             return RedirectToAction("Login", nameof(AccountController));
         // Retrieve the access token from the authentication properties
-        var accessToken = await _httpContext.GetTokenAsync("access_token");
-
+        var accessToken = info.AuthenticationTokens.FirstOrDefault(a => a.Name == "access_token").Value;
+        var credentials = GoogleCredential.FromAccessToken(accessToken);
         // Use the token to make an API call to the Google People API, for example
         var peopleService = new PeopleServiceService(new BaseClientService.Initializer
         {
-            HttpClientInitializer = new UserCredential(null, "user", new TokenResponse { AccessToken = accessToken }),
+            HttpClientInitializer = credentials,
             ApplicationName = "ITaxi",
         });
 
         // Request detailed user info from the People API
         var request = peopleService.People.Get("people/me");
         request.PersonFields = "genders,birthdays,phoneNumbers";
-        var person = await request.ExecuteAsync();
+        var person = request.Execute(); // make this async
 
         // Now you can access additional user details
         var gender = person.Genders?.FirstOrDefault()?.Value;
@@ -363,15 +393,15 @@ public class ExternalLoginModel : PageModel
         /// <summary>
         /// Gender
         /// </summary>
-        //[Required]
-        //public string Gender { get; set; } = default!;
+        [Required]
+        public Gender Gender { get; set; } = default!;
 
         /// <summary>
         /// Date of Birth
         /// </summary>
-        //[Required]
-        //[DataType(DataType.Date)]
-        //public DateTime? DateOfBirth { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime? DateOfBirth { get; set; }
 
         /// <summary>
         /// Phone Number
