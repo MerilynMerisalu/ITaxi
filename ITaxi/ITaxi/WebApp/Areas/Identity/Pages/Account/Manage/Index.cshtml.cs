@@ -184,7 +184,7 @@ public class IndexModel : PageModel
                     LastName = lastName,
                     Gender = Enum.Parse<Gender>(gender.Value.ToString()),
                     DateOfBirth = dateOfBirth,
-                    DisabilityId = customer.DisabilityTypeId,
+                    DisabilityId = customer.DisabilityTypeId.Value,
                     ImageFile = user.ProfileImage
                 };
             }
@@ -192,8 +192,8 @@ public class IndexModel : PageModel
         
         if (user.ProfilePhoto != null)
             Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
-        else
-            Input.PhotoPath = Path.Combine(_webHostEnvironment.WebRootPath + "/Images/icons8-selfies-50.png");
+        //else
+            //Input.PhotoPath = Path.Combine(_webHostEnvironment.WebRootPath + "/Images/icons8-selfies-50.png");
     }
 
     /// <summary>
@@ -494,6 +494,6 @@ public class IndexModel : PageModel
         /// The path to a user photo
         /// </summary>
         [Display(ResourceType = typeof(Index), Name = "ProfileImage")]
-        public string PhotoPath { get; set; } = "icons8-selfies-50.png";
+        public string? PhotoPath { get; set; } = "icons8-selfies-50.png";
     }
 }

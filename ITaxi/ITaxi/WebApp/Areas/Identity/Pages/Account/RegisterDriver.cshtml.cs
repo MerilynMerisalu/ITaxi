@@ -115,6 +115,7 @@ public class RegisterDriverModel : PageModel
     /// </summary>
     /// <param name="returnUrl">Return url</param>
     /// <returns>Url</returns>
+    
     public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");

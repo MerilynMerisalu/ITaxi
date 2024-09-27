@@ -32,6 +32,8 @@ using WebApp.Helpers;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.JsonWebTokens;
+using WebApp.Filters;
+using App.BLL.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -113,6 +115,7 @@ builder.Services.AddAutoMapper(typeof(App.DAL.EF.AutoMapperConfig),
 /*builder.Services.AddAutoMapper(
     typeof(App.DAL.EF.AutoMapperConfig));*/
 
+builder.Services.AddTransient<ProfileCompleteFilterAttribute>();
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

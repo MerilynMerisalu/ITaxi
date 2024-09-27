@@ -27,7 +27,6 @@ using Microsoft.AspNetCore.Authentication;
 using Google.Apis;
 using Google.Apis.PeopleService.v1;
 using Index = System.Index;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
@@ -35,7 +34,7 @@ namespace WebApp.Areas.Identity.Pages.Account;
 /// External login model
 /// </summary>
 [AllowAnonymous]
-public class ExternalLoginModel : PageModel
+public class ExternalLoginDriverModel : PageModel
 {
     private readonly IEmailSender _emailSender;
     private readonly IUserEmailStore<AppUser> _emailStore;
@@ -52,7 +51,7 @@ public class ExternalLoginModel : PageModel
     /// <param name="userStore">Store for the user's</param>
     /// <param name="logger">Logger for the user's</param>
     /// <param name="emailSender">Email sender</param>
-    public ExternalLoginModel(
+    public ExternalLoginDriverModel(
         SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
         IUserStore<AppUser> userStore,
@@ -105,18 +104,12 @@ public class ExternalLoginModel : PageModel
     /// <param name="provider">Provider</param>
     /// <param name="returnUrl">Return url</param>
     /// <returns>New challenge result</returns>
-
+    // [Route("ExternalLoginDriver")]
+    
     public IActionResult OnPost(string provider, string returnUrl = null)
     {
         // Request a redirect to the external login provider.
-        var redirectUrl = Url.Page("./ExternalLogin", "Callback", new { returnUrl });
-        var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-        return new ChallengeResult(provider, properties);
-    }
-    public IActionResult OnPostDriver(string provider, string returnUrl = null)
-    {
-        // Request a redirect to the external login provider.
-        var redirectUrl = Url.Page("./ExternalLogin", "CallbackDriver", new { returnUrl });
+        var redirectUrl = Url.Page("./ExternalLoginDriver", "Callback", new {returnUrl});
         var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
         return new ChallengeResult(provider, properties);
     }
@@ -127,28 +120,9 @@ public class ExternalLoginModel : PageModel
     /// <param name="returnUrl">Return url</param>
     /// <param name="remoteError">remote error</param>
     /// <returns>Page</returns>
-    public async Task<IActionResult> OnGetCallbackDriverAsync(string returnUrl = null, string remoteError = null)
-    {
-        returnUrl = returnUrl ?? Url.Content("~/");
-        if (remoteError != null)
-        {
-            ErrorMessage = $"Error from external provider: {remoteError}";
-            return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
-        }
-
-
-        // create account
-        if (await RegisterUserAsync("Driver"))
-        {
-            // redirect to home
-            return Redirect("/");
-        }
-
-        return null;
-    }
-
     public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
     {
+        
         returnUrl = returnUrl ?? Url.Content("~/");
         if (remoteError != null)
         {
@@ -156,14 +130,41 @@ public class ExternalLoginModel : PageModel
             return RedirectToPage("./Login", new {ReturnUrl = returnUrl});
         }
 
+        //////
+        ///
 
-        var info = await _signInManager.GetExternalLoginInfoAsync();
+        ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
         if (info == null)
+            return RedirectToAction("Login", nameof(AccountController));
+        // Retrieve the access token from the authentication properties
+        var accessToken = info.AuthenticationTokens.FirstOrDefault(a => a.Name == "access_token").Value;
+        var credentials = GoogleCredential.FromAccessToken(accessToken);
+        // Use the token to make an API call to the Google People API, for example
+        var peopleService = new PeopleServiceService(new BaseClientService.Initializer
         {
-            ErrorMessage = "Error loading external login information.";
-            return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
-        }
+            HttpClientInitializer = credentials,
+            ApplicationName = "ITaxi",
+        });
 
+        // Request detailed user info from the People API
+        var request = peopleService.People.Get("people/me");
+        request.PersonFields = "genders,birthdays,phoneNumbers";
+        var person = request.Execute(); // make this async
+
+        // Now you can access additional user details
+        var gender = person.Genders?.FirstOrDefault()?.Value;
+        var birthday = person.Birthdays?.FirstOrDefault()?.Date;
+        var phoneNumber = person.PhoneNumbers.FirstOrDefault()?.Value;
+        //var pValue = phoneNumber.First();
+        //////
+
+        //var info = await _signInManager.GetExternalLoginInfoAsync();
+        //if (info == null)
+        //{
+        //    ErrorMessage = "Error loading external login information.";
+        //    return RedirectToPage("./Login", new {ReturnUrl = returnUrl});
+        //}
+        
         // Sign in the user with this external login provider if the user already has a login.
         var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
         if (result.Succeeded)
@@ -201,110 +202,17 @@ public class ExternalLoginModel : PageModel
         //var birthday = person.Birthdays?.FirstOrDefault()?.Date;
         //var phoneNumber = person.PhoneNumbers?.FirstOrDefault()?.Value;
 
-        // create account
-        if (await RegisterUserAsync("Customer"))
-        {
-            // add to context customers
-            // redirect to home
-            return Redirect("/");
-        }
-        // login
-        // show profile page or homepage
-
         if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
             Input = new InputModel
             {
                 Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
                 FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName),
                 LastName = info.Principal.FindFirstValue(ClaimTypes.Surname),
-                //Gender = Enum.Parse<Gender>(gender, true),
-                //DateOfBirth = new DateTime(birthday.Year.Value, birthday.Month.Value, birthday.Day.Value), // DateTime.Parse($"{birthday.Year}-{birthday.Month}-{birthday.Day}")
-                //PhoneNumber = phoneNumber
+                Gender = Enum.Parse<Gender>(gender, true),
+                DateOfBirth = new DateTime(birthday.Year.Value, birthday.Month.Value, birthday.Day.Value), // DateTime.Parse($"{birthday.Year}-{birthday.Month}-{birthday.Day}")
+                PhoneNumber = phoneNumber
             };
         return Page();
-    }
-
-    private async Task<bool> RegisterUserAsync(string role)
-    {
-
-
-        //////
-        ///
-
-        ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
-        if (info == null)
-            return false;
-        // Retrieve the access token from the authentication properties
-        var accessToken = info.AuthenticationTokens.FirstOrDefault(a => a.Name == "access_token").Value;
-        var credentials = GoogleCredential.FromAccessToken(accessToken);
-        // Use the token to make an API call to the Google People API, for example
-        var peopleService = new PeopleServiceService(new BaseClientService.Initializer
-        {
-            HttpClientInitializer = credentials,
-            ApplicationName = "ITaxi",
-        });
-
-        // Request detailed user info from the People API
-        var request = peopleService.People.Get("people/me");
-        request.PersonFields = "genders,birthdays,phoneNumbers";
-        var person = request.Execute(); // make this async
-
-        // Now you can access additional user details
-        var gender = person.Genders?.FirstOrDefault()?.Value;
-        var birthday = person.Birthdays?.FirstOrDefault()?.Date;
-        var phoneNumber = person.PhoneNumbers.FirstOrDefault()?.Value;
-
-        var email = info.Principal.FindFirst(ClaimTypes.Email).Value;
-        var firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
-        var lastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
-        //var pValue = phoneNumber.First();
-        //////
-
-        var user = CreateUser();
-
-        user.FirstName = firstName;
-        user.LastName = lastName;
-        user.Gender = Enum.Parse<Gender>(gender, true);
-        user.DateOfBirth = new DateTime(birthday.Year.Value, birthday.Month.Value, birthday.Day.Value); // DateTime.Parse($"{birthday.Year}-{birthday.Month}-{birthday.Day}")
-        user.PhoneNumber = phoneNumber;
-
-        await _userStore.SetUserNameAsync(user, email, CancellationToken.None);
-        await _emailStore.SetEmailAsync(user, email, CancellationToken.None);
-
-        
-        var result = await _userManager.CreateAsync(user);
-        if (result.Succeeded)
-        {
-            await _userManager.AddClaimAsync(user, new Claim("aspnet.firstname", firstName));
-            await _userManager.AddClaimAsync(user, new Claim("aspnet.lastname", lastName));
-
-            await _userManager.AddToRoleAsync(user, role);
-            result = await _userManager.AddLoginAsync(user, info);
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    null,
-                    new { area = "Identity", userId, code },
-                    Request.Scheme);
-
-                //await _emailSender.SendEmailAsync(email, "Confirm your email",
-                //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-
-                await _signInManager.SignInAsync(user, false, info.LoginProvider);
-                return true;
-            }
-        }
-
-        foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
-
-        return false;
     }
 
     /// <summary>
@@ -325,7 +233,41 @@ public class ExternalLoginModel : PageModel
 
         if (ModelState.IsValid)
         {
-            await RegisterUserAsync("");
+            var user = CreateUser();
+
+            await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+            await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+            var result = await _userManager.CreateAsync(user);
+            if (result.Succeeded)
+            {
+                result = await _userManager.AddLoginAsync(user, info);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        null,
+                        new {area = "Identity", userId, code},
+                        Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    // If account confirmation is required, we need to show the link if we don't have a real email sender
+                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        return RedirectToPage("./RegisterConfirmation", new {Input.Email});
+
+                    await _signInManager.SignInAsync(user, false, info.LoginProvider);
+                    return LocalRedirect(returnUrl);
+                }
+            }
+
+            foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
         }
 
         ProviderDisplayName = info.ProviderDisplayName;
