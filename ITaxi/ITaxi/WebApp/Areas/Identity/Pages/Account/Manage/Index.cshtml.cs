@@ -177,16 +177,31 @@ public class IndexModel : PageModel
         {
             if (customer != null)
             {
-                Input = new InputModel
+                if (customer.DisabilityTypeId == null)
                 {
-                    PhoneNumber = phoneNumber!,
-                    FirstName = firstname,
-                    LastName = lastName,
-                    Gender = Enum.Parse<Gender>(gender.Value.ToString()),
-                    DateOfBirth = dateOfBirth,
-                    DisabilityId = customer.DisabilityTypeId.Value,
-                    ImageFile = user.ProfileImage
-                };
+                    Input = new InputModel
+                    {
+                        PhoneNumber = phoneNumber!,
+                        FirstName = firstname,
+                        LastName = lastName,
+                        Gender = Enum.Parse<Gender>(gender.Value.ToString()),
+                        DateOfBirth = dateOfBirth,
+                        ImageFile = user.ProfileImage
+                    };
+                }
+                else {
+                    Input = new InputModel
+                    {
+                        PhoneNumber = phoneNumber!,
+                        FirstName = firstname,
+                        LastName = lastName,
+                        Gender = Enum.Parse<Gender>(gender.Value.ToString()),
+                        DateOfBirth = dateOfBirth,
+                        DisabilityId = customer.DisabilityTypeId.Value,
+                        ImageFile = user.ProfileImage
+                    };
+                }
+                
             }
         }
         

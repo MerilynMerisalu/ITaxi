@@ -28,6 +28,9 @@ using Google.Apis;
 using Google.Apis.PeopleService.v1;
 using Index = System.Index;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using App.Domain;
+using App.DAL.EF;
+using WebApp.Filters;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
@@ -44,6 +47,7 @@ public class ExternalLoginModel : PageModel
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserStore<AppUser> _userStore;
     private readonly HttpContext _httpContext;
+    private readonly AppDbContext _appDbContext;
     /// <summary>
     /// External login model constructor
     /// </summary>
@@ -57,7 +61,8 @@ public class ExternalLoginModel : PageModel
         UserManager<AppUser> userManager,
         IUserStore<AppUser> userStore,
         ILogger<ExternalLoginModel> logger,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        AppDbContext appDbContext)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -65,7 +70,7 @@ public class ExternalLoginModel : PageModel
         _emailStore = GetEmailStore();
         _logger = logger;
         _emailSender = emailSender;
-        
+        _appDbContext = appDbContext;
     }
 
     /// <summary>
@@ -205,11 +210,17 @@ public class ExternalLoginModel : PageModel
         if (await RegisterUserAsync("Customer"))
         {
             // add to context customers
-            // redirect to home
-            return Redirect("/");
+            // redirect to profile
+            return Redirect("/Identity/Account/Manage/Index");
+           
+            
+            
         }
         // login
         // show profile page or homepage
+        
+        ProfileCompleteFilterAttribute(info, )
+        
 
         if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
             Input = new InputModel
@@ -295,9 +306,13 @@ public class ExternalLoginModel : PageModel
 
                 //await _emailSender.SendEmailAsync(email, "Confirm your email",
                 //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-
+                var customer = new Customer() { AppUser = user,
+                CreatedAt = DateTime.Now.ToUniversalTime(),
+                UpdatedAt = DateTime.Now.ToUniversalTime()};
+                await _appDbContext.Customers.AddAsync(customer);
+                await _appDbContext.SaveChangesAsync();
                 await _signInManager.SignInAsync(user, false, info.LoginProvider);
+                
                 return true;
             }
         }
