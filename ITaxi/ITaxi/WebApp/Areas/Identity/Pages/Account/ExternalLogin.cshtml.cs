@@ -31,6 +31,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using App.Domain;
 using App.DAL.EF;
 using WebApp.Filters;
+using NuGet.Packaging;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
@@ -163,6 +164,7 @@ public class ExternalLoginModel : PageModel
 
 
         var info = await _signInManager.GetExternalLoginInfoAsync();
+        string disabilityTypeId = null;
         if (info == null)
         {
             ErrorMessage = "Error loading external login information.";
@@ -216,10 +218,16 @@ public class ExternalLoginModel : PageModel
             
             
         }
+        string[] userInfo = { info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value ,
+            info.Principal.FindFirst(ClaimTypes.Gender).Value,
+            info.Principal.FindFirst(ClaimTypes.DateOfBirth).Value,
+            info.Principal.FindFirst(ClaimTypes.MobilePhone).Value,
+        disabilityTypeId};
         // login
         // show profile page or homepage
         
-        ProfileCompleteFilterAttribute(info, )
+        
+        
         
 
         if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
@@ -264,11 +272,10 @@ public class ExternalLoginModel : PageModel
         var gender = person.Genders?.FirstOrDefault()?.Value;
         var birthday = person.Birthdays?.FirstOrDefault()?.Date;
         var phoneNumber = person.PhoneNumbers.FirstOrDefault()?.Value;
-
         var email = info.Principal.FindFirst(ClaimTypes.Email).Value;
         var firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
         var lastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
-        //var pValue = phoneNumber.First();
+       
         //////
 
         var user = CreateUser();
@@ -303,7 +310,7 @@ public class ExternalLoginModel : PageModel
                     null,
                     new { area = "Identity", userId, code },
                     Request.Scheme);
-
+                
                 //await _emailSender.SendEmailAsync(email, "Confirm your email",
                 //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
                 var customer = new Customer() { AppUser = user,
@@ -382,12 +389,11 @@ public class ExternalLoginModel : PageModel
         var gender = person.Genders?.FirstOrDefault()?.Value;
         var birthday = person.Birthdays?.FirstOrDefault()?.Date;
         var phoneNumber = person.PhoneNumbers?.FirstOrDefault()?.Value;
-
+        string disabilityTypeId = null;
         var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
-        string[] userInfo = { info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value , 
-            info.Principal.FindFirst(ClaimTypes.Gender).Value,
-            info.Principal.FindFirst(ClaimTypes.DateOfBirth).Value,
-            info.Principal.FindFirst(ClaimTypes.MobilePhone).Value};
+        
+
+        
         if (result.Succeeded)
             return RedirectToPage(nameof(Index), nameof(HomeController));
         else
@@ -423,6 +429,7 @@ public class ExternalLoginModel : PageModel
     {
         try
         {
+
             return Activator.CreateInstance<AppUser>();
         }
         catch

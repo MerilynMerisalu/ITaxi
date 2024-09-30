@@ -123,11 +123,29 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer&apos;s Full Name and Phone Number.
+        /// </summary>
+        public static string CustomerFullNameAndPhoneNumber {
+            get {
+                return ResourceManager.GetString("CustomerFullNameAndPhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customer&apos;s Last and First Name.
         /// </summary>
         public static string CustomerLastAndFirstName {
             get {
                 return ResourceManager.GetString("CustomerLastAndFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone Number.
+        /// </summary>
+        public static string CustomerPhoneNumber {
+            get {
+                return ResourceManager.GetString("CustomerPhoneNumber", resourceCulture);
             }
         }
         

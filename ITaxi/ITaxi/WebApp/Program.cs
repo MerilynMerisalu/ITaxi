@@ -173,7 +173,7 @@ builder.Services.AddAuthentication().AddGoogle(options =>
 var app = builder.Build();
 //Register Syncfusion license
 Syncfusion.Licensing.SyncfusionLicenseProvider
-    .RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NCaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXdec3VTRmZdWUJwVkA=");
+    .RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NDaF5cWGNCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXZdcHRdQmhZUU1wX0I=");
 
 Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
 Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");

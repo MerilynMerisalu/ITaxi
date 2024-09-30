@@ -29,7 +29,7 @@
                 @Html.DisplayNameFor(model => model.Booking!.VehicleType!.VehicleTypeName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Booking!.Customer)
+                @Html.DisplayNameFor(model => model.CustomerFullNameAndPhoneNumber)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.Customer!.DisabilityType!.DisabilityTypeName)
@@ -64,10 +64,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.HasAnElevatorInTheDestinationBuilding)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking!.Customer!.AppUser!.PhoneNumber)
-            </th>
-
+            
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.NumberOfPassengers)
             </th>
@@ -95,7 +92,7 @@
                     @Html.DisplayTextFor(modelItem => item.Booking!.Vehicle!.VehicleType!.VehicleTypeName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.LastAndFirstName)
+                    @Html.DisplayFor(modelItem => item.CustomerFullNameAndPhoneNumber)
                 </td>
                 <td>
                     @Html.DisplayTextFor(modelItem =>
@@ -146,10 +143,7 @@
                     <td></td>
                     <td></td>
                 }
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.PhoneNumber)
-                </td>
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.Booking!.NumberOfPassengers)
                 </td>

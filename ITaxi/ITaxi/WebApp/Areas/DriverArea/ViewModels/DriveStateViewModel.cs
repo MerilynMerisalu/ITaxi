@@ -29,8 +29,8 @@ public class DriveStateViewModel
     /// <summary>
     /// Customer last and first name
     /// </summary>
-    [Display(ResourceType = typeof(Drive), Name = nameof(CustomerLastAndFirstName))]
-    public string CustomerLastAndFirstName { get; set; } = default!;
+    [Display(ResourceType = typeof(Drive), Name = nameof(CustomerFullNameAndPhoneNumber))]
+    public string CustomerFullNameAndPhoneNumber { get; set; } = default!;
 
     /// <summary>
     /// Pickup date and time

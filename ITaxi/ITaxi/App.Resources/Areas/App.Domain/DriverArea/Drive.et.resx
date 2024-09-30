@@ -129,4 +129,10 @@
     <data name="HasAnElevatorInThePickupBuilding" xml:space="preserve">
         <value>Lifti olemasolu lähtekohas?</value>
     </data>
+    <data name="CustomerFullNameAndPhoneNumber" xml:space="preserve">
+        <value>Kliendi nimi ja telefoninumber</value>
+    </data>
+    <data name="CustomerPhoneNumber" xml:space="preserve">
+        <value>Telefoninumber</value>
+    </data>
 </root>

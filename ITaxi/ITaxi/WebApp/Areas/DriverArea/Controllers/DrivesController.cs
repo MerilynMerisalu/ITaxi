@@ -95,7 +95,7 @@ public async Task<IActionResult> Accept(Guid? id)
     drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
     vm.City = drive.Booking.City!.CityName;
-    vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
+    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerFullNameAndPhoneNumber;
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking!.NeedAssistanceEnteringTheBuilding;
@@ -188,7 +188,7 @@ public async Task<IActionResult> AcceptConfirmed(Guid id)
 /// Driver area drives GET method decline
 /// </summary>
 /// <param name="id">Id</param>
-/// <returns>View</returns>
+/// <returns> Decline view</returns>
 public async Task<IActionResult> Decline(Guid? id)
 {
     if (id == null) return NotFound();
@@ -204,7 +204,7 @@ public async Task<IActionResult> Decline(Guid? id)
     drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
     vm.City = drive.Booking.City!.CityName;
-    vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
+    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerFullNameAndPhoneNumber;
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
@@ -314,7 +314,7 @@ public async Task<IActionResult> StartDrive(Guid? id)
     drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
     vm.City = drive.Booking.City!.CityName;
-    vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
+    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerFullNameAndPhoneNumber;
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
@@ -413,7 +413,7 @@ public async Task<IActionResult> EndDrive(Guid? id)
     drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
     vm.City = drive.Booking.City!.CityName;
-    vm.CustomerLastAndFirstName = drive.Booking.Customer!.AppUser!.LastAndFirstName;
+    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerFullNameAndPhoneNumber;
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
