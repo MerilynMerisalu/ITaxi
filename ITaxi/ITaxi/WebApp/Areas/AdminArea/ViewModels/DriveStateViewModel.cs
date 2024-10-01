@@ -27,16 +27,16 @@ public class DriveStateViewModel : AdminAreaBaseViewModel
     public string ShiftDurationTime { get; set; } = default!;
 
     /// <summary>
-    /// Driver last and first name
+    /// Driver's information
     /// </summary>
-    [Display(ResourceType = typeof(Drive), Name = "JobTitle")]
-    public string DriverLastAndFirstName { get; set; } = default!;
+    [Display(ResourceType = typeof(Drive), Name = nameof(DriverInfo))]
+    public string DriverInfo { get; set; } = default!;
 
     /// <summary>
-    /// Customer last and first name
+    /// Customer's information
     /// </summary>
-    [Display(ResourceType = typeof(Drive), Name = "Customer")]
-    public string CustomerLastAndFirstName { get; set; } = default!;
+    [Display(ResourceType = typeof(Drive), Name = nameof(CustomerInfo))]
+    public string CustomerInfo { get; set; } = default!;
 
     /// <summary>
     /// Pick up date and time

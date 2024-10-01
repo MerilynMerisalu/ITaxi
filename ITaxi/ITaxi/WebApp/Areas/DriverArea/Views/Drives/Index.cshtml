@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.Booking!.Schedule!.ShiftDurationTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerFullNameAndPhoneNumber)
+                @Html.DisplayNameFor(model => model.CustomerInfo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.Customer!.DisabilityType)
@@ -110,7 +110,7 @@
                     @Html.DisplayFor(modelItem => item.Booking!.Schedule!.ShiftDurationTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CustomerFullNameAndPhoneNumber)
+                    @Html.DisplayFor(modelItem => item.CustomerInfo)
                 </td>
                 <td>
                     @Html.DisplayTextFor(modelItem => item.Booking!.Customer!.DisabilityType!.DisabilityTypeName)

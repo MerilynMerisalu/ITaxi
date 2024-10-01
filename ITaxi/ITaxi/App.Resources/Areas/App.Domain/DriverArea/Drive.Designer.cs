@@ -123,11 +123,11 @@ namespace App.Resources.Areas.App.Domain.DriverArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Customer&apos;s Full Name and Phone Number.
+        ///   Looks up a localized string similar to Customer&apos;s Information.
         /// </summary>
-        public static string CustomerFullNameAndPhoneNumber {
+        public static string CustomerInfo {
             get {
-                return ResourceManager.GetString("CustomerFullNameAndPhoneNumber", resourceCulture);
+                return ResourceManager.GetString("CustomerInfo", resourceCulture);
             }
         }
         

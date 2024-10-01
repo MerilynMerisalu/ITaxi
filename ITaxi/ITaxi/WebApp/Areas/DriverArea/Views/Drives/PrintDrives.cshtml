@@ -29,7 +29,7 @@
                 @Html.DisplayNameFor(model => model.Booking!.VehicleType!.VehicleTypeName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerFullNameAndPhoneNumber)
+                @Html.DisplayNameFor(model => model.CustomerInfo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.Customer!.DisabilityType!.DisabilityTypeName)
@@ -92,7 +92,7 @@
                     @Html.DisplayTextFor(modelItem => item.Booking!.Vehicle!.VehicleType!.VehicleTypeName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CustomerFullNameAndPhoneNumber)
+                    @Html.DisplayFor(modelItem => item.CustomerInfo)
                 </td>
                 <td>
                     @Html.DisplayTextFor(modelItem =>

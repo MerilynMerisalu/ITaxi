@@ -17,7 +17,7 @@
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.Booking!.Driver)
+                @Html.DisplayNameFor(model => model.DriverInfo)
             </th>
 
             <th>
@@ -27,7 +27,7 @@
                 @Html.DisplayNameFor(model => model.Booking!.VehicleType!.VehicleTypeName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Booking!.Customer)
+                @Html.DisplayNameFor(model => model.CustomerInfo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.Customer!.DisabilityType!.DisabilityTypeName)
@@ -62,10 +62,6 @@
                 @Html.DisplayNameFor(model => model.Booking!.HasAnElevatorInTheDestinationBuilding)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Booking!.Customer!.AppUser!.PhoneNumber)
-            </th>
-
-            <th>
                 @Html.DisplayNameFor(model => model.Booking!.NumberOfPassengers)
             </th>
             <th>
@@ -86,7 +82,7 @@
                     @Html.DisplayFor(modelItem => item.Booking!.Schedule!.ShiftDurationTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Driver!.AppUser!.LastAndFirstName)
+                    @Html.DisplayFor(modelItem => item.DriverInfo)
                 </td>
 
                 <td>
@@ -96,7 +92,7 @@
                     @Html.DisplayTextFor(modelItem => item.Booking!.Vehicle!.VehicleType!.VehicleTypeName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.LastAndFirstName)
+                    @Html.DisplayFor(modelItem => item.CustomerInfo)
                 </td>
                 <td>
                     @Html.DisplayTextFor(modelItem =>
@@ -148,9 +144,7 @@
                     <td></td>
                     <td></td>
                 }
-                <td>
-                    @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.PhoneNumber)
-                </td>
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.Booking!.NumberOfPassengers)
                 </td>

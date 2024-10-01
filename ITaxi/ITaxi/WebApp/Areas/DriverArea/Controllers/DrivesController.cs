@@ -95,7 +95,7 @@ public async Task<IActionResult> Accept(Guid? id)
     drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
     vm.City = drive.Booking.City!.CityName;
-    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerFullNameAndPhoneNumber;
+    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerInfo;
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking!.NeedAssistanceEnteringTheBuilding;
@@ -204,7 +204,7 @@ public async Task<IActionResult> Decline(Guid? id)
     drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
     vm.City = drive.Booking.City!.CityName;
-    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerFullNameAndPhoneNumber;
+    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerInfo;
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
@@ -314,7 +314,7 @@ public async Task<IActionResult> StartDrive(Guid? id)
     drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
     vm.City = drive.Booking.City!.CityName;
-    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerFullNameAndPhoneNumber;
+    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerInfo;
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
@@ -413,7 +413,7 @@ public async Task<IActionResult> EndDrive(Guid? id)
     drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
     vm.City = drive.Booking.City!.CityName;
-    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerFullNameAndPhoneNumber;
+    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerInfo;
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;

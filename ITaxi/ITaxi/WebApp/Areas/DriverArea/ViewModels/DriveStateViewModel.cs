@@ -29,7 +29,7 @@ public class DriveStateViewModel
     /// <summary>
     /// Customer last and first name
     /// </summary>
-    [Display(ResourceType = typeof(Drive), Name = nameof(CustomerFullNameAndPhoneNumber))]
+    [Display(ResourceType = typeof(Drive), Name = "CustomerInfo")]
     public string CustomerFullNameAndPhoneNumber { get; set; } = default!;
 
     /// <summary>

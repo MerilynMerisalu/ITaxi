@@ -21,14 +21,14 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Driver)
+                @Html.DisplayNameFor(model => model.DriverInfo)
             </th>
 
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.Schedule!.ShiftDurationTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Booking!.Customer)
+                @Html.DisplayNameFor(model => model.CustomerInfo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.Customer!.DisabilityType)
@@ -149,14 +149,14 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Driver!.AppUser!.LastAndFirstName)
+                    @Html.DisplayFor(modelItem => item.DriverInfo)
                 </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => item.Booking!.Schedule!.ShiftDurationTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Booking!.Customer!.AppUser!.LastAndFirstName)
+                    @Html.DisplayFor(modelItem => item.CustomerInfo)
                 </td>
                 <td>
                     @Html.DisplayTextFor(modelItem => item.Booking!.Customer!.DisabilityType!.DisabilityTypeName)

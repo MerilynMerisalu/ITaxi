@@ -137,8 +137,8 @@
     <data name="HasAnElevatorInThePickupBuilding" xml:space="preserve">
         <value>Does the Pickup Building Have an Elevator?</value>
     </data>
-    <data name="CustomerFullNameAndPhoneNumber" xml:space="preserve">
-        <value>Customer's Full Name and Phone Number</value>
+    <data name="CustomerInfo" xml:space="preserve">
+        <value>Customer's Information</value>
     </data>
     <data name="CustomerPhoneNumber" xml:space="preserve">
         <value>Phone Number</value>

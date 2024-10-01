@@ -132,6 +132,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer&apos;s Information.
+        /// </summary>
+        public static string CustomerInfo {
+            get {
+                return ResourceManager.GetString("CustomerInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Decline.
         /// </summary>
         public static string Decline {
@@ -191,6 +200,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string DriveName {
             get {
                 return ResourceManager.GetString("DriveName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Driver&apos;s Information.
+        /// </summary>
+        public static string DriverInfo {
+            get {
+                return ResourceManager.GetString("DriverInfo", resourceCulture);
             }
         }
         
@@ -299,6 +317,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string NumberOfPassengers {
             get {
                 return ResourceManager.GetString("NumberOfPassengers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone Number.
+        /// </summary>
+        public static string PhoneNumber {
+            get {
+                return ResourceManager.GetString("PhoneNumber", resourceCulture);
             }
         }
         
