@@ -18,15 +18,15 @@ public class DetailsDeleteBookingViewModel
     /// Vehicle Information
     /// </summary>
 
-    [Display(ResourceType = typeof(Booking), Name = "VehiclesData")]
-    public string? VehicleData { get; set; }
+    [Display(ResourceType = typeof(Booking), Name = nameof(VehicleInfo))]
+    public string? VehicleInfo { get; set; }
 
     /// <summary>
     /// Driver Information
     /// </summary>
 
-    [Display(ResourceType = typeof(Booking), Name = "DriversData")]
-    public string? DriverData { get; set; }
+    [Display(ResourceType = typeof(Booking), Name = "DriverInfo")]
+    public string? DriverInfo { get; set; }
 
 
     /// <summary>

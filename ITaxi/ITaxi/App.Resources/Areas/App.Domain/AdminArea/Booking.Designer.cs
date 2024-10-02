@@ -141,6 +141,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer&apos;s Information.
+        /// </summary>
+        public static string CustomerInfo {
+            get {
+                return ResourceManager.GetString("CustomerInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Decline .
         /// </summary>
         public static string Decline {
@@ -191,6 +200,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string Driver {
             get {
                 return ResourceManager.GetString("Driver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Driver&apos;s Information.
+        /// </summary>
+        public static string DriverInfo {
+            get {
+                return ResourceManager.GetString("DriverInfo", resourceCulture);
             }
         }
         
@@ -249,6 +267,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Phone Number.
+        /// </summary>
+        public static string PhoneNumber {
+            get {
+                return ResourceManager.GetString("PhoneNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pick Up Address .
         /// </summary>
         public static string PickupAddress {
@@ -299,6 +326,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string Vehicle {
             get {
                 return ResourceManager.GetString("Vehicle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle&apos;s Information.
+        /// </summary>
+        public static string VehicleInfo {
+            get {
+                return ResourceManager.GetString("VehicleInfo", resourceCulture);
             }
         }
         

@@ -13,17 +13,20 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.PickUpDateAndTime)
+            @Html.DisplayNameFor(model => model.Schedule)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DriversData)
+            @Html.DisplayNameFor(model => model.DriverInfo)
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.VehiclesData)
+            @Html.DisplayNameFor(model => model.PickUpDateAndTime)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Customer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VehicleInfo)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.City)
@@ -53,9 +56,7 @@
         <th>
             @Html.DisplayNameFor(model => model.HasAnElevatorInTheDestinationBuilding)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Customer!.AppUser!.PhoneNumber)
-        </th>
+        
 
         <th>
             @Html.DisplayNameFor(model => model.NumberOfPassengers)
@@ -78,18 +79,19 @@
                     @Html.DisplayFor(modelItem => item.Schedule!.ShiftDurationTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Driver!.AppUser!.LastAndFirstName)
+                    @Html.DisplayFor(modelItem => item.DriverInfo)
                 </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => item.PickUpDateAndTime)
                 </td>
                 <td>
-                    @Html.DisplayTextFor(modelItem => item.VehicleType!.VehicleTypeName)
+                    @Html.DisplayTextFor(modelItem => item.CustomerInfo)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Customer!.AppUser!.LastAndFirstName)
+                    @Html.DisplayFor(modelItem => item.VehicleInfo)
                 </td>
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.City!.CityName)
                 </td>
@@ -135,9 +137,7 @@
                     <td></td>
                     <td></td>
                 }
-                <td>
-                    @Html.DisplayFor(modelItem => item.Customer!.AppUser!.PhoneNumber)
-                </td>
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.NumberOfPassengers)
                 </td>

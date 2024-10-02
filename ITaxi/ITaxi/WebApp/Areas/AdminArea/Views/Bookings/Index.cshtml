@@ -23,7 +23,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model!.Customer)
+                @Html.DisplayNameFor(model => model!.CustomerInfo)
             </th>
 
             <th>
@@ -31,14 +31,14 @@
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model!.Driver)
+                @Html.DisplayNameFor(model => model!.DriverInfo)
             </th>
 
             <th>
                 @Html.DisplayNameFor(model => model!.VehicleType)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model!.Vehicle)
+                @Html.DisplayNameFor(model => model!.VehicleInfo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model!.City)
@@ -115,19 +115,19 @@
             <tr>
 
                 <td>
-                    @Html.DisplayFor(modelItem => item!.Customer!.AppUser!.LastAndFirstName)
+                    @Html.DisplayFor(modelItem => item!.CustomerInfo)
                 </td>
                 <td>
                     @Html.DisplayTextFor(modelItem => item!.Schedule!.ShiftDurationTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item!.Driver!.AppUser!.LastAndFirstName)
+                    @Html.DisplayFor(modelItem => item!.DriverInfo)
                 </td>
                 <td>
                     @Html.DisplayTextFor(modelItem => item!.VehicleType!.VehicleTypeName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item!.Vehicle!.VehicleIdentifier)
+                    @Html.DisplayFor(modelItem => item!.VehicleInfo)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item!.City!.CityName)

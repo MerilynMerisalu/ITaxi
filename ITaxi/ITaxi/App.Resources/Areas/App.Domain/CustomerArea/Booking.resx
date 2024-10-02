@@ -100,10 +100,10 @@
     <data name="CreatePDF" xml:space="preserve">
         <value>Create PDF</value>
     </data>
-    <data name="DriversData" xml:space="preserve">
+    <data name="DriverInfo" xml:space="preserve">
         <value>Driver Information </value>
     </data>
-    <data name="VehiclesData" xml:space="preserve">
+    <data name="VehicleInfo" xml:space="preserve">
         <value>Vehicle's Data</value>
     </data>
 </root>

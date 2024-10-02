@@ -148,9 +148,8 @@ public class BookingsController : Controller
 
         vm.Id = booking.Id;
         vm.City = booking.City!.CityName;
-        
-        vm.VehicleData = booking.VehiclesData;
-        vm.DriverData = booking.DriversData;
+        vm.VehicleInfo = booking.VehicleInfo;
+        vm.DriverInfo = booking.DriverInfo;
         vm.AdditionalInfo = booking.AdditionalInfo;
         vm.DestinationAddress = booking.DestinationAddress;
         vm.NeedAssistanceEnteringTheBuilding = booking.NeedAssistanceEnteringTheBuilding;
@@ -305,8 +304,8 @@ public class BookingsController : Controller
             vm.PickupFloorNumber = booking.PickupFloorNumber;
             vm.HasAnElevatorInThePickupBuilding = booking.HasAnElevatorInThePickupBuilding;
         }
-        vm.VehicleData = booking.VehiclesData;
-        vm.DriverData = booking.DriversData;
+        vm.VehicleInfo = booking.VehicleInfo;
+        vm.DriverInfo = booking.DriverInfo;
         vm.HasAnAssistant = booking.HasAnAssistant;
         vm.NumberOfPassengers = booking.NumberOfPassengers;
         vm.StatusOfBooking = booking.StatusOfBooking;
@@ -353,9 +352,9 @@ public class BookingsController : Controller
         
         vm.Id = booking.Id;
         vm.City = booking.City!.CityName;
-        vm.VehicleData = booking!.VehiclesData;
+        vm.VehicleInfo = booking!.VehicleInfo;
         vm.VehicleType = booking!.VehicleType!.VehicleTypeName;
-        vm.DriverData = booking!.DriversData;
+        vm.DriverInfo = booking!.DriverInfo;
         vm.AdditionalInfo = booking.AdditionalInfo;
         vm.DestinationAddress = booking.DestinationAddress;
         vm.NeedAssistanceEnteringTheBuilding = booking.NeedAssistanceEnteringTheBuilding;

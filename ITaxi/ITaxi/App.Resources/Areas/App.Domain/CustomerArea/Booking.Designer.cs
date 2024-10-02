@@ -161,9 +161,9 @@ namespace App.Resources.Areas.App.Domain.CustomerArea {
         /// <summary>
         ///   Looks up a localized string similar to Driver Information .
         /// </summary>
-        public static string DriversData {
+        public static string DriverInfo {
             get {
-                return ResourceManager.GetString("DriversData", resourceCulture);
+                return ResourceManager.GetString("DriverInfo", resourceCulture);
             }
         }
         
@@ -287,9 +287,9 @@ namespace App.Resources.Areas.App.Domain.CustomerArea {
         /// <summary>
         ///   Looks up a localized string similar to Vehicle&apos;s Data.
         /// </summary>
-        public static string VehiclesData {
+        public static string VehicleInfo {
             get {
-                return ResourceManager.GetString("VehiclesData", resourceCulture);
+                return ResourceManager.GetString("VehicleInfo", resourceCulture);
             }
         }
         
