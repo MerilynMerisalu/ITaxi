@@ -38,7 +38,7 @@ public class ExternalLoginDriverModel : PageModel
 {
     private readonly IEmailSender _emailSender;
     private readonly IUserEmailStore<AppUser> _emailStore;
-    private readonly ILogger<ExternalLoginModel> _logger;
+    private readonly ILogger<ExternalLoginDriverModel> _logger;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserStore<AppUser> _userStore;
@@ -55,7 +55,7 @@ public class ExternalLoginDriverModel : PageModel
         SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
         IUserStore<AppUser> userStore,
-        ILogger<ExternalLoginModel> logger,
+        ILogger<ExternalLoginDriverModel> logger,
         IEmailSender emailSender)
     {
         _signInManager = signInManager;
@@ -104,7 +104,7 @@ public class ExternalLoginDriverModel : PageModel
     /// <param name="provider">Provider</param>
     /// <param name="returnUrl">Return url</param>
     /// <returns>New challenge result</returns>
-    // [Route("ExternalLoginDriver")]
+    
     
     public IActionResult OnPost(string provider, string returnUrl = null)
     {
@@ -148,13 +148,15 @@ public class ExternalLoginDriverModel : PageModel
 
         // Request detailed user info from the People API
         var request = peopleService.People.Get("people/me");
-        request.PersonFields = "genders,birthdays,phoneNumbers";
+        request.PersonFields = "genders,birthdays,phoneNumbers,state,address";
         var person = request.Execute(); // make this async
 
         // Now you can access additional user details
         var gender = person.Genders?.FirstOrDefault()?.Value;
         var birthday = person.Birthdays?.FirstOrDefault()?.Date;
         var phoneNumber = person.PhoneNumbers.FirstOrDefault()?.Value;
+        var county = person.Addresses.FirstOrDefault()?.Region;
+        var address = person.Addresses.FirstOrDefault()?.ExtendedAddress;
         //var pValue = phoneNumber.First();
         //////
 
@@ -210,7 +212,9 @@ public class ExternalLoginDriverModel : PageModel
                 LastName = info.Principal.FindFirstValue(ClaimTypes.Surname),
                 Gender = Enum.Parse<Gender>(gender, true),
                 DateOfBirth = new DateTime(birthday.Year.Value, birthday.Month.Value, birthday.Day.Value), // DateTime.Parse($"{birthday.Year}-{birthday.Month}-{birthday.Day}")
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                County = county,
+                Address = address,
             };
         return Page();
     }
@@ -220,6 +224,10 @@ public class ExternalLoginDriverModel : PageModel
     /// </summary>
     /// <param name="returnUrl">Return url</param>
     /// <returns>Page</returns>
+
+    
+
+
     public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = "/Home/Index")
     {
         returnUrl = returnUrl ?? Url.Content("~/");
@@ -234,7 +242,7 @@ public class ExternalLoginDriverModel : PageModel
         if (ModelState.IsValid)
         {
             var user = CreateUser();
-
+            var googleResponse = GoogleResponse();
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
@@ -302,19 +310,24 @@ public class ExternalLoginDriverModel : PageModel
 
         // Request detailed user info from the People API
         var request = peopleService.People.Get("people/me");
-        request.PersonFields = "genders,birthdays,phoneNumbers";
+        request.PersonFields = "genders,birthdays,phoneNumbers,state,address";
         var person = request.Execute(); // make this async
 
         // Now you can access additional user details
         var gender = person.Genders?.FirstOrDefault()?.Value;
         var birthday = person.Birthdays?.FirstOrDefault()?.Date;
         var phoneNumber = person.PhoneNumbers?.FirstOrDefault()?.Value;
+        var county = person.Addresses.FirstOrDefault()?.Region;
+        var address = person.Addresses.FirstOrDefault()?.ExtendedAddress;
 
         var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
         string[] userInfo = { info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value , 
             info.Principal.FindFirst(ClaimTypes.Gender).Value,
             info.Principal.FindFirst(ClaimTypes.DateOfBirth).Value,
-            info.Principal.FindFirst(ClaimTypes.MobilePhone).Value};
+            info.Principal.FindFirst(ClaimTypes.MobilePhone).Value,
+            info.Principal.FindFirst(ClaimTypes.StateOrProvince).Value,
+            info.Principal.FindFirst(ClaimTypes.StreetAddress).Value,
+        };
         if (result.Succeeded)
             return RedirectToPage(nameof(Index), nameof(HomeController));
         else
@@ -356,7 +369,7 @@ public class ExternalLoginDriverModel : PageModel
         {
             throw new InvalidOperationException($"Can't create an instance of '{nameof(AppUser)}'. " +
                                                 $"Ensure that '{nameof(AppUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                                                "override the external login page in /Areas/Identity/Pages/Account/ExternalLogin.cshtml");
+                                                "override the external login page in /Areas/Identity/Pages/Account/ExternalLoginCustomer.cshtml");
         }
     }
 
@@ -413,5 +426,20 @@ public class ExternalLoginDriverModel : PageModel
         [Phone]
         [Display(ResourceType = typeof(ExternalLogin), Name = nameof(PhoneNumber))]
         public string PhoneNumber { get; set; } = default!;
+        
+        /// <summary>
+        /// County
+        /// </summary>
+        [Required]
+        [Display(ResourceType = typeof(ExternalLogin), Name = nameof(County))]
+        public string County { get; set; } = default!;
+        
+        /// <summary>
+        /// Address
+        /// </summary>
+        [Required]
+        [Display(ResourceType = typeof(ExternalLogin), Name = nameof(Address))]
+        public string Address { get; set; } = default!;
     }
+    
 }

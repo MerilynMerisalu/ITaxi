@@ -318,9 +318,9 @@ public class IndexModel : PageModel
                 if (Input.DriverLicenseNumber != null) driver.DriverLicenseNumber = Input.DriverLicenseNumber;
             }
 
-            if (Input.DriverLicenseExpiryDate.Date != driver.DriverLicenseExpiryDate.Date)
+            if (Input.DriverLicenseExpiryDate?.Date != driver.DriverLicenseExpiryDate.Date)
             {
-                driver.DriverLicenseExpiryDate = Input.DriverLicenseExpiryDate;
+                driver.DriverLicenseExpiryDate = Input.DriverLicenseExpiryDate.Value.Date;
             }
             
             if (Input.ChangedDriverLicenseCategoriesList != null)
@@ -497,7 +497,7 @@ public class IndexModel : PageModel
         /// </summary>
         [DataType(DataType.Date)]
         [Display(ResourceType = typeof(Index), Name = "DriverLicenseExpiryDate")]
-        public DateTime DriverLicenseExpiryDate { get; set; }
+        public DateTime? DriverLicenseExpiryDate { get; set; }
         
         /// <summary>
         /// Image file

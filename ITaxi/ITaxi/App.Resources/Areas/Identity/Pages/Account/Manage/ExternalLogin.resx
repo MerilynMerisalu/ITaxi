@@ -45,4 +45,10 @@
     <data name="PhoneNumber" xml:space="preserve">
         <value>Phone Number</value>
     </data>
+    <data name="County" xml:space="preserve">
+        <value>County</value>
+    </data>
+    <data name="Address" xml:space="preserve">
+        <value>Address</value>
+    </data>
 </root>

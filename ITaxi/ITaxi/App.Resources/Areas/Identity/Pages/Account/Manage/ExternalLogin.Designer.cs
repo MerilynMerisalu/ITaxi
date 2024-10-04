@@ -60,11 +60,29 @@ namespace App.Resources.Areas.Identity.Pages.Account.Manage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Address.
+        /// </summary>
+        public static string Address {
+            get {
+                return ResourceManager.GetString("Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Associate your {0} account..
         /// </summary>
         public static string AssociateYourAccountWithTheThirdPartyAccount {
             get {
                 return ResourceManager.GetString("AssociateYourAccountWithTheThirdPartyAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to County.
+        /// </summary>
+        public static string County {
+            get {
+                return ResourceManager.GetString("County", resourceCulture);
             }
         }
         

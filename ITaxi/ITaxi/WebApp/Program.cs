@@ -159,12 +159,15 @@ builder.Services.AddAuthentication().AddGoogle(options =>
     options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
     options.Scope.Add("https://www.googleapis.com/auth/user.birthday.read");
     options.Scope.Add("https://www.googleapis.com/auth/user.phonenumbers.read");
+    options.Scope.Add("https://www.googleapis.com/auth/user.addresses.read");
     
     options.SaveTokens = true;
     
     options.ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
     options.ClaimActions.MapJsonKey(ClaimTypes.DateOfBirth, "birthdate");
     options.ClaimActions.MapJsonKey(ClaimTypes.MobilePhone, "phoneNumbers");
+    options.ClaimActions.MapJsonKey(ClaimTypes.StateOrProvince, "state");
+    options.ClaimActions.MapJsonKey(ClaimTypes.StreetAddress, "address");
     options.ClaimActions.MapJsonKey("picture", "picture");
 
   

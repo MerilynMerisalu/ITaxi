@@ -39,11 +39,11 @@ namespace WebApp.Areas.Identity.Pages.Account;
 /// External login model
 /// </summary>
 [AllowAnonymous]
-public class ExternalLoginModel : PageModel
+public class ExternalLoginCustomerModel : PageModel
 {
     private readonly IEmailSender _emailSender;
     private readonly IUserEmailStore<AppUser> _emailStore;
-    private readonly ILogger<ExternalLoginModel> _logger;
+    private readonly ILogger<ExternalLoginCustomerModel> _logger;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserStore<AppUser> _userStore;
@@ -57,11 +57,11 @@ public class ExternalLoginModel : PageModel
     /// <param name="userStore">Store for the user's</param>
     /// <param name="logger">Logger for the user's</param>
     /// <param name="emailSender">Email sender</param>
-    public ExternalLoginModel(
+    public ExternalLoginCustomerModel(
         SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
         IUserStore<AppUser> userStore,
-        ILogger<ExternalLoginModel> logger,
+        ILogger<ExternalLoginCustomerModel> logger,
         IEmailSender emailSender,
         AppDbContext appDbContext)
     {
@@ -119,13 +119,13 @@ public class ExternalLoginModel : PageModel
         var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
         return new ChallengeResult(provider, properties);
     }
-    public IActionResult OnPostDriver(string provider, string returnUrl = null)
-    {
-        // Request a redirect to the external login provider.
-        var redirectUrl = Url.Page("./ExternalLogin", "CallbackDriver", new { returnUrl });
-        var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-        return new ChallengeResult(provider, properties);
-    }
+    //public IActionResult OnPostDriver(string provider, string returnUrl = null)
+    //{
+    //    // Request a redirect to the external login provider.
+    //    var redirectUrl = Url.Page("./ExternalLogin", "CallbackDriver", new { returnUrl });
+    //    var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+    //    return new ChallengeResult(provider, properties);
+    //}
 
     /// <summary>
     /// On get callback async method
@@ -133,7 +133,7 @@ public class ExternalLoginModel : PageModel
     /// <param name="returnUrl">Return url</param>
     /// <param name="remoteError">remote error</param>
     /// <returns>Page</returns>
-    public async Task<IActionResult> OnGetCallbackDriverAsync(string returnUrl = null, string remoteError = null)
+    /*public async Task<IActionResult> OnGetCallbackDriverAsync(string returnUrl = null, string remoteError = null)
     {
         returnUrl = returnUrl ?? Url.Content("~/");
         if (remoteError != null)
@@ -152,6 +152,7 @@ public class ExternalLoginModel : PageModel
 
         return null;
     }
+    */
 
     public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
     {
@@ -436,7 +437,7 @@ public class ExternalLoginModel : PageModel
         {
             throw new InvalidOperationException($"Can't create an instance of '{nameof(AppUser)}'. " +
                                                 $"Ensure that '{nameof(AppUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                                                "override the external login page in /Areas/Identity/Pages/Account/ExternalLogin.cshtml");
+                                                "override the external login page in /Areas/Identity/Pages/Account/ExternalLoginCustomer.cshtml");
         }
     }
 

@@ -38,4 +38,10 @@
     <data name="PhoneNumber" xml:space="preserve">
         <value>Telefoninumber</value>
     </data>
+    <data name="County" xml:space="preserve">
+        <value>Maakond</value>
+    </data>
+    <data name="Address" xml:space="preserve">
+        <value>Aadress</value>
+    </data>
 </root>
