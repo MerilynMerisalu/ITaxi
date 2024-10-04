@@ -148,15 +148,16 @@ public class ExternalLoginDriverModel : PageModel
 
         // Request detailed user info from the People API
         var request = peopleService.People.Get("people/me");
-        request.PersonFields = "genders,birthdays,phoneNumbers,state,address";
+        request.PersonFields = "genders,birthdays,phoneNumbers,addresses";
         var person = request.Execute(); // make this async
 
         // Now you can access additional user details
         var gender = person.Genders?.FirstOrDefault()?.Value;
         var birthday = person.Birthdays?.FirstOrDefault()?.Date;
         var phoneNumber = person.PhoneNumbers.FirstOrDefault()?.Value;
-        var county = person.Addresses.FirstOrDefault()?.Region;
-        var address = person.Addresses.FirstOrDefault()?.ExtendedAddress;
+        var address = person.Addresses?.FirstOrDefault(a => a.Type == "home");
+        //var county = person.Addresses.FirstOrDefault()?.Region;
+        //var address = person.Addresses.FirstOrDefault()?.ExtendedAddress;
         //var pValue = phoneNumber.First();
         //////
 
@@ -213,8 +214,6 @@ public class ExternalLoginDriverModel : PageModel
                 Gender = Enum.Parse<Gender>(gender, true),
                 DateOfBirth = new DateTime(birthday.Year.Value, birthday.Month.Value, birthday.Day.Value), // DateTime.Parse($"{birthday.Year}-{birthday.Month}-{birthday.Day}")
                 PhoneNumber = phoneNumber,
-                County = county,
-                Address = address,
             };
         return Page();
     }

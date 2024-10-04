@@ -166,8 +166,8 @@ builder.Services.AddAuthentication().AddGoogle(options =>
     options.ClaimActions.MapJsonKey(ClaimTypes.Gender, "gender");
     options.ClaimActions.MapJsonKey(ClaimTypes.DateOfBirth, "birthdate");
     options.ClaimActions.MapJsonKey(ClaimTypes.MobilePhone, "phoneNumbers");
-    options.ClaimActions.MapJsonKey(ClaimTypes.StateOrProvince, "state");
-    options.ClaimActions.MapJsonKey(ClaimTypes.StreetAddress, "address");
+    options.ClaimActions.MapJsonKey(ClaimTypes.StateOrProvince, "stateOrProvince");
+    options.ClaimActions.MapJsonKey(ClaimTypes.StreetAddress, "streetAddress");
     options.ClaimActions.MapJsonKey("picture", "picture");
 
   
