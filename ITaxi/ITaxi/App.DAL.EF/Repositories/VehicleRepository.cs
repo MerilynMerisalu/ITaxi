@@ -218,6 +218,7 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
                     .ThenInclude(v => v.Translations)
                     .Include(v => v.VehiclePhotos)
                     .AsSplitQuery();
+                return query;
             }
             else if (roleName.Equals("Driver"))
             {

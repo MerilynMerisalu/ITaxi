@@ -51,4 +51,7 @@
     <data name="VehicleName" xml:space="preserve">
         <value>Sõiduk</value>
     </data>
+    <data name="DoElectricWheelchairFitInCar" xml:space="preserve">
+        <value>Kas elektriratastool mahub autosse?</value>
+    </data>
 </root>

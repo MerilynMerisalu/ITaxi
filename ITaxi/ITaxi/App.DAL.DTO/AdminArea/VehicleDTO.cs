@@ -31,6 +31,10 @@ public class VehicleDTO : DomainEntityMetaId
     public int NumberOfSeats { get; set; }
     public string VehicleIdentifier => $"{VehicleMark?.VehicleMarkName} {VehicleModel?.VehicleModelName} " +
                                        $"{VehiclePlateNumber} {VehicleType?.VehicleTypeName}";
+    
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Vehicle), Name = nameof(DoElectricWheelchairFitInCar))]
+    public bool DoElectricWheelchairFitInCar { get; set; }
+    
     public VehicleAvailability VehicleAvailability { get; set; }
 
     public ICollection<ScheduleDTO>? Schedules { get; set; }

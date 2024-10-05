@@ -155,7 +155,8 @@ public class ExternalLoginDriverModel : PageModel
         var gender = person.Genders?.FirstOrDefault()?.Value;
         var birthday = person.Birthdays?.FirstOrDefault()?.Date;
         var phoneNumber = person.PhoneNumbers.FirstOrDefault()?.Value;
-        var address = person.Addresses?.FirstOrDefault(a => a.Type == "home");
+        var address = person.Addresses?.First();
+        var home = address;
         //var county = person.Addresses.FirstOrDefault()?.Region;
         //var address = person.Addresses.FirstOrDefault()?.ExtendedAddress;
         //var pValue = phoneNumber.First();

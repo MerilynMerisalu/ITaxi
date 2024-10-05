@@ -465,6 +465,7 @@ public static class DataHelper
                     ManufactureYear = 2020,
                     NumberOfSeats = 4,
                     VehiclePlateNumber = "123 AAC",
+                    DoElectricWheelchairFitInCar = true,
                     VehicleAvailability = VehicleAvailability.Available,
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()

@@ -60,4 +60,7 @@
     <data name="VehicleName" xml:space="preserve">
         <value>Vehicle</value>
     </data>
+    <data name="DoElectricWheelchairFitInCar" xml:space="preserve">
+        <value>Do Electric Wheelchair Fit In Car?</value>
+    </data>
 </root>
