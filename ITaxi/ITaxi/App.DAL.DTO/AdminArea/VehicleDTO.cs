@@ -32,8 +32,8 @@ public class VehicleDTO : DomainEntityMetaId
     public string VehicleIdentifier => $"{VehicleMark?.VehicleMarkName} {VehicleModel?.VehicleModelName} " +
                                        $"{VehiclePlateNumber} {VehicleType?.VehicleTypeName}";
     
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Vehicle), Name = nameof(DoElectricWheelchairFitInCar))]
-    public bool DoElectricWheelchairFitInCar { get; set; }
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Vehicle), Name = nameof(DoesElectricWheelchairFitInVehicle))]
+    public bool DoesElectricWheelchairFitInVehicle { get; set; }
     
     public VehicleAvailability VehicleAvailability { get; set; }
 

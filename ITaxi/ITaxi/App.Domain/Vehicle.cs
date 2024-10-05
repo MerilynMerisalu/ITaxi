@@ -36,6 +36,6 @@ public class Vehicle : DomainEntityMetaId
     public ICollection<Schedule>? Schedules { get; set; }
     public ICollection<Photo>? VehiclePhotos { get; set; }
 
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Vehicle), Name = nameof(DoElectricWheelchairFitInCar))]
-    public bool DoElectricWheelchairFitInCar { get; set; }
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Vehicle), Name = nameof(DoesElectricWheelchairFitInVehicle))]
+    public bool DoesElectricWheelchairFitInVehicle { get; set; }
 }

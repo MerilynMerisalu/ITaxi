@@ -69,11 +69,11 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do Electric Wheelchair Fit In Car?.
+        ///   Looks up a localized string similar to Does Electric Wheelchair Fit In Vehicle?.
         /// </summary>
-        public static string DoElectricWheelchairFitInCar {
+        public static string DoesElectricWheelchairFitInVehicle {
             get {
-                return ResourceManager.GetString("DoElectricWheelchairFitInCar", resourceCulture);
+                return ResourceManager.GetString("DoesElectricWheelchairFitInVehicle", resourceCulture);
             }
         }
         
