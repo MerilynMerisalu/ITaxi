@@ -83,10 +83,17 @@
             <td>
                 @Html.DisplayFor(modelItem => item.NumberOfSeats)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DoesElectricWheelchairFitInVehicle)
-            </td>
-            <td>
+            @if (item.DoesElectricWheelchairFitInVehicle)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DoesElectricWheelchairFitInVehicle)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td>
                 @Html.DisplayFor(modelItem => item.VehicleAvailability)
             </td>
             <td>
