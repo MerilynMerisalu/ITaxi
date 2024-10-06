@@ -61,6 +61,7 @@ public class VehiclesController : Controller
         vm.ManufactureYear = vehicle.ManufactureYear;
         vm.VehicleAvailability = vehicle.VehicleAvailability;
         vm.NumberOfSeats = vehicle.NumberOfSeats;
+        vm.DoesElectricWheelchairFitInVehicle = vehicle.DoesElectricWheelchairFitInVehicle;
         vm.VehiclePlateNumber = vehicle.VehiclePlateNumber;
         vm.CreatedBy = vehicle.CreatedBy = UserEmail;
         vm.CreatedAt = vehicle.CreatedAt;
@@ -277,6 +278,7 @@ public class VehiclesController : Controller
         vm.ManufactureYear = vehicle.ManufactureYear;
         vm.VehicleAvailability = vehicle.VehicleAvailability;
         vm.NumberOfSeats = vehicle.NumberOfSeats;
+        vm.DoesElectricWheelchairFitInVehicle = vehicle.DoesElectricWheelchairFitInVehicle;
         vm.VehiclePlateNumber = vehicle.VehiclePlateNumber;
         vm.CreatedBy = vehicle.CreatedBy!;
         vm.CreatedAt = vehicle.CreatedAt;

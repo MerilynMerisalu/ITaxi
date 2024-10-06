@@ -149,13 +149,14 @@ public class ExternalLoginDriverModel : PageModel
         // Request detailed user info from the People API
         var request = peopleService.People.Get("people/me");
         request.PersonFields = "genders,birthdays,phoneNumbers,addresses";
-        var person = request.Execute(); // make this async
-
+       
+        var person = await request.ExecuteAsync(); // make this async
+        
         // Now you can access additional user details
         var gender = person.Genders?.FirstOrDefault()?.Value;
         var birthday = person.Birthdays?.FirstOrDefault()?.Date;
         var phoneNumber = person.PhoneNumbers.FirstOrDefault()?.Value;
-        var address = person.Addresses?.First();
+        var address = person.Addresses?.First(a => a.Type == "home" ).StreetAddress;
         var home = address;
         //var county = person.Addresses.FirstOrDefault()?.Region;
         //var address = person.Addresses.FirstOrDefault()?.ExtendedAddress;

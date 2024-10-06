@@ -43,6 +43,15 @@
     <dd class="col-sm-10">
         @Html.DisplayFor(model => model.NumberOfSeats)
     </dd>
+    @if (Model.DoesElectricWheelchairFitInVehicle)
+    {
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DoesElectricWheelchairFitInVehicle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DoesElectricWheelchairFitInVehicle)
+        </dd>  
+    }
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.VehicleAvailability)
     </dt>

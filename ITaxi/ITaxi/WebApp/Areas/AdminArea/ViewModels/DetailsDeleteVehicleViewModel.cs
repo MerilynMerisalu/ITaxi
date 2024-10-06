@@ -55,7 +55,13 @@ public class DetailsDeleteVehicleViewModel : AdminAreaBaseViewModel
     /// </summary>
     [Display(ResourceType = typeof(Vehicle), Name = nameof(NumberOfSeats))]
     public int NumberOfSeats { get; set; }
-
+    
+    /// <summary>
+    /// Does Electric Wheelchair Fit In Vehicle
+    /// </summary>
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Vehicle), Name = nameof(DoesElectricWheelchairFitInVehicle))]
+    public bool DoesElectricWheelchairFitInVehicle { get; set; }
+    
     /// <summary>
     /// Vehicle availability
     /// </summary>
