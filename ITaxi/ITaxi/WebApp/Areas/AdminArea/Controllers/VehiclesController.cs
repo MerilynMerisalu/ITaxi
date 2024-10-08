@@ -1,10 +1,12 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using App.DAL.EF;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.EJ2.Linq;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers;
@@ -17,14 +19,15 @@ namespace WebApp.Areas.AdminArea.Controllers;
 public class VehiclesController : Controller
 {
     private readonly IAppBLL _appBLL;
-
+    private readonly AppDbContext _context;
     /// <summary>
     /// Admin area vehicles controller constructor
     /// </summary>
     /// <param name="appBLL">AppBLL</param>
-    public VehiclesController(IAppBLL appBLL)
+    public VehiclesController(IAppBLL appBLL, AppDbContext context)
     {
         _appBLL = appBLL;
+        _context = context;
     }
     private string UserEmail => User.Identity!.Name!;
 
@@ -99,7 +102,6 @@ public class VehiclesController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditVehicleViewModel();
-
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
             nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
         vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears());
@@ -127,6 +129,7 @@ public class VehiclesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateEditVehicleViewModel vm, VehicleDTO vehicle)
     {
+        
         if (ModelState.IsValid)
         {
             vehicle.Id = Guid.NewGuid();
@@ -139,6 +142,7 @@ public class VehiclesController : Controller
             vehicle.VehicleModelId = vm.VehicleModelId;
             vehicle.VehicleTypeId = vm.VehicleTypeId;
             vehicle.NumberOfSeats = vm.NumberOfSeats;
+            
             vehicle.VehiclePlateNumber = vm.VehiclePlateNumber;
             vehicle.CreatedBy = User.Identity!.Name;
             vehicle.CreatedAt = DateTime.Now.ToUniversalTime();
@@ -169,9 +173,10 @@ public class VehiclesController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
+        var vt = new VehicleTypeDTO();
         var vm = new CreateEditVehicleViewModel();
+         
         if (id == null) return NotFound();
-
         
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value);
         if (vehicle == null) return NotFound();
@@ -194,6 +199,7 @@ public class VehiclesController : Controller
             nameof(VehicleModelDTO.VehicleModelName));
 
         vm.Id = vehicle.Id;
+        vm.DoesElectricWheelchairFitInVehicle = vehicle.DoesElectricWheelchairFitInVehicle;
         vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears());
         vm.ManufactureYear = vehicle.ManufactureYear;
         vm.VehicleAvailability = vehicle.VehicleAvailability;
@@ -203,6 +209,7 @@ public class VehiclesController : Controller
         vm.DriverId = vehicle.DriverId;
         vm.VehicleMarkId = vehicle.VehicleMarkId;
         vm.VehicleModelId = vehicle.VehicleModelId;
+        
 
         return View(vm);
     }
@@ -220,6 +227,7 @@ public class VehiclesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleViewModel vm)
     {
+        
         var vehicle = await _appBLL.Vehicles.FirstOrDefaultAsync(id, noIncludes:true);
         if (vehicle != null && id != vehicle.Id) return NotFound();
 
@@ -238,6 +246,7 @@ public class VehiclesController : Controller
                     vehicle.VehiclePlateNumber = vm.VehiclePlateNumber;
                     vehicle.VehicleTypeId = vm.VehicleTypeId;
                     vehicle.NumberOfSeats = vm.NumberOfSeats;
+                    vehicle.DoesElectricWheelchairFitInVehicle = vm.DoesElectricWheelchairFitInVehicle;
                     vehicle.UpdatedBy = User.Identity!.Name;
                     vehicle.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _appBLL.Vehicles.Update(vehicle);

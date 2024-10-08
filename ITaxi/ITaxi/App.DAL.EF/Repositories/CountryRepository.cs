@@ -35,6 +35,8 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
         return RepoDbContext.Counties.Any(c => c.CountryId.Equals(id));
     }
 
+    
+
     public async Task<IEnumerable<CountryDTO>> GetAllCountiesOrderedByCountryNameAsync(bool noTracking = true, bool noIncludes = false)
     {
         // special handling of OrderBy to account for language transalation

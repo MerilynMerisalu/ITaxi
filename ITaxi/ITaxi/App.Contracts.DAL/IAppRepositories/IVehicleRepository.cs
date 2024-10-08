@@ -34,4 +34,5 @@ public interface IVehicleRepositoryCustom<TEntity>
     
     Task<bool> HasAnyBookingsAnyAsync(Guid vehicleId, bool noTracking = true);
     bool HasAnyBookingsAny(Guid vehicleId, bool noTracking = true);
+    
 }

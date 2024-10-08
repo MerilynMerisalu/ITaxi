@@ -59,4 +59,6 @@ public class VehicleTypeService: BaseEntityService<App.BLL.DTO.AdminArea.Vehicle
     {
         return (await Repository.GetAllVehicleTypesWithOutIncludesAsync(noTracking)).Select(x => Mapper.Map(x)).ToList()!;
     }
+
+    
 }

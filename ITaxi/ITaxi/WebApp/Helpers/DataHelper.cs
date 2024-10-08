@@ -137,6 +137,7 @@ public static class DataHelper
                 {
                     Id = new Guid(),
                     CountryName = "Estonia",
+                    ISOCode = "EST",
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };

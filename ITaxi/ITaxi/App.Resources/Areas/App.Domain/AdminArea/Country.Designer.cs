@@ -67,5 +67,14 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
                 return ResourceManager.GetString("CountryName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ISO Code.
+        /// </summary>
+        public static string ISOCode {
+            get {
+                return ResourceManager.GetString("ISOCode", resourceCulture);
+            }
+        }
     }
 }

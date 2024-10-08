@@ -7,6 +7,7 @@ using App.Domain;
 using AutoMapper;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using RESTCountries.NET.Services;
 using WebApp.Areas.AdminArea.ViewModels;
 
 
@@ -28,7 +29,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/Countries
         public async Task<IActionResult> Index()
         {
-            var res = await _appBLL.Countries.GetAllCountriesOrderedByCountryNameAsync();
+            var res = _appBLL.Countries.GetAllCountriesThroughRestAPI(CultureInfo.CurrentCulture.ThreeLetterISOLanguageName);
+            /*await _appBLL.Countries.GetAllCountriesOrderedByCountryNameAsync();*/
             return View(res);
         }
 

@@ -21,4 +21,5 @@ public interface IVehicleTypeRepositoryCustom<TEntity>
     Task<bool> HasBookingsAnyAsync(Guid vehicleTypeId, bool noTracking = true);
     bool HasBookingsAny(Guid vehicleTypeId, bool noTracking = true);
     Task<IEnumerable<TEntity>> GetAllVehicleTypesWithOutIncludesAsync(bool noTracking = true);
+    
 }

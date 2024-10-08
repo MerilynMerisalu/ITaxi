@@ -93,6 +93,28 @@ public class VehicleTypeRepository : BaseEntityRepository<VehicleTypeDTO, Vehicl
         return (await CreateQuery(noTracking: noTracking, noIncludes: true).Select(x => Mapper.Map(x)).ToListAsync()!)!;
     }
 
+    public async Task<Guid?> GetVehicleTypeIdAsync(string vehicleTypeName, bool noTracking = true)
+    {
+        var translations =  await RepoDbContext.Translations.ToListAsync();
+        var translationId = translations.Where(t => t.Value.Equals(vehicleTypeName))
+            .Select(t => t.Id);
+        var vehicleTypeId = (await CreateQuery(noTracking: noTracking, noIncludes: true)
+            .Where(v => v.VehicleTypeName.Equals(translationId)).FirstOrDefaultAsync()).Id;
+        return vehicleTypeId;
+    }
+    
+    
+
+    public Guid? GetVehicleTypeId(string vehicleTypeName, bool noTracking = true)
+    {
+        var result = ( CreateQuery(noTracking: noTracking, noIncludes: true)
+            .Where(v => 
+                v.VehicleTypeName!.Translations.Equals(vehicleTypeName))
+            .Select(v => v.Id));
+        return  result.FirstOrDefault();
+        
+    }
+
     protected override IQueryable<VehicleType> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
         var query = base.CreateQuery(noTracking, noIncludes, showDeleted);

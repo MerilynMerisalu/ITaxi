@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.CountryName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ISOCode)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CreatedBy)
             </th>
             <th>
@@ -36,6 +39,9 @@
         <tr>
             <td>
                 @Html.DisplayTextFor(modelItem => item.CountryName)
+            </td>
+            <td>
+                @Html.DisplayTextFor(modelItem => item.ISOCode)
             </td>
             <td>
                 @Html.DisplayFor(model => item.CreatedBy)

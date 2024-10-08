@@ -14,4 +14,7 @@
     <data name="CountryName" xml:space="preserve">
         <value>Riik</value>
     </data>
+    <data name="ISOCode" xml:space="preserve">
+        <value>ISO kood</value>
+    </data>
 </root>

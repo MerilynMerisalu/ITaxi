@@ -83,6 +83,12 @@ public class CreateEditVehicleViewModel
     public int NumberOfSeats { get; set; }
 
     /// <summary>
+    /// Does Electric Wheelchair Fit In Vehicle
+    /// </summary>
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Vehicle), Name = nameof(DoesElectricWheelchairFitInVehicle))]
+    public bool DoesElectricWheelchairFitInVehicle { get; set; }
+    
+    /// <summary>
     /// Vehicle availability
     /// </summary>
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
