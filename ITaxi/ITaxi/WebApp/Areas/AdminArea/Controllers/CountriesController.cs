@@ -80,6 +80,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 var country = new CountryDTO();
                 country.Id = Guid.NewGuid();
                 country.CountryName = vm.CountryName;
+                country.ISOCode = vm.ISOCode.ToUpper();
                 country.CreatedBy = User.GettingUserEmail();
                 country.CreatedAt = DateTime.Now.ToUniversalTime();
                 country.UpdatedBy = User.GettingUserEmail();
@@ -108,6 +109,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.Id = country.Id;
             vm.CountryName = country.CountryName;
+            vm.ISOCode = country.ISOCode;
             
             return View(vm);
         }
@@ -132,6 +134,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                     if (country != null)
                     {
                         country.CountryName.SetTranslation(vm.CountryName); 
+                        country.ISOCode = vm.ISOCode.ToUpper();
                         country.UpdatedBy = User.GettingUserEmail();
                         country.UpdatedAt = DateTime.Now.ToUniversalTime();
                         _appBLL.Countries.Update(country);

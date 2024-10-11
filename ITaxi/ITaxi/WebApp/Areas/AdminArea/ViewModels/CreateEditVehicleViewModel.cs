@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using App.BLL.DTO.AdminArea;
 using App.Domain;
 using App.Enum.Enum;
 using Base.Resources;
@@ -41,7 +42,7 @@ public class CreateEditVehicleViewModel
     /// <summary>
     /// List of vehicle types
     /// </summary>
-    public SelectList? VehicleTypes { get; set; }
+    public IEnumerable<VehicleTypeDTO>? VehicleTypes { get; set; }
     
     /// <summary>
     /// List of vehicle marks

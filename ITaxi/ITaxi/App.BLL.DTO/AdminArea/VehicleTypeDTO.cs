@@ -13,6 +13,8 @@ public class VehicleTypeDTO: DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.VehicleType), Name = "VehicleTypeName")]
     public LangStr VehicleTypeName { get; set; } = default!;
 
+    public bool IsWheelChair { get; set; }
+
 
    
 }

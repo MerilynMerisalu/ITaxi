@@ -1,3 +1,4 @@
+@using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
 @model IEnumerable<App.BLL.DTO.AdminArea.CountryDTO>
 @{
@@ -7,8 +8,9 @@
 <h1>@Common.Index</h1>
 
 <p>
-    <a asp-action="Create">@Common.CreateNew</a>
-    <a asp-action="UpdateFromAPI">@App.Resources.Areas.App.Domain.AdminArea.Country.UpdateCountriesList</a>
+    <a asp-action="Create">@Common.CreateNew</a> 
+    <br/>
+    <a asp-action="UpdateFromAPI">@Country.UpdateCountriesList</a>
 </p>
 <table class="table">
     <thead>

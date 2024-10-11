@@ -110,9 +110,9 @@ public class VehiclesController : Controller
         vm.VehicleModels = new SelectList( await _appBLL.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
             //new VehicleModelDTO[0], // Deliberately empty until the user selects a Mark
             nameof(VehicleModelDTO.Id), nameof(VehicleModelDTO.VehicleModelName));
-        vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
-            nameof(VehicleTypeDTO.Id),
-            nameof(VehicleTypeDTO.VehicleTypeName));
+        vm.VehicleTypes = await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync();
+            
+            
         return View(vm);
     }
 
@@ -153,9 +153,7 @@ public class VehiclesController : Controller
 
         vm.ManufactureYears = new SelectList(_appBLL.Vehicles.GettingManufactureYears(), 
             nameof(VehicleDTO.ManufactureYear));
-        vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
-            nameof(VehicleTypeDTO.Id),
-            nameof(VehicleTypeDTO.VehicleTypeName), nameof(vehicle.VehicleTypeId));
+        vm.VehicleTypes =  await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync();
         vm.VehicleMarks = new SelectList(await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
             nameof(VehicleMarkDTO.Id),
             nameof(VehicleMarkDTO.VehicleMarkName), nameof(vehicle.VehicleMarkId));
@@ -184,9 +182,7 @@ public class VehiclesController : Controller
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
             nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
 
-        vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
-            nameof(VehicleTypeDTO.Id),
-            nameof(VehicleTypeDTO.VehicleTypeName));
+        vm.VehicleTypes = await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync();
         
         vm.VehicleMarks = new SelectList(await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
             nameof(VehicleMarkDTO.Id),
