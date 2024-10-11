@@ -76,5 +76,14 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
                 return ResourceManager.GetString("ISOCode", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Countries List.
+        /// </summary>
+        public static string UpdateCountriesList {
+            get {
+                return ResourceManager.GetString("UpdateCountriesList", resourceCulture);
+            }
+        }
     }
 }

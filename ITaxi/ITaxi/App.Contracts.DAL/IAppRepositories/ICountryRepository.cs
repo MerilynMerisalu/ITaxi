@@ -12,8 +12,12 @@ public interface ICountryRepositoryCustom<TEntity>
 {
     Task<IEnumerable<TEntity>> GetAllCountriesOrderedByCountryNameAsync(bool noTracking = true, bool noIncludes = false);
     IEnumerable<TEntity> GetAllCountriesOrderedByCountryName(bool noTracking = true, bool noIncludes = false);
+    Task<IEnumerable<TEntity>> GetAllCountriesOrderedByCountryISOCodeAsync(bool noTracking = true, bool noIncludes = false);
+    IEnumerable<TEntity> GetAllCountriesOrderedByCountryISOCode(bool noTracking = true, bool noIncludes = false);
     Task<bool> HasAnyCountiesAsync(Guid id, bool noTracking = true);
     bool HasAnyCounties(Guid id, bool noTracking = true);
+    Task<CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false);
 
-    
+
+
 }

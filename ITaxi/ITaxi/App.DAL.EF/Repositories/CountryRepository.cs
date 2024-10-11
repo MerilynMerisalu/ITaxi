@@ -37,21 +37,21 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
 
     
 
-    public async Task<IEnumerable<CountryDTO>> GetAllCountiesOrderedByCountryNameAsync(bool noTracking = true, bool noIncludes = false)
+    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryISOCodeAsync(bool noTracking = true, bool noIncludes = false)
     {
         // special handling of OrderBy to account for language transalation
         return (await CreateQuery(noTracking)
             .ToListAsync()) // Bring into memory "Materialize"
-            .OrderBy(v => v.CountryName)
+            .OrderBy(v => v.ISOCode)
             .ToList().Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<CountryDTO> GetAllCountiesOrderedByCountryName(bool noTracking = true, bool noIncludes = false)
+    public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryISOCode(bool noTracking = true, bool noIncludes = false)
     {
         // special handling of OrderBy to account for language transalation
         return CreateQuery(noTracking)
             .ToList() // Bring into memory "Materialize"
-            .OrderBy(v => v.CountryName)
+            .OrderBy(v => v.ISOCode)
             
             .ToList().Select(e => Mapper.Map(e))!;
     }
@@ -88,5 +88,10 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
     public override CountryDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false)
     {
         return Mapper.Map(CreateQuery(noTracking, noIncludes).FirstOrDefault(c => c.Id.Equals(id)));
+    }
+
+    public async Task<CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false)
+    {
+        return Mapper.Map(CreateQuery(noTracking, noIncludes).FirstOrDefault(c => c.ISOCode.Equals(isoCode)));
     }
 }

@@ -6,6 +6,9 @@ using Base.Contracts;
 using Microsoft.IdentityModel.Tokens;
 using RESTCountries.NET.Models;
 using RESTCountries.NET.Services;
+using System.Globalization;
+using System.Linq;
+using Base.Domain;
 
 namespace App.BLL.Services;
 
@@ -31,6 +34,18 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
             .Select(e => Mapper.Map(e))!;
     }
 
+    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryISOCodeAsync(bool noTracking = true, bool noIncludes = false)
+    {
+        return (await Repository.GetAllCountriesOrderedByCountryISOCodeAsync(noTracking, noIncludes))
+            .Select(e => Mapper.Map(e))!;
+    }
+
+    public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryISOCode(bool noTracking = true, bool noIncludes = false)
+    {
+        return Repository.GetAllCountriesOrderedByCountryISOCode(noTracking, noIncludes)
+            .Select(e => Mapper.Map(e))!;
+    }
+
     public async Task<bool> HasAnyCountiesAsync(Guid id, bool noTracking = true)
     {
         return await Repository.HasAnyCountiesAsync(id, noTracking);
@@ -40,7 +55,12 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
     {
         return Repository.HasAnyCounties(id, noTracking);
     }
-    
+
+    public async Task<DAL.DTO.AdminArea.CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false)
+    {
+        return await Repository.GetCountryByISOCodeAsync(isoCode, noTracking, noIncludes);
+    }
+
     // public void UpdateCountriesFromAPI(string[] langCodes)
     //      - get the countries from the api
     //              - get all the translations based on langCodes
@@ -51,6 +71,82 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
     // public void GetAllCountries(langCode)
     //      - return all from db
 
+    // UpadetCountriesResult { bool Success, List<string> Errors }
+
+
+    public async Task UpdateCountriesFromAPIAsync(CultureInfo[] cultures)//, string[] langCodes)
+    {
+        if (cultures == null) //langCodes == null)
+        {
+            return;
+        }
+
+        var countries = RestCountriesService.GetAllCountries();
+
+        if (countries == null)
+        {
+            // maybe log error
+            // 
+            return;
+        }
+
+        foreach (var country in countries)
+        {
+            var existingCountryDTO = await Repository.GetCountryByISOCodeAsync(country.Cca3);
+
+            var countryDTO = new CountryDTO();
+
+            if (existingCountryDTO != null) // we are updating a country
+            {
+                countryDTO = Mapper.Map(existingCountryDTO);
+            }
+            else // adding a new country
+            {
+                countryDTO.Id = Guid.NewGuid();
+                countryDTO.ISOCode = country.Cca3;
+                countryDTO.CreatedAt = DateTime.Now.ToUniversalTime();
+            }
+
+            foreach (var langCode in cultures) //langCodes)
+            {
+                if (langCode == null) //string.IsNullOrEmpty(langCode))
+                {
+                    continue;
+                }
+                if (countryDTO.CountryName == null)
+                {
+                    countryDTO.CountryName = new LangStr();
+                }
+                if (country.Translations.ContainsKey(langCode.ThreeLetterISOLanguageName)) // eng  en-GB
+                {
+                    var translation = country.Translations[langCode.ThreeLetterISOLanguageName].Common;
+                    
+                    countryDTO.CountryName.SetTranslation(translation, langCode.Name);
+                }
+                else if (langCode.ThreeLetterISOLanguageName == "eng")
+                {
+                    countryDTO.CountryName.SetTranslation(country.Name.Common, langCode.Name);
+                }
+                else if (country.Name.NativeName?.ContainsKey(langCode.ThreeLetterISOLanguageName) ?? false)
+                {
+                    var translation = country.Name.NativeName[langCode.ThreeLetterISOLanguageName].Common;
+
+                    countryDTO.CountryName.SetTranslation(translation, langCode.Name);
+                }
+            }
+            countryDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
+
+            if (existingCountryDTO != null)
+            {
+                Repository.Update(Mapper.Map(countryDTO));
+            }
+            else
+            {
+                Repository.Add(Mapper.Map(countryDTO));
+            }
+        }
+        
+    }
     public IEnumerable<CountryDTO?> GetAllCountriesThroughRestAPI(string langCode = "eng")
     {
         var countries = RestCountriesService.GetAllCountries();

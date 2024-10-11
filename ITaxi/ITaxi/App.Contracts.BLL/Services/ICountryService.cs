@@ -1,4 +1,5 @@
-﻿using App.BLL.DTO.AdminArea;
+﻿using System.Globalization;
+using App.BLL.DTO.AdminArea;
 using App.Contracts.DAL.IAppRepositories;
 using Base.Contracts.BLL;
 
@@ -8,4 +9,5 @@ public interface ICountryService: IEntityService<App.BLL.DTO.AdminArea.CountryDT
     ICountryRepositoryCustom<App.BLL.DTO.AdminArea.CountryDTO> // Add custom stuff
 {
     IEnumerable<CountryDTO?> GetAllCountriesThroughRestAPI(string langCode);
+    Task UpdateCountriesFromAPIAsync(CultureInfo[] cultures);
 }

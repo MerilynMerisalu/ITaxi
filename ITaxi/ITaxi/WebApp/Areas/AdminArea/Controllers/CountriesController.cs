@@ -7,6 +7,8 @@ using App.Domain;
 using AutoMapper;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using RESTCountries.NET.Services;
 using WebApp.Areas.AdminArea.ViewModels;
 
@@ -18,19 +20,19 @@ namespace WebApp.Areas.AdminArea.Controllers
     public class CountriesController : Controller
     {
         private readonly IAppBLL _appBLL;
+        private readonly IOptions<RequestLocalizationOptions> _localizationOptions;
         
-        
-        public CountriesController( IAppBLL appBLL)
+        public CountriesController( IAppBLL appBLL, IOptions<RequestLocalizationOptions> localizationOptions)
         {
-            
             _appBLL = appBLL;
+            _localizationOptions = localizationOptions;
         }
 
         // GET: AdminArea/Countries
         public async Task<IActionResult> Index()
         {
-            var res = _appBLL.Countries.GetAllCountriesThroughRestAPI(CultureInfo.CurrentCulture.ThreeLetterISOLanguageName);
-            /*await _appBLL.Countries.GetAllCountriesOrderedByCountryNameAsync();*/
+            var res = //_appBLL.Countries.GetAllCountriesThroughRestAPI(CultureInfo.CurrentCulture.ThreeLetterISOLanguageName);
+            await _appBLL.Countries.GetAllCountriesOrderedByCountryISOCodeAsync();
             return View(res);
         }
 
@@ -198,6 +200,15 @@ namespace WebApp.Areas.AdminArea.Controllers
         private bool CountryExists(Guid id)
         {
             return _appBLL.Countries.Exists(id);
+        }
+        [HttpGet]
+        public async Task<IActionResult> UpdateFromAPI()
+        {
+            var cultures = _localizationOptions.Value.SupportedUICultures.ToArray();
+            await _appBLL.Countries.UpdateCountriesFromAPIAsync(cultures);
+            await _appBLL.SaveChangesAsync();
+            
+            return RedirectToAction(nameof(Index));
         }
     }
 }

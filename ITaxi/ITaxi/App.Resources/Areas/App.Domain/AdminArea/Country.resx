@@ -24,4 +24,7 @@
     <data name="ISOCode" xml:space="preserve">
         <value>ISO Code</value>
     </data>
+    <data name="UpdateCountriesList" xml:space="preserve">
+        <value>Update Countries List</value>
+    </data>
 </root>

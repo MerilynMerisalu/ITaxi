@@ -24,16 +24,16 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
         return Repository.GetAllCountiesOrderedByCountyName(noTracking, noIncludes).Select(e => Mapper.Map(e))!;
     }
 
-    /*public async Task<IEnumerable<CountyDTO>> GetAllCountiesOrderedByCountryNameAsync(bool noTracking = true, bool noIncludes = false)
+    /*public async Task<IEnumerable<CountyDTO>> GetAllCountiesOrderedByCountryISOCodeAsync(bool noTracking = true, bool noIncludes = false)
     {
-        return (await Repository.GetAllCountiesOrderedByCountryNameAsync(noTracking, noIncludes))
+        return (await Repository.GetAllCountiesOrderedByCountryISOCodeAsync(noTracking, noIncludes))
             .Select(e => Mapper.Map(e))!;
     }
     */
 
-    /*public IEnumerable<CountyDTO> GetAllCountiesOrderedByCountryName(bool noTracking = true, bool noIncludes = false)
+    /*public IEnumerable<CountyDTO> GetAllCountiesOrderedByCountryISOCode(bool noTracking = true, bool noIncludes = false)
     {
-        return Repository.GetAllCountiesOrderedByCountryName(noTracking, noIncludes).Select(e => Mapper.Map(e))!;
+        return Repository.GetAllCountiesOrderedByCountryISOCode(noTracking, noIncludes).Select(e => Mapper.Map(e))!;
     }*/
 
     public Task<bool> HasCities(Guid countyId)

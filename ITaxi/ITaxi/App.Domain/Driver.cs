@@ -24,15 +24,15 @@ public class Driver : DomainEntityMetaId
     [StringLength(15, MinimumLength = 2, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     
-    public string DriverLicenseNumber { get; set; } = default!;
+    public string? DriverLicenseNumber { get; set; }
 
 
     [DataType(DataType.DateTime)]
     
-    public DateTime DriverLicenseExpiryDate { get; set; }
+    public DateTime? DriverLicenseExpiryDate { get; set; }
 
 
-    public Guid CityId { get; set; }
+    public Guid? CityId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "City")]
     public City? City { get; set; }
@@ -42,7 +42,7 @@ public class Driver : DomainEntityMetaId
     [StringLength(30, MinimumLength = 1,
         ErrorMessageResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver),
         ErrorMessageResourceName = "AddressOfResidence")]
-    public string Address { get; set; } = default!;
+    public string? Address { get; set; } 
 
 
     public ICollection<Vehicle>? Vehicles { get; set; }

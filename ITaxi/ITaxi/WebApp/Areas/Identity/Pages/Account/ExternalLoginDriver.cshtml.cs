@@ -1,7 +1,7 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-#nullable disable
+#nullable enable
 
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
@@ -27,6 +27,9 @@ using Microsoft.AspNetCore.Authentication;
 using Google.Apis;
 using Google.Apis.PeopleService.v1;
 using Index = System.Index;
+using App.Domain;
+using App.DAL.EF;
+using System.Data;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
@@ -43,6 +46,7 @@ public class ExternalLoginDriverModel : PageModel
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserStore<AppUser> _userStore;
     private readonly HttpContext _httpContext;
+    private readonly AppDbContext _context;
     /// <summary>
     /// External login model constructor
     /// </summary>
@@ -56,7 +60,8 @@ public class ExternalLoginDriverModel : PageModel
         UserManager<AppUser> userManager,
         IUserStore<AppUser> userStore,
         ILogger<ExternalLoginDriverModel> logger,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        AppDbContext context)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -64,7 +69,7 @@ public class ExternalLoginDriverModel : PageModel
         _emailStore = GetEmailStore();
         _logger = logger;
         _emailSender = emailSender;
-        
+        _context = context;
     }
 
     /// <summary>
@@ -156,7 +161,7 @@ public class ExternalLoginDriverModel : PageModel
         var gender = person.Genders?.FirstOrDefault()?.Value;
         var birthday = person.Birthdays?.FirstOrDefault()?.Date;
         var phoneNumber = person.PhoneNumbers.FirstOrDefault()?.Value;
-        var address = person.Residences?.First(a => a.Current == true).Value;
+        //var address = person.Residences?.First(a => a.Current == true).Value;
         
         //var county = person.Addresses.FirstOrDefault()?.Region;
         //var address = person.Addresses.FirstOrDefault(a => a.Type == "home")?.ExtendedAddress;
@@ -215,7 +220,7 @@ public class ExternalLoginDriverModel : PageModel
                 LastName = info.Principal.FindFirstValue(ClaimTypes.Surname),
                 Gender = Enum.Parse<Gender>(gender, true),
                 DateOfBirth = new DateTime(birthday.Year.Value, birthday.Month.Value, birthday.Day.Value), // DateTime.Parse($"{birthday.Year}-{birthday.Month}-{birthday.Day}")
-                Address = address,
+               
                 PhoneNumber = phoneNumber,
             };
         return Page();
@@ -267,6 +272,22 @@ public class ExternalLoginDriverModel : PageModel
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    var driver = new Driver() 
+                    { 
+                        Id = Guid.NewGuid(),
+                        AppUserId = user.Id,
+                        AppUser = user,
+                        CreatedAt = DateTime.Now.ToUniversalTime(),
+                        UpdatedAt = DateTime.Now.ToUniversalTime()
+                    };
+                    await _context.Drivers.AddAsync(driver);
+                    await _context.SaveChangesAsync();
+                    await _userManager.AddClaimAsync(user, new Claim("aspnet.firstname", driver.AppUser.FirstName));
+                    await _userManager.AddClaimAsync(user, new Claim("aspnet.lastname", driver.AppUser.LastName));
+                    await _userManager.AddToRoleAsync(user, "Driver");
+
+                    await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                    await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
                     // If account confirmation is required, we need to show the link if we don't have a real email sender
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
@@ -312,10 +333,11 @@ public class ExternalLoginDriverModel : PageModel
 
         // Request detailed user info from the People API
         var request = peopleService.People.Get("people/me");
-        request.PersonFields = "genders,birthdays,phoneNumbers,state,address";
+        request.PersonFields = "genders,birthdays,phoneNumbers";
         var person = request.Execute(); // make this async
 
         // Now you can access additional user details
+       
         var gender = person.Genders?.FirstOrDefault()?.Value;
         var birthday = person.Birthdays?.FirstOrDefault()?.Date;
         var phoneNumber = person.PhoneNumbers?.FirstOrDefault()?.Value;
@@ -327,8 +349,7 @@ public class ExternalLoginDriverModel : PageModel
             info.Principal.FindFirst(ClaimTypes.Gender).Value,
             info.Principal.FindFirst(ClaimTypes.DateOfBirth).Value,
             info.Principal.FindFirst(ClaimTypes.MobilePhone).Value,
-            info.Principal.FindFirst(ClaimTypes.StateOrProvince).Value,
-            info.Principal.FindFirst(ClaimTypes.StreetAddress).Value,
+            
         };
         if (result.Succeeded)
             return RedirectToPage(nameof(Index), nameof(HomeController));
@@ -346,14 +367,28 @@ public class ExternalLoginDriverModel : PageModel
                 PhoneNumber = info.Principal.FindFirstValue(ClaimTypes.MobilePhone)
             };
 
-            IdentityResult identResult = await _userManager.CreateAsync(user);
-            if (identResult.Succeeded)
+            
+
+            IdentityResult identityResult = await _userManager.CreateAsync(user);
+            if (identityResult.Succeeded)
             {
-                identResult = await _userManager.AddLoginAsync(user, info);
-                if (identResult.Succeeded)
+                
+                identityResult = await _userManager.AddLoginAsync(user, info);
+                
+                if (identityResult.Succeeded)
                 {
+                    var driver = new Driver()
+                    {
+                        Id = Guid.NewGuid(),
+                        AppUserId = user.Id,
+                        AppUser = user,
+                        CreatedAt = DateTime.Now.ToUniversalTime(),
+                        UpdatedAt = DateTime.Now.ToUniversalTime(),
+                    };
+                    await _context.Drivers.AddAsync(driver);
+                    await _context.SaveChangesAsync();
                     await _signInManager.SignInAsync(user, false);
-                    return RedirectToPage(nameof(Index), nameof(HomeController));
+                    return RedirectToPage(nameof(Index), "/Identity/Account/Manage/");
                 }
             }
             return Page();
@@ -393,7 +428,7 @@ public class ExternalLoginDriverModel : PageModel
         [Required]
         [EmailAddress]
         [Display(ResourceType = typeof(ExternalLogin), Name = nameof(Email))]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
         /// <summary>
         /// First Name
         /// </summary>
@@ -429,19 +464,10 @@ public class ExternalLoginDriverModel : PageModel
         [Display(ResourceType = typeof(ExternalLogin), Name = nameof(PhoneNumber))]
         public string PhoneNumber { get; set; } = default!;
         
-        /// <summary>
-        /// County
-        /// </summary>
-        [Required]
-        [Display(ResourceType = typeof(ExternalLogin), Name = nameof(County))]
-        public string County { get; set; } = default!;
+       
+       
         
-        /// <summary>
-        /// Address
-        /// </summary>
-        [Required]
-        [Display(ResourceType = typeof(ExternalLogin), Name = nameof(Address))]
-        public string Address { get; set; } = default!;
+        
     }
     
 }

@@ -167,7 +167,7 @@ public class IndexModel : PageModel
                     CityId = driver.CityId,
                     AddressOfResidence = driver.Address,
                     DriverLicenseNumber = driver.DriverLicenseNumber,
-                    DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.Date,
+                    DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate?.Date,
                     
                     ImageFile = user.ProfileImage
                 };
@@ -318,7 +318,7 @@ public class IndexModel : PageModel
                 if (Input.DriverLicenseNumber != null) driver.DriverLicenseNumber = Input.DriverLicenseNumber;
             }
 
-            if (Input.DriverLicenseExpiryDate?.Date != driver.DriverLicenseExpiryDate.Date)
+            if (Input.DriverLicenseExpiryDate?.Date != driver.DriverLicenseExpiryDate?.Date)
             {
                 driver.DriverLicenseExpiryDate = Input.DriverLicenseExpiryDate.Value.Date;
             }
