@@ -16,6 +16,10 @@ public class DriverDTO: DomainEntityMetaId
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "PersonalIdentifier")]
     public string? PersonalIdentifier { get; set; }
+    
+    [MaxLength(10, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = nameof(ServiceProviderCardIdentifier))]
+    public string? ServiceProviderCardIdentifier { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "DriverLicenseCategories")]
     public ICollection<DriverAndDriverLicenseCategory>? DriverLicenseCategories { get; set; }

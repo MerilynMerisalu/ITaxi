@@ -17,6 +17,8 @@ public class DriverDTO: DomainEntityMetaId
     
     public string? PersonalIdentifier { get; set; }
 
+    [MaxLength(10, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    public string? ServiceProviderCardIdentifier { get; set; }
     
     public ICollection<DriverAndDriverLicenseCategory>? DriverLicenseCategories { get; set; }
 

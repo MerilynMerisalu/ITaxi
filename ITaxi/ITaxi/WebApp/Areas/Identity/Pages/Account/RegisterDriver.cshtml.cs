@@ -163,7 +163,8 @@ public class RegisterDriverModel : PageModel
                     AppUserId = user.Id, PersonalIdentifier = Input.PersonalIdentifier,
                     Address = Input.Address, CityId = Input.CityId,
                     DriverLicenseNumber = Input.DriverLicenseNumber,
-                    DriverLicenseExpiryDate = Input.ExpiryDate
+                    DriverLicenseExpiryDate = Input.ExpiryDate,
+                    ServiceProviderCardIdentifier = Input.ServiceProviderCardIdentifier,
                 };
                  _appBLL.Drivers.Add(driver);
                 if (Input.DriverAndDriverLicenseCategories != null)
@@ -273,6 +274,12 @@ public class RegisterDriverModel : PageModel
         [Display(ResourceType = typeof(DriverRegister), Name = "City")]
         public Guid CityId { get; set; }
 
+        
+        [DataType(DataType.Text)]
+        [Display(ResourceType = typeof(DriverRegister), Name = nameof(ServiceProviderCardIdentifier))]
+        [MaxLength(10, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+        public string? ServiceProviderCardIdentifier { get; set; } 
+        
         /// <summary>
         /// Driver and driver license categories
         /// </summary>

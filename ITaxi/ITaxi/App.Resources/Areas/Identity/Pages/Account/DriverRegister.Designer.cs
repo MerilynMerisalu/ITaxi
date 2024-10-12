@@ -231,6 +231,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter Your Service Card Number Here.
+        /// </summary>
+        public static string EnterYourServiceCardIdentifierHere {
+            get {
+                return ResourceManager.GetString("EnterYourServiceCardIdentifierHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name.
         /// </summary>
         public static string FirstName {
@@ -290,6 +299,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         public static string RegisterDriver {
             get {
                 return ResourceManager.GetString("RegisterDriver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service Card Provider Identifier.
+        /// </summary>
+        public static string ServiceProviderCardIdentifier {
+            get {
+                return ResourceManager.GetString("ServiceProviderCardIdentifier", resourceCulture);
             }
         }
     }

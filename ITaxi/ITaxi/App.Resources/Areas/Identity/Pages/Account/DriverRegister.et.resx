@@ -93,4 +93,10 @@
     <data name="ChooseTheExpiryDateOfYourDriverLicense" xml:space="preserve">
         <value>Valige oma juhiloa aegumiskuupäev</value>
     </data>
+    <data name="EnterYourServiceCardIdentifierHere" xml:space="preserve">
+        <value>Sisestage siia oma teeninduskaardi number</value>
+    </data>
+    <data name="ServiceProviderCardIdentifier" xml:space="preserve">
+        <value>Teenindajakaardi Number</value>
+    </data>
 </root>

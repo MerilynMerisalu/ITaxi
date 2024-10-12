@@ -102,4 +102,10 @@
     <data name="ChooseTheExpiryDateOfYourDriverLicense" xml:space="preserve">
         <value>Choose the Expiry Date of Your Driver License </value>
     </data>
+    <data name="EnterYourServiceCardIdentifierHere" xml:space="preserve">
+        <value>Enter Your Service Card Number Here</value>
+    </data>
+    <data name="ServiceProviderCardIdentifier" xml:space="preserve">
+        <value>Service Card Provider Identifier</value>
+    </data>
 </root>
