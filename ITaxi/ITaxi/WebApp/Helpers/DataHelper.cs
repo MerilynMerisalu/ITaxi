@@ -94,6 +94,7 @@ public static class DataHelper
                 {
                     Id = Guid.NewGuid(),
                     VehicleTypeName = App.Resources.Areas.App.Domain.AdminArea.VehicleType.Regular,
+                    IsWheelChair = false,
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
@@ -104,6 +105,7 @@ public static class DataHelper
                 {
                     Id = Guid.NewGuid(),
                     VehicleTypeName = App.Resources.Areas.App.Domain.AdminArea.VehicleType.Wheelchair,
+                    IsWheelChair = true,
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };

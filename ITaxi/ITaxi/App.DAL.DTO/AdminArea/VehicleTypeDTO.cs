@@ -11,5 +11,7 @@ public class VehicleTypeDTO: DomainEntityMetaId
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     public LangStr VehicleTypeName { get; set; } = default!;
+
+    public bool IsWheelChair { get; set; }
     public ICollection<VehicleDTO>? Vehicles { get; set; }
 }

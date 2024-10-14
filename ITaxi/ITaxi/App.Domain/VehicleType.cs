@@ -15,4 +15,6 @@ public class VehicleType : DomainEntityMetaId
 
 
     public ICollection<Vehicle>? Vehicles { get; set; }
+
+    public bool IsWheelChair { get; set; }
 }

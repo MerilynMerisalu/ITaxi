@@ -27,22 +27,35 @@
     <a asp-action="Index">@Common.BackToList</a>
 </div>
 
-<script>
-function VehicleMarkIdChanged (value) {
-                if (!value) return;
-                fetch('@Url.Action("SetDropDownList")/' + value.toString(), {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json; charset=UTF-8'
-                        },                       
-                    }).then(response => {
-                        response.json().then(data => {
-                            PopulateDropDownList("VehicleModelId", data.vehicleModels, false);
-                        });
-                    });
-                }
-             
+<script type="text/javascript">
+    function VehicleMarkIdChanged (value) {
+        if (!value) return;
+        fetch('@Url.Action("SetDropDownList")/' + value.toString(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8'
+            },                       
+        }).then(response => {
+            response.json().then(data => {
+                PopulateDropDownList("VehicleModelId", data.vehicleModels, false);
+            });
+        });
+    }
+
+    function showHideCheckBox() {
+        console.log("test");
+        const vehicleTypeSelectList = document.getElementById("VehicleTypeId");
+        const vehicleTypeOption = vehicleTypeSelectList.options[vehicleTypeSelectList.selectedIndex];
+        const isWheelChair = vehicleTypeOption.getAttribute("data-is-wheelchair");
+        const DoesElectricWheelchairFitInVehicleDiv = document.getElementById("DoesElectricWheelchairFitInVehicleDiv");
+        if (isWheelChair == "1") {
+            DoesElectricWheelchairFitInVehicleDiv.style.display = "block";
+        } else {
+            DoesElectricWheelchairFitInVehicleDiv.style.display = "none";
+        }
+    }
+    console.log("hello");
 </script>
 
 

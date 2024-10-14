@@ -13,6 +13,33 @@
     @*<select asp-for="VehicleTypeId" class="form-control" />
         <option value="">@Common.PleaseSelect</option>
     </select>*@
+    <select id="VehicleTypeId" class="form-control" onchange="showHideCheckBox()">
+        <option value="">@Common.PleaseSelect</option>
+        @foreach (var option in Model.VehicleTypes)
+        {
+            <option value="@option.Id" data-is-wheelchair="@(option.IsWheelChair ? "1" : "0")">@option.VehicleTypeName</option>
+        }
+    </select>
+    @*
+
+
+
+    <select class="form-control" onchanged="updateVehicleType()">
+        <option value="">Please Select</option>
+        <option value="0000-000" data-is-wheelchair="0">Regular</option>
+        <option value="0000-001" data-is-wheelchair="1">...</option>
+    </select>
+    
+    function updateVehicleType() {
+        // get the select list
+        // get the selected value
+        // look at the data-is-wheelchair attribute
+        // if (is 1) { show checkbox }
+        // else { hide checkbox }
+    }
+
+
+*@
 </div>
 <div class="form-group">
     <label asp-for="VehicleMarkId" class="control-label"></label>
@@ -44,7 +71,7 @@
     <input asp-for="NumberOfSeats" class="form-control" min="2" max="6"/>
     <span asp-validation-for="NumberOfSeats" class="text-danger"></span>
 </div>
-<div class="form-group form-check">
+<div style="display: none" class="form-group form-check" id="DoesElectricWheelchairFitInVehicleDiv">
     <label class="form-check-label">
         <input id="DoesElectricWheelchairFitInVehicle" class="form-check-input" asp-for="DoesElectricWheelchairFitInVehicle" onchange="showHidePickUpTextBox()" />  @Html.DisplayNameFor(model => model.DoesElectricWheelchairFitInVehicle)
     </label>
@@ -57,3 +84,6 @@
     <span asp-validation-for="VehicleAvailability" class="text-danger"></span>
 </div>
 
+<script type="text/javascript">
+    
+</script>
