@@ -43,11 +43,16 @@ public class CreateEditVehicleViewModel
     /// List of vehicle types
     /// </summary>
     public IEnumerable<VehicleTypeDTO>? VehicleTypes { get; set; }
-    
+
     /// <summary>
     /// List of vehicle marks
     /// </summary>
     public SelectList? VehicleMarks { get; set; }
+
+    /// <summary>
+    /// Selected vehicle type id
+    /// </summary>
+    public Guid SelectedVehicleTypeId { get; set; }
     
     /// <summary>
     /// List of vehicle models

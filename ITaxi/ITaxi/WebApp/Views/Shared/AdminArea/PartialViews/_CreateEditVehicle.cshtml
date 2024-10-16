@@ -18,8 +18,10 @@
         @foreach (var option in Model.VehicleTypes)
         {
             <option value="@option.Id" data-is-wheelchair="@(option.IsWheelChair ? "1" : "0")">@option.VehicleTypeName</option>
+            
         }
     </select>
+    @Html.HiddenFor(v => v.SelectedVehicleTypeId, new { vehicleTypeId = "SelectedVehicleTypeId" })
     @*
 
 
@@ -84,6 +86,3 @@
     <span asp-validation-for="VehicleAvailability" class="text-danger"></span>
 </div>
 
-<script type="text/javascript">
-    
-</script>

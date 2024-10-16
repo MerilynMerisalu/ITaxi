@@ -140,9 +140,8 @@ public class VehiclesController : Controller
             vehicle.VehicleAvailability = vm.VehicleAvailability;
             vehicle.VehicleMarkId = vm.VehicleMarkId;
             vehicle.VehicleModelId = vm.VehicleModelId;
-            vehicle.VehicleTypeId = vm.VehicleTypeId;
+            vehicle.VehicleTypeId = vm.SelectedVehicleTypeId;
             vehicle.NumberOfSeats = vm.NumberOfSeats;
-            
             vehicle.VehiclePlateNumber = vm.VehiclePlateNumber;
             vehicle.CreatedBy = User.Identity!.Name;
             vehicle.CreatedAt = DateTime.Now.ToUniversalTime();
