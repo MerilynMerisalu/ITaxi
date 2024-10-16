@@ -43,23 +43,7 @@
         });
     }
 
-    function showHideCheckBox() {
-        console.log("test");
-        const vehicleTypeSelectList = document.getElementById("VehicleTypeId");
-        const vehicleTypeOption = vehicleTypeSelectList.options[vehicleTypeSelectList.selectedIndex];
-        console.log(vehicleTypeOption);
-        const isWheelChair = vehicleTypeOption.getAttribute("data-is-wheelchair");
-        const DoesElectricWheelchairFitInVehicleDiv = document.getElementById("DoesElectricWheelchairFitInVehicleDiv");
-        let vehicleTypeIdValue; 
-        if (isWheelChair == "1") {
-            DoesElectricWheelchairFitInVehicleDiv.style.display = "block"; 
-            return vehicleTypeIdValue = document.getElementById("SelectedVehicleTypeId").value = vehicleTypeOption.value;
-        } else {
-            DoesElectricWheelchairFitInVehicleDiv.style.display = "none";
-            return document.getElementById('SelectedVehicleTypeId').value = vehicleTypeOption.value;
-            
-        }
-    }
+    
    
 </script>
 
