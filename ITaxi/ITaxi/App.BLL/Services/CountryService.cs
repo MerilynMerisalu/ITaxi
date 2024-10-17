@@ -92,6 +92,7 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
 
         foreach (var country in countries)
         {
+            country.Cca3 = country.Cca3.ToUpper();
             var existingCountryDTO = await Repository.GetCountryByISOCodeAsync(country.Cca3);
 
             var countryDTO = new CountryDTO();

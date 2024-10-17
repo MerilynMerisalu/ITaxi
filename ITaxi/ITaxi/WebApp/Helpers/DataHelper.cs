@@ -1,11 +1,15 @@
 ﻿using System.Diagnostics;
 using System.Security.Claims;
+using App.BLL;
+using App.Contracts.BLL;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
 using App.Enum.Enum;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 
 namespace WebApp.Helpers;
 
@@ -31,6 +35,8 @@ public static class DataHelper
 
         using var userManager = serviceScope.ServiceProvider.GetService<UserManager<AppUser>>();
         using var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<AppRole>>();
+        var appBll = serviceScope.ServiceProvider.GetService<IAppBLL>();
+        var languageOptions = serviceScope.ServiceProvider.GetService<IOptions<RequestLocalizationOptions>>();
 
         if (context == null) throw new ApplicationException("Problem in services. No db context.");
 
@@ -48,7 +54,7 @@ public static class DataHelper
 
         if (configuration.GetValue<bool>("DataInitialization:MigrateDatabase")) await context.Database.MigrateAsync();
 
-        await SeedDatabase(context, userManager!, roleManager!,
+        await SeedDatabase(context, userManager!, roleManager!, appBll!, languageOptions!,
             configuration.GetValue<bool>("DataInitialization:SeedIdentity"),
             configuration.GetValue<bool>("DataInitialization:SeedData"));
     }
@@ -59,9 +65,11 @@ public static class DataHelper
     /// <param name="context">DB context</param>
     /// <param name="userManager">Manager for the system users</param>
     /// <param name="roleManager">Manager for the system roles</param>
+    /// <param name="appBLL">AppBLL</param>
+    /// <param name="languageOptions">Language options for the application</param>
     /// <param name="seedIdentity">Identity seeding</param>
     /// <param name="seedData">Data seeding</param>
-    public static async Task SeedDatabase(AppDbContext context, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, bool seedIdentity, bool seedData)
+    public static async Task SeedDatabase(AppDbContext context, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IAppBLL appBLL, IOptions<RequestLocalizationOptions> languageOptions, bool seedIdentity, bool seedData)
     {
         if (seedIdentity)
         {
@@ -132,27 +140,31 @@ public static class DataHelper
                 var testDisabilityType =
                     context.DisabilityTypes.Include(x => x.DisabilityTypeName.Translations).FirstOrDefault();
                 Debug.WriteLine(testDisabilityType);
-                
-                
 
-                var country = new Country()
-                {
-                    Id = new Guid(),
-                    CountryName = "Estonia",
-                    ISOCode = "EST",
-                    CreatedBy = "System",
-                    CreatedAt = DateTime.Now.ToUniversalTime()
-                };
-                country.CountryName.SetTranslation("Eesti", "et-EE");
-                await context.Countries.AddAsync(country);
-                await context.SaveChangesAsync();
-                
+
+                var cultures = languageOptions.Value.SupportedUICultures.ToArray();
+                await appBLL.Countries.UpdateCountriesFromAPIAsync(cultures);
+                await appBLL.SaveChangesAsync();
+
+                //var country = new Country()
+                //{
+                //    Id = new Guid(),
+                //    CountryName = "Estonia",
+                //    ISOCode = "EST",
+                //    CreatedBy = "System",
+                //    CreatedAt = DateTime.Now.ToUniversalTime()
+                //};
+                //country.CountryName.SetTranslation("Eesti", "et-EE");
+                //await context.Countries.AddAsync(country);
+                //await context.SaveChangesAsync();
+
                 var county = new County
                 {
                     Id = new Guid(),
-                    CountryId =  context.Countries!
+                    CountryId = context.Countries!
                         //.SingleOrDefault(c => c.CountryName.Equals("Estonia"))!.Id,
-                        .SingleOrDefault(c => c.CountryName.Translations!.Any(t => t.Value.Equals("Estonia")))!.Id,
+                        //.SingleOrDefault(c => c.CountryName.Translations!.Any(t => t.Value.Equals("Estonia")))!.Id,
+                        .SingleOrDefault(c => c.ISOCode == "EST")!.Id,
                     CountyName = "Harjumaa",
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
