@@ -140,7 +140,7 @@ public class VehiclesController : Controller
             vehicle.VehicleAvailability = vm.VehicleAvailability;
             vehicle.VehicleMarkId = vm.VehicleMarkId;
             vehicle.VehicleModelId = vm.VehicleModelId;
-            vehicle.VehicleTypeId = vm.SelectedVehicleTypeId;
+            vehicle.VehicleTypeId = vm.VehicleTypeId;
             vehicle.NumberOfSeats = vm.NumberOfSeats;
             vehicle.VehiclePlateNumber = vm.VehiclePlateNumber;
             vehicle.CreatedBy = User.Identity!.Name;
@@ -200,6 +200,7 @@ public class VehiclesController : Controller
         vm.VehicleAvailability = vehicle.VehicleAvailability;
         vm.NumberOfSeats = vehicle.NumberOfSeats;
         vm.VehicleTypeId = vehicle.VehicleTypeId;
+        vm.VehicleTypes = await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync();
         vm.VehiclePlateNumber = vehicle.VehiclePlateNumber;
         vm.DriverId = vehicle.DriverId;
         vm.VehicleMarkId = vehicle.VehicleMarkId;
@@ -241,6 +242,7 @@ public class VehiclesController : Controller
                     vehicle.VehiclePlateNumber = vm.VehiclePlateNumber;
                     vehicle.VehicleTypeId = vm.VehicleTypeId;
                     vehicle.NumberOfSeats = vm.NumberOfSeats;
+
                     vehicle.DoesElectricWheelchairFitInVehicle = vm.DoesElectricWheelchairFitInVehicle;
                     vehicle.UpdatedBy = User.Identity!.Name;
                     vehicle.UpdatedAt = DateTime.Now.ToUniversalTime();
