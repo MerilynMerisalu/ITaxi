@@ -204,6 +204,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             return _appBLL.Countries.Exists(id);
         }
+
         [HttpGet]
         public async Task<IActionResult> UpdateFromAPI()
         {

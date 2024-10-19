@@ -69,6 +69,20 @@ public class VehiclesController : Controller
 
         return View(vm);
     }
+    /// <summary>
+    /// driver area vehicles set drop down list
+    /// </summary>
+    /// <param name="id">Vehicle mark id</param>
+    /// <returns>Status 200 OK</returns>
+    
+    [HttpPost("DriverArea/Vehicles/SetDropDownList/{id}")]
+    public async Task<IActionResult> SetTheDropDownList([FromRoute] Guid id)
+    {
+        var vm = new CreateEditVehicleViewModel();
+        var vehicleModels = await _appBLL.VehicleModels.GettingVehicleModelsByMarkIdAsync(id);
+        vm.VehicleModels = new SelectList(vehicleModels, nameof(VehicleModelDTO.Id), nameof(VehicleModelDTO.VehicleModelName));
+        return Ok(vm);
+    }
 
     // GET: AdminArea/Vehicles/Create
     /// <summary>

@@ -61,6 +61,7 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
     public TBllEntity Update(TBllEntity entity)
     {
         return Mapper.Map(Repository.Update(Mapper.Map(entity)!))!;
+        
     }
 
     public TBllEntity Remove(TBllEntity entity, bool hardDelete = false)

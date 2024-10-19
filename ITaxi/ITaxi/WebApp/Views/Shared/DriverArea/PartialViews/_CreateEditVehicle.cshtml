@@ -10,7 +10,7 @@
 </div>
 <div class="form-group">
     <label asp-for="VehicleMarkId" class="control-label"></label>
-    <select asp-for="VehicleMarkId" class="form-control" asp-items="@Model.VehicleMarks">
+    <select asp-for="VehicleMarkId" class="form-control" asp-items="@Model.VehicleMarks" onchange="VehicleMarkIdChanged(this.value)">
         <option>@Common.PleaseSelect</option>
     </select>
 </div>

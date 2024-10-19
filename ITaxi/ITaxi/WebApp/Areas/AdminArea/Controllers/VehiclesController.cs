@@ -77,7 +77,7 @@ public class VehiclesController : Controller
     /// <summary>
     /// Admin area vehicles set drop down list
     /// </summary>
-    /// <param name="id">Id</param>
+    /// <param name="id">Vehicle mark id</param>
     /// <returns>Status 200 OK</returns>
     [HttpPost("AdminArea/Vehicles/SetDropDownList/{id}")]
     public async Task<IActionResult> SetDropDownList([FromRoute]Guid id)
@@ -85,7 +85,7 @@ public class VehiclesController : Controller
         // Using the EditRideTimeViewModel because I want to send through the SelectLists and Ids that have now changed
         var vm = new CreateEditVehicleViewModel();
        
-        // Select the VehicleMarks for the currently selected VehicleMarkId
+        // Select the VehicleModels for the currently selected VehicleMarkId
         
         var vehicleModels = await _appBLL.VehicleModels.GettingVehicleModelsByMarkIdAsync(id);
         vm.VehicleModels = new SelectList(vehicleModels, 

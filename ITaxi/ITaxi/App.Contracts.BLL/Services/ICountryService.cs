@@ -10,4 +10,5 @@ public interface ICountryService: IEntityService<App.BLL.DTO.AdminArea.CountryDT
 {
     IEnumerable<CountryDTO?> GetAllCountriesThroughRestAPI(string langCode);
     Task UpdateCountriesFromAPIAsync(CultureInfo[] cultures);
+    
 }

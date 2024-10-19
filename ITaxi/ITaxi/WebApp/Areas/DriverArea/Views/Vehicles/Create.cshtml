@@ -25,6 +25,25 @@
     <a asp-action="Index">@Common.BackToList</a>
 </div>
 
+ <script type="text/javascript">
+    function VehicleMarkIdChanged(value) {
+        if (!value) return;
+        fetch('@Url.Action("SetDropDownList")/' + value.toString(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=UTF-8'
+            },
+        }).then(response => {
+            console.log(response);
+            response.json().then(data => {
+                PopulateDropDownList("VehicleModelId", data.vehicleModels, false);
+            });
+        });
+    }
+</script> 
+
+
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

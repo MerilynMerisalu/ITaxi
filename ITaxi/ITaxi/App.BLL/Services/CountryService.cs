@@ -34,9 +34,9 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
             .Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryISOCodeAsync(bool noTracking = true, bool noIncludes = false)
+    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryISOCodeAsync(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        return (await Repository.GetAllCountriesOrderedByCountryISOCodeAsync(noTracking, noIncludes))
+        return (await Repository.GetAllCountriesOrderedByCountryISOCodeAsync(noTracking, noIncludes, showDeleted))
             .Select(e => Mapper.Map(e))!;
     }
 
@@ -56,9 +56,9 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
         return Repository.HasAnyCounties(id, noTracking);
     }
 
-    public async Task<DAL.DTO.AdminArea.CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false)
+    public async Task<DAL.DTO.AdminArea.CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true)
     {
-        return await Repository.GetCountryByISOCodeAsync(isoCode, noTracking, noIncludes);
+        return await Repository.GetCountryByISOCodeAsync(isoCode, noTracking, noIncludes, showDeleted);
     }
 
     // public void UpdateCountriesFromAPI(string[] langCodes)
@@ -99,7 +99,16 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
 
             if (existingCountryDTO != null) // we are updating a country
             {
+                if (existingCountryDTO.IsDeleted == true)
+                {
+                    existingCountryDTO.IsDeleted = false;
+                    Repository.Update(existingCountryDTO);
+                    
+                    
+                }
+                //Repository.Update(existingCountryDTO);
                 countryDTO = Mapper.Map(existingCountryDTO);
+                
             }
             else // adding a new country
             {
@@ -191,4 +200,6 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
     {
         throw new NotImplementedException();
     }
+
+    
 }
