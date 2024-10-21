@@ -22,6 +22,9 @@
                 @Html.DisplayNameFor(model => model.ISOCode)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.IsIgnored)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CreatedBy)
             </th>
             <th>
@@ -47,6 +50,9 @@
                 @Html.DisplayTextFor(modelItem => item.ISOCode)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.IsIgnored)
+            </td>
+            <td>
                 @Html.DisplayFor(model => item.CreatedBy)
             </td>
             <td>
@@ -62,6 +68,7 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
+                <a asp-action="ToggleCountryIgnore" asp-route-id="@item.Id">@Country.ShowHideCountry</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
             </td>
         </tr>

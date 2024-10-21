@@ -102,4 +102,15 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
     {
         return Mapper.Map(CreateQuery(noTracking, noIncludes, showDeleted).FirstOrDefault(c => c.ISOCode.Equals(isoCode)));
     }
+
+    public async Task<CountryDTO?> ToggleCountryIsIgnoredAsync(Guid id, bool noTracking = true, bool noIncludes = false)
+    {
+        var country = await FirstOrDefaultAsync(id, noTracking, noIncludes);
+        if (country == null)
+        {
+            return null;
+        }
+        country.IsIgnored = !country.IsIgnored;
+        return country;
+    }
 }

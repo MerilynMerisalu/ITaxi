@@ -25,7 +25,7 @@
     <a asp-action="Index">@Common.BackToList</a>
 </div>
 
- <script type="text/javascript">
+<script type="text/javascript">
     function VehicleMarkIdChanged(value) {
         if (!value) return;
         fetch('@Url.Action("SetDropDownList")/' + value.toString(), {
@@ -41,7 +41,7 @@
             });
         });
     }
-</script> 
+</script>
 
 
 @section Scripts {

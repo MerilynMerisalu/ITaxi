@@ -69,11 +69,38 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Country Hidden.
+        /// </summary>
+        public static string IsIgnored {
+            get {
+                return ResourceManager.GetString("IsIgnored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ISO Code.
         /// </summary>
         public static string ISOCode {
             get {
                 return ResourceManager.GetString("ISOCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show / Hide Country.
+        /// </summary>
+        public static string ShowHideCountry {
+            get {
+                return ResourceManager.GetString("ShowHideCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Country.
+        /// </summary>
+        public static string UnIgnore {
+            get {
+                return ResourceManager.GetString("UnIgnore", resourceCulture);
             }
         }
         

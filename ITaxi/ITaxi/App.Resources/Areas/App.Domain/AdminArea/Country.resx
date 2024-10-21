@@ -27,4 +27,13 @@
     <data name="UpdateCountriesList" xml:space="preserve">
         <value>Update Countries List</value>
     </data>
+    <data name="IsIgnored" xml:space="preserve">
+        <value>Country Hidden</value>
+    </data>
+    <data name="UnIgnore" xml:space="preserve">
+        <value>Show Country</value>
+    </data>
+    <data name="ShowHideCountry" xml:space="preserve">
+        <value>Show / Hide Country</value>
+    </data>
 </root>

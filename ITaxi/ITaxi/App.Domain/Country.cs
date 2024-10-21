@@ -22,6 +22,11 @@ public class Country: DomainEntityMetaId
         Name = nameof(ISOCode))]
     public string ISOCode { get; set; } = default!;
 
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Country),
+        Name = nameof(IsIgnored))]
+    public bool IsIgnored { get; set; }
+    
     public ICollection<County>? Counties { get; set; }
+    
     
 }

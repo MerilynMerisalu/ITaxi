@@ -15,9 +15,18 @@
         <value>Riik</value>
     </data>
     <data name="ISOCode" xml:space="preserve">
-        <value>ISO kood</value>
+        <value>ISO Kood</value>
     </data>
     <data name="UpdateCountriesList" xml:space="preserve">
         <value>Uuenda Riikide Nimekirja</value>
+    </data>
+    <data name="IsIgnored" xml:space="preserve">
+        <value>Riik Peidetud</value>
+    </data>
+    <data name="UnIgnore" xml:space="preserve">
+        <value>Riik Nähtaval</value>
+    </data>
+    <data name="ShowHideCountry" xml:space="preserve">
+        <value>Näita / Peida Riik</value>
     </data>
 </root>

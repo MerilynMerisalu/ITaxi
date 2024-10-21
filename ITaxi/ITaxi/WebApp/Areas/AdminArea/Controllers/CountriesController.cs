@@ -214,5 +214,23 @@ namespace WebApp.Areas.AdminArea.Controllers
             
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ToggleCountryIgnoreAsync(Guid? id)
+        {
+            var country = await _appBLL.Countries.ToggleCountryIsIgnoredAsync(id.Value);
+            if (country == null)
+            {
+                return BadRequest();
+            }
+            
+            country.UpdatedBy = User.GettingUserEmail();
+            country.UpdatedAt = DateTime.Now.ToUniversalTime();
+            _appBLL.Countries.Update(country);
+            await _appBLL.SaveChangesAsync();
+            
+            return RedirectToAction(nameof(Index));
+        }
+        
     }
 }

@@ -56,11 +56,41 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
         return Repository.HasAnyCounties(id, noTracking);
     }
 
-    public async Task<DAL.DTO.AdminArea.CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true)
+    public async Task<CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true)
     {
-        return await Repository.GetCountryByISOCodeAsync(isoCode, noTracking, noIncludes, showDeleted);
+        return Mapper.Map(await Repository.GetCountryByISOCodeAsync(isoCode, noTracking, noIncludes, showDeleted));
     }
 
+    public async Task<CountryDTO?> ToggleCountryIsIgnoredAsync(Guid id, bool noTracking = true, bool noIncludes = false)
+    {
+        return Mapper.Map(await Repository.ToggleCountryIsIgnoredAsync(id, noTracking, noIncludes));
+    }
+
+    /*public async Task<DAL.DTO.AdminArea.CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true)
+    {
+        return await Repository.GetCountryByISOCodeAsync(isoCode, noTracking, noIncludes, showDeleted);
+    }*/
+
+    /*public async Task<DAL.DTO.AdminArea.CountryDTO?> ToggleCountryIsIgnoredAsync(Guid id, bool noTracking = true, bool noIncludes = false)
+    {
+        var country = await FirstOrDefaultAsync(id, noTracking, noIncludes);
+        if (country == null)
+        {
+            return null;
+        }
+        country.IsIgnored = !country.IsIgnored;
+
+        var countryDto = Mapper.Map(country);
+
+        Repository.Update(countryDto);
+        
+        return countryDto;
+        
+        //return Mapper.Map(await Repository.ToggleCountryIsIgnoredAsync(id, noTracking, noIncludes));
+    }
+    */
+
+   
     // public void UpdateCountriesFromAPI(string[] langCodes)
     //      - get the countries from the api
     //              - get all the translations based on langCodes

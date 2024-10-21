@@ -156,7 +156,8 @@ public class VehiclesController : Controller
         vm.VehicleMarks = new SelectList(await _appBLL.VehicleMarks.GetAllVehicleMarkOrderedAsync(),
             nameof(VehicleMarkDTO.Id),
             nameof(VehicleMarkDTO.VehicleMarkName), nameof(vehicle.VehicleMarkId));
-        vm.VehicleModels = new SelectList(await _appBLL.VehicleModels.GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
+        vm.VehicleModels = new SelectList(await _appBLL.VehicleModels.
+            GetAllVehicleModelsOrderedByVehicleMarkNameAsync(),
             nameof(VehicleModelDTO.VehicleModelName), nameof(VehicleModelDTO.Id));
 
         return View(vm);
