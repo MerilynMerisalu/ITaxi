@@ -27,6 +27,7 @@ public interface IEntityRepository<TEntity, TKey>
     TEntity? SingleOrDefault(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
 
     TEntity? First(bool noTracking = true, bool noIncludes = false);
+    TEntity? ToggleCountryIsIgnored(TEntity? dalEntity, bool noTracking = true, bool noIncludes = false);
 
 
     // async

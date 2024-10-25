@@ -270,4 +270,14 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         dalEntity.IsIgnored = !dalEntity.IsIgnored;
         return dalEntity;
     }
+
+    public TDalEntity? ToggleCountryIsIgnored(TDalEntity? dalEntity, bool noTracking = true, bool noIncludes = false)
+    {
+        if (dalEntity == null)
+        {
+            return null;
+        }
+        dalEntity.IsIgnored = !dalEntity.IsIgnored;
+        return dalEntity;
+    }
 }

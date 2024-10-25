@@ -182,4 +182,9 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
     {
         return Mapper.Map(await Repository.ToggleCountryIsIgnoredAsync(id, noTracking, noIncludes));
     }
+
+    public TBllEntity? ToggleCountryIsIgnored(TBllEntity? dalEntity, bool noTracking = true, bool noIncludes = false)
+    {
+        return Mapper.Map(Repository.ToggleCountryIsIgnored(Mapper.Map(dalEntity), noTracking, noIncludes));
+    }
 }
