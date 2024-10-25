@@ -74,11 +74,13 @@ public class VehicleModelRepository : BaseEntityRepository<App.DAL.DTO.AdminArea
         return await CreateQuery(noTracking).AnyAsync(v => v.VehicleMarkId.Equals(markId));
     }
 
-    protected override IQueryable<VehicleModel> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    protected override IQueryable<VehicleModel> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
-        if (noTracking) query = query.AsNoTracking();
-        if (!noIncludes) query = query.Include(c => c.VehicleMark);
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted, showIgnored);
+        if (noTracking)
+            query = query.AsNoTracking();
+        if (!noIncludes)
+            query = query.Include(c => c.VehicleMark);
         return query;
     }
 }

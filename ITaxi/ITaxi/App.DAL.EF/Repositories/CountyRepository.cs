@@ -56,9 +56,10 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
         return await RepoDbContext.Cities.AnyAsync(x => x.CountyId == countyId);
     }
     
-    protected override IQueryable<App.Domain.County> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    protected override IQueryable<App.Domain.County> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, 
+        bool showIgnored = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted, showIgnored);
         if (!noIncludes)
             query = query.Include(x => x.Cities)
                 .Include(x => x.Country)

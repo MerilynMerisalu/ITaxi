@@ -80,9 +80,10 @@ public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Drive
        
    
 
-    protected override IQueryable<Driver> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    protected override IQueryable<Driver> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false,
+        bool showIgnored = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted, showIgnored);
         if (noTracking) query = query.AsNoTracking();
         if (!noIncludes)
             query = query.Include(a => a.AppUser)

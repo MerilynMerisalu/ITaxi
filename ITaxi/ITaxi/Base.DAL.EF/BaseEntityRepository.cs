@@ -244,14 +244,17 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
     /// <param name="noTracking">Disable tracking on the query results if this is set to true</param>
     /// <param name="noIncludes">Ignore Auto Includes if this is true</param>
     /// <param name="showDeleted">If True, include "Soft Deleted" records in the query results</param>
+    /// 
     /// <returns>The default query that you can further compose for your domain repo logic</returns>
     protected virtual IQueryable<TDomainEntity> CreateQuery(bool noTracking = true, bool noIncludes = false,
-        bool showDeleted = false)
+        bool showDeleted = false, bool showIgnored = false)
 
     {
         var query = RepoDbSet.AsQueryable();
         if (!showDeleted)
             query = query.Where(x => !x.IsDeleted);
+        if (!showIgnored)
+            query = query.Where(x => !x.IsIgnored);
         if (noTracking)
             query = query.AsNoTracking();
         if (noIncludes)

@@ -73,9 +73,9 @@ public class DisabilityTypeRepository : BaseEntityRepository<DisabilityTypeDTO, 
         return RepoDbContext.Customers.Any(d => d.DisabilityTypeId.Equals(disabilityTypeId));
     }
 
-    protected override IQueryable<DisabilityType> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    protected override IQueryable<DisabilityType> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted, showIgnored);
         if (noTracking) query = query.AsNoTracking();
         if (!noIncludes)
             query = query.Include(c => c.DisabilityTypeName)

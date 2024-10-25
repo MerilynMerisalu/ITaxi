@@ -115,9 +115,10 @@ public class VehicleTypeRepository : BaseEntityRepository<VehicleTypeDTO, Vehicl
         
     }
 
-    protected override IQueryable<VehicleType> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    protected override IQueryable<VehicleType> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, 
+        bool showIgnored = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted, showIgnored);
         if (!noIncludes)
             query = query.Include(t => t.VehicleTypeName)
                          .ThenInclude(t => t.Translations);

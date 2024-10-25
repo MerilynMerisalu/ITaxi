@@ -103,9 +103,10 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
             throw new ApplicationException("Entity cannot be deleted because it has dependent entities!");
         return base.Remove(entity, hardDelete);
     }
-    protected override IQueryable<City> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    protected override IQueryable<City> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false
+        , bool showIgnored = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted, showIgnored);
         if (noTracking) query = query.AsNoTracking();
         if (!noIncludes)
             query = query.Include(c => c.County);

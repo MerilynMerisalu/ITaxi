@@ -93,14 +93,13 @@ public class CustomerRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Cus
         return CreateQuery().SingleOrDefault(c => c.AppUserId.Equals(appUserId))!.Id;
     }
 
-    protected override IQueryable<Customer> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    protected override IQueryable<Customer> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
-        if (noTracking) query = query.AsNoTracking();
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted, showIgnored);
+        if (noTracking)
+            query = query.AsNoTracking();
         if (!noIncludes)
-            query = query.Include(a => a.AppUser)
-                .Include(a => a.DisabilityType).ThenInclude(a => a!.DisabilityTypeName)
-                .ThenInclude(a => a.Translations);
+            query = query.Include(a => a.AppUser).Include(a => a.DisabilityType).ThenInclude(a => a!.DisabilityTypeName).ThenInclude(a => a.Translations);
         return query;
     }
 }

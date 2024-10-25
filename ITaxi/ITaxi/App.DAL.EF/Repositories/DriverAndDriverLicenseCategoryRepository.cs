@@ -61,13 +61,13 @@ public class DriverAndDriverLicenseCategoryRepository :
     }
 
 
-    protected override IQueryable<DriverAndDriverLicenseCategory> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    protected override IQueryable<DriverAndDriverLicenseCategory> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes, showDeleted);
-        if (noTracking) query = query.AsNoTracking();
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted, showIgnored);
+        if (noTracking)
+            query = query.AsNoTracking();
         if (!noIncludes)
-            query = query.Include(c => c.DriverLicenseCategory)
-                         .Include(c => c.Driver);
+            query = query.Include(c => c.DriverLicenseCategory).Include(c => c.Driver);
         return query;
     }
 }

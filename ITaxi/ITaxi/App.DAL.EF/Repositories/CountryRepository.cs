@@ -56,16 +56,16 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
             .ToList().Select(e => Mapper.Map(e))!;
     }
 
-    protected override IQueryable<Country> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = true)
+    protected override IQueryable<Country> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = false)
     {
-        //if (noTracking && showDeleted == true)
-        //{
-        //   return RepoDbSet
-        //        .Include(c => c.CountryName)
-        //        .ThenInclude(c => c.Translations!.Where(c => c.IsDeleted == true))
-        //       .Where(c => c.IsDeleted == true)
-        //        .AsNoTracking();
-        //}
+        if (!showIgnored) 
+        {
+
+            return RepoDbSet
+                .Include(c => c.CountryName)
+                .ThenInclude(c => c.Translations).Where(c => c.IsIgnored == true)
+                .AsNoTracking();
+        }
         if (noTracking)
         {
             return RepoDbSet
