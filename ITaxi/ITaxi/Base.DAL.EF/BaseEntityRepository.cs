@@ -259,4 +259,15 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
 
         return query;
     }
+
+    public async Task<TDalEntity?> ToggleCountryIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false)
+    {
+        var dalEntity = await FirstOrDefaultAsync(id, noTracking, noIncludes);
+        if (dalEntity == null)
+        {
+            return null;
+        }
+        dalEntity.IsIgnored = !dalEntity.IsIgnored;
+        return dalEntity;
+    }
 }

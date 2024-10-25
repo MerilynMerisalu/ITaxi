@@ -48,7 +48,15 @@
         <th>
             @Html.DisplayNameFor(model => model.UpdatedAt)
         </th>
-        
+        <th>
+            @Html.DisplayNameFor(model => model.DeletedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeletedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsIgnored)
+        </th>
         <th></th>
     </tr>
     </thead>
@@ -94,12 +102,21 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeletedBy)
+            </td>
 
-
+            <td>
+                @Html.DisplayFor(modelItem => item.DeletedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsIgnored)
+            </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a> |
+                <a asp-action="#" asp-route-id="@item.Id">@Common.ShowHide</a> |
             </td>
         </tr>
     }

@@ -29,4 +29,9 @@ public class BaseRole<TKey> : IdentityRole<TKey>, IDomainEntityId<TKey>
     /// Flag to indicate that this Role has been deleted
     /// </summary>
     public bool IsDeleted { get; set; }
+
+    /// <summary>
+    /// Flag to indicate that this Role has been ignored
+    /// </summary>
+    public bool IsIgnored { get; set; }
 }

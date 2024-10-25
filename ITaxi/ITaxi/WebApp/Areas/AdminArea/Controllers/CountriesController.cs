@@ -219,6 +219,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> ToggleCountryIgnoreAsync(Guid? id)
         {
             var country = await _appBLL.Countries.ToggleCountryIsIgnoredAsync(id.Value);
+           
             if (country == null)
             {
                 return BadRequest();

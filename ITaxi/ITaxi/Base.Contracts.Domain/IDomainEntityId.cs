@@ -16,4 +16,5 @@ public interface IDomainEntityId<TKey>
 {
     public TKey Id { get; set; }
     public bool IsDeleted { get; set; }
+    public bool IsIgnored { get; set; }
 }

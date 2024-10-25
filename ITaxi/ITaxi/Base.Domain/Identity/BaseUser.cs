@@ -17,6 +17,8 @@ public class BaseUser : BaseUser<Guid>, IDomainEntityId
     /// Flag to indicate that this User has been deleted
     /// </summary>
     public bool IsDeleted { get; set; }
+
+    public bool IsIgnored { get; set; }
 }
 
 public class BaseUser<TKey> : IdentityUser<TKey>

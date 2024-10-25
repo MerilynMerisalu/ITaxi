@@ -31,7 +31,9 @@
         <th>
             @Html.DisplayNameFor(model => model.UpdatedAt)
         </th>
-
+        <th>
+            @Html.DisplayNameFor(model => model.IsIgnored)
+        </th>
         <th></th>
     </tr>
     </thead>
@@ -62,6 +64,7 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
+                <a asp-action="#" asp-route-id="@item.Id">@Common.ShowHide</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
             </td>
         </tr>

@@ -38,6 +38,6 @@ public interface IEntityRepository<TEntity, TKey>
     Task<bool> AnyAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
     Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
     Task<TEntity?> FirstAsync(bool noTracking = true, bool noIncludes = false);
-
+    Task<TEntity?> ToggleCountryIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false);
 
 }
