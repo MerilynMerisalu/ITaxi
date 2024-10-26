@@ -232,5 +232,19 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
         throw new NotImplementedException();
     }
 
-    
+    public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryISOCode(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = true)
+    {
+        return(Repository.GetAllCountriesOrderedByCountryISOCode(noTracking, noIncludes, showDeleted, showIgnored)
+            .Select(e => Mapper.Map(e)).ToList());
+    }
+
+    public async Task<CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = true)
+    {
+        return Mapper.Map(await Repository.GetCountryByISOCodeAsync(isoCode, noIncludes, showDeleted, showIgnored));
+    }
+
+    public CountryDTO? GetCountryByISOCode(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = true)
+    {
+        return Mapper.Map(Repository.GetCountryByISOCode(isoCode, noTracking, noIncludes, showDeleted, showIgnored));
+    }
 }
