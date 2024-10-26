@@ -37,10 +37,10 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
 
     
 
-    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryISOCodeAsync(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryISOCodeAsync(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = true)
     {
         // special handling of OrderBy to account for language transalation
-        return (await CreateQuery(noTracking, showDeleted: showDeleted)
+        return (await CreateQuery(noTracking, showDeleted: showDeleted, showIgnored: showIgnored)
             .ToListAsync()) // Bring into memory "Materialize"
             .OrderBy(v => v.ISOCode)
             .ToList().Select(e => Mapper.Map(e))!;

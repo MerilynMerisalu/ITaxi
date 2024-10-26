@@ -34,9 +34,9 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
             .Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryISOCodeAsync(bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryISOCodeAsync(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = true)
     {
-        return (await Repository.GetAllCountriesOrderedByCountryISOCodeAsync(noTracking, noIncludes, showDeleted))
+        return (await Repository.GetAllCountriesOrderedByCountryISOCodeAsync(noTracking, noIncludes, showDeleted,showIgnored ))
             .Select(e => Mapper.Map(e))!;
     }
 
