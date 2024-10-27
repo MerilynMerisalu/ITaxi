@@ -223,6 +223,7 @@ public static class DataHelper
                     Id = new Guid(),
                     AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                         a.FirstName.Equals("Katrin") && a.LastName.Equals("Salu")).Id,
+                    CountryId = context.Countries.First(c => c.ISOCode == "EST").Id,
                     CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
                     PersonalIdentifier = "49208202221",
                     Address = "Kalda 23",
@@ -270,6 +271,7 @@ public static class DataHelper
                     Id = new Guid(),
                     AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                         a.FirstName.Equals("Tiina") && a.LastName.Equals("Pilv")).Id,
+                    CountryId = context.Countries.First(c => c.ISOCode == "EST").Id,
                     CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
                     PersonalIdentifier = "47708222221",
                     Address = "Suurmäe 13-9",
