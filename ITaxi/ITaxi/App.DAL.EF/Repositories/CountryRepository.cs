@@ -56,7 +56,7 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
             .ToList().Select(e => Mapper.Map(e))!;
     }
 
-    protected override IQueryable<Country> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = false)
+    protected override IQueryable<Country> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = true)
     {
         if (!showIgnored) 
         {
@@ -89,8 +89,9 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
 
     public override async Task<CountryDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false)
     {
-        return (Mapper.Map(await CreateQuery(noTracking, noIncludes)
-            .FirstOrDefaultAsync(c => c.Id.Equals(id))));
+        var country = (await CreateQuery(noTracking, noIncludes)
+            .FirstOrDefaultAsync(c => c.Id.Equals(id)));
+        return Mapper.Map(country);
     }
 
     public override CountryDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false)
