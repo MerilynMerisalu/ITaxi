@@ -16,9 +16,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="14.0.0" />
-      <PackageReference Include="RESTCountries.NET" Version="3.3.0" />
-      <PackageReference Include="System.Text.Encodings.Web" Version="9.0.4" />
+      <PackageReference Include="AutoMapper" Version="15.0.1" />
+      <PackageReference Include="RESTCountries.NET" Version="3.4.0" />
+      <PackageReference Include="System.Text.Encodings.Web" Version="9.0.7" />
     </ItemGroup>
 
 </Project>

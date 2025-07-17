@@ -108,12 +108,10 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         new AcceptLanguageHeaderRequestCultureProvider()
     };
 });
-
-builder.Services.AddAutoMapper(typeof(App.DAL.EF.AutoMapperConfig),
+builder.Services.AddAutoMapper(cfg => { },
+    typeof(App.DAL.EF.AutoMapperConfig),
     typeof(App.BLL.AutoMapperConfig),
     typeof(WebApp.ApiControllers.v1.AutoMapperConfig));
-/*builder.Services.AddAutoMapper(
-    typeof(App.DAL.EF.AutoMapperConfig));*/
 
 builder.Services.AddTransient<ProfileCompleteFilterAttribute>();
 
