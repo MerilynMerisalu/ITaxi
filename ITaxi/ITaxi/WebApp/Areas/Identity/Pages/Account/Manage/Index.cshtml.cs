@@ -207,8 +207,8 @@ public class IndexModel : PageModel
         
         if (user.ProfilePhoto != null)
             Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
-        //else
-            //Input.PhotoPath = Path.Combine(_webHostEnvironment.WebRootPath + "/Images/icons8-selfies-50.png");
+        else
+            Input.PhotoPath =  "/Images/icons8-selfies-50.png";
     }
 
     /// <summary>
