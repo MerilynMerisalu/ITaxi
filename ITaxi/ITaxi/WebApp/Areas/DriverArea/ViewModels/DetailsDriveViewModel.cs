@@ -31,7 +31,7 @@ public class DetailsDriveViewModel
     /// </summary>
     [Display(ResourceType = typeof(Drive), Name = "CustomerLastAndFirstName")]
     public string CustomerLastAndFirstName { get; set; } = default!;
-
+    
     /// <summary>
     /// Pickup date and time
     /// </summary>
