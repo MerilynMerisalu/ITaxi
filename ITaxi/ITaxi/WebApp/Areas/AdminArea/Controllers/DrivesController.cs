@@ -299,6 +299,7 @@ public async Task<IActionResult> StartDrive(Guid? id)
     if (drive == null) return NotFound();
 
     vm.Id = drive.Id;
+    vm.BookingNumber = drive.Booking!.BookingNumber;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
     vm.City = drive.Booking.City!.CityName;
     vm.CustomerInfo = drive!.CustomerInfo;
@@ -374,6 +375,7 @@ public async Task<IActionResult> EndDrive(Guid? id)
     if (drive == null) return NotFound();
 
     vm.Id = drive.Id;
+    vm.BookingNumber = drive.Booking!.BookingNumber;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
     vm.City = drive.Booking.City!.CityName;
     vm.CustomerInfo = drive!.CustomerInfo;
