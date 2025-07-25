@@ -87,6 +87,7 @@ public async Task<IActionResult> Accept(Guid? id)
     if (drive == null) return NotFound();
 
     vm.Id = drive.Id;
+    vm.BookingNumber = drive.Booking!.BookingNumber;
     drive.Booking!.Schedule!.StartDateAndTime = drive.Booking!.Schedule!.StartDateAndTime;
     drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
@@ -201,6 +202,7 @@ public async Task<IActionResult> Decline(Guid? id)
     if (drive == null) return NotFound();
 
     vm.Id = drive.Id;
+    vm.BookingNumber = drive.Booking!.BookingNumber;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
     vm.City = drive.Booking.City!.CityName;
     vm.CustomerInfo = drive!.CustomerInfo;

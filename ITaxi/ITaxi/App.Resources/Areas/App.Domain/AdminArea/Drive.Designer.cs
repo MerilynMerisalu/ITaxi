@@ -105,6 +105,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Booking Number.
+        /// </summary>
+        public static string BookingNumber {
+            get {
+                return ResourceManager.GetString("BookingNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City.
         /// </summary>
         public static string City {

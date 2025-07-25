@@ -138,4 +138,7 @@
     <data name="DriverInfo" xml:space="preserve">
         <value>Juhi andmed</value>
     </data>
+    <data name="BookingNumber" xml:space="preserve">
+        <value>Broneerigu number</value>
+    </data>
 </root>

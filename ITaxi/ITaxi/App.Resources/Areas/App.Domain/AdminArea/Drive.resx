@@ -240,4 +240,7 @@
   <data name="DriverInfo" xml:space="preserve">
     <value>Driver's Information</value>
   </data>
+  <data name="BookingNumber" xml:space="preserve">
+    <value>Booking Number</value>
+  </data>
 </root>

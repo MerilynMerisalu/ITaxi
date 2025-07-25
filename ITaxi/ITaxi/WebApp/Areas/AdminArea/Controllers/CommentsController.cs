@@ -150,6 +150,7 @@ public class CommentsController : Controller
         if (comment.StarRating != null) vm.StarRating = comment.StarRating;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.DriveId = comment.DriveId;
+        vm.BookingNumber = comment.Drive!.Booking.BookingNumber;
         vm.DriveTimeAndDriver = $"{comment.DriveCustomerStr} - {comment.DriverName}";
 
         return View(vm);

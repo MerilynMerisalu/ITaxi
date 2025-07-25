@@ -16,6 +16,12 @@ public class EditCommentViewModel
     /// <summary>
     /// Drive id
     /// </summary>
+    [Display(ResourceType = typeof(Drive), Name = nameof(BookingNumber))]
+    public Guid? BookingNumber { get; set; }
+    
+    /// <summary>
+    /// Drive id
+    /// </summary>
     [Display(ResourceType = typeof(Comment), Name = nameof(Drive))]
     public Guid? DriveId { get; set; }
 
