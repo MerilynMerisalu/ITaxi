@@ -143,4 +143,7 @@
     <data name="CustomerPhoneNumber" xml:space="preserve">
         <value>Phone Number</value>
     </data>
+    <data name="BookingNumber" xml:space="preserve">
+        <value>Booking Number</value>
+    </data>
 </root>

@@ -23,7 +23,9 @@
 <table class="table">
     <thead>
         <tr>
-
+            <th>
+                @Html.DisplayNameFor(model => model!.BookingNumber)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model!.DriverInfo)
             </th>
@@ -71,9 +73,7 @@
             <th>
                 @Html.DisplayNameFor(model => model!.AdditionalInfo)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.BookingNumber)
-            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model!.StatusOfBooking)
             </th>
@@ -96,13 +96,16 @@
         {
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item!.BookingNumber)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item!.DriverInfo)
                 </td>
                 <td>
                     @Html.DisplayTextFor(modelItem => item!.VehicleInfo)
                 </td>
-                
-                    
+
+
                 <td>
                     @Html.DisplayFor(modelItem => item!.City!.CityName)
                 </td>
@@ -129,7 +132,7 @@
                     <td>
                     </td>
                     <td>
-                        
+
                     </td>
                 }
 
@@ -162,10 +165,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item!.AdditionalInfo)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.BookingNumber)
-                </td>
-
+                
                 <td>
                     @Html.DisplayFor(modelItem => item!.StatusOfBooking)
                 </td>

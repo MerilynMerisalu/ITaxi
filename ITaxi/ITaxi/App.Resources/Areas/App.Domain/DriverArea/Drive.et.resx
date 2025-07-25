@@ -135,4 +135,7 @@
     <data name="CustomerPhoneNumber" xml:space="preserve">
         <value>Telefoninumber</value>
     </data>
+    <data name="BookingNumber" xml:space="preserve">
+        <value>Broneeringu Number</value>
+    </data>
 </root>

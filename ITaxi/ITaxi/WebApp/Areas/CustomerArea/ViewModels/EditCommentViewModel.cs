@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using App.Domain;
+using Booking = App.Public.DTO.v1.CustomerArea.Booking;
 using Comment = App.Resources.Areas.App.Domain.CustomerArea.Comment;
 
 namespace WebApp.Areas.CustomerArea.ViewModels;
@@ -23,7 +24,7 @@ public class EditCommentViewModel
     /// <summary>
     /// A booking number
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = nameof(BookingNumber))]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = nameof(BookingNumber) )]
     public Guid BookingNumber { get; set; }
     /// <summary>
     /// Drive time and driver

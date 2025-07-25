@@ -147,6 +147,7 @@ public class BookingsController : Controller
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
+        vm.BookingNumber = booking.BookingNumber;
         vm.City = booking.City!.CityName;
         vm.VehicleInfo = booking.VehicleInfo;
         vm.DriverInfo = booking.DriverInfo;
