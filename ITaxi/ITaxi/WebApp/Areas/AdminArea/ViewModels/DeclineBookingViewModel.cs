@@ -13,6 +13,11 @@ public class DeclineBookingViewModel : AdminAreaBaseViewModel
     /// Booking id
     /// </summary>
     public Guid Id { get; set; }
+    /// <summary>
+    /// A number of the booking
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(BookingNumber))]
+    public Guid BookingNumber { get; set; }
 
     /// <summary>
     /// Shift duration time

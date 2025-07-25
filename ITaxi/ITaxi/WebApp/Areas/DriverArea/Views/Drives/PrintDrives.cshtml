@@ -71,6 +71,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.HasAnAssistant)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.BookingNumber)
+            </th>
 
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.AdditionalInfo)
@@ -147,9 +150,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Booking!.NumberOfPassengers)
                 </td>
-
+                
                 <td>
                     @Html.DisplayFor(modelItem => item.Booking!.HasAnAssistant)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.BookingNumber)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Booking!.AdditionalInfo)

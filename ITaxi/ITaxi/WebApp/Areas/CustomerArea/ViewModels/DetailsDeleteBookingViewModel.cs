@@ -121,6 +121,12 @@ public class DetailsDeleteBookingViewModel
     public string? AdditionalInfo { get; set; }
 
     /// <summary>
+    /// A booking number
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(BookingNumber))]
+    public Guid BookingNumber { get; set; }
+
+    /// <summary>
     /// Status of booking
     /// </summary>
     [Display(ResourceType = typeof(Booking), Name = nameof(StatusOfBooking))]

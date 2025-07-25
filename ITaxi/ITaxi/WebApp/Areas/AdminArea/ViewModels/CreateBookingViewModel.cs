@@ -15,6 +15,10 @@ public class CreateBookingViewModel
     /// </summary>
     [Display(ResourceType = typeof(Booking), Name = "Schedule")]
     public Guid? ScheduleId { get; set; }
+    /// <summary>
+    /// A number for the booking 
+    /// </summary>
+    public Guid BookingNumber { get; set; }
 
     /// <summary>
     /// Driver id for create booking

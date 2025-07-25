@@ -15,6 +15,11 @@ public class DriveStateViewModel : AdminAreaBaseViewModel
     public Guid Id { get; set; }
 
     /// <summary>
+    /// A number for the booking
+    /// </summary>
+    public Guid BookingNumber { get; set; }
+
+    /// <summary>
     /// Schedule 
     /// </summary>
     [Display(ResourceType = typeof(Drive), Name = nameof(Schedule))]

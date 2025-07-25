@@ -116,6 +116,7 @@ public async Task<IActionResult> Accept(Guid? id)
     vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
+    vm.BookingNumber = drive.Booking!.BookingNumber;
     vm.StatusOfBooking = drive.Booking.StatusOfBooking;
     vm.StatusOfDrive = drive.StatusOfDrive;
     vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
@@ -225,6 +226,7 @@ public async Task<IActionResult> Decline(Guid? id)
     vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
+    vm.BookingNumber = drive.Booking.BookingNumber;
     vm.StatusOfBooking = drive.Booking.StatusOfBooking;
     vm.StatusOfDrive = drive.StatusOfDrive;
     vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
@@ -336,6 +338,7 @@ public async Task<IActionResult> StartDrive(Guid? id)
     vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
+    vm.BookingNumber = drive.Booking.BookingNumber;
     vm.StatusOfBooking = drive.Booking.StatusOfBooking;
     vm.StatusOfDrive = drive.StatusOfDrive;
     vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
@@ -434,6 +437,7 @@ public async Task<IActionResult> EndDrive(Guid? id)
     vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
     vm.HasAnAssistant = drive.Booking.HasAnAssistant;
     vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
+    vm.BookingNumber = drive.Booking.BookingNumber;
     vm.StatusOfBooking = drive.Booking.StatusOfBooking;
     vm.StatusOfDrive = drive.StatusOfDrive;
     vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");

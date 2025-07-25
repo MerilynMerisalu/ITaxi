@@ -668,6 +668,7 @@ public static class DataHelper
                 var booking = new Booking
                 {
                     Id = new Guid(),
+                    BookingNumber = Guid.NewGuid(),
                     DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("38806237921")).Result.Id,
                     VehicleId = context.Vehicles
                         .FirstOrDefaultAsync(v => v.Driver!.PersonalIdentifier!.Equals("38806237921"))
@@ -723,6 +724,7 @@ public static class DataHelper
                 booking = new Booking
                 {
                     Id = new Guid(),
+                    BookingNumber = Guid.NewGuid(),
                     DriverId = context.Drivers.SingleAsync(d => d.PersonalIdentifier!.Equals("36605138911")).Result.Id,
                     VehicleId = context.Vehicles
                         .FirstOrDefaultAsync(v => v.Driver!.PersonalIdentifier!.Equals("36605138911"))

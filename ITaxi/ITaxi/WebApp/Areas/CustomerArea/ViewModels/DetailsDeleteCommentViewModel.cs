@@ -14,6 +14,12 @@ public class DetailsDeleteCommentViewModel
     public Guid Id { get; set; }
 
     /// <summary>
+    /// A booking number
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(BookingNumber))]
+    public Guid BookingNumber { get; set; }
+
+    /// <summary>
     /// Driver name
     /// </summary>
     [Display(ResourceType = typeof(Comment), Name = "Driver")]

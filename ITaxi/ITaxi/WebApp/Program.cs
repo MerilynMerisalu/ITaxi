@@ -174,7 +174,7 @@ builder.Services.AddAuthentication().AddGoogle(options =>
 var app = builder.Build();
 //Register Syncfusion license
 Syncfusion.Licensing.SyncfusionLicenseProvider
-    .RegisterLicense("Mgo+DSMBPh8sVXJ9S0d+X1JPd11dXmJWd1p/THNYflR1fV9DaUwxOX1dQl9mSXpSdERlWXlacH1UQmNXU00=;Mgo+DSMBMAY9C3t2XFhhQlJHfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTH5Xd0diX39YdHRcRGlVWkZ/;MzgxMjk1NUAzMjM5MmUzMDJlMzAzYjMyMzkzYm0zUld1em1FY0laWWlxMUlFUEhaU2RDbXc0VTVjYzNEbDU1TlNnc1ZXYzg9");
+    .RegisterLicense("Mgo + DSMBPh8sVXN0S0d + X1ZPd11dXmJWd1p / THNYflR1fV9DaUwxOX1dQl9mSXlRc0RgW3xecnRXQ2FXUkQ =; Mgo + DSMBMAY9C3t3VVhhQlJDfV5AQmBIYVp / TGpJfl96cVxMZVVBJAtUQF1hTH5UdEBiWn1dcHZVQ2ZYWkd2; Mzk2Njc1NkAzMzMwMmUzMDJlMzAzYjMzMzAzYkhXcHRaRmxhM1lFNXJXQ2wvb3Y0ZXlCVmVQbUJCc2xaNW5MYlpBcmd2UFk9");
 
 Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
 Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");

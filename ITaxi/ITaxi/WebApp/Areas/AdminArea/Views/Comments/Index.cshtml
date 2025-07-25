@@ -18,7 +18,10 @@
 <table class="table">
     <thead>
     <tr>
-        <th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookingNumber)
+            </th>
+            <th>
             @Html.DisplayNameFor(model => model.DriveCustomerStr)
         </th>
         <th>
@@ -65,8 +68,11 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.DriveCustomerStr)
+                @Html.DisplayFor(modelItem => item.BookingNumber)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriveCustomerStr)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CustomerName)
             </td>

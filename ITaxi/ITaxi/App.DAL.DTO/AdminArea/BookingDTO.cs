@@ -9,6 +9,7 @@ public class BookingDTO: DomainEntityMetaId
 {
     public Guid ScheduleId { get; set; }
 
+    public Guid BookingNumber { get; set; }
     public ScheduleDTO? Schedule { get; set; }
 
     public Guid DriverId { get; set; }

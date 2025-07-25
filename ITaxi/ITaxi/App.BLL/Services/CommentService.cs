@@ -28,8 +28,9 @@ public class CommentService: BaseEntityService<App.BLL.DTO.AdminArea.CommentDTO,
     public async Task<IEnumerable<CommentDTO>> GettingAllOrderedCommentsWithIncludesAsync(Guid?
         userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
-        return (await Repository.GettingAllOrderedCommentsWithIncludesAsync(userId, roleName, noTracking, noIncludes))
+        var res = (await Repository.GettingAllOrderedCommentsWithIncludesAsync(userId, roleName, noTracking, noIncludes))
             .Select(e => Mapper.Map(e))!;
+        return res;
     }
 
     public async Task<IEnumerable<CommentDTO>> GettingAllOrderedCommentsWithoutIncludesAsync(bool noTracking = true)

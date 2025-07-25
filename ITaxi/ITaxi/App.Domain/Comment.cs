@@ -14,7 +14,9 @@ public class Comment : DomainEntityMetaId
     [DataType(DataType.MultilineText)]
     public string? CommentText { get; set; }
 
-    
+    public Guid BookingNumber => Drive!.Booking!.BookingNumber;
+
+
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Comment), Name = "Rating")]
     [Range(minimum:0, maximum:5)]
     public int? StarRating { get; set; }

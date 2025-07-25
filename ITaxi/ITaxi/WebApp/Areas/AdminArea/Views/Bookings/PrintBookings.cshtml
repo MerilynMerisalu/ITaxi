@@ -2,9 +2,11 @@
 @model IEnumerable<App.BLL.DTO.AdminArea.BookingDTO>
 
 
+
 @{
     Layout = "_PrintLayout";
     ViewData["Title"] = App.Resources.Areas.App.Domain.AdminArea.PDF.BookingsTitle;
+    
 }
 
 <h1>@PDF.BookingsTitle</h1>
@@ -13,8 +15,11 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Schedule)
+            @Html.DisplayNameFor(model => model.BookingNumber)
         </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Schedule)
+            </th>
         <th>
             @Html.DisplayNameFor(model => model.DriverInfo)
         </th>
@@ -75,6 +80,9 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookingNumber)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Schedule!.ShiftDurationTime)
                 </td>

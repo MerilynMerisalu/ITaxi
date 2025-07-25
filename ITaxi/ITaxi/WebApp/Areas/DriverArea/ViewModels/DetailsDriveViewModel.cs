@@ -137,6 +137,12 @@ public class DetailsDriveViewModel
     /// </summary>
     public bool IsDriveFinished { get; set; }
 
+
+    /// <summary>
+    /// A booking number
+    /// </summary>
+    public Guid BookingNumber { get; set; }
+
     /// <summary>
     /// Status of booking
     /// </summary>

@@ -11,6 +11,9 @@ public class BookingDTO: DomainEntityMetaId
 {
     public Guid ScheduleId { get; set; }
 
+    [Display(ResourceType = typeof(Booking), Name = nameof(BookingNumber))]
+    public Guid BookingNumber { get; set; }
+
     [Display(ResourceType = typeof(Booking), Name = nameof(Schedule))]
     public ScheduleDTO? Schedule { get; set; }
     

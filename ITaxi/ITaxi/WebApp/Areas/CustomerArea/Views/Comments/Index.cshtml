@@ -13,6 +13,9 @@
 <table class="table">
     <thead>
     <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookingNumber)
+            </th>
         <th>
             @Html.DisplayNameFor(model => model.DriveCustomerStr)
         </th>
@@ -33,6 +36,9 @@
     @foreach (var item in Model)
     {
         <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookingNumber)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DriveCustomerStr)
             </td>

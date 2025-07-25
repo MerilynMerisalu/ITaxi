@@ -164,6 +164,7 @@ public class BookingsController : Controller
         
         vm.HasAnAssistant = booking.HasAnAssistant;
         vm.NumberOfPassengers = booking.NumberOfPassengers;
+        vm.BookingNumber = booking.BookingNumber;
         vm.StatusOfBooking = booking.StatusOfBooking;
         vm.PickUpDateAndTime = booking.PickUpDateAndTime.ToString("g");
 
@@ -204,6 +205,7 @@ public class BookingsController : Controller
             var userId = User.GettingUserId();
             
             booking.Id = Guid.NewGuid();
+            booking.BookingNumber = Guid.NewGuid();
             booking.CityId = vm.CityId;
             booking.CustomerId = await _appBLL.Customers.GettingCustomerIdByAppUserIdAsync(userId);
             booking.AdditionalInfo = vm.AdditionalInfo;
@@ -287,6 +289,7 @@ public class BookingsController : Controller
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
+        vm.BookingNumber = booking.BookingNumber;
         vm.City = booking.City!.CityName;
         vm.AdditionalInfo = booking.AdditionalInfo;
         vm.DestinationAddress = booking.DestinationAddress;
@@ -351,6 +354,7 @@ public class BookingsController : Controller
         if (booking == null) return NotFound();
         
         vm.Id = booking.Id;
+        vm.BookingNumber = booking.BookingNumber;
         vm.City = booking.City!.CityName;
         vm.VehicleInfo = booking!.VehicleInfo;
         vm.VehicleType = booking!.VehicleType!.VehicleTypeName;

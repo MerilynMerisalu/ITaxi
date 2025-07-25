@@ -8,12 +8,16 @@ public class CommentDTO: DomainEntityMetaId
     
     public Guid? DriveId { get; set; }
 
+    public DriveDTO? Drive { get; set; }
+
+    [Display(ResourceType =typeof(App.Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(BookingNumber))]
+    public Guid BookingNumber => Drive!.Booking!.BookingNumber;
     /// <summary>
     /// Description of the Drive, to show the Customer
     /// It should be the formatted drive time.
     /// </summary>
-    
-    
+
+
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Comment),
         Name = "Drive")]
     public string DriveCustomerStr { get; set; } = default!;

@@ -21,6 +21,11 @@ public class EditCommentViewModel
     public Guid? DriveId { get; set; }
 
     /// <summary>
+    /// A booking number
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(BookingNumber))]
+    public Guid BookingNumber { get; set; }
+    /// <summary>
     /// Drive time and driver
     /// </summary>
     public string? DriveTimeAndDriver { get; set; }

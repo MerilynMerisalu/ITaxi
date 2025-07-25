@@ -63,6 +63,7 @@ public class CommentsController : Controller
         vm.Id = comment.Id;
         vm.Drive = comment.DriveCustomerStr;
         vm.DriverName = comment.DriverName;
+        vm.BookingNumber = comment.BookingNumber;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         if (comment.StarRating > 0)
         {
@@ -150,6 +151,7 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
+        
         vm.DriveTimeAndDriver = $"{comment.DriveCustomerStr} - {comment.DriverName}";
         if (comment.StarRating != null) vm.StarRating = comment.StarRating.Value;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;

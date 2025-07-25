@@ -118,6 +118,12 @@ public class DriveStateViewModel
     public bool HasAnAssistant { get; set; }
 
     /// <summary>
+    /// Booking number
+    /// </summary>
+    [Display(ResourceType =typeof(Drive), Name = nameof(BookingNumber))]
+    public Guid BookingNumber { get; set; }
+
+    /// <summary>
     /// Status of booking
     /// </summary>
     [Display(ResourceType = typeof(Drive), Name = nameof(StatusOfBooking))]

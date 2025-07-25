@@ -64,6 +64,7 @@ public class BookingsController : Controller
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
+        vm.BookingNumber = booking.BookingNumber;
         vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
         vm.City = booking.City!.CityName;
         vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
@@ -294,6 +295,7 @@ public class BookingsController : Controller
         {
 
             booking.Id = Guid.NewGuid();
+            booking.BookingNumber = vm.BookingNumber;
             booking.CityId = vm.CityId;
             booking.CustomerId = vm.CustomerId;
             booking.DriverId = vm.DriverId;
@@ -383,8 +385,7 @@ public class BookingsController : Controller
         if (booking == null) return NotFound();
 
         vm.Id = booking.Id;
-        booking.Schedule!.StartDateAndTime = booking.Schedule!.StartDateAndTime;
-        booking.Schedule!.EndDateAndTime = booking.Schedule!.EndDateAndTime;
+        vm.BookingNumber = booking.BookingNumber;
         vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
         vm.City = booking.City!.CityName;
         vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
@@ -496,7 +497,6 @@ public class BookingsController : Controller
         var vm = new DetailsDeleteBookingViewModel();
         if (id == null) return NotFound();
         var roleName = User.GettingUserRoleName();
-
         var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, null, roleName );
         if (booking == null) return NotFound();
         vm.Id = booking.Id;
@@ -504,6 +504,7 @@ public class BookingsController : Controller
         booking.Schedule.EndDateAndTime = booking.Schedule.EndDateAndTime.ToLocalTime();
         vm.ShiftDurationTime = booking.Schedule.ShiftDurationTime ;
         vm.City = booking.City!.CityName;
+        vm.BookingNumber = booking.BookingNumber;
         vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
         vm.Customer = booking.Customer!.AppUser!.LastAndFirstName;
         vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
@@ -604,7 +605,9 @@ public class BookingsController : Controller
         
         return new ViewAsPdf("PrintBookings", bookings) 
         {
-            PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape
+            PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape,
+            MinimumFontSize = 10,
+             
         };
     }
 

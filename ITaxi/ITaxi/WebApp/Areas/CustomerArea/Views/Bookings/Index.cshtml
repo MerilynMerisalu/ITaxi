@@ -72,6 +72,9 @@
                 @Html.DisplayNameFor(model => model!.AdditionalInfo)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model!.BookingNumber)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model!.StatusOfBooking)
             </th>
             @foreach (var i in Model)
@@ -159,6 +162,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item!.AdditionalInfo)
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.BookingNumber)
+                </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item!.StatusOfBooking)
                 </td>

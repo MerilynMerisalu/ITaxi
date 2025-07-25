@@ -8,7 +8,7 @@ namespace App.Domain;
 
 public class Booking : DomainEntityMetaId
 {
-    
+    public Guid BookingNumber { get; set; }
     public Guid ScheduleId { get; set; }
 
     public Schedule? Schedule { get; set; }

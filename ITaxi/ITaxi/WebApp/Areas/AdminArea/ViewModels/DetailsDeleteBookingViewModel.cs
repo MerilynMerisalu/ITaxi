@@ -13,6 +13,10 @@ public class DetailsDeleteBookingViewModel : AdminAreaBaseViewModel
     /// Booking id
     /// </summary>
     public Guid Id { get; set; }
+    /// <summary>
+    /// A booking number for booking identification 
+    /// </summary>
+    public Guid BookingNumber { get; set; }
 
     /// <summary>
     /// Schedule shift duration time

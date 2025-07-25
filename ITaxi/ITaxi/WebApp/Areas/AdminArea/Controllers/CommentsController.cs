@@ -57,6 +57,7 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
+        vm.BookingNumber = comment!.Drive.Booking.BookingNumber;
         vm.Drive = comment.DriveCustomerStr;
         vm.CustomerName = comment.CustomerName;
         vm.DriverName = comment.DriverName;
@@ -223,6 +224,8 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
+        vm.BookingNumber = comment.Drive.Booking.BookingNumber;
+        
         vm.Drive = comment.DriveCustomerStr;
         vm.CustomerName = comment.CustomerName;
         vm.DriverName = comment.DriverName;

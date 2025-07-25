@@ -7,11 +7,16 @@
     ViewData["Title"] = App.Resources.Areas.App.Domain.DriverArea.PDF.Title;
 }
 
+
+
 <h1>@Drive.Drives</h1>
 
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.BookingNumber)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.Schedule)
             </th>
@@ -78,6 +83,9 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.BookingNumber)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Booking!.Schedule!.ShiftDurationTime)
                 </td>
