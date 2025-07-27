@@ -151,7 +151,7 @@ public class CommentsController : Controller
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        
+        vm.BookingNumber = comment.BookingNumber;
         vm.DriveTimeAndDriver = $"{comment.DriveCustomerStr} - {comment.DriverName}";
         if (comment.StarRating != null) vm.StarRating = comment.StarRating.Value;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
