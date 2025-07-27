@@ -170,7 +170,7 @@ public class CommentsController : Controller
     public async Task<IActionResult> Edit(Guid id, EditCommentViewModel vm)
     {
         var roleName = User.GettingUserRoleName();
-        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, null, roleName);
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, null, roleName, noIncludes:true);
         if (comment != null && id != comment.Id) return NotFound();
 
         if (ModelState.IsValid)
