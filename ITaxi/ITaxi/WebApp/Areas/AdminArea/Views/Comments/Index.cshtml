@@ -8,7 +8,7 @@
 @{
     ViewData["Title"] = Common.Index;
 }
-
+<link rel="stylesheet" href="@Url.Content("~/css/star-rating.css")"/>
 <h1>@Common.Index</h1>
 
 <p>
@@ -87,8 +87,13 @@
             @if (item.StarRating > 0)
             {
                 <td>
-                    <ejs-rating id="rating-@item.Id" readOnly="true"
-                                value="item.StarRating.Value"></ejs-rating>
+                    <ejs-rating id="rating-@item.Id"
+                                readOnly="true"
+                                value="@item.StarRating.Value"
+                                cssClass="cssStyles"
+                                fullTemplate="<span class='star full'>★</span>"
+                                emptyTemplate="<span class='star empty'>☆</span>">
+                    </ejs-rating>
                 </td>
             }
             else

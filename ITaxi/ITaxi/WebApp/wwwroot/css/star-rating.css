@@ -1,0 +1,16 @@
+﻿.cssStyles .e-rating-selected {
+    font-size: 20px;
+    color: gold !important;
+}
+.changeRating .star {
+    font-size: 24px;         
+    transform: none !important;
+}
+
+.changeRating .star.full {
+    color: gold;
+}
+
+.changeRating .star.empty {
+    color: lightgray;
+}
