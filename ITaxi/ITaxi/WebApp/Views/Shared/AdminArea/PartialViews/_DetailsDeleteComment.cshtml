@@ -1,6 +1,6 @@
 ﻿@using System.Text
 @model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteCommentViewModel
-
+<link rel="stylesheet" href="@Url.Content("~/css/star-rating.css")"/>
 <dl class="row">
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.BookingNumber)
@@ -33,8 +33,13 @@
         </dt>
         <dd class="col-sm-10">
         <td>
-            <ejs-rating id="rating" ejs-for="StarRating!.Value "
-                        readOnly=true></ejs-rating>
+            <ejs-rating id="rating-@Model.Id"
+                                readOnly="true"
+                                value="@Model.StarRating.Value"
+                                cssClass="cssStyles"
+                                fullTemplate="<span class='star full'>★</span>"
+                                emptyTemplate="<span class='star empty'>☆</span>">
+                    </ejs-rating>
         </td>
         </dd>
     }
