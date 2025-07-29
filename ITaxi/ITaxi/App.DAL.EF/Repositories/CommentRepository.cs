@@ -139,6 +139,19 @@ public class CommentRepository : BaseEntityRepository<CommentDTO, App.Domain.Com
             .FirstOrDefault(c => c.Drive!.Booking!.Id.Equals(driveId)));
     }
 
+    public Guid GettingBookingNumberByDriveId(Guid driveId, Guid? userId = null, string? roleName = null)
+    {
+        return CreateQuery(userId, roleName, true)
+            .FirstOrDefaultAsync(c => c.DriveId.Equals(driveId))
+            .Result.BookingNumber;
+    }
+
+    public async Task<Guid> GettingBookingNumberByDriveIdAsync(Guid driveId, Guid? userId = null, string? roleName = null)
+    {
+        return (await CreateQuery(userId, roleName, true)
+                .SingleOrDefaultAsync(c => c.DriveId.Equals(driveId))).BookingNumber; 
+    }
+    
     protected  IQueryable<Comment> CreateQuery(Guid? userId= null, string? roleName = null,
        bool noIncludes = false, bool noTracking = true, bool showDeleted = false)
     {

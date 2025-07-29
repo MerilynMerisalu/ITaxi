@@ -79,4 +79,14 @@ public class CommentService: BaseEntityService<App.BLL.DTO.AdminArea.CommentDTO,
     {
         return Mapper.Map(Repository.GettingCommentByDriveId(driveId, userId, roleName, noIncludes, noTracking));
     }
+
+    public Guid GettingBookingNumberByDriveId(Guid driveId, Guid? userId = null, string? roleName = null)
+    {
+        return Repository.GettingBookingNumberByDriveId(driveId, userId, roleName);
+    }
+
+    public async Task<Guid> GettingBookingNumberByDriveIdAsync(Guid driveId, Guid? userId = null, string? roleName = null)
+    {
+        return await Repository.GettingBookingNumberByDriveIdAsync(driveId, userId, roleName);
+    }
 }

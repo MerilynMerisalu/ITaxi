@@ -25,12 +25,16 @@ public class CreateCommentViewModel
     /// Comment drive
     /// </summary>
     public Drive? Drive { get; set; }
+    /// <summary>
+    /// Booking Number
+    /// </summary>
+    public Guid BookingNumber { get; set; }
 
     /// <summary>
     /// List of drives
     /// </summary>
     public SelectList? Drives { get; set; }
-
+    
     /// <summary>
     /// Comment text
     /// </summary>

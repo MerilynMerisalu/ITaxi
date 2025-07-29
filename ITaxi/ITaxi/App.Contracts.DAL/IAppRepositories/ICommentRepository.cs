@@ -29,4 +29,6 @@ public interface ICommentRepositoryCustom<TEntity>
         bool noIncludes = true, bool noTracking = false);
     TEntity? GettingCommentByDriveId(Guid driveId, Guid? userId = null, string? roleName = null,
         bool noIncludes = true, bool noTracking = false);
+    Guid GettingBookingNumberByDriveId(Guid driveId, Guid? userId = null, string? roleName = null);
+    Task<Guid> GettingBookingNumberByDriveIdAsync(Guid driveId, Guid? userId = null, string? roleName = null);
 }
