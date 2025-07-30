@@ -42,4 +42,7 @@
     <data name="Customer" xml:space="preserve">
         <value>Customer</value>
     </data>
+    <data name="BookingNumber" xml:space="preserve">
+        <value>Booking Number</value>
+    </data>
 </root>

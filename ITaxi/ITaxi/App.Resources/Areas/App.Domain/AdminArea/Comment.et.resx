@@ -135,4 +135,7 @@
   <data name="Customer" xml:space="preserve">
     <value>Klient</value>
   </data>
+  <data name="BookingNumber" xml:space="preserve">
+    <value>Broneeringu number</value>
+  </data>
 </root>
