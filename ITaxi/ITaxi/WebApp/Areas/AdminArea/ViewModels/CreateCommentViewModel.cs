@@ -29,7 +29,7 @@ public class CreateCommentViewModel
     /// Booking Number
     /// </summary>
     [Display(ResourceType = typeof(Comment), Name = nameof(BookingNumber))]
-    public Guid BookingNumber { get; set; }
+    public Guid? BookingNumber { get; set; }
 
     /// <summary>
     /// List of drives

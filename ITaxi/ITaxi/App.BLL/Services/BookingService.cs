@@ -126,5 +126,17 @@ public class BookingService : BaseEntityService<App.BLL.DTO.AdminArea.BookingDTO
     {
         return Repository.Print(id).Select(e => Mapper.Map(e)).ToList();
     }
+
+    public Guid? GettingBookingNumberByDriveId(Guid driveId, Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = false)
+    {
+        return Repository.GettingBookingNumberByDriveId(driveId, userId, roleName, noTracking);
+    }
+
+    public async Task<Guid?> GettingBookingNumberByDriveIdAsync(Guid driveId, Guid? userId = null, string? roleName = null,
+        bool noTracking = true, bool noIncludes = false)
+    {
+        return (await Repository.GettingBookingNumberByDriveIdAsync(driveId, userId, roleName, noTracking, noIncludes));
+    }
 }
 

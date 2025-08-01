@@ -43,4 +43,9 @@ public interface IBookingRepositoryCustom<TEntity>
         string? roleName = null, bool noIncludes = true, bool noTracking = true);
     Task<IEnumerable<TEntity?>> PrintAsync( Guid? userId = null, string? roleName = null);
     IEnumerable<TEntity?> Print(Guid id);
+    
+    Guid? GettingBookingNumberByDriveId(Guid driveId, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = false);
+    Task<Guid?> GettingBookingNumberByDriveIdAsync(Guid driveId, Guid? userId = null, string? roleName = null,
+        bool noTracking = true, bool noIncludes = false);
 }

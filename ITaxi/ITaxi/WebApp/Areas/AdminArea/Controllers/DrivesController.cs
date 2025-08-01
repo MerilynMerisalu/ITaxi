@@ -110,43 +110,43 @@ public async Task<IActionResult> Accept(Guid? id)
             vm.HasAnElevatorInTheDestinationBuilding = drive.Booking!.HasAnElevatorInTheDestinationBuilding;
         }
              
-   vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("G");
-   vm.PickupAddress = drive.Booking.PickupAddress;
-   vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
-   vm.HasAnAssistant = drive.Booking.HasAnAssistant;
-   vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
-   vm.StatusOfBooking = drive.Booking.StatusOfBooking;
-   vm.StatusOfDrive = drive.StatusOfDrive;
-    if (vm.IsDriveAccepted )
-    {
-        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("G");
-    }
-    if (vm.IsDriveDeclined )
-    {
-        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("G");
-        vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToString("G");
-    }
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("G");
+        vm.PickupAddress = drive.Booking.PickupAddress;
+        vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
+        vm.HasAnAssistant = drive.Booking.HasAnAssistant;
+        vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
+        vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+        vm.StatusOfDrive = drive.StatusOfDrive;
+        if (vm.IsDriveAccepted )
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("G");
+        }
+        if (vm.IsDriveDeclined )
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("G");
+            vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToString("G");
+        }
 
-    if (vm.IsDriveStarted)
-    {
-        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("G");
-        vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("G");
-    }
+        if (vm.IsDriveStarted)
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("G");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("G");
+        }
 
-    if (vm.IsDriveFinished)
-    {
-        vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("G");
-        vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("G");
-        vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToString("G");
-    }
+        if (vm.IsDriveFinished)
+        {
+            vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("G");
+            vm.DriveInProgressDateAndTime = drive.DriveStartDateAndTime.ToString("G");
+            vm.DriveFinishedDateAndTime = drive.DriveEndDateAndTime.ToString("G");
+        }
 
-    vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
-    vm.CreatedBy = drive.CreatedBy!;
-    vm.CreatedAt = drive.CreatedAt;
-    vm.UpdatedBy = drive.UpdatedBy!;
-    vm.UpdatedAt = drive.UpdatedAt;
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
+        vm.CreatedBy = drive.CreatedBy!;
+        vm.CreatedAt = drive.CreatedAt;
+        vm.UpdatedBy = drive.UpdatedBy!;
+        vm.UpdatedAt = drive.UpdatedAt;
     
-    return View(vm);
+        return View(vm);
 }
 
 // POST: AdminArea/Bookings/Accept/5

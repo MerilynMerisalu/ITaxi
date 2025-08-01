@@ -13,7 +13,21 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
     public BookingRepository(AppDbContext dbContext, IMapper<App.DAL.DTO.AdminArea.BookingDTO, App.Domain.Booking> mapper) : base(dbContext, mapper)
     {
     }
+    public Guid? GettingBookingNumberByDriveId(Guid driveId, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool noIncludes = true)
+    {
+        var result = CreateQuery(userId, roleName, noIncludes:noIncludes, noTracking:noTracking)
+            .FirstOrDefault(d => d.DriveId.Equals(driveId)).BookingNumber;
+        return result;
+    }
 
+    public async Task<Guid?> GettingBookingNumberByDriveIdAsync(Guid driveId, Guid? userId = null, 
+        string? roleName = null,  bool noTracking = true, bool noIncludes = true)
+    {
+        var result = (await CreateQuery(userId, roleName, noIncludes: noIncludes, noTracking: noTracking)
+            .SingleOrDefaultAsync(b => b.DriveId.Equals(driveId)));
+        return result.BookingNumber;
+    }
     public override async Task<IEnumerable<BookingDTO>> GetAllAsync(bool noTracking = true)
     {
         return (await CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;

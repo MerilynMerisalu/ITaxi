@@ -77,13 +77,14 @@ public class CommentsController : Controller
     /// <param name="id">Drive id</param>
     /// <returns>Status 200 OK</returns>
     
-    [HttpGet("/{id}")]
-    public async Task<IActionResult> SetBookingNumber([FromBody] Guid id)
+    [HttpPost("/AdminArea/Comments/GetBookingNumber")]
+    public async Task<IActionResult> GetBookingNumber(CreateCommentViewModel vm, [FromBody] Guid? id = null)
     {
-        var vm = new CreateCommentViewModel();
-        var bookingNumber = await _appBLL.Comments.GettingBookingNumberByDriveIdAsync(id);
+        
+        var  bookingNumber = await _appBLL.Bookings.GettingBookingNumberByDriveIdAsync(id.Value, null, User.GettingUserRoleName(),
+            true, false);
         vm.BookingNumber = bookingNumber;
-        return Ok(vm);
+        return Content(bookingNumber.ToString()?? String.Empty, "text/plain");
     }
 
 
@@ -102,10 +103,6 @@ public class CommentsController : Controller
         vm.Drives = new SelectList(drives,
             nameof(DriveDTO.Id), 
             nameof(DriveDTO.DriveDescription));
-        if (vm.DriveId.HasValue)
-        {
-            vm.BookingNumber = await _appBLL.Comments.GettingBookingNumberByDriveIdAsync(vm.DriveId.Value);
-        }
         
         return View(vm);
     }
