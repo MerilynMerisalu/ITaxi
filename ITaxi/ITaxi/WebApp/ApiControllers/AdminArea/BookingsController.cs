@@ -90,6 +90,7 @@ public class BookingsController : ControllerBase
     {
         var bookingDTO = new BookingDTO();
         bookingDTO.Id = Guid.NewGuid();
+        bookingDTO.BookingNumber = booking.BookingNumber;
         bookingDTO.CityId = booking.CityId;
         bookingDTO.DriverId = booking.DriverId;
         bookingDTO.CustomerId = booking.CustomerId;

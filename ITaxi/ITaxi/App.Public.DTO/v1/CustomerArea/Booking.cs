@@ -10,8 +10,6 @@ namespace App.Public.DTO.v1.CustomerArea;
 public class Booking : DomainEntityMetaId
 {
     public Guid DriverId { get; set; }
-    
-     
      public Driver? Driver { get; set; }
      public Guid CustomerId { get; set; }
     public Guid VehicleTypeId { get; set; }

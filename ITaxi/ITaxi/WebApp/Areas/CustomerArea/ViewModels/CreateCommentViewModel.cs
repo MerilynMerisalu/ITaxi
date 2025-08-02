@@ -13,7 +13,12 @@ public class CreateCommentViewModel
     /// Id
     /// </summary>
     public Guid Id { get; set; }
-
+    
+    /// <summary>
+    /// Booking number
+    /// </summary>
+    public Guid BookingNumber { get; set; } = default!;
+    
     /// <summary>
     /// Drive id
     /// </summary>

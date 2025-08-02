@@ -8,11 +8,11 @@ namespace App.Public.DTO.v1.AdminArea;
 
 public class Booking: DomainEntityMetaId
 {
-    public Guid ScheduleId { get; set; }
-
+    
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(BookingNumber))]
     public Guid BookingNumber { get; set; }
-
+    public Guid ScheduleId { get; set; }
+    
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(Schedule))]
     public Schedule? Schedule { get; set; }
     

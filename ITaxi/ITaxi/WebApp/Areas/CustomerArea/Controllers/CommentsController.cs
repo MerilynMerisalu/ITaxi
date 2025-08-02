@@ -73,6 +73,15 @@ public class CommentsController : Controller
         return View(vm);
     }
 
+    [HttpPost("/CustomerArea/Comments/GetBookingNumber")]
+    public async Task<IActionResult> GetBookingNumber(Guid? id)
+    {
+        if (id == null) return NotFound();
+        var bookingNumber = await _appBLL.Bookings.GettingBookingNumberByDriveIdAsync(id.Value, User.GettingUserId());
+        return Content(bookingNumber.ToString()!, contentType: "text/plain");
+        
+    }
+    
     // GET: AdminArea/Comments/Create
     /// <summary>
     /// Customer area comments GET method create

@@ -14,6 +14,7 @@ public class DetailsDeleteBookingViewModel
     /// </summary>
     public Guid Id { get; set; }
 
+    
     /// <summary>
     /// Vehicle Information
     /// </summary>
