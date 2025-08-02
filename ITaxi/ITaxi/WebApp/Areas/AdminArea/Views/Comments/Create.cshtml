@@ -14,45 +14,74 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="DriveId" class="control-label"></label>
-                <select  asp-for="DriveId" class="form-control" asp-items="Model.Drives"
-                         onchange="GetSelectedDriveId(this.value)">
-                    @if (Model.Drives == null || !Model.Drives.Any())
-                    {
+            @if (Model.Drives == null || !Model.Drives.Any())
+            {
+                <div class="form-group">
+                    <label asp-for="DriveId" class="control-label"></label>
+                    <select disabled="disabled" asp-for="DriveId" class="form-control" asp-items="Model.Drives">
                         <option>@Comment.NoDrives</option>
-                    }
-                    else
-                    {
-                        <option>@Common.PleaseSelect</option>
-                        <options asp-items="@Model.Drives"/>
-                    }
-                </select>
-                <input type="hidden" asp-for="DriveId" />
-            </div>
-        <div class="form-group">
-        <label asp-for="BookingNumber" class="control-label"></label>
-        <input id="booking-number" disabled="disabled" type="text" asp-for="BookingNumber" class="form-control"  />
-    </div>
-            <div class="form-group">
-                <label asp-for="StarRating" class="control-label"></label>
-                <ejs-rating ejs-for="StarRating" cssClass="changeRating"
-                            fullTemplate="<span class='star full'>★</span>"
-                            emptyTemplate="<span class='star empty'>☆</span>">
+                    </select>
                     
-                </ejs-rating>
+                </div>
                 
-                <span asp-validation-for="StarRating" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CommentText" class="control-label"></label>
-                <textarea asp-for="CommentText" class="form-control"></textarea>
-                <span asp-validation-for="CommentText" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <label asp-for="BookingNumber" class="control-label"></label>
+                    <input id="booking-number" disabled="disabled" type="text" asp-for="BookingNumber" class="form-control"  />
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="StarRating" class="control-label"></label>
+                    <ejs-rating disabled="true" ejs-for="StarRating" cssClass="changeRating"
+                                fullTemplate="<span class='star full'>★</span>"
+                                emptyTemplate="<span class='star empty'>☆</span>">
+                    
+                    </ejs-rating>
+                    <span asp-validation-for="StarRating" class="text-danger"></span>
+                </div>
+                
+                
+                <div class="form-group">
+                    <label asp-for="CommentText" class="control-label"></label>
+                    <textarea asp-for="CommentText" class="form-control" disabled="disabled"></textarea>
+                    <span asp-validation-for="CommentText" class="text-danger"></span>
+                </div>
+            }
+            else {
+                <div class="form-group">
+                    <label asp-for="DriveId" class="control-label"></label>
+                    <select asp-for="DriveId" class="form-control" asp-items="Model.Drives" onchange="GetSelectedDriveId(this.value)">
+                        <option>@Common.PleaseSelect</option>
+                    </select>
+                    <input type="hidden" asp-for="DriveId"/>
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="BookingNumber" class="control-label"></label>
+                    <input id="booking-number" disabled="disabled" type="text" asp-for="BookingNumber" class="form-control"  />
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="StarRating" class="control-label"></label>
+                    <ejs-rating ejs-for="StarRating" cssClass="changeRating"
+                                fullTemplate="<span class='star full'>★</span>"
+                                emptyTemplate="<span class='star empty'>☆</span>">
+                    </ejs-rating>
+                    <span asp-validation-for="StarRating" class="text-danger"></span>
+                </div>
+                
+                
+                <div class="form-group">
+                    <label asp-for="CommentText" class="control-label"></label>
+                    <textarea asp-for="CommentText" class="form-control"></textarea>
+                    <span asp-validation-for="CommentText" class="text-danger"></span>
+                </div>
+        
+                <div class="form-group">
+                    <input type="submit" value="@Common.Create" class="btn btn-primary"/>
+                </div>
+            }
+             
             
-            <div class="form-group">
-                <input type="submit" value="@Common.Create" class="btn btn-primary"/>
-            </div>
         </form>
     </div>
 </div>
