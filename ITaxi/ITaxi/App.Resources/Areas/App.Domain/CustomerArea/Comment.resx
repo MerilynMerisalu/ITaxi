@@ -35,4 +35,7 @@
     <data name="Driver" xml:space="preserve">
         <value>Driver</value>
     </data>
+    <data name="BookingNumber" xml:space="preserve">
+        <value>Booking Number</value>
+    </data>
 </root>

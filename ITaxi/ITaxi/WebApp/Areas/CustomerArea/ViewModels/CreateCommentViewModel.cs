@@ -2,6 +2,7 @@
 using App.Domain;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+
 namespace WebApp.Areas.CustomerArea.ViewModels;
 
 /// <summary>
@@ -17,11 +18,14 @@ public class CreateCommentViewModel
     /// <summary>
     /// Booking number
     /// </summary>
-    public Guid BookingNumber { get; set; } = default!;
+    
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Comment), Name = nameof(BookingNumber))]
+    public Guid BookingNumber { get; set; }
     
     /// <summary>
     /// Drive id
     /// </summary>
+    [Required(ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Comment), Name = nameof(Drive))]
     public Guid? DriveId { get; set; }
 
@@ -43,6 +47,7 @@ public class CreateCommentViewModel
     /// <summary>
     /// Comment text
     /// </summary>
+    [Required(ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [StringLength(1000)]
     [DataType(DataType.MultilineText)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Comment),

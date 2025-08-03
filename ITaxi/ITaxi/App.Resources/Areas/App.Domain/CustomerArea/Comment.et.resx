@@ -27,4 +27,7 @@
     <data name="Driver" xml:space="preserve">
         <value>Sõidukijuht</value>
     </data>
+    <data name="BookingNumber" xml:space="preserve">
+        <value>Broneeringu number</value>
+    </data>
 </root>
