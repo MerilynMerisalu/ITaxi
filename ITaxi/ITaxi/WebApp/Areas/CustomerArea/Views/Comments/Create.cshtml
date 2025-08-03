@@ -17,7 +17,7 @@
             <div class="form-group">
                 <label asp-for="DriveId" class="control-label"></label>
                 <select asp-for="DriveId" class="form-control" asp-items="Model.Drives"
-                        onchange="GetBookingByDriveId(this.value)">
+                        onchange="GetSelectedDriveId()">
                     @if (Model.Drives == null || !Model.Drives.Any())
                     {
                         <option>@Comment.NoDrives</option>
@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="BookingNumber" class="control-label"></label>
-                <textarea asp-for="BookingNumber" class="form-control"></textarea>
+                <textarea id="booking_number" asp-for="BookingNumber" class="form-control"></textarea>
                 <span asp-validation-for="BookingNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -62,9 +62,20 @@
 @section Scripts {
     @{
         <script type="text/javascript">
-            function GetBookingByDriveId() {
+            function GetSelectedDriveId() {
                 let selectedDriveId = document.getElementById('DriveId').value;
-                console.log(selectedDriveId);
+                let bookingNumberDiv = document.getElementById('booking-number');
+                if (selectedDriveId == null || selectedDriveId ==='@Common.PleaseSelect')
+                    return;
+                fetch('/CustomerArea/Comments/GetBookingNumber/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json; charset=UTF-8',
+                    },
+                    body: JSON.stringify(selectedDriveId)
+                } ).then(response => response.
+                text().then(data => bookingNumberDiv.value = data));
+
             }
         </script>
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

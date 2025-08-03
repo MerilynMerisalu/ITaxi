@@ -74,7 +74,7 @@ public class CommentsController : Controller
     }
 
     [HttpPost("/CustomerArea/Comments/GetBookingNumber")]
-    public async Task<IActionResult> GetBookingNumber(Guid? id)
+    public async Task<IActionResult> GetBookingNumber([FromBody]Guid? id = null)
     {
         if (id == null) return NotFound();
         var bookingNumber = await _appBLL.Bookings.GettingBookingNumberByDriveIdAsync(id.Value, User.GettingUserId());
