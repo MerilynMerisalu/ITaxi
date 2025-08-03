@@ -7,7 +7,6 @@ public class Comment : DomainEntityMetaId
 {
     public Guid? DriveId { get; set; }
     
-    
     public Drive? Drive { get; set; }
     
     [MaxLength(1000)]

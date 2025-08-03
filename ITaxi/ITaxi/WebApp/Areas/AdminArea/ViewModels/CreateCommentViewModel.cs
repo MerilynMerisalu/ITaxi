@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using App.Domain;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Base.Resources;
 using Comment = App.Resources.Areas.App.Domain.AdminArea.Comment;
+
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
@@ -18,6 +20,7 @@ public class CreateCommentViewModel
     /// <summary>
     /// Comment drive id
     /// </summary>
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Display(ResourceType = typeof(Comment), Name = nameof(Drive))]
     public Guid? DriveId { get; set; }
 
@@ -39,6 +42,7 @@ public class CreateCommentViewModel
     /// <summary>
     /// Comment text
     /// </summary>
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [StringLength(1000)]
     [DataType(DataType.MultilineText)]
     [Display(ResourceType = typeof(Comment),
