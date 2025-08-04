@@ -767,6 +767,12 @@ public static class DataHelper
                     Booking = context.Bookings.Include(b => b.Driver)
                         .SingleOrDefaultAsync(b => b.Driver!.PersonalIdentifier!.Equals("36605138911")).Result!,
                     StatusOfDrive = StatusOfDrive.Finished,
+                    IsDriveAccepted = true,
+                    DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime(),
+                    IsDriveStarted = true,
+                    DriveStartDateAndTime = DateTime.Now.AddMinutes(30).ToUniversalTime(),
+                    IsDriveFinished = true,
+                    DriveEndDateAndTime = DateTime.Now.AddHours(1).AddMinutes(30).ToUniversalTime(),
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };

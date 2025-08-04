@@ -187,8 +187,15 @@
                 @if (item.Comment?.StarRating > 0)
                 {
                     <td>
-                        <ejs-rating id="rating-@item.Comment.Id" readOnly="true"
-                                    value="item.Comment.StarRating.Value"></ejs-rating>
+                        <td>
+                            <ejs-rating id="rating-@item.Id"
+                                        readOnly="true"
+                                        value="@item.Comment.StarRating.Value"
+                                        cssClass="cssStyles"
+                                        fullTemplate="<span class='star full'>★</span>"
+                                        emptyTemplate="<span class='star empty'>☆</span>">
+                            </ejs-rating>
+                        </td>
                     </td>
                 }
                 else
