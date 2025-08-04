@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="BookingNumber" class="control-label"></label>
-                <textarea id="booking_number" asp-for="BookingNumber" class="form-control"></textarea>
+                <input id="booking_number" asp-for="BookingNumber" disabled="disabled" class="form-control"></input>
                 <span asp-validation-for="BookingNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -62,22 +62,23 @@
 @section Scripts {
     @{
         <script type="text/javascript">
-            function GetSelectedDriveId() {
-                let selectedDriveId = document.getElementById('DriveId').value;
-                let bookingNumberDiv = document.getElementById('booking-number');
-                if (selectedDriveId == null || selectedDriveId ==='@Common.PleaseSelect')
-                    return;
-                fetch('/CustomerArea/Comments/GetBookingNumber/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json; charset=UTF-8',
-                    },
-                    body: JSON.stringify(selectedDriveId)
-                } ).then(response => response.
-                text().then(data => bookingNumberDiv.value = data));
-
-            }
-        </script>
+        function GetSelectedDriveId() {
+            let selectedDriveId = document.getElementById('DriveId').value;
+            let bookingNumberDiv = document.getElementById('booking_number');
+            
+            if (selectedDriveId == null || selectedDriveId ==='@Common.PleaseSelect')
+                return;
+            fetch('/CustomerArea/Comments/GetBookingNumber/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                },
+                body: JSON.stringify(selectedDriveId)
+            } ).then(response => response.
+            text().then(data => bookingNumberDiv.value = data));
+            
+        }
+    </script>
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }

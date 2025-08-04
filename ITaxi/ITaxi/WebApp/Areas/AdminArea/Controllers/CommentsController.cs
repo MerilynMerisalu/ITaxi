@@ -78,12 +78,11 @@ public class CommentsController : Controller
     /// <returns>Status 200 OK</returns>
     
     [HttpPost("/AdminArea/Comments/GetBookingNumber")]
-    public async Task<IActionResult> GetBookingNumber(CreateCommentViewModel vm, [FromBody] Guid? id = null)
+    public async Task<IActionResult> GetBookingNumber([FromBody] Guid? id = null)
     {
         
         var  bookingNumber = await _appBLL.Bookings.GettingBookingNumberByDriveIdAsync(id.Value, null, User.GettingUserRoleName(),
             true, false);
-        vm.BookingNumber = bookingNumber;
         return Content(bookingNumber.ToString()?? String.Empty, "text/plain");
     }
 
