@@ -126,6 +126,25 @@ public class CommentsController : ControllerBase
         return NoContent();
     }
 
+    /*[HttpPost("{id:guid}")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [HttpPost("api/v1/CustomerArea/Comments/GetBookingNumber")]
+    public async Task<IActionResult> GetBookingNumber([FromBody] Guid? id = null)
+    {
+        
+        var  bookingNumber = await _appBLL.Bookings.GettingBookingNumberByDriveIdAsync(id.Value, null, User.GettingUserRoleName(),
+            true, false);
+        return Ok(bookingNumber.ToString());
+    }
+    */
+
+
     // POST: api/Comments
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     /// <summary>
@@ -155,6 +174,7 @@ public class CommentsController : ControllerBase
 
         var commentDTO = new CommentDTO();
         commentDTO.Id = Guid.NewGuid();
+        
         commentDTO.DriveId = comment.DriveId;
         commentDTO.CommentText = comment.CommentText;
         commentDTO.CreatedBy = User.Identity!.Name;

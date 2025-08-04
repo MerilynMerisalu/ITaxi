@@ -121,6 +121,33 @@ public class CommentsController : ControllerBase
 
         return NoContent();
     }
+    
+    /// <summary>
+    /// sets booking number for comment
+    /// </summary>
+    /// <param name="id">Drive id</param>
+    /// <returns>Status 200 OK with booking number as a string
+            /// Status 204
+            /// Status 404
+            /// Status 403
+            /// Status 401
+            /// Status 400</returns>
+    [HttpPost("{id:guid}")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [HttpPost("api/v1/AdminArea/Comments/GetBookingNumber")]
+    public async Task<IActionResult> GetBookingNumber([FromBody] Guid? id = null)
+    {
+        
+        var  bookingNumber = await _appBLL.Bookings.GettingBookingNumberByDriveIdAsync(id.Value, null, User.GettingUserRoleName(),
+            true, false);
+        return Ok(bookingNumber.ToString());
+    }
 
     // POST: api/Comments
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
