@@ -98,7 +98,7 @@ public class CommentsController : Controller
         var userId = User.GettingUserId();
         var roleName = User.GettingUserRoleName();
 
-        var drives = await _appBLL.Drives.GettingDrivesWithoutCommentAsync(userId, roleName);
+        var drives = await _appBLL.Drives.GettingFinishedDrivesWithoutCommentAsync(userId, roleName);
         foreach (var drive in drives)
         {
             if (drive != null && drive.Booking != null)
@@ -141,7 +141,7 @@ public class CommentsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Drives = new SelectList(await _appBLL.Drives.GettingDrivesWithoutCommentAsync(userId, roleName),
+        vm.Drives = new SelectList(await _appBLL.Drives.GettingFinishedDrivesWithoutCommentAsync(userId, roleName),
             nameof(Drive.Id),
             nameof(Drive.DriveDescription));
         

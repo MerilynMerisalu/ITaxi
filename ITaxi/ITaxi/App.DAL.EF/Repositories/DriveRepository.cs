@@ -359,7 +359,36 @@ public class DriveRepository : BaseEntityRepository<DriveDTO, App.Domain.Drive, 
         return Mapper.Map(CreateQuery(userId, roleName, noTracking, noIncludes)
             .FirstOrDefault(d => d.Booking!.Id.Equals(bookingId)));
     }
-    
+
+    public async Task<IEnumerable<DriveDTO?>> GettingFinishedDrivesWithoutCommentAsync(Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        var res = (await CreateQuery(userId, roleName, noTracking)
+            .Where(d => d.Comment!.DriveId == null && d.IsDriveFinished && d.StatusOfDrive == StatusOfDrive.Finished)
+            .ToListAsync()).Select(e => Mapper.Map(e));
+        return res;
+    }
+
+    public IEnumerable<DriveDTO?> GettingFinishedDrivesWithoutComment(Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        var res = CreateQuery(noTracking)
+            .OrderBy(d => d.Booking!.PickUpDateAndTime.Date)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Day)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Month)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Year)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Hour)
+            .ThenBy(d => d.Booking!.PickUpDateAndTime.Minute)
+            .ThenBy(d => d.Booking!.Customer!.AppUser!.LastName)
+            .ThenBy(d => d.Booking!.Customer!.AppUser!.FirstName)
+            .ThenBy(d => d.Booking!.City!.CityName)
+            .ThenBy(d => d.Booking!.PickupAddress)
+            .ThenBy(d => d.Booking!.DestinationAddress)
+            .ThenBy(d => d.Booking!.VehicleType!.VehicleTypeName)
+            .Where(d => d.Comment!.DriveId == null && d.IsDriveFinished == true
+                                                   && d.StatusOfDrive == StatusOfDrive.Finished)
+            .ToList().Select(e => Mapper.Map(e));
+        return res;
+    }
+
     public async Task<DriveDTO?> GettingDriveByCommentIdAsync(Guid commentId, Guid? userId = null, string? roleName = null, bool noTracking = true,
         bool noIncludes = false)
     {

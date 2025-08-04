@@ -97,7 +97,7 @@ public class CommentsController : Controller
         var vm = new CreateCommentViewModel();
 
         var roleName = User.GettingUserRoleName();
-        var drives = await _appBLL.Drives.GettingDrivesWithoutCommentAsync(null, roleName);
+        var drives = await _appBLL.Drives.GettingFinishedDrivesWithoutCommentAsync(null, roleName);
         
         vm.Drives = new SelectList(drives,
             nameof(DriveDTO.Id), 
@@ -140,7 +140,7 @@ public class CommentsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Drives = new SelectList(await _appBLL.Drives.GettingDrivesWithoutCommentAsync(null, roleName),
+        vm.Drives = new SelectList(await _appBLL.Drives.GettingFinishedDrivesWithoutCommentAsync(null, roleName),
             nameof(DriverDTO.Id),
             nameof(BookingDTO.DriveTime));
         

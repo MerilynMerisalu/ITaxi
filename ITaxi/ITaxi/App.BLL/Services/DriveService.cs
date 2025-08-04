@@ -171,9 +171,18 @@ public class DriveService: BaseEntityService<App.BLL.DTO.AdminArea.DriveDTO, App
                      roleName, noTracking, noIncludes));
     }
 
-    
+    public async Task<IEnumerable<DriveDTO?>> GettingFinishedDrivesWithoutCommentAsync(Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return (await Repository.GettingFinishedDrivesWithoutCommentAsync(userId, roleName, noTracking)).Select(e =>
+            Mapper.Map(e));
+    }
 
-    
+    public IEnumerable<DriveDTO?> GettingFinishedDrivesWithoutComment(Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return  (Repository.GettingFinishedDrivesWithoutComment(userId, roleName, noTracking)).Select(e =>
+            Mapper.Map(e));
+    }
+
 
     /*public async Task<DriveDTO?> GettingDriveByCommentIdAsync(Guid commentId
         , Guid? userId = null, string? roleName = null, bool noTracking = true,
