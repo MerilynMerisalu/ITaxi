@@ -20,7 +20,7 @@ public class CreateCommentViewModel
     /// </summary>
     
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Comment), Name = nameof(BookingNumber))]
-    public Guid BookingNumber { get; set; }
+    public Guid? BookingNumber { get; set; }
     
     /// <summary>
     /// Drive id

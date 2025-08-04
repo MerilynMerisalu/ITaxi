@@ -72,13 +72,20 @@ public class CommentsController : Controller
         
         return View(vm);
     }
-
+/// <summary>
+/// Get booking number
+/// </summary>
+/// <param name="vm"></param>
+/// <param name="id"></param>
+/// <returns></returns>
     [HttpPost("/CustomerArea/Comments/GetBookingNumber")]
-    public async Task<IActionResult> GetBookingNumber([FromBody]Guid? id = null)
+    
+    public async Task<IActionResult> GetBookingNumber(CreateCommentViewModel vm ,[FromBody]Guid? id = null  )
     {
         if (id == null) return NotFound();
-        var bookingNumber = await _appBLL.Bookings.GettingBookingNumberByDriveIdAsync(id.Value, User.GettingUserId());
-        return Content(bookingNumber.ToString()!, contentType: "text/plain");
+        var bookingNumber = await _appBLL.Bookings.GettingBookingNumberByDriveIdAsync(id.Value, 
+            User.GettingUserId());
+        return Content(bookingNumber.ToString() ?? String.Empty, contentType: "text/plain");
         
     }
     

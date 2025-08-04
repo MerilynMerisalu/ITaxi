@@ -52,7 +52,6 @@
                     <select asp-for="DriveId" class="form-control" asp-items="Model.Drives" onchange="GetSelectedDriveId(this.value)">
                         <option value="">@Common.PleaseSelect</option>
                     </select>
-                    <input type="hidden" asp-for="DriveId"/>
                     
                 </div>
                 
@@ -95,7 +94,7 @@
         function GetSelectedDriveId() {
             let selectedDriveId = document.getElementById('DriveId').value;
             let bookingNumberDiv = document.getElementById('booking-number');
-            let driverIdSpan = document.getElementById('driver-id-error');
+            
             if (selectedDriveId == null || selectedDriveId ==='@Common.PleaseSelect')
                 return;
             fetch('/AdminArea/Comments/GetBookingNumber/', {
