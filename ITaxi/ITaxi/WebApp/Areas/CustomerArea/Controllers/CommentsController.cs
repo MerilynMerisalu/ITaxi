@@ -76,7 +76,7 @@ public class CommentsController : Controller
 /// Get booking number
 /// </summary>
 /// <param name="id">Drive id</param>
-/// <returns></returns>
+/// <returns>Booking number</returns>
     [HttpPost("/CustomerArea/Comments/GetBookingNumber")]
     public async Task<IActionResult> GetBookingNumber([FromBody]Guid? id = null)
     {
