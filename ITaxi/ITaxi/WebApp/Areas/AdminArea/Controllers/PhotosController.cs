@@ -2,9 +2,12 @@
 
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using App.Contracts.BLL.Services;
+using Base.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
+using PhotoDTO = App.BLL.DTO.AdminArea.PhotoDTO;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
@@ -15,14 +18,15 @@ namespace WebApp.Areas.AdminArea.Controllers;
 public class PhotosController : Controller
 {
     private readonly IAppBLL _appBLL;
-
+    private readonly IWebHostEnvironment _webHostEnvironment;
     /// <summary>
     /// Admin area photos controller constructor
     /// </summary>
     /// <param name="appBLL">AppBLL</param>
-    public PhotosController(IAppBLL appBLL)
+    public PhotosController(IAppBLL appBLL, IWebHostEnvironment webHostEnvironment)
     {
         _appBLL = appBLL;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     // GET: AdminArea/Photos
@@ -76,7 +80,7 @@ public class PhotosController : Controller
     /// <param name="vm">View model</param>
     /// <param name="photo">Photo</param>
     /// <returns>View</returns>
-    [HttpPost]
+    /*[HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateEditPhotoViewModel vm, PhotoDTO photo)
     {
@@ -85,13 +89,14 @@ public class PhotosController : Controller
             photo.Id = Guid.NewGuid();
             photo.Title = vm.Title;
             photo.PhotoURL = vm.PhotoName;
+            
             _appBLL.Photos.Add(photo);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         
         return View(vm);
-    }
+    }*/
 
     // GET: AdminArea/Photos/Edit/5
     /// <summary>
@@ -121,7 +126,7 @@ public class PhotosController : Controller
     /// <returns>View</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, CreateEditPhotoViewModel vm)
+    /*public async Task<IActionResult> Edit(Guid id, CreateEditPhotoViewModel vm)
     {
         var photo = await _appBLL.Photos.FirstOrDefaultAsync(id);
         if (photo != null && id != photo.Id) return NotFound();
@@ -144,7 +149,7 @@ public class PhotosController : Controller
         }
         
         return View(vm);
-    }
+    }*/
 
     // GET: AdminArea/Photos/Delete/5
     /// <summary>
@@ -152,7 +157,7 @@ public class PhotosController : Controller
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>View</returns>
-    public async Task<IActionResult> Delete(Guid? id)
+    /*public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeletePhotoViewModel();
         if (id == null) return NotFound();
@@ -161,7 +166,7 @@ public class PhotosController : Controller
         if (photo == null) return NotFound();
 
         return View(vm);
-    }
+    }*/
 
     // POST: AdminArea/Photos/Delete/5
     /// <summary>
@@ -169,7 +174,7 @@ public class PhotosController : Controller
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>Redirect to index</returns>
-    [HttpPost]
+    /*[HttpPost]
     [ActionName(nameof(Delete))]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -184,6 +189,44 @@ public class PhotosController : Controller
     private bool PhotoExists(Guid id)
     {
         return _appBLL.Photos.Exists(id);
+    }*/
+
+    [AcceptVerbs("Post")]
+    public async Task<IActionResult> Upload(List<IFormFile>? files)
+    {
+        
+        var filePaths = new List<string>();
+        var fileName = Path.GetFileName(files.First().FileName);
+        var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", "VehicleImages"); 
+
+        foreach (var file in files)
+        {
+            if (file.Length is > 0 and < 5000000 && file.FileName.EndsWith(".png"))
+            {
+                var fullFilePath = Path.Combine(filePath, file.FileName);
+                await using var stream = new FileStream(fullFilePath, FileMode.Create);
+                await file.CopyToAsync(stream);
+
+               
+                /*var photoInfo = new PhotoDTO()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = file.FileName,
+                    AppUserId = User.GettingUserId(),
+                    CreatedBy = User.GettingUserEmail(),
+                    CreatedAt = DateTime.Now.ToUniversalTime(),
+                    PhotoURL = filePath
+                };
+                 _appBLL.Photos.Add(photoInfo);
+                 await _appBLL.SaveChangesAsync();
+                 */
+            }
+            else
+            {
+                return BadRequest("Invalid file size and/or file extension.");
+            }
+        }
+        return RedirectToAction(nameof(Index));
     }
 }
 

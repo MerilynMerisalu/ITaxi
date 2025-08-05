@@ -59,7 +59,6 @@
 
     <ItemGroup>
         <Folder Include="wwwroot\Images\Icons\" />
-        <Folder Include="wwwroot\Images\VehicleImages\" />
     </ItemGroup>
 
     <ItemGroup>
