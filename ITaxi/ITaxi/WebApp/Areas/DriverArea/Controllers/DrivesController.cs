@@ -167,6 +167,7 @@ public async Task<IActionResult> AcceptConfirmed(Guid id)
     drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
     drive.StatusOfDrive = StatusOfDrive.Accepted;
     drive.IsDriveAccepted = true;
+    drive.AcceptedBy = User.GettingUserEmail();
     drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
     _appBLL.Drives.Update(drive);
@@ -276,6 +277,7 @@ public async Task<IActionResult> DeclineConfirmed(Guid id)
     drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
     drive.StatusOfDrive = StatusOfDrive.Declined;
     drive.IsDriveDeclined = true;
+    drive.UpdatedBy = User.GettingUserEmail();
     drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
     _appBLL.Drives.Update(drive);
@@ -388,6 +390,7 @@ public async Task<IActionResult> StartConfirmed(Guid id)
 
     drive.DriveStartDateAndTime = DateTime.Now.ToUniversalTime();
     drive.StatusOfDrive = StatusOfDrive.Started;
+    drive.UpdatedBy = User.GettingUserEmail();
     drive.IsDriveStarted = true;
     drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
@@ -475,6 +478,7 @@ public async Task<IActionResult> EndDriveConfirmed(Guid id)
     drive.IsDriveFinished = true;
     drive.StatusOfDrive = StatusOfDrive.Finished;
     drive.DriveEndDateAndTime = DateTime.Now.ToUniversalTime();
+    drive.UpdatedBy = User.GettingUserEmail();
     drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
     _appBLL.Drives.Update(drive);

@@ -745,7 +745,7 @@ public static class DataHelper
                     PickUpDateAndTime = DateTime.Now.ToUniversalTime(),
                     NumberOfPassengers = 2,
                     HasAnAssistant = true,
-                    StatusOfBooking = StatusOfBooking.Awaiting,
+                    StatusOfBooking = StatusOfBooking.Accepted,
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
