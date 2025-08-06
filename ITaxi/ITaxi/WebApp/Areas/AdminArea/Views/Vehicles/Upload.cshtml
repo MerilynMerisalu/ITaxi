@@ -1,0 +1,28 @@
+﻿@using App.Resources.Areas.App.Domain.AdminArea
+@model WebApp.Areas.AdminArea.ViewModels.GalleryViewModel
+
+@{
+    ViewData["Title"] = Gallery.GalleryName;
+}
+
+<h1>@Gallery.VehicleName</h1>
+
+<h3>@Model.VehicleIdentifier</h3>
+<form method="post" enctype="multipart/form-data" asp-area="AdminArea"
+      asp-controller="Photos" asp-action="Upload">
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>Upload one or more files using this form. File size cannot be bigger than 2000 MB and they must be in png format</p>
+            <input type="file" name="files" multiple />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" value="Upload" />
+        </div>
+    </div>
+</form>
+
+<td>
+    <a asp-area="AdminArea" asp-controller="Photos" asp-action="Upload" asp-route-id="@Model.Id">@Gallery.UploadImages</a>
+</td>

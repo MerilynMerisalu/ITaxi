@@ -226,7 +226,7 @@ public class PhotosController : Controller
                 return BadRequest("Invalid file size and/or file extension.");
             }
         }
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction("Gallery", "Vehicles");
     }
 }
 

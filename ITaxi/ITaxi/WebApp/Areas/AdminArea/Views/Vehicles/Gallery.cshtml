@@ -1,28 +1,71 @@
-﻿@using App.Resources.Areas.App.Domain.AdminArea
-@model WebApp.Areas.AdminArea.ViewModels.GalleryViewModel
+﻿@page "/AdminArea/Vehicles/Gallery"
+@using Syncfusion.EJ2
+@using Syncfusion.EJ2.Navigations;
 
-@{
-    ViewData["Title"] = Gallery.GalleryName;
-}
-
-<h1>@Gallery.VehicleName</h1>
-
-<h3>@Model.VehicleIdentifier</h3>
-<form method="post" enctype="multipart/form-data" asp-area="AdminArea"
-      asp-controller="Photos" asp-action="Upload">
-    <div class="form-group">
-        <div class="col-md-10">
-            <p>Upload one or more files using this form. File size cannot be bigger than 2000 MB and they must be in png format</p>
-            <input type="file" name="files" multiple />
-        </div>
+<div class="col-lg-12 control-section default-carousel-section">
+    <div class="e-sample-resize-container carousel-sample">
+        @(Html.EJS().Carousel("defaultCarousel").CssClass("default-carousel")
+            .Items(new List<CarouselItem> {
+                new CarouselItem { Template = "#itemTemplate1"  },
+                new CarouselItem { Template = "#itemTemplate2"  },
+                new CarouselItem { Template = "#itemTemplate3"  },
+                new CarouselItem { Template = "#itemTemplate4"  },
+                new CarouselItem { Template = "#itemTemplate5"  }
+            })
+            .Render()
+        )
     </div>
-    <div class="form-group">
-        <div class="col-md-10">
-            <input type="submit" value="Upload" />
-        </div>
-    </div>
-</form>
+</div>
+<script id="itemTemplate1" type="text/x-template">
+    <figure class="img-container">
+        <img src="https://ej2.syncfusion.com/aspnetmvc/Content/carousel/images/bridge.jpg" alt="bridge" style="height:100%; width: 100%;" />
+        <figcaption class="img-caption">Golden Gate Bridge, San Francisco</figcaption>
+    </figure>
+</script>
+<script id="itemTemplate2" type="text/x-template">
+    <figure class="img-container">
+        <img src="https://ej2.syncfusion.com/aspnetmvc/Content/carousel/images/trees.jpg" alt="spring_trees" style="height:100%; width: 100%;" />
+        <figcaption class="img-caption">Spring Flower Trees</figcaption>
+    </figure>
+</script>
+<script id="itemTemplate3" type="text/x-template">
+    <figure class="img-container">
+        <img src="https://ej2.syncfusion.com/aspnetmvc/Content/carousel/images/waterfall.jpg" alt="waterfall" style="height:100%; width: 100%;" />
+        <figcaption class="img-caption">Oddadalen Waterfalls, Norway</figcaption>
+    </figure>
+</script>
+<script id="itemTemplate4" type="text/x-template">
+    <figure class="img-container">
+        <img src="https://ej2.syncfusion.com/aspnetmvc/Content/carousel/images/sea.jpg" alt="sea" style="height:100%; width: 100%;" />
+        <figcaption class="img-caption">Anse Source d'Argent, Seychelles</figcaption>
+    </figure>
+</script>
+<script id="itemTemplate5" type="text/x-template">
+    <figure class="img-container">
+        <img src="https://ej2.syncfusion.com/aspnetmvc/Content/carousel/images/rocks.jpeg" alt="rocks" style="height:100%; width: 100%;" />
+        <figcaption class="img-caption">Stonehenge, England</figcaption>
+    </figure>
+</script>
 
-<td>
-    <a asp-area="AdminArea" asp-controller="Photos" asp-action="Upload" asp-route-id="@Model.Id">@Gallery.UploadImages</a>
-</td>
+<style>
+    .default-carousel-section .carousel-sample {
+        margin: 0 auto 2em;
+        max-width: 500px;
+        height: 300px;
+    }
+
+    .default-carousel .e-carousel-items .e-carousel-item .img-container {
+        height: 100%;
+    }
+
+    .default-carousel .e-carousel-items .e-carousel-item .img-caption {
+        bottom: 4em;
+        color: #fff;
+        font-size: 12pt;
+        height: 2em;
+        position: relative;
+        padding: 0.3em 1em;
+        text-align: center;
+        width: 100%;
+    }
+</style>

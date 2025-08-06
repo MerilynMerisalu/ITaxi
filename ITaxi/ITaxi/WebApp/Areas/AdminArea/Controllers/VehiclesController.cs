@@ -331,7 +331,7 @@ public class VehiclesController : Controller
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>View</returns>
-    public async Task<IActionResult> Gallery(Guid? id)
+    public async Task<IActionResult> Upload(Guid? id)
     {
         if (id == null) return NotFound();
 
@@ -344,5 +344,11 @@ public class VehiclesController : Controller
         vm.Id = vehicle.Id;
 
         return View(vm);
+    }
+    
+    public IActionResult Gallery()
+    {
+        
+        return View();
     }
 }
