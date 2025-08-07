@@ -194,15 +194,25 @@ public class PhotosController : Controller
     [AcceptVerbs("Post")]
     public async Task<IActionResult> Upload(List<IFormFile>? files)
     {
-        
+        string directoryName = "";
         var filePaths = new List<string>();
         var fileName = Path.GetFileName(files.First().FileName);
-        var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", "VehicleImages"); 
+        var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", "VehicleImages");
+        string[] vehicleIdentifierParts = fileName.Split(" ");
 
+        for (int i = 0; i < 5; i++)
+        {
+            directoryName += vehicleIdentifierParts[i] + " ";
+        }
+        
         foreach (var file in files)
         {
             if (file.Length is > 0 and < 5000000 && file.FileName.EndsWith(".png"))
             {
+                if (Directory.Exists(directoryName))
+                {
+                    Console.WriteLine(directoryName);
+                }
                 var fullFilePath = Path.Combine(filePath, file.FileName);
                 await using var stream = new FileStream(fullFilePath, FileMode.Create);
                 await file.CopyToAsync(stream);
