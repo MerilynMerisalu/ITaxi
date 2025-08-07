@@ -11,6 +11,7 @@
     <ItemGroup>
       <Compile Remove="Images\**" />
       <Content Remove="Images\**" />
+      
       <EmbeddedResource Remove="Images\**" />
       <None Remove="Images\**" />
     </ItemGroup>
@@ -162,6 +163,10 @@
         <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Countries\Details.cshtml" />
         <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Countries\Edit.cshtml" />
         <_ContentIncludedByDefault Remove="Areas\AdminArea\Views\Countries\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="wwwroot\fslightbox-basic-3.7.4\fslightbox.js" />
+        <_ContentIncludedByDefault Remove="wwwroot\fslightbox-basic-3.7.4\LICENSE" />
+        <_ContentIncludedByDefault Remove="wwwroot\fslightbox-basic-3.7.4\package.json" />
+        <_ContentIncludedByDefault Remove="wwwroot\fslightbox-basic-3.7.4\README.md" />
     </ItemGroup>
 
     <ItemGroup>
