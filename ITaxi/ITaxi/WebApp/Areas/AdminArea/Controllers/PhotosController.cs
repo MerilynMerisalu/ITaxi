@@ -124,8 +124,8 @@ public class PhotosController : Controller
     /// <param name="id">Id</param>
     /// <param name="vm">View model</param>
     /// <returns>View</returns>
-    [HttpPost]
-    [ValidateAntiForgeryToken]
+    /*[HttpPost]
+    [ValidateAntiForgeryToken]*/
     /*public async Task<IActionResult> Edit(Guid id, CreateEditPhotoViewModel vm)
     {
         var photo = await _appBLL.Photos.FirstOrDefaultAsync(id);
@@ -191,10 +191,10 @@ public class PhotosController : Controller
         return _appBLL.Photos.Exists(id);
     }*/
 
-    [AcceptVerbs("Post")]
+    /*[AcceptVerbs("Post")]
     public async Task<IActionResult> Upload(List<IFormFile>? files)
-    {
-        var filePaths = new List<string>();
+    {*/
+        /*var filePaths = new List<string>();
 
         var firstFileName = Path.GetFileName(files.First().FileName);
         var vehicleIdentifierParts = firstFileName.Split(" ");
@@ -218,10 +218,10 @@ public class PhotosController : Controller
                 await file.CopyToAsync(stream);
 
                 filePaths.Add(fullFilePath);
-            }
+            }*/
 
         }
-        return RedirectToAction("Gallery", "Vehicles");
+       // return RedirectToAction("Gallery", "Vehicles");
 
 
         /*var photoInfo = new PhotoDTO()
@@ -236,10 +236,10 @@ public class PhotosController : Controller
          _appBLL.Photos.Add(photoInfo);
          await _appBLL.SaveChangesAsync();
          */
-    }
+    //}
       
         
-    }
+    //}
 
 
 

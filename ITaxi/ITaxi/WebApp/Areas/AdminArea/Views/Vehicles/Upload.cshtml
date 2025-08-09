@@ -1,4 +1,6 @@
-﻿@using App.Resources.Areas.App.Domain.AdminArea
+﻿@using System.Net
+@using App.Resources.Areas.App.Domain.AdminArea
+
 @model WebApp.Areas.AdminArea.ViewModels.GalleryViewModel
 
 @{
@@ -9,20 +11,20 @@
 
 <h3>@Model.VehicleIdentifier</h3>
 <form method="post" enctype="multipart/form-data" asp-area="AdminArea"
-      asp-controller="Photos" asp-action="Upload">
+      asp-controller="Vehicles" asp-action="Upload">
     <div class="form-group">
         <div class="col-md-10">
-            <p>Upload one or more files using this form. File size cannot be bigger than 2000 MB and they must be in png format</p>
-            <input type="file" name="files" multiple />
+            <p>@Upload.UploadRestictions</p>
+            <a asp-action="#">@Upload.ChooseFiles</a>
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-10">
-            <input type="submit" value="Upload" />
+            <a asp-action="#">@Upload.UploadButtonText</a>
         </div>
     </div>
 </form>
 
-<td>
+@*<td>
     <a asp-area="AdminArea" asp-controller="Photos" asp-action="Upload" asp-route-id="@Model.Id">@Gallery.UploadImages</a>
-</td>
+</td>*@
