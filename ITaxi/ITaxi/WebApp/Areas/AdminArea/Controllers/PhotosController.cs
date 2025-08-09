@@ -194,50 +194,52 @@ public class PhotosController : Controller
     [AcceptVerbs("Post")]
     public async Task<IActionResult> Upload(List<IFormFile>? files)
     {
-        string directoryName = "";
         var filePaths = new List<string>();
-        var fileName = Path.GetFileName(files.First().FileName);
-        var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", "VehicleImages");
-        string[] vehicleIdentifierParts = fileName.Split(" ");
 
-        for (int i = 0; i < 5; i++)
+        var firstFileName = Path.GetFileName(files.First().FileName);
+        var vehicleIdentifierParts = firstFileName.Split(" ");
+        var directoryName = string.Join(" ", vehicleIdentifierParts.Take(5));
+
+        var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", directoryName);
+
+        if (!Directory.Exists(filePath))
         {
-            directoryName += vehicleIdentifierParts[i] + " ";
+            Directory.CreateDirectory(filePath);
         }
-        
+
         foreach (var file in files)
         {
-            if (file.Length is > 0 and < 5000000 && file.FileName.EndsWith(".png"))
+            if (file.Length > 0 && file.Length < 5000000 && file.FileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
             {
-                if (Directory.Exists(directoryName))
-                {
-                    Console.WriteLine(directoryName);
-                }
-                var fullFilePath = Path.Combine(filePath, file.FileName);
+                var fileName = Path.GetFileName(file.FileName);
+                var fullFilePath = Path.Combine(filePath, fileName);
+
                 await using var stream = new FileStream(fullFilePath, FileMode.Create);
                 await file.CopyToAsync(stream);
 
-               
-                /*var photoInfo = new PhotoDTO()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = file.FileName,
-                    AppUserId = User.GettingUserId(),
-                    CreatedBy = User.GettingUserEmail(),
-                    CreatedAt = DateTime.Now.ToUniversalTime(),
-                    PhotoURL = filePath
-                };
-                 _appBLL.Photos.Add(photoInfo);
-                 await _appBLL.SaveChangesAsync();
-                 */
+                filePaths.Add(fullFilePath);
             }
-            else
-            {
-                return BadRequest("Invalid file size and/or file extension.");
-            }
+
         }
         return RedirectToAction("Gallery", "Vehicles");
+
+
+        /*var photoInfo = new PhotoDTO()
+        {
+            Id = Guid.NewGuid(),
+            Title = file.FileName,
+            AppUserId = User.GettingUserId(),
+            CreatedBy = User.GettingUserEmail(),
+            CreatedAt = DateTime.Now.ToUniversalTime(),
+            PhotoURL = filePath
+        };
+         _appBLL.Photos.Add(photoInfo);
+         await _appBLL.SaveChangesAsync();
+         */
     }
-}
+      
+        
+    }
+
 
 
