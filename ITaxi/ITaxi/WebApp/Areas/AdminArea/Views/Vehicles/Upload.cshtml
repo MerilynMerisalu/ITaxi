@@ -15,12 +15,12 @@
     <div class="form-group">
         <div class="col-md-10">
             <p>@Upload.UploadRestictions</p>
-            <a asp-action="#">@Upload.ChooseFiles</a>
+            <input name="files" class="btn-outline-primary" type="file" multiple />
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-10">
-            <a asp-action="#">@Upload.UploadButtonText</a>
+            <button class="btn-primary" asp-area="AdminArea" asp-controller="Vehicles" asp-action="Upload" asp-route-id="@Model.Id">@Upload.UploadButtonText</button>
         </div>
     </div>
 </form>

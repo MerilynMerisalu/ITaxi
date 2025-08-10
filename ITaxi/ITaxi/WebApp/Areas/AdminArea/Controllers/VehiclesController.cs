@@ -20,14 +20,17 @@ public class VehiclesController : Controller
 {
     private readonly IAppBLL _appBLL;
     private readonly AppDbContext _context;
+    private readonly IWebHostEnvironment _webHostEnvironment;
+    
     /// <summary>
     /// Admin area vehicles controller constructor
     /// </summary>
     /// <param name="appBLL">AppBLL</param>
-    public VehiclesController(IAppBLL appBLL, AppDbContext context)
+    public VehiclesController(IAppBLL appBLL, AppDbContext context, IWebHostEnvironment webHostEnvironment)
     {
         _appBLL = appBLL;
         _context = context;
+        _webHostEnvironment = webHostEnvironment;
     }
     private string UserEmail => User.Identity!.Name!;
 
@@ -345,7 +348,72 @@ public class VehiclesController : Controller
 
         return View(vm);
     }
-    
+
+    [AcceptVerbs("Post")]
+    public async Task<IActionResult> Upload([FromRoute] Guid id, List<IFormFile>? files)
+    {
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id);
+        if (vehicle == null) return NotFound();
+        if (files == null || files.Count == 0) 
+        {
+            Content("Files are required.");
+        }
+        
+        string directoryName = "";
+
+        foreach (var file in files)
+        {
+            if (file.Length <= 0 && file.Length > 5000000
+                                && (!file.FileName.EndsWith(".jpg")
+                                    || !file.FileName.EndsWith(".png")))
+            {
+                return Content("File cannot be uploaded because its size is more than 5MB" +
+                               "and/or the files aren't in .png or .jpg format!");
+            }
+            
+            string[] directoryNameParts = file.FileName.Split(" ");
+
+            for (int i = 0; i < 4; i++)
+            {
+                directoryName += directoryNameParts[i] + " ";
+                
+            }
+            directoryName = string.Concat(directoryName.Split
+                (Path.GetInvalidFileNameChars())).Trim();
+            string uploadFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", "VehicleImages",
+                directoryName);
+            if (!Directory.Exists(uploadFolderPath)) 
+                Directory.CreateDirectory(uploadFolderPath);
+            var fileName = file.FileName;
+
+            string fullPath = Path.Combine(uploadFolderPath, fileName);
+            
+            try
+            {
+                await using var stream = new FileStream(fullPath, FileMode.Create);
+                await file.CopyToAsync(stream);
+
+            }
+            catch (UnauthorizedAccessException exception)
+            {
+                return Content($"You do not have permission to upload the file {file.FileName}." +
+                        $" Please contact the administrator or try again later. {exception.Message}");
+            }
+            catch (DirectoryNotFoundException exception)
+            {
+               return Content($"The folder in which the image files you want to be uploaded is cannot be found. " +
+                        $"{exception.Message}");
+            }
+            catch (IOException exception)
+            {
+                return Content($"The file you are trying to upload could not be uploaded. {exception.Message}");
+            }
+
+
+        }
+        
+        return RedirectToAction(nameof(Gallery));
+    }
     public IActionResult Gallery()
     {
         
