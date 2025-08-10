@@ -193,12 +193,22 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
         return RepoDbContext.Bookings.Any(b => b.VehicleId.Equals(vehicleId));
     }
 
+    public async Task<Guid?> GetDriverIdByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = false)
+    {
+        return (await CreateQuery(userId, roleName, noTracking)
+            .SingleAsync(v => v.Id.Equals(vehicleId))).DriverId;
+    }
 
-    //public async Task<VehicleDTO?> GettingVehicleByIdAsync(Guid id, Guid? userId = null, string? roleName = null,
-    //    bool noTracking = true)
-    //{
-    //    return Mapper.Map(await CreateQuery(userId, roleName, noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id)));
-    //}
+    public Guid? GetDriverIdByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = false)
+    {
+        return CreateQuery(userId, roleName, noTracking)
+            .Single(v => v.Id.Equals(vehicleId)).DriverId;
+    }
+
+
+    
 
     protected IQueryable<Vehicle> CreateQuery(Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {

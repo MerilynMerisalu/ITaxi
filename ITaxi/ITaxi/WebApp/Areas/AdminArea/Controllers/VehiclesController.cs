@@ -2,6 +2,7 @@
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.DAL.EF;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -358,6 +359,8 @@ public class VehiclesController : Controller
         {
             Content("Files are required.");
         }
+        var driverId = await _appBLL.Vehicles.GetDriverIdByVehicleIdAsync(id, null, User.GettingUserRoleName(), true, true);
+        if (driverId == null) return NotFound();
         
         string directoryName = "";
 
@@ -408,7 +411,13 @@ public class VehiclesController : Controller
             {
                 return Content($"The file you are trying to upload could not be uploaded. {exception.Message}");
             }
-
+            
+            /*var photo = new PhotoDTO()
+            {
+                Id = Guid.NewGuid(),
+                VehicleId = id,
+                
+            }*/
 
         }
         

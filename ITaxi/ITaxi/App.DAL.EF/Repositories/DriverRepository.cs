@@ -71,6 +71,10 @@ public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Drive
         return RepoDbContext.Bookings.Any(b => b.DriverId.Equals(driverId));
     }
 
+    
+   
+
+
     public async Task<bool> HasAnyDriversAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         return await CreateQuery(noTracking)

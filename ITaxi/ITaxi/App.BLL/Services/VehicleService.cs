@@ -123,4 +123,16 @@ public class VehicleService : BaseEntityService<App.BLL.DTO.AdminArea.VehicleDTO
     {
         return Repository.HasAnyBookingsAny(vehicleId, noTracking);
     }
+
+    public async Task<Guid?> GetDriverIdByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = false)
+    {
+        return (await Repository.GetDriverIdByVehicleIdAsync(vehicleId, userId, roleName, noTracking));
+    }
+
+    public Guid? GetDriverIdByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true,
+        bool noIncludes = false)
+    {
+        return Repository.GetDriverIdByVehicleId(vehicleId, userId, roleName, noTracking, noIncludes);
+    }
 }
