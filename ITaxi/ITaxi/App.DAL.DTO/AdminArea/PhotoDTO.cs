@@ -22,6 +22,10 @@ public class PhotoDTO : DomainEntityMetaId
     [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     public string? PhotoURL { get; set; }
+
+    public Guid? DriverId { get; set; }
+    public DriverDTO? Driver { get; set; }
+    
     public Guid VehicleId { get; set; }
     public VehicleDTO? Vehicle { get; set; }
 

@@ -26,10 +26,13 @@ public class PhotoDTO : DomainEntityMetaId
     public string? PhotoURL { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
-
     public Guid VehicleId { get; set; }
     public VehicleDTO? Vehicle { get; set; }
 
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = "Driver")]
+    public Guid? DriverId { get; set; }
+    public DriverDTO? Driver { get; set; }
+    
     public Guid? AppUserId { get; set; }
     public AppUser? AppUser { get; set; }
 

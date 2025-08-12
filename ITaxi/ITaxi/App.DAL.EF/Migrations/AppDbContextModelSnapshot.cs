@@ -17,7 +17,7 @@ namespace App.DAL.EF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.7")
+                .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -879,6 +879,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("DriverId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -907,6 +910,8 @@ namespace App.DAL.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
+
+                    b.HasIndex("DriverId");
 
                     b.HasIndex("VehicleId");
 
@@ -1597,12 +1602,19 @@ namespace App.DAL.EF.Migrations
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("App.Domain.Driver", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("App.Domain.Vehicle", "Vehicle")
                         .WithMany("VehiclePhotos")
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("AppUser");
+
+                    b.Navigation("Driver");
 
                     b.Navigation("Vehicle");
                 });

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Syncfusion.EJ2.Linq;
+using System.IO;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers;
@@ -389,6 +389,10 @@ public class VehiclesController : Controller
                 Directory.CreateDirectory(uploadFolderPath);
             var fileName = file.FileName;
 
+            if (System.IO.File.Exists(Path.Combine(uploadFolderPath, fileName)))
+            {
+                return Content("File cannot be uploaded because its file already exists!");
+            }
             string fullPath = Path.Combine(uploadFolderPath, fileName);
             
             try
@@ -411,13 +415,21 @@ public class VehiclesController : Controller
             {
                 return Content($"The file you are trying to upload could not be uploaded. {exception.Message}");
             }
-            
-            /*var photo = new PhotoDTO()
+
+            var photo = new PhotoDTO()
             {
                 Id = Guid.NewGuid(),
                 VehicleId = id,
-                
-            }*/
+                Title = fileName,
+                PhotoURL = fullPath,
+                DriverId = driverId,
+                CreatedBy = User.GettingUserEmail(),
+                CreatedAt = DateTime.UtcNow,
+                UpdatedBy = User.GettingUserEmail(),
+                UpdatedAt = DateTime.UtcNow,
+            };
+            _appBLL.Photos.Add(photo);
+            await _appBLL.SaveChangesAsync();
 
         }
         

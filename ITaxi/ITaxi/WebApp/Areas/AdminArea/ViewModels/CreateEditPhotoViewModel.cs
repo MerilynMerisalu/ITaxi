@@ -20,6 +20,9 @@ public class CreateEditPhotoViewModel
     [StringLength(255)]
     public string Title { get; set; } = default!;
 
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = "Driver")]
+    public Guid? DriverId { get; set; }
+    
     /// <summary>
     /// Photo name
     /// </summary>
@@ -28,4 +31,6 @@ public class CreateEditPhotoViewModel
     [StringLength(255)]
     [Display(Name = "Photo Name")]
     public string? PhotoName { get; set; }
+    
+    
 }
