@@ -357,7 +357,11 @@ public class VehiclesController : Controller
         if (vehicle == null) return NotFound();
         if (files == null || files.Count == 0) 
         {
-            Content("Files are required.");
+           return Content("Images are required.");
+        }
+        if (files.Count > 4 )
+        {
+            return Content("You can only upload up to four images per a car.");
         }
         var driverId = await _appBLL.Vehicles.GetDriverIdByVehicleIdAsync(id, null, User.GettingUserRoleName(), true, true);
         if (driverId == null) return NotFound();
@@ -370,7 +374,7 @@ public class VehiclesController : Controller
                                 && (!file.FileName.EndsWith(".jpg")
                                     || !file.FileName.EndsWith(".png")))
             {
-                return Content("File cannot be uploaded because its size is more than 5MB" +
+                return Content("The images cannot be uploaded because its size is more than 5MB" +
                                "and/or the files aren't in .png or .jpg format!");
             }
             
@@ -387,11 +391,16 @@ public class VehiclesController : Controller
                 directoryName);
             if (!Directory.Exists(uploadFolderPath)) 
                 Directory.CreateDirectory(uploadFolderPath);
+            else if (Directory.GetFiles(uploadFolderPath).Length == 4)
+            {
+                return Content("Images cannot be uploaded because one vehicle can have up to four photos!");
+            }
+            
             var fileName = file.FileName;
 
             if (System.IO.File.Exists(Path.Combine(uploadFolderPath, fileName)))
             {
-                return Content("File cannot be uploaded because its file already exists!");
+                return Content("An image cannot be uploaded because its file already exists!");
             }
             string fullPath = Path.Combine(uploadFolderPath, fileName);
             
@@ -403,7 +412,7 @@ public class VehiclesController : Controller
             }
             catch (UnauthorizedAccessException exception)
             {
-                return Content($"You do not have permission to upload the file {file.FileName}." +
+                return Content($"You do not have permission to upload the image(s) {file.FileName}." +
                         $" Please contact the administrator or try again later. {exception.Message}");
             }
             catch (DirectoryNotFoundException exception)
@@ -413,7 +422,7 @@ public class VehiclesController : Controller
             }
             catch (IOException exception)
             {
-                return Content($"The file you are trying to upload could not be uploaded. {exception.Message}");
+                return Content($"The image you are trying to upload could not be uploaded. {exception.Message}");
             }
 
             var photo = new PhotoDTO()
