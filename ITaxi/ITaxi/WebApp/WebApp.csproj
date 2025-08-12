@@ -18,7 +18,7 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="15.0.1" />
-        <PackageReference Include="Azure.Identity" Version="1.14.2" />
+        <PackageReference Include="Azure.Identity" Version="1.15.0" />
         <PackageReference Include="Azure.Storage.Blobs" Version="12.25.0" />
         <PackageReference Include="Google.Apis.PeopleService.v1" Version="1.69.0.3785" />
         <PackageReference Include="jQuery" Version="3.7.1" />

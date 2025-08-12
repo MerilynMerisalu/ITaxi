@@ -27,4 +27,7 @@
     <data name="Vehicle" xml:space="preserve">
         <value>Sõiduk</value>
     </data>
+    <data name="Driver" xml:space="preserve">
+        <value>Sõidukijuht</value>
+    </data>
 </root>

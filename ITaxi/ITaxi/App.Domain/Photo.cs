@@ -28,8 +28,11 @@ public class Photo : DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
     public Guid? VehicleId { get; set; }
     public Vehicle? Vehicle { get; set; }
-
-   
+    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Driver))]
+    public Guid? DriverId { get; set; }
+    public Driver? Driver { get; set; }
+    
     public Guid? AppUserId { get; set; }
     public AppUser? AppUser { get; set; }
 

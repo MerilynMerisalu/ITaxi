@@ -35,4 +35,7 @@
     <data name="Vehicle" xml:space="preserve">
         <value>Vehicle</value>
     </data>
+    <data name="Driver" xml:space="preserve">
+        <value>Driver</value>
+    </data>
 </root>
