@@ -41,6 +41,21 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
             .FirstOrDefault(p => p.Id.Equals(id)));
     }
 
+    public async Task<int> GetPhotoCountByVehicleIdAsync(Guid vehicleId, 
+        Guid? userId = null, string? roleName = null,
+        bool noTracking = true)
+    {
+        return (await CreateQuery(userId, roleName, noTracking)
+            .CountAsync(p => p.VehicleId.Equals(vehicleId)));
+    }
+
+    public int GetPhotoCountByVehicleId(Guid vehicleId, Guid? userId = null,
+        string? roleName = null, bool noTracking = true)
+    {
+        return CreateQuery(userId, roleName, noTracking)
+            .Count(p => p.VehicleId.Equals(vehicleId));
+    }
+
 
     protected  IQueryable<Photo> CreateQuery(Guid? userId = null, 
         string? roleName = null,

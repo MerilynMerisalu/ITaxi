@@ -35,4 +35,15 @@ public class PhotoService: BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
     {
         return Mapper.Map(Repository.GetPhotoById(id, userId, roleName, noTracking));
     }
+
+    public async Task<int> GetPhotoCountByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null,
+        bool noTracking = true)
+    {
+        return await Repository.GetPhotoCountByVehicleIdAsync(vehicleId, userId, roleName, noTracking);
+    }
+
+    public int GetPhotoCountByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return Repository.GetPhotoCountByVehicleId(vehicleId, userId, roleName, noTracking);
+    }
 }

@@ -19,7 +19,7 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="UploadRestictions" xml:space="preserve">
-        <value>Upload one or more files. The maximum size cannot be bigger than 5000 MB and they must be in .png or .jpg format.</value>
+        <value>Upload one or more images. There can be up to four images per vehicle. The  maximum size cannot be bigger than 5000 MB and they must be in .png or .jpg format.</value>
     </data>
     <data name="UploadButtonText" xml:space="preserve">
         <value>Upload</value>

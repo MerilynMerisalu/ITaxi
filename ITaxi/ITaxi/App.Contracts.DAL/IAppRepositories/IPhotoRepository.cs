@@ -16,4 +16,9 @@ public interface IPhotoRepositoryCustom<TEntity>
     IEnumerable<TEntity?> GetAllPhotosWithIncludes(Guid? userId = null, string? roleName = null,bool noTracking = true);
     Task<TEntity?> GetPhotoByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
     TEntity? GetPhotoById(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true);
+    Task<int> GetPhotoCountByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null,
+        bool noTracking = true);
+    int GetPhotoCountByVehicleId(Guid vehicleId, Guid? userId = null,
+        string? roleName = null,
+        bool noTracking = true);
 }

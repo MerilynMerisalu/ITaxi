@@ -351,99 +351,87 @@ public class VehiclesController : Controller
     }
 
     [AcceptVerbs("Post")]
-    public async Task<IActionResult> Upload([FromRoute] Guid id, List<IFormFile>? files)
+public async Task<IActionResult> Upload([FromRoute] Guid id, List<IFormFile>? files)
+{
+    var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id);
+    if (vehicle == null) return NotFound();
+
+    if (files == null || files.Count == 0)
+        return Content("Images are required.");
+
+    int imagesAlreadyUploadedPerCar = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(
+        id, null, User.GettingUserRoleName(), true);
+
+    if (imagesAlreadyUploadedPerCar + files.Count > 4)
+        return Content("You can only upload up to four images per car.");
+
+    var driverId = await _appBLL.Vehicles.GetDriverIdByVehicleIdAsync(
+        id, null, User.GettingUserRoleName(), true, true);
+
+    if (driverId == null) return NotFound();
+
+    foreach (var file in files)
     {
-        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id);
-        if (vehicle == null) return NotFound();
-        if (files == null || files.Count == 0) 
+        if (file.Length <= 0 
+            || file.Length > 5_000_000
+            || (!file.FileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) 
+                && !file.FileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase)))
         {
-           return Content("Images are required.");
+            return Content("The image must be between 1 byte and 5MB and have a .png or .jpg extension!");
         }
-        if (files.Count > 4 )
+
+        var directoryNameParts = file.FileName.Split(" ");
+        if (directoryNameParts.Length < 4)
+            return Content("The file name must be in the format: vehicle mark vehicle model plate number.");
+
+        string directoryName = string.Join("_", directoryNameParts.Take(4));
+        directoryName = string.Concat(directoryName.Split(Path.GetInvalidFileNameChars())).Trim();
+
+        string uploadFolderPath = Path.Combine(
+            _webHostEnvironment.WebRootPath, "Images", "VehicleImages", directoryName);
+
+        if (!Directory.Exists(uploadFolderPath))
+            Directory.CreateDirectory(uploadFolderPath);
+
+        var fileName = file.FileName;
+        string fullPath = Path.Combine(uploadFolderPath, fileName);
+
+        if (System.IO.File.Exists(fullPath))
+            return Content("An image cannot be uploaded because its file already exists!");
+
+        try
         {
-            return Content("You can only upload up to four images per a car.");
+            await using var stream = new FileStream(fullPath, FileMode.Create);
+            await file.CopyToAsync(stream);
         }
-        var driverId = await _appBLL.Vehicles.GetDriverIdByVehicleIdAsync(id, null, User.GettingUserRoleName(), true, true);
-        if (driverId == null) return NotFound();
-        
-        string directoryName = "";
-
-        foreach (var file in files)
+        catch (Exception ex) when (ex is UnauthorizedAccessException ||
+                                   ex is DirectoryNotFoundException ||
+                                   ex is IOException)
         {
-            if (file.Length <= 0 && file.Length > 5000000
-                                && (!file.FileName.EndsWith(".jpg")
-                                    || !file.FileName.EndsWith(".png")))
-            {
-                return Content("The images cannot be uploaded because its size is more than 5MB" +
-                               "and/or the files aren't in .png or .jpg format!");
-            }
-            
-            string[] directoryNameParts = file.FileName.Split(" ");
-
-            for (int i = 0; i < 4; i++)
-            {
-                directoryName += directoryNameParts[i] + " ";
-                
-            }
-            directoryName = string.Concat(directoryName.Split
-                (Path.GetInvalidFileNameChars())).Trim();
-            string uploadFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", "VehicleImages",
-                directoryName);
-            if (!Directory.Exists(uploadFolderPath)) 
-                Directory.CreateDirectory(uploadFolderPath);
-            else if (Directory.GetFiles(uploadFolderPath).Length == 4)
-            {
-                return Content("Images cannot be uploaded because one vehicle can have up to four photos!");
-            }
-            
-            var fileName = file.FileName;
-
-            if (System.IO.File.Exists(Path.Combine(uploadFolderPath, fileName)))
-            {
-                return Content("An image cannot be uploaded because its file already exists!");
-            }
-            string fullPath = Path.Combine(uploadFolderPath, fileName);
-            
-            try
-            {
-                await using var stream = new FileStream(fullPath, FileMode.Create);
-                await file.CopyToAsync(stream);
-
-            }
-            catch (UnauthorizedAccessException exception)
-            {
-                return Content($"You do not have permission to upload the image(s) {file.FileName}." +
-                        $" Please contact the administrator or try again later. {exception.Message}");
-            }
-            catch (DirectoryNotFoundException exception)
-            {
-               return Content($"The folder in which the image files you want to be uploaded is cannot be found. " +
-                        $"{exception.Message}");
-            }
-            catch (IOException exception)
-            {
-                return Content($"The image you are trying to upload could not be uploaded. {exception.Message}");
-            }
-
-            var photo = new PhotoDTO()
-            {
-                Id = Guid.NewGuid(),
-                VehicleId = id,
-                Title = fileName,
-                PhotoURL = fullPath,
-                DriverId = driverId,
-                CreatedBy = User.GettingUserEmail(),
-                CreatedAt = DateTime.UtcNow,
-                UpdatedBy = User.GettingUserEmail(),
-                UpdatedAt = DateTime.UtcNow,
-            };
-            _appBLL.Photos.Add(photo);
-            await _appBLL.SaveChangesAsync();
-
+            return Content($"The image could not be uploaded. {ex.Message}");
         }
-        
-        return RedirectToAction(nameof(Gallery));
+
+        var photo = new PhotoDTO
+        {
+            Id = Guid.NewGuid(),
+            VehicleId = id,
+            Title = fileName,
+            PhotoURL = $"/Images/VehicleImages/{directoryName}/{fileName}",
+            DriverId = driverId,
+            CreatedBy = User.GettingUserEmail(),
+            CreatedAt = DateTime.UtcNow,
+            UpdatedBy = User.GettingUserEmail(),
+            UpdatedAt = DateTime.UtcNow,
+        };
+
+        _appBLL.Photos.Add(photo);
     }
+
+    await _appBLL.SaveChangesAsync();
+
+    return RedirectToAction(nameof(Gallery));
+}
+
     public IActionResult Gallery()
     {
         

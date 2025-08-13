@@ -78,7 +78,7 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload one or more files. The maximum size cannot be bigger than 5000 MB and they must be in .png or .jpg format..
+        ///   Looks up a localized string similar to Upload one or more images. There can be up to four images per vehicle. The  maximum size cannot be bigger than 5000 MB and they must be in .png or .jpg format..
         /// </summary>
         public static string UploadRestictions {
             get {
