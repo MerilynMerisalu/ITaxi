@@ -359,11 +359,14 @@ public async Task<IActionResult> Upload([FromRoute] Guid id, List<IFormFile>? fi
     if (files == null || files.Count == 0)
         return Content("Images are required.");
 
-    int imagesAlreadyUploadedPerCar = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(
+    int imagesAlreadyUploadedPerVehicle = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(
         id, null, User.GettingUserRoleName(), true);
 
-    if (imagesAlreadyUploadedPerCar + files.Count > 4)
-        return Content("You can only upload up to four images per car.");
+    var result = _appBLL.Photos.AlreadyHasACertainNumberOfImages(files: files, numberOfImagesAllowed: 4, 
+        numberOfImages:imagesAlreadyUploadedPerVehicle);
+
+        if (result == true)
+            return Content($"You can upload up to four images per vehicle.");
 
     var driverId = await _appBLL.Vehicles.GetDriverIdByVehicleIdAsync(
         id, null, User.GettingUserRoleName(), true, true);

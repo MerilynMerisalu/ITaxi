@@ -3,6 +3,7 @@ using App.Contracts.BLL.Services;
 using App.Contracts.DAL.IAppRepositories;
 using Base.BLL;
 using Base.Contracts;
+using Microsoft.AspNetCore.Http;
 
 namespace App.BLL.Services;
 
@@ -45,5 +46,18 @@ public class PhotoService: BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
     public int GetPhotoCountByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         return Repository.GetPhotoCountByVehicleId(vehicleId, userId, roleName, noTracking);
+    }
+
+    public bool AlreadyHasACertainNumberOfImages(int numberOfImages, int? numberOfImagesAllowed = 4, List<IFormFile>? files = null)
+    {
+        int minimumNumberOfImagesAllowed = 1;
+        if (files == null) throw new ArgumentNullException(nameof(files));
+
+        else if (numberOfImagesAllowed < minimumNumberOfImagesAllowed)
+            throw new ArgumentOutOfRangeException(nameof(numberOfImagesAllowed));
+
+        else if ((files.Count + numberOfImages) > numberOfImagesAllowed)
+            return true;
+        return false;
     }
 }
