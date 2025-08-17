@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace App.BLL.Services;
 
-public class PhotoService: BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
-    App.DAL.DTO.AdminArea.PhotoDTO, IPhotoRepository >, IPhotoService
+public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
+    App.DAL.DTO.AdminArea.PhotoDTO, IPhotoRepository>, IPhotoService
 {
     public PhotoService(IPhotoRepository repository, IMapper<PhotoDTO, DAL.DTO.AdminArea.PhotoDTO> mapper) : base(repository, mapper)
     {
@@ -31,7 +31,7 @@ public class PhotoService: BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return Mapper.Map(await Repository.GetPhotoByIdAsync(id, userId, roleName, noTracking));
     }
 
-    public PhotoDTO? GetPhotoById(Guid id, Guid? userId = null, string? roleName = null, 
+    public PhotoDTO? GetPhotoById(Guid id, Guid? userId = null, string? roleName = null,
         bool noTracking = true)
     {
         return Mapper.Map(Repository.GetPhotoById(id, userId, roleName, noTracking));
@@ -59,5 +59,57 @@ public class PhotoService: BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         else if ((files.Count + numberOfImages) > numberOfImagesAllowed)
             return true;
         return false;
+    }
+
+    public bool AreAllFilesCorrect(List<IFormFile> files)
+    {
+        for (int i = 0; i < files.Count; i++)
+        {
+            if (files[i].Length <= 0
+            || files[i].Length > 5000000
+            || (!files[i].FileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
+                && !files[i].FileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase)))
+            {
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+    public bool IsDirectoryNameCorrect(string fileName, int? numberOfDirectoryNamePartsNeeded = 4)
+    {
+        int minimumLengthOfDirectoryNamePartsNeeded = 1;
+        if (numberOfDirectoryNamePartsNeeded < minimumLengthOfDirectoryNamePartsNeeded)
+            throw new ArgumentOutOfRangeException();
+        var directoryNameParts = fileName.Split(" ");
+        if (directoryNameParts.Length < numberOfDirectoryNamePartsNeeded)
+            return false;
+        else
+        {
+            GetDirectoryName(directoryNameParts);
+            return true;
+        }
+    }
+
+    public void GetDirectoryName(string[] directoryNameParts, int? numberOfDirectoryNameParts = 4)
+    {
+        int minimumLengthOfDirectoryNamePartsNeeded = 1;
+        if (directoryNameParts.Length < minimumLengthOfDirectoryNamePartsNeeded)
+        {
+            throw new ArgumentOutOfRangeException();
+        }
+        if (!numberOfDirectoryNameParts.HasValue)
+        {
+            throw new ArgumentOutOfRangeException();
+        }
+        string directoryName = string.Join("_", directoryNameParts.Take(numberOfDirectoryNameParts.Value));
+        directoryName = string.Concat(directoryName.Split(Path.GetInvalidFileNameChars())).Trim();
+
+    }
+
+    public string GetUploadFolderPath(string wwwRootPath, string[] directoryNames)
+    {
+        throw new NotImplementedException();
     }
 }

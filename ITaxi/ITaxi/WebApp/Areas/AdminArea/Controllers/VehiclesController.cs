@@ -373,62 +373,55 @@ public async Task<IActionResult> Upload([FromRoute] Guid id, List<IFormFile>? fi
 
     if (driverId == null) return NotFound();
 
-    foreach (var file in files)
-    {
-        if (file.Length <= 0 
-            || file.Length > 5_000_000
-            || (!file.FileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) 
-                && !file.FileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase)))
+   result = _appBLL.Photos.AreAllFilesCorrect(files);
+    
+   if (result == false) return Content("The image must be between 1 byte and 5MB and have a .png or " +
+        ".jpg extension!");
+      foreach (var file in files)
         {
-            return Content("The image must be between 1 byte and 5MB and have a .png or .jpg extension!");
+            string fileName = file.FileName;
+            result = _appBLL.Photos.IsDirectoryNameCorrect(fileName: fileName);
+            if (result == false) throw new ArgumentException();
+            string[] directoryNames = { "VehicleImages" };
+            string uploadFolderPath = _appBLL.Photos.GetUploadFolderPath(wwwRootPath: _webHostEnvironment.WebRootPath, directoryNames: directoryNames);
+            if (!Directory.Exists(uploadFolderPath))
+                Directory.CreateDirectory(uploadFolderPath);
+
+           string fullPath = Path.Combine(uploadFolderPath, fileName);
+
+            if (System.IO.File.Exists(fullPath))
+                return Content("An image cannot be uploaded because its file already exists!");
+
+            try
+            {
+                await using var stream = new FileStream(fullPath, FileMode.Create);
+                await file.CopyToAsync(stream);
+            }
+            catch (Exception ex) when (ex is UnauthorizedAccessException ||
+                                       ex is DirectoryNotFoundException ||
+                                       ex is IOException)
+            {
+                return Content($"The image could not be uploaded. {ex.Message}");
+            }
+
+            var photo = new PhotoDTO
+            {
+                Id = Guid.NewGuid(),
+                VehicleId = id,
+                Title = fileName,
+                PhotoURL = $"/Images/VehicleImages/{directoryName}/{fileName}",
+                DriverId = driverId,
+                CreatedBy = User.GettingUserEmail(),
+                CreatedAt = DateTime.UtcNow,
+                UpdatedBy = User.GettingUserEmail(),
+                UpdatedAt = DateTime.UtcNow,
+            };
+
+            _appBLL.Photos.Add(photo);
         }
 
-        var directoryNameParts = file.FileName.Split(" ");
-        if (directoryNameParts.Length < 4)
-            return Content("The file name must be in the format: vehicle mark vehicle model plate number.");
-
-        string directoryName = string.Join("_", directoryNameParts.Take(4));
-        directoryName = string.Concat(directoryName.Split(Path.GetInvalidFileNameChars())).Trim();
-
-        string uploadFolderPath = Path.Combine(
-            _webHostEnvironment.WebRootPath, "Images", "VehicleImages", directoryName);
-
-        if (!Directory.Exists(uploadFolderPath))
-            Directory.CreateDirectory(uploadFolderPath);
-
-        var fileName = file.FileName;
-        string fullPath = Path.Combine(uploadFolderPath, fileName);
-
-        if (System.IO.File.Exists(fullPath))
-            return Content("An image cannot be uploaded because its file already exists!");
-
-        try
-        {
-            await using var stream = new FileStream(fullPath, FileMode.Create);
-            await file.CopyToAsync(stream);
-        }
-        catch (Exception ex) when (ex is UnauthorizedAccessException ||
-                                   ex is DirectoryNotFoundException ||
-                                   ex is IOException)
-        {
-            return Content($"The image could not be uploaded. {ex.Message}");
-        }
-
-        var photo = new PhotoDTO
-        {
-            Id = Guid.NewGuid(),
-            VehicleId = id,
-            Title = fileName,
-            PhotoURL = $"/Images/VehicleImages/{directoryName}/{fileName}",
-            DriverId = driverId,
-            CreatedBy = User.GettingUserEmail(),
-            CreatedAt = DateTime.UtcNow,
-            UpdatedBy = User.GettingUserEmail(),
-            UpdatedAt = DateTime.UtcNow,
-        };
-
-        _appBLL.Photos.Add(photo);
-    }
+        
+    
 
     await _appBLL.SaveChangesAsync();
 

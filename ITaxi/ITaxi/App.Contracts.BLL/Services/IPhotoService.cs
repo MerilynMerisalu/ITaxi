@@ -12,4 +12,10 @@ public interface IPhotoService: IEntityService<App.BLL.DTO.AdminArea.PhotoDTO>,
         int numberOfImages,
         int? numberOfImagesAllowed = 4,
         List<IFormFile>? files = null);
+    
+    bool AreAllFilesCorrect(List<IFormFile> files);
+
+    bool IsDirectoryNameCorrect(string fileName, int? numberOfDirectoryNamePartsNeeded = 4);
+    void GetDirectoryName(string[] diretoryNameParts, int? numberOfDirectoryNamePartsNeeded = 4);
+    string GetUploadFolderPath(string wwwRootPath, string[] directoryNames);
 }
