@@ -14,8 +14,12 @@ public interface IPhotoService: IEntityService<App.BLL.DTO.AdminArea.PhotoDTO>,
         List<IFormFile>? files = null);
     
     bool AreAllFilesCorrect(List<IFormFile> files);
+    string? GetDirectoryPath(string startOfDirectoryPath, string[]? middleParts, string? directoryName = null);
+    bool DoesDirectoryExist(string directoryPath);
+    void CreateDirectory(string directoryPath);
+    bool DoesFileExist(string fullFilePath);
+    Task<bool> UploadImagesAsync(string fullUploadDirectoryPath, IFormFile file);
+    bool UploadImages(string fullUploadDirectoryPath, IFormFile file);
 
-    bool IsDirectoryNameCorrect(string fileName, int? numberOfDirectoryNamePartsNeeded = 4);
-    void GetDirectoryName(string[] diretoryNameParts, int? numberOfDirectoryNamePartsNeeded = 4);
-    string GetUploadFolderPath(string wwwRootPath, string[] directoryNames);
+    
 }

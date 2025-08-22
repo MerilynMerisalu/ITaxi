@@ -23,6 +23,7 @@ public class Photo: DomainEntityMetaId
         ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    public Guid DiretoryNameId { get; set; }
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(PhotoURL))]
     public string? PhotoURL { get; set; }
 

@@ -21,4 +21,14 @@ public interface IPhotoRepositoryCustom<TEntity>
     int GetPhotoCountByVehicleId(Guid vehicleId, Guid? userId = null,
         string? roleName = null,
         bool noTracking = true);
+    Task<string?> GetDiretoryIdByVehicleIdAsStringAsync(Guid vehicleId, Guid? userId = null,
+        string? roleName = null,
+        bool noTracking = true,
+        bool noIncludes = false);
+    string? GetDiretoryIdByVehicleIdAsString(Guid vehicleId, Guid? userId = null,
+       string? roleName = null,
+       bool noTracking = true,
+       bool noIncludes = false);
+
+    
 }

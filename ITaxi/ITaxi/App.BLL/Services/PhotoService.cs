@@ -4,6 +4,7 @@ using App.Contracts.DAL.IAppRepositories;
 using Base.BLL;
 using Base.Contracts;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace App.BLL.Services;
 
@@ -63,53 +64,102 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
 
     public bool AreAllFilesCorrect(List<IFormFile> files)
     {
-        for (int i = 0; i < files.Count; i++)
-        {
-            if (files[i].Length <= 0
-            || files[i].Length > 5000000
-            || (!files[i].FileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
-                && !files[i].FileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase)))
-            {
-                return false;
-            }
+        return files.All(t => t.Length > 0 && t.Length <= 5000000 && (t.FileName.EndsWith(".jpg", 
+            StringComparison.OrdinalIgnoreCase) || t.FileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase)));
+    }
+   
+    public bool DoesFileExist(string fullFilePath)
+    {
+        if (!File.Exists(fullFilePath)) 
+            return false;
+        return true;
+    }
 
+    public string? GetDirectoryPath(string startOfDirectoryPath, string[]? middleParts, string? directoryName = null)
+    {
+        
+        var directoryFullPath = Path.Combine(startOfDirectoryPath, "Images\\");
+        if (string.IsNullOrWhiteSpace(startOfDirectoryPath))
+            throw new ArgumentNullException(nameof(startOfDirectoryPath));
+        if (middleParts!.Any() || middleParts != null)
+        {
+            foreach (var mp in middleParts!)
+            {
+                string middlePart = string.Concat(mp.Split(Path.GetInvalidPathChars())).Trim();
+                directoryFullPath += Path.Combine(middlePart);
+            }
+          
+        }
+
+        if (directoryName != null)
+        {
+            return directoryFullPath = Path.Combine(directoryFullPath, directoryName);
+        }
+
+        else
+        {
+            return directoryFullPath;
+        }
+        
+    }
+
+    public bool DoesDirectoryExist(string directoryPath)
+    {
+        if (!Directory.Exists(directoryPath))
+        {
+            return false;
         }
         return true;
     }
 
-    public bool IsDirectoryNameCorrect(string fileName, int? numberOfDirectoryNamePartsNeeded = 4)
+    public void CreateDirectory(string directoryPath)
     {
-        int minimumLengthOfDirectoryNamePartsNeeded = 1;
-        if (numberOfDirectoryNamePartsNeeded < minimumLengthOfDirectoryNamePartsNeeded)
-            throw new ArgumentOutOfRangeException();
-        var directoryNameParts = fileName.Split(" ");
-        if (directoryNameParts.Length < numberOfDirectoryNamePartsNeeded)
-            return false;
-        else
-        {
-            GetDirectoryName(directoryNameParts);
-            return true;
-        }
+        Directory.CreateDirectory(directoryPath);
     }
 
-    public void GetDirectoryName(string[] directoryNameParts, int? numberOfDirectoryNameParts = 4)
+    public async Task<string?> GetDiretoryIdByVehicleIdAsStringAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = true)
     {
-        int minimumLengthOfDirectoryNamePartsNeeded = 1;
-        if (directoryNameParts.Length < minimumLengthOfDirectoryNamePartsNeeded)
-        {
-            throw new ArgumentOutOfRangeException();
-        }
-        if (!numberOfDirectoryNameParts.HasValue)
-        {
-            throw new ArgumentOutOfRangeException();
-        }
-        string directoryName = string.Join("_", directoryNameParts.Take(numberOfDirectoryNameParts.Value));
-        directoryName = string.Concat(directoryName.Split(Path.GetInvalidFileNameChars())).Trim();
-
+        return await Repository.GetDiretoryIdByVehicleIdAsStringAsync(vehicleId, userId, roleName, noTracking, noIncludes);
     }
 
-    public string GetUploadFolderPath(string wwwRootPath, string[] directoryNames)
+    public string? GetDiretoryIdByVehicleIdAsString(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = true)
     {
-        throw new NotImplementedException();
+      return Repository.GetDiretoryIdByVehicleIdAsString(vehicleId, userId,roleName, noTracking, noIncludes);
+    }
+
+    public async Task<bool> UploadImagesAsync(string fullUploadDirectoryPath, IFormFile file)
+    {
+        try
+        {
+            
+         await using var stream = new FileStream(fullUploadDirectoryPath, FileMode.Create);
+         await file.CopyToAsync(stream);
+     
+        }
+        catch (Exception ex) when (ex is UnauthorizedAccessException || ex is DirectoryNotFoundException
+            || ex is IOException )
+        {
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public bool UploadImages(string fullUploadDirectoryPath, IFormFile file)
+    {
+        try
+        {
+             using var stream = new FileStream(fullUploadDirectoryPath, FileMode.Create);
+            file.CopyTo(stream);
+        }
+        catch (Exception ex) when (ex is UnauthorizedAccessException || ex is DirectoryNotFoundException
+            || ex is IOException)
+        {
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

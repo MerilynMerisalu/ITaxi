@@ -59,10 +59,11 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
 
     protected  IQueryable<Photo> CreateQuery(Guid? userId = null, 
         string? roleName = null,
+        bool noIncludes = false,
         bool noTracking = true,
         bool showDeleted = false)
     {
-        var query = base.CreateQuery(noIncludes: false, noTracking: noTracking, showDeleted: showDeleted);
+        var query = base.CreateQuery(noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted);
         if (noTracking) query = query.AsNoTracking();
 
         if (roleName != null && roleName.Equals(nameof(Admin)))
@@ -74,5 +75,21 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
        
         query = query.Include(c => c.AppUser).Where(p => p.AppUser!.Id.Equals(userId));
         return query;
+    }
+
+    public async Task<string?> GetDiretoryIdByVehicleIdAsStringAsync(Guid vehicleId,
+        Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result = (await CreateQuery(userId, roleName, noTracking, noIncludes).
+            SingleOrDefaultAsync(p => p.VehicleId.Equals(vehicleId)));
+        return result?.DiretoryTitle ?? null;
+    }
+
+    public string? GetDiretoryIdByVehicleIdAsString(Guid vehicleId, Guid? userId = null, 
+        string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+       var result = CreateQuery(userId, roleName, noTracking, noIncludes).
+            SingleOrDefault(v => v.VehicleId.Equals(vehicleId));
+        return result?.DiretoryTitle ?? null;
     }
 }
