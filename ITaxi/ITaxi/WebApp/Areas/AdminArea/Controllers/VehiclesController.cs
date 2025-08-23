@@ -379,22 +379,19 @@ public class VehiclesController : Controller
         ".jpg extension!");
         foreach (var file in files)
         {
+            string uploadFolderPath = "";
             string fileName = file.FileName;
             if (result == false) throw new ArgumentException();
             string? directoryId = await _appBLL.Photos.GetDiretoryIdByVehicleIdAsStringAsync(vehicle.Id, null, userRoleName!);
             if (directoryId == null)
             {
                 string[]? directoryNames = { "VehicleImages" };
-                string uploadFolderPath = _appBLL.Photos.GetDirectoryPath(startOfDirectoryPath: _webHostEnvironment.WebRootPath, middleParts: directoryNames);
+               uploadFolderPath = await _appBLL.Photos.GetDiretoryIdByVehicleIdAsStringAsync(vehicleId: vehicle.Id, userId: null, roleName: userRoleName, noTracking: true, noIncludes: true)
                 bool isDirectoryCreated = _appBLL.Photos.DoesDirectoryExist(uploadFolderPath);
                 if (isDirectoryCreated == false)
                     _appBLL.Photos.CreateDirectory(uploadFolderPath);
 
-                if (_appBLL.Photos.DoesFileExist(uploadFolderPath!) == true)
-                    return Content("An image cannot be uploaded because its file already exists!");
-
-                if (await _appBLL.Photos.UploadImagesAsync(uploadFolderPath!, file) == false)
-                    return Content("Upload failed");
+                
                 
                 //    var photo = new PhotoDTO
                 //    {
@@ -417,7 +414,12 @@ public class VehiclesController : Controller
 
 
             }
-            
+            if (_appBLL.Photos.DoesFileExist(uploadFolderPath!) == true)
+                return Content("An image cannot be uploaded because its file already exists!");
+
+            if (await _appBLL.Photos.UploadImagesAsync(uploadFolderPath!, file) == false)
+                return Content("Upload failed");
+
         }
         return RedirectToAction(nameof(Gallery));
     }
