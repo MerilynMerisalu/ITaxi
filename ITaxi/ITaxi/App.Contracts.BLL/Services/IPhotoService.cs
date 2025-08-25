@@ -18,8 +18,8 @@ public interface IPhotoService: IEntityService<App.BLL.DTO.AdminArea.PhotoDTO>,
     bool DoesDirectoryExist(string directoryPath);
     void CreateDirectory(string directoryPath);
     bool DoesFileExist(string fullFilePath);
-    Task<bool> UploadImagesAsync(string fullUploadDirectoryPath, IFormFile file);
-    bool UploadImages(string fullUploadDirectoryPath, IFormFile file);
+    Task<bool> UploadImagesAsync(string fullUploadDirectoryPath,string fileName, IFormFile file);
+    bool UploadImages(string fullUploadDirectoryPath, string fileName, IFormFile file);
 
     
 }

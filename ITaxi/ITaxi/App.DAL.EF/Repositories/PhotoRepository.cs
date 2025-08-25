@@ -82,7 +82,7 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
     {
         var result = (await CreateQuery(userId, roleName, noTracking, noIncludes).
             SingleOrDefaultAsync(p => p.VehicleId.Equals(vehicleId)));
-        return result?.DiretoryTitle ?? null;
+        return result?.DirectoryTitleId ?? null;
     }
 
     public string? GetDirectoryIdByVehicleIdAsString(Guid vehicleId, Guid? userId = null, 
@@ -90,6 +90,6 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
     {
        var result = CreateQuery(userId, roleName, noTracking, noIncludes).
             SingleOrDefault(v => v.VehicleId.Equals(vehicleId));
-        return result?.DiretoryTitle ?? null;
+        return result?.DirectoryTitleId ?? null;
     }
 }

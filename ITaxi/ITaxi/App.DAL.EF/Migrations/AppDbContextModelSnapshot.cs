@@ -879,7 +879,7 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DiretoryTitle")
+                    b.Property<string>("DirectoryTitleId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

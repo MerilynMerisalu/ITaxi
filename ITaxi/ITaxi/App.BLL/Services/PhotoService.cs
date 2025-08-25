@@ -126,11 +126,11 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
       return Repository.GetDirectoryIdByVehicleIdAsString(vehicleId, userId,roleName, noTracking, noIncludes);
     }
 
-    public async Task<bool> UploadImagesAsync(string fullUploadDirectoryPath, IFormFile file)
+    public async Task<bool> UploadImagesAsync(string fullUploadDirectoryPath, string fileName, IFormFile file)
     {
         try
         {
-            
+            fullUploadDirectoryPath = Path.Combine(fullUploadDirectoryPath, fileName);
          await using var stream = new FileStream(fullUploadDirectoryPath, FileMode.Create);
          await file.CopyToAsync(stream);
      
@@ -145,11 +145,12 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return true;
     }
 
-    public bool UploadImages(string fullUploadDirectoryPath, IFormFile file)
+    public bool UploadImages(string fullUploadDirectoryPath, string fileName, IFormFile file)
     {
         try
         {
-             using var stream = new FileStream(fullUploadDirectoryPath, FileMode.Create);
+            fullUploadDirectoryPath = Path.Combine(fullUploadDirectoryPath, fileName);
+            using var stream = new FileStream(fullUploadDirectoryPath, FileMode.Create);
             file.CopyTo(stream);
         }
         catch (Exception ex) when (ex is UnauthorizedAccessException || ex is DirectoryNotFoundException

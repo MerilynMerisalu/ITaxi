@@ -17,7 +17,7 @@ public class PhotoDTO : DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Title))]
     public string Title { get; set; } = default!;
 
-    public string DirectoryNameId { get; set; } = default!;
+    public string DirectoryTitleId { get; set; } = default!;
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(255, ErrorMessageResourceType = typeof(Common),

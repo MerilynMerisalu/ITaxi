@@ -391,8 +391,6 @@ public class VehiclesController : Controller
                 bool isDirectoryCreated = _appBLL.Photos.DoesDirectoryExist(uploadFolderPath);
                 if (isDirectoryCreated == false)
                     _appBLL.Photos.CreateDirectory(uploadFolderPath);
-
-                
                 
                 //    var photo = new PhotoDTO
                 //    {
@@ -401,7 +399,8 @@ public class VehiclesController : Controller
                 //        Title = fileName,
                 //        PhotoURL = $"/Images/VehicleImages/{directoryName}/{fileName}",
                 //        DriverId = driverId,
-                //        DirectoryNameId = directoryName!,
+                
+                //        DirectoryNameId = !,
                 //        CreatedBy = User.GettingUserEmail(),
                 //        CreatedAt = DateTime.UtcNow,
                 //        UpdatedBy = User.GettingUserEmail(),
@@ -418,7 +417,7 @@ public class VehiclesController : Controller
             if (_appBLL.Photos.DoesFileExist(uploadFolderPath!) == true)
                 return Content("An image cannot be uploaded because its file already exists!");
 
-            if (await _appBLL.Photos.UploadImagesAsync(uploadFolderPath!, file) == false)
+            if (await _appBLL.Photos.UploadImagesAsync(uploadFolderPath!, fileName, file) == false)
                 return Content("Upload failed");
 
         }
