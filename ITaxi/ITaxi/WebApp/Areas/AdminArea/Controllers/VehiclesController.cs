@@ -374,7 +374,7 @@ public class VehiclesController : Controller
         if (driverId == null) return NotFound();
 
         result = _appBLL.Photos.AreAllFilesCorrect(files);
-
+        string uploadFolderName = Guid.NewGuid().ToString();
         if (result == false) return Content("The image must be between 1 byte and 5MB and have a .png or " +
         ".jpg extension!");
         foreach (var file in files)
@@ -382,11 +382,12 @@ public class VehiclesController : Controller
             string uploadFolderPath = "";
             string fileName = file.FileName;
             if (result == false) throw new ArgumentException();
-            string? directoryId = await _appBLL.Photos.GetDiretoryIdByVehicleIdAsStringAsync(vehicle.Id, null, userRoleName!);
+            string? directoryId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id, null, userRoleName!);
             if (directoryId == null)
             {
                 string[]? directoryNames = { "VehicleImages" };
-               uploadFolderPath = await _appBLL.Photos.GetDiretoryIdByVehicleIdAsStringAsync(vehicleId: vehicle.Id, userId: null, roleName: userRoleName, noTracking: true, noIncludes: true)
+                uploadFolderPath = _appBLL.Photos.GetDirectoryPath(_webHostEnvironment.WebRootPath,
+                    directoryNames, uploadFolderName );
                 bool isDirectoryCreated = _appBLL.Photos.DoesDirectoryExist(uploadFolderPath);
                 if (isDirectoryCreated == false)
                     _appBLL.Photos.CreateDirectory(uploadFolderPath);

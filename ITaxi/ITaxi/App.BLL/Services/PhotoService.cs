@@ -77,7 +77,6 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
 
     public string? GetDirectoryPath(string startOfDirectoryPath, string[]? middleParts, string? directoryName = null)
     {
-        
         var directoryFullPath = Path.Combine(startOfDirectoryPath, "Images\\");
         if (string.IsNullOrWhiteSpace(startOfDirectoryPath))
             throw new ArgumentNullException(nameof(startOfDirectoryPath));
@@ -117,14 +116,14 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         Directory.CreateDirectory(directoryPath);
     }
 
-    public async Task<string?> GetDiretoryIdByVehicleIdAsStringAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = true)
+    public async Task<string?> GetDirectoryIdByVehicleIdAsStringAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = true)
     {
-        return await Repository.GetDiretoryIdByVehicleIdAsStringAsync(vehicleId, userId, roleName, noTracking, noIncludes);
+        return await Repository.GetDirectoryIdByVehicleIdAsStringAsync(vehicleId, userId, roleName, noTracking, noIncludes);
     }
 
-    public string? GetDiretoryIdByVehicleIdAsString(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = true)
+    public string? GetDirectoryIdByVehicleIdAsString(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = true)
     {
-      return Repository.GetDiretoryIdByVehicleIdAsString(vehicleId, userId,roleName, noTracking, noIncludes);
+      return Repository.GetDirectoryIdByVehicleIdAsString(vehicleId, userId,roleName, noTracking, noIncludes);
     }
 
     public async Task<bool> UploadImagesAsync(string fullUploadDirectoryPath, IFormFile file)

@@ -77,7 +77,7 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
         return query;
     }
 
-    public async Task<string?> GetDiretoryIdByVehicleIdAsStringAsync(Guid vehicleId,
+    public async Task<string?> GetDirectoryIdByVehicleIdAsStringAsync(Guid vehicleId,
         Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
         var result = (await CreateQuery(userId, roleName, noTracking, noIncludes).
@@ -85,7 +85,7 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
         return result?.DiretoryTitle ?? null;
     }
 
-    public string? GetDiretoryIdByVehicleIdAsString(Guid vehicleId, Guid? userId = null, 
+    public string? GetDirectoryIdByVehicleIdAsString(Guid vehicleId, Guid? userId = null, 
         string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
        var result = CreateQuery(userId, roleName, noTracking, noIncludes).
