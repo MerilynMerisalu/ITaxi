@@ -385,13 +385,13 @@ public class VehiclesController : Controller
             string? directoryId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id, null, userRoleName!);
             if (directoryId == null)
             {
-                string[]? directoryNames = { "VehicleImages" };
+                string[]? directoryNames = { "Vehicles" };
                 uploadFolderPath = _appBLL.Photos.GetDirectoryPath(_webHostEnvironment.WebRootPath,
                     directoryNames, uploadFolderName );
                 bool isDirectoryCreated = _appBLL.Photos.DoesDirectoryExist(uploadFolderPath);
                 if (isDirectoryCreated == false)
                     _appBLL.Photos.CreateDirectory(uploadFolderPath); 
-                string imageRelativePath = $"Images/Vehicles/{directoryId}/{fileName}";
+                string imageRelativePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath, Path.Combine(uploadFolderPath, fileName));
                 var photo = new PhotoDTO
                     {
                         Id = Guid.NewGuid(),
@@ -399,8 +399,7 @@ public class VehiclesController : Controller
                         Title = fileName,
                         PhotoURL = imageRelativePath,
                         DriverId = driverId,
-                
-                       DirectoryTitleId = uploadFolderName,
+                        DirectoryTitleId = uploadFolderName,
                         CreatedBy = User.GettingUserEmail(),
                         CreatedAt = DateTime.UtcNow,
                         UpdatedBy = User.GettingUserEmail(),
@@ -412,7 +411,7 @@ public class VehiclesController : Controller
 
             await _appBLL.SaveChangesAsync();
             
-        if (_appBLL.Photos.DoesFileExist(uploadFolderPath!) == true)
+        if (_appBLL.Photos.DoesFileExist(uploadFolderPath!))
             return Content("An image cannot be uploaded because its file already exists!");
 
         if (await _appBLL.Photos.UploadImagesAsync(uploadFolderPath!, fileName, file) == false)

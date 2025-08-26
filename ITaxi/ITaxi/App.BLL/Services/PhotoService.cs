@@ -144,7 +144,7 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         }
         return true;
     }
-
+    
     public bool UploadImages(string fullUploadDirectoryPath, string fileName, IFormFile file)
     {
         try
