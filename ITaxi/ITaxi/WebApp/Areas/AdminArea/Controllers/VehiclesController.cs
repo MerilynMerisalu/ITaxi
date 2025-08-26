@@ -366,7 +366,7 @@ public class VehiclesController : Controller
         var result = _appBLL.Photos.AlreadyHasACertainNumberOfImages(files: files, numberOfImagesAllowed: 4,
             numberOfImages: imagesAlreadyUploadedPerVehicle);
 
-        if (result == true)
+        if (result)
             return Content($"You can upload up to four images per vehicle.");
         var driverId = await _appBLL.Vehicles.GetDriverIdByVehicleIdAsync(
         id, null, User.GettingUserRoleName(), true, true);
@@ -381,17 +381,25 @@ public class VehiclesController : Controller
         {
             string uploadFolderPath = "";
             string fileName = _appBLL.Photos.FileNameFormat(file.FileName);
+            
             if (result == false) throw new ArgumentException();
-            string? directoryId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id, null, userRoleName!);
+            
+            string? directoryId = await _appBLL.Photos.
+                GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id,
+                    null, userRoleName!);
             if (directoryId == null)
             {
                 string[]? directoryNames = { "Vehicles" };
                 uploadFolderPath = _appBLL.Photos.GetDirectoryPath(_webHostEnvironment.WebRootPath,
                     directoryNames, uploadFolderName );
+                
                 bool isDirectoryCreated = _appBLL.Photos.DoesDirectoryExist(uploadFolderPath);
                 if (isDirectoryCreated == false)
                     _appBLL.Photos.CreateDirectory(uploadFolderPath); 
-                string imageRelativePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath, Path.Combine(uploadFolderPath, fileName));
+                
+                string imageRelativePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath, 
+                    Path.Combine(uploadFolderPath, fileName));
+                
                 var photo = new PhotoDTO
                     {
                         Id = Guid.NewGuid(),
