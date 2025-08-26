@@ -380,7 +380,7 @@ public class VehiclesController : Controller
         foreach (var file in files)
         {
             string uploadFolderPath = "";
-            string fileName = file.FileName;
+            string fileName = _appBLL.Photos.FileNameFormat(file.FileName);
             if (result == false) throw new ArgumentException();
             string? directoryId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id, null, userRoleName!);
             if (directoryId == null)
