@@ -353,6 +353,7 @@ public class VehiclesController : Controller
     [AcceptVerbs("Post")]
     public async Task<IActionResult> Upload([FromRoute] Guid id, List<IFormFile>? files)
     {
+        
         var userRoleName = User.GettingUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id);
         if (vehicle == null) return NotFound();
@@ -390,35 +391,33 @@ public class VehiclesController : Controller
                     directoryNames, uploadFolderName );
                 bool isDirectoryCreated = _appBLL.Photos.DoesDirectoryExist(uploadFolderPath);
                 if (isDirectoryCreated == false)
-                    _appBLL.Photos.CreateDirectory(uploadFolderPath);
+                    _appBLL.Photos.CreateDirectory(uploadFolderPath); 
+                string imageRelativePath = $"Images/Vehicles/{directoryId}/{fileName}";
+                var photo = new PhotoDTO
+                    {
+                        Id = Guid.NewGuid(),
+                        VehicleId = id,
+                        Title = fileName,
+                        PhotoURL = imageRelativePath,
+                        DriverId = driverId,
                 
-                //    var photo = new PhotoDTO
-                //    {
-                //        Id = Guid.NewGuid(),
-                //        VehicleId = id,
-                //        Title = fileName,
-                //        PhotoURL = $"/Images/VehicleImages/{directoryName}/{fileName}",
-                //        DriverId = driverId,
-                
-                //        DirectoryNameId = !,
-                //        CreatedBy = User.GettingUserEmail(),
-                //        CreatedAt = DateTime.UtcNow,
-                //        UpdatedBy = User.GettingUserEmail(),
-                //        UpdatedAt = DateTime.UtcNow,
-                //    };
+                       DirectoryTitleId = uploadFolderName,
+                        CreatedBy = User.GettingUserEmail(),
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedBy = User.GettingUserEmail(),
+                        UpdatedAt = DateTime.UtcNow,
+                    };
 
-                //    _appBLL.Photos.Add(photo);
-                //}
-
-                //await _appBLL.SaveChangesAsync();
-
-
+                   _appBLL.Photos.Add(photo);
             }
-            if (_appBLL.Photos.DoesFileExist(uploadFolderPath!) == true)
-                return Content("An image cannot be uploaded because its file already exists!");
 
-            if (await _appBLL.Photos.UploadImagesAsync(uploadFolderPath!, fileName, file) == false)
-                return Content("Upload failed");
+            await _appBLL.SaveChangesAsync();
+            
+        if (_appBLL.Photos.DoesFileExist(uploadFolderPath!) == true)
+            return Content("An image cannot be uploaded because its file already exists!");
+
+        if (await _appBLL.Photos.UploadImagesAsync(uploadFolderPath!, fileName, file) == false)
+            return Content("Upload failed");
 
         }
         return RedirectToAction(nameof(Gallery));
