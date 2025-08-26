@@ -353,7 +353,6 @@ public class VehiclesController : Controller
     [AcceptVerbs("Post")]
     public async Task<IActionResult> Upload([FromRoute] Guid id, List<IFormFile>? files)
     {
-        
         var userRoleName = User.GettingUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id);
         if (vehicle == null) return NotFound();
