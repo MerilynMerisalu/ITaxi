@@ -26,7 +26,8 @@ public class Photo : DomainEntityMetaId
     public string? PhotoURL { get; set; }
 
     public string DirectoryTitleId { get; set; } = default!;
-
+    public string FileNameInDirectory { get; set; } = default!;
+    
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
     public Guid? VehicleId { get; set; }
     public Vehicle? Vehicle { get; set; }

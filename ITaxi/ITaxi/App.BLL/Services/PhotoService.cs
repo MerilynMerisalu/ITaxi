@@ -153,6 +153,22 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return fileName.Replace(" ", "_");
     }
 
+    public string GetFileNameForDirectory(string fullUploadDirectoryPath)
+    {
+        int index = 1;
+        string fileNameInDirectory = $"Foto_{index}.png";
+        while (index < 5)
+        {
+            if ( DoesFileExist(fullUploadDirectoryPath + fileNameInDirectory ))
+            {
+                fileNameInDirectory += $"{index}" + ".png"; 
+            }
+            index++;
+        }
+        return fileNameInDirectory;
+        
+    }
+
     public bool UploadImages(string fullUploadDirectoryPath, string fileName, IFormFile file)
     {
         try

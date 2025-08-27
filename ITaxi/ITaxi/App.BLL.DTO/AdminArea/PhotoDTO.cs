@@ -18,7 +18,7 @@ public class PhotoDTO : DomainEntityMetaId
     public string Title { get; set; } = default!;
 
     public string DirectoryTitleId { get; set; } = default!;
-
+    public string FileNameInDirectory { get; set; } = default!;
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(255, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageStringLengthMax")]

@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241005204219_RenamedAPropertyDoElectricWheelchairFitInCar")]
-    partial class RenamedAPropertyDoElectricWheelchairFitInCar
+    [Migration("20250827220133_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -42,6 +42,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("CityId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CountryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -55,6 +58,9 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
 
                     b.Property<string>("PersonalIdentifier")
@@ -73,6 +79,8 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("CityId");
 
+                    b.HasIndex("CountryId");
+
                     b.ToTable("Admins");
                 });
 
@@ -85,6 +93,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("AdditionalInfo")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
+
+                    b.Property<Guid>("BookingNumber")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CityId")
                         .HasColumnType("uniqueidentifier");
@@ -140,6 +151,9 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
 
                     b.Property<bool>("NeedAssistanceEnteringTheBuilding")
@@ -230,6 +244,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -271,6 +288,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("StarRating")
                         .HasColumnType("int");
 
@@ -310,7 +330,14 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ISOCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -355,6 +382,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -395,6 +425,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -432,6 +465,9 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -498,6 +534,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<bool>("IsDriveStarted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
                     b.Property<int>("StatusOfDrive")
                         .HasColumnType("int");
 
@@ -528,7 +567,7 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CityId")
+                    b.Property<Guid?>("CityId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -543,20 +582,26 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DriverLicenseExpiryDate")
+                    b.Property<DateTime?>("DriverLicenseExpiryDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DriverLicenseNumber")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PersonalIdentifier")
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("ServiceProviderCardIdentifier")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -586,6 +631,9 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -623,6 +671,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -650,6 +701,9 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -706,6 +760,9 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
@@ -779,6 +836,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PreviousToken")
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)");
@@ -822,7 +882,21 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DirectoryTitleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("DriverId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileNameInDirectory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
 
                     b.Property<string>("PhotoURL")
@@ -847,6 +921,8 @@ namespace App.DAL.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
+
+                    b.HasIndex("DriverId");
 
                     b.HasIndex("VehicleId");
 
@@ -881,6 +957,9 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsTaken")
@@ -936,6 +1015,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("StartDateAndTime")
                         .HasColumnType("datetime2");
 
@@ -975,13 +1057,16 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("DoElectricWheelchairFitInVehicle")
+                    b.Property<bool>("DoesElectricWheelchairFitInVehicle")
                         .HasColumnType("bit");
 
                     b.Property<Guid>("DriverId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
 
                     b.Property<int>("ManufactureYear")
@@ -1047,6 +1132,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -1082,6 +1170,9 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -1126,6 +1217,12 @@ namespace App.DAL.EF.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWheelChair")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -1151,6 +1248,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("LangStrings");
@@ -1168,6 +1268,9 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("nvarchar(5)");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
 
                     b.Property<Guid>("LangStrId")
@@ -1302,9 +1405,17 @@ namespace App.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("App.Domain.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("AppUser");
 
                     b.Navigation("City");
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("App.Domain.Booking", b =>
@@ -1459,8 +1570,7 @@ namespace App.DAL.EF.Migrations
                     b.HasOne("App.Domain.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("AppUser");
 
@@ -1503,12 +1613,19 @@ namespace App.DAL.EF.Migrations
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("App.Domain.Driver", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("App.Domain.Vehicle", "Vehicle")
                         .WithMany("VehiclePhotos")
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("AppUser");
+
+                    b.Navigation("Driver");
 
                     b.Navigation("Vehicle");
                 });

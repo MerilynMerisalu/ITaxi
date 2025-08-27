@@ -354,6 +354,7 @@ public class VehiclesController : Controller
     public async Task<IActionResult> Upload([FromRoute] Guid id, List<IFormFile>? files)
     {
         var userRoleName = User.GettingUserRoleName();
+        string fileNameInDirectory = string.Empty;
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id);
         if (vehicle == null) return NotFound();
 
@@ -398,9 +399,9 @@ public class VehiclesController : Controller
                 bool isDirectoryCreated = _appBLL.Photos.DoesDirectoryExist(uploadFolderPath);
                 if (isDirectoryCreated == false)
                     _appBLL.Photos.CreateDirectory(uploadFolderPath); 
-                
+                fileNameInDirectory = _appBLL.Photos.GetFileNameForDirectory(uploadFolderPath);
                 string imageRelativePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath, 
-                    Path.Combine(uploadFolderPath, fileName));
+                    Path.Combine(uploadFolderPath, fileNameInDirectory));
                 
                 var photo = new PhotoDTO
                     {
@@ -410,6 +411,7 @@ public class VehiclesController : Controller
                         PhotoURL = imageRelativePath,
                         DriverId = driverId,
                         DirectoryTitleId = uploadFolderName,
+                        FileNameInDirectory = fileNameInDirectory,
                         CreatedBy = User.GettingUserEmail(),
                         CreatedAt = DateTime.UtcNow,
                         UpdatedBy = User.GettingUserEmail(),
@@ -424,7 +426,7 @@ public class VehiclesController : Controller
         if (_appBLL.Photos.DoesFileExist(uploadFolderPath!))
             return Content("An image cannot be uploaded because its file already exists!");
 
-        if (await _appBLL.Photos.UploadImagesAsync(uploadFolderPath!, fileName, file) == false)
+        if (await _appBLL.Photos.UploadImagesAsync(uploadFolderPath!,fileNameInDirectory , file) == false)
             return Content("Upload failed");
 
         }

@@ -18,6 +18,7 @@ public class Photo: DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Title))]
     public string Title { get; set; } = default!;
 
+    public string FileNameInDirectory { get; set; } = default!;
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(255, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
