@@ -145,8 +145,11 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return true;
     }
 
-    public string FileNameFormat(string fileName)
+    public string FileNameFormat(string fileName, int maxLength)
     {
+        
+        if(fileName.Length > maxLength )
+            fileName = fileName.Substring(0, maxLength) + "...";
         return fileName.Replace(" ", "_");
     }
 

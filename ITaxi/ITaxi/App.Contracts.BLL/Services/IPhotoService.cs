@@ -20,7 +20,7 @@ public interface IPhotoService: IEntityService<App.BLL.DTO.AdminArea.PhotoDTO>,
     bool DoesFileExist(string fullFilePath);
     Task<bool> UploadImagesAsync(string fullUploadDirectoryPath,string fileName, IFormFile file);
     bool UploadImages(string fullUploadDirectoryPath, string fileName, IFormFile file);
-    string FileNameFormat(string fileName);
+    string FileNameFormat(string fileName, int maxLength);
    
 
     

@@ -379,8 +379,10 @@ public class VehiclesController : Controller
         ".jpg extension!");
         foreach (var file in files)
         {
+            int maxLength = 255;
             string uploadFolderPath = "";
-            string fileName = _appBLL.Photos.FileNameFormat(file.FileName);
+            string fileName = _appBLL.Photos.FileNameFormat(fileName: file.FileName,
+                maxLength:maxLength );
             
             if (result == false) throw new ArgumentException();
             
