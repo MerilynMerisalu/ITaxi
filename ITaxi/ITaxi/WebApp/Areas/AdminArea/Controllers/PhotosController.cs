@@ -251,7 +251,7 @@ public class PhotosController : Controller
             string uploadFolderPath = "";
             string fileName = _appBLL.Photos.FileNameFormat(fileName: file.FileName,
                 maxLength: maxLength);
-
+            
             if (result == false) throw new ArgumentException();
 
             string? directoryId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id,
@@ -265,7 +265,8 @@ public class PhotosController : Controller
                 bool isDirectoryCreated = _appBLL.Photos.DoesDirectoryExist(uploadFolderPath);
                 if (isDirectoryCreated == false)
                     _appBLL.Photos.CreateDirectory(uploadFolderPath);
-                fileNameInDirectory = _appBLL.Photos.GetFileNameForDirectory(uploadFolderPath);
+                string fileExtension = Path.GetExtension(file.FileName);
+                fileNameInDirectory = _appBLL.Photos.GetFileNameForDirectory(uploadFolderPath, fileExtension);
                 string imageRelativePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath,
                     Path.Combine(uploadFolderPath, fileNameInDirectory));
 
