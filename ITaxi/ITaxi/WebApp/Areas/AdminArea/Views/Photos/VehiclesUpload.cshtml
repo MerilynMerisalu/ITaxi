@@ -1,4 +1,5 @@
-﻿@using System.Net
+﻿
+@using System.Net
 @using App.Resources.Areas.App.Domain.AdminArea
 
 @model WebApp.Areas.AdminArea.ViewModels.GalleryViewModel
@@ -11,7 +12,7 @@
 
 <h3>@Model.VehicleIdentifier</h3>
 <form method="post" enctype="multipart/form-data" asp-area="AdminArea"
-      asp-controller="Vehicles" asp-action="Upload">
+      asp-controller="Photos" asp-action="Upload">
     <div class="form-group">
         <div class="col-md-10">
             <p>@Upload.UploadRestictions</p>
@@ -20,7 +21,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-10">
-            <button class="btn-primary" asp-area="AdminArea" asp-controller="Vehicles" asp-action="Upload" asp-route-id="@Model.Id">@Upload.UploadButtonText</button>
+            <button class="btn-primary" asp-area="AdminArea" asp-controller="Photos" asp-action="Upload" asp-route-id="@Model.Id">@Upload.UploadButtonText</button>
         </div>
     </div>
 </form>
