@@ -228,7 +228,7 @@ public class PhotosController : Controller
             return Content("Images are required.");
 
         int imagesAlreadyUploadedPerVehicle = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(
-            id, null, User.GettingUserRoleName(), true);
+            id, null, userRoleName, true);
 
         var result = _appBLL.Photos.AlreadyHasACertainNumberOfImages(files: files, numberOfImagesAllowed: 4,
             numberOfImages: imagesAlreadyUploadedPerVehicle);
@@ -236,7 +236,7 @@ public class PhotosController : Controller
         if (result)
             return Content($"You can upload up to four images per vehicle.");
         var driverId = await _appBLL.Vehicles.GetDriverIdByVehicleIdAsync(
-            id, null, User.GettingUserRoleName(), true, true);
+            id, null, userRoleName, true, true);
 
         if (driverId == null) return NotFound();
 
@@ -256,43 +256,45 @@ public class PhotosController : Controller
 
             string? directoryId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id,
                 null, userRoleName!);
+            string[]? directoryNames = { "Vehicles" };
+            uploadFolderPath = _appBLL.Photos.GetDirectoryPath(_webHostEnvironment.WebRootPath,
+                directoryNames, uploadFolderName);
             if (directoryId == null)
             {
-                string[]? directoryNames = { "Vehicles" };
-                uploadFolderPath = _appBLL.Photos.GetDirectoryPath(_webHostEnvironment.WebRootPath,
-                    directoryNames, uploadFolderName);
-
                 bool isDirectoryCreated = _appBLL.Photos.DoesDirectoryExist(uploadFolderPath);
                 if (isDirectoryCreated == false)
                     _appBLL.Photos.CreateDirectory(uploadFolderPath);
-                string fileExtension = Path.GetExtension(file.FileName);
-                fileNameInDirectory = _appBLL.Photos.GetFileNameForDirectory(uploadFolderPath, fileExtension);
-                string imageRelativePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath,
-                    Path.Combine(uploadFolderPath, fileNameInDirectory));
-
-                var photo = new PhotoDTO
-                {
-                    Id = Guid.NewGuid(),
-                    VehicleId = id,
-                    Title = fileName,
-                    PhotoURL = imageRelativePath,
-                    DriverId = driverId,
-                    DirectoryTitleId = uploadFolderName,
-                    FileNameInDirectory = fileNameInDirectory,
-                    CreatedBy = User.GettingUserEmail(),
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedBy = User.GettingUserEmail(),
-                    UpdatedAt = DateTime.UtcNow,
-                };
-
-                _appBLL.Photos.Add(photo);
             }
+            
+            string fileExtension = Path.GetExtension(file.FileName);
+            fileNameInDirectory = _appBLL.Photos.GetFileNameForDirectory(uploadFolderPath, fileExtension);
+            string fullFilePath = Path.Combine(uploadFolderPath, fileNameInDirectory);
+            string imageRelativePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath,
+                Path.Combine(uploadFolderPath, fileNameInDirectory));
+            if (_appBLL.Photos.DoesFileExist(fullFilePath!))
+                return Content("An image cannot be uploaded because its file already exists!");
+
+
+            var photo = new PhotoDTO
+            {
+                Id = Guid.NewGuid(),
+                VehicleId = id,
+                Title = fileName,
+                PhotoURL = imageRelativePath,
+                DriverId = driverId,
+                DirectoryTitleId = uploadFolderName,
+                FileNameInDirectory = fileNameInDirectory,
+                CreatedBy = User.GettingUserEmail(),
+                CreatedAt = DateTime.UtcNow,
+                UpdatedBy = User.GettingUserEmail(),
+                UpdatedAt = DateTime.UtcNow,
+            };
+
+            _appBLL.Photos.Add(photo);
 
             await _appBLL.SaveChangesAsync();
 
-            if (_appBLL.Photos.DoesFileExist(uploadFolderPath!))
-                return Content("An image cannot be uploaded because its file already exists!");
-
+            
             if (await _appBLL.Photos.UploadImagesAsync(uploadFolderPath!, fileNameInDirectory, file) == false)
                 return Content("Upload failed");
 
