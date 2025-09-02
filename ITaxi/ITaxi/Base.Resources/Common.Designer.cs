@@ -339,6 +339,42 @@ namespace Base.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The images sizes must be between {0}{1} and {2}{3} and the accepted file extensions are .png and .jpg..
+        /// </summary>
+        public static string FileErrorMessage {
+            get {
+                return ResourceManager.GetString("FileErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An image cannot be uploaded because {0} already exists!.
+        /// </summary>
+        public static string FileExists {
+            get {
+                return ResourceManager.GetString("FileExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files aren&apos;t correct.  .
+        /// </summary>
+        public static string FilesAreNotCorrect {
+            get {
+                return ResourceManager.GetString("FilesAreNotCorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files are required!.
+        /// </summary>
+        public static string FilesAreRequired {
+            get {
+                return ResourceManager.GetString("FilesAreRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gender.
         /// </summary>
         public static string Gender {
@@ -389,6 +425,15 @@ namespace Base.Resources {
         public static string Male {
             get {
                 return ResourceManager.GetString("Male", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can upload up to {0} images..
+        /// </summary>
+        public static string NumberOfImagesErrorMessage {
+            get {
+                return ResourceManager.GetString("NumberOfImagesErrorMessage", resourceCulture);
             }
         }
         
@@ -470,6 +515,15 @@ namespace Base.Resources {
         public static string StringLengthAttributeErrorMessage {
             get {
                 return ResourceManager.GetString("StringLengthAttributeErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload failed!.
+        /// </summary>
+        public static string UploadFailed {
+            get {
+                return ResourceManager.GetString("UploadFailed", resourceCulture);
             }
         }
     }

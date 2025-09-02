@@ -162,4 +162,22 @@
     <data name="IsIgnored" xml:space="preserve">
         <value>Ignoreeritud?</value>
     </data>
+    <data name="FilesAreRequired" xml:space="preserve">
+        <value>Failid peavad olema lisatud!</value>
+    </data>
+    <data name="FilesAreNotCorrect" xml:space="preserve">
+        <value>Failid ei vasta nõuetele!</value>
+    </data>
+    <data name="NumberOfImagesErrorMessage" xml:space="preserve">
+        <value>Saate üles laadida kuni {0} fotot.</value>
+    </data>
+    <data name="FileErrorMessage" xml:space="preserve">
+        <value>Üleslaetavate failide suurus peab jääma vahemikku {0}{1} kuni {3}{4} ja lubatud faililaiendideks on .png ja .jpg.</value>
+    </data>
+    <data name="FileExists" xml:space="preserve">
+        <value>Faili ei saa üles laadida, sest fail {0} eksistreerib kettal. </value>
+    </data>
+    <data name="UploadFailed" xml:space="preserve">
+        <value>Faili üleslaadimine ebaõnnestus!</value>
+    </data>
 </root>

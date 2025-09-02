@@ -126,12 +126,13 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
       return Repository.GetDirectoryIdByVehicleIdAsString(vehicleId, userId,roleName, noTracking, noIncludes);
     }
 
-    public async Task<bool> UploadImagesAsync(string fullUploadDirectoryPath, string fileName, IFormFile file)
+    public async Task<bool> UploadImagesAsync(string fullFilePath, string fileNameOnDisk, IFormFile file)
     {
+        fullFilePath = Path.Combine(fullFilePath, fileNameOnDisk);
+        
         try
         {
-            fullUploadDirectoryPath = Path.Combine(fullUploadDirectoryPath, fileName);
-         await using var stream = new FileStream(fullUploadDirectoryPath, FileMode.Create);
+         await using var stream = new FileStream(fullFilePath, FileMode.Create);
          await file.CopyToAsync(stream);
      
         }
@@ -150,33 +151,33 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         
         if(fileName.Length > maxLength )
             fileName = fileName.Substring(0, maxLength) + "...";
-        return fileName.Replace(" ", "_");
+        return fileName.Replace(" ", "_").Trim();
     }
 
     public string GetFileNameForDirectory(string fullUploadDirectoryPath, string fileExtension)
     {
-        string fileNameInDirectory = $"Foto_";
-        for (int i = 1; i < 5; i++)
+        const string filenameBeginning = "Foto_";
+        fullUploadDirectoryPath = fullUploadDirectoryPath.TrimEnd(Path.DirectorySeparatorChar);
+
+        for (int i = 1; i <= 4; i++)
         {
-            fileNameInDirectory += $"{i}{fileExtension}";
-       
-            if (!DoesFileExist(fullUploadDirectoryPath + fileNameInDirectory ))
+            string fileNameInDirectory = $"{filenameBeginning}{i}{fileExtension}";
+            string fullPath = Path.Combine(fullUploadDirectoryPath, fileNameInDirectory);
+
+            if (!DoesFileExist(fullPath))
             {
                 return fileNameInDirectory;
             }
-            
         }
-        return fileNameInDirectory;
-        
-        
+
+        throw new InvalidOperationException("Maximum number of 4 photos already reached for this vehicle.");
     }
 
-    public bool UploadImages(string fullUploadDirectoryPath, string fileName, IFormFile file)
+    public bool UploadImages(string fullFilePath, string fileNameOnDisk, IFormFile file)
     {
         try
         {
-            fullUploadDirectoryPath = Path.Combine(fullUploadDirectoryPath, fileName);
-            using var stream = new FileStream(fullUploadDirectoryPath, FileMode.Create);
+            using var stream = new FileStream(fullFilePath, FileMode.Create);
             file.CopyTo(stream);
         }
         catch (Exception ex) when (ex is UnauthorizedAccessException || ex is DirectoryNotFoundException

@@ -162,4 +162,22 @@
     <data name="IsIgnored" xml:space="preserve">
         <value>Is Ignored?</value>
     </data>
+    <data name="FilesAreRequired" xml:space="preserve">
+        <value>Files are required!</value>
+    </data>
+    <data name="FilesAreNotCorrect" xml:space="preserve">
+        <value>Files aren't correct.  </value>
+    </data>
+    <data name="NumberOfImagesErrorMessage" xml:space="preserve">
+        <value>You can upload up to {0} images.</value>
+    </data>
+    <data name="FileErrorMessage" xml:space="preserve">
+        <value>The images sizes must be between {0}{1} and {2}{3} and the accepted file extensions are .png and .jpg.</value>
+    </data>
+    <data name="FileExists" xml:space="preserve">
+        <value>An image cannot be uploaded because {0} already exists!</value>
+    </data>
+    <data name="UploadFailed" xml:space="preserve">
+        <value>Upload failed!</value>
+    </data>
 </root>
