@@ -238,7 +238,7 @@ public class PhotosController : Controller
             
         if (result)
         {
-            return Content(string.Format(Common.NumberOfImagesErrorMessage, "four"));
+            return Content(string.Format(Common.NumberOfImagesErrorMessage, "4"));
         }
         
         result = _appBLL.Photos.AreAllFilesCorrect(files);
