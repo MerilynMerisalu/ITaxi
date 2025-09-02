@@ -81,7 +81,7 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
         Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
         var result = (await CreateQuery(userId, roleName, noTracking, noIncludes).
-            SingleOrDefaultAsync(p => p.VehicleId.Equals(vehicleId)));
+            FirstOrDefaultAsync(p => p.VehicleId.Equals(vehicleId)));
         return result?.DirectoryTitleId ?? null;
     }
 
@@ -89,7 +89,7 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
         string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
        var result = CreateQuery(userId, roleName, noTracking, noIncludes).
-            SingleOrDefault(v => v.VehicleId.Equals(vehicleId));
+            FirstOrDefault(v => v.VehicleId.Equals(vehicleId));
         return result?.DirectoryTitleId ?? null;
     }
 }

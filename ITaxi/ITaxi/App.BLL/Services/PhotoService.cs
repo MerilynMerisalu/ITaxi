@@ -159,7 +159,7 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         const string filenameBeginning = "Foto_";
         fullUploadDirectoryPath = fullUploadDirectoryPath.TrimEnd(Path.DirectorySeparatorChar);
 
-        for (int i = 1; i <= 4; i++)
+        for (int i = 1; i < 5; i++)
         {
             string fileNameInDirectory = $"{filenameBeginning}{i}{fileExtension}";
             string fullPath = Path.Combine(fullUploadDirectoryPath, fileNameInDirectory);
