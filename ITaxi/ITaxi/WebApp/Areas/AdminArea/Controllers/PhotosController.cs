@@ -218,8 +218,13 @@ public class PhotosController : Controller
 
    
    [AcceptVerbs("Post")]
-public async Task<IActionResult> Upload([FromRoute] Guid id, List<IFormFile>? files)
+public async Task<IActionResult> Upload([FromRoute] Guid id, IFormFile? photo1, 
+       IFormFile? photo2,
+       IFormFile? photo3, 
+       IFormFile? photo4 )
 {
+        List<IFormFile> files = new List<IFormFile> { photo1, photo2, photo3, photo4 };
+
     string userRoleName = User.GettingUserRoleName();
     var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, null, roleName: userRoleName);
     if (vehicle == null) return NotFound();
@@ -256,6 +261,7 @@ public async Task<IActionResult> Upload([FromRoute] Guid id, List<IFormFile>? fi
 
     foreach (var file in files)
     {
+
         string fileExtension = Path.GetExtension(file.FileName);
         string fileNameOnDisk = _appBLL.Photos.GetFileNameForDirectory(uploadFolderPath, fileExtension);
         string relativeFilePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath,

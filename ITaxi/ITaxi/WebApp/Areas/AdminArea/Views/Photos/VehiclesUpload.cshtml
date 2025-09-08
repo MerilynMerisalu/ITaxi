@@ -16,9 +16,36 @@
     <div class="form-group">
         <div class="col-md-10">
             <p>@Upload.UploadRestictions</p>
-            <input name="files" class="btn-outline-primary" type="file" multiple />
+            <label asp-for="Photo1">@Photo.UploadAPhotoOfTheVehiclesFrontSide</label> 
+            <br />
+            <input type="file" asp-for="Photo1" />
         </div>
     </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-10">
+            <label asp-for="Photo1">@Photo.UploadAPhotoOfTheVehiclesBackside</label>
+            <br />
+            <input type="file" asp-for="Photo2" />
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-10">
+            <label asp-for="Photo3">@Photo.UploadAPhotoOfTheVehiclesSide</label>
+            <br />
+            <input type="file" asp-for="Photo3" />
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-10">
+            <label asp-for="Photo4">@Photo.UploadAPhotoOfTheVehiclesInterior</label>
+            <br />
+            <input type="file" asp-for="Photo4" />
+        </div>
+    </div>
+    <br />
     <div class="form-group">
         <div class="col-md-10">
             <button class="btn-primary" asp-area="AdminArea" asp-controller="Photos" asp-action="Upload" asp-route-id="@Model.Id">@Upload.UploadButtonText</button>

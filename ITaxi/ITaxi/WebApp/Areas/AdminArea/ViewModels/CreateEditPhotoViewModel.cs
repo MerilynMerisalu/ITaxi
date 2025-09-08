@@ -31,6 +31,8 @@ public class CreateEditPhotoViewModel
     [StringLength(255)]
     [Display(Name = "Photo Name")]
     public string? PhotoName { get; set; }
+
     
-    
+
+
 }
