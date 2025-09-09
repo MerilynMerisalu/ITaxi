@@ -52,13 +52,22 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
     public bool AlreadyHasACertainNumberOfImages(int numberOfImages, int? numberOfImagesAllowed = 4, List<IFormFile>? files = null)
     {
         int minimumNumberOfImagesAllowed = 1;
+        int numberOfFiles = 0;
         if (files == null) throw new ArgumentNullException(nameof(files));
-
-        else if (numberOfImagesAllowed < minimumNumberOfImagesAllowed)
-            throw new ArgumentOutOfRangeException(nameof(numberOfImagesAllowed));
-
-        else if ((files.Count + numberOfImages) > numberOfImagesAllowed)
-            return true;
+        foreach (var file in files)
+        {
+            if (file == null )
+            {
+                continue;
+            }
+            numberOfFiles += 1;
+            
+            if (numberOfImagesAllowed < minimumNumberOfImagesAllowed)
+                throw new ArgumentOutOfRangeException(nameof(numberOfImagesAllowed));
+            else if ((numberOfFiles + numberOfImages) > numberOfImagesAllowed)
+                return true;
+        }
+        
         return false;
     }
 

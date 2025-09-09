@@ -218,7 +218,7 @@ public class PhotosController : Controller
 
    
    [AcceptVerbs("Post")]
-public async Task<IActionResult> Upload([FromRoute] Guid id, IFormFile? photo1, 
+public async Task<IActionResult> VehicleImagesUpload([FromRoute] Guid id, IFormFile? photo1, 
        IFormFile? photo2,
        IFormFile? photo3, 
        IFormFile? photo4 )
