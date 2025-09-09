@@ -277,11 +277,11 @@ public async Task<IActionResult> VehicleImagesUpload([FromRoute] Guid id, IFormF
         bool uploadResult = await _appBLL.Photos.UploadImagesAsync(uploadFolderPath, fileNameOnDisk, file);
         if (!uploadResult)
             return Content(Common.UploadFailed);
-
+        int fileNameMaximumLength = 255;
         var photo = new PhotoDTO()
         {
             Id = Guid.NewGuid(),
-            Title = _appBLL.Photos.FileNameFormat(file.FileName, 255),
+            Title = _appBLL.Photos.FileNameFormat(file.FileName, fileNameMaximumLength),
             DriverId = driverId,
             VehicleId = vehicle.Id,
             DirectoryTitleId = directoryId,
