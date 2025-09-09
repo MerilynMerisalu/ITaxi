@@ -237,7 +237,7 @@ public async Task<IActionResult> Upload([FromRoute] Guid id, IFormFile? photo1,
 
     int imagesAlreadyUploaded = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(id, null, userRoleName, true);
     if (_appBLL.Photos.AlreadyHasACertainNumberOfImages(imagesAlreadyUploaded, files: files))
-        return Content(string.Format(Common.NumberOfImagesErrorMessage, "four"));
+        return Content(string.Format(Common.NumberOfImagesErrorMessage, "4"));
 
     if (!_appBLL.Photos.AreAllFilesCorrect(files))
         return Content(string.Format(Common.FilesAreNotCorrect, "1", "b", "5", "MB"));
@@ -261,6 +261,10 @@ public async Task<IActionResult> Upload([FromRoute] Guid id, IFormFile? photo1,
 
     foreach (var file in files)
     {
+        if (file == null)
+        {
+           continue;
+        }
 
         string fileExtension = Path.GetExtension(file.FileName);
         string fileNameOnDisk = _appBLL.Photos.GetFileNameForDirectory(uploadFolderPath, fileExtension);

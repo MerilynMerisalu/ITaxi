@@ -65,19 +65,29 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
     public bool AreAllFilesCorrect(List<IFormFile> files)
     {
         foreach (IFormFile file in files)
-        {
-            if (file == null) continue;
-            if (file.Length <= 0 || file.Length > 5_000_000)
-                return false;
-            string extension = Path.GetExtension(file.FileName).ToLowerInvariant();
-            if (extension != ".png" && extension != ".jpg")
-                return false;
-        }
+
+            if (file == null)
+            {
+                continue;
+            }
+            else
+            {
+                if (file.Length <= 0 || file.Length > 5000000)
+                    return false;
+                var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+                if (!fileExtension.Equals(".png") && !fileExtension.Equals(".jpg"))
+                {
+
+                    return false;
+                }
+            }
         return true;
     }
 
 
-   
+
+
+
     public bool DoesFileExist(string fullFilePath)
     {
         if (!File.Exists(fullFilePath)) 
