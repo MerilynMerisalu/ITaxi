@@ -652,3 +652,4 @@ appsettings.Development.json
 # End of https://www.toptal.com/developers/gitignore/api/rider,visualstudio,visualstudiocode,node,react
 
 /ITaxi/ITaxi/WebApp/wwwroot/Images/Toyota Avensis 555 XXZ Tava
+/ITaxi/ITaxi/WebApp/wwwroot/Images/Vehicles/d31ef737-0b48-4ebc-8109-ff1977018ccc
