@@ -92,4 +92,20 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
             FirstOrDefault(v => v.VehicleId.Equals(vehicleId));
         return result?.DirectoryTitleId ?? null;
     }
+
+    public async Task<IEnumerable<string?>>?GetAllPhotosRelativePathsByVehicleIdWithIncludesAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result = (await 
+            CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes:noIncludes)
+            .Where(p => p.VehicleId.Equals(vehicleId)).Select(p => p.PhotoURL).ToListAsync());
+        return result;
+    }
+
+    public IEnumerable<string?> GetAllPhotosRelativePathsByVehicleIdWithIncludes(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+       var result = 
+            CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes)
+            .Where(p => p.VehicleId.Equals(vehicleId)).Select(p => p.PhotoURL).ToList();
+        return result;
+    }
 }

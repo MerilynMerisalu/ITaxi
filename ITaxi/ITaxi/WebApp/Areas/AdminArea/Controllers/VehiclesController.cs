@@ -328,10 +328,17 @@ public class VehiclesController : Controller
     {
         return _appBLL.Vehicles.Exists(id);
     }
-    public IActionResult Gallery()
+    public async Task<IActionResult> Gallery(Guid id)
     {
+        var vm = new VehicleGalleryAdminViewModel();
+        var roleName = User.GettingUserRoleName();
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id,roleName: roleName );
+        if (vehicle == null) 
+            return NotFound();
         
-        return View();
+        var urls = await _appBLL.Photos.GetAllPhotosRelativePathsByVehicleIdWithIncludesAsync(vehicleId: vehicle.Id, roleName: roleName);
+       
+        return View(urls);
     }
 
 }

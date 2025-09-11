@@ -3,7 +3,7 @@
 /// <summary>
 /// Gallery view model
 /// </summary>
-public class GalleryViewModel
+public class VehicleImagesUploadViewModel
 {
     /// <summary>
     /// Id
@@ -19,4 +19,6 @@ public class GalleryViewModel
     public IFormFile? Photo2 { get; set; }
     public IFormFile? Photo3 { get; set; }
     public IFormFile? Photo4 { get; set; }
+
+    
 }

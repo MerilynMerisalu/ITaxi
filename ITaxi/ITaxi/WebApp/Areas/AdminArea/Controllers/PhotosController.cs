@@ -203,7 +203,7 @@ public class PhotosController : Controller
     {
         if (id == null) return NotFound();
 
-        var vm = new GalleryViewModel();
+        var vm = new VehicleImagesUploadViewModel();
 
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value);
         if (vehicle == null) return NotFound();
@@ -296,10 +296,12 @@ public async Task<IActionResult> VehicleImagesUpload([FromRoute] Guid id, IFormF
     }
 
     await _appBLL.SaveChangesAsync();
-    return RedirectToAction("Gallery", "Vehicles");
+    return RedirectToAction("Gallery", "Vehicles",  new{ id});
 }
 
 }
+
+
 
 
 

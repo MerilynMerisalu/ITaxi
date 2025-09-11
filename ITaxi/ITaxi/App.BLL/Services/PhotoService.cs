@@ -218,4 +218,14 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         }
         return true;
     }
+
+    public async Task<IEnumerable<string?>>? GetAllPhotosRelativePathsByVehicleIdWithIncludesAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        return (await Repository.GetAllPhotosRelativePathsByVehicleIdWithIncludesAsync(vehicleId, userId, roleName, noTracking, noIncludes));
+    }
+
+    public IEnumerable<string?> GetAllPhotosRelativePathsByVehicleIdWithIncludes(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        return Repository.GetAllPhotosRelativePathsByVehicleIdWithIncludes(vehicleId, userId, roleName, noTracking, noIncludes);
+    }
 }

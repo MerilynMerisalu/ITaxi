@@ -1,8 +1,11 @@
 ﻿@page "/AdminArea/Vehicles/Gallery/"
+@model List<string>
+
+
 <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function(urls) {
         let lightBox = new FsLightbox();
-        lightBox.props.sources = ["/Images/VehicleImages/Foto1.png", "/Images/VehicleImages/Foto2.png", "/Images/VehicleImages/Foto3.png"]; 
+        lightBox.props.sources = urls; 
         lightBox.open();
     })
 </script>
