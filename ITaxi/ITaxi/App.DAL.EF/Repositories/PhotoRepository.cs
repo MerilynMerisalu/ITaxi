@@ -97,7 +97,7 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
     {
         var result = (await 
             CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes:noIncludes)
-            .Where(p => p.VehicleId.Equals(vehicleId)).Select(p => p.PhotoURL).ToListAsync());
+            .Where(p => p.VehicleId.Equals(vehicleId)).OrderBy(p => p.FileNameInDirectory).Select(p => p.PhotoURL).ToListAsync());
         return result;
     }
 
@@ -105,7 +105,7 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
     {
        var result = 
             CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes)
-            .Where(p => p.VehicleId.Equals(vehicleId)).Select(p => p.PhotoURL).ToList();
+            .Where(p => p.VehicleId.Equals(vehicleId)).OrderBy(p => p.FileNameInDirectory).Select(p => p.PhotoURL).ToList();
         return result;
     }
 }

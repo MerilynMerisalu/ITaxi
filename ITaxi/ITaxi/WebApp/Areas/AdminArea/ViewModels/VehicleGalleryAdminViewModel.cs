@@ -2,6 +2,6 @@
 {
     public class VehicleGalleryAdminViewModel
     {
-        public List<string>? imagesRelativePathURLs = new List<string>();
+        public IEnumerable<string>? ImagesRelativePathURLs = new List<string>();
     }
 }

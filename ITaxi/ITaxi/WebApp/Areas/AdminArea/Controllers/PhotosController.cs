@@ -8,6 +8,7 @@ using Base.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
+using WebApp.Helpers;
 using PhotoDTO = App.BLL.DTO.AdminArea.PhotoDTO;
 
 namespace WebApp.Areas.AdminArea.Controllers;
@@ -270,6 +271,7 @@ public async Task<IActionResult> VehicleImagesUpload([FromRoute] Guid id, IFormF
         string fileNameOnDisk = _appBLL.Photos.GetFileNameForDirectory(uploadFolderPath, fileExtension);
         string relativeFilePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath,
             Path.Combine(uploadFolderPath, fileNameOnDisk));
+        relativeFilePath = FileHelper.GetImageRelativePath(relativeFilePath);
 
         if (_appBLL.Photos.DoesFileExist(Path.Combine(uploadFolderPath, fileNameOnDisk)))
             return Content(string.Format(Common.FileExists, fileNameOnDisk));

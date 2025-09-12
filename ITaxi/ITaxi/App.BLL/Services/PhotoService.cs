@@ -4,7 +4,9 @@ using App.Contracts.DAL.IAppRepositories;
 using Base.BLL;
 using Base.Contracts;
 using Microsoft.AspNetCore.Http;
+using System.Globalization;
 using System.IO;
+using System.Text;
 
 namespace App.BLL.Services;
 
@@ -177,9 +179,13 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
 
     public string FileNameFormat(string fileName, int maxLength)
     {
-        
         if(fileName.Length > maxLength )
             fileName = fileName.Substring(0, maxLength) + "...";
+        char firstChar = fileName[0];
+        if (Char.IsLower(firstChar) == true)
+        {
+            fileName = fileName.Replace(firstChar.ToString(), firstChar.ToString().ToUpperInvariant());
+        }
         return fileName.Replace(" ", "_").Trim();
     }
 

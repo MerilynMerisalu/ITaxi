@@ -1,9 +1,13 @@
-﻿@page "/AdminArea/Vehicles/Gallery/"
-@model List<string>
+﻿@using WebApp.Areas.AdminArea.ViewModels
 
+@model VehicleGalleryAdminViewModel
+@{
+    var urlJson = System.Text.Json.JsonSerializer.Serialize(Model.ImagesRelativePathURLs);
+}
 
 <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function(urls) {
+    let urls = @Html.Raw(urlJson)
+    document.addEventListener("DOMContentLoaded", function() {
         let lightBox = new FsLightbox();
         lightBox.props.sources = urls; 
         lightBox.open();
