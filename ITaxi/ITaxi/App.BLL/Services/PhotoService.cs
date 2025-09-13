@@ -259,7 +259,8 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
             string[] fileRelativePaths = new string[numberOfImages];
             for (int i = 0; i < numberOfImages; i++)
             {
-                fileRelativePaths[i] = photos.ElementAt(i)!.Title ?? "";
+                
+                fileRelativePaths[i] = photos.ElementAt(i)!.Title.Replace("_", " ")?? "Unknown";
             }
             return fileRelativePaths;
         }
