@@ -58,18 +58,18 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         if (files == null) throw new ArgumentNullException(nameof(files));
         foreach (var file in files)
         {
-            if (file == null )
+            if (file == null)
             {
                 continue;
             }
             numberOfFiles += 1;
-            
+
             if (numberOfImagesAllowed < minimumNumberOfImagesAllowed)
                 throw new ArgumentOutOfRangeException(nameof(numberOfImagesAllowed));
             else if ((numberOfFiles + numberOfImages) > numberOfImagesAllowed)
                 return true;
         }
-        
+
         return false;
     }
 
@@ -101,7 +101,7 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
 
     public bool DoesFileExist(string fullFilePath)
     {
-        if (!File.Exists(fullFilePath)) 
+        if (!File.Exists(fullFilePath))
             return false;
         return true;
     }
@@ -118,7 +118,7 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
                 string middlePart = string.Concat(mp.Split(Path.GetInvalidPathChars())).Trim();
                 directoryFullPath += Path.Combine(middlePart);
             }
-          
+
         }
 
         if (directoryName != null)
@@ -130,7 +130,7 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         {
             return directoryFullPath;
         }
-        
+
     }
 
     public bool DoesDirectoryExist(string directoryPath)
@@ -154,21 +154,21 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
 
     public string? GetDirectoryIdByVehicleIdAsString(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = true)
     {
-      return Repository.GetDirectoryIdByVehicleIdAsString(vehicleId, userId,roleName, noTracking, noIncludes);
+        return Repository.GetDirectoryIdByVehicleIdAsString(vehicleId, userId, roleName, noTracking, noIncludes);
     }
 
     public async Task<bool> UploadImagesAsync(string fullFilePath, string fileNameOnDisk, IFormFile file)
     {
         fullFilePath = Path.Combine(fullFilePath, fileNameOnDisk);
-        
+
         try
         {
-         await using var stream = new FileStream(fullFilePath, FileMode.Create);
-         await file.CopyToAsync(stream);
-     
+            await using var stream = new FileStream(fullFilePath, FileMode.Create);
+            await file.CopyToAsync(stream);
+
         }
         catch (Exception ex) when (ex is UnauthorizedAccessException || ex is DirectoryNotFoundException
-            || ex is IOException )
+            || ex is IOException)
         {
             {
                 return false;
@@ -179,7 +179,7 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
 
     public string FileNameFormat(string fileName, int maxLength)
     {
-        if(fileName.Length > maxLength )
+        if (fileName.Length > maxLength)
             fileName = fileName.Substring(0, maxLength) + "...";
         char firstChar = fileName[0];
         if (Char.IsLower(firstChar) == true)
@@ -225,13 +225,44 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return true;
     }
 
-    public async Task<IEnumerable<string?>>? GetAllPhotosRelativePathsByVehicleIdWithIncludesAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    public async Task<IEnumerable<PhotoDTO?>>? GetAllPhotosByVehicleIdWithIncludesAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
-        return (await Repository.GetAllPhotosRelativePathsByVehicleIdWithIncludesAsync(vehicleId, userId, roleName, noTracking, noIncludes));
+        return ((await Repository.GetAllPhotosByVehicleIdWithIncludesAsync(vehicleId: vehicleId, roleName: roleName,
+            userId: userId, noTracking: noTracking, noIncludes: noIncludes)).Select(p => Mapper.Map(p)));
     }
 
-    public IEnumerable<string?> GetAllPhotosRelativePathsByVehicleIdWithIncludes(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    public IEnumerable<PhotoDTO?>? GetAllPhotosByVehicleIdWithIncludes(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
-        return Repository.GetAllPhotosRelativePathsByVehicleIdWithIncludes(vehicleId, userId, roleName, noTracking, noIncludes);
+        return Repository.GetAllPhotosByVehicleIdWithIncludes(vehicleId, userId, roleName, noTracking, noIncludes).Select(p => Mapper.Map(p));
+    }
+
+    public string[] GetFilesRelativePaths(IEnumerable<PhotoDTO?> photos)
+    {
+        if (photos != null)
+        {
+            int numberOfImages = photos.Count();
+            string[] fileRelativePaths = new string[numberOfImages];
+            for (int i = 0; i < numberOfImages; i++)
+            {
+                fileRelativePaths[i] = photos.ElementAt(i)!.PhotoURL ?? "";
+            }
+            return fileRelativePaths;
+        }
+        throw new ArgumentNullException();
+    }
+
+    public string[] GetFileNames(IEnumerable<PhotoDTO?> photos)
+    {
+        if (photos != null)
+        {
+            int numberOfImages = photos.Count();
+            string[] fileRelativePaths = new string[numberOfImages];
+            for (int i = 0; i < numberOfImages; i++)
+            {
+                fileRelativePaths[i] = photos.ElementAt(i)!.Title ?? "";
+            }
+            return fileRelativePaths;
+        }
+        throw new ArgumentNullException();
     }
 }

@@ -3,13 +3,39 @@
 @model VehicleGalleryAdminViewModel
 @{
     var urlJson = System.Text.Json.JsonSerializer.Serialize(Model.ImagesRelativePathURLs);
+    var titlesJson = System.Text.Json.JsonSerializer.Serialize(Model.ImagesTitles);
 }
+<table class="table" border="0">
+    <thead>
+        <tr>
+            <th>
+                
+            </th>
+
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ImagesRelativePathURLs)
+        {
+            <tr>
+                <td>
+                    @Html.Raw(item)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
 
 <script type="text/javascript">
-    let urls = @Html.Raw(urlJson)
+    let urls=@Html.Raw(urlJson)
+    let titles=@Html.Raw(titlesJson)
     document.addEventListener("DOMContentLoaded", function() {
         let lightBox = new FsLightbox();
-        lightBox.props.sources = urls; 
+        lightBox.props.sources = urls;
+        lightBox.props.captions = titles;
         lightBox.open();
     })
 </script>

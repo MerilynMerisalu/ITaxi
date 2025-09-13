@@ -29,12 +29,12 @@ public interface IPhotoRepositoryCustom<TEntity>
        string? roleName = null,
        bool noTracking = true,
        bool noIncludes = false);
-    Task<IEnumerable<string?>>? GetAllPhotosRelativePathsByVehicleIdWithIncludesAsync(Guid vehicleId, 
+    Task<IEnumerable<TEntity?>>? GetAllPhotosByVehicleIdWithIncludesAsync(Guid vehicleId, 
         Guid? userId = null,
        string? roleName = null,
        bool noTracking = true,
        bool noIncludes = false);
-  IEnumerable<string?>? GetAllPhotosRelativePathsByVehicleIdWithIncludes(Guid vehicleId,
+  IEnumerable<TEntity?>? GetAllPhotosByVehicleIdWithIncludes(Guid vehicleId,
         Guid? userId = null,
        string? roleName = null,
        bool noTracking = true,

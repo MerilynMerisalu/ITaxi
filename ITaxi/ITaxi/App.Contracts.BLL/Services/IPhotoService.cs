@@ -1,4 +1,5 @@
-﻿using App.Contracts.DAL.IAppRepositories;
+﻿using App.BLL.DTO.AdminArea;
+using App.Contracts.DAL.IAppRepositories;
 using Base.Contracts.BLL;
 using Microsoft.AspNetCore.Http;
 
@@ -22,7 +23,8 @@ public interface IPhotoService: IEntityService<App.BLL.DTO.AdminArea.PhotoDTO>,
     bool UploadImages(string fullFilePath, string fileNameOnDisk, IFormFile file);
     string FileNameFormat(string fileName, int maxLength);
     string GetFileNameForDirectory(string fullUploadDirectoryPath, string fileExtension);
-   
+    string[]GetFilesRelativePaths(IEnumerable<PhotoDTO?> photos);
+    string[] GetFileNames(IEnumerable<PhotoDTO?> photos);
 
-    
+
 }

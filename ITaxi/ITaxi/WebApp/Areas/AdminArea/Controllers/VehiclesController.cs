@@ -336,7 +336,9 @@ public class VehiclesController : Controller
         if (vehicle == null) 
             return NotFound();
         
-        var urls = await _appBLL.Photos.GetAllPhotosRelativePathsByVehicleIdWithIncludesAsync(vehicleId: vehicle.Id, roleName: roleName);
+        var photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicleId: vehicle.Id, roleName: roleName);
+        string[] urls = _appBLL.Photos.GetFilesRelativePaths(photos);
+        vm.ImagesTitles = _appBLL.Photos.GetFileNames(photos);
         vm.ImagesRelativePathURLs = urls;
         return View(vm);
     }

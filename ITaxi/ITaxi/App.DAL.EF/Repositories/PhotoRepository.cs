@@ -93,19 +93,19 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
         return result?.DirectoryTitleId ?? null;
     }
 
-    public async Task<IEnumerable<string?>>?GetAllPhotosRelativePathsByVehicleIdWithIncludesAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    public async Task<IEnumerable<PhotoDTO?>>?GetAllPhotosByVehicleIdWithIncludesAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
         var result = (await 
             CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes:noIncludes)
-            .Where(p => p.VehicleId.Equals(vehicleId)).OrderBy(p => p.FileNameInDirectory).Select(p => p.PhotoURL).ToListAsync());
-        return result;
+            .Where(p => p.VehicleId.Equals(vehicleId)).OrderBy(p => p.FileNameInDirectory).ToListAsync());
+        return result.Select(p => Mapper.Map(p));
     }
 
-    public IEnumerable<string?> GetAllPhotosRelativePathsByVehicleIdWithIncludes(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    public IEnumerable<PhotoDTO?> GetAllPhotosByVehicleIdWithIncludes(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
        var result = 
             CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes)
-            .Where(p => p.VehicleId.Equals(vehicleId)).OrderBy(p => p.FileNameInDirectory).Select(p => p.PhotoURL).ToList();
-        return result;
+            .Where(p => p.VehicleId.Equals(vehicleId)).OrderBy(p => p.FileNameInDirectory).ToList();
+        return result.Select(p => Mapper.Map(p));
     }
 }
