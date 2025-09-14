@@ -144,4 +144,7 @@
   <data name="UploadAPhotoOfTheVehiclesInterior" xml:space="preserve">
     <value>Laadige üles foto sõidukisalongist.</value>
   </data>
+  <data name="PhotoFullPath" xml:space="preserve">
+    <value>Foto Täistee</value>
+  </data>
 </root>

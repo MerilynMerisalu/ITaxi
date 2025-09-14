@@ -21,6 +21,13 @@ public class PhotoDTO : DomainEntityMetaId
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(255, ErrorMessageResourceType = typeof(Common),
+       ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
+       ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    public string? PhotoFullPath{ get; set; }
+
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(255, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]

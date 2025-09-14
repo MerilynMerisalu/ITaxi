@@ -691,6 +691,7 @@ namespace App.DAL.EF.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     PhotoURL = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    PhotoFullPath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     DirectoryTitleId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FileNameInDirectory = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VehicleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),

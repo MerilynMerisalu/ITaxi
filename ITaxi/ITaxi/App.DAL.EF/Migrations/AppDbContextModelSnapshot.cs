@@ -17,7 +17,7 @@ namespace App.DAL.EF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.8")
+                .HasAnnotation("ProductVersion", "9.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -895,6 +895,11 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
+
+                    b.Property<string>("PhotoFullPath")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("PhotoURL")
                         .IsRequired()

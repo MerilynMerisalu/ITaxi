@@ -70,6 +70,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Photo Full Path.
+        /// </summary>
+        public static string PhotoFullPath {
+            get {
+                return ResourceManager.GetString("PhotoFullPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Photos.
         /// </summary>
         public static string PhotoName {
