@@ -97,6 +97,24 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thumbnail Directory Id.
+        /// </summary>
+        public static string ThumbnailDirectoryId {
+            get {
+                return ResourceManager.GetString("ThumbnailDirectoryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thumbnail Full Path.
+        /// </summary>
+        public static string ThumbnailFullPath {
+            get {
+                return ResourceManager.GetString("ThumbnailFullPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Title .
         /// </summary>
         public static string Title {

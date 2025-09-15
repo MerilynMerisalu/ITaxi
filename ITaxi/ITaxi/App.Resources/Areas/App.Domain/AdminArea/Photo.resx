@@ -147,4 +147,10 @@
   <data name="PhotoFullPath" xml:space="preserve">
     <value>Photo Full Path</value>
   </data>
+  <data name="ThumbnailDirectoryId" xml:space="preserve">
+    <value>Thumbnail Directory Id</value>
+  </data>
+  <data name="ThumbnailFullPath" xml:space="preserve">
+    <value>Thumbnail Full Path</value>
+  </data>
 </root>

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250914220929_Initial")]
+    [Migration("20250915163424_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -905,6 +905,11 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("PhotoURL")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("ThumbnailFullPath")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");

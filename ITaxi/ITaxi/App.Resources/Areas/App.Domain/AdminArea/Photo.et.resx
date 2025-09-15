@@ -145,6 +145,12 @@
     <value>Laadige üles foto sõidukisalongist.</value>
   </data>
   <data name="PhotoFullPath" xml:space="preserve">
-    <value>Foto Täistee</value>
+    <value>Foto täistee</value>
+  </data>
+  <data name="ThumbnailDirectoryId" xml:space="preserve">
+    <value>Pisipildi kausta id</value>
+  </data>
+  <data name="ThumbnailFullPath" xml:space="preserve">
+    <value>Pisipildi täistee</value>
   </data>
 </root>

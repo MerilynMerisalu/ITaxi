@@ -33,6 +33,13 @@ public class PhotoDTO : DomainEntityMetaId
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     public string? PhotoURL { get; set; }
 
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(255, ErrorMessageResourceType = typeof(Common),
+       ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
+       ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    public string ThumbnailFullPath { get; set; } = default!;
+
     public Guid? DriverId { get; set; }
     public DriverDTO? Driver { get; set; }
     

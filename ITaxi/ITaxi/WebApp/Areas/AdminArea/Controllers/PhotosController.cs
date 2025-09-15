@@ -247,18 +247,23 @@ public async Task<IActionResult> VehicleImagesUpload([FromRoute] Guid id, IFormF
     string? directoryId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id, null, userRoleName);
     string[] directoryNames = { "Vehicles" };
     string uploadFolderPath = _appBLL.Photos.GetDirectoryPath(_webHostEnvironment.WebRootPath, directoryNames);
-
+    const string THUMBNAILFOLDERNAME = "Thumbnails";
+    string thumbnailFolderPath = string.Empty;
     if (string.IsNullOrEmpty(directoryId))
     {
         directoryId = Guid.NewGuid().ToString();
         uploadFolderPath = Path.Combine(uploadFolderPath, directoryId);
         if (!_appBLL.Photos.DoesDirectoryExist(uploadFolderPath))
             _appBLL.Photos.CreateDirectory(uploadFolderPath);
+       thumbnailFolderPath = Path.Combine(uploadFolderPath, THUMBNAILFOLDERNAME);
+            if (!_appBLL.Photos.DoesDirectoryExist(thumbnailFolderPath))
+                _appBLL.Photos.CreateDirectory(thumbnailFolderPath);
     }
     else
     {
         uploadFolderPath = Path.Combine(uploadFolderPath, directoryId);
     }
+    
 
     foreach (var file in files)
     {
@@ -288,6 +293,7 @@ public async Task<IActionResult> VehicleImagesUpload([FromRoute] Guid id, IFormF
             VehicleId = vehicle.Id,
             DirectoryTitleId = directoryId,
             PhotoFullPath = fullFilePath,
+            ThumbnailFullPath = thumbnailFolderPath,
             FileNameInDirectory = fileNameOnDisk,
             PhotoURL = relativeFilePath,
             CreatedBy = User.GettingUserEmail(),

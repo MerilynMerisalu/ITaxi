@@ -697,6 +697,7 @@ namespace App.DAL.EF.Migrations
                     VehicleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     AppUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ThumbnailFullPath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     IsIgnored = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),

@@ -906,6 +906,11 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("ThumbnailFullPath")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(255)
