@@ -4,6 +4,11 @@ using App.Contracts.DAL.IAppRepositories;
 using Base.BLL;
 using Base.Contracts;
 using Microsoft.AspNetCore.Http;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Processing;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -259,13 +264,39 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
             string[] fileRelativePaths = new string[numberOfImages];
             for (int i = 0; i < numberOfImages; i++)
             {
-                
-                fileRelativePaths[i] = photos.ElementAt(i)!.Title.Replace("_", " ")?? "Unknown";
+
+                fileRelativePaths[i] = photos.ElementAt(i)!.Title.Replace("_", " ") ?? "Unknown";
             }
             return fileRelativePaths;
         }
         throw new ArgumentNullException();
     }
 
-   
+    public async Task CreateThumbnailAsync(string fullFilePath, string fileName, string fileExtension,
+        string thumbFullFilePath, int? width = 300, int? height = 300)
+    {
+        using var image = await Image.LoadAsync(fullFilePath);
+
+        image.Mutate(async i =>
+        {
+            if (width.HasValue && height.HasValue)
+            {
+                i.Resize(new ResizeOptions()
+                {
+                    Size = new Size(height: height.Value, width: width.Value),
+                    Mode = ResizeMode.Crop
+                });
+
+                IImageEncoder encoder = fileExtension switch
+                {
+                    ".jpg" => new JpegEncoder { Quality = 80 },
+                    ".png" => new PngEncoder(),
+                    _ => throw new NotSupportedException()
+                };
+
+                await image.SaveAsync(Path.Combine(thumbFullFilePath, fileName), encoder);
+            }
+
+        });
+    }
 }
