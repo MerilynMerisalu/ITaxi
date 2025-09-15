@@ -25,8 +25,8 @@ public class PhotoDTO : DomainEntityMetaId
        ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(FullFilePath))]
-    public string? FullFilePath { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(PhotoFullPath))]
+    public string? PhotoFullPath { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(255, ErrorMessageResourceType = typeof(Common),

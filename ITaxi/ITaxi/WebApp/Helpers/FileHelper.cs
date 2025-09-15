@@ -6,5 +6,11 @@
         {
             return $"\\{path}";
         }
+        
+        public static string GetFileFullPath(string fullFilePath, string fileNameOnDisk)
+        {
+            string fullPath = $"{fullFilePath}\\{fileNameOnDisk}";
+            return fullPath;
+        }
     }
 }

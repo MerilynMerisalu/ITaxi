@@ -22,8 +22,9 @@ public interface IPhotoService: IEntityService<App.BLL.DTO.AdminArea.PhotoDTO>,
     Task<bool> UploadImagesAsync(string fullUploadDirectoryPath, string fileNameOnDisk, IFormFile file);
     bool UploadImages(string fullFilePath, string fileNameOnDisk, IFormFile file);
     string FileNameFormat(string fileName, int maxLength);
-    string GetFileNameForDirectory(string fullUploadDirectoryPath, string fileExtension);
+    string GetFileNameForDirectory(string fullUploadDirectoryPath, string fileExtension, int? numberOfPhotos = 4, string? entityName = "vehicle");
     string[]GetFilesRelativePaths(IEnumerable<PhotoDTO?> photos);
+   
     string[] GetFileNames(IEnumerable<PhotoDTO?> photos);
 
 

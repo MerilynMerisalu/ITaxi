@@ -272,7 +272,7 @@ public async Task<IActionResult> VehicleImagesUpload([FromRoute] Guid id, IFormF
         string relativeFilePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath,
             Path.Combine(uploadFolderPath, fileNameOnDisk));
         relativeFilePath = FileHelper.GetImageRelativePath(relativeFilePath);
-
+        string fullFilePath = FileHelper.GetFileFullPath(uploadFolderPath, fileNameOnDisk);
         if (_appBLL.Photos.DoesFileExist(Path.Combine(uploadFolderPath, fileNameOnDisk)))
             return Content(string.Format(Common.FileExists, fileNameOnDisk));
 
@@ -287,6 +287,7 @@ public async Task<IActionResult> VehicleImagesUpload([FromRoute] Guid id, IFormF
             DriverId = driverId,
             VehicleId = vehicle.Id,
             DirectoryTitleId = directoryId,
+            PhotoFullPath = fullFilePath,
             FileNameInDirectory = fileNameOnDisk,
             PhotoURL = relativeFilePath,
             CreatedBy = User.GettingUserEmail(),

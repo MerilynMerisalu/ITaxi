@@ -189,12 +189,12 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return fileName.Replace(" ", "_").Trim();
     }
 
-    public string GetFileNameForDirectory(string fullUploadDirectoryPath, string fileExtension)
+    public string GetFileNameForDirectory(string fullUploadDirectoryPath, string fileExtension, int? numberOfPhotos = 4, string? entityName = "vehicle")
     {
         const string filenameBeginning = "Foto_";
         fullUploadDirectoryPath = fullUploadDirectoryPath.TrimEnd(Path.DirectorySeparatorChar);
 
-        for (int i = 1; i < 5; i++)
+        for (int i = 1; i <= numberOfPhotos; i++)
         {
             string fileNameInDirectory = $"{filenameBeginning}{i}{fileExtension}";
             string fullPath = Path.Combine(fullUploadDirectoryPath, fileNameInDirectory);
@@ -205,7 +205,7 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
             }
         }
 
-        throw new InvalidOperationException("Maximum number of 4 photos already reached for this vehicle.");
+        throw new InvalidOperationException($"Maximum number of {numberOfPhotos} photos already reached for this {entityName}.");
     }
 
     public bool UploadImages(string fullFilePath, string fileNameOnDisk, IFormFile file)
@@ -266,4 +266,6 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         }
         throw new ArgumentNullException();
     }
+
+   
 }
