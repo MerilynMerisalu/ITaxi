@@ -28,5 +28,6 @@ public interface IPhotoService: IEntityService<App.BLL.DTO.AdminArea.PhotoDTO>,
     string[] GetFileNames(IEnumerable<PhotoDTO?> photos);
     Task<string> CreateThumbnailAsync(string fullFilePath, string fileName, string fileExtension, string thumbFullFilePath, 
                             int? width = 300, int? height = 300);
+    
 
 }

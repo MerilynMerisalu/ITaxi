@@ -39,6 +39,7 @@ public class PhotoDTO : DomainEntityMetaId
     [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     public string ThumbnailFullPath { get; set; } = default!;
+    public string ThumbnailRelativePath { get; set; }
 
     public Guid? DriverId { get; set; }
     public DriverDTO? Driver { get; set; }

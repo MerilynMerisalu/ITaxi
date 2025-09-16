@@ -2,8 +2,7 @@
 
 @model VehicleGalleryAdminViewModel
 @{
-    var urlJson = System.Text.Json.JsonSerializer.Serialize(Model.ImagesRelativePathURLs);
-    var titlesJson = System.Text.Json.JsonSerializer.Serialize(Model.ImagesTitles);
+    var json = System.Text.Json.JsonSerializer.Serialize(Model.photos);
 }
 <table class="table" border="0">
     <thead>
@@ -17,11 +16,16 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.ImagesRelativePathURLs)
+        @foreach (var item in Model.photos)
         {
             <tr>
                 <td>
-                    @Html.Raw(item)
+                    <a data-fslightbox="gallery" 
+                       data-thumb="@item.ThumbnailRelativePath"
+                       href="@item.PhotoURL">
+                       <div>@item.FileName <br/>
+                           <img src="@item.ThumbnailRelativePath"/>
+                       </div></a>
                 </td>
 
             </tr>
@@ -30,12 +34,18 @@
 </table>
 
 <script type="text/javascript">
-    let urls=@Html.Raw(urlJson)
-    let titles=@Html.Raw(titlesJson)
+    let photos=@Html.Raw(json)
+
     document.addEventListener("DOMContentLoaded", function() {
+
+        //refreshFsLightBox();
+        //fsLightBox.open();
+        
         let lightBox = new FsLightbox();
-        lightBox.props.sources = urls;
-        lightBox.props.captions = titles;
+        lightBox.props.sources = photos.map(x => x.PhotoURL);
+        lightBox.props.thumbs = photos.map(x => x.ThumbnailRelativePath);
+        lightBox.props.captions = photos.map(x => x.FileName);
+        lightBox.props.showThumbsOnMount = true;
         lightBox.open();
     })
 </script>

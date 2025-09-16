@@ -241,37 +241,12 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return Repository.GetAllPhotosByVehicleIdWithIncludes(vehicleId, userId, roleName, noTracking, noIncludes).Select(p => Mapper.Map(p));
     }
 
-    public string[] GetFilesRelativePaths(IEnumerable<PhotoDTO?> photos)
-    {
-        if (photos != null)
-        {
-            int numberOfImages = photos.Count();
-            string[] fileRelativePaths = new string[numberOfImages];
-            for (int i = 0; i < numberOfImages; i++)
-            {
-                fileRelativePaths[i] = photos.ElementAt(i)!.PhotoURL ?? "";
-            }
-            return fileRelativePaths;
-        }
-        throw new ArgumentNullException();
-    }
+    public string[] GetFilesRelativePaths(IEnumerable<PhotoDTO?> photos) =>
+        photos.Select(p => p!.PhotoURL ?? "").ToArray();
 
-    public string[] GetFileNames(IEnumerable<PhotoDTO?> photos)
-    {
-        if (photos != null)
-        {
-            int numberOfImages = photos.Count();
-            string[] fileRelativePaths = new string[numberOfImages];
-            for (int i = 0; i < numberOfImages; i++)
-            {
-
-                fileRelativePaths[i] = photos.ElementAt(i)!.Title.Replace("_", " ") ?? "Unknown";
-            }
-            return fileRelativePaths;
-        }
-        throw new ArgumentNullException();
-    }
-
+    public string[] GetFileNames(IEnumerable<PhotoDTO?> photos) =>
+                photos.Select(p => p!.Title.Replace("_", " ") ?? "Unknown").ToArray();
+    
     public async Task<string> CreateThumbnailAsync(string fullFilePath, string fileName, string fileExtension,
         string thumbFullFilePath, int? width = 300, int? height = 300)
     {

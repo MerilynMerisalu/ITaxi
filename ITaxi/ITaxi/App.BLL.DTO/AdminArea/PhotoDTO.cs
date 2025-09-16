@@ -35,7 +35,13 @@ public class PhotoDTO : DomainEntityMetaId
        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(ThumbnailFullPath))]
     public string ThumbnailFullPath { get; set; } = default!;
-
+    /// <summary>
+    /// Relative path to the thumbnail
+    /// </summary>
+    public string ThumbnailRelativePath { get; set; } = default!;
+    /// <summary>
+    /// Relative path to photo files
+    /// </summary>
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(255, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
@@ -54,6 +60,8 @@ public class PhotoDTO : DomainEntityMetaId
     
     public Guid? AppUserId { get; set; }
     public AppUser? AppUser { get; set; }
+    
+    public string FileName { get => Title.Replace("_", " ") ?? "Unknown"; }
 
     [NotMapped] public IFormFile? ImageFile { get; set; }
 }

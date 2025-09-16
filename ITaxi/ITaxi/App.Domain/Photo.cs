@@ -56,6 +56,6 @@ public class Photo : DomainEntityMetaId
        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(ThumbnailFullPath))]
     public string ThumbnailFullPath { get; set; } = default!;
-
+    public string ThumbnailRelativePath { get; set; }
     [NotMapped] public IFormFile? ImageFile { get; set; }
 }

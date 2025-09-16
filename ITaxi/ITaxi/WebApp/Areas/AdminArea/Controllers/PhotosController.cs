@@ -287,6 +287,7 @@ public class PhotosController : Controller
             if (!uploadResult)
                 return Content(Common.UploadFailed);
             var thumbnailFilePath = await _appBLL.Photos.CreateThumbnailAsync(fullFilePath, fileName: fileName, fileExtension, thumbnailFolderPath);
+            var thumbnailRelativePath = FileHelper.GetImageRelativePath(Path.GetRelativePath(_webHostEnvironment.WebRootPath, thumbnailFilePath));
 
             var photo = new PhotoDTO()
             {
@@ -299,6 +300,7 @@ public class PhotosController : Controller
                 ThumbnailFullPath = thumbnailFilePath,
                 FileNameInDirectory = fileNameOnDisk,
                 PhotoURL = relativeFilePath,
+                ThumbnailRelativePath = thumbnailRelativePath,
                 CreatedBy = User.GettingUserEmail(),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedBy = User.GettingUserEmail(),
