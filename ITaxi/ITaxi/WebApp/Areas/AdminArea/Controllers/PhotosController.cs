@@ -286,7 +286,7 @@ public class PhotosController : Controller
             bool uploadResult = await _appBLL.Photos.UploadImagesAsync(uploadFolderPath, fileNameOnDisk, file);
             if (!uploadResult)
                 return Content(Common.UploadFailed);
-            await _appBLL.Photos.CreateThumbnailAsync(fullFilePath, fileName: fileName, fileExtension, thumbnailFolderPath);
+            var thumbnailFilePath = await _appBLL.Photos.CreateThumbnailAsync(fullFilePath, fileName: fileName, fileExtension, thumbnailFolderPath);
 
             var photo = new PhotoDTO()
             {
@@ -296,7 +296,7 @@ public class PhotosController : Controller
                 VehicleId = vehicle.Id,
                 DirectoryTitleId = directoryId,
                 PhotoFullPath = fullFilePath,
-                ThumbnailFullPath = thumbnailFolderPath,
+                ThumbnailFullPath = thumbnailFilePath,
                 FileNameInDirectory = fileNameOnDisk,
                 PhotoURL = relativeFilePath,
                 CreatedBy = User.GettingUserEmail(),

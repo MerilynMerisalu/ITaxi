@@ -175,9 +175,9 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         catch (Exception ex) when (ex is UnauthorizedAccessException || ex is DirectoryNotFoundException
             || ex is IOException)
         {
-            {
+            
                 return false;
-            }
+            
         }
         return true;
     }
@@ -272,11 +272,11 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         throw new ArgumentNullException();
     }
 
-    public async Task CreateThumbnailAsync(string fullFilePath, string fileName, string fileExtension,
+    public async Task<string> CreateThumbnailAsync(string fullFilePath, string fileName, string fileExtension,
         string thumbFullFilePath, int? width = 300, int? height = 300)
     {
         using var image = await Image.LoadAsync(fullFilePath);
-
+        var imagePath = Path.Combine(thumbFullFilePath, fileName);
         image.Mutate(async i =>
         {
             if (width.HasValue && height.HasValue)
@@ -294,9 +294,9 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
                     _ => throw new NotSupportedException()
                 };
 
-                await image.SaveAsync(Path.Combine(thumbFullFilePath, fileName), encoder);
+                await image.SaveAsync(imagePath, encoder);
             }
-
         });
+        return imagePath;
     }
 }
