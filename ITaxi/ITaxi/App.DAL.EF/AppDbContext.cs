@@ -35,6 +35,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<Drive> Drives { get; set; } = default!;
     public DbSet<Vehicle> Vehicles { get; set; } = default!;
     public DbSet<Comment> Comments { get; set; } = default!;
+    public DbSet<ExtraService> ExtraServices { get; set; } = default!;
 
     public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
 

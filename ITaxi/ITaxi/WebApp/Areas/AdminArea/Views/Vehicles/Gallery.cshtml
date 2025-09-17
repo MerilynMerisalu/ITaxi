@@ -1,51 +1,38 @@
-﻿@using WebApp.Areas.AdminArea.ViewModels
+﻿@using System.Text.Json
+@using WebApp.Areas.AdminArea.ViewModels
 
 @model VehicleGalleryAdminViewModel
 @{
-    var json = System.Text.Json.JsonSerializer.Serialize(Model.photos);
+    var json = JsonSerializer.Serialize(Model.photos);
 }
-<table class="table" border="0">
-    <thead>
-        <tr>
-            <th>
-                
-            </th>
-
-           
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.photos)
-        {
-            <tr>
-                <td>
-                    <a data-fslightbox="gallery" 
-                       data-thumb="@item.ThumbnailRelativePath"
-                       href="@item.PhotoURL">
-                       <div>@item.FileName <br/>
-                           <img src="@item.ThumbnailRelativePath"/>
-                       </div></a>
-                </td>
-
-            </tr>
-        }
-    </tbody>
-</table>
+<div id="gallery" style="display:flex; flex-wrap:wrap; gap:10px;">
+    @foreach (var item in Model.photos)
+    {
+        <a data-fslightbox="galerii"
+           href="@item.PhotoURL"
+           data-caption="@item.FileName">
+            <img src="@item.ThumbnailRelativePath" 
+                 alt="@item.FileName" 
+                 style="width:300px; height:auto; display:block;" />
+        </a>
+    }
+</div>
 
 <script type="text/javascript">
-    let photos=@Html.Raw(json)
+    let photos =@Html.Raw(json)
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
 
         //refreshFsLightBox();
         //fsLightBox.open();
-        
-        let lightBox = new FsLightbox();
-        lightBox.props.sources = photos.map(x => x.PhotoURL);
-        lightBox.props.thumbs = photos.map(x => x.ThumbnailRelativePath);
-        lightBox.props.captions = photos.map(x => x.FileName);
-        lightBox.props.showThumbsOnMount = true;
-        lightBox.open();
+        setTimeout(() => {
+            // Ava galerii ja näita esimest pilti
+            fsLightboxInstances["galerii"].open(0);
+        }, 150);
+
+        fsLightBox.props.sources = photos.map(x => x.PhotoURL);
+        fsLightBox.props.thumbs = photos.map(x => x.ThumbnailRelativePath);
+        fsLightBox.props.captions = photos.map(x => x.FileName);
+        //fsLightBox.props.showThumbsOnMount = true;
     })
 </script>

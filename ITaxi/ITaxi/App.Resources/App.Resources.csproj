@@ -168,6 +168,10 @@
           <Generator>PublicResXFileCodeGenerator</Generator>
           <LastGenOutput>Upload.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App.Domain\AdminArea\ExtraService.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>ExtraService.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -370,6 +374,11 @@
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
           <DependentUpon>Upload.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App.Domain\AdminArea\ExtraService.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>ExtraService.resx</DependentUpon>
         </Compile>
     </ItemGroup>
 

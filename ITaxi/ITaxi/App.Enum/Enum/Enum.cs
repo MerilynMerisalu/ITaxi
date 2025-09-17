@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Resources;
 
 namespace App.Enum.Enum;
@@ -61,4 +62,12 @@ public enum StatusOfDrive
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Drive), Name = "Finished")]
     Finished
+}
+
+public enum ExtraServiceType
+{
+    [Display(ResourceType = typeof(ExtraService), Name = "Driver")]
+    Driver = 1,
+    [Display(ResourceType = typeof(ExtraService), Name = "Vehicle")]
+    Vehicle
 }

@@ -262,6 +262,7 @@ public class PhotosController : Controller
         else
         {
             uploadFolderPath = Path.Combine(uploadFolderPath, directoryId);
+            thumbnailFolderPath = Path.Combine(uploadFolderPath, THUMBNAILFOLDERNAME);
         }
 
 
