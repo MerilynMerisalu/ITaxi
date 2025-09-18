@@ -5,17 +5,16 @@
 @{
     var json = JsonSerializer.Serialize(Model.photos);
 }
-<div id="gallery" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:15px; 
-max-width: 1200px; margin: 0 auto" >
+<div id="gallery" class="gallery-view" >
     @foreach (var item in Model.photos)
     {
-        <a data-fslightbox="galerii"
+        <a data-fslightbox="gallery"
            href="@item.PhotoURL"
            data-caption="@item.FileName"
            style="display:block;">
             <img src="@item.ThumbnailRelativePath" 
                  alt="@item.FileName" 
-                 style="width:100%; height:auto; display:block; border-radius:6px;" />
+                 class="image"/>
         </a>
     }
 </div>
@@ -30,7 +29,7 @@ max-width: 1200px; margin: 0 auto" >
         //fsLightBox.open();
         setTimeout(() => {
             // Ava galerii ja näita esimest pilti
-            fsLightboxInstances["galerii"].open(0);
+            fsLightboxInstances["gallery"].open(0);
         }, 150);
 
         fsLightBox.props.sources = photos.map(x => x.PhotoURL);
