@@ -336,7 +336,7 @@ public class VehiclesController : Controller
         if (vehicle == null) 
             return NotFound();
         
-        vm.photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicleId: vehicle.Id, roleName: roleName);
+        vm.Photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicleId: vehicle.Id, roleName: roleName);
 
         return View(vm);
     }

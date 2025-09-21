@@ -35,4 +35,7 @@
     <data name="UploadImages" xml:space="preserve">
         <value>Upload Images</value>
     </data>
+    <data name="Upload" xml:space="preserve">
+        <value>Upload</value>
+    </data>
 </root>

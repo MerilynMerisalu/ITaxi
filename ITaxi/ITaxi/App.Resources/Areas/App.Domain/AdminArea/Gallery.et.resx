@@ -27,4 +27,7 @@
     <data name="UploadImages" xml:space="preserve">
         <value>Lae pilte üles</value>
     </data>
+    <data name="Upload" xml:space="preserve">
+        <value>Lae pilt üles</value>
+    </data>
 </root>

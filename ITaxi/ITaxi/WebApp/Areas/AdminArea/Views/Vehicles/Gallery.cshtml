@@ -1,21 +1,31 @@
 ﻿@using System.Text.Json
+@using App.Resources.Areas.App.Domain.AdminArea
+@using Base.Resources
 @using WebApp.Areas.AdminArea.ViewModels
 
 @model VehicleGalleryAdminViewModel
 @{
-    var json = JsonSerializer.Serialize(Model.photos);
+    var json = JsonSerializer.Serialize(Model.Photos);
 }
 <div id="gallery" class="gallery-view" >
-    @foreach (var item in Model.photos)
+    @foreach (var item in Model.Photos!)
     {
-        <a data-fslightbox="gallery"
-           href="@item.PhotoURL"
-           data-caption="@item.FileName"
-           style="display:block;">
-            <img src="@item.ThumbnailRelativePath" 
-                 alt="@item.FileName" 
-                 class="image"/>
-        </a>
+        <div class="image-container">
+            <a data-fslightbox="gallery"
+               href="@item!.PhotoURL"
+               data-caption="@item.FileName"
+               class="a">
+                <img src="@item.ThumbnailRelativePath"
+                     alt="@item.FileName"
+                     class="image" />
+            </a>
+            <div class="buttons">
+                <a asp-area="AdminArea" asp-controller="Photos" asp-action="Edit" asp-route-id="@item.Id">@Gallery.Upload</a>
+                <a asp-area="AdminArea" asp-controller="Photos" asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+            </div>
+
+        </div>
+        
     }
 </div>
 

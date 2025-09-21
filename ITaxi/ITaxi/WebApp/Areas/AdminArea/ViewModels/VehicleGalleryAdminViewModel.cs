@@ -4,7 +4,7 @@ namespace WebApp.Areas.AdminArea.ViewModels
 {
     public class VehicleGalleryAdminViewModel
     {
-        public IEnumerable<PhotoDTO?>? photos { get; set; }
+        public IEnumerable<PhotoDTO?>? Photos { get; set; }
         
     }
 }
