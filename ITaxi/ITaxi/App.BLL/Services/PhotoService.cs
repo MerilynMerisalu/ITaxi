@@ -274,4 +274,9 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         });
         return imagePath;
     }
+
+    public bool HasAnyImages(IEnumerable<PhotoDTO?> photos)
+    {
+        return photos.Any() ? true : false;
+    }
 }
