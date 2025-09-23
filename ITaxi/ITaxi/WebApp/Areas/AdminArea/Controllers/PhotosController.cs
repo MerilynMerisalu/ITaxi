@@ -200,7 +200,7 @@ public class PhotosController : Controller
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>View</returns>
-    public async Task<IActionResult> VehiclesUpload(Guid? id)
+    public async Task<IActionResult> VehicleImagesUpload(Guid? id)
     {
         if (id == null) return NotFound();
 
@@ -311,7 +311,7 @@ public class PhotosController : Controller
         }
 
         await _appBLL.SaveChangesAsync();
-        return RedirectToAction("Gallery", "Vehicles", new { id });
+        return RedirectToAction("ChooseView", "Vehicles", new { id });
     }
 
 }
