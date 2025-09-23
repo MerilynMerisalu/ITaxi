@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using WebApp.Areas.AdminArea.ViewModels;
+using WebApp.Areas.DriverArea.ViewModels;
+using CreateEditVehicleViewModel = WebApp.Areas.AdminArea.ViewModels.CreateEditVehicleViewModel;
+using DetailsDeleteVehicleViewModel = WebApp.Areas.AdminArea.ViewModels.DetailsDeleteVehicleViewModel;
 
 namespace WebApp.Areas.AdminArea.Controllers;
 
@@ -328,33 +331,17 @@ public class VehiclesController : Controller
     {
         return _appBLL.Vehicles.Exists(id);
     }
-    public async Task<IActionResult> ChooseView(Guid id)
+    public async Task<IActionResult> Gallery(Guid id)
     {
-        
+        var vm = new VehicleGalleryAdminViewModel();
         var roleName = User.GettingUserRoleName();
-        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id,roleName: roleName );
-        if (vehicle == null) 
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, roleName: roleName);
+        if (vehicle == null)
             return NotFound();
         
-        int numberOfPhotos = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(vehicle.Id);
-        if (numberOfPhotos == 0)
-        {
-            var vm = new VehicleImagesUploadViewModel()
-            {
-                Id = id,
-                VehicleIdentifier = vehicle.VehicleIdentifier,
-            };
+        vm.Photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicleId: vehicle.Id, roleName: roleName);
 
-            return RedirectToAction("VehicleImagesUpload", "Photos", new { id = id });
-        }
-        else
-        {
-            var vm = new VehicleGalleryAdminViewModel();
-            vm.Photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicleId: vehicle.Id);
-            return View("Gallery", vm);
-        }
-
-
+        return View(vm);
     }
 
 }
