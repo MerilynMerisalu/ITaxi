@@ -1,3 +1,4 @@
+@using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
 @model IEnumerable<App.BLL.DTO.AdminArea.PhotoDTO?>
 
@@ -65,7 +66,10 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item!.Id">@Common.Edit</a> |
                 <a asp-action="Details" asp-route-id="@item!.Id">@Common.Details</a> |
-                <a asp-action="Delete" asp-route-id="@item!.Id">@Common.Delete</a>
+                <a asp-action="Delete" asp-route-id="@item!.Id">@Common.Delete</a> |
+                <a asp-action="ChooseView" asp-route-id="@item.Id">@Gallery.GalleryName</a>
+
+
             </td>
         </tr>
     }
