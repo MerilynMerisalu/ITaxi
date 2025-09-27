@@ -203,10 +203,11 @@ public class PhotosController : Controller
     public async Task<IActionResult> VehicleImagesUpload(Guid? id)
     {
         if (id == null) return NotFound();
+        var userRole = User.GettingUserRoleName();
 
         var vm = new VehicleImagesUploadViewModel();
 
-        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, roleName: userRole);
         if (vehicle == null) return NotFound();
 
         vm.VehicleIdentifier = vehicle.VehicleIdentifier;

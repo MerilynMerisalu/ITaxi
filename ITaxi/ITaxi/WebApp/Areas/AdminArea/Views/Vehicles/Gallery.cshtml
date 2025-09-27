@@ -4,9 +4,15 @@
 @using WebApp.Areas.AdminArea.ViewModels
 
 @model VehicleGalleryAdminViewModel
+
 @{
+    var id = JsonSerializer.Serialize(Model.Id);
     var json = JsonSerializer.Serialize(Model.Photos);
 }
+<p>
+    <a asp-area="AdminArea" asp-controller="Photos" asp-action="VehicleImagesUpload" asp-route-id="@Model.Id">@Common.CreateNew</a>
+</p>
+
 <div id="gallery" class="gallery-view" >
     @foreach (var item in Model.Photos!)
     {
