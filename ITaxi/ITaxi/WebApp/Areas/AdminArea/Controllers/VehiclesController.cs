@@ -335,7 +335,7 @@ public class VehiclesController : Controller
     {
         
         var roleName = User.GettingUserRoleName();
-        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, roleName: roleName);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, roleName: null);
         if (vehicle == null)
             return NotFound();
         
