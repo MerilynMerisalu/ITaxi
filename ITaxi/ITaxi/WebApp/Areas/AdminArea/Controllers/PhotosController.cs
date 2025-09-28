@@ -207,7 +207,7 @@ public class PhotosController : Controller
 
         var vm = new VehicleImagesUploadViewModel();
 
-        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, roleName: userRole);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value /*roleName: userRole*/);
         if (vehicle == null) return NotFound();
 
         vm.VehicleIdentifier = vehicle.VehicleIdentifier;
