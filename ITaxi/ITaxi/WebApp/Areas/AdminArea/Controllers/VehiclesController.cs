@@ -349,6 +349,7 @@ public class VehiclesController : Controller
             var vm = new VehicleGalleryAdminViewModel()
             {
                 Id = vehicle.Id,
+                VehicleIdentifier = vehicle.VehicleIdentifier,
                 Photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicle.Id)
             };
             return View("Gallery", vm);
