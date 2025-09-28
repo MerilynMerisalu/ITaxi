@@ -28,3 +28,8 @@
 .a {
     display:block;
 }
+.title {
+    font-size: x-large;
+    display: flex;
+    justify-content: center
+}
