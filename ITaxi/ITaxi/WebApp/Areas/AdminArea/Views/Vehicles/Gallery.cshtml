@@ -30,7 +30,8 @@
                      class="image" />
             </a>
             <div class="buttons">
-                <a asp-area="AdminArea" asp-controller="Photos" asp-action="Edit" asp-route-id="@item.Id">@Gallery.Upload</a>
+                 <a asp-area="AdminArea" asp-controller="Photos" asp-action="UpdateVehicleImage" asp-route-vehicleImageId="@item.Id">@Gallery.Upload</a> 
+                 
                 <a asp-area="AdminArea" asp-controller="Photos" asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
             </div>
 

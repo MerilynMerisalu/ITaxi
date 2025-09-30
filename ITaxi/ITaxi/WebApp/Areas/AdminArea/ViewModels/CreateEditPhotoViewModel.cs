@@ -32,7 +32,10 @@ public class CreateEditPhotoViewModel
     [Display(Name = "Photo Name")]
     public string? PhotoName { get; set; }
 
-    
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(PhotoURL))]
+    public string PhotoURL { get; set; }
+
+
 
 
 }

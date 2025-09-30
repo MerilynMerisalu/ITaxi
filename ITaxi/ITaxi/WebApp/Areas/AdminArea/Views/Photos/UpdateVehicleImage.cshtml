@@ -1,0 +1,15 @@
+﻿@using WebApp.Areas.AdminArea.ViewModels
+@model UploadVehiclePhotoViewModel
+@{
+    ViewData["Title"] = "UploadVehiclePhoto";
+}
+
+<form method="post" enctype="multipart/form-data" asp-area="AdminArea"
+      asp-controller="Photos" >
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="file" asp-for="VehicleImageNumber" />
+        </div>
+    </div>
+    </form>
+

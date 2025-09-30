@@ -114,6 +114,7 @@ public class PhotosController : Controller
 
         var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
         if (photo == null) return NotFound();
+        
 
         return View(vm);
     }
@@ -312,6 +313,15 @@ public class PhotosController : Controller
         return RedirectToAction("ChooseView", "Vehicles", new { id });
     }
 
+
+    public async Task<IActionResult> UpdateVehicleImageAsync(Guid vehicleImageId)
+    {
+        var vm = new UploadVehiclePhotoViewModel();
+        var userRole = User.GettingUserRoleName();
+        var photo = await _appBLL.Photos.GetPhotoByIdAsync(vehicleImageId, null, userRole);
+        if (photo == null) return NotFound();
+        return View(vm);
+    }
 }
 
 
