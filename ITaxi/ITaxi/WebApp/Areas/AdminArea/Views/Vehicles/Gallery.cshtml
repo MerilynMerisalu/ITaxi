@@ -30,9 +30,18 @@
                      class="image" />
             </a>
             <div class="buttons">
-                 <a asp-area="AdminArea" asp-controller="Photos" asp-action="UpdateVehicleImage" asp-route-vehicleImageId="@item.Id">@Gallery.Upload</a> 
-                 
-                <a asp-area="AdminArea" asp-controller="Photos" asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+                <label for="fileInput_@item.Id" class="btn btn-primary">
+                    <i class="bi bi-upload"></i> @Gallery.Upload
+                </label>
+                <input type="file" id="fileInput_@item.Id" style="display:none;" />
+
+                <a asp-area="AdminArea"
+                   asp-controller="Photos"
+                   asp-action="Delete"
+                   asp-route-id="@item.Id"
+                   class="btn btn-danger">
+                    <i class="bi bi-trash"></i> @Common.Delete
+                </a>
             </div>
 
         </div>
@@ -58,4 +67,7 @@
         fsLightBox.props.captions = photos.map(x => x.FileName);
         //fsLightBox.props.showThumbsOnMount = true;
     })
+     async function OpenFileManager() {
+        return await window.showOpenFilePicker();
+    }
 </script>
