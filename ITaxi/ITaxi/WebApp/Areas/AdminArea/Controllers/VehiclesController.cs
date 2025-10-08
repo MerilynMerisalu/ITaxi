@@ -350,7 +350,7 @@ public class VehiclesController : Controller
             {
                 Id = vehicle.Id,
                 VehicleIdentifier = vehicle.VehicleIdentifier,
-                Photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicle.Id)
+                Photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicle.Id),
             };
             return View("Gallery", vm);
         }

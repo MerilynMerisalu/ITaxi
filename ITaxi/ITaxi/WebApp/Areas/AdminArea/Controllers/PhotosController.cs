@@ -314,13 +314,38 @@ public class PhotosController : Controller
     }
 
 
-    public async Task<IActionResult> UpdateVehicleImageAsync(Guid vehicleImageId)
+    //public async Task<IActionResult> EditVehicleImageAsync(Guid vehicleImageId)
+    //{
+    //    var vm = new UploadVehiclePhotoViewModel();
+    //    var userRole = User.GettingUserRoleName();
+    //    var photo = await _appBLL.Photos.GetPhotoByIdAsync(vehicleImageId, null, userRole);
+    //    if (photo == null) return NotFound();
+    //    return View(vm);
+    //}
+
+    [HttpPost]
+    [ActionName("UpdateVehicleImageAsync")]
+    public async Task<IActionResult> UpdateVehicleImageAsync(Guid id, Guid vehicleImageId, IFormFile file)
     {
-        var vm = new UploadVehiclePhotoViewModel();
         var userRole = User.GettingUserRoleName();
-        var photo = await _appBLL.Photos.GetPhotoByIdAsync(vehicleImageId, null, userRole);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, null, roleName: userRole);
+        if (vehicle == null) return NotFound();
+        
+        var photo = await _appBLL.Photos.GetPhotoByIdAsync(vehicleImageId, roleName: userRole);
         if (photo == null) return NotFound();
-        return View(vm);
+        var vehicleImageFolderId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(id, roleName: userRole);
+        if (vehicleImageFolderId == null) return NotFound();
+        if (file == null)
+        {
+            return Content(Common.FilesAreRequired);
+        }
+
+        var imageThumbnailFullPath 
+
+        await _appBLL.Photos.RemoveAsync(photo.Id);
+        var fullImagePath 
+        await _appBLL.SaveChangesAsync();
+        return RedirectToAction("Gallery", "Vehicles");
     }
 }
 

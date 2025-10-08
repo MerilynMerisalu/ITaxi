@@ -8,6 +8,8 @@ namespace WebApp.Areas.AdminArea.ViewModels
 
         public string VehicleIdentifier { get; set; } = default!;
         public IEnumerable<PhotoDTO?>? Photos { get; set; }
-        
+
+        public Guid VehicleImageId { get; set; }
+
     }
 }

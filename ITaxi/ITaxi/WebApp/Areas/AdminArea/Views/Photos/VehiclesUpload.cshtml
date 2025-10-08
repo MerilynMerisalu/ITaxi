@@ -1,0 +1,58 @@
+﻿
+@using System.Net
+@using App.Resources.Areas.App.Domain.AdminArea
+
+@model WebApp.Areas.AdminArea.ViewModels.VehicleImagesUploadViewModel
+
+@{
+    ViewData["Title"] = Gallery.GalleryName;
+}
+
+<h1>@Gallery.VehicleName</h1>
+
+<h3>@Model.VehicleIdentifier</h3>
+<form method="post" enctype="multipart/form-data" asp-area="AdminArea"
+      asp-controller="Photos" asp-action="Upload">
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>@Upload.UploadRestictions</p>
+            <label asp-for="Photo1">@Photo.UploadAPhotoOfTheVehiclesFrontSide</label> 
+            <br />
+            <input type="file" asp-for="Photo1" />
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-10">
+            <label asp-for="Photo1">@Photo.UploadAPhotoOfTheVehiclesBackside</label>
+            <br />
+            <input type="file" asp-for="Photo2" />
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-10">
+            <label asp-for="Photo3">@Photo.UploadAPhotoOfTheVehiclesSide</label>
+            <br />
+            <input type="file" asp-for="Photo3" />
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-10">
+            <label asp-for="Photo4">@Photo.UploadAPhotoOfTheVehiclesInterior</label>
+            <br />
+            <input type="file" asp-for="Photo4" />
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-10">
+            <button class="btn-primary" asp-area="AdminArea" asp-controller="Photos" asp-action="VehicleImagesUpload" asp-route-id="@Model.Id">@Upload.UploadButtonText</button>
+        </div>
+    </div>
+</form>
+
+@*<td>
+    <a asp-area="AdminArea" asp-controller="Photos" asp-action="Upload" asp-route-id="@Model.Id">@Gallery.UploadImages</a>
+</td>*@

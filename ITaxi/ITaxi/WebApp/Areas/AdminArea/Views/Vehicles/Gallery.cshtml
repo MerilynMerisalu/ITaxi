@@ -10,7 +10,7 @@
     var json = JsonSerializer.Serialize(Model.Photos);
 }
 <p>
-    <a asp-area="AdminArea" asp-controller="Photos" asp-action="VehicleImagesUpload" asp-route-id="@Model.Id">@Common.CreateNew</a>
+   <a asp-area="AdminArea" asp-controller="Photos" asp-action="VehicleImagesUpload" asp-route-id="@Model.Id">@Common.CreateNew</a>
 </p>
 
 <p>
@@ -29,11 +29,19 @@
                      alt="@item.FileName"
                      class="image" />
             </a>
+            <form 
+                asp-area="AdminArea"
+                asp-controller="Photos"
+                asp-action="UpdateVehicleImageAsync"
+                asp-route-id="@item.VehicleId"
+                asp-route-vehicleImageId="@item.Id"
+                asp-route-vehicleId="@item.VehicleId"
+            >
             <div class="buttons">
                 <label for="fileInput_@item.Id" class="btn btn-primary">
                     <i class="bi bi-upload"></i> @Gallery.Upload
                 </label>
-                <input type="file" id="fileInput_@item.Id" class="input" />
+                <input type="file" id="fileInput_@item.Id" name="file" class="input" onchange="this.form.submit();" />
 
                 <a asp-area="AdminArea"
                    asp-controller="Photos"
@@ -43,7 +51,7 @@
                     <i class="bi bi-trash"></i> @Common.Delete
                 </a>
             </div>
-
+            </form>
         </div>
         
     }
@@ -67,7 +75,6 @@
         fsLightBox.props.captions = photos.map(x => x.FileName);
         //fsLightBox.props.showThumbsOnMount = true;
     })
-     async function OpenFileManager() {
-        return await window.showOpenFilePicker();
-    }
+     
+   
 </script>
