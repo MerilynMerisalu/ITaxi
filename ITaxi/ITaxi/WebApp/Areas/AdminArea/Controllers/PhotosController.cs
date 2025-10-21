@@ -310,10 +310,10 @@ public class PhotosController : Controller
         }
 
         await _appBLL.SaveChangesAsync();
-        return RedirectToAction("ChooseView", "Vehicles", new { id });
+        return RedirectToAction("ChooseView", controllerName:"Vehicles", new { id = vehicle.Id });
     }
 
-
+    
     //public async Task<IActionResult> EditVehicleImageAsync(Guid vehicleImageId)
     //{
     //    var vm = new UploadVehiclePhotoViewModel();
@@ -340,10 +340,10 @@ public class PhotosController : Controller
             return Content(Common.FilesAreRequired);
         }
 
-        var imageThumbnailFullPath 
+        //var imageThumbnailFullPath 
 
         await _appBLL.Photos.RemoveAsync(photo.Id);
-        var fullImagePath 
+        //var fullImagePath 
         await _appBLL.SaveChangesAsync();
         return RedirectToAction("Gallery", "Vehicles");
     }
