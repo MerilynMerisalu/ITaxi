@@ -12,5 +12,11 @@
             string fullPath = $"{fullFilePath}\\{fileNameOnDisk}";
             return fullPath;
         }
+
+        public static void DeleteFile(string fullFilePath) 
+            
+        {
+           File.Delete(fullFilePath);
+        }
     }
 }

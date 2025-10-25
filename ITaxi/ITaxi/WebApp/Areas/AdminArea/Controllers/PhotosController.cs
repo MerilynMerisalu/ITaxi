@@ -340,11 +340,21 @@ public class PhotosController : Controller
             return Content(Common.FilesAreRequired);
         }
 
-        //var imageThumbnailFullPath 
-
+        var imageThumbnailFullPath = photo.ThumbnailFullPath;
+        var fullImagePath = photo.PhotoFullPath;
+        if (imageThumbnailFullPath != null)
+        {
+            FileHelper.DeleteFile(imageThumbnailFullPath);
+        }
+        if (fullImagePath != null)
+        {
+            FileHelper.DeleteFile(fullImagePath);
+        }
+        
         await _appBLL.Photos.RemoveAsync(photo.Id);
-        //var fullImagePath 
+         
         await _appBLL.SaveChangesAsync();
+       
         return RedirectToAction("Gallery", "Vehicles");
     }
 }
