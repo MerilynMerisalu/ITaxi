@@ -314,14 +314,7 @@ public class PhotosController : Controller
     }
 
     
-    //public async Task<IActionResult> EditVehicleImageAsync(Guid vehicleImageId)
-    //{
-    //    var vm = new UploadVehiclePhotoViewModel();
-    //    var userRole = User.GettingUserRoleName();
-    //    var photo = await _appBLL.Photos.GetPhotoByIdAsync(vehicleImageId, null, userRole);
-    //    if (photo == null) return NotFound();
-    //    return View(vm);
-    //}
+    
 
     [HttpPost]
     [ActionName("UpdateVehicleImageAsync")]
@@ -350,12 +343,50 @@ public class PhotosController : Controller
         {
             FileHelper.DeleteFile(fullImagePath);
         }
-        
+        photo.DeletedBy = User.GettingUserEmail();
+        photo.DeletedAt = DateTime.UtcNow;
+        photo.IsDeleted = true;
         await _appBLL.Photos.RemoveAsync(photo.Id);
-         
+
+        string[] directoryNames = { "Vehicles" };
+        int fileNameMaximumLength = 255;
+        string fileName = _appBLL.Photos.FileNameFormat(file.FileName, fileNameMaximumLength);
+        string uploadFolderPath = _appBLL.Photos.GetDirectoryPath(_webHostEnvironment.WebRootPath, directoryNames);
+        string fileExtension = Path.GetExtension(file.FileName);
+        string fileNameOnDisk = _appBLL.Photos.GetFileNameForDirectory(uploadFolderPath, fileExtension);
+        string thumbnailFolderPath = string.Empty;
+        const string THUMBNAILFOLDERNAME = "Thumbnails";
+        thumbnailFolderPath = Path.Combine(uploadFolderPath, THUMBNAILFOLDERNAME);
+        string relativeFilePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath,
+            Path.Combine(uploadFolderPath, fileNameOnDisk));
+        relativeFilePath = FileHelper.GetImageRelativePath(relativeFilePath);
+        string fullFilePath = FileHelper.GetFileFullPath(uploadFolderPath, fileNameOnDisk);
+        if (_appBLL.Photos.DoesFileExist(Path.Combine(uploadFolderPath, fileNameOnDisk)))
+            return Content(string.Format(Common.FileExists, fileNameOnDisk));
+
+        bool uploadResult = await _appBLL.Photos.UploadImagesAsync(uploadFolderPath, fileNameOnDisk, file);
+        if (!uploadResult)
+            return Content(Common.UploadFailed);
+        var thumbnailFilePath = await _appBLL.Photos.CreateThumbnailAsync(fullFilePath, fileName: fileName, fileExtension, thumbnailFolderPath);
+        var thumbnailRelativePath = FileHelper.GetImageRelativePath(Path.GetRelativePath(_webHostEnvironment.WebRootPath, thumbnailFilePath));
+
+        var replacementPhoto = new PhotoDTO()
+        {
+            Id = Guid.NewGuid(),
+            Title = fileName,
+            VehicleId = vehicle.Id,
+            DirectoryTitleId = vehicleImageFolderId,
+            PhotoFullPath = fullFilePath,
+            PhotoURL = relativeFilePath,
+            FileNameInDirectory = fileNameOnDisk,
+            ThumbnailFullPath = thumbnailFilePath,
+            ThumbnailRelativePath = thumbnailRelativePath,
+            CreatedBy = User.GettingUserEmail(),
+            CreatedAt = DateTime.UtcNow,
+        };
         await _appBLL.SaveChangesAsync();
        
-        return RedirectToAction("Gallery", "Vehicles");
+        return RedirectToAction("Gallery", "Vehicles", new {id = vehicle.Id});
     }
 }
 
