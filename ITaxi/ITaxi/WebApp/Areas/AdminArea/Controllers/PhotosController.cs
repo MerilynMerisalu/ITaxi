@@ -323,7 +323,6 @@ public class PhotosController : Controller
         var userRole = User.GettingUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, null, roleName: userRole);
         if (vehicle == null) return NotFound();
-        
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(vehicleImageId, roleName: userRole);
         if (photo == null) return NotFound();
         var vehicleImageFolderId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(id, roleName: userRole);
@@ -332,6 +331,8 @@ public class PhotosController : Controller
         {
             return Content(Common.FilesAreRequired);
         }
+        List<IFormFile?>? files = new List<IFormFile?>();
+        files.Add(file);
 
         var imageThumbnailFullPath = photo.ThumbnailFullPath;
         var fullImagePath = photo.PhotoFullPath;
@@ -348,28 +349,31 @@ public class PhotosController : Controller
         photo.IsDeleted = true;
         await _appBLL.Photos.RemoveAsync(photo.Id);
 
+        int imagesAlreadyUploaded = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(id, null, userRole, true);
+        if (_appBLL.Photos.AlreadyHasACertainNumberOfImages(imagesAlreadyUploaded, files: files))
+            return Content(string.Format(Common.NumberOfImagesErrorMessage, "4"));
+
+        if (!_appBLL.Photos.AreAllFilesCorrect(files))
+            return Content(string.Format(Common.FilesAreNotCorrect, "1", "b", "5", "MB"));
         string[] directoryNames = { "Vehicles" };
+        string uploadFolderPath = _appBLL.Photos.GetDirectoryPath(_webHostEnvironment.WebRootPath, directoryNames, vehicleImageFolderId);
+        const string THUMBNAILFOLDERNAME = "Thumbnails";
         int fileNameMaximumLength = 255;
         string fileName = _appBLL.Photos.FileNameFormat(file.FileName, fileNameMaximumLength);
-        string uploadFolderPath = _appBLL.Photos.GetDirectoryPath(_webHostEnvironment.WebRootPath, directoryNames);
         string fileExtension = Path.GetExtension(file.FileName);
         string fileNameOnDisk = _appBLL.Photos.GetFileNameForDirectory(uploadFolderPath, fileExtension);
-        string thumbnailFolderPath = string.Empty;
-        const string THUMBNAILFOLDERNAME = "Thumbnails";
-        thumbnailFolderPath = Path.Combine(uploadFolderPath, THUMBNAILFOLDERNAME);
         string relativeFilePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath,
             Path.Combine(uploadFolderPath, fileNameOnDisk));
         relativeFilePath = FileHelper.GetImageRelativePath(relativeFilePath);
         string fullFilePath = FileHelper.GetFileFullPath(uploadFolderPath, fileNameOnDisk);
         if (_appBLL.Photos.DoesFileExist(Path.Combine(uploadFolderPath, fileNameOnDisk)))
             return Content(string.Format(Common.FileExists, fileNameOnDisk));
-
         bool uploadResult = await _appBLL.Photos.UploadImagesAsync(uploadFolderPath, fileNameOnDisk, file);
         if (!uploadResult)
             return Content(Common.UploadFailed);
+        var thumbnailFolderPath = Path.Combine(uploadFolderPath, THUMBNAILFOLDERNAME);
         var thumbnailFilePath = await _appBLL.Photos.CreateThumbnailAsync(fullFilePath, fileName: fileName, fileExtension, thumbnailFolderPath);
         var thumbnailRelativePath = FileHelper.GetImageRelativePath(Path.GetRelativePath(_webHostEnvironment.WebRootPath, thumbnailFilePath));
-
         var replacementPhoto = new PhotoDTO()
         {
             Id = Guid.NewGuid(),
