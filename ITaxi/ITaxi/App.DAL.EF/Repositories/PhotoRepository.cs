@@ -43,18 +43,36 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
 
     public async Task<int> GetPhotoCountByVehicleIdAsync(Guid vehicleId, 
         Guid? userId = null, string? roleName = null,
-        bool noTracking = true)
+        bool noTracking = true, bool isCountingDeleted = false)
     {
-        return (await CreateQuery(userId, roleName, noTracking)
-            .CountAsync(p => p.VehicleId.Equals(vehicleId)));
+        if (isCountingDeleted == false)
+        {
+            return (await CreateQuery(userId, roleName, noTracking)
+            .CountAsync(p => p.VehicleId.Equals(vehicleId) && p.IsDeleted == false));
+        }
+        else
+        {
+            return (await CreateQuery(userId, roleName, noTracking)
+            .CountAsync(p => p.VehicleId.Equals(vehicleId) && p.IsDeleted == true));
+        }
+
     }
 
     public int GetPhotoCountByVehicleId(Guid vehicleId, Guid? userId = null,
-        string? roleName = null, bool noTracking = true)
+        string? roleName = null, bool noTracking = true, bool isCountingDeleted = false)
     {
-        return CreateQuery(userId, roleName, noTracking)
-            .Count(p => p.VehicleId.Equals(vehicleId));
+        if (isCountingDeleted == false)
+        {
+            return CreateQuery(userId, roleName, noTracking)
+            .Count(p => p.VehicleId.Equals(vehicleId) && p.IsDeleted == false);
+        }
+        else
+        {
+            return CreateQuery(userId, roleName, noTracking)
+            .Count(p => p.VehicleId.Equals(vehicleId) && p.IsDeleted == true);
+        }
     }
+        
 
 
     protected  IQueryable<Photo> CreateQuery(Guid? userId = null, 

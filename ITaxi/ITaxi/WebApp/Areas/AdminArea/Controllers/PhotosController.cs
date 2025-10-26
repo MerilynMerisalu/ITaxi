@@ -348,6 +348,7 @@ public class PhotosController : Controller
         photo.DeletedAt = DateTime.UtcNow;
         photo.IsDeleted = true;
         await _appBLL.Photos.RemoveAsync(photo.Id);
+        await _appBLL.SaveChangesAsync();
 
         int imagesAlreadyUploaded = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(id, null, userRole, true);
         if (_appBLL.Photos.AlreadyHasACertainNumberOfImages(imagesAlreadyUploaded, files: files))

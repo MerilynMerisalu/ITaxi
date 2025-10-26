@@ -17,10 +17,11 @@ public interface IPhotoRepositoryCustom<TEntity>
     Task<TEntity?> GetPhotoByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
     TEntity? GetPhotoById(Guid id,Guid? userId = null, string? roleName = null, bool noTracking = true);
     Task<int> GetPhotoCountByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null,
-        bool noTracking = true);
+        bool noTracking = true, bool isCountingDeleted = false);
     int GetPhotoCountByVehicleId(Guid vehicleId, Guid? userId = null,
         string? roleName = null,
-        bool noTracking = true);
+        bool noTracking = true,
+        bool isCountingDeleted = false);
     Task<string?> GetDirectoryIdByVehicleIdAsStringAsync(Guid vehicleId, Guid? userId = null,
         string? roleName = null,
         bool noTracking = true,

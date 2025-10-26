@@ -46,14 +46,15 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
     }
 
     public async Task<int> GetPhotoCountByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null,
-        bool noTracking = true)
+        bool noTracking = true, bool isCountingDeleted = false)
     {
-        return await Repository.GetPhotoCountByVehicleIdAsync(vehicleId, userId, roleName, noTracking);
+        return await Repository.GetPhotoCountByVehicleIdAsync(vehicleId, userId, roleName, noTracking, isCountingDeleted);
     }
 
-    public int GetPhotoCountByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public int GetPhotoCountByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, 
+        bool noTracking = true, bool isCountingDeleted = false)
     {
-        return Repository.GetPhotoCountByVehicleId(vehicleId, userId, roleName, noTracking);
+        return Repository.GetPhotoCountByVehicleId(vehicleId, userId, roleName, noTracking, isCountingDeleted);
     }
 
     public bool AlreadyHasACertainNumberOfImages(int numberOfImages, int? numberOfImagesAllowed = 4, List<IFormFile>? files = null)
