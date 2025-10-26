@@ -388,9 +388,10 @@ public class PhotosController : Controller
             CreatedBy = User.GettingUserEmail(),
             CreatedAt = DateTime.UtcNow,
         };
+        _appBLL.Photos.Add(replacementPhoto);
         await _appBLL.SaveChangesAsync();
        
-        return RedirectToAction("Gallery", "Vehicles", new {id = vehicle.Id});
+        return RedirectToAction("ChooseView", controllerName:"Vehicles", new {id = vehicle.Id});
     }
 }
 
