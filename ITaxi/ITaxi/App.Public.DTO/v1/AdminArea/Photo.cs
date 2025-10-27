@@ -36,13 +36,16 @@ public class Photo: DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(PhotoURL))]
     public string? PhotoURL { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = "Driver")]
+    
     public Guid? DriverId { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = "Driver")]
     public DriverDTO? Driver { get; set; }
     
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
+   
 
     public Guid VehicleId { get; set; }
+    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
     public VehicleDTO? Vehicle { get; set; }
 
     public Guid? AppUserId { get; set; }
