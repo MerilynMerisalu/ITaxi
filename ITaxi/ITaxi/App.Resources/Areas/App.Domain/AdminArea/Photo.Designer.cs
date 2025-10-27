@@ -61,11 +61,29 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Directory Title Id.
+        /// </summary>
+        public static string DirectoryTitleId {
+            get {
+                return ResourceManager.GetString("DirectoryTitleId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Driver.
         /// </summary>
         public static string Driver {
             get {
                 return ResourceManager.GetString("Driver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Name in the Directory.
+        /// </summary>
+        public static string FileNameInDirectory {
+            get {
+                return ResourceManager.GetString("FileNameInDirectory", resourceCulture);
             }
         }
         
@@ -111,6 +129,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string ThumbnailFullPath {
             get {
                 return ResourceManager.GetString("ThumbnailFullPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thumbnail Relative Path.
+        /// </summary>
+        public static string ThumbnailRelativePath {
+            get {
+                return ResourceManager.GetString("ThumbnailRelativePath", resourceCulture);
             }
         }
         

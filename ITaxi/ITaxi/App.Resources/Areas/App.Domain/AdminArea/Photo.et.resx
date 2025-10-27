@@ -153,4 +153,13 @@
   <data name="ThumbnailFullPath" xml:space="preserve">
     <value>Pisipildi täistee</value>
   </data>
+  <data name="FileNameInDirectory" xml:space="preserve">
+    <value>Faili nimi kaustas</value>
+  </data>
+  <data name="DirectoryTitleId" xml:space="preserve">
+    <value>Kausta  id</value>
+  </data>
+  <data name="ThumbnailRelativePath" xml:space="preserve">
+    <value>Pisipildi relatiivne tee</value>
+  </data>
 </root>

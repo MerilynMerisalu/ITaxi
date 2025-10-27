@@ -39,7 +39,8 @@ public class PhotosController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        var res = await _appBLL.Photos.GetAllPhotosWithIncludesAsync();
+        var roleName = User.GettingUserRoleName();
+        var res = await _appBLL.Photos.GetAllPhotosWithIncludesAsync(roleName: roleName);
         return View(res);
     }
 
@@ -161,7 +162,7 @@ public class PhotosController : Controller
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>View</returns>
-    /*public async Task<IActionResult> Delete(Guid? id)
+    public async Task<IActionResult> Delete(Guid? id)
     {
         var vm = new DetailsDeletePhotoViewModel();
         if (id == null) return NotFound();
@@ -170,7 +171,7 @@ public class PhotosController : Controller
         if (photo == null) return NotFound();
 
         return View(vm);
-    }*/
+    }
 
     // POST: AdminArea/Photos/Delete/5
     /// <summary>

@@ -86,8 +86,13 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
 
         if (roleName != null && roleName.Equals(nameof(Admin)))
         {
-            
-            query = query.Include(c => c.AppUser);
+
+            query = query.Include(c => c.AppUser).Include(c => c.Vehicle)
+                .ThenInclude(c => c.VehicleType).ThenInclude(c => c.VehicleTypeName)
+                .ThenInclude(c => c.Translations)
+                .Include(c => c.Vehicle).ThenInclude(c => c.VehicleMark)
+                .Include(c => c.Vehicle).ThenInclude(c => c.VehicleModel)
+                .Include(c => c.Driver).ThenInclude(c => c.AppUser);
             return query;
         }
        

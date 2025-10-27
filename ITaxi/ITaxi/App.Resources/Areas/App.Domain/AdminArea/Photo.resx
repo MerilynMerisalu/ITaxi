@@ -153,4 +153,13 @@
   <data name="ThumbnailFullPath" xml:space="preserve">
     <value>Thumbnail Full Path</value>
   </data>
+  <data name="FileNameInDirectory" xml:space="preserve">
+    <value>File Name in the Directory</value>
+  </data>
+  <data name="DirectoryTitleId" xml:space="preserve">
+    <value>Directory Title Id</value>
+  </data>
+  <data name="ThumbnailRelativePath" xml:space="preserve">
+    <value>Thumbnail Relative Path</value>
+  </data>
 </root>

@@ -16,8 +16,9 @@ public class PhotoDTO : DomainEntityMetaId
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Title))]
     public string Title { get; set; } = default!;
-
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(DirectoryTitleId))]
     public string DirectoryTitleId { get; set; } = default!;
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(FileNameInDirectory))]
     public string FileNameInDirectory { get; set; } = default!;
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
@@ -38,6 +39,8 @@ public class PhotoDTO : DomainEntityMetaId
     /// <summary>
     /// Relative path to the thumbnail
     /// </summary>
+
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(ThumbnailRelativePath))]
     public string ThumbnailRelativePath { get; set; } = default!;
     /// <summary>
     /// Relative path to photo files
@@ -50,12 +53,14 @@ public class PhotoDTO : DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(PhotoURL))]
     public string? PhotoURL { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
+    
     public Guid VehicleId { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
     public VehicleDTO? Vehicle { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = "Driver")]
+    
     public Guid? DriverId { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = "Driver")]
     public DriverDTO? Driver { get; set; }
     
     public Guid? AppUserId { get; set; }
