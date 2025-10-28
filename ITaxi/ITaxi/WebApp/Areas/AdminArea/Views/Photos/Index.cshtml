@@ -58,48 +58,27 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.PhotoFullPath)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.PhotoURL)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.ThumbnailFullPath)
-                </td>
-                <td>
-                    @Html.DisplayNameFor(modelItem => item!.ThumbnailRelativePath)
-                </td>
-                <td>
-                    @Html.DisplayNameFor(modelItem => item!.DirectoryTitleId)
-                </td>
-                <td>
-                    @Html.DisplayNameFor(modelItem => item!.FileNameInDirectory)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.Vehicle!.VehicleIdentifier)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.Driver!.AppUser!.LastAndFirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.CreatedBy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.CreatedAt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.UpdatedBy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.UpdatedAt)
-                </td>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item!.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item!.PhotoURL)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item!.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item!.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item!.UpdatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item!.UpdatedAt)
+            </td>
 
                 <td>
                     <a asp-action="Edit" asp-route-id="@item!.Id">@Common.Edit</a> |
