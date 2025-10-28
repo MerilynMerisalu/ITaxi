@@ -10,6 +10,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNet.Providers.Core" Version="2.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.0" />
+        <PackageReference Include="Microsoft.Build" Version="17.14.28" />
         <PackageReference Include="System.Text.Encodings.Web" Version="9.0.10" />
     </ItemGroup>
 

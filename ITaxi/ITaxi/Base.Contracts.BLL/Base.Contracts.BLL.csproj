@@ -7,6 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.Build" Version="17.14.28" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\Base.Contracts.DAL\Base.Contracts.DAL.csproj" />
       <ProjectReference Include="..\Base.Contracts.Domain\Base.Contracts.Domain.csproj" />
     </ItemGroup>

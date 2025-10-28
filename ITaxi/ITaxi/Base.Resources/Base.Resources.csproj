@@ -131,5 +131,9 @@
         <Folder Include="Identity\Pages" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Build" Version="17.14.28" />
+    </ItemGroup>
+
 
 </Project>

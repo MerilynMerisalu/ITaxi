@@ -8,6 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.Build" Version="17.14.28" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\App.BLL.DTO\App.BLL.DTO.csproj" />
       <ProjectReference Include="..\App.Domain\App.Domain.csproj" />
       <ProjectReference Include="..\App.Resources\App.Resources.csproj" />
