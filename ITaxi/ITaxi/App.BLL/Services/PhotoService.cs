@@ -280,4 +280,14 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
     {
         return photos.Any() ? true : false;
     }
+
+    public async Task<string?> GetDirectoryIdByAppUserIdAsStringAsync(Guid userId, string? roleName, bool noTracking = true, bool noIncludes = false)
+    {
+        return await Repository.GetDirectoryIdByAppUserIdAsStringAsync(userId: userId, roleName: roleName, noTracking, noIncludes);
+    }
+
+    public string? GetDirectoryIdByAppUserIdAsString(Guid userId, string? roleName, bool noTracking = true, bool noIncludes = false)
+    {
+        return Repository.GetDirectoryIdByAppUserIdAsString(userId: userId, roleName: roleName, noTracking, noIncludes);
+    }
 }

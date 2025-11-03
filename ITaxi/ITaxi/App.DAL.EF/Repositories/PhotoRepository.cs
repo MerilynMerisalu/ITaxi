@@ -131,4 +131,18 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
             .Where(p => p.VehicleId.Equals(vehicleId)).OrderBy(p => p.FileNameInDirectory).ToList();
         return result.Select(p => Mapper.Map(p));
     }
+
+    public async Task<string?> GetDirectoryIdByAppUserIdAsStringAsync(Guid userId, string? roleName, bool noTracking = true, bool noIncludes = false)
+    {
+        var result
+            = await CreateQuery(userId: userId, roleName: roleName, noTracking:noTracking, noIncludes: noIncludes).FirstOrDefaultAsync(p  => p.AppUserId.Equals(userId) && p.DirectoryTitleId == null);
+        return result!.DirectoryTitleId;
+    }
+
+    public string? GetDirectoryIdByAppUserIdAsString(Guid userId, string? roleName, bool noTracking = true, bool noIncludes = false)
+    {
+        var result
+            =  CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes).FirstOrDefault(p => p.AppUserId.Equals(userId) && p.DirectoryTitleId == null);
+        return result!.DirectoryTitleId;
+    }
 }

@@ -41,5 +41,8 @@ public interface IPhotoRepositoryCustom<TEntity>
        bool noTracking = true,
        bool noIncludes = false);
 
-
+    Task<string?> GetDirectoryIdByAppUserIdAsStringAsync(Guid userId, string? roleName,
+        bool noTracking=true, bool noIncludes = false);
+    string? GetDirectoryIdByAppUserIdAsString(Guid userId, string? roleName,
+        bool noTracking = true, bool noIncludes = false);
 }

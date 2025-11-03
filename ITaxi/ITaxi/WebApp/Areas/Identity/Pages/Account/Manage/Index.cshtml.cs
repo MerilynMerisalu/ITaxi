@@ -104,25 +104,25 @@ public class IndexModel : PageModel
         var lastName = user.LastName;
         var gender = user.Gender;
         var dateOfBirth = user.DateOfBirth.Date;
-        
+
         Cities = new SelectList(await _context.Cities
             .OrderBy(c => c.CityName)
-            .Select(c => new {c.Id, c.CityName})
-            .ToListAsync(), nameof(City.Id), 
+            .Select(c => new { c.Id, c.CityName })
+            .ToListAsync(), nameof(City.Id),
             nameof(City.CityName));
-        
-            DisabilityTypes = new SelectList(await _context.DisabilityTypes
-                .Include(t => t.DisabilityTypeName)
-                .ThenInclude(t => t.Translations)
-                .OrderBy(c => c.DisabilityTypeName)
-                .Select(c => new {c.Id, c.DisabilityTypeName})
-                .ToListAsync(), nameof(DisabilityType.Id),
-            nameof(DisabilityType.DisabilityTypeName));
 
-            Username = userName!;
+        DisabilityTypes = new SelectList(await _context.DisabilityTypes
+            .Include(t => t.DisabilityTypeName)
+            .ThenInclude(t => t.Translations)
+            .OrderBy(c => c.DisabilityTypeName)
+            .Select(c => new { c.Id, c.DisabilityTypeName })
+            .ToListAsync(), nameof(DisabilityType.Id),
+        nameof(DisabilityType.DisabilityTypeName));
+
+        Username = userName!;
 
         if (User.IsInRole(nameof(Admin)) || User.IsInRole(nameof(Driver)))
-            if (admin != null )
+            if (admin != null)
                 Input = new InputModel
                 {
                     PhoneNumber = phoneNumber!,
@@ -135,7 +135,7 @@ public class IndexModel : PageModel
                     AddressOfResidence = admin.Address,
                     ImageFile = user.ProfileImage
                 };
-            
+
             else if (driver != null)
             {
                 SelectedDriverLicenseCategories = new SelectList(await
@@ -148,7 +148,7 @@ public class IndexModel : PageModel
                             {
                                 Id = dlc.DriverLicenseCategoryId,
                                 DriverLicenseCategoryName = dlc.DriverLicenseCategory!.DriverLicenseCategoryName
-                            }).ToListAsync(), nameof(DriverLicenseCategory.Id), 
+                            }).ToListAsync(), nameof(DriverLicenseCategory.Id),
                     nameof(DriverLicenseCategory.DriverLicenseCategoryName));
                 DriverLicenseCategories = new SelectList(await _context.DriverLicenseCategories
                         .Include(d => d.Drivers)
@@ -168,7 +168,7 @@ public class IndexModel : PageModel
                     AddressOfResidence = driver.Address,
                     DriverLicenseNumber = driver.DriverLicenseNumber,
                     DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate?.Date,
-                    
+
                     ImageFile = user.ProfileImage
                 };
             }
@@ -189,7 +189,8 @@ public class IndexModel : PageModel
                         ImageFile = user.ProfileImage
                     };
                 }
-                else {
+                else
+                {
                     Input = new InputModel
                     {
                         PhoneNumber = phoneNumber!,
@@ -200,15 +201,15 @@ public class IndexModel : PageModel
                         DisabilityId = customer.DisabilityTypeId.Value,
                         ImageFile = user.ProfileImage
                     };
-                }
+                   
+               if (user.ProfilePhoto != null)
+                    Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
+                else
+                    Input.PhotoPath = "/Images/icons8-selfies-50.png";
+            }
                 
             }
         }
-        
-        if (user.ProfilePhoto != null)
-            Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
-        else
-            Input.PhotoPath =  "/Images/icons8-selfies-50.png";
     }
 
     /// <summary>
@@ -241,7 +242,27 @@ public class IndexModel : PageModel
         }
 
         if (Input.ImageFile != null) await SavingImage();
-        
+        if (Input.ImageFile != null)
+        {
+            var result= await _context.Photos.FirstOrDefaultAsync(au => au.AppUserId == user.Id);
+            if (result?.DirectoryTitleId == null)
+            {
+                var directoryId = Guid.NewGuid().ToString();
+                string[] directoryNames = { "ProfileImages" };
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "Images\\");
+                foreach (var name in directoryNames)
+                {
+                    path += Path.Combine(name + "\\");
+                }
+                path = Path.Combine(path, directoryId);
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+
+                }
+
+            }
+        }
         var admin = await _context.Admins.SingleOrDefaultAsync(a => a.AppUserId.Equals(user.Id));
         var driver = await _context.Drivers.SingleOrDefaultAsync(d => d.AppUserId.Equals(user.Id));
         var customer = await _context.Customers.SingleOrDefaultAsync(c => c.AppUserId.Equals(user.Id));
