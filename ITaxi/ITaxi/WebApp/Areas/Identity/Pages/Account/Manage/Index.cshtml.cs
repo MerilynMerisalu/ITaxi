@@ -202,10 +202,10 @@ public class IndexModel : PageModel
                         ImageFile = user.ProfileImage
                     };
                    
-               if (user.ProfilePhoto != null)
-                    Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
-                else
-                    Input.PhotoPath = "/Images/icons8-selfies-50.png";
+               //if (user.ProfilePhoto != null)
+               //     Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
+               // else
+               //     Input.PhotoPath = "/Images/icons8-selfies-50.png";
             }
                 
             }
@@ -260,7 +260,20 @@ public class IndexModel : PageModel
                     Directory.CreateDirectory(path);
 
                 }
-
+                string fileNameOnDisk = "ProfileImage";
+                string fileExtension = Path.GetExtension(Input.ImageFile.FileName!);
+                if (fileExtension != ".png"&& fileExtension != ".jpg")
+                {
+                    return Content("The file extension isn't acceptable. Acceptable file extensions" +
+                        " are .png and .jpg.");
+                }
+                else
+                {
+                   fileNameOnDisk += fileExtension;
+                   path = Path.Combine(path, fileNameOnDisk);
+                   await using var stream = new FileStream(path, FileMode.Create);
+                   await Input.ImageFile.CopyToAsync(stream);
+                }
             }
         }
         var admin = await _context.Admins.SingleOrDefaultAsync(a => a.AppUserId.Equals(user.Id));
@@ -399,17 +412,17 @@ public class IndexModel : PageModel
         var user = await _userManager.GetUserAsync(User);
         if (Input.ImageFile != null)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                await Input.ImageFile!.CopyToAsync(memoryStream);
-                user!.ProfilePhoto = memoryStream.ToArray();
-                user.ProfilePhotoName = Path.GetFileName(Input.ImageFile.FileName);
-            }
+            //using (var memoryStream = new MemoryStream())
+            //{
+            //    await Input.ImageFile!.CopyToAsync(memoryStream);
+            //    user!.ProfilePhoto = memoryStream.ToArray();
+            //    user.ProfilePhotoName = Path.GetFileName(Input.ImageFile.FileName);
+            //}
 
             _context.Users.Update(user);
         }
 
-        Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user!.ProfilePhoto!)}";
+        //Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user!.ProfilePhoto!)}";
 
         await _context.SaveChangesAsync();
         return RedirectToPage();
@@ -530,6 +543,6 @@ public class IndexModel : PageModel
         /// The path to a user photo
         /// </summary>
         [Display(ResourceType = typeof(Index), Name = "ProfileImage")]
-        public string? PhotoPath { get; set; } = "icons8-selfies-50.png";
+        public string? DefaultPhotoTitle { get; set; } = "icons8-selfies-50.png";
     }
 }
