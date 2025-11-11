@@ -279,7 +279,7 @@ public class IndexModel : PageModel
         var admin = await _context.Admins.SingleOrDefaultAsync(a => a.AppUserId.Equals(user.Id));
         var driver = await _context.Drivers.SingleOrDefaultAsync(d => d.AppUserId.Equals(user.Id));
         var customer = await _context.Customers.SingleOrDefaultAsync(c => c.AppUserId.Equals(user.Id));
-
+        
         var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
         if (Input.PhoneNumber != phoneNumber)
         {
@@ -395,7 +395,7 @@ public class IndexModel : PageModel
         
         await _context.SaveChangesAsync();
         _context.Users.Update(user);
-
+        //var photo = new Photo() { } 
         await _signInManager.RefreshSignInAsync(user);
 
         StatusMessage = Base.Resources.Identity.Pages.Account.Manage.Index.ProfileUpdated;

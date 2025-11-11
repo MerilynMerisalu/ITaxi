@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>default</LangVersion>
@@ -11,7 +11,7 @@
         <PackageReference Include="Microsoft.AspNet.Providers.Core" Version="2.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.0" />
         <PackageReference Include="Microsoft.Build" Version="17.14.28" />
-        <PackageReference Include="System.Text.Encodings.Web" Version="9.0.10" />
+        <PackageReference Include="System.Text.Encodings.Web" Version="10.0.0" />
     </ItemGroup>
 
     <ItemGroup>

@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>aspnet-WebApp-38900D17-6AA0-4488-98B5-944245C23643</UserSecretsId>
         <LangVersion>default</LangVersion>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,16 +25,16 @@
         <PackageReference Include="jQuery.Validation" Version="1.21.0" />
         <PackageReference Include="jQuery.Validation.Globalize" Version="1.1.0" />
         <PackageReference Include="MailKit" Version="4.14.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="10.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
         <PackageReference Include="Microsoft.Build" Version="17.14.28" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.10" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.10">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -43,11 +43,11 @@
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="RESTCountries.NET" Version="3.5.0" />
         <PackageReference Include="Rotativa.AspNetCore" Version="1.4.0" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
-        <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="31.2.4" />
-        <PackageReference Include="Syncfusion.Licensing" Version="31.2.4" />
-        <PackageReference Include="System.Text.Encodings.Web" Version="9.0.10" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.0" />
+        <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="31.2.5" />
+        <PackageReference Include="Syncfusion.Licensing" Version="31.2.5" />
+        <PackageReference Include="System.Text.Encodings.Web" Version="10.0.0" />
     </ItemGroup>
 
     <ItemGroup>
