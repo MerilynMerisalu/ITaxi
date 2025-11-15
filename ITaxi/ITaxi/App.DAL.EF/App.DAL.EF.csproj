@@ -10,7 +10,7 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="15.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.0" />
-        <PackageReference Include="Microsoft.Build" Version="17.14.28" />
+        <PackageReference Include="Microsoft.Build" Version="18.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0" />
         <PackageReference Include="System.Text.Encodings.Web" Version="10.0.0" />
     </ItemGroup>

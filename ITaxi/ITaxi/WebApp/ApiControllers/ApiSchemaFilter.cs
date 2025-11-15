@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using System.Linq;
+using Microsoft.OpenApi;
+
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace WebApp.ApiControllers;
@@ -30,7 +32,7 @@ public class ApiSchemaFilter : ISchemaFilter
     /// </summary>
     /// <param name="schema"></param>
     /// <param name="context"></param>
-    public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+    public void Apply(IOpenApiSchema schema, SchemaFilterContext context)
     {
         var keys = context.SchemaRepository.Schemas.Keys
             .Where(key => _blackList.Any(bl => key.StartsWith(bl)))
@@ -42,4 +44,6 @@ public class ApiSchemaFilter : ISchemaFilter
             context.SchemaRepository.Schemas.Remove(key);   
         }
     }
+
+    
 }
