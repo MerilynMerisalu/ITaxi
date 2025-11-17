@@ -232,7 +232,9 @@ public class IndexModel : PageModel
     public async Task<IActionResult> OnPostAsync()
     {
         var user = await _userManager.GetUserAsync(User);
-        
+        var directoryId = string.Empty;
+        var fileNameOnDisk = string.Empty;
+        var path = string.Empty;
         if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
         if (!ModelState.IsValid)
@@ -247,9 +249,9 @@ public class IndexModel : PageModel
             var result= await _context.Photos.FirstOrDefaultAsync(au => au.AppUserId == user.Id);
             if (result?.DirectoryTitleId == null)
             {
-                var directoryId = Guid.NewGuid().ToString();
+                directoryId = Guid.NewGuid().ToString();
                 string[] directoryNames = { "ProfileImages" };
-                var path = Path.Combine(_webHostEnvironment.WebRootPath, "Images\\");
+                path = Path.Combine(_webHostEnvironment.WebRootPath, "Images\\");
                 foreach (var name in directoryNames)
                 {
                     path += Path.Combine(name + "\\");
@@ -260,9 +262,9 @@ public class IndexModel : PageModel
                     Directory.CreateDirectory(path);
 
                 }
-                string fileNameOnDisk = "ProfileImage";
+                fileNameOnDisk = "ProfileImage";
                 string fileExtension = Path.GetExtension(Input.ImageFile.FileName!);
-                if (fileExtension != ".png"&& fileExtension != ".jpg")
+                if (fileExtension != ".png" && fileExtension != ".jpg")
                 {
                     return Content("The file extension isn't acceptable. Acceptable file extensions" +
                         " are .png and .jpg.");
@@ -276,10 +278,50 @@ public class IndexModel : PageModel
                 }
             }
         }
+        ;
         var admin = await _context.Admins.SingleOrDefaultAsync(a => a.AppUserId.Equals(user.Id));
         var driver = await _context.Drivers.SingleOrDefaultAsync(d => d.AppUserId.Equals(user.Id));
         var customer = await _context.Customers.SingleOrDefaultAsync(c => c.AppUserId.Equals(user.Id));
-        
+        var photoTitle = admin != null ? "AdminProfilePhoto" : driver != null ? "DriverProfilePhoto" :
+            customer != null ? "CustomerProfilePhoto" : "Unknown";
+        var photoUrlPath = Path.GetRelativePath(_webHostEnvironment.WebRootPath, path);
+        photoUrlPath = "\\" + photoUrlPath;
+        Guid? adminId = null;
+        Guid? driverId = null;
+        Guid? customerId = null;
+
+        if (admin != null)
+        {
+            adminId = admin.Id;
+        }
+        else if (driver != null)
+        {
+            driverId = driver.Id;
+        }
+        else
+        {
+            customerId = customer!.Id;
+        }
+
+        var photo = new Photo { 
+            Id = Guid.NewGuid(),
+            Title = photoTitle,
+            PhotoURL = photoUrlPath,
+            PhotoFullPath = path,
+            DirectoryTitleId = directoryId,
+            FileNameInDirectory = fileNameOnDisk,
+            AdminId = adminId,
+            DriverId = driverId,
+            CustomerId = customerId,
+            AppUserId = user.Id,
+            CreatedBy = User.Identity!.Name,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedBy = User.Identity!.Name,
+            UpdatedAt = DateTime.UtcNow,
+        };
+        _context.Photos.Add(photo);
+        await _context.SaveChangesAsync();
+
         var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
         if (Input.PhoneNumber != phoneNumber)
         {

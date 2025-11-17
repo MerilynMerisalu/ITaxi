@@ -39,11 +39,15 @@ public class Photo : DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
     public Guid? VehicleId { get; set; }
     public Vehicle? Vehicle { get; set; }
-    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Admin))]
+    public Admin? Admin { get; set; }
+    public Guid? AdminId { get; set; }
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Driver))]
     public Guid? DriverId { get; set; }
     public Driver? Driver { get; set; }
-    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Customer))]
+    public Guid? CustomerId { get; set; }
+    public Customer? Customer { get; set; }
     public Guid? AppUserId { get; set; }
     public AppUser? AppUser { get; set; }
 
@@ -55,7 +59,7 @@ public class Photo : DomainEntityMetaId
     [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(ThumbnailFullPath))]
-    public string ThumbnailFullPath { get; set; } = default!;
-    public string ThumbnailRelativePath { get; set; }
+    public string? ThumbnailFullPath { get; set; } 
+    public string? ThumbnailRelativePath { get; set; }
     [NotMapped] public IFormFile? ImageFile { get; set; }
 }

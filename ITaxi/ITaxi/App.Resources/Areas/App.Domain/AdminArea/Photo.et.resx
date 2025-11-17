@@ -162,4 +162,10 @@
   <data name="ThumbnailRelativePath" xml:space="preserve">
     <value>Pisipildi relatiivne tee</value>
   </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Administraator</value>
+  </data>
+  <data name="Customer" xml:space="preserve">
+    <value>Kasutaja</value>
+  </data>
 </root>
