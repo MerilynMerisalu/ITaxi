@@ -133,7 +133,8 @@ public class IndexModel : PageModel
                     PersonalIdentifier = admin.PersonalIdentifier,
                     CityId = admin.CityId,
                     AddressOfResidence = admin.Address,
-                    ImageFile = user.ProfileImage
+                    ImageFile = user.ProfileImage,
+                    
                 };
 
             else if (driver != null)
@@ -199,17 +200,38 @@ public class IndexModel : PageModel
                         Gender = Enum.Parse<Gender>(gender.Value.ToString()),
                         DateOfBirth = dateOfBirth,
                         DisabilityId = customer.DisabilityTypeId.Value,
-                        ImageFile = user.ProfileImage
+                        ImageFile = user.ProfileImage,
+                        
                     };
-                   
-               //if (user.ProfilePhoto != null)
-               //     Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user.ProfilePhoto!)}";
-               // else
-               //     Input.PhotoPath = "/Images/icons8-selfies-50.png";
-            }
+
+                    
+
+                }
+
                 
+
             }
         }
+    }
+
+    public async Task GetUserProfilePhotoAsync()
+    {
+         
+        var user = await _userManager.GetUserAsync(User);
+        var userProfilePhoto = await _context.Photos.FirstOrDefaultAsync(upp => upp.AppUserId == user.Id);
+        if (Input == null)
+        {
+            Input = new InputModel(); 
+        }
+        if (userProfilePhoto == null)
+        {
+            Input.PhotoPath = "/Images/icons8-selfies-50.png";
+        }
+        else
+        {
+            Input.PhotoPath = userProfilePhoto?.PhotoURL;
+        }
+
     }
 
     /// <summary>
@@ -220,8 +242,10 @@ public class IndexModel : PageModel
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-
+        Input = new InputModel();
+        await GetUserProfilePhotoAsync();
         await LoadAsync(user);
+        await GetUserProfilePhotoAsync();
         return Page();
     }
 
@@ -243,7 +267,7 @@ public class IndexModel : PageModel
             return Page();
         }
 
-        if (Input.ImageFile != null) await SavingImage();
+        
         if (Input.ImageFile != null)
         {
             var result= await _context.Photos.FirstOrDefaultAsync(au => au.AppUserId == user.Id);
@@ -278,7 +302,7 @@ public class IndexModel : PageModel
                 }
             }
         }
-        ;
+        
         var admin = await _context.Admins.SingleOrDefaultAsync(a => a.AppUserId.Equals(user.Id));
         var driver = await _context.Drivers.SingleOrDefaultAsync(d => d.AppUserId.Equals(user.Id));
         var customer = await _context.Customers.SingleOrDefaultAsync(c => c.AppUserId.Equals(user.Id));
@@ -348,7 +372,7 @@ public class IndexModel : PageModel
 
         if (Input.LastName != user.LastName) user.LastName = Input.LastName;
 
-        if (Input.Gender != user.Gender.Value) user.Gender = Input.Gender;
+        if (Input.Gender != user.Gender!.Value) user.Gender = Input.Gender;
         if (admin != null)
         {
             if (Input.PersonalIdentifier != admin.PersonalIdentifier)
@@ -396,7 +420,7 @@ public class IndexModel : PageModel
 
             if (Input.DriverLicenseExpiryDate?.Date != driver.DriverLicenseExpiryDate?.Date)
             {
-                driver.DriverLicenseExpiryDate = Input.DriverLicenseExpiryDate.Value.Date;
+                driver.DriverLicenseExpiryDate = Input.DriverLicenseExpiryDate!.Value.Date;
             }
             
             if (Input.ChangedDriverLicenseCategoriesList != null)
@@ -434,7 +458,7 @@ public class IndexModel : PageModel
             _context.Customers.Update(customer);
             await _context.SaveChangesAsync();
         }
-        
+       
         await _context.SaveChangesAsync();
         _context.Users.Update(user);
         //var photo = new Photo() { } 
@@ -444,31 +468,21 @@ public class IndexModel : PageModel
 
         return RedirectToPage();
     }
-
+/*
     /// <summary>
     /// Setting a profile image for an user
     /// </summary>
     /// <returns>IActionResult</returns>
     private async Task<IActionResult> SavingImage()
     {
-        var user = await _userManager.GetUserAsync(User);
-        if (Input.ImageFile != null)
-        {
-            //using (var memoryStream = new MemoryStream())
-            //{
-            //    await Input.ImageFile!.CopyToAsync(memoryStream);
-            //    user!.ProfilePhoto = memoryStream.ToArray();
-            //    user.ProfilePhotoName = Path.GetFileName(Input.ImageFile.FileName);
-            //}
-
-            _context.Users.Update(user);
-        }
-
-        //Input.PhotoPath = $"data:image/*;base64,{Convert.ToBase64String(user!.ProfilePhoto!)}";
+        
+        
+       
+        
 
         await _context.SaveChangesAsync();
         return RedirectToPage();
-    }
+    }*/
 
     /// <summary>
     ///  Input model
@@ -586,5 +600,7 @@ public class IndexModel : PageModel
         /// </summary>
         [Display(ResourceType = typeof(Index), Name = "ProfileImage")]
         public string? DefaultPhotoTitle { get; set; } = "icons8-selfies-50.png";
+
+        public string? PhotoPath { get; set; }
     }
 }
