@@ -218,18 +218,18 @@ public class IndexModel : PageModel
     {
          
         var user = await _userManager.GetUserAsync(User);
-        var userProfilePhoto = await _context.Photos.FirstOrDefaultAsync(upp => upp.AppUserId == user!.Id);
+        var userProfilePhotoUrl = _context.Photos.FirstOrDefaultAsync(upp => upp.AppUserId == user!.Id).Result?.PhotoURL;
         if (Input == null)
         {
             Input = new InputModel(); 
         }
-        if (userProfilePhoto == null)
+        if (userProfilePhotoUrl == null)
         {
-            Input.PhotoPath = "/Images/icons8-selfies-50.png";
+            Input.PhotoPath = "/Images/Icons/icons8-selfies-50.png";
         }
         else
         {
-            Input.PhotoPath = userProfilePhoto.PhotoURL;
+            Input.PhotoPath = userProfilePhotoUrl;
         }
 
     }
