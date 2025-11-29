@@ -3,14 +3,17 @@
 @using Base.Resources.Views.Shared
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.EntityFrameworkCore
 @inject SignInManager<AppUser> SignInManager
-
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            
+           @*  @{
+                var userId = User.GettingUserId();
+                var userProfilePhoto = 
+            } *@
             <img alt="Default Profile Photo" style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="~/Images/icons8-selfies-50.png">
             
         </li>
@@ -30,6 +33,7 @@
 
             </a>
         </li>
+        
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">
                 <button type="submit" class="nav-link btn btn-link text-dark">@_LoginPartial.Logout</button>

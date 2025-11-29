@@ -41,16 +41,7 @@ public class HomeController : Controller
         return View();
     }
 
-    /// <summary>
-    /// Home controller test action
-    /// </summary>
-    /// <param name="a">A</param>
-    /// <param name="b">B</param>
-    /// <returns>New error view model</returns>
-    public string TestAction(int a, int b)
-    {
-        return (a + b).ToString();
-    }
+    
     /// <summary>
     /// Home controller error view
     /// </summary>

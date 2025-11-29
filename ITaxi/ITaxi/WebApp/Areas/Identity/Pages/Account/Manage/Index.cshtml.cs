@@ -218,7 +218,7 @@ public class IndexModel : PageModel
     {
          
         var user = await _userManager.GetUserAsync(User);
-        var userProfilePhoto = await _context.Photos.FirstOrDefaultAsync(upp => upp.AppUserId == user.Id);
+        var userProfilePhoto = await _context.Photos.FirstOrDefaultAsync(upp => upp.AppUserId == user!.Id);
         if (Input == null)
         {
             Input = new InputModel(); 
@@ -229,7 +229,7 @@ public class IndexModel : PageModel
         }
         else
         {
-            Input.PhotoPath = userProfilePhoto?.PhotoURL;
+            Input.PhotoPath = userProfilePhoto.PhotoURL;
         }
 
     }

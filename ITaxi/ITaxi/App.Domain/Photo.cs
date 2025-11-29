@@ -51,9 +51,6 @@ public class Photo : DomainEntityMetaId
     public Guid? AppUserId { get; set; }
     public AppUser? AppUser { get; set; }
 
-    
-
-    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(255, ErrorMessageResourceType = typeof(Common),
        ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
