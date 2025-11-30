@@ -1,22 +1,80 @@
 ﻿@model WebApp.Areas.AdminArea.ViewModels.DetailsDeletePhotoViewModel
 <dl class="row">
-<dt class="col-sm-2">
-    @Html.DisplayNameFor(model => model.Title)
-</dt>
-<dd class="col-sm-10">
-    @Html.DisplayFor(model => model.Title)
-</dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Title)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Title)
+    </dd>
 
-<dt class="col-sm-2">
-    @Html.DisplayNameFor(model => model.PhotoURL)
-</dt>
-<dd class="col-sm-10">
-    @Html.DisplayFor(model => model.PhotoURL)
-</dd>
-<dt class = "col-sm-2">
-    @Html.DisplayNameFor(model => model.PhotoFullPath)
-</dt>
-<dd class = "col-sm-10">
-    @Html.DisplayFor(model => model.PhotoFullPath)
-</dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.PhotoURL)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.PhotoURL)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.PhotoFullPath)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.PhotoFullPath)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.ThumbnailRelativePath)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.ThumbnailRelativePath)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.DirectoryTitleId)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.DirectoryTitleId)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.FileNameInDirectory)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.FileNameInDirectory)
+    </dd>
+    @if(Model.Vehicle != null)
+    {
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Vehicle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Vehicle)
+        </dd>
+    }
+    
+    @if(Model.Admin != null)
+    {
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Admin)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Admin)
+        </dd>
+    }
+    @if(Model.Driver != null)
+    {
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Driver)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Driver)
+        </dd>
+    }
+
+    @if (Model.Customer != null)
+    {
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer)
+        </dd>
+    }
+   
+    
 </dl>

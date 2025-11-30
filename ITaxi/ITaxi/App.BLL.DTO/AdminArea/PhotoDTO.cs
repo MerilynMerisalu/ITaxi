@@ -54,19 +54,24 @@ public class PhotoDTO : DomainEntityMetaId
     public string? PhotoURL { get; set; }
 
     
-    public Guid VehicleId { get; set; }
+    public Guid? VehicleId { get; set; }
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
     public VehicleDTO? Vehicle { get; set; }
 
-    
+    public Guid AdminId { get; set; }
+
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Admin))]
+    public AdminDTO? Admin { get; set; }
     public Guid? DriverId { get; set; }
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = "Driver")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Driver))]
     public DriverDTO? Driver { get; set; }
-    
+
+    public Guid? CustomerId { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Customer))]
+    public CustomerDTO? Customer { get; set; }
     public Guid? AppUserId { get; set; }
     public AppUser? AppUser { get; set; }
     
-    public string FileName { get => Title.Replace("_", " ") ?? "Unknown"; }
 
     [NotMapped] public IFormFile? ImageFile { get; set; }
 }

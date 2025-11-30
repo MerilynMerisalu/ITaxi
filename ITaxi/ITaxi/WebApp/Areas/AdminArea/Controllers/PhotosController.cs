@@ -74,87 +74,7 @@ public class PhotosController : Controller
         return View(vm);
     }
 
-    // POST: AdminArea/Photos/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    /// <summary>
-    /// Admin area photos controller POST method create
-    /// </summary>
-    /// <param name="vm">View model</param>
-    /// <param name="photo">Photo</param>
-    /// <returns>View</returns>
-    /*[HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateEditPhotoViewModel vm, PhotoDTO photo)
-    {
-        if (ModelState.IsValid)
-        {
-            photo.Id = Guid.NewGuid();
-            photo.Title = vm.Title;
-            photo.PhotoURL = vm.PhotoName;
-
-            _appBLL.Photos.Add(photo);
-            await _appBLL.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        return View(vm);
-    }*/
-
-    // GET: AdminArea/Photos/Edit/5
-    /// <summary>
-    /// Admin area photos controller GET method edit
-    /// </summary>
-    /// <param name="id">Id</param>
-    /// <returns>View</returns>
-    //public async Task<IActionResult> Edit(Guid? id)
-    //{
-    //    var vm = new CreateEditPhotoViewModel();
-    //    if (id == null) return NotFound();
-
-    //    var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
-    //    if (photo == null) return NotFound();
-        
-
-    //    return View(vm);
-    //}
-
-    // POST: AdminArea/Photos/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    /// <summary>
-    /// Admin area photos controller POST method edit
-    /// </summary>
-    /// <param name="id">Id</param>
-    /// <param name="vm">View model</param>
-    /// <returns>View</returns>
-    /*[HttpPost]
-    [ValidateAntiForgeryToken]*/
-    /*public async Task<IActionResult> Edit(Guid id, CreateEditPhotoViewModel vm)
-    {
-        var photo = await _appBLL.Photos.FirstOrDefaultAsync(id);
-        if (photo != null && id != photo.Id) return NotFound();
-
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                if (photo != null) _appBLL.Photos.Update(photo);
-                await _appBLL.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (photo != null && !PhotoExists(photo.Id))
-                    return NotFound();
-                throw;
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        return View(vm);
-    }*/
-
+    
     // GET: AdminArea/Photos/Delete/5
     /// <summary>
     /// Admin area photos controller GET method delete
@@ -169,10 +89,29 @@ public class PhotosController : Controller
         var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
         if (photo == null) return NotFound();
         vm.Id = photo.Id;
-        vm.Title = _appBLL.Photos.FileNameFormat(photo.Title, 255);
+        vm.Title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
         vm.PhotoURL = photo.PhotoURL!;
         vm.PhotoFullPath = photo.PhotoFullPath!;
-
+        vm.ThumbnailRelativePath = photo.ThumbnailRelativePath;
+        vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
+        vm.DirectoryTitleId = photo.DirectoryTitleId;
+        vm.FileNameInDirectory = photo.FileNameInDirectory;
+        if (photo.Vehicle != null)
+        {
+            vm.Vehicle = photo.Vehicle.VehicleIdentifier;
+        }
+        else if (photo.Admin != null)
+        {
+            vm.Admin = photo.Admin.AppUser!.FirstAndLastName;
+        }
+        else if (photo.Driver != null)
+        {
+            vm.Driver = photo.Driver.AppUser!.FirstAndLastName;
+        }
+        else if (photo.Customer != null)
+        {
+            vm.Driver = photo.Customer.AppUser!.FirstAndLastName;
+        }
 
         return View(vm);
     }

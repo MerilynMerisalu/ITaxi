@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using WebApp.Areas.AdminArea.ViewModels;
 using WebApp.Areas.DriverArea.ViewModels;
+using WebApp.Helpers;
 using CreateEditVehicleViewModel = WebApp.Areas.AdminArea.ViewModels.CreateEditVehicleViewModel;
 using DetailsDeleteVehicleViewModel = WebApp.Areas.AdminArea.ViewModels.DetailsDeleteVehicleViewModel;
 
@@ -346,11 +347,18 @@ public class VehiclesController : Controller
         }
         else
         {
+            var photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicle.Id)!;
+            var title = string.Empty;
+            foreach (var photo in photos)
+            {
+                title = photo?.Title;
+            }
             var vm = new VehicleGalleryAdminViewModel()
             {
                 Id = vehicle.Id,
+                Title = title!,
                 VehicleIdentifier = vehicle.VehicleIdentifier,
-                Photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicle.Id),
+                Photos = photos,
             };
             return View("Gallery", vm);
         }
