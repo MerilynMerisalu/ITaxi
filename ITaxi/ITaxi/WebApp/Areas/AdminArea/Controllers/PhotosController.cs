@@ -58,9 +58,8 @@ public class PhotosController : Controller
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(id.Value);
         if (photo == null) return NotFound();
 
-        photo.Id = vm.Id;
-        photo.Title = vm.Title;
-        photo.PhotoURL = vm.PhotoName;
+        
+
         return View(vm);
     }
 
@@ -108,17 +107,17 @@ public class PhotosController : Controller
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>View</returns>
-    public async Task<IActionResult> Edit(Guid? id)
-    {
-        var vm = new CreateEditPhotoViewModel();
-        if (id == null) return NotFound();
+    //public async Task<IActionResult> Edit(Guid? id)
+    //{
+    //    var vm = new CreateEditPhotoViewModel();
+    //    if (id == null) return NotFound();
 
-        var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
-        if (photo == null) return NotFound();
+    //    var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
+    //    if (photo == null) return NotFound();
         
 
-        return View(vm);
-    }
+    //    return View(vm);
+    //}
 
     // POST: AdminArea/Photos/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -169,6 +168,11 @@ public class PhotosController : Controller
 
         var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
         if (photo == null) return NotFound();
+        vm.Id = photo.Id;
+        vm.Title = _appBLL.Photos.FileNameFormat(photo.Title, 255);
+        vm.PhotoURL = photo.PhotoURL!;
+        vm.PhotoFullPath = photo.PhotoFullPath!;
+
 
         return View(vm);
     }

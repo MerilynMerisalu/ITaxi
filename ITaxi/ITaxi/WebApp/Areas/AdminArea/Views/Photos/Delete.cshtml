@@ -1,3 +1,5 @@
+@using App.Resources.Areas.App.Domain.AdminArea
+@using Base.Resources
 @model WebApp.Areas.AdminArea.ViewModels.DetailsDeletePhotoViewModel
 
 @{
@@ -13,16 +15,16 @@
 </head>
 <body>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>@Common.AreYouSureYouWantToDeleteThis</h3>
 <div>
-    <h4>Photo</h4>
+    <h4>@Photo.PhotoName</h4>
     <hr/>
     <partial name="AdminArea/PartialViews/_DetailsDeletePhoto" model="Model"/>
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id"/>
-        <input type="submit" value="Delete" class="btn btn-danger"/> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="@Common.Delete" class="btn btn-danger"/> |
+        <a asp-action="Index">@Common.BackToList</a>
     </form>
 </div>
 </body>
