@@ -85,9 +85,10 @@ public class PhotosController : Controller
     {
         var vm = new DetailsDeletePhotoViewModel();
         if (id == null) return NotFound();
-
+        var roleName = User.GettingUserRoleName();
         var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
         if (photo == null) return NotFound();
+        
         vm.Id = photo.Id;
         vm.Title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
         vm.PhotoURL = photo.PhotoURL!;
@@ -96,23 +97,48 @@ public class PhotosController : Controller
         vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
         vm.DirectoryTitleId = photo.DirectoryTitleId;
         vm.FileNameInDirectory = photo.FileNameInDirectory;
-        if (photo.Vehicle != null)
+        if (photo.VehicleId.HasValue)
         {
-            vm.Vehicle = photo.Vehicle.VehicleIdentifier;
+            var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(photo.VehicleId.Value, roleName: roleName);
+            vm.Vehicle = vehicle;
+            if (vehicle != null)
+            {
+                vm.VehicleIdentifier = vehicle.VehicleIdentifier;
+            }
         }
-        else if (photo.Admin != null)
+        else if (photo.AdminId.HasValue)
         {
-            vm.Admin = photo.Admin.AppUser!.FirstAndLastName;
+            var admin = await _appBLL.Admins.GetAdminWithIncludesByAdminIdAsync(photo.AdminId.Value);
+            vm.Admin = admin;
+            if (vm.Admin != null)
+            {
+                vm.AdminFirstAndLastName = vm.Admin.AppUser!.FirstAndLastName;
+            }
+
         }
-        else if (photo.Driver != null)
+        else if (photo.DriverId.HasValue)
         {
-            vm.Driver = photo.Driver.AppUser!.FirstAndLastName;
-        }
-        else if (photo.Customer != null)
-        {
-            vm.Driver = photo.Customer.AppUser!.FirstAndLastName;
+           var driver = await _appBLL.Drivers.GettingDriverByDriverIdAsync(driverId: photo.DriverId.Value, roleName: roleName);
+           vm.Driver = driver;
+
+            if (vm.Driver != null)
+            {
+                vm.DriverFirstAndLastName = vm.Driver.AppUser!.FirstAndLastName;
+            }
         }
 
+        else if (photo.CustomerId.HasValue)
+        {
+            var customer = await _appBLL.Customers.GettingCustomerByPhotoCustomerIdAsync(customerId: photo.CustomerId.Value,
+            roleName: roleName);
+            vm.Customer = customer;
+            if (vm.Customer != null)
+            {
+                vm.CustomerFirstAndLastName = vm.Customer.AppUser!.FirstAndLastName;
+            }
+
+        }
+        
         return View(vm);
     }
 

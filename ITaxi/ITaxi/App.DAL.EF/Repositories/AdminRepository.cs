@@ -59,4 +59,16 @@ public class AdminRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.AdminD
                          .Include(a => a.City);
         return query;
     }
+
+    public async Task<AdminDTO?> GetAdminWithIncludesByAdminIdAsync(Guid adminId, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false)
+    {
+        var result = Mapper.Map(await CreateQuery(noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored).FirstOrDefaultAsync(a => a.Id.Equals(adminId)));
+        return result;
+    }
+
+    public AdminDTO? GetAdminByAdminId(Guid adminId, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false)
+    {
+        var result = Mapper.Map( CreateQuery(noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored).FirstOrDefault(a => a.Id.Equals(adminId)));
+        return result;
+    }
 }

@@ -21,5 +21,6 @@ public interface IDriverRepositoryCustom<TEntity>
     bool HasAnySchedules(Guid driverId, bool noTracking = true);
     Task<bool> HasAnyBookingsAsync(Guid driverId, bool noTracking = true);
     bool HasAnyBookings(Guid driverId, bool noTracking = true);
-    
+    Task<TEntity?> GettingDriverByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true);
+    TEntity? GettingDriverByDriverId(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true);
 }

@@ -15,6 +15,20 @@ public class AdminService: BaseEntityService<App.BLL.DTO.AdminArea.AdminDTO,App.
     {
     }
 
+    
+
+    public AdminDTO? GetAdminByAdminId(Guid id, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false)
+    {
+        return Mapper.Map(Repository.GetAdminByAdminId(id, noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored));
+    }
+
+    public async Task<AdminDTO?>? GetAdminWithIncludesByAdminIdAsync(Guid adminId, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false)
+    {
+        return Mapper.Map(await Repository.GetAdminWithIncludesByAdminIdAsync(adminId, noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored));
+    }
+
+   
+
     public async Task<IEnumerable<AdminDTO>> GetAllAdminsOrderedByLastNameAsync(bool noTracking = true)
     {
         return (await Repository.GetAllAdminsOrderedByLastNameAsync(noTracking)).Select(e => Mapper.Map(e))!;

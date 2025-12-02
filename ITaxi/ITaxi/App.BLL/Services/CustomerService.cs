@@ -67,4 +67,14 @@ ICustomerRepository>, ICustomerService
     {
         return Repository.GettingCustomerIdByAppUserId(appUserId);
     }
+
+    public async Task<CustomerDTO?> GettingCustomerByPhotoCustomerIdAsync(Guid customerId, Guid? userId = null, string? roleName = null, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false)
+    {
+        return Mapper.Map(await Repository.GettingCustomerByPhotoCustomerIdAsync(customerId: customerId, userId: userId, roleName: roleName, noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored));
+    }
+
+    public CustomerDTO? GettingCustomerByPhotoCustomerId(Guid customerId, Guid? userId = null, string? roleName = null, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false)
+    {
+        throw new NotImplementedException();
+    }
 }

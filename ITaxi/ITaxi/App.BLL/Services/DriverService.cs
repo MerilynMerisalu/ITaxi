@@ -60,4 +60,14 @@ public class DriverService: BaseEntityService<App.BLL.DTO.AdminArea.DriverDTO, A
     {
         return Mapper.Map(await Repository.GettingDriverByAppUserIdAsync(Id))!;
     }
+
+    public async Task<DriverDTO?> GettingDriverByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return Mapper.Map(await Repository.GettingDriverByDriverIdAsync(driverId: driverId, userId: userId, roleName: roleName, noTracking: noTracking));
+    }
+
+    public DriverDTO? GettingDriverByDriverId(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    {
+        return Mapper.Map(Repository.GettingDriverByDriverId(driverId: driverId, userId: userId, roleName:roleName, noTracking: noTracking));
+    }
 }

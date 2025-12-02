@@ -48,7 +48,7 @@ public class VehicleService : BaseEntityService<App.BLL.DTO.AdminArea.VehicleDTO
         return Repository.GettingOrderedVehiclesWithoutIncludes(noTracking).Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<VehicleDTO?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
+    public async Task<VehicleDTO?>? GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         return Mapper.Map(await Repository.GettingVehicleWithIncludesByIdAsync(id, userId, roleName, noTracking));
     }
@@ -135,4 +135,6 @@ public class VehicleService : BaseEntityService<App.BLL.DTO.AdminArea.VehicleDTO
     {
         return Repository.GetDriverIdByVehicleId(vehicleId, userId, roleName, noTracking, noIncludes);
     }
+
+    
 }

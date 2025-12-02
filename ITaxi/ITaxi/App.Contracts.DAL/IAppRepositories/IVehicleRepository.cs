@@ -20,7 +20,7 @@ public interface IVehicleRepositoryCustom<TEntity>
     IEnumerable<TEntity> GettingOrderedVehiclesWithoutIncludes(bool noTracking = true);
     Task<TEntity?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null,
         bool noTracking = true);
-    Task<TEntity?> GettingVehicleWithoutIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
+    Task<TEntity?>? GettingVehicleWithoutIncludesByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true);
     TEntity? GettingVehicleWithoutIncludesById(Guid id, bool noTracking = true);
     List<int> GettingManufactureYears();
     Task<TEntity?> GettingVehicleWithoutIncludesByDriverIdAndVehicleAvailabilityAsync(BookingDTO booking);

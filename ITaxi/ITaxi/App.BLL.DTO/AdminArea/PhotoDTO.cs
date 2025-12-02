@@ -58,7 +58,7 @@ public class PhotoDTO : DomainEntityMetaId
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
     public VehicleDTO? Vehicle { get; set; }
 
-    public Guid AdminId { get; set; }
+    public Guid? AdminId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Admin))]
     public AdminDTO? Admin { get; set; }

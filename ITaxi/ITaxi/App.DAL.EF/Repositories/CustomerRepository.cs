@@ -102,4 +102,36 @@ public class CustomerRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Cus
             query = query.Include(a => a.AppUser).Include(a => a.DisabilityType).ThenInclude(a => a!.DisabilityTypeName).ThenInclude(a => a.Translations);
         return query;
     }
+
+    public async Task<CustomerDTO?>? GettingCustomerByPhotoCustomerIdAsync(Guid customerId, Guid? userId = null, string? roleName = null, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false)
+    {
+        if(roleName is nameof(Admin))
+        {
+            var customer = Mapper.Map(await CreateQuery(noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored )
+                .FirstOrDefaultAsync(c => c.Id.Equals(customerId)));
+            return customer;
+        }
+        else
+        {
+            var customer = Mapper.Map(await CreateQuery(noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored)
+                .FirstOrDefaultAsync(c => c.Id.Equals(customerId) && c.AppUserId.Equals(userId)));
+            return customer;
+        }
+    }
+
+    public CustomerDTO? GettingCustomerByPhotoCustomerId(Guid customerId, Guid? userId = null, string? roleName = null, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false)
+    {
+        if (roleName is nameof(Admin))
+        {
+            var customer = Mapper.Map(CreateQuery(noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored)
+                .FirstOrDefault(c => c.Id.Equals(customerId)));
+            return customer;
+        }
+        else
+        {
+            var customer = Mapper.Map(CreateQuery(noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored)
+                .FirstOrDefault(c => c.Id.Equals(customerId) && c.AppUserId.Equals(userId)));
+            return customer;
+        }
+    }
 }

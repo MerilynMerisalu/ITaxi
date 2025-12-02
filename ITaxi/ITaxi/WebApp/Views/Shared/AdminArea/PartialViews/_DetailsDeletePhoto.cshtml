@@ -43,7 +43,7 @@
             @Html.DisplayNameFor(model => model.Vehicle)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Vehicle)
+            @Html.DisplayFor(model => model.VehicleIdentifier)
         </dd>
     }
     
@@ -53,7 +53,7 @@
             @Html.DisplayNameFor(model => model.Admin)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Admin)
+            @Html.DisplayFor(model => model.AdminFirstAndLastName)
         </dd>
     }
     @if(Model.Driver != null)
@@ -62,7 +62,7 @@
             @Html.DisplayNameFor(model => model.Driver)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Driver)
+            @Html.DisplayFor(model => model.DriverFirstAndLastName)
         </dd>
     }
 
@@ -72,7 +72,7 @@
             @Html.DisplayNameFor(model => model.Customer)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Customer)
+            @Html.DisplayFor(model => model.CustomerFirstAndLastName)
         </dd>
     }
    

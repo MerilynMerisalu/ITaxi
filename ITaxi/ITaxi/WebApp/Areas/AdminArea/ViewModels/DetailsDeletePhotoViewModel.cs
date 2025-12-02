@@ -56,25 +56,41 @@ public class DetailsDeletePhotoViewModel: AdminAreaBaseViewModel
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(FileNameInDirectory))]
     public string FileNameInDirectory { get; set; } = default!;
     /// <summary>
+    /// Vehicle Identifier
+    /// </summary>
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = "Vehicle")]
+    public string? VehicleIdentifier{ get; set; }
+
+    /// <summary>
     /// Vehicle
     /// </summary>
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
-    public string? Vehicle { get; set; }
+    public VehicleDTO? Vehicle { get; set; }
+    /// <summary>
+    /// Admin's full name
+    /// </summary>
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = "Admin")]
+    public string? AdminFirstAndLastName { get; set; }
     /// <summary>
     /// Admin
     /// </summary>
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Admin))]
-    public string? Admin { get; set; }
-
+    public AdminDTO? Admin { get; set; }
+    /// <summary>
+    /// Driver's full name
+    /// </summary>
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = "Driver")]
+    public string? DriverFirstAndLastName { get; set; }
     /// <summary>
     /// Driver
     /// </summary>
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Driver))]
-    public string? Driver { get; set; }
+    public DriverDTO? Driver { get; set; }
 
+    /// <summary>
+    /// Customer's full name
+    /// </summary>
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = "Customer")]
+    public string? CustomerFirstAndLastName { get; set; }
     /// <summary>
     /// Customer
     /// </summary>
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Customer))]
-    public string? Customer { get; set; }
+    public CustomerDTO? Customer { get; set; }
 }

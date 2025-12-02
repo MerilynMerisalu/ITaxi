@@ -95,7 +95,7 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
             .Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<VehicleDTO?> GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null,
+    public async Task<VehicleDTO?>? GettingVehicleWithIncludesByIdAsync(Guid id, Guid? userId = null,
         string? roleName = null, bool noTracking = true)
     {
         var vehicle = await CreateQuery(userId, roleName, noTracking).FirstOrDefaultAsync(v => v.Id.Equals(id));
@@ -245,4 +245,6 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
         }
         return query;
     }
+
+    
 }

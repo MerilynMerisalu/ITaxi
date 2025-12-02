@@ -23,4 +23,8 @@ public interface ICustomerRepositoryCustom<TEntity>
     bool HasAnyBookings(Guid customerId);
     Task<Guid> GettingCustomerIdByAppUserIdAsync(Guid appUserId);
     Guid GettingCustomerIdByAppUserId(Guid appUserId);
+    Task<TEntity?> GettingCustomerByPhotoCustomerIdAsync(Guid customerId, Guid? userId = null, string? roleName = null,
+        bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false);
+    TEntity? GettingCustomerByPhotoCustomerId(Guid customerId, Guid? userId = null, string? roleName = null,
+       bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false);
 }
