@@ -145,4 +145,18 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
             =  CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes).FirstOrDefault(p => p.AppUserId.Equals(userId) && p.DirectoryTitleId == null);
         return result!.DirectoryTitleId;
     }
+
+    public async Task<bool> IsPhotoOfVehicleAsync(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result = await CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes).AnyAsync(p => p.Id == photoId && (p.VehicleId != null && vehicleId.Equals(vehicleId)));
+        return result;
+    }
+
+    public bool IsPhotoOfVehicle(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result = CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes).Any(p => p.Id == photoId && (p.VehicleId != null && p.VehicleId.Equals(vehicleId)));
+        return result;
+    }
+
+   
 }

@@ -45,4 +45,7 @@ public interface IPhotoRepositoryCustom<TEntity>
         bool noTracking=true, bool noIncludes = false);
     string? GetDirectoryIdByAppUserIdAsString(Guid userId, string? roleName,
         bool noTracking = true, bool noIncludes = false);
+    Task<bool> IsPhotoOfVehicleAsync(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
+    bool IsPhotoOfVehicle(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
+   
 }

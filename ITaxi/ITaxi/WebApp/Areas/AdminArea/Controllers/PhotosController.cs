@@ -99,11 +99,13 @@ public class PhotosController : Controller
         vm.FileNameInDirectory = photo.FileNameInDirectory;
         if (photo.VehicleId.HasValue)
         {
-            var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(photo.VehicleId.Value, roleName: roleName);
-            vm.Vehicle = vehicle;
-            if (vehicle != null)
+            var isVehicle = await _appBLL.Photos.IsPhotoOfVehicleAsync(photoId:photo.Id, vehicleId: photo.VehicleId.Value);
+           
+            if (isVehicle)
             {
-                vm.VehicleIdentifier = vehicle.VehicleIdentifier;
+                var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(photo.VehicleId.Value);
+                vm.IsVehicle = isVehicle;
+                vm.Vehicle = vehicle!.VehicleIdentifier;               ;
             }
         }
         else if (photo.AdminId.HasValue)
