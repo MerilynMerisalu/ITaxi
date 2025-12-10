@@ -103,9 +103,9 @@ public class PhotosController : Controller
            
             if (isVehicle)
             {
-                var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(photo.VehicleId.Value);
+                var vehicleIdentifier = await _appBLL.Photos.GetVehicleIdentifierAsync(photoId: photo.Id, vehicleId: photo.VehicleId.Value);
                 vm.IsVehicle = isVehicle;
-                vm.Vehicle = vehicle!.VehicleIdentifier;               ;
+                vm.Vehicle = vehicleIdentifier;               ;
             }
         }
         

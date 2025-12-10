@@ -324,4 +324,14 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
     {
         return Repository.GetAdminFirstAndLastName(photoId: photoId, adminId: adminId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
     }
+
+    public async Task<string?> GetVehicleIdentifierAsync(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        return await Repository.GetVehicleIdentifierAsync(photoId: photoId, vehicleId:vehicleId, userId: userId, roleName: roleName,noTracking: noTracking, noIncludes:noIncludes, showDeleted:showDeleted);
+    }
+
+    public string? GetVehicleIdentifier(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        return Repository.GetVehicleIdentifier(photoId: photoId, vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
+    }
 }

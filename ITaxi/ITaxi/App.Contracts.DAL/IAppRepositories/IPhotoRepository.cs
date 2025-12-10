@@ -51,4 +51,7 @@ public interface IPhotoRepositoryCustom<TEntity>
     bool IsPhotoOfAdmin(Guid photoId, Guid adminId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false);
     Task<string?> GetAdminFirstAndLastNameAsync(Guid photoId, Guid adminId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false);
     string? GetAdminFirstAndLastName(Guid photoId, Guid adminId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false);
+    Task<string?> GetVehicleIdentifierAsync(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false);
+    string? GetVehicleIdentifier(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false);
+
 }
