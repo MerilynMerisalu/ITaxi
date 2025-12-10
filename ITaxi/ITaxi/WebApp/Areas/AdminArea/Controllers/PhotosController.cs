@@ -39,8 +39,8 @@ public class PhotosController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        var roleName = User.GettingUserRoleName();
-        var res = await _appBLL.Photos.GetAllPhotosWithIncludesAsync(roleName: roleName);
+        
+        var res = await _appBLL.Photos.GetAllPhotosWithIncludesAsync(roleName: null);
         return View(res);
     }
 
@@ -108,13 +108,17 @@ public class PhotosController : Controller
                 vm.Vehicle = vehicle!.VehicleIdentifier;               ;
             }
         }
-        else if (photo.AdminId.HasValue)
+        
+      if (photo.AdminId.HasValue)
         {
-            var admin = await _appBLL.Admins.GetAdminWithIncludesByAdminIdAsync(photo.AdminId.Value);
-            vm.Admin = admin;
-            if (vm.Admin != null)
+
+            var isAdmin = await _appBLL.Photos.IsPhotoOfAdminAsync(photoId: photo.Id, adminId: photo.AdminId.Value, userId: null, roleName: null);
+            
+            if (isAdmin)
             {
-                vm.AdminFirstAndLastName = vm.Admin.AppUser!.FirstAndLastName;
+                vm.IsAdmin = isAdmin;
+                var adminFirstAndLastName = await _appBLL.Photos.GetAdminFirstAndLastNameAsync(photoId: photo.Id, adminId: photo.AdminId.Value);
+                vm.Admin = adminFirstAndLastName;
             }
 
         }

@@ -291,16 +291,37 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return Repository.GetDirectoryIdByAppUserIdAsString(userId: userId, roleName: roleName, noTracking, noIncludes);
     }
 
-    public async Task<bool> IsPhotoOfVehicleAsync(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    public async Task<bool> IsPhotoOfVehicleAsync(Guid photoId, Guid vehicleId, Guid? userId = null,
+        string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        return await Repository.IsPhotoOfVehicleAsync(photoId: photoId, vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes);
+        return await Repository.IsPhotoOfVehicleAsync(photoId: photoId, vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes,
+            showDeleted: showDeleted);
     }
 
-    public bool IsPhotoOfVehicle(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    public bool IsPhotoOfVehicle(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        return Repository.IsPhotoOfVehicle(photoId: photoId, vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes);
+        return Repository.IsPhotoOfVehicle(photoId: photoId, vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
     }
 
     
-    
+
+    public async Task<bool> IsPhotoOfAdminAsync(Guid photoId, Guid adminId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        return await Repository.IsPhotoOfAdminAsync(photoId: photoId, adminId:adminId, userId:userId, roleName:roleName, noTracking:noTracking, noIncludes:noIncludes, showDeleted:showDeleted);
+    }
+
+    public bool IsPhotoOfAdmin(Guid photoId, Guid adminId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        return Repository.IsPhotoOfAdmin(photoId: photoId, adminId: adminId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
+    }
+
+    public async Task<string?> GetAdminFirstAndLastNameAsync(Guid photoId, Guid adminId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        return await Repository.GetAdminFirstAndLastNameAsync(photoId: photoId, adminId: adminId, userId: userId, roleName: roleName, noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
+    }
+
+    public string? GetAdminFirstAndLastName(Guid photoId, Guid adminId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        return Repository.GetAdminFirstAndLastName(photoId: photoId, adminId: adminId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
+    }
 }

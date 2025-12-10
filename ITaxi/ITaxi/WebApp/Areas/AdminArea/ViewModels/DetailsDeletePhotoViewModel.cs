@@ -60,17 +60,20 @@ public class DetailsDeletePhotoViewModel: AdminAreaBaseViewModel
     /// </summary>
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
     public string? Vehicle{ get; set; }
-
+    /// <summary>
+    /// Is vehicle boolean value
+    /// </summary>
     public bool IsVehicle { get; set; }
     /// <summary>
     /// Admin's full name
     /// </summary>
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = "Admin")]
-    public string? AdminFirstAndLastName { get; set; }
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Admin))]
+    public string? Admin { get; set; }
+
     /// <summary>
-    /// Admin
+    /// Is Admin boolean value
     /// </summary>
-    public AdminDTO? Admin { get; set; }
+    public bool IsAdmin { get; set; }
     /// <summary>
     /// Driver's full name
     /// </summary>
