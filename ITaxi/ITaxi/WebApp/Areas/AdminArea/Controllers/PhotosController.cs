@@ -54,11 +54,64 @@ public class PhotosController : Controller
     {
         var vm = new DetailsDeletePhotoViewModel();
         if (id == null) return NotFound();
-
+        
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(id.Value);
         if (photo == null) return NotFound();
+        vm.Id = photo.Id;
+        vm.Title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
+        vm.PhotoURL = photo.PhotoURL!;
+        vm.PhotoFullPath = photo.PhotoFullPath!;
+        vm.ThumbnailRelativePath = photo.ThumbnailRelativePath;
+        vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
+        vm.DirectoryTitleId = photo.DirectoryTitleId;
+        vm.FileNameInDirectory = photo.FileNameInDirectory;
+        if (photo.VehicleId.HasValue)
+        {
+            var isVehicle = await _appBLL.Photos.IsPhotoOfVehicleAsync(photoId: photo.Id, vehicleId: photo.VehicleId.Value);
 
-        
+            if (isVehicle)
+            {
+                var vehicleIdentifier = await _appBLL.Photos.GetVehicleIdentifierAsync(photoId: photo.Id, vehicleId: photo.VehicleId.Value);
+                vm.IsVehicle = isVehicle;
+                vm.Vehicle = vehicleIdentifier; ;
+            }
+        }
+
+        if (photo.AdminId.HasValue)
+        {
+
+            var isAdmin = await _appBLL.Photos.IsPhotoOfAdminAsync(photoId: photo.Id, adminId: photo.AdminId.Value, userId: null, roleName: null);
+
+            if (isAdmin)
+            {
+                vm.IsAdmin = isAdmin;
+                var adminFirstAndLastName = await _appBLL.Photos.GetAdminFirstAndLastNameAsync(photoId: photo.Id, adminId: photo.AdminId.Value);
+                vm.Admin = adminFirstAndLastName;
+            }
+
+        }
+        else if (photo.DriverId.HasValue)
+        {
+            var driver = await _appBLL.Drivers.GettingDriverByDriverIdAsync(driverId: photo.DriverId.Value, roleName: null);
+            vm.Driver = driver;
+
+            if (vm.Driver != null)
+            {
+                vm.DriverFirstAndLastName = vm.Driver.AppUser!.FirstAndLastName;
+            }
+        }
+
+        else if (photo.CustomerId.HasValue)
+        {
+            var customer = await _appBLL.Customers.GettingCustomerByPhotoCustomerIdAsync(customerId: photo.CustomerId.Value,
+            roleName: null);
+            vm.Customer = customer;
+            if (vm.Customer != null)
+            {
+                vm.CustomerFirstAndLastName = vm.Customer.AppUser!.FirstAndLastName;
+            }
+
+        }
 
         return View(vm);
     }

@@ -98,7 +98,7 @@ public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Drive
     public async Task<DriverDTO?> GettingDriverByDriverIdAsync(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
         
-        if (roleName.Equals(nameof(Admin)) )
+        if (roleName == null)
         {
             var driver = Mapper.Map(await CreateQuery(noTracking).FirstOrDefaultAsync(d => d.AppUserId.Equals(userId)));
             return driver;
@@ -116,6 +116,16 @@ public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Drive
 
     public DriverDTO? GettingDriverByDriverId(Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        throw new NotImplementedException();
+        if (roleName == null)
+        {
+            var driver = Mapper.Map(CreateQuery(noTracking).FirstOrDefault(d => d.AppUserId.Equals(userId)));
+            return driver;
+
+        }
+        else
+        {
+            var driver = Mapper.Map(CreateQuery(noTracking).FirstOrDefault(d => d.AppUserId.Equals(userId)));
+            return driver;
+        }
     }
 }
