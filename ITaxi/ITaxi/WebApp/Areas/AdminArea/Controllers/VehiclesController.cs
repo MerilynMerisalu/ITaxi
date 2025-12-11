@@ -349,6 +349,10 @@ public class VehiclesController : Controller
         {
             var photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicle.Id)!;
             var title = string.Empty;
+            var vehicleType = await _appBLL.Vehicles.GetVehicleTypeNameByVehicleIdAsync(vehicleId: vehicle.Id);
+            var vehicleMark = await _appBLL.Vehicles.GetVehicleMarkNameByVehicleIdAsync(vehicleId: vehicle.Id);
+            var vehicleModel = await _appBLL.Vehicles.GetVehicleModelNameByVehicleIdAsync(vehicleId: vehicle.Id); 
+            var vehiclePlateNumber = await _appBLL.Vehicles.GetVehiclePlateNumberByVehicleIdAsync(vehicleId: vehicle.Id);
             foreach (var photo in photos)
             {
                 title = photo?.Title;
@@ -357,7 +361,11 @@ public class VehiclesController : Controller
             {
                 Id = vehicle.Id,
                 Title = title!,
-                VehicleIdentifier = vehicle.VehicleIdentifier,
+                VehicleType = vehicleType,
+                VehicleMark = vehicleMark,
+                VehicleModel = vehicleModel,
+                VehiclePlateNumber = vehiclePlateNumber,
+               
                 Photos = photos,
             };
             return View("Gallery", vm);

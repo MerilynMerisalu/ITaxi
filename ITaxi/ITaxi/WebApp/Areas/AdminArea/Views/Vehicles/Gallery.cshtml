@@ -7,13 +7,10 @@
 @model VehicleGalleryAdminViewModel
 
 @{
-    var options = new JsonSerializerOptions
-    {
-        ReferenceHandler = ReferenceHandler.Preserve,
-        WriteIndented = true
-    };
-    var json = JsonSerializer.Serialize(Model.Photos, options);
+    var json = JsonSerializer.Serialize(Model.Photos);
 }
+   
+    
 <p>
    <a asp-area="AdminArea" asp-controller="Photos" asp-action="VehicleImagesUpload" asp-route-id="@Model.Id">@Common.CreateNew</a>
 </p>

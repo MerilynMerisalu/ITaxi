@@ -136,5 +136,43 @@ public class VehicleService : BaseEntityService<App.BLL.DTO.AdminArea.VehicleDTO
         return Repository.GetDriverIdByVehicleId(vehicleId, userId, roleName, noTracking, noIncludes);
     }
 
-    
+    public async Task<string> GetVehicleTypeNameByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        return await Repository.GetVehicleTypeNameByVehicleIdAsync(vehicleId:  vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes);
+    }
+
+    public string GetVehicleTypeNameByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        return Repository.GetVehicleTypeNameByVehicleId(vehicleId: vehicleId, userId: userId, roleName:roleName, noTracking:noTracking, noIncludes);
+    }
+
+    public async Task<string> GetVehicleMarkNameByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        return await Repository.GetVehicleMarkNameByVehicleIdAsync(vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes);
+    }
+
+    public string GetVehicleMarkNameByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        return Repository.GetVehicleMarkNameByVehicleId(vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes);
+    }
+
+    public async Task<string> GetVehicleModelNameByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+      return await Repository.GetVehicleModelNameByVehicleIdAsync(vehicleId: vehicleId, userId: userId, roleName:roleName, noTracking:noTracking, noIncludes: noIncludes);
+    }
+
+    public string GetVehicleModelNameByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        return Repository.GetVehicleModelNameByVehicleId(vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes);
+    }
+
+    public async Task<string?> GetVehiclePlateNumberByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        return await Repository.GetVehiclePlateNumberByVehicleIdAsync(vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes);
+    }
+
+    public string? GetVehiclePlateNumberByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        return Repository.GetVehiclePlateNumberByVehicleId(vehicleId: vehicleId, userId: userId, roleName:roleName, noTracking:noTracking, noIncludes: noIncludes);
+    }
 }

@@ -246,5 +246,59 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
         return query;
     }
 
-    
+    public async Task<string?> GetVehicleTypeNameByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result = await CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes)
+            .FirstOrDefaultAsync(v => v.Id.Equals(vehicleId));
+        return result!.VehicleType?.VehicleTypeName;
+    }
+
+    public string? GetVehicleTypeNameByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result = CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes)
+           .FirstOrDefault(v => v.Id.Equals(vehicleId));
+        return result!.VehicleType?.VehicleTypeName;
+    }
+
+    public async Task<string> GetVehicleMarkNameByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result = await CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes)
+            .FirstOrDefaultAsync(v => v.Id.Equals(vehicleId));
+        return result!.VehicleMark!.VehicleMarkName;
+    }
+
+    public string GetVehicleMarkNameByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result =  CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes)
+            .FirstOrDefault(v => v.Id.Equals(vehicleId));
+        return result!.VehicleMark!.VehicleMarkName;
+    }
+
+    public async Task<string> GetVehicleModelNameByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result = await CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes)
+            .FirstOrDefaultAsync(v => v.Id.Equals(vehicleId));
+        return result!.VehicleModel!.VehicleModelName;
+    }
+
+    public string GetVehicleModelNameByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result = CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes)
+           .FirstOrDefault(v => v.Id.Equals(vehicleId));
+        return result!.VehicleModel!.VehicleModelName;
+    }
+
+    public async Task<string> GetVehiclePlateNumberByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result = await CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes)
+           .FirstOrDefaultAsync(v => v.Id.Equals(vehicleId));
+        return result!.VehiclePlateNumber;
+    }
+
+    public string GetVehiclePlateNumberByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result =  CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes)
+           .FirstOrDefault(v => v.Id.Equals(vehicleId));
+        return result!.VehiclePlateNumber;
+    }
 }

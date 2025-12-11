@@ -41,6 +41,7 @@ public class PhotosController : Controller
     {
         
         var res = await _appBLL.Photos.GetAllPhotosWithIncludesAsync(roleName: null);
+        
         return View(res);
     }
 
@@ -156,9 +157,13 @@ public class PhotosController : Controller
            
             if (isVehicle)
             {
-                var vehicleIdentifier = await _appBLL.Photos.GetVehicleIdentifierAsync(photoId: photo.Id, vehicleId: photo.VehicleId.Value);
+                var vehicleTypeName = await _appBLL.Vehicles.GetVehicleTypeNameByVehicleIdAsync(vehicleId: photo.VehicleId.Value, userId: null, roleName: null);
+                var vehicleMark = await _appBLL.Vehicles.GetVehicleMarkNameByVehicleIdAsync(vehicleId: photo.VehicleId.Value, userId: null, roleName: null);
+                var vehicleModel = await _appBLL.Vehicles.GetVehicleModelNameByVehicleIdAsync(vehicleId: photo.VehicleId.Value, userId: null, roleName: null);
+                var vehiclePlateNumber = await _appBLL.Vehicles.GetVehiclePlateNumberByVehicleIdAsync(vehicleId: photo.VehicleId.Value, userId: null, roleName: null);
                 vm.IsVehicle = isVehicle;
-                vm.Vehicle = vehicleIdentifier;               ;
+                var vehicleIdentifier = $"{vehicleTypeName} {vehicleMark} {vehicleModel} {vehiclePlateNumber}";
+                vm.Vehicle = vehicleIdentifier;              
             }
         }
         

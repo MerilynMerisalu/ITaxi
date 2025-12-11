@@ -36,4 +36,12 @@ public interface IVehicleRepositoryCustom<TEntity>
     bool HasAnyBookingsAny(Guid vehicleId, bool noTracking = true);
     Task<Guid?> GetDriverIdByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null , bool noTracking = true, bool noIncludes = false);
     Guid? GetDriverIdByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
+    Task<string> GetVehicleTypeNameByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
+    string GetVehicleTypeNameByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
+    Task<string> GetVehicleMarkNameByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
+    string GetVehicleMarkNameByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
+    Task<string> GetVehicleModelNameByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
+    string GetVehicleModelNameByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
+    Task<string?> GetVehiclePlateNumberByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
+    string? GetVehiclePlateNumberByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
 }

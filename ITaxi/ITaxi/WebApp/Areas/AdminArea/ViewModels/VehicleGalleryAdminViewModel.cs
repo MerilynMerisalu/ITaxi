@@ -11,7 +11,11 @@ namespace WebApp.Areas.AdminArea.ViewModels
 
         public string FormattedTitle => Title.Replace("_", " ");
 
-        public string VehicleIdentifier { get; set; } = default!;
+        public string VehicleType { get; set; } = default!;
+        public string VehicleMark { get; set; } = default!;
+        public string VehicleModel { get; set; } = default!;
+        public string VehiclePlateNumber { get; set; } = default!;
+        public string VehicleIdentifier => $"{VehicleType} {VehicleMark} {VehicleModel} {VehiclePlateNumber}";
         public IEnumerable<PhotoDTO?>? Photos { get; set; }
 
         public IFormFile? File{ get; set; }

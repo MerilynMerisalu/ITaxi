@@ -1,6 +1,6 @@
 @using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
-@model IEnumerable<App.BLL.DTO.AdminArea.PhotoDTO?>
+@model IEnumerable<App.BLL.DTO.AdminArea.PhotoIndexDTO?>
 
 @{
     ViewData["Title"] = Common.Index;
@@ -83,7 +83,7 @@
                     @Html.DisplayFor(modelItem => item!.FileNameInDirectory)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item!.Vehicle!.VehicleIdentifier)
+                    @Html.DisplayFor(modelItem => item!.Vehicle)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item!.Driver!.AppUser!.FirstAndLastName)
