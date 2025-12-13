@@ -334,4 +334,11 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
     {
         return Repository.GetVehicleIdentifier(photoId: photoId, vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
     }
+
+    
+
+    public IEnumerable<PhotoDTOGallery> GettingPhotosForGallery(IEnumerable<PhotoDTO>? photos, Guid vehicleId)
+    {
+        return photos!.Select(p => new PhotoDTOGallery() { Id = p.Id, Title = p.Title, PhotoURL = p.PhotoURL, VehicleId = vehicleId, ThumbnailRelativePath = p.ThumbnailRelativePath }).ToList();
+    }
 }

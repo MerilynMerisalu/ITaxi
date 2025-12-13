@@ -364,9 +364,9 @@ public class VehiclesController : Controller
                 VehicleType = vehicleType,
                 VehicleMark = vehicleMark,
                 VehicleModel = vehicleModel,
-                VehiclePlateNumber = vehiclePlateNumber,
-               
-                Photos = photos,
+                VehiclePlateNumber = vehiclePlateNumber!,
+
+                Photos = _appBLL.Photos.GettingPhotosForGallery(photos:photos!, vehicleId: vehicle.Id)
             };
             return View("Gallery", vm);
         }

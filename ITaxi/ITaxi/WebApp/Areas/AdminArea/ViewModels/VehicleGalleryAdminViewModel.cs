@@ -16,7 +16,7 @@ namespace WebApp.Areas.AdminArea.ViewModels
         public string VehicleModel { get; set; } = default!;
         public string VehiclePlateNumber { get; set; } = default!;
         public string VehicleIdentifier => $"{VehicleType} {VehicleMark} {VehicleModel} {VehiclePlateNumber}";
-        public IEnumerable<PhotoDTO?>? Photos { get; set; }
+        public IEnumerable<PhotoDTOGallery?>? Photos { get; set; }
 
         public IFormFile? File{ get; set; }
 
