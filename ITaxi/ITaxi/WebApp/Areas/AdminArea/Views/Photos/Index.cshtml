@@ -83,7 +83,7 @@
                     @Html.DisplayFor(modelItem => item!.FileNameInDirectory)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item!.Vehicle)
+                    @Html.DisplayFor(modelItem => item!.Vehicle!.VehicleIdentifier)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item!.Driver!.AppUser!.FirstAndLastName)
