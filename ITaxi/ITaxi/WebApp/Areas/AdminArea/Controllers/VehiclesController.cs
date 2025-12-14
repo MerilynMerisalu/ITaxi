@@ -347,27 +347,27 @@ public class VehiclesController : Controller
         }
         else
         {
+            var vm = new VehicleGalleryAdminViewModel();
+            
             var photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicle.Id)!;
-            var title = string.Empty;
+            
             var vehicleType = await _appBLL.Vehicles.GetVehicleTypeNameByVehicleIdAsync(vehicleId: vehicle.Id);
             var vehicleMark = await _appBLL.Vehicles.GetVehicleMarkNameByVehicleIdAsync(vehicleId: vehicle.Id);
             var vehicleModel = await _appBLL.Vehicles.GetVehicleModelNameByVehicleIdAsync(vehicleId: vehicle.Id); 
             var vehiclePlateNumber = await _appBLL.Vehicles.GetVehiclePlateNumberByVehicleIdAsync(vehicleId: vehicle.Id);
+            
             foreach (var photo in photos)
             {
-                title = photo?.Title;
+                vm.Id = photo.Id;
+                
             }
-            var vm = new VehicleGalleryAdminViewModel()
-            {
-                Id = vehicle.Id,
-                Title = title!,
-                VehicleType = vehicleType,
-                VehicleMark = vehicleMark,
-                VehicleModel = vehicleModel,
-                VehiclePlateNumber = vehiclePlateNumber!,
+            vm.VehicleType = vehicleType;
+            vm.VehicleMark = vehicleMark;
+            vm.VehicleModel = vehicleModel;
+            vm.VehiclePlateNumber = vehiclePlateNumber;
+            vm.Photos = _appBLL.Photos.GettingPhotosForGallery(photos: photos, vehicleId: vehicle.Id);
 
-                Photos = _appBLL.Photos.GettingPhotosForGallery(photos:photos!, vehicleId: vehicle.Id)
-            };
+
             return View("Gallery", vm);
         }
 

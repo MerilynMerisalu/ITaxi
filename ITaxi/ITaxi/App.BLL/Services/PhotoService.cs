@@ -337,8 +337,9 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
 
     
 
-    public IEnumerable<PhotoDTOGallery> GettingPhotosForGallery(IEnumerable<PhotoDTO>? photos, Guid vehicleId)
+    public IEnumerable<PhotoDTOGallery> GettingPhotosForGallery(IEnumerable<PhotoDTO?>? photos, Guid vehicleId)
     {
-        return photos!.Select(p => new PhotoDTOGallery() { Id = p.Id, Title = p.Title, PhotoURL = p.PhotoURL, VehicleId = vehicleId, ThumbnailRelativePath = p.ThumbnailRelativePath }).ToList();
+        var result = photos!.Select(p => new PhotoDTOGallery() { Id = p.Id, Title = p.Title.Replace('_', ' ').Trim(), PhotoURL = p.PhotoURL, VehicleId = vehicleId, ThumbnailRelativePath = p.ThumbnailRelativePath!,  });
+        return result;
     }
 }

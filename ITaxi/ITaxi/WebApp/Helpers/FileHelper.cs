@@ -21,10 +21,10 @@
 
         public static string ReplaceUnderscoreWithSpaceInFileName(string fileName )
         {
-            return fileName.Replace('_', ' ');
+            return fileName.Replace('_', ' ').Trim();
         }
 
         public static string ReplaceSpaceWithUnderscoreInFileName(string fileName)
-        {  return fileName.Replace(" ",  "_");}
+        {  return fileName.Replace(" ",  "_").Trim();}
     }
 }

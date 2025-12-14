@@ -25,10 +25,10 @@
         <div class="image-container">
             <a data-fslightbox="gallery"
                href="@item!.PhotoURL"
-               data-caption="@Model.FormattedTitle"
+               data-caption="@item.Title"
                class="a">
                 <img src="@item.ThumbnailRelativePath"
-                     alt="@Model.FormattedTitle"
+                     alt="@item.Title"
                      class="image" />
             </a>
             <form method="post" enctype="multipart/form-data" 

@@ -4,6 +4,7 @@
 
 @{
     Layout = Layout;
+    
 }
 
 <!DOCTYPE html>
@@ -24,6 +25,11 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id"/>
         <input type="submit" value="@Common.Delete" class="btn btn-danger"/> |
+            @if(Model.IsVehicle && Model.VehicleId.HasValue)
+                {
+                    <a asp-controller="Vehicles" asp-action="ChooseView" asp-route-id="@Model.VehicleId.Value">@Photo.BackToGallery</a> 
+                }
+                |
         <a asp-action="Index">@Common.BackToList</a>
     </form>
 </div>

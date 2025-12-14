@@ -168,4 +168,7 @@
   <data name="Customer" xml:space="preserve">
     <value>Kasutaja</value>
   </data>
+  <data name="BackToGallery" xml:space="preserve">
+    <value>Tagasi galerii vaatesse</value>
+  </data>
 </root>

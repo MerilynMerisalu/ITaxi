@@ -7,10 +7,6 @@ namespace WebApp.Areas.AdminArea.ViewModels
     {
         public Guid Id { get; set; }
 
-        public string Title { get; set; }
-
-        public string FormattedTitle => Title.Replace("_", " ");
-
         public string VehicleType { get; set; } = default!;
         public string VehicleMark { get; set; } = default!;
         public string VehicleModel { get; set; } = default!;

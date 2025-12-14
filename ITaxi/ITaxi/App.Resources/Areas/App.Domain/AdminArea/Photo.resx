@@ -168,4 +168,7 @@
   <data name="Customer" xml:space="preserve">
     <value>Customer</value>
   </data>
+  <data name="BackToGallery" xml:space="preserve">
+    <value>Back to Gallery</value>
+  </data>
 </root>

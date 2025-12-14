@@ -70,6 +70,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back to Gallery.
+        /// </summary>
+        public static string BackToGallery {
+            get {
+                return ResourceManager.GetString("BackToGallery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customer.
         /// </summary>
         public static string Customer {

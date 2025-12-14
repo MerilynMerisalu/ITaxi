@@ -118,7 +118,7 @@ public static class DataHelper
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
                 
-                wheelChairVehicleType.VehicleTypeName.SetTranslation("Inva", "et-EE");
+                wheelChairVehicleType.VehicleTypeName.SetTranslation("Ratastooli", "et-EE");
                 await context.VehicleTypes.AddAsync(wheelChairVehicleType);
                 await context.SaveChangesAsync();
 

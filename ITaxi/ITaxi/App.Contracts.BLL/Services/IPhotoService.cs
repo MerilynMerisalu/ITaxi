@@ -30,7 +30,7 @@ public interface IPhotoService: IEntityService<App.BLL.DTO.AdminArea.PhotoDTO>,
                             int? width = 300, int? height = 300);
    bool HasAnyImages(IEnumerable<PhotoDTO?> photos);
    //Task<IEnumerable<PhotoDTOGallery>> GettingPhotosForGalleryAsync(List<PhotoDTOGallery>? photos, Guid vehicleId);
-   IEnumerable<PhotoDTOGallery> GettingPhotosForGallery(IEnumerable<PhotoDTO>? photos, Guid vehicleId);
+   IEnumerable<PhotoDTOGallery> GettingPhotosForGallery(IEnumerable<PhotoDTO?>? photos, Guid vehicleId);
 
     
 

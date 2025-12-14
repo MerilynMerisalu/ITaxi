@@ -55,8 +55,13 @@ public class DetailsDeletePhotoViewModel: AdminAreaBaseViewModel
     /// </summary>
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(FileNameInDirectory))]
     public string FileNameInDirectory { get; set; } = default!;
+
     /// <summary>
-    /// Vehicle Identifier
+    /// Vehicle Id
+    /// </summary>
+    public Guid? VehicleId { get; set; }
+    /// <summary>
+    /// Vehicle identifier
     /// </summary>
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
     public string? Vehicle{ get; set; }
