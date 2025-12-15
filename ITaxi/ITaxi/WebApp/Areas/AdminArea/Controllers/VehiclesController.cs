@@ -332,48 +332,33 @@ public class VehiclesController : Controller
     {
         return _appBLL.Vehicles.Exists(id);
     }
-    public async Task<IActionResult> ChooseView(Guid id)
+    
+
+    public async Task<IActionResult> Gallery(Guid vehicleId)
     {
-        
-        var roleName = User.GettingUserRoleName();
-        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, roleName: null);
-        if (vehicle == null)
-            return NotFound();
-        
-        int numberOfPhotos = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(vehicle.Id, roleName: roleName);
-        if (numberOfPhotos == 0)
+        var vm = new VehicleGalleryAdminViewModel();
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(vehicleId);
+        var photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicle.Id)!;
+
+        var vehicleType = await _appBLL.Vehicles.GetVehicleTypeNameByVehicleIdAsync(vehicleId: vehicle.Id);
+        var vehicleMark = await _appBLL.Vehicles.GetVehicleMarkNameByVehicleIdAsync(vehicleId: vehicle.Id);
+        var vehicleModel = await _appBLL.Vehicles.GetVehicleModelNameByVehicleIdAsync(vehicleId: vehicle.Id);
+        var vehiclePlateNumber = await _appBLL.Vehicles.GetVehiclePlateNumberByVehicleIdAsync(vehicleId: vehicle.Id);
+
+        foreach (var photo in photos)
         {
-            return RedirectToAction("VehicleImagesUpload", "Photos", new { id = vehicle.Id });
+            vm.Id = photo.Id;
+
         }
-        else
-        {
-            var vm = new VehicleGalleryAdminViewModel();
-            
-            var photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicle.Id)!;
-            
-            var vehicleType = await _appBLL.Vehicles.GetVehicleTypeNameByVehicleIdAsync(vehicleId: vehicle.Id);
-            var vehicleMark = await _appBLL.Vehicles.GetVehicleMarkNameByVehicleIdAsync(vehicleId: vehicle.Id);
-            var vehicleModel = await _appBLL.Vehicles.GetVehicleModelNameByVehicleIdAsync(vehicleId: vehicle.Id); 
-            var vehiclePlateNumber = await _appBLL.Vehicles.GetVehiclePlateNumberByVehicleIdAsync(vehicleId: vehicle.Id);
-            
-            foreach (var photo in photos)
-            {
-                vm.Id = photo.Id;
-                
-            }
-            vm.VehicleType = vehicleType;
-            vm.VehicleMark = vehicleMark;
-            vm.VehicleModel = vehicleModel;
-            vm.VehiclePlateNumber = vehiclePlateNumber;
-            vm.Photos = _appBLL.Photos.GettingPhotosForGallery(photos: photos, vehicleId: vehicle.Id);
+        vm.VehicleType = vehicleType;
+        vm.VehicleMark = vehicleMark;
+        vm.VehicleModel = vehicleModel;
+        vm.VehiclePlateNumber = vehiclePlateNumber;
+        vm.Photos = _appBLL.Photos.GettingPhotosForGallery(photos: photos, vehicleId: vehicle.Id);
 
-
-            return View("Gallery", vm);
-        }
-
-        
+        return View(vm);
     }
-
    
+    
 
 }

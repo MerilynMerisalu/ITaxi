@@ -39,9 +39,9 @@ public class PhotosController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        
+
         var res = await _appBLL.Photos.GetAllPhotosWithIncludesAsync(roleName: null);
-        
+
         return View(res);
     }
 
@@ -55,7 +55,7 @@ public class PhotosController : Controller
     {
         var vm = new DetailsDeletePhotoViewModel();
         if (id == null) return NotFound();
-        
+
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(id.Value);
         if (photo == null) return NotFound();
         vm.Id = photo.Id;
@@ -129,7 +129,7 @@ public class PhotosController : Controller
         return View(vm);
     }
 
-    
+
     // GET: AdminArea/Photos/Delete/5
     /// <summary>
     /// Admin area photos controller GET method delete
@@ -143,7 +143,7 @@ public class PhotosController : Controller
         var roleName = User.GettingUserRoleName();
         var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
         if (photo == null) return NotFound();
-        
+
         vm.Id = photo.Id;
         vm.Title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
         vm.PhotoURL = photo.PhotoURL!;
@@ -154,8 +154,8 @@ public class PhotosController : Controller
         vm.FileNameInDirectory = photo.FileNameInDirectory;
         if (photo.VehicleId.HasValue)
         {
-            var isVehicle = await _appBLL.Photos.IsPhotoOfVehicleAsync(photoId:photo.Id, vehicleId: photo.VehicleId.Value);
-           
+            var isVehicle = await _appBLL.Photos.IsPhotoOfVehicleAsync(photoId: photo.Id, vehicleId: photo.VehicleId.Value);
+
             if (isVehicle)
             {
                 var vehicleTypeName = await _appBLL.Vehicles.GetVehicleTypeNameByVehicleIdAsync(vehicleId: photo.VehicleId.Value, userId: null, roleName: null);
@@ -167,17 +167,17 @@ public class PhotosController : Controller
                 {
                     vm.VehicleId = photo.VehicleId.Value;
                 }
-                
+
                 var vehicleIdentifier = $"{vehicleTypeName} {vehicleMark} {vehicleModel} {vehiclePlateNumber}";
-                vm.Vehicle = vehicleIdentifier;              
+                vm.Vehicle = vehicleIdentifier;
             }
         }
-        
-      if (photo.AdminId.HasValue)
+
+        if (photo.AdminId.HasValue)
         {
 
             var isAdmin = await _appBLL.Photos.IsPhotoOfAdminAsync(photoId: photo.Id, adminId: photo.AdminId.Value, userId: null, roleName: null);
-            
+
             if (isAdmin)
             {
                 vm.IsAdmin = isAdmin;
@@ -188,8 +188,8 @@ public class PhotosController : Controller
         }
         else if (photo.DriverId.HasValue)
         {
-           var driver = await _appBLL.Drivers.GettingDriverByDriverIdAsync(driverId: photo.DriverId.Value, roleName: roleName);
-           vm.Driver = driver;
+            var driver = await _appBLL.Drivers.GettingDriverByDriverIdAsync(driverId: photo.DriverId.Value, roleName: roleName);
+            vm.Driver = driver;
 
             if (vm.Driver != null)
             {
@@ -208,7 +208,7 @@ public class PhotosController : Controller
             }
 
         }
-        
+
         return View(vm);
     }
 
@@ -235,7 +235,7 @@ public class PhotosController : Controller
         return _appBLL.Photos.Exists(id);
     }*/
 
-// GET: AdminArea/Vehicle/Gallery/5
+    // GET: AdminArea/Vehicle/Gallery/5
     /// <summary>
     /// Admin area vehicle GET method gallery
     /// </summary>
@@ -350,22 +350,22 @@ public class PhotosController : Controller
         }
 
         await _appBLL.SaveChangesAsync();
-        return RedirectToAction("ChooseView", controllerName:"Vehicles", new { id = vehicle.Id });
+        return RedirectToAction("ChooseView", new { vehicleId = vehicle.Id });
     }
 
-    
-    
+
+
 
     [HttpPost]
     [ActionName("UpdateVehicleImageAsync")]
-    public async Task<IActionResult> UpdateVehicleImageAsync(Guid id, Guid vehicleImageId, IFormFile file)
+    public async Task<IActionResult> UpdateVehicleImageAsync(Guid vehicleId, Guid vehicleImageId, IFormFile file)
     {
         var userRole = User.GettingUserRoleName();
-        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, null, roleName: userRole);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(vehicleId, null, roleName: userRole);
         if (vehicle == null) return NotFound();
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(vehicleImageId, roleName: userRole);
         if (photo == null) return NotFound();
-        var vehicleImageFolderId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(id, roleName: userRole);
+        var vehicleImageFolderId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicleId, roleName: userRole);
         if (vehicleImageFolderId == null) return NotFound();
         if (file == null)
         {
@@ -390,7 +390,7 @@ public class PhotosController : Controller
         await _appBLL.Photos.RemoveAsync(photo.Id);
         await _appBLL.SaveChangesAsync();
 
-        int imagesAlreadyUploaded = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(id, null, userRole, true);
+        int imagesAlreadyUploaded = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(vehicleId, null, userRole, true);
         if (_appBLL.Photos.AlreadyHasACertainNumberOfImages(imagesAlreadyUploaded, files: files))
             return Content(string.Format(Common.NumberOfImagesErrorMessage, "4"));
 
@@ -431,9 +431,39 @@ public class PhotosController : Controller
         };
         _appBLL.Photos.Add(replacementPhoto);
         await _appBLL.SaveChangesAsync();
-       
-        return RedirectToAction("ChooseView", controllerName:"Vehicles", new {id = vehicle.Id});
+
+        return RedirectToAction("ChooseView", new { vehicleId = vehicle.Id });
     }
+    /// <summary>
+    /// Choosing a right view
+    /// </summary>
+    /// <param name="vehicleId">VehicleId</param>
+    /// <returns></returns>
+    public async Task<IActionResult> ChooseView(Guid? vehicleId = null)
+    {
+
+        var roleName = User.GettingUserRoleName();
+        if (vehicleId.HasValue)
+        {
+            var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(vehicleId.Value, roleName: null);
+            if (vehicle == null)
+                return NotFound();
+
+            int numberOfPhotos = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(vehicle.Id, roleName: roleName);
+            if (numberOfPhotos == 0)
+            {
+                return RedirectToAction("VehicleImagesUpload", new { id = vehicle.Id });
+            }
+
+            else
+            {
+                return RedirectToAction("Gallery", "Vehicles", routeValues: new { vehicleId = vehicle.Id});
+            }
+
+        }
+        return View();
+    }
+
 }
 
 
