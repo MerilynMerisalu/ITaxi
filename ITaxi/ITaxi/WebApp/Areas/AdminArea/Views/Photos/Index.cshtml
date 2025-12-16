@@ -39,6 +39,9 @@
                 @Html.DisplayNameFor(model => model!.Vehicle!.VehicleIdentifier)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model!.Admin)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model!.Driver)
             </th>
             <th>
@@ -84,6 +87,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item!.Vehicle!.VehicleIdentifier)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item!.Admin!.AppUser!.FirstAndLastName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item!.Driver!.AppUser!.FirstAndLastName)

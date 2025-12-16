@@ -94,12 +94,12 @@ public class PhotosController : Controller
         }
         else if (photo.DriverId.HasValue)
         {
-            var driver = await _appBLL.Drivers.GettingDriverByDriverIdAsync(driverId: photo.DriverId.Value, roleName: null);
-            vm.Driver = driver;
-
-            if (vm.Driver != null)
+            var isDriver = await _appBLL.Photos.IsPhotoOfDriverAsync(photoId: photo.Id, driverId: photo.DriverId.Value);
+            if (vm.IsDriver)
             {
-                vm.DriverFirstAndLastName = vm.Driver.AppUser!.FirstAndLastName;
+                vm.IsDriver = isDriver;
+                var driverFirstAndLastName = await _appBLL.Photos.GetDriverFirstAndLastNameAsync(photoId: photo.Id, driverId: photo.DriverId.Value);
+                vm.Driver = driverFirstAndLastName;
             }
         }
 
@@ -188,12 +188,13 @@ public class PhotosController : Controller
         }
         else if (photo.DriverId.HasValue)
         {
-            var driver = await _appBLL.Drivers.GettingDriverByDriverIdAsync(driverId: photo.DriverId.Value, roleName: roleName);
-            vm.Driver = driver;
+            var isDriver = await _appBLL.Photos.IsPhotoOfDriverAsync(photoId: photo.Id, photo.DriverId.Value);
 
-            if (vm.Driver != null)
+            if (isDriver)
             {
-                vm.DriverFirstAndLastName = vm.Driver.AppUser!.FirstAndLastName;
+                vm.IsDriver = isDriver;
+                var driverFirstAndLastName = await _appBLL.Photos.GetDriverFirstAndLastNameAsync(photoId: photo.Id, driverId: photo.DriverId.Value);
+                vm.Driver = driverFirstAndLastName;
             }
         }
 

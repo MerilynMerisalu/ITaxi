@@ -82,12 +82,12 @@ public class DetailsDeletePhotoViewModel: AdminAreaBaseViewModel
     /// <summary>
     /// Driver's full name
     /// </summary>
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = "Driver")]
-    public string? DriverFirstAndLastName { get; set; }
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Driver))]
+    public string? Driver { get; set; }
     /// <summary>
-    /// Driver
+    /// Is driver
     /// </summary>
-    public DriverDTO? Driver { get; set; }
+    public bool IsDriver { get; set; }
 
     /// <summary>
     /// Customer's full name

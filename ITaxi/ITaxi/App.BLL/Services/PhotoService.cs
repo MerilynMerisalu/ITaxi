@@ -339,7 +339,27 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
 
     public IEnumerable<PhotoDTOGallery> GettingPhotosForGallery(IEnumerable<PhotoDTO?>? photos, Guid vehicleId)
     {
-        var result = photos!.Select(p => new PhotoDTOGallery() { Id = p.Id, Title = p.Title.Replace('_', ' ').Trim(), PhotoURL = p.PhotoURL, VehicleId = vehicleId, ThumbnailRelativePath = p.ThumbnailRelativePath!,  });
+        var result = photos!.Select(p => new PhotoDTOGallery() { Id = p!.Id, Title = p.Title.Replace('_', ' ').Trim(), PhotoURL = p.PhotoURL, VehicleId = vehicleId, ThumbnailRelativePath = p.ThumbnailRelativePath!,  });
         return result;
+    }
+
+    public async Task<bool> IsPhotoOfDriverAsync(Guid photoId, Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        return await Repository.IsPhotoOfDriverAsync(photoId: photoId, driverId: driverId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
+    }
+
+    public bool IsPhotoOfDriver(Guid photoId, Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        return Repository.IsPhotoOfDriver(photoId:photoId, driverId:driverId, userId: userId, roleName: roleName,noTracking: noTracking, noIncludes:noIncludes, showDeleted:showDeleted);
+    }
+
+    public async Task<string?> GetDriverFirstAndLastNameAsync(Guid photoId, Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        return await Repository.GetDriverFirstAndLastNameAsync(photoId: photoId,driverId:driverId, userId:userId, roleName: roleName, noTracking:noTracking, noIncludes:noIncludes, showDeleted:showDeleted);
+    }
+
+    public string? GetDriverFirstAndLastName(Guid photoId, Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        return Repository.GetDriverFirstAndLastName(photoId: photoId, driverId: driverId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
     }
 }

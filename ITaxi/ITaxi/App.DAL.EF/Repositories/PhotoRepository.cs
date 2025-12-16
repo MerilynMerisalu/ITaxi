@@ -181,29 +181,57 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
     public async Task<string?> GetAdminFirstAndLastNameAsync(Guid photoId, Guid adminId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
       var result = await CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted).FirstOrDefaultAsync(p => p.Id.Equals(photoId) && (p.AdminId != null && p.AdminId.Equals(adminId)));
-      return result!.AppUser!.FirstAndLastName;
+      return result?.AppUser?.FirstAndLastName;
     }
 
     public string? GetAdminFirstAndLastName(Guid photoId, Guid adminId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        var result =  CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking,
+        var result = CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking,
             noIncludes: noIncludes, showDeleted: showDeleted)
             .FirstOrDefault(p => p.Id.Equals(photoId) && (p.AdminId != null && p.AdminId.Equals(adminId)));
-        return result!.AppUser!.FirstAndLastName;
+        return result?.AppUser?.FirstAndLastName;
     }
 
     public async Task<string?> GetVehicleIdentifierAsync(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
         var result = await CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted)
-            .FirstOrDefaultAsync(p => p.Id.Equals(photoId) && (vehicleId != null && p.VehicleId.Equals(vehicleId)));
-        return result.Vehicle!.VehicleIdentifier;
+            .FirstOrDefaultAsync(p => p.Id.Equals(photoId) && p.VehicleId.Equals(vehicleId));
+        return result?.Vehicle?.VehicleIdentifier;
 
     }
 
     public string? GetVehicleIdentifier(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
         var result = CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted)
-            .FirstOrDefault(p => p.Id.Equals(photoId) && (vehicleId != null && p.VehicleId.Equals(vehicleId)));
-        return result.Vehicle!.VehicleIdentifier;
+            .FirstOrDefault(p => p.Id.Equals(photoId) && p.VehicleId.Equals(vehicleId));
+        return result?.Vehicle?.VehicleIdentifier;
+    }
+
+    public async Task<bool> IsPhotoOfDriverAsync(Guid photoId, Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        var result = await CreateQuery(userId: userId, roleName:roleName, noTracking:noTracking, noIncludes: noIncludes, showDeleted:showDeleted)
+            .AnyAsync(p => p.Id.Equals(photoId) && p.DriverId.Equals(driverId));
+        return result;
+    }
+
+    public bool IsPhotoOfDriver(Guid photoId, Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        var result = CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted)
+             .Any(p => p.Id.Equals(photoId) && p.DriverId.Equals(driverId));
+        return result;
+    }
+
+    public async Task<string?> GetDriverFirstAndLastNameAsync(Guid photoId, Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        var result = await CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted)
+           .FirstOrDefaultAsync(p => p.Id.Equals(photoId) && p.DriverId.Equals(driverId));
+        return result?.Driver?.AppUser?.FirstAndLastName;
+    }
+
+    public string? GetDriverFirstAndLastName(Guid photoId, Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    {
+        var result = CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted)
+           .FirstOrDefault(p => p.Id.Equals(photoId) && p.DriverId.Equals(driverId));
+        return result?.Driver?.AppUser?.FirstAndLastName;
     }
 }

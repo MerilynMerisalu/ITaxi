@@ -57,13 +57,13 @@
             @Html.DisplayFor(model => model.Admin)
         </dd>
     }
-    @if(Model.Driver != null)
+    @if(Model.IsDriver)
     {
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Driver)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DriverFirstAndLastName)
+            @Html.DisplayFor(model => model.Driver)
         </dd>
     }
 
