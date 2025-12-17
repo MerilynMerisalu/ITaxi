@@ -429,6 +429,8 @@ public class PhotosController : Controller
             ThumbnailRelativePath = thumbnailRelativePath,
             CreatedBy = User.GettingUserEmail(),
             CreatedAt = DateTime.UtcNow,
+            UpdatedBy = User.GettingUserEmail(),
+            UpdatedAt = DateTime.UtcNow,
         };
         _appBLL.Photos.Add(replacementPhoto);
         await _appBLL.SaveChangesAsync();

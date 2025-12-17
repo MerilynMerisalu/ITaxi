@@ -21,7 +21,8 @@
     <partial name="AdminArea/PartialViews/_DetailsDeletePhoto" model="Model"/>
 </div>
 <div>
-    <a asp-action="Index">@Common.BackToList</a>
+    <a asp-action="Index">@Common.BackToList</a> |
+    <a asp-action="ChooseView" asp-route-vehicleId=@Model.VehicleId>@Photo.BackToGallery</a>
 </div>
 </body>
 </html>
