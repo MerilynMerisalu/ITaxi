@@ -97,5 +97,5 @@ public class DetailsDeletePhotoViewModel: AdminAreaBaseViewModel
     /// <summary>
     /// Customer
     /// </summary>
-    public CustomerDTO? Customer { get; set; }
+    public bool IsCustomer { get; set; }
 }

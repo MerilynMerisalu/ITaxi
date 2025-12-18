@@ -105,12 +105,13 @@ public class PhotosController : Controller
 
         else if (photo.CustomerId.HasValue)
         {
-            var customer = await _appBLL.Customers.GettingCustomerByPhotoCustomerIdAsync(customerId: photo.CustomerId.Value,
+            var isCustomer = await _appBLL.Photos.IsPhotoOfCustomerAsync(photoId: photo.Id,customerId: photo.CustomerId.Value,
             roleName: null);
-            vm.Customer = customer;
-            if (vm.Customer != null)
+            vm.IsCustomer = isCustomer;
+            if (vm.IsCustomer)
             {
-                vm.CustomerFirstAndLastName = vm.Customer.AppUser!.FirstAndLastName;
+                var customerFirstAndLastName = await _appBLL.Photos.GetCustomerFirstAndLastNameAsync(photoId: photo.Id, customerId: photo.CustomerId.Value);
+                vm.CustomerFirstAndLastName = customerFirstAndLastName;
             }
 
         }
@@ -200,14 +201,14 @@ public class PhotosController : Controller
 
         else if (photo.CustomerId.HasValue)
         {
-            var customer = await _appBLL.Customers.GettingCustomerByPhotoCustomerIdAsync(customerId: photo.CustomerId.Value,
-            roleName: roleName);
-            vm.Customer = customer;
-            if (vm.Customer != null)
+            var isCustomer = await _appBLL.Photos.IsPhotoOfCustomerAsync(photoId: photo.Id, customerId: photo.CustomerId.Value,
+            roleName: null);
+            vm.IsCustomer = isCustomer;
+            if (vm.IsCustomer)
             {
-                vm.CustomerFirstAndLastName = vm.Customer.AppUser!.FirstAndLastName;
+                var customerFirstAndLastName = await _appBLL.Photos.GetCustomerFirstAndLastNameAsync(photoId: photo.Id, customerId: photo.CustomerId.Value);
+                vm.CustomerFirstAndLastName = customerFirstAndLastName;
             }
-
         }
 
         return View(vm);

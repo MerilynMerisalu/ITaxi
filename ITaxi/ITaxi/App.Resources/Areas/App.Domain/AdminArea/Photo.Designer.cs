@@ -124,11 +124,20 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Photos.
+        ///   Looks up a localized string similar to Photo.
         /// </summary>
         public static string PhotoName {
             get {
                 return ResourceManager.GetString("PhotoName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Photos.
+        /// </summary>
+        public static string Photos {
+            get {
+                return ResourceManager.GetString("Photos", resourceCulture);
             }
         }
         
