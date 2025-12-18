@@ -95,7 +95,7 @@ public class PhotosController : Controller
         else if (photo.DriverId.HasValue)
         {
             var isDriver = await _appBLL.Photos.IsPhotoOfDriverAsync(photoId: photo.Id, driverId: photo.DriverId.Value);
-            if (vm.IsDriver)
+            if (isDriver)
             {
                 vm.IsDriver = isDriver;
                 var driverFirstAndLastName = await _appBLL.Photos.GetDriverFirstAndLastNameAsync(photoId: photo.Id, driverId: photo.DriverId.Value);

@@ -93,9 +93,10 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
                 .ThenInclude(c => c.Translations)
                 .Include(c => c.Vehicle).ThenInclude(c => c.VehicleMark)
                 .Include(c => c.Vehicle).ThenInclude(c => c.VehicleModel)
-                .Include(c => c.Driver).ThenInclude(c => c.AppUser)
-                .Include(c => c.Customer).ThenInclude(c => c.AppUser)
-                .Include(c => c.Admin).ThenInclude(c => c.AppUser);
+                .Include(c => c.AppUser);
+                //.Include(c => c.Driver).ThenInclude(c => c.AppUser)
+                //.Include(c => c.Customer).ThenInclude(c => c.AppUser)
+                //.Include(c => c.Admin).ThenInclude(c => c.AppUser);
 
             return query;
         }
@@ -229,14 +230,14 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
     {
         var result = await CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted)
            .FirstOrDefaultAsync(p => p.Id.Equals(photoId) && p.DriverId.Equals(driverId));
-        return result?.Driver!.AppUser!.FirstAndLastName;
+        return result?.AppUser!.FirstAndLastName;
     }
 
     public string? GetDriverFirstAndLastName(Guid photoId, Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
         var result = CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted)
            .FirstOrDefault(p => p.Id.Equals(photoId) && p.DriverId.Equals(driverId));
-        return result?.Driver!.AppUser!.FirstAndLastName;
+        return result?.AppUser!.FirstAndLastName;
     }
 
     public async Task<bool> IsPhotoOfCustomerAsync(Guid photoId, Guid customerId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
@@ -257,13 +258,13 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
     {
         var result = await CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted)
            .FirstOrDefaultAsync(p => p.Id.Equals(photoId) && p.CustomerId.Equals(customerId));
-        return result!.Customer!.AppUser!.FirstAndLastName;
+        return result!.AppUser!.FirstAndLastName;
     }
 
     public string? GetCustomerFirstAndLastName(Guid photoId, Guid customerId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
         var result = CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted)
            .FirstOrDefault(p => p.Id.Equals(photoId) && p.CustomerId.Equals(customerId));
-        return result?.Customer!.AppUser!.FirstAndLastName;
+        return result?.AppUser!.FirstAndLastName;
     }
 }
