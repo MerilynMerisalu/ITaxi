@@ -44,4 +44,6 @@ public interface IVehicleRepositoryCustom<TEntity>
     string GetVehicleModelNameByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
     Task<string?> GetVehiclePlateNumberByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
     string? GetVehiclePlateNumberByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
+    Task<string?> GetVehicleDriverByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
+    string? GetVehicleDriverByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
 }

@@ -27,6 +27,12 @@
         @Html.DisplayFor(model => model.ThumbnailRelativePath)
     </dd>
     <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.ThumbnailFullPath)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.ThumbnailFullPath)
+    </dd>
+    <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.DirectoryTitleId)
     </dt>
     <dd class="col-sm-10">
@@ -46,7 +52,16 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Vehicle)
         </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Driver)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.VehicleDriver)
+        </dd>
     }
+        
+    
     
     @if(Model.IsAdmin)
     {
@@ -57,7 +72,7 @@
             @Html.DisplayFor(model => model.Admin)
         </dd>
     }
-    @if(Model.IsDriver)
+    @*@if(Model.IsDriver)
     {
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Driver)
@@ -65,15 +80,15 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Driver)
         </dd>
-    }
+    }*@
 
     @if (Model.IsCustomer)
     {
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CustomerFirstAndLastName)
+            @Html.DisplayNameFor(model => model.Customer)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CustomerFirstAndLastName)
+            @Html.DisplayFor(model => model.Customer)
         </dd>
     }
    

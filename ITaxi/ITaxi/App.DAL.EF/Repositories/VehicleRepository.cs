@@ -301,4 +301,18 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
            .FirstOrDefault(v => v.Id.Equals(vehicleId));
         return result!.VehiclePlateNumber;
     }
+
+    public async Task<string?> GetVehicleDriverByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result = await CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes)
+            .FirstOrDefaultAsync(v => v.Id.Equals(vehicleId));
+        return result?.Driver?.AppUser?.FirstAndLastName;
+    }
+
+    public string? GetVehicleDriverByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        var result = CreateQuery(userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes)
+            .FirstOrDefault(v => v.Id.Equals(vehicleId));
+        return result?.Driver?.AppUser?.FirstAndLastName;
+    }
 }

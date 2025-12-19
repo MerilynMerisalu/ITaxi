@@ -175,4 +175,14 @@ public class VehicleService : BaseEntityService<App.BLL.DTO.AdminArea.VehicleDTO
     {
         return Repository.GetVehiclePlateNumberByVehicleId(vehicleId: vehicleId, userId: userId, roleName:roleName, noTracking:noTracking, noIncludes: noIncludes);
     }
+
+    public async Task<string?> GetVehicleDriverByVehicleIdAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        return await Repository.GetVehicleDriverByVehicleIdAsync(vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes);
+    }
+
+    public string? GetVehicleDriverByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    {
+        return Repository.GetVehicleDriverByVehicleId(vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes);
+    }
 }

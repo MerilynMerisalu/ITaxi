@@ -59,7 +59,8 @@ public class PhotosController : Controller
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(id.Value);
         if (photo == null) return NotFound();
         vm.Id = photo.Id;
-        vm.Title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
+        var title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
+        vm.Title = FileHelper.RemoveFileExtensionFromTitle(title);
         vm.PhotoURL = photo.PhotoURL!;
         vm.PhotoFullPath = photo.PhotoFullPath!;
         vm.ThumbnailRelativePath = photo.ThumbnailRelativePath;
@@ -74,8 +75,10 @@ public class PhotosController : Controller
             {
                 vm.VehicleId = photo.VehicleId.Value;
                 var vehicleIdentifier = await _appBLL.Photos.GetVehicleIdentifierAsync(photoId: photo.Id, vehicleId: photo.VehicleId.Value);
+                var driver = await _appBLL.Vehicles.GetVehicleDriverByVehicleIdAsync(vehicleId: photo.VehicleId.Value);
                 vm.IsVehicle = isVehicle;
                 vm.Vehicle = vehicleIdentifier;
+                vm.VehicleDriver = driver;
             }
         }
 
@@ -111,7 +114,7 @@ public class PhotosController : Controller
             if (vm.IsCustomer)
             {
                 var customerFirstAndLastName = await _appBLL.Photos.GetCustomerFirstAndLastNameAsync(photoId: photo.Id, customerId: photo.CustomerId.Value);
-                vm.CustomerFirstAndLastName = customerFirstAndLastName;
+                vm.Customer = customerFirstAndLastName;
             }
 
         }
@@ -146,7 +149,8 @@ public class PhotosController : Controller
         if (photo == null) return NotFound();
 
         vm.Id = photo.Id;
-        vm.Title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
+        var title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
+        vm.Title = FileHelper.RemoveFileExtensionFromTitle(title);
         vm.PhotoURL = photo.PhotoURL!;
         vm.PhotoFullPath = photo.PhotoFullPath!;
         vm.ThumbnailRelativePath = photo.ThumbnailRelativePath;
@@ -159,18 +163,23 @@ public class PhotosController : Controller
 
             if (isVehicle)
             {
+                vm.IsVehicle = isVehicle;
                 var vehicleTypeName = await _appBLL.Vehicles.GetVehicleTypeNameByVehicleIdAsync(vehicleId: photo.VehicleId.Value, userId: null, roleName: null);
                 var vehicleMark = await _appBLL.Vehicles.GetVehicleMarkNameByVehicleIdAsync(vehicleId: photo.VehicleId.Value, userId: null, roleName: null);
                 var vehicleModel = await _appBLL.Vehicles.GetVehicleModelNameByVehicleIdAsync(vehicleId: photo.VehicleId.Value, userId: null, roleName: null);
                 var vehiclePlateNumber = await _appBLL.Vehicles.GetVehiclePlateNumberByVehicleIdAsync(vehicleId: photo.VehicleId.Value, userId: null, roleName: null);
+                var driverId = await _appBLL.Vehicles.GetDriverIdByVehicleIdAsync(vehicleId: photo.VehicleId.Value);
+                var driver = await _appBLL.Vehicles.GetVehicleDriverByVehicleIdAsync(vehicleId: photo.VehicleId.Value);
+                vm.VehicleId = photo.VehicleId.Value;
                 vm.IsVehicle = isVehicle;
-                if (photo.VehicleId.HasValue)
-                {
-                    vm.VehicleId = photo.VehicleId.Value;
-                }
-
+                vm.DriverId = driverId.Value;
+                vm.VehicleDriver = driver;
                 var vehicleIdentifier = $"{vehicleTypeName} {vehicleMark} {vehicleModel} {vehiclePlateNumber}";
                 vm.Vehicle = vehicleIdentifier;
+                    
+                
+
+                
             }
         }
 
@@ -207,7 +216,7 @@ public class PhotosController : Controller
             if (vm.IsCustomer)
             {
                 var customerFirstAndLastName = await _appBLL.Photos.GetCustomerFirstAndLastNameAsync(photoId: photo.Id, customerId: photo.CustomerId.Value);
-                vm.CustomerFirstAndLastName = customerFirstAndLastName;
+                vm.Customer = customerFirstAndLastName;
             }
         }
 
@@ -417,10 +426,11 @@ public class PhotosController : Controller
         var thumbnailFolderPath = Path.Combine(uploadFolderPath, THUMBNAILFOLDERNAME);
         var thumbnailFilePath = await _appBLL.Photos.CreateThumbnailAsync(fullFilePath, fileName: fileName, fileExtension, thumbnailFolderPath);
         var thumbnailRelativePath = FileHelper.GetImageRelativePath(Path.GetRelativePath(_webHostEnvironment.WebRootPath, thumbnailFilePath));
+        string title = FileHelper.RemoveFileExtensionFromTitle(fileName);
         var replacementPhoto = new PhotoDTO()
         {
             Id = Guid.NewGuid(),
-            Title = fileName,
+            Title = title,
             VehicleId = vehicle.Id,
             DirectoryTitleId = vehicleImageFolderId,
             PhotoFullPath = fullFilePath,

@@ -65,6 +65,8 @@ public class DetailsDeletePhotoViewModel: AdminAreaBaseViewModel
     /// </summary>
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
     public string? Vehicle{ get; set; }
+
+    public string? VehicleDriver { get; set; }
     /// <summary>
     /// Is vehicle boolean value
     /// </summary>
@@ -79,6 +81,8 @@ public class DetailsDeletePhotoViewModel: AdminAreaBaseViewModel
     /// Is Admin boolean value
     /// </summary>
     public bool IsAdmin { get; set; }
+
+    public Guid? DriverId { get; set; }
     /// <summary>
     /// Driver's full name
     /// </summary>
@@ -92,8 +96,8 @@ public class DetailsDeletePhotoViewModel: AdminAreaBaseViewModel
     /// <summary>
     /// Customer's full name
     /// </summary>
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = "Customer")]
-    public string? CustomerFirstAndLastName { get; set; }
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Customer))]
+    public string? Customer{ get; set; }
     /// <summary>
     /// Customer
     /// </summary>

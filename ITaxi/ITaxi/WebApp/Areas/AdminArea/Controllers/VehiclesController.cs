@@ -348,7 +348,7 @@ public class VehiclesController : Controller
         foreach (var photo in photos)
         {
             vm.Id = photo.Id;
-
+            
         }
         vm.VehicleType = vehicleType;
         vm.VehicleMark = vehicleMark;
