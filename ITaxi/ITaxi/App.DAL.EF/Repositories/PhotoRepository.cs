@@ -93,10 +93,10 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
                 .ThenInclude(c => c.Translations)
                 .Include(c => c.Vehicle).ThenInclude(c => c.VehicleMark)
                 .Include(c => c.Vehicle).ThenInclude(c => c.VehicleModel)
-                .Include(c => c.AppUser);
-                //.Include(c => c.Driver).ThenInclude(c => c.AppUser)
-                //.Include(c => c.Customer).ThenInclude(c => c.AppUser)
-                //.Include(c => c.Admin).ThenInclude(c => c.AppUser);
+                .Include(c => c.AppUser)
+                .Include(c => c.Driver).ThenInclude(c => c.AppUser)
+                .Include(c => c.Customer).ThenInclude(c => c.AppUser)
+                .Include(c => c.Admin).ThenInclude(c => c.AppUser);
 
             return query;
         }

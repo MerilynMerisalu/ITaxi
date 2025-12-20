@@ -119,6 +119,10 @@ public class PhotosController : Controller
             }
 
         }
+        vm.CreatedBy = photo.CreatedBy;
+        vm.CreatedAt = photo.CreatedAt;
+        vm.UpdatedBy = photo.UpdatedBy;
+        vm.UpdatedAt = photo.UpdatedAt;
 
         return View(vm);
     }
@@ -221,6 +225,11 @@ public class PhotosController : Controller
                 vm.Customer = customerFirstAndLastName;
             }
         }
+        vm.CreatedBy = photo.CreatedBy;
+        vm.CreatedAt = photo.CreatedAt;
+        vm.UpdatedBy = photo.UpdatedBy;
+        vm.UpdatedAt = photo.UpdatedAt;
+
 
         return View(vm);
     }
