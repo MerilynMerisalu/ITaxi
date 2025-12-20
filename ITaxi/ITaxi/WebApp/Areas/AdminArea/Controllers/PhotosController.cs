@@ -60,7 +60,8 @@ public class PhotosController : Controller
         if (photo == null) return NotFound();
         vm.Id = photo.Id;
         var title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
-        vm.Title = FileHelper.RemoveFileExtensionFromTitle(title);
+        vm.Title = title; 
+        vm.FileName = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.FileName);
         vm.PhotoURL = photo.PhotoURL!;
         vm.PhotoFullPath = photo.PhotoFullPath!;
         vm.ThumbnailRelativePath = photo.ThumbnailRelativePath;
@@ -150,7 +151,8 @@ public class PhotosController : Controller
 
         vm.Id = photo.Id;
         var title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
-        vm.Title = FileHelper.RemoveFileExtensionFromTitle(title);
+        vm.Title = title;
+        vm.FileName = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.FileName);
         vm.PhotoURL = photo.PhotoURL!;
         vm.PhotoFullPath = photo.PhotoFullPath!;
         vm.ThumbnailRelativePath = photo.ThumbnailRelativePath;
@@ -325,6 +327,9 @@ public class PhotosController : Controller
 
             int fileNameMaximumLength = 255;
             string fileName = _appBLL.Photos.FileNameFormat(file.FileName, fileNameMaximumLength);
+            string title = _appBLL.Photos.FileNameFormat(file.FileName, fileNameMaximumLength);
+            title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(title);
+            title = FileHelper.RemoveFileExtensionFromTitle(title);
             string fileExtension = Path.GetExtension(file.FileName);
             string fileNameOnDisk = _appBLL.Photos.GetFileNameForDirectory(uploadFolderPath, fileExtension);
             string relativeFilePath = Path.GetRelativePath(_webHostEnvironment.WebRootPath,
@@ -343,7 +348,8 @@ public class PhotosController : Controller
             var photo = new PhotoDTO()
             {
                 Id = Guid.NewGuid(),
-                Title = fileName,
+                Title = title,
+                FileName = fileName,
                 DriverId = driverId,
                 VehicleId = vehicle.Id,
                 DirectoryTitleId = directoryId,
@@ -427,10 +433,13 @@ public class PhotosController : Controller
         var thumbnailFilePath = await _appBLL.Photos.CreateThumbnailAsync(fullFilePath, fileName: fileName, fileExtension, thumbnailFolderPath);
         var thumbnailRelativePath = FileHelper.GetImageRelativePath(Path.GetRelativePath(_webHostEnvironment.WebRootPath, thumbnailFilePath));
         string title = FileHelper.RemoveFileExtensionFromTitle(fileName);
+        title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(title);
+        fileName = FileHelper.ReplaceUnderscoreWithSpaceInFileName(fileName);
         var replacementPhoto = new PhotoDTO()
         {
             Id = Guid.NewGuid(),
             Title = title,
+            FileName = fileName,
             VehicleId = vehicle.Id,
             DirectoryTitleId = vehicleImageFolderId,
             PhotoFullPath = fullFilePath,

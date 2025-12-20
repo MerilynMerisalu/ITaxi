@@ -342,7 +342,7 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
     public IEnumerable<PhotoDTOGallery> GettingPhotosForGallery(IEnumerable<PhotoDTO?>? photos, Guid vehicleId)
     {
          
-        var result = photos!.Select(p => new PhotoDTOGallery() { Id = p!.Id, Title = p.Title.Replace('_', ' ').Remove(p.Title.LastIndexOf('.')).Trim(), PhotoURL = p.PhotoURL, VehicleId = vehicleId, ThumbnailRelativePath = p.ThumbnailRelativePath!,  });
+        var result = photos!.Select(p => new PhotoDTOGallery() { Id = p!.Id, Title = p.Title.Replace('_', ' ').Trim(), PhotoURL = p.PhotoURL, VehicleId = vehicleId, ThumbnailRelativePath = p.ThumbnailRelativePath!,  });
         return result;
     }
 
@@ -385,4 +385,6 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
     {
         return Repository.GetCustomerFirstAndLastName(photoId: photoId, customerId: customerId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
     }
+
+    
 }

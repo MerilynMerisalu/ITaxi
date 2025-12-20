@@ -174,4 +174,7 @@
   <data name="PhotoName" xml:space="preserve">
     <value>Foto</value>
   </data>
+  <data name="FileName" xml:space="preserve">
+    <value>Faili nimi</value>
+  </data>
 </root>

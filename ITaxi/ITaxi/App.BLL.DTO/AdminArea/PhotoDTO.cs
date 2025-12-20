@@ -17,6 +17,9 @@ public class PhotoDTO : DomainEntityMetaId
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Title))]
     public string Title { get; set; } = default!;
+    
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(FileName))]
+    public string FileName { get; set; } = default!;
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(DirectoryTitleId))]
     public string DirectoryTitleId { get; set; } = default!;
