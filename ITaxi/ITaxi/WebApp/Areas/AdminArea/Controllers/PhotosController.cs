@@ -64,7 +64,7 @@ public class PhotosController : Controller
         vm.FileName = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.FileName);
         vm.PhotoURL = photo.PhotoURL!;
         vm.PhotoFullPath = photo.PhotoFullPath!;
-        vm.ThumbnailRelativePath = photo.ThumbnailRelativePath;
+        vm.ThumbnailRelativePath = photo.ThumbnailRelativePath!;
         vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
         vm.DirectoryTitleId = photo.DirectoryTitleId;
         vm.FileNameInDirectory = photo.FileNameInDirectory;

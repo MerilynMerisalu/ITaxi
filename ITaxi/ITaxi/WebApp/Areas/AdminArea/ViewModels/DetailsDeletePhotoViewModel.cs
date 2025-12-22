@@ -1,4 +1,5 @@
 ﻿using App.BLL.DTO.AdminArea;
+using Google.Apis.PeopleService.v1.Data;
 using Humanizer.Localisation;
 using System.ComponentModel.DataAnnotations;
 
@@ -107,4 +108,6 @@ public class DetailsDeletePhotoViewModel: AdminAreaBaseViewModel
     /// Customer
     /// </summary>
     public bool IsCustomer { get; set; }
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = "PhotoName")]
+    public string? Photo { get; set; }
 }
