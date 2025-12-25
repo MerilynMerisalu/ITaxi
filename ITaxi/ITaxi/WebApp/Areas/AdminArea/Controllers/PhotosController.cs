@@ -158,7 +158,8 @@ public class PhotosController : Controller
     /// Admin area photos controller POST method delete
     /// </summary>
     /// <param name="id">Id</param>
-    /// <returns>Redirect to index</returns>
+    /// <param name="vehicleId">Vehicle to which the photo belongs</param>
+    /// <returns>Redirect to vehicle index</returns>
     [HttpPost]
     [ActionName(nameof(VehiclePhotoDelete))]
     [ValidateAntiForgeryToken]
