@@ -164,13 +164,14 @@ public class PhotosController : Controller
     [HttpPost]
     [ActionName(nameof(VehiclePhotoDelete))]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(Guid id, [FromRoute]Guid vehicleId )
+    public async Task<IActionResult> DeleteConfirmed(Guid id, Guid vehicleId )
     {
         var userRole = User.GettingUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(vehicleId, null, roleName: userRole);
         if (vehicle == null) return NotFound();
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(id, roleName: userRole);
         if (photo == null) return NotFound();
+        if (photo.VehicleId != vehicleId) return Forbid();
         var vehicleImageFolderId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicleId, roleName: userRole);
         if (vehicleImageFolderId == null) return NotFound();
         var imageThumbnailFullPath = photo.ThumbnailFullPath;
@@ -331,6 +332,7 @@ public class PhotosController : Controller
         if (vehicle == null) return NotFound();
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(vehicleImageId, roleName: userRole);
         if (photo == null) return NotFound();
+        if (photo.VehicleId != vehicle.Id) return Forbid();
         var vehicleImageFolderId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicleId, roleName: userRole);
         if (vehicleImageFolderId == null) return NotFound();
         if (file == null)

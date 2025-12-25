@@ -23,7 +23,8 @@
     <partial name="AdminArea/PartialViews/_DetailsDeletePhoto" model="Model"/>
 
     <form asp-action="VehiclePhotoDelete">
-        <input type="hidden" asp-for="Id"/>
+        <input type="hidden" asp-for="Id" />
+           <input type="hidden" asp-for="VehicleId" />
         <input type="submit" value="@Common.Delete" class="btn btn-danger"/> |
             @if(Model.IsVehicle && Model.VehicleId.HasValue)
                 {
