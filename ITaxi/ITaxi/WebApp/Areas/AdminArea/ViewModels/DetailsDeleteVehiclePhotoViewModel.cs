@@ -8,7 +8,7 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 /// <summary>
 /// Details delete photo view model
 /// </summary>
-public class DetailsDeletePhotoViewModel: AdminAreaBaseViewModel
+public class DetailsDeleteVehiclePhotoViewModel: AdminAreaBaseViewModel
 {
     /// <summary>
     /// Photo id
@@ -72,6 +72,8 @@ public class DetailsDeletePhotoViewModel: AdminAreaBaseViewModel
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Vehicle))]
     public string? Vehicle{ get; set; }
 
+    public Guid DriverId { get; set; }
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = "Driver")]
     public string? VehicleDriver { get; set; }
     /// <summary>
     /// Is vehicle boolean value
@@ -80,34 +82,7 @@ public class DetailsDeletePhotoViewModel: AdminAreaBaseViewModel
     /// <summary>
     /// Admin's full name
     /// </summary>
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Admin))]
-    public string? Admin { get; set; }
-
-    /// <summary>
-    /// Is Admin boolean value
-    /// </summary>
-    public bool IsAdmin { get; set; }
-
-    public Guid? DriverId { get; set; }
-    /// <summary>
-    /// Driver's full name
-    /// </summary>
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Driver))]
-    public string? Driver { get; set; }
-    /// <summary>
-    /// Is driver
-    /// </summary>
-    public bool IsDriver { get; set; }
-
-    /// <summary>
-    /// Customer's full name
-    /// </summary>
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Customer))]
-    public string? Customer{ get; set; }
-    /// <summary>
-    /// Customer
-    /// </summary>
-    public bool IsCustomer { get; set; }
+    
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Photo), Name = "PhotoName")]
     public string? Photo { get; set; }
 }

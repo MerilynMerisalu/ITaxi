@@ -51,9 +51,9 @@ public class PhotosController : Controller
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>View</returns>
-    public async Task<IActionResult> Details(Guid? id)
+    public async Task<IActionResult> VehiclePhotoDetails(Guid? id)
     {
-        var vm = new DetailsDeletePhotoViewModel();
+        var vm = new DetailsDeleteVehiclePhotoViewModel();
         if (id == null) return NotFound();
 
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(id.Value);
@@ -84,41 +84,7 @@ public class PhotosController : Controller
         }
 
         if (photo.AdminId.HasValue)
-        {
-
-            var isAdmin = await _appBLL.Photos.IsPhotoOfAdminAsync(photoId: photo.Id, adminId: photo.AdminId.Value, userId: null, roleName: null);
-
-            if (isAdmin)
-            {
-                vm.IsAdmin = isAdmin;
-                var adminFirstAndLastName = await _appBLL.Photos.GetAdminFirstAndLastNameAsync(photoId: photo.Id, adminId: photo.AdminId.Value);
-                vm.Admin = adminFirstAndLastName;
-            }
-
-        }
-        else if (photo.DriverId.HasValue)
-        {
-            var isDriver = await _appBLL.Photos.IsPhotoOfDriverAsync(photoId: photo.Id, driverId: photo.DriverId.Value);
-            if (isDriver)
-            {
-                vm.IsDriver = isDriver;
-                var driverFirstAndLastName = await _appBLL.Photos.GetDriverFirstAndLastNameAsync(photoId: photo.Id, driverId: photo.DriverId.Value);
-                vm.Driver = driverFirstAndLastName;
-            }
-        }
-
-        else if (photo.CustomerId.HasValue)
-        {
-            var isCustomer = await _appBLL.Photos.IsPhotoOfCustomerAsync(photoId: photo.Id,customerId: photo.CustomerId.Value,
-            roleName: null);
-            vm.IsCustomer = isCustomer;
-            if (vm.IsCustomer)
-            {
-                var customerFirstAndLastName = await _appBLL.Photos.GetCustomerFirstAndLastNameAsync(photoId: photo.Id, customerId: photo.CustomerId.Value);
-                vm.Customer = customerFirstAndLastName;
-            }
-
-        }
+       
         vm.CreatedBy = photo.CreatedBy;
         vm.CreatedAt = photo.CreatedAt;
         vm.UpdatedBy = photo.UpdatedBy;
@@ -127,27 +93,18 @@ public class PhotosController : Controller
         return View(vm);
     }
 
-    // GET: AdminArea/Photos/Create
-    /// <summary>
-    /// Admin area photos controller GET method create
-    /// </summary>
-    /// <returns>View</returns>
-    public IActionResult Create()
-    {
-        var vm = new CreateEditPhotoViewModel();
-        return View(vm);
-    }
+    
 
 
-    // GET: AdminArea/Photos/Delete/5
+    // GET: AdminArea/Photos/VehiclePhotoDelete/5
     /// <summary>
     /// Admin area photos controller GET method delete
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>View</returns>
-    public async Task<IActionResult> Delete(Guid? id)
+    public async Task<IActionResult> VehiclePhotoDelete(Guid? id, Guid vehicleId)
     {
-        var vm = new DetailsDeletePhotoViewModel();
+        var vm = new DetailsDeleteVehiclePhotoViewModel();
         if (id == null) return NotFound();
         var roleName = User.GettingUserRoleName();
         var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
@@ -178,7 +135,6 @@ public class PhotosController : Controller
                 var driver = await _appBLL.Vehicles.GetVehicleDriverByVehicleIdAsync(vehicleId: photo.VehicleId.Value);
                 vm.VehicleId = photo.VehicleId.Value;
                 vm.IsVehicle = isVehicle;
-                vm.DriverId = driverId.Value;
                 vm.VehicleDriver = driver;
                 var vehicleIdentifier = $"{vehicleTypeName} {vehicleMark} {vehicleModel} {vehiclePlateNumber}";
                 vm.Vehicle = vehicleIdentifier;
@@ -189,42 +145,7 @@ public class PhotosController : Controller
             }
         }
 
-        if (photo.AdminId.HasValue)
-        {
-
-            var isAdmin = await _appBLL.Photos.IsPhotoOfAdminAsync(photoId: photo.Id, adminId: photo.AdminId.Value, userId: null, roleName: null);
-
-            if (isAdmin)
-            {
-                vm.IsAdmin = isAdmin;
-                var adminFirstAndLastName = await _appBLL.Photos.GetAdminFirstAndLastNameAsync(photoId: photo.Id, adminId: photo.AdminId.Value);
-                vm.Admin = adminFirstAndLastName;
-            }
-
-        }
-        else if (photo.DriverId.HasValue)
-        {
-            var isDriver = await _appBLL.Photos.IsPhotoOfDriverAsync(photoId: photo.Id, photo.DriverId.Value);
-
-            if (isDriver)
-            {
-                vm.IsDriver = isDriver;
-                var driverFirstAndLastName = await _appBLL.Photos.GetDriverFirstAndLastNameAsync(photoId: photo.Id, driverId: photo.DriverId.Value);
-                vm.Driver = driverFirstAndLastName;
-            }
-        }
-
-        else if (photo.CustomerId.HasValue)
-        {
-            var isCustomer = await _appBLL.Photos.IsPhotoOfCustomerAsync(photoId: photo.Id, customerId: photo.CustomerId.Value,
-            roleName: null);
-            vm.IsCustomer = isCustomer;
-            if (vm.IsCustomer)
-            {
-                var customerFirstAndLastName = await _appBLL.Photos.GetCustomerFirstAndLastNameAsync(photoId: photo.Id, customerId: photo.CustomerId.Value);
-                vm.Customer = customerFirstAndLastName;
-            }
-        }
+        
         vm.CreatedBy = photo.CreatedBy;
         vm.CreatedAt = photo.CreatedAt;
         vm.UpdatedBy = photo.UpdatedBy;
@@ -240,14 +161,33 @@ public class PhotosController : Controller
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>Redirect to index</returns>
-    /*[HttpPost]
-    [ActionName(nameof(Delete))]
+    [HttpPost]
+    [ActionName(nameof(VehiclePhotoDelete))]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(Guid id)
+    public async Task<IActionResult> DeleteConfirmed(Guid id, [FromRoute]Guid vehicleId )
     {
-        var photo = await _appBLL.Photos.FirstOrDefaultAsync(id);
-        if (photo != null) _appBLL.Photos.Remove(photo);
+        var userRole = User.GettingUserRoleName();
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(vehicleId, null, roleName: userRole);
+        if (vehicle == null) return NotFound();
+        var photo = await _appBLL.Photos.GetPhotoByIdAsync(id, roleName: userRole);
+        if (photo == null) return NotFound();
+        var vehicleImageFolderId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicleId, roleName: userRole);
+        if (vehicleImageFolderId == null) return NotFound();
+        var imageThumbnailFullPath = photo.ThumbnailFullPath;
+        var fullImagePath = photo.PhotoFullPath;
+        if (imageThumbnailFullPath != null)
+        {
+            FileHelper.DeleteFile(imageThumbnailFullPath);
+        }
+        if (fullImagePath != null)
+        {
+            FileHelper.DeleteFile(fullImagePath);
+        }
+        photo.IsDeleted = true;
+        photo.DeletedBy = User.GettingUserEmail();
+        photo.DeletedAt = DateTime.UtcNow;
 
+        await _appBLL.Photos.RemoveAsync(photo.Id);
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
@@ -255,7 +195,7 @@ public class PhotosController : Controller
     private bool PhotoExists(Guid id)
     {
         return _appBLL.Photos.Exists(id);
-    }*/
+    }
 
     // GET: AdminArea/Vehicle/Gallery/5
     /// <summary>
@@ -410,9 +350,10 @@ public class PhotosController : Controller
         {
             FileHelper.DeleteFile(fullImagePath);
         }
+        photo.IsDeleted = true;
         photo.DeletedBy = User.GettingUserEmail();
         photo.DeletedAt = DateTime.UtcNow;
-        photo.IsDeleted = true;
+       
         await _appBLL.Photos.RemoveAsync(photo.Id);
         await _appBLL.SaveChangesAsync();
 

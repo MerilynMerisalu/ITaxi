@@ -38,6 +38,12 @@
             <th>
                 @Html.DisplayNameFor(model => model!.FileNameInDirectory)
             </th>
+            @{
+                var isVehicle = Model.Any(p => p.VehicleId != null);
+                var isDriver = Model.Any(p => p.DriverId != null);
+                var isAdmin = Model.Any(p => p.AdminId != null);
+                var IsCustomer = Model.Any(p => p.CustomerId != null);
+            }
             <th>
                 @Html.DisplayNameFor(model => model!.Vehicle!.VehicleIdentifier)
             </th>
@@ -114,8 +120,13 @@
                 </td>
 
                 <td>
-                    <a asp-action="Details" asp-route-id="@item!.Id">@Common.Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item!.Id">@Common.Delete</a>
+                    @if (item?.VehicleId != null)
+                    {
+                        <a asp-action="Details" asp asp-route-vehicleId="@item!.VehicleId">@Common.Details</a> <span>|</span>
+                        <a asp-action="Delete" asp-route-vehicleId="@item!.VehicleId">@Common.Delete</a>
+                    }
+                    
+                    
                    
 
                 </td>

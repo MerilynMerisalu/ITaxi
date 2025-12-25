@@ -1,5 +1,4 @@
-﻿
-@model WebApp.Areas.AdminArea.ViewModels.DetailsDeletePhotoViewModel
+﻿@model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteVehiclePhotoViewModel
 <dl class="row">
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.Title)
@@ -50,54 +49,23 @@
     <dd class="col-sm-10">
         @Html.DisplayFor(model => model.FileNameInDirectory)
     </dd>
-    @if(Model.IsVehicle)
-    {
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Vehicle)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Vehicle)
-        </dd>
-        
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Driver)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.VehicleDriver)
-        </dd>
-    }
-        
-    
-    
-    else if(Model.IsAdmin)
-    {
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Admin)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Admin)
-        </dd>
-    }
-    else if(Model.IsDriver)
-    {
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Driver)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Driver)
-        </dd>
-    }
 
-    else if (Model.IsCustomer)
-    {
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Customer)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Customer)
-        </dd>
-    }
-   
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Vehicle)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Vehicle)
+    </dd>
+
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.VehicleDriver)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.VehicleDriver)
+    </dd>
+
+
+
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.CreatedBy)
     </dt>
@@ -128,7 +96,7 @@
         @Html.DisplayNameFor(model => model.Photo)
     </dt>
     <dd class="col-sm-10">
-        <img alt="@Model.Title" src="@Model.PhotoURL" height="250" width="250"/>
+        <img alt="@Model.Title" src="@Model.PhotoURL" height="250" width="250" />
     </dd>
-    
+
 </dl>

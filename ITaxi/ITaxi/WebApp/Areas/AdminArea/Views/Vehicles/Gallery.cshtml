@@ -47,8 +47,8 @@
 
                 <a asp-area="AdminArea"
                    asp-controller="Photos"
-                   asp-action="Delete"
-                   asp-route-id="@item.Id"
+                   asp-action="VehiclePhotoDelete"
+                   asp-route-id="@item.Id" asp-route-vehicleId="@item.VehicleId"
                    class="btn btn-danger">
                     <i class="bi bi-trash"></i> @Common.Delete
                 </a>
