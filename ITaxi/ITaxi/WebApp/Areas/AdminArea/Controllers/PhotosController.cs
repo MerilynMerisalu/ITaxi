@@ -138,8 +138,6 @@ public class PhotosController : Controller
                 vm.VehicleDriver = driver;
                 var vehicleIdentifier = $"{vehicleTypeName} {vehicleMark} {vehicleModel} {vehiclePlateNumber}";
                 vm.Vehicle = vehicleIdentifier;
-                    
-                
 
                 
             }
@@ -184,13 +182,14 @@ public class PhotosController : Controller
         {
             FileHelper.DeleteFile(fullImagePath);
         }
+        
         photo.IsDeleted = true;
         photo.DeletedBy = User.GettingUserEmail();
         photo.DeletedAt = DateTime.UtcNow;
 
         await _appBLL.Photos.RemoveAsync(photo.Id);
         await _appBLL.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction("Index", controllerName: "Vehicles");
     }
 
     private bool PhotoExists(Guid id)
