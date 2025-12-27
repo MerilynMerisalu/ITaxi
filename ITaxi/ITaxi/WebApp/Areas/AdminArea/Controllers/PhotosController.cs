@@ -190,7 +190,7 @@ public class PhotosController : Controller
 
         await _appBLL.Photos.RemoveAsync(photo.Id);
         await _appBLL.SaveChangesAsync();
-        return RedirectToAction("Index", controllerName: "Vehicles");
+        return RedirectToAction("Gallery", controllerName: "Vehicles", routeValues: new {vehicleId = photo.VehicleId});
     }
 
     private bool PhotoExists(Guid id)
