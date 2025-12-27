@@ -202,7 +202,7 @@ public class PhotosController : Controller
     /// <summary>
     /// Admin area vehicle GET method gallery
     /// </summary>
-    /// <param name="id">Id</param>
+    /// <param name="vehicleId">Id</param>
     /// <returns>View</returns>
     public async Task<IActionResult> VehicleImagesUpload(Guid? vehicleId)
     {
