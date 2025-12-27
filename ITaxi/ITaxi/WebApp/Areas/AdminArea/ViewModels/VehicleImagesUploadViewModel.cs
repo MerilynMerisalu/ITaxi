@@ -8,7 +8,7 @@ public class VehicleImagesUploadViewModel
     /// <summary>
     /// Id
     /// </summary>
-    public Guid Id { get; set; }
+    public Guid VehicleId { get; set; }
     
     /// <summary>
     /// Vehicle identifier

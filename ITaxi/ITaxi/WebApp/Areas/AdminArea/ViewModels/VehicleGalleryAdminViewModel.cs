@@ -7,6 +7,7 @@ namespace WebApp.Areas.AdminArea.ViewModels
     {
         public Guid Id { get; set; }
 
+        public Guid VehicleId { get; set; }
         public string VehicleType { get; set; } = default!;
         public string VehicleMark { get; set; } = default!;
         public string VehicleModel { get; set; } = default!;

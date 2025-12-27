@@ -204,24 +204,24 @@ public class PhotosController : Controller
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>View</returns>
-    public async Task<IActionResult> VehicleImagesUpload(Guid? id)
+    public async Task<IActionResult> VehicleImagesUpload(Guid? vehicleId)
     {
-        if (id == null) return NotFound();
+        if (vehicleId == null) return NotFound();
         var userRole = User.GettingUserRoleName();
 
         var vm = new VehicleImagesUploadViewModel();
 
-        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value /*roleName: userRole*/);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id:vehicleId.Value);
         if (vehicle == null) return NotFound();
 
         vm.VehicleIdentifier = vehicle.VehicleIdentifier;
-        vm.Id = vehicle.Id;
+        vm.VehicleId = vehicle.Id;
 
         return View(vm);
     }
 
     [AcceptVerbs("Post")]
-    public async Task<IActionResult> VehicleImagesUpload([FromRoute] Guid id, IFormFile? photo1,
+    public async Task<IActionResult> VehicleImagesUpload( Guid vehicleId, IFormFile? photo1,
         IFormFile? photo2,
         IFormFile? photo3,
         IFormFile? photo4)
@@ -229,7 +229,7 @@ public class PhotosController : Controller
         List<IFormFile> files = new List<IFormFile> { photo1, photo2, photo3, photo4 };
 
         string userRoleName = User.GettingUserRoleName();
-        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, null, roleName: userRoleName);
+        var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id:vehicleId, null, roleName: userRoleName);
         if (vehicle == null) return NotFound();
 
         var driverId = await _appBLL.Vehicles.GetDriverIdByVehicleIdAsync(vehicle.Id, roleName: userRoleName);
@@ -238,7 +238,7 @@ public class PhotosController : Controller
         if (files == null || !files.Any())
             return Content(Common.FilesAreRequired);
 
-        int imagesAlreadyUploaded = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(id, null, userRoleName, true);
+        int imagesAlreadyUploaded = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(vehicleId, null, userRoleName, true);
         if (_appBLL.Photos.AlreadyHasACertainNumberOfImages(imagesAlreadyUploaded, files: files))
             return Content(string.Format(Common.NumberOfImagesErrorMessage, "4"));
 
@@ -416,27 +416,37 @@ public class PhotosController : Controller
     /// <returns></returns>
     public async Task<IActionResult> ChooseView(Guid? vehicleId = null)
     {
+        if (!vehicleId.HasValue)
+        {
+            return View();
+        }
 
         var roleName = User.GettingUserRoleName();
-        if (vehicleId.HasValue)
+
+        var vehicle = await _appBLL.Vehicles
+            .GettingVehicleWithIncludesByIdAsync(vehicleId.Value, roleName: null);
+
+        if (vehicle == null)
         {
-            var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(vehicleId.Value, roleName: null);
-            if (vehicle == null)
-                return NotFound();
-
-            int numberOfPhotos = await _appBLL.Photos.GetPhotoCountByVehicleIdAsync(vehicle.Id, roleName: roleName);
-            if (numberOfPhotos == 0)
-            {
-                return RedirectToAction("VehicleImagesUpload", new { id = vehicle.Id });
-            }
-
-            else
-            {
-                return RedirectToAction("Gallery", "Vehicles", routeValues: new { vehicleId = vehicle.Id});
-            }
-
+            return NotFound();
         }
-        return View();
+
+        int numberOfPhotos = await _appBLL.Photos
+            .GetPhotoCountByVehicleIdAsync(vehicle.Id);
+
+        if (numberOfPhotos == 0)
+        {
+            return RedirectToAction(
+                "VehicleImagesUpload",
+                new { vehicleId = vehicle.Id }
+            );
+        }
+
+        return RedirectToAction(
+            "Gallery",
+            "Vehicles",
+            new { vehicleId = vehicle.Id }
+        );
     }
 
 }
