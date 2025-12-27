@@ -12,7 +12,28 @@
    
     
 <p>
-   <a asp-area="AdminArea" asp-controller="Photos" asp-action="VehicleImagesUpload" asp-route-VehicleId="@Model.VehicleId">@Common.CreateNew</a>
+    <div class="d-flex justify-content-between align-items-center w-100">
+        <a class="btn btn-link p-0"
+           asp-area="AdminArea"
+           asp-controller="Photos"
+           asp-action="VehicleImagesUpload"
+           asp-route-vehicleId="@Model.VehicleId">
+            @Common.CreateNew
+        </a>
+
+        <form method="post"
+              asp-area="AdminArea"
+              asp-controller="Photos"
+              asp-action="DeleteAllVehiclePhotos"
+              asp-route-vehicleId="@Model.VehicleId"
+              class="m-0">
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash me-2"></i>
+                @Gallery.DeleteAllPhotos
+            </button>
+        </form>
+    </div>
+
 </p>
 
 <p>
