@@ -20,18 +20,21 @@
            asp-route-vehicleId="@Model.VehicleId">
             @Common.CreateNew
         </a>
-
-        <form method="post"
-              asp-area="AdminArea"
-              asp-controller="Photos"
-              asp-action="DeleteAllVehiclePhotos"
-              asp-route-vehicleId="@Model.VehicleId"
-              class="m-0">
-            <button type="submit" class="btn btn-danger">
-                <i class="bi bi-trash me-2"></i>
-                @Gallery.DeleteAllPhotos
-            </button>
-        </form>
+        @if (Model.Photos!.Count() > 1)
+        {
+            <form method="post"
+                  asp-area="AdminArea"
+                  asp-controller="Photos"
+                  asp-action="DeleteAllVehiclePhotos"
+                  asp-route-vehicleId="@Model.VehicleId"
+                  class="m-0">
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash me-2"></i>
+                    @Gallery.DeleteAllPhotos
+                </button>
+            </form>
+        }
+        
     </div>
 
 </p>
