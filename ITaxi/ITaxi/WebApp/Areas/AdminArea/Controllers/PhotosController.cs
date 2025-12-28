@@ -249,7 +249,7 @@ public class PhotosController : Controller
 
         string? directoryId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id, null, userRoleName);
         string[] directoryNames = { "Vehicles" };
-        string uploadFolderPath = _appBLL.Photos.GetDirectoryPath(_webHostEnvironment.WebRootPath, directoryNames);
+        string uploadFolderPath = _appBLL.Photos.CreateDirectoryPath(_webHostEnvironment.WebRootPath, directoryNames);
         const string THUMBNAILFOLDERNAME = "Thumbnails";
         string thumbnailFolderPath = string.Empty;
         if (string.IsNullOrEmpty(directoryId))
@@ -367,7 +367,7 @@ public class PhotosController : Controller
         if (!_appBLL.Photos.AreAllFilesCorrect(files))
             return Content(string.Format(Common.FilesAreNotCorrect, "1", "b", "5", "MB"));
         string[] directoryNames = { "Vehicles" };
-        string uploadFolderPath = _appBLL.Photos.GetDirectoryPath(_webHostEnvironment.WebRootPath, directoryNames, vehicleImageFolderId);
+        string uploadFolderPath = _appBLL.Photos.CreateDirectoryPath(_webHostEnvironment.WebRootPath, directoryNames, vehicleImageFolderId);
         const string THUMBNAILFOLDERNAME = "Thumbnails";
         int fileNameMaximumLength = 255;
         string fileName = _appBLL.Photos.FileNameFormat(file.FileName, fileNameMaximumLength);
@@ -458,7 +458,30 @@ public class PhotosController : Controller
     {
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id: vehicleId);
         if (vehicle == null) return NotFound();
-
+        var directoryId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id);
+        if (directoryId == null) return NotFound();
+        var photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicleId: vehicle.Id);
+        if (photos == null) return RedirectToAction("Gallery", "Vehicles", new { vehicleId = vehicle.Id });
+        var result = _appBLL.Photos.DoAllPhotosBelongToDirectory(photos: photos, directoryId: directoryId);
+        if (!result) return Forbid();
+        var photoFullPaths = _appBLL.Photos.GetPhotosFullPaths(photos: photos);
+        var thumbnailsFullPaths = _appBLL.Photos.GetThumbnailsFullPaths(photos: photos);
+        foreach (var photoFullPath in photoFullPaths)
+        {
+            FileHelper.DeleteFile(photoFullPath);
+        }
+        foreach (var thumbnailFullPath in thumbnailsFullPaths)
+        {
+            FileHelper.DeleteFile(thumbnailFullPath);
+        }
+        foreach(var photo in photos)
+        { photo.DeletedBy = User.GettingUserEmail(); 
+            photo.DeletedAt = DateTime.UtcNow;
+            photo.IsDeleted = true;
+            _appBLL.Photos.Remove(photo);
+            await _appBLL.SaveChangesAsync();
+        }
+        
         return RedirectToAction("Gallery", "Vehicles", new { vehicleId = vehicle.Id });
     }
 }

@@ -51,7 +51,7 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return await Repository.GetPhotoCountByVehicleIdAsync(vehicleId, userId, roleName, noTracking, isCountingDeleted);
     }
 
-    public int GetPhotoCountByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null, 
+    public int GetPhotoCountByVehicleId(Guid vehicleId, Guid? userId = null, string? roleName = null,
         bool noTracking = true, bool isCountingDeleted = false)
     {
         return Repository.GetPhotoCountByVehicleId(vehicleId, userId, roleName, noTracking, isCountingDeleted);
@@ -114,7 +114,7 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return true;
     }
 
-    public string? GetDirectoryPath(string startOfDirectoryPath, string[]? middleParts, string? directoryName = null)
+    public string? CreateDirectoryPath(string startOfDirectoryPath, string[]? middleParts, string? directoryName = null)
     {
         var directoryFullPath = Path.Combine(startOfDirectoryPath, "Images\\");
         if (string.IsNullOrWhiteSpace(startOfDirectoryPath))
@@ -178,9 +178,9 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         catch (Exception ex) when (ex is UnauthorizedAccessException || ex is DirectoryNotFoundException
             || ex is IOException)
         {
-            
-                return false;
-            
+
+            return false;
+
         }
         return true;
     }
@@ -233,15 +233,15 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return true;
     }
 
-    public async Task<IEnumerable<PhotoDTO?>>? GetAllPhotosByVehicleIdWithIncludesAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    public async Task<List<PhotoDTO?>>? GetAllPhotosByVehicleIdWithIncludesAsync(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
         return ((await Repository.GetAllPhotosByVehicleIdWithIncludesAsync(vehicleId: vehicleId, roleName: roleName,
-            userId: userId, noTracking: noTracking, noIncludes: noIncludes)).Select(p => Mapper.Map(p)));
+            userId: userId, noTracking: noTracking, noIncludes: noIncludes)).Select(p => Mapper.Map(p))).ToList();
     }
 
-    public IEnumerable<PhotoDTO?>? GetAllPhotosByVehicleIdWithIncludes(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+    public List<PhotoDTO?>? GetAllPhotosByVehicleIdWithIncludes(Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
     {
-        return Repository.GetAllPhotosByVehicleIdWithIncludes(vehicleId, userId, roleName, noTracking, noIncludes).Select(p => Mapper.Map(p));
+        return Repository.GetAllPhotosByVehicleIdWithIncludes(vehicleId, userId, roleName, noTracking, noIncludes).Select(p => Mapper.Map(p)).ToList();
     }
 
     public string[] GetFilesRelativePaths(IEnumerable<PhotoDTO?> photos) =>
@@ -249,7 +249,7 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
 
     public string[] GetFileNames(IEnumerable<PhotoDTO?> photos) =>
                 photos.Select(p => p!.Title.Replace("_", " ") ?? "Unknown").ToArray();
-    
+
     public async Task<string> CreateThumbnailAsync(string fullFilePath, string fileName, string fileExtension,
         string thumbFullFilePath, int? width = 300, int? height = 300)
     {
@@ -305,11 +305,11 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return Repository.IsPhotoOfVehicle(photoId: photoId, vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
     }
 
-    
+
 
     public async Task<bool> IsPhotoOfAdminAsync(Guid photoId, Guid adminId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        return await Repository.IsPhotoOfAdminAsync(photoId: photoId, adminId:adminId, userId:userId, roleName:roleName, noTracking:noTracking, noIncludes:noIncludes, showDeleted:showDeleted);
+        return await Repository.IsPhotoOfAdminAsync(photoId: photoId, adminId: adminId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
     }
 
     public bool IsPhotoOfAdmin(Guid photoId, Guid adminId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
@@ -329,7 +329,7 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
 
     public async Task<string?> GetVehicleIdentifierAsync(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        return await Repository.GetVehicleIdentifierAsync(photoId: photoId, vehicleId:vehicleId, userId: userId, roleName: roleName,noTracking: noTracking, noIncludes:noIncludes, showDeleted:showDeleted);
+        return await Repository.GetVehicleIdentifierAsync(photoId: photoId, vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
     }
 
     public string? GetVehicleIdentifier(Guid photoId, Guid vehicleId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
@@ -337,12 +337,12 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return Repository.GetVehicleIdentifier(photoId: photoId, vehicleId: vehicleId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
     }
 
-    
+
 
     public IEnumerable<PhotoDTOGallery> GettingPhotosForGallery(IEnumerable<PhotoDTO?>? photos, Guid vehicleId)
     {
-         
-        var result = photos!.Select(p => new PhotoDTOGallery() { Id = p!.Id, Title = p.Title.Replace('_', ' ').Trim(), PhotoURL = p.PhotoURL, VehicleId = vehicleId, ThumbnailRelativePath = p.ThumbnailRelativePath!,  });
+
+        var result = photos!.Select(p => new PhotoDTOGallery() { Id = p!.Id, Title = p.Title.Replace('_', ' ').Trim(), PhotoURL = p.PhotoURL, VehicleId = vehicleId, ThumbnailRelativePath = p.ThumbnailRelativePath!, });
         return result;
     }
 
@@ -353,12 +353,12 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
 
     public bool IsPhotoOfDriver(Guid photoId, Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        return Repository.IsPhotoOfDriver(photoId:photoId, driverId:driverId, userId: userId, roleName: roleName,noTracking: noTracking, noIncludes:noIncludes, showDeleted:showDeleted);
+        return Repository.IsPhotoOfDriver(photoId: photoId, driverId: driverId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
     }
 
     public async Task<string?> GetDriverFirstAndLastNameAsync(Guid photoId, Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
     {
-        return await Repository.GetDriverFirstAndLastNameAsync(photoId: photoId,driverId:driverId, userId:userId, roleName: roleName, noTracking:noTracking, noIncludes:noIncludes, showDeleted:showDeleted);
+        return await Repository.GetDriverFirstAndLastNameAsync(photoId: photoId, driverId: driverId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
     }
 
     public string? GetDriverFirstAndLastName(Guid photoId, Guid driverId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
@@ -386,5 +386,20 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return Repository.GetCustomerFirstAndLastName(photoId: photoId, customerId: customerId, userId: userId, roleName: roleName, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted);
     }
 
-    
+    public bool DoAllPhotosBelongToDirectory(List<PhotoDTO?> photos, string directoryId)
+    {
+        return photos.TrueForAll(p => p!.DirectoryTitleId.Equals(directoryId));
+    }
+
+    public List<string?> GetThumbnailsFullPaths(List<PhotoDTO?> photos)
+    {
+        return photos.Select(p => p!.ThumbnailFullPath).ToList();
+    }
+
+    public List<string?> GetPhotosFullPaths(List<PhotoDTO?> photos)
+    {
+        return photos.Select(p => p!.PhotoFullPath).ToList();
+    }
 }
+
+   

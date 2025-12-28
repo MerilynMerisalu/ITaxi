@@ -30,12 +30,12 @@ public interface IPhotoRepositoryCustom<TEntity>
        string? roleName = null,
        bool noTracking = true,
        bool noIncludes = false);
-    Task<IEnumerable<TEntity?>>? GetAllPhotosByVehicleIdWithIncludesAsync(Guid vehicleId, 
+    Task<List<TEntity?>>? GetAllPhotosByVehicleIdWithIncludesAsync(Guid vehicleId, 
         Guid? userId = null,
        string? roleName = null,
        bool noTracking = true,
        bool noIncludes = false);
-  IEnumerable<TEntity?>? GetAllPhotosByVehicleIdWithIncludes(Guid vehicleId,
+  List<TEntity?>? GetAllPhotosByVehicleIdWithIncludes(Guid vehicleId,
         Guid? userId = null,
        string? roleName = null,
        bool noTracking = true,
@@ -61,4 +61,5 @@ public interface IPhotoRepositoryCustom<TEntity>
     bool IsPhotoOfCustomer(Guid photoId, Guid customerId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false);
     Task<string?> GetCustomerFirstAndLastNameAsync(Guid photoId, Guid customerId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false);
     string? GetCustomerFirstAndLastName(Guid photoId, Guid customerId, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false);
+    
 }
