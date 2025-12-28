@@ -5,6 +5,7 @@ using App.Contracts.BLL;
 using App.Contracts.BLL.Services;
 using Base.Extensions;
 using Base.Resources;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
@@ -451,8 +452,9 @@ public class PhotosController : Controller
 
 
 
-    [HttpPost]
-    public async Task<IActionResult> DeleteAllVehiclePhotos(Guid vehicleId)
+    [HttpPost("{vehicleId:guid}")]
+    
+    public async Task<IActionResult> DeleteAllVehiclePhotos([FromRoute]Guid vehicleId)
     {
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id: vehicleId);
         if (vehicle == null) return NotFound();

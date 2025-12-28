@@ -354,6 +354,7 @@ public class VehiclesController : Controller
         vm.VehicleMark = vehicleMark;
         vm.VehicleModel = vehicleModel;
         vm.VehiclePlateNumber = vehiclePlateNumber;
+        vm.VehicleId = vehicle.Id;
         vm.Photos = _appBLL.Photos.GettingPhotosForGallery(photos: photos, vehicleId: vehicle.Id);
 
         return View(vm);
