@@ -458,22 +458,16 @@ public class PhotosController : Controller
     {
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id: vehicleId);
         if (vehicle == null) return NotFound();
-        var directoryId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id);
+        string directoryId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id);
         if (directoryId == null) return NotFound();
         var photos = await _appBLL.Photos.GetAllPhotosByVehicleIdWithIncludesAsync(vehicleId: vehicle.Id);
         if (photos == null) return RedirectToAction("Gallery", "Vehicles", new { vehicleId = vehicle.Id });
         var result = _appBLL.Photos.DoAllPhotosBelongToDirectory(photos: photos, directoryId: directoryId);
         if (!result) return Forbid();
-        var photoFullPaths = _appBLL.Photos.GetPhotosFullPaths(photos: photos);
-        var thumbnailsFullPaths = _appBLL.Photos.GetThumbnailsFullPaths(photos: photos);
-        foreach (var photoFullPath in photoFullPaths)
-        {
-            FileHelper.DeleteFile(photoFullPath);
-        }
-        foreach (var thumbnailFullPath in thumbnailsFullPaths)
-        {
-            FileHelper.DeleteFile(thumbnailFullPath);
-        }
+        
+        string directoryFullPath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", "Vehicles", directoryId); 
+        DirectoryHelper.DeleteDirectory(directoryFullPath);
+
         foreach(var photo in photos)
         { photo.DeletedBy = User.GettingUserEmail(); 
             photo.DeletedAt = DateTime.UtcNow;
