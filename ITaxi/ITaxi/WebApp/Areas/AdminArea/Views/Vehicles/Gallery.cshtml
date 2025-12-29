@@ -147,6 +147,7 @@
             });
 
             // only DeleteAll uses confirm window
+            // Used Chatgpt for help (29.12.2025)
             window.ConfirmDelete = function () {
                 const msg = @Html.Raw(
                          System.Text.Json.JsonSerializer.Serialize(Gallery.ConfirmDelete)
