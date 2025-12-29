@@ -1,33 +1,52 @@
 ﻿@using System.Text.Json
+@using System.Linq
 @using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
-@using System.Text.Json.Serialization
 @using WebApp.Areas.AdminArea.ViewModels
 
 @model VehicleGalleryAdminViewModel
 
 @{
-    var json = JsonSerializer.Serialize(Model.Photos);
+
+
+    var photoCount = Model.Photos?.Count() ?? 0;
+    var canAddNew = photoCount < 4;
+    var canDeleteAll = photoCount > 1;
 }
-   
-    
-<p>
-    <div class="d-flex justify-content-between align-items-center w-100">
-        <a class="btn btn-link p-0"
-           asp-area="AdminArea"
-           asp-controller="Photos"
-           asp-action="VehicleImagesUpload"
-           asp-route-vehicleId="@Model.VehicleId">
-            @Common.CreateNew
-        </a>
-        @if (Model.Photos!.Count() > 1)
+
+
+<div class="d-flex align-items-center w-100 mb-3">
+
+    <div style="width:160px;">
+        @if (canAddNew)
+        {
+            <a class="btn btn-link p-0"
+               asp-area="AdminArea"
+               asp-controller="Photos"
+               asp-action="VehicleImagesUpload"
+               asp-route-vehicleId="@Model.VehicleId">
+                @Common.CreateNew
+            </a>
+        }
+        else
+        {
+
+            <span class="d-inline-block w-100" style="height:1.5rem;"></span>
+        }
+    </div>
+
+    <div class="flex-grow-1"></div>
+
+
+    <div>
+        @if (canDeleteAll)
         {
             <form method="post"
                   asp-area="AdminArea"
                   asp-controller="Photos"
-                  onsubmit="return ConfirmDelete();"
                   asp-action="DeleteAllVehiclePhotos"
                   asp-route-vehicleId="@Model.VehicleId"
+                  onsubmit="return ConfirmDelete();"
                   class="m-0">
                 <button type="submit" class="btn btn-danger">
                     <i class="bi bi-trash me-2"></i>
@@ -35,98 +54,104 @@
                 </button>
             </form>
         }
-        
+        else
+        {
+            <button class="btn btn-danger invisible" tabindex="-1" aria-hidden="true">
+                <i class="bi bi-trash me-2"></i>
+                @Gallery.DeleteAllPhotos
+            </button>
+        }
     </div>
-
-</p>
-
-<p>
-    <b class="title">@Model.VehicleIdentifier</b>
-</p>
-
-<div id="gallery" class="gallery-view" >
-    @foreach (var item in Model.Photos!)
-    {
-        <div class="image-container">
-            <a data-fslightbox="gallery"
-               href="@item!.PhotoURL"
-               data-caption="@item.Title"
-               class="a">
-                <img src="@item.ThumbnailRelativePath"
-                     alt="@item.Title"
-                     class="image" />
-            </a>
-            <form method="post" enctype="multipart/form-data" 
-                asp-area="AdminArea"
-                asp-controller="Photos"
-                asp-action="UpdateVehicleImageAsync"
-                asp-route-id="@item.VehicleId"
-                asp-route-vehicleImageId="@item.Id"
-                asp-route-vehicleId="@item.VehicleId"
-                
-            >
-            <div class="buttons">
-                <label for="fileInput_@item.Id" class="btn btn-primary">
-                    <i class="bi bi-upload"></i> @Gallery.Upload
-                </label>
-                    <input type="file" id=fileInput_@item.Id name="file" class="input" onchange="this.form.submit();" />
-
-                <a asp-area="AdminArea"
-                   asp-controller="Photos"
-                   asp-action="VehiclePhotoDelete"
-                   asp-route-id="@item.Id" asp-route-vehicleId="@item.VehicleId"
-                      
-                   class="btn btn-danger">
-                    <i class="bi bi-trash"></i> @Common.Delete
-                </a>
-            </div>
-            </form>
-        </div>
-        
-    }
 </div>
 
 
+<div class="mb-3">
+    <b class="title">@Model.VehicleIdentifier</b>
+</div>
 
+
+<div id="gallery" class="gallery-view">
+    @foreach (var item in Model.Photos!)
+    {
+        <div class="image-container">
+
+
+            <a data-fslightbox="gallery"
+               href="@item?.PhotoURL"
+               data-caption="@item?.Title">
+                <img src="@item?.ThumbnailRelativePath"
+                     alt="@item?.Title"
+                     class="image" />
+            </a>
+
+            <div class="buttons">
+
+
+                <form method="post"
+                      enctype="multipart/form-data"
+                      asp-area="AdminArea"
+                      asp-controller="Photos"
+                      asp-action="UpdateVehicleImageAsync"
+                      asp-route-vehicleId="@item?.VehicleId"
+                      asp-route-vehicleImageId="@item?.Id"
+                      class="m-0">
+
+                    <label for="fileInput_@item?.Id" class="btn btn-primary">
+                        <i class="bi bi-upload"></i> @Gallery.Upload
+                    </label>
+
+                    <input type="file"
+                           id="fileInput_@item?.Id"
+                           name="file"
+                           class="input"
+                           onchange="this.form.submit();" />
+                </form>
+
+
+                <a class="btn btn-danger"
+                   asp-area="AdminArea"
+                   asp-controller="Photos"
+                   asp-action="VehiclePhotoDelete"
+                   asp-route-id="@item?.Id"
+                   asp-route-vehicleId="@item?.VehicleId">
+                    <i class="bi bi-trash"></i> @Common.Delete
+                </a>
+
+            </div>
+        </div>
+    }
+</div>
 
 @section Scripts {
     <script>
-        
-        const photos = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Photos));
+            const photos = @Html.Raw(
+             System.Text.Json.JsonSerializer.Serialize(Model.Photos)
+                            );
 
-        document.addEventListener("DOMContentLoaded", () => {
-          
-            try {
-                if (window.fsLightBox && Array.isArray(photos)) {
-                    fsLightBox.props.sources  = photos.map(x => x.PhotoURL);
-                    fsLightBox.props.thumbs   = photos.map(x => x.ThumbnailRelativePath);
-                    fsLightBox.props.captions = photos.map(x => x.FileName);
-                }
-
-                setTimeout(() => {
-                    if (window.fsLightboxInstances && fsLightboxInstances["gallery"]) {
-                        fsLightboxInstances["gallery"].open(0);
-                    }
-                }, 150);
-            } catch (e) {
-                console.error("Lightbox init error:", e);
+    document.addEventListener("DOMContentLoaded", () => {
+        try {
+            if (window.fsLightBox && Array.isArray(photos)) {
+                fsLightBox.props.sources  = photos.map(x => x.PhotoURL);
+                fsLightBox.props.thumbs   = photos.map(x => x.ThumbnailRelativePath);
+                fsLightBox.props.captions = photos.map(x => x.Title ?? x.FileName);
             }
-        });
 
-        
-        window.ConfirmDelete = function () {
-            const msg = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Gallery.ConfirmDelete));
-            return confirm(msg);
-        };
-    </script>
-    
+                    setTimeout(() => {
+                        if (window.fsLightboxInstances?.gallery) {
+                            fsLightboxInstances.gallery.open(0);
+                        }
+                    }, 150);
+                } catch (e) {
+                    console.error("Lightbox init error:", e);
+                }
+            });
 
-
-
-
-
-
-
-
-
+            // ainult DeleteAll kasutab confirm'i
+            window.ConfirmDelete = function () {
+                const msg = @Html.Raw(
+                         System.Text.Json.JsonSerializer.Serialize(Gallery.ConfirmDelete)
+                                );
+        return confirm(msg);
+    };
+</script>
 }
