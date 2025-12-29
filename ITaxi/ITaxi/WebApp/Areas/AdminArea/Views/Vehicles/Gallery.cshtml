@@ -146,7 +146,7 @@
                 }
             });
 
-            // ainult DeleteAll kasutab confirm'i
+            // only DeleteAll uses confirm window
             window.ConfirmDelete = function () {
                 const msg = @Html.Raw(
                          System.Text.Json.JsonSerializer.Serialize(Gallery.ConfirmDelete)
