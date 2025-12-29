@@ -456,6 +456,7 @@ public class PhotosController : Controller
     
     public async Task<IActionResult> DeleteAllVehiclePhotos([FromRoute]Guid vehicleId)
     {
+        
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id: vehicleId);
         if (vehicle == null) return NotFound();
         string directoryId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id);

@@ -2,13 +2,13 @@
 {
     public static class DirectoryHelper
     {
-        public static void DeleteDirectory(string path)
+        public static void DeleteDirectory(string path, bool recursiveDelete = true)
         {
             if (!Directory.Exists(path))
             {
                return;
             }
-            Directory.Delete(path, true);
+            Directory.Delete(path, recursiveDelete);
         }
 
        
