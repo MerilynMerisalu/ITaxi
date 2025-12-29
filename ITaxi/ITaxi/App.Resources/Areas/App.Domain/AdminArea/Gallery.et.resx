@@ -135,4 +135,7 @@
   <data name="DeleteAllPhotos" xml:space="preserve">
     <value>Kustuta kõik fotod</value>
   </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>Kas olete kindel, et soovite kõik fotod kustutada?</value>
+  </data>
 </root>

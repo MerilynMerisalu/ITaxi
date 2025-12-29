@@ -135,4 +135,7 @@
   <data name="DeleteAllPhotos" xml:space="preserve">
     <value>Delete All Photos</value>
   </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>Are you sure you want to delete all photos? </value>
+  </data>
 </root>
