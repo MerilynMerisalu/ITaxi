@@ -1,0 +1,93 @@
+﻿@using WebApp.Areas.AdminArea.ViewModels
+
+@model DetailsDeleteCustomerPhotoViewModel
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Title)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Title)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.FileName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.FileName)
+    </dd>
+
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.PhotoURL)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.PhotoURL)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.PhotoFullPath)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.PhotoFullPath)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.ThumbnailRelativePath)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.ThumbnailRelativePath)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.ThumbnailFullPath)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.ThumbnailFullPath)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.DirectoryTitleId)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.DirectoryTitleId)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.FileNameInDirectory)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.FileNameInDirectory)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Customer)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Customer)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.CreatedBy)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.CreatedBy)
+    </dd>
+
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.CreatedAt)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.CreatedAt)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.UpdatedBy)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.UpdatedBy)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.UpdatedAt)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.UpdatedAt)
+    </dd>
+
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Photo)
+    </dt>
+    <dd class="col-sm-10">
+        <img alt="@Model.Title" src="@Model.PhotoURL" height="250" width="250" />
+    </dd>
+
+</dl>

@@ -46,7 +46,7 @@ public class PhotosController : Controller
         return View(res);
     }
 
-    // GET: AdminArea/Photos/Details/5
+    // GET: AdminArea/Photos/VehiclePhotoDetails/5
     /// <summary>
     /// Admin area photos controller GET method details
     /// </summary>
@@ -84,9 +84,8 @@ public class PhotosController : Controller
             }
         }
 
-        if (photo.AdminId.HasValue)
 
-            vm.CreatedBy = photo.CreatedBy;
+        vm.CreatedBy = photo.CreatedBy;
         vm.CreatedAt = photo.CreatedAt;
         vm.UpdatedBy = photo.UpdatedBy;
         vm.UpdatedAt = photo.UpdatedAt;
@@ -95,6 +94,128 @@ public class PhotosController : Controller
     }
 
 
+    //GET: AdminArea/Photos/AdminPhotoDetails/5
+    /// <summary>
+    /// Admin area photos controller GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
+    public async Task<IActionResult> AdminPhotoDetails(Guid? id)
+    {
+        var vm = new DetailsDeleteAdminPhotoViewModel();
+        if (id == null) return NotFound();
+
+        var photo = await _appBLL.Photos.GetPhotoByIdAsync(id.Value);
+        if (photo == null) return NotFound();
+        vm.Id = photo.Id;
+        var title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
+        vm.Title = title;
+        vm.FileName = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.FileName);
+        vm.PhotoURL = photo.PhotoURL!;
+        vm.PhotoFullPath = photo.PhotoFullPath!;
+        vm.ThumbnailRelativePath = photo.ThumbnailRelativePath!;
+        vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
+        vm.DirectoryTitleId = photo.DirectoryTitleId;
+        vm.FileNameInDirectory = photo.FileNameInDirectory;
+        if (photo.AdminId.HasValue)
+        {
+            var isAdmin = await _appBLL.Photos.IsPhotoOfAdminAsync(photoId: photo.Id, adminId: photo.AdminId.Value);
+
+            if (isAdmin)
+            {
+                vm.Admin = await _appBLL.Photos.GetAdminFirstAndLastNameAsync(photoId: photo.Id, adminId: photo!.AdminId!.Value);
+            }
+        }
+        
+        
+
+       vm.CreatedBy = photo.CreatedBy;
+        vm.CreatedAt = photo.CreatedAt;
+        vm.UpdatedBy = photo.UpdatedBy;
+        vm.UpdatedAt = photo.UpdatedAt;
+
+        return View(vm);
+    }
+
+    //GET: AdminArea/Photos/DriverPhotoDetails/5
+    /// <summary>
+    /// Admin area photos controller GET method details
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
+    public async Task<IActionResult> DriverPhotoDetails(Guid? id)
+    {
+        var vm = new DetailsDeleteDriverPhotoViewModel();
+        if (id == null) return NotFound();
+
+        var photo = await _appBLL.Photos.GetPhotoByIdAsync(id.Value);
+        if (photo == null) return NotFound();
+        vm.Id = photo.Id;
+        var title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
+        vm.Title = title;
+        vm.FileName = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.FileName);
+        vm.PhotoURL = photo.PhotoURL!;
+        vm.PhotoFullPath = photo.PhotoFullPath!;
+        vm.ThumbnailRelativePath = photo.ThumbnailRelativePath!;
+        vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
+        vm.DirectoryTitleId = photo.DirectoryTitleId;
+        vm.FileNameInDirectory = photo.FileNameInDirectory;
+        if (photo.DriverId.HasValue)
+        {
+            var isDriver = await _appBLL.Photos.IsPhotoOfDriverAsync(photoId: photo.Id, driverId: photo.DriverId!.Value);
+
+            if (isDriver)
+            {
+                vm.Driver = await _appBLL.Photos.GetDriverFirstAndLastNameAsync(photoId: photo.Id, driverId: photo!.DriverId!.Value);
+            }
+        }
+
+
+
+        vm.CreatedBy = photo.CreatedBy;
+        vm.CreatedAt = photo.CreatedAt;
+        vm.UpdatedBy = photo.UpdatedBy;
+        vm.UpdatedAt = photo.UpdatedAt;
+
+        return View(vm);
+    }
+
+    public async Task<IActionResult> CustomerPhotoDetails(Guid? id)
+    {
+        var vm = new DetailsDeleteCustomerPhotoViewModel();
+        if (id == null) return NotFound();
+
+        var photo = await _appBLL.Photos.GetPhotoByIdAsync(id.Value);
+        if (photo == null) return NotFound();
+        vm.Id = photo.Id;
+        var title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
+        vm.Title = title;
+        vm.FileName = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.FileName);
+        vm.PhotoURL = photo.PhotoURL!;
+        vm.PhotoFullPath = photo.PhotoFullPath!;
+        vm.ThumbnailRelativePath = photo.ThumbnailRelativePath!;
+        vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
+        vm.DirectoryTitleId = photo.DirectoryTitleId;
+        vm.FileNameInDirectory = photo.FileNameInDirectory;
+        if (photo.DriverId.HasValue)
+        {
+            var isCustomer = await _appBLL.Photos.IsPhotoOfCustomerAsync(photoId: photo.Id, customerId: photo.CustomerId!.Value);
+
+            if (isCustomer)
+            {
+                vm.Customer = await _appBLL.Photos.GetCustomerFirstAndLastNameAsync(photoId: photo.Id, customerId: photo!.DriverId!.Value);
+            }
+        }
+
+
+
+        vm.CreatedBy = photo.CreatedBy;
+        vm.CreatedAt = photo.CreatedAt;
+        vm.UpdatedBy = photo.UpdatedBy;
+        vm.UpdatedAt = photo.UpdatedAt;
+
+        return View(vm);
+    }
 
 
     // GET: AdminArea/Photos/VehiclePhotoDelete/5
@@ -154,7 +275,7 @@ public class PhotosController : Controller
         return View(vm);
     }
 
-    // POST: AdminArea/Photos/Delete/5
+    // POST: AdminArea/Photos/VehiclePhotoDelete/5
     /// <summary>
     /// Admin area photos controller POST method delete
     /// </summary>
@@ -164,7 +285,7 @@ public class PhotosController : Controller
     [HttpPost]
     [ActionName(nameof(VehiclePhotoDelete))]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(Guid id, Guid vehicleId)
+    public async Task<IActionResult> VehicleDeleteConfirmed(Guid id, Guid vehicleId)
     {
         var userRole = User.GettingUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(vehicleId, null, roleName: userRole);
@@ -194,6 +315,94 @@ public class PhotosController : Controller
         return RedirectToAction("Gallery", controllerName: "Vehicles", routeValues: new { vehicleId = photo.VehicleId });
     }
 
+
+    // GET: AdminArea/Photos/AdminPhotoDelete/5
+    /// <summary>
+    /// Admin area photos controller GET method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="adminId">Admin Id</param>
+    /// <returns>View</returns>
+    public async Task<IActionResult> AdminPhotoDelete(Guid? id, Guid adminId)
+    {
+        var vm = new DetailsDeleteAdminPhotoViewModel();
+        if (id == null) return NotFound();
+        var roleName = User.GettingUserRoleName();
+        var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
+        if (photo == null) return NotFound();
+
+        vm.Id = photo.Id;
+        vm.AdminId = adminId;
+        var title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.Title);
+        vm.Title = title;
+        vm.FileName = FileHelper.ReplaceUnderscoreWithSpaceInFileName(photo.FileName);
+        vm.PhotoURL = photo.PhotoURL!;
+        vm.PhotoFullPath = photo.PhotoFullPath!;
+        vm.ThumbnailRelativePath = photo.ThumbnailRelativePath;
+        vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
+        vm.DirectoryTitleId = photo.DirectoryTitleId;
+        vm.FileNameInDirectory = photo.FileNameInDirectory;
+        if (photo.AdminId.HasValue)
+        {
+            var isAdmin = await _appBLL.Photos.IsPhotoOfAdminAsync(photoId: photo.Id, adminId: photo.AdminId.Value);
+            if (isAdmin)
+            {
+                vm.Admin = await _appBLL.Photos.GetAdminFirstAndLastNameAsync(photoId: photo.Id, adminId: photo.AdminId.Value);
+            }
+           
+        }
+
+
+        vm.CreatedBy = photo.CreatedBy;
+        vm.CreatedAt = photo.CreatedAt;
+        vm.UpdatedBy = photo.UpdatedBy;
+        vm.UpdatedAt = photo.UpdatedAt;
+
+
+        return View(vm);
+    }
+
+    // POST: AdminArea/Photos/AdminPhotoDelete/5
+    /// <summary>
+    /// Admin area photos controller POST method delete
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <param name="adminId">Admin id</param>
+    /// <returns>Redirect to vehicle index</returns>
+    [HttpPost]
+    [ActionName(nameof(AdminPhotoDelete))]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AdminDeleteConfirmed(Guid id, Guid adminId)
+    {
+        var userRole = User.GettingUserRoleName();
+        var admin = await _appBLL.Admins.GetAdminWithIncludesByAdminIdAsync(adminId: adminId);
+        if (admin == null) return NotFound();
+        var photo = await _appBLL.Photos.GetPhotoByIdAsync(id, roleName: userRole);
+        if (photo == null) return NotFound();
+        if (photo.VehicleId != adminId) return Forbid();
+        var profileImageFolderId = await _appBLL.Photos.GetDirectoryIdByAppUserIdAsStringAsync(userId: admin.AppUserId, roleName: userRole);
+        if (profileImageFolderId == null) return NotFound();
+        //var imageThumbnailFullPath = photo.ThumbnailFullPath;
+        var fullImagePath = photo.PhotoFullPath;
+        //if (imageThumbnailFullPath != null)
+        //{
+        //    FileHelper.DeleteFile(imageThumbnailFullPath);
+        //}
+        if (fullImagePath != null)
+        {
+            FileHelper.DeleteFile(fullImagePath);
+        }
+
+        photo.IsDeleted = true;
+        photo.DeletedBy = User.GettingUserEmail();
+        photo.DeletedAt = DateTime.UtcNow;
+
+        await _appBLL.Photos.RemoveAsync(photo.Id);
+        await _appBLL.SaveChangesAsync();
+        return RedirectToAction("Index");
+    }
+
+    
     private bool PhotoExists(Guid id)
     {
         return _appBLL.Photos.Exists(id);

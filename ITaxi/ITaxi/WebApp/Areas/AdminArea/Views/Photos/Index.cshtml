@@ -114,18 +114,27 @@
                 <td>@Html.DisplayFor(modelItem => item!.UpdatedAt)</td>
 
                 <td>
-                    <a asp-action="Details" asp-route-id="@item!.Id">@Common.Details</a>
-                    <span>|</span>
-                    <a asp-action="Delete" asp-route-id="@item!.Id">@Common.Delete</a>
+                    
 
                     @if (item?.VehicleId.HasValue == true && item.VehicleId.Value != Guid.Empty)
                     {
+                        <a asp-action="VehiclePhotoDetails" asp-route-id="@item!.Id">@Common.Details</a>
+                        <span>|</span>
+                        <a asp-action="VehiclePhotoDelete" asp-route-id="@item!.Id">@Common.Delete</a>
                         <span>|</span>
                         <a asp-controller="Vehicles"
                            asp-action="Gallery"
                            asp-route-vehicleId="@item!.VehicleId">
                             @Gallery.GalleryName
                         </a>
+                    }
+                    @if (item?.AdminId.HasValue == true && item.AdminId.Value != Guid.Empty)
+                    {
+
+                        <a asp-action="AdminPhotoDetails" asp-route-id="@item!.Id">@Common.Details</a>
+                        <span>|</span>
+                        <a asp-action="AdminPhotoDelete" asp-route-id="@item!.Id">@Common.Delete</a>
+                        
                     }
                 </td>
             </tr>

@@ -270,4 +270,6 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
            .FirstOrDefault(p => p.Id.Equals(photoId) && p.CustomerId.Equals(customerId));
         return result?.AppUser?.FirstAndLastName;
     }
+
+    
 }

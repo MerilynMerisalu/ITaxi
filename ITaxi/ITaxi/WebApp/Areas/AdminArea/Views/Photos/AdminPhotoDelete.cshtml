@@ -1,6 +1,6 @@
 @using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
-@model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteVehiclePhotoViewModel
+@model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteAdminPhotoViewModel
 
 @{
     Layout = Layout;
@@ -20,17 +20,13 @@
 <div>
     <h4>@Photo.PhotoName</h4>
     <hr/>
-    <partial name="AdminArea/PartialViews/_DetailsDeleteVehiclePhoto" model="Model"/>
+    <partial name="AdminArea/PartialViews/_DetailsDeleteAdminPhoto" model="Model"/>
 
-    <form asp-action="VehiclePhotoDelete">
+    <form asp-action="AdminPhotoDelete">
         <input type="hidden" asp-for="Id" />
-           <input type="hidden" asp-for="VehicleId" />
+           <input type="hidden" asp-for="AdminId" />
         <input type="submit" value="@Common.Delete" class="btn btn-danger"/> |
-            @if(Model.IsVehicle && Model.VehicleId.HasValue)
-                {
-                    <a asp-action="ChooseView" asp-route-vehicleId="@Model.VehicleId.Value">@Photo.BackToGallery</a> 
-                }
-                |
+            
         <a asp-action="Index">@Common.BackToList</a>
     </form>
 </div>
