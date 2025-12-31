@@ -1,0 +1,7 @@
+﻿.cell-hide-if-empty {
+    visibility: hidden;
+}
+
+    .cell-hide-if-empty:has(*) {
+        visibility: visible;
+    }

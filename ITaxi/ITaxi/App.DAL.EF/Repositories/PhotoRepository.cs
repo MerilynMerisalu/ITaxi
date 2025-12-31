@@ -15,18 +15,21 @@ public class PhotoRepository : BaseEntityRepository<PhotoDTO, App.Domain.Photo, 
         : base(dbContext, mapper)
     {
     }
-    
-    public async Task<IEnumerable<PhotoDTO?>> GetAllPhotosWithIncludesAsync(Guid? userId = null, 
+
+    public async Task<IEnumerable<PhotoDTO>> GetAllPhotosWithIncludesAsync(Guid? userId = null,
         string? roleName = null, bool noTracking = true)
     {
-        return (await CreateQuery(userId,roleName,noTracking).ToListAsync())
-            .Select(e => Mapper.Map(e));
-    }
+        return (await CreateQuery(userId, roleName, noTracking).ToListAsync())
+     .Select(e => Mapper.Map(e))
+     .Where(dto => dto != null)
+     .Select(dto => dto!);
+     }
 
-    public IEnumerable<PhotoDTO?> GetAllPhotosWithIncludes(Guid? userId = null, string? roleName = null, 
+    public IEnumerable<PhotoDTO> GetAllPhotosWithIncludes(Guid? userId = null, string? roleName = null, 
         bool noTracking = true)
     {
-        return CreateQuery(userId, roleName,noTracking).ToList().Select(e => Mapper.Map(e));
+        return CreateQuery(userId, roleName,noTracking).ToList().Select(e => Mapper.Map(e)).Where(dto =>
+        dto != null).Select(dto => dto!);
     }
 
     public async Task<PhotoDTO?> GetPhotoByIdAsync(Guid id, Guid? userId = null, string? roleName = null,

@@ -286,6 +286,7 @@ public class IndexModel : PageModel
                     Directory.CreateDirectory(path);
 
                 }
+                
                 fileNameOnDisk = "ProfileImage";
                 string fileExtension = Path.GetExtension(Input.ImageFile.FileName!);
                 if (fileExtension != ".png" && fileExtension != ".jpg")
@@ -313,6 +314,7 @@ public class IndexModel : PageModel
         Guid? adminId = null;
         Guid? driverId = null;
         Guid? customerId = null;
+        var fileName = Input.ImageFile!.FileName;
 
         if (admin != null)
         {
@@ -331,6 +333,7 @@ public class IndexModel : PageModel
             Id = Guid.NewGuid(),
             Title = photoTitle,
             PhotoURL = photoUrlPath,
+            FileName = fileName,
             PhotoFullPath = path,
             DirectoryTitleId = directoryId,
             FileNameInDirectory = fileNameOnDisk,

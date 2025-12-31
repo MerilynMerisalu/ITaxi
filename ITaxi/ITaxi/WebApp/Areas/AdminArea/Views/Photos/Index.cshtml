@@ -4,6 +4,12 @@
 
 @{
     ViewData["Title"] = Common.Index;
+
+    
+    var showVehicle = Model.Any(p => p?.VehicleId.HasValue == true && p.VehicleId.Value != Guid.Empty);
+    var showAdmin = Model.Any(p => p?.AdminId.HasValue == true && p.AdminId.Value != Guid.Empty);
+    var showDriver = Model.Any(p => p?.DriverId.HasValue == true && p.DriverId.Value != Guid.Empty);
+    var showCustomer = Model.Any(p => p?.CustomerId.HasValue == true && p.CustomerId.Value != Guid.Empty);
 }
 
 <h1>@Common.Index</h1>
@@ -11,124 +17,116 @@
 <p>
     <a asp-action="Create">@Common.CreateNew</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model!.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.FileName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.PhotoFullPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.PhotoURL)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.ThumbnailFullPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.ThumbnailRelativePath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.DirectoryTitleId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.FileNameInDirectory)
-            </th>
-            @{
-                var isVehicle = Model.Any(p => p.VehicleId != null);
-                var isDriver = Model.Any(p => p.DriverId != null);
-                var isAdmin = Model.Any(p => p.AdminId != null);
-                var IsCustomer = Model.Any(p => p.CustomerId != null);
+            <th>@Html.DisplayNameFor(model => model!.Title)</th>
+            <th>@Html.DisplayNameFor(model => model!.FileName)</th>
+            <th>@Html.DisplayNameFor(model => model!.PhotoFullPath)</th>
+            <th>@Html.DisplayNameFor(model => model!.PhotoURL)</th>
+            <th>@Html.DisplayNameFor(model => model!.ThumbnailFullPath)</th>
+            <th>@Html.DisplayNameFor(model => model!.ThumbnailRelativePath)</th>
+            <th>@Html.DisplayNameFor(model => model!.DirectoryTitleId)</th>
+            <th>@Html.DisplayNameFor(model => model!.FileNameInDirectory)</th>
+
+            
+            @if (showVehicle)
+            {
+                <th>@Html.DisplayNameFor(model => model!.Vehicle!.VehicleIdentifier)</th>
             }
-            <th>
-                @Html.DisplayNameFor(model => model!.Vehicle!.VehicleIdentifier)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.Admin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.Driver)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.UpdatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model!.UpdatedAt)
-            </th>
+            @if (showAdmin)
+            {
+                <th>@Html.DisplayNameFor(model => model!.Admin)</th>
+            }
+            @if (showDriver)
+            {
+                <th>@Html.DisplayNameFor(model => model!.Driver)</th>
+            }
+            @if (showCustomer)
+            {
+                <th>@Html.DisplayNameFor(model => model!.Customer)</th>
+            }
+
+            <th>@Html.DisplayNameFor(model => model!.CreatedBy)</th>
+            <th>@Html.DisplayNameFor(model => model!.CreatedAt)</th>
+            <th>@Html.DisplayNameFor(model => model!.UpdatedBy)</th>
+            <th>@Html.DisplayNameFor(model => model!.UpdatedAt)</th>
 
             <th></th>
         </tr>
     </thead>
+
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.FileName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.PhotoFullPath)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.PhotoURL)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.ThumbnailFullPath)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.ThumbnailRelativePath)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.DirectoryTitleId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.FileNameInDirectory)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.Vehicle!.VehicleIdentifier)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.Admin!.AppUser!.FirstAndLastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.Driver!.AppUser!.FirstAndLastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.CreatedBy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.CreatedAt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.UpdatedBy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item!.UpdatedAt)
-                </td>
+                <td>@Html.DisplayFor(modelItem => item!.Title)</td>
+                <td>@Html.DisplayFor(modelItem => item!.FileName)</td>
+                <td>@Html.DisplayFor(modelItem => item!.PhotoFullPath)</td>
+                <td>@Html.DisplayFor(modelItem => item!.PhotoURL)</td>
+                <td>@Html.DisplayFor(modelItem => item!.ThumbnailFullPath)</td>
+                <td>@Html.DisplayFor(modelItem => item!.ThumbnailRelativePath)</td>
+                <td>@Html.DisplayFor(modelItem => item!.DirectoryTitleId)</td>
+                <td>@Html.DisplayFor(modelItem => item!.FileNameInDirectory)</td>
+
+                
+                @if (showVehicle)
+                {
+                    <td class="cell-hide-if-empty">
+                        @if (item?.VehicleId.HasValue == true && item.VehicleId.Value != Guid.Empty)
+                        {
+                            <span>@Html.DisplayFor(modelItem => item!.Vehicle!.VehicleIdentifier)</span>
+                        }
+                    </td>
+                }
+                @if (showAdmin)
+                {
+                    <td class="cell-hide-if-empty">
+                        @if (item?.AdminId.HasValue == true && item.AdminId.Value != Guid.Empty)
+                        {
+                            <span>@Html.DisplayFor(modelItem => item!.Admin!.AppUser!.FirstAndLastName)</span>
+                        }
+                    </td>
+                }
+                @if (showDriver)
+                {
+                    <td class="cell-hide-if-empty">
+                        @if (item?.DriverId.HasValue == true && item.DriverId.Value != Guid.Empty)
+                        {
+                            <span>@Html.DisplayFor(modelItem => item!.Driver!.AppUser!.FirstAndLastName)</span>
+                        }
+                    </td>
+                }
+                @if (showCustomer)
+                {
+                    <td class="cell-hide-if-empty">
+                        @if (item?.CustomerId.HasValue == true && item.CustomerId.Value != Guid.Empty)
+                        {
+                            <span>@Html.DisplayFor(modelItem => item!.Customer!.AppUser!.FirstAndLastName)</span>
+                        }
+                    </td>
+                }
+
+                <td>@Html.DisplayFor(modelItem => item!.CreatedBy)</td>
+                <td>@Html.DisplayFor(modelItem => item!.CreatedAt)</td>
+                <td>@Html.DisplayFor(modelItem => item!.UpdatedBy)</td>
+                <td>@Html.DisplayFor(modelItem => item!.UpdatedAt)</td>
 
                 <td>
-                    @if (item?.VehicleId != null)
+                    <a asp-action="Details" asp-route-id="@item!.Id">@Common.Details</a>
+                    <span>|</span>
+                    <a asp-action="Delete" asp-route-id="@item!.Id">@Common.Delete</a>
+
+                    @if (item?.VehicleId.HasValue == true && item.VehicleId.Value != Guid.Empty)
                     {
-                        <a asp-action="Details" asp asp-route-vehicleId="@item!.VehicleId">@Common.Details</a> <span>|</span>
-                        <a asp-action="Delete" asp-route-vehicleId="@item!.VehicleId">@Common.Delete</a>
+                        <span>|</span>
+                        <a asp-controller="Vehicles"
+                           asp-action="Gallery"
+                           asp-route-vehicleId="@item!.VehicleId">
+                            @Gallery.GalleryName
+                        </a>
                     }
-                    
-                    
-                   
-
                 </td>
             </tr>
         }

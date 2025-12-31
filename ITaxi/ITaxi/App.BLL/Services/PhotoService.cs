@@ -26,12 +26,13 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
     {
         return (await Repository
                 .GetAllPhotosWithIncludesAsync(userId, roleName, noTracking))
-            .Select(e => Mapper.Map(e));
+            .Select(e => Mapper.Map(e)).OfType<PhotoDTO>();
     }
 
     public IEnumerable<PhotoDTO?> GetAllPhotosWithIncludes(Guid? userId = null, string? roleName = null, bool noTracking = true)
     {
-        return Repository.GetAllPhotosWithIncludes(userId, roleName, noTracking).Select(e => Mapper.Map(e));
+        return Repository.GetAllPhotosWithIncludes(userId, roleName, noTracking).Select(e => Mapper.Map(e))
+            .Where(dto => dto != null).Select(dto => dto!).OfType<PhotoDTO>();
     }
 
     public async Task<PhotoDTO?> GetPhotoByIdAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)

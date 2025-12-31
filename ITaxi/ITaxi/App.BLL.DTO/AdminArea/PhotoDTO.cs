@@ -53,7 +53,7 @@ public class PhotoDTO : DomainEntityMetaId
     public string? ThumbnailRelativePath { get; set; }
     
     public Guid? AdminId { get; set; }
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(Admin))]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = "Admin")]
     public AdminDTO? Admin { get; set; }
     
     public Guid? DriverId { get; set; }
