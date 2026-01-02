@@ -322,7 +322,10 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2022 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">@_Layout.Privacy</a>
+        @{
+            int year = DateTime.Now.Year;
+        }
+        &copy; @year - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">@_Layout.Privacy</a>
         | UI Culture: @Thread.CurrentThread.CurrentUICulture.Name
         (@CultureInfo.CurrentUICulture.Name);
         | Culture: @Thread.CurrentThread.CurrentCulture.Name (@CultureInfo.CurrentCulture.Name);
