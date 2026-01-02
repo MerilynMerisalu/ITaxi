@@ -79,6 +79,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Content Type.
+        /// </summary>
+        public static string ContentType {
+            get {
+                return ResourceManager.GetString("ContentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customer.
         /// </summary>
         public static string Customer {
@@ -124,11 +133,47 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Original Photo Width .
+        /// </summary>
+        public static string OrginalPhotoWidth {
+            get {
+                return ResourceManager.GetString("OrginalPhotoWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Original Photo File Type.
+        /// </summary>
+        public static string OriginalPhotoFileType {
+            get {
+                return ResourceManager.GetString("OriginalPhotoFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Original Photo Height.
+        /// </summary>
+        public static string OriginalPhotoHeight {
+            get {
+                return ResourceManager.GetString("OriginalPhotoHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Photo Full Path.
         /// </summary>
         public static string PhotoFullPath {
             get {
                 return ResourceManager.GetString("PhotoFullPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile Photo Height.
+        /// </summary>
+        public static string PhotoHeight {
+            get {
+                return ResourceManager.GetString("PhotoHeight", resourceCulture);
             }
         }
         
@@ -156,6 +201,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string PhotoURL {
             get {
                 return ResourceManager.GetString("PhotoURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile Photo Width.
+        /// </summary>
+        public static string PhotoWidth {
+            get {
+                return ResourceManager.GetString("PhotoWidth", resourceCulture);
             }
         }
         

@@ -114,10 +114,16 @@
                 </div>
             }
             <div class="form-floating">
-                <label asp-for="Input.ImageFile"></label>
+                <span><label asp-for="Input.ImageFile"></label></span>
+                <br />
                 <input type="file" asp-for="Input.ImageFile" />
+                
             </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">@Common.Save</button>
+            <div>
+                <hr />
+                <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">@Common.Save</button>
+            </div>
+            
         </form>
     </div>
     <div class="col-md-6">

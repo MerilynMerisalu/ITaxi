@@ -177,4 +177,22 @@
   <data name="FileName" xml:space="preserve">
     <value>Faili nimi</value>
   </data>
+  <data name="OriginalPhotoFileType" xml:space="preserve">
+    <value>Pildifaili originaaltüüp</value>
+  </data>
+  <data name="OriginalPhotoHeight" xml:space="preserve">
+    <value>Originaal pildifaili kõrgus</value>
+  </data>
+  <data name="OrginalPhotoWidth" xml:space="preserve">
+    <value>Originaal pildifaili laius</value>
+  </data>
+  <data name="PhotoHeight" xml:space="preserve">
+    <value>Profiilifoto kõrgus </value>
+  </data>
+  <data name="PhotoWidth" xml:space="preserve">
+    <value>Profiilifoto laius</value>
+  </data>
+  <data name="ContentType" xml:space="preserve">
+    <value>Failitüüp</value>
+  </data>
 </root>

@@ -133,7 +133,7 @@
 
                         <a asp-action="AdminPhotoDetails" asp-route-id="@item!.Id">@Common.Details</a>
                         <span>|</span>
-                        <a asp-action="AdminPhotoDelete" asp-route-id="@item!.Id">@Common.Delete</a>
+                        <a asp-action="AdminPhotoDelete" asp-route-id="@item!.Id" asp-route-adminId="@item.AdminId">@Common.Delete</a>
                         
                     }
                 </td>

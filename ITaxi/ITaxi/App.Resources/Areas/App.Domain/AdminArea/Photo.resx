@@ -177,4 +177,22 @@
   <data name="FileName" xml:space="preserve">
     <value>File Name</value>
   </data>
+  <data name="OriginalPhotoFileType" xml:space="preserve">
+    <value>Original Photo File Type</value>
+  </data>
+  <data name="OriginalPhotoHeight" xml:space="preserve">
+    <value>Original Photo Height</value>
+  </data>
+  <data name="OrginalPhotoWidth" xml:space="preserve">
+    <value>Original Photo Width </value>
+  </data>
+  <data name="PhotoHeight" xml:space="preserve">
+    <value>Profile Photo Height</value>
+  </data>
+  <data name="PhotoWidth" xml:space="preserve">
+    <value>Profile Photo Width</value>
+  </data>
+  <data name="ContentType" xml:space="preserve">
+    <value>Content Type</value>
+  </data>
 </root>

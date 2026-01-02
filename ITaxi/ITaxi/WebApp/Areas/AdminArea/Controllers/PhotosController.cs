@@ -126,10 +126,10 @@ public class PhotosController : Controller
                 vm.Admin = await _appBLL.Photos.GetAdminFirstAndLastNameAsync(photoId: photo.Id, adminId: photo!.AdminId!.Value);
             }
         }
-        
-        
 
-       vm.CreatedBy = photo.CreatedBy;
+
+
+        vm.CreatedBy = photo.CreatedBy;
         vm.CreatedAt = photo.CreatedAt;
         vm.UpdatedBy = photo.UpdatedBy;
         vm.UpdatedAt = photo.UpdatedAt;
@@ -323,6 +323,7 @@ public class PhotosController : Controller
     /// <param name="id">Id</param>
     /// <param name="adminId">Admin Id</param>
     /// <returns>View</returns>
+    [HttpGet("AdminPhotoDelete/{id:guid}/{adminId:guid}")]
     public async Task<IActionResult> AdminPhotoDelete(Guid? id, Guid adminId)
     {
         var vm = new DetailsDeleteAdminPhotoViewModel();
@@ -349,7 +350,7 @@ public class PhotosController : Controller
             {
                 vm.Admin = await _appBLL.Photos.GetAdminFirstAndLastNameAsync(photoId: photo.Id, adminId: photo.AdminId.Value);
             }
-           
+
         }
 
 
@@ -369,38 +370,39 @@ public class PhotosController : Controller
     /// <param name="id">Id</param>
     /// <param name="adminId">Admin id</param>
     /// <returns>Redirect to vehicle index</returns>
-    [HttpPost]
-    [ActionName(nameof(AdminPhotoDelete))]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AdminDeleteConfirmed(Guid id, Guid adminId)
-    {
-        var userRole = User.GettingUserRoleName();
-        var admin = await _appBLL.Admins.GetAdminWithIncludesByAdminIdAsync(adminId: adminId);
-        if (admin == null) return NotFound();
-        var photo = await _appBLL.Photos.GetPhotoByIdAsync(id, roleName: userRole);
-        if (photo == null) return NotFound();
-        if (photo.VehicleId != adminId) return Forbid();
-        var profileImageFolderId = await _appBLL.Photos.GetDirectoryIdByAppUserIdAsStringAsync(userId: admin.AppUserId, roleName: userRole);
-        if (profileImageFolderId == null) return NotFound();
-        //var imageThumbnailFullPath = photo.ThumbnailFullPath;
-        var fullImagePath = photo.PhotoFullPath;
-        //if (imageThumbnailFullPath != null)
-        //{
-        //    FileHelper.DeleteFile(imageThumbnailFullPath);
-        //}
-        if (fullImagePath != null)
-        {
-            FileHelper.DeleteFile(fullImagePath);
-        }
+    //[HttpPost("{id:guid}/{adminId:guid}")]
+    //[ActionName(nameof(AdminPhotoDelete))]
+    //[ValidateAntiForgeryToken]
+    //public async Task<IActionResult> AdminDeleteConfirmed(Guid id, Guid adminId)
+    //{
+    //    var userRole = User.GettingUserRoleName();
+    //    var admin = await _appBLL.Admins.GetAdminWithIncludesByAdminIdAsync(adminId: adminId);
+        
+    //    if (admin == null) return NotFound();
+    //    var photo = await _appBLL.Photos.GetPhotoByIdAsync(id, roleName: userRole);
+    //    if (photo == null) return NotFound();
+    //    if (photo.AdminId != adminId) return Forbid();
+    //    var profileImageFolderId = await _appBLL.Photos.GetDirectoryIdByAppUserIdAsStringAsync(userId: admin.AppUserId, roleName: userRole);
+    //    if (profileImageFolderId == null) return NotFound();
+    //    //var imageThumbnailFullPath = photo.ThumbnailFullPath;
+    //    var fullImagePath = photo.PhotoFullPath;
+    //    //if (imageThumbnailFullPath != null)
+    //    //{
+    //    //    FileHelper.DeleteFile(imageThumbnailFullPath);
+    //    //}
+    //    if (fullImagePath != null)
+    //    {
+    //        FileHelper.DeleteFile(fullImagePath);
+    //    }
 
-        photo.IsDeleted = true;
-        photo.DeletedBy = User.GettingUserEmail();
-        photo.DeletedAt = DateTime.UtcNow;
+    //    photo.IsDeleted = true;
+    //    photo.DeletedBy = User.GettingUserEmail();
+    //    photo.DeletedAt = DateTime.UtcNow;
 
-        await _appBLL.Photos.RemoveAsync(photo.Id);
-        await _appBLL.SaveChangesAsync();
-        return RedirectToAction("Index");
-    }
+    //    await _appBLL.Photos.RemoveAsync(photo.Id);
+    //    await _appBLL.SaveChangesAsync();
+    //    return RedirectToAction("Index");
+    //}
 
     
     private bool PhotoExists(Guid id)
@@ -516,6 +518,7 @@ public class PhotosController : Controller
                 PhotoFullPath = fullFilePath,
                 ThumbnailFullPath = thumbnailFilePath,
                 FileNameInDirectory = fileNameOnDisk,
+
                 PhotoURL = relativeFilePath,
                 ThumbnailRelativePath = thumbnailRelativePath,
                 CreatedBy = User.GettingUserEmail(),

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using App.Domain.Identity;
+using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Domain;
 using Base.Resources;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +32,7 @@ public class Photo : DomainEntityMetaId
     [StringLength(255, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(PhotoURL))]
-    public string? PhotoURL { get; set; }
+    public string PhotoURL { get; set; } = default!;
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(255, ErrorMessageResourceType = typeof(Common),
@@ -40,7 +41,31 @@ public class Photo : DomainEntityMetaId
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Photo), Name = nameof(PhotoFullPath))]
     public string PhotoFullPath { get; set; } = default!;
+    
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Range(minimum: 300, maximum:4096, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
+    [Display(ResourceType = typeof(Photo), Name = nameof(OriginalPhotoHeight))]
+    public int OriginalPhotoHeight { get; set; }
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Range(minimum: 300, maximum: 4096, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
+    [Display(ResourceType = typeof(Photo), Name = nameof(OriginalPhotoWidth))]
+    public int OriginalPhotoWidth { get; set; }
 
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Range(minimum: 300, maximum: 4096, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
+    [Display(ResourceType = typeof(Photo), Name = nameof(PhotoHeight))]
+    public int PhotoHeight { get; set; }
+
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Range(minimum: 300, maximum: 4096, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
+    [Display(ResourceType = typeof(Photo), Name = nameof(PhotoWidth))]
+    public int PhotoWidth { get; set; }
+
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [StringLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(Photo), Name = nameof(ContentType))]
+    public string ContentType { get; set; } = default!;
+    public int ProfileImageHeight { get; set; }
     public string DirectoryTitleId { get; set; } = default!;
     public string FileNameInDirectory { get; set; } = default!;
     
