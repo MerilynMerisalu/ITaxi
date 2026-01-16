@@ -195,4 +195,19 @@
   <data name="ContentType" xml:space="preserve">
     <value>Failitüüp</value>
   </data>
+  <data name="OriginalBytes" xml:space="preserve">
+    <value>Pildifaili originaalbaidid</value>
+  </data>
+  <data name="PhotoBytes" xml:space="preserve">
+    <value>Pildifaili baidid</value>
+  </data>
+  <data name="ThumbnailBytes" xml:space="preserve">
+    <value>Pisipildi baidid</value>
+  </data>
+  <data name="ProfilePhoto" xml:space="preserve">
+    <value>Profiilifoto</value>
+  </data>
+  <data name="PhotoType" xml:space="preserve">
+    <value>Pildifaili tüüp</value>
+  </data>
 </root>

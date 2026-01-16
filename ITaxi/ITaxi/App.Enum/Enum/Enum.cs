@@ -71,3 +71,11 @@ public enum ExtraServiceType
     [Display(ResourceType = typeof(ExtraService), Name = "Vehicle")]
     Vehicle
 }
+
+public enum PhotoType
+{
+    [Display(ResourceType = typeof(Photo), Name = "Vehicle")]
+    Vehicle = 1,
+    [Display(ResourceType = typeof(Photo), Name = "ProfilePhoto")]
+    Profile,
+}

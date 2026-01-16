@@ -142,6 +142,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Original Bytes .
+        /// </summary>
+        public static string OriginalBytes {
+            get {
+                return ResourceManager.GetString("OriginalBytes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Original Photo File Type.
         /// </summary>
         public static string OriginalPhotoFileType {
@@ -156,6 +165,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string OriginalPhotoHeight {
             get {
                 return ResourceManager.GetString("OriginalPhotoHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bytes of Photo.
+        /// </summary>
+        public static string PhotoBytes {
+            get {
+                return ResourceManager.GetString("PhotoBytes", resourceCulture);
             }
         }
         
@@ -196,6 +214,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Photo Type.
+        /// </summary>
+        public static string PhotoType {
+            get {
+                return ResourceManager.GetString("PhotoType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Photo URL.
         /// </summary>
         public static string PhotoURL {
@@ -210,6 +237,24 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string PhotoWidth {
             get {
                 return ResourceManager.GetString("PhotoWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile Photo.
+        /// </summary>
+        public static string ProfilePhoto {
+            get {
+                return ResourceManager.GetString("ProfilePhoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thumbnail Bytes.
+        /// </summary>
+        public static string ThumbnailBytes {
+            get {
+                return ResourceManager.GetString("ThumbnailBytes", resourceCulture);
             }
         }
         

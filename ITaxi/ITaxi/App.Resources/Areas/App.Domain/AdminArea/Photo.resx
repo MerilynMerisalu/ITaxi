@@ -195,4 +195,19 @@
   <data name="ContentType" xml:space="preserve">
     <value>Content Type</value>
   </data>
+  <data name="OriginalBytes" xml:space="preserve">
+    <value>Original Bytes </value>
+  </data>
+  <data name="PhotoBytes" xml:space="preserve">
+    <value>Bytes of Photo</value>
+  </data>
+  <data name="ThumbnailBytes" xml:space="preserve">
+    <value>Thumbnail Bytes</value>
+  </data>
+  <data name="ProfilePhoto" xml:space="preserve">
+    <value>Profile Photo</value>
+  </data>
+  <data name="PhotoType" xml:space="preserve">
+    <value>Photo Type</value>
+  </data>
 </root>

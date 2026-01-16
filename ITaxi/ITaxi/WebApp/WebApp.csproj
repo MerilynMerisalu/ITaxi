@@ -19,17 +19,17 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="16.0.0" />
         <PackageReference Include="Azure.Identity" Version="1.17.1" />
-        <PackageReference Include="Azure.Storage.Blobs" Version="12.26.0" />
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.27.0" />
         <PackageReference Include="Google.Apis.PeopleService.v1" Version="1.72.0.3973" />
         <PackageReference Include="jQuery" Version="3.7.1" />
         <PackageReference Include="jQuery.Validation" Version="1.21.0" />
         <PackageReference Include="jQuery.Validation.Globalize" Version="1.1.0" />
         <PackageReference Include="MailKit" Version="4.14.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="10.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="10.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.2" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
         <PackageReference Include="Microsoft.Build" Version="18.0.2" />
@@ -38,20 +38,20 @@
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.0.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.Scripting.Common" Version="5.0.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.1" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.1">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.1" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.2" />
         <PackageReference Include="MimeKit" Version="4.14.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="RESTCountries.NET" Version="3.6.0" />
         <PackageReference Include="Rotativa.AspNetCore" Version="1.4.0" />
         <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
-        <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="32.1.21" />
-        <PackageReference Include="Syncfusion.Licensing" Version="32.1.21" />
+        <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="32.1.23" />
+        <PackageReference Include="Syncfusion.Licensing" Version="32.1.23" />
     </ItemGroup>
 
     <ItemGroup>

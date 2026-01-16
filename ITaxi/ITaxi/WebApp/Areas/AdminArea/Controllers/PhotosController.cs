@@ -3,6 +3,7 @@
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Contracts.BLL.Services;
+using App.Enum.Enum;
 using Base.Extensions;
 using Base.Resources;
 using Microsoft.AspNetCore.Components;
@@ -69,6 +70,14 @@ public class PhotosController : Controller
         vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
         vm.DirectoryTitleId = photo.DirectoryTitleId;
         vm.FileNameInDirectory = photo.FileNameInDirectory;
+        vm.OriginalPhotoHeight = photo.OriginalPhotoHeight;
+        vm.OriginalPhotoWidth = photo.OriginalPhotoWidth;
+        vm.PhotoHeight = photo.PhotoHeight;
+        vm.PhotoWidth = photo.PhotoWidth;
+        vm.ContentType = photo.ContentType;
+        vm.ProfileImageHeight = photo.ProfileImageHeight;
+        vm.ProfileImageWidth = photo.ProfileImageWidth;
+        
         if (photo.VehicleId.HasValue)
         {
             var isVehicle = await _appBLL.Photos.IsPhotoOfVehicleAsync(photoId: photo.Id, vehicleId: photo.VehicleId.Value);
@@ -117,6 +126,13 @@ public class PhotosController : Controller
         vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
         vm.DirectoryTitleId = photo.DirectoryTitleId;
         vm.FileNameInDirectory = photo.FileNameInDirectory;
+        vm.OriginalPhotoHeight = photo.OriginalPhotoHeight;
+        vm.OriginalPhotoWidth = photo.OriginalPhotoWidth;
+        vm.PhotoHeight = photo.PhotoHeight;
+        vm.PhotoWidth = photo.PhotoWidth;
+        vm.ContentType = photo.ContentType;
+        vm.ProfileImageHeight = photo.ProfileImageHeight;
+        vm.ProfileImageWidth = photo.ProfileImageWidth;
         if (photo.AdminId.HasValue)
         {
             var isAdmin = await _appBLL.Photos.IsPhotoOfAdminAsync(photoId: photo.Id, adminId: photo.AdminId.Value);
@@ -160,6 +176,13 @@ public class PhotosController : Controller
         vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
         vm.DirectoryTitleId = photo.DirectoryTitleId;
         vm.FileNameInDirectory = photo.FileNameInDirectory;
+        vm.OriginalPhotoHeight = photo.OriginalPhotoHeight;
+        vm.OriginalPhotoWidth = photo.OriginalPhotoWidth;
+        vm.PhotoHeight = photo.PhotoHeight;
+        vm.PhotoWidth = photo.PhotoWidth;
+        vm.ContentType = photo.ContentType;
+        vm.ProfileImageHeight = photo.ProfileImageHeight;
+        vm.ProfileImageWidth = photo.ProfileImageWidth;
         if (photo.DriverId.HasValue)
         {
             var isDriver = await _appBLL.Photos.IsPhotoOfDriverAsync(photoId: photo.Id, driverId: photo.DriverId!.Value);
@@ -197,6 +220,13 @@ public class PhotosController : Controller
         vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
         vm.DirectoryTitleId = photo.DirectoryTitleId;
         vm.FileNameInDirectory = photo.FileNameInDirectory;
+        vm.OriginalPhotoHeight = photo.OriginalPhotoHeight;
+        vm.OriginalPhotoWidth = photo.OriginalPhotoWidth;
+        vm.PhotoHeight = photo.PhotoHeight;
+        vm.PhotoWidth = photo.PhotoWidth;
+        vm.ContentType = photo.ContentType;
+        vm.ProfileImageHeight = photo.ProfileImageHeight;
+        vm.ProfileImageWidth = photo.ProfileImageWidth;
         if (photo.DriverId.HasValue)
         {
             var isCustomer = await _appBLL.Photos.IsPhotoOfCustomerAsync(photoId: photo.Id, customerId: photo.CustomerId!.Value);
@@ -242,6 +272,13 @@ public class PhotosController : Controller
         vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
         vm.DirectoryTitleId = photo.DirectoryTitleId;
         vm.FileNameInDirectory = photo.FileNameInDirectory;
+        vm.OriginalPhotoHeight = photo.OriginalPhotoHeight;
+        vm.OriginalPhotoWidth = photo.OriginalPhotoWidth;
+        vm.PhotoHeight = photo.PhotoHeight;
+        vm.PhotoWidth = photo.PhotoWidth;
+        vm.ContentType = photo.ContentType;
+        vm.ProfileImageHeight = photo.ProfileImageHeight;
+        vm.ProfileImageWidth = photo.ProfileImageWidth;
         if (photo.VehicleId.HasValue)
         {
             var isVehicle = await _appBLL.Photos.IsPhotoOfVehicleAsync(photoId: photo.Id, vehicleId: photo.VehicleId.Value);
@@ -343,6 +380,13 @@ public class PhotosController : Controller
         vm.ThumbnailFullPath = photo.ThumbnailFullPath!;
         vm.DirectoryTitleId = photo.DirectoryTitleId;
         vm.FileNameInDirectory = photo.FileNameInDirectory;
+        vm.OriginalPhotoHeight = photo.OriginalPhotoHeight;
+        vm.OriginalPhotoWidth = photo.OriginalPhotoWidth;
+        vm.PhotoHeight = photo.PhotoHeight;
+        vm.PhotoWidth = photo.PhotoWidth;
+        vm.ContentType = photo.ContentType;
+        vm.ProfileImageHeight = photo.ProfileImageHeight;
+        vm.ProfileImageWidth = photo.ProfileImageWidth;
         if (photo.AdminId.HasValue)
         {
             var isAdmin = await _appBLL.Photos.IsPhotoOfAdminAsync(photoId: photo.Id, adminId: photo.AdminId.Value);
@@ -506,7 +550,7 @@ public class PhotosController : Controller
                 return Content(Common.UploadFailed);
             var thumbnailFilePath = await _appBLL.Photos.CreateThumbnailAsync(fullFilePath, fileName: fileName, fileExtension, thumbnailFolderPath);
             var thumbnailRelativePath = FileHelper.GetImageRelativePath(Path.GetRelativePath(_webHostEnvironment.WebRootPath, thumbnailFilePath));
-
+            //var originalPhotoHeight =  
             var photo = new PhotoDTO()
             {
                 Id = Guid.NewGuid(),
@@ -518,7 +562,7 @@ public class PhotosController : Controller
                 PhotoFullPath = fullFilePath,
                 ThumbnailFullPath = thumbnailFilePath,
                 FileNameInDirectory = fileNameOnDisk,
-
+                PhotoType = PhotoType.Vehicle,
                 PhotoURL = relativeFilePath,
                 ThumbnailRelativePath = thumbnailRelativePath,
                 CreatedBy = User.GettingUserEmail(),

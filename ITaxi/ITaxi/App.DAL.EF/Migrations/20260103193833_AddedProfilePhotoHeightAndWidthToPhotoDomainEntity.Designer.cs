@@ -4,6 +4,7 @@ using App.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260103193833_AddedProfilePhotoHeightAndWidthToPhotoDomainEntity")]
+    partial class AddedProfilePhotoHeightAndWidthToPhotoDomainEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.2")
+                .HasAnnotation("ProductVersion", "10.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -963,17 +966,11 @@ namespace App.DAL.EF.Migrations
                     b.Property<bool>("IsIgnored")
                         .HasColumnType("bit");
 
-                    b.Property<long>("OriginalBytes")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("OriginalPhotoHeight")
                         .HasColumnType("int");
 
                     b.Property<int>("OriginalPhotoWidth")
                         .HasColumnType("int");
-
-                    b.Property<long>("PhotoBytes")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("PhotoFullPath")
                         .IsRequired()
@@ -981,9 +978,6 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("PhotoHeight")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PhotoType")
                         .HasColumnType("int");
 
                     b.Property<string>("PhotoURL")
@@ -999,9 +993,6 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<int?>("ProfileImageWidth")
                         .HasColumnType("int");
-
-                    b.Property<long?>("ThumbnailBytes")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("ThumbnailFullPath")
                         .HasMaxLength(255)
