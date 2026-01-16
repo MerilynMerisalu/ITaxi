@@ -34,6 +34,6 @@ public interface IPhotoService: IEntityService<App.BLL.DTO.AdminArea.PhotoDTO>,
    bool DoAllPhotosBelongToDirectory(List<PhotoDTO?> photos, string directoryId);
   List<string?> GetThumbnailsFullPaths(List<PhotoDTO?> photos);
   List<string?> GetPhotosFullPaths(List<PhotoDTO?> photos);
-    
+ public readonly record struct ImageSize(int Width, int Height); 
 
 }
