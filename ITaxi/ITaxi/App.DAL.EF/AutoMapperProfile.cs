@@ -1,6 +1,7 @@
 ﻿using App.DAL.DTO.AdminArea;
 using App.DAL.DTO.Identity;
 using AutoMapper;
+using System.Threading;
 
 namespace App.DAL.EF;
 
@@ -385,7 +386,25 @@ public class AutoMapperProfile: Profile
                 dto =>
                     dto.MapFrom(x => x.UpdatedAt.ToUniversalTime()))
             ;
+        // Convert from EF => DTO: Convert to Local Time
+        CreateMap<App.Domain.ExtraService, ExtraServiceDTO>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
+            ;
 
+        // DTO => EF: Convert to Universal Time
+        CreateMap<ExtraServiceDTO, App.Domain.ExtraService>()
+            .ForMember(db => db.CreatedAt,
+                dto =>
+                    dto.MapFrom(x => x.CreatedAt.ToUniversalTime()))
+            .ForMember(db => db.UpdatedAt,
+                dto =>
+                    dto.MapFrom(x => x.UpdatedAt.ToUniversalTime()))
+            ;
 
         CreateMap<AppUser, App.Domain.Identity.AppUser>().ReverseMap();
     }

@@ -404,6 +404,21 @@ public static class DataHelper
                 };
                 await context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategory);
                 await context.SaveChangesAsync();
+                
+                var extraService = new ExtraService
+                {
+                    Id = new Guid(),
+                    ExtraServiceName = "Luggage Handling",
+                    ExtraServiceType = ExtraServiceType.Driver,
+                    Price = 2.00,
+                    Description = "Accessible taxi service with luggage handling.",
+                    CreatedBy = "System",
+                    CreatedAt = DateTime.Now.ToUniversalTime()
+                };
+                extraService.ExtraServiceName.SetTranslation("Pagasikanne", "et-EE");
+                await context.ExtraServices.AddAsync(extraService);
+                await context.SaveChangesAsync();
+
 
                 var vehicleMark = new VehicleMark
                 {

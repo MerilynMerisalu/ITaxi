@@ -510,9 +510,9 @@ public class PhotosController : Controller
             if (!uploadResult)
                 return Content(Common.UploadFailed);
             var thumbnailFilePath = await _appBLL.Photos.CreateThumbnailAsync(fullFilePath, fileName: fileName, fileExtension, thumbnailFolderPath);
-            var (w, h) = 
+            //var (w, h) = 
             var thumbnailRelativePath = FileHelper.GetImageRelativePath(Path.GetRelativePath(_webHostEnvironment.WebRootPath, thumbnailFilePath));
-            var originalPhotoHeight =  
+           // var originalPhotoHeight =  
             var photo = new PhotoDTO()
             {
                 Id = Guid.NewGuid(),
