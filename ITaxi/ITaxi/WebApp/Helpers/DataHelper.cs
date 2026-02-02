@@ -410,7 +410,7 @@ public static class DataHelper
                     Id = new Guid(),
                     ExtraServiceName = "Luggage Handling",
                     ExtraServiceType = ExtraServiceType.Driver,
-                    Price = 2.00,
+                    Price = 2.00m,
                     Description = "Accessible taxi service with luggage handling.",
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()

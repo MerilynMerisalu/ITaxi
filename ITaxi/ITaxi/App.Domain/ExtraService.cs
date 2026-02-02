@@ -31,7 +31,7 @@ namespace App.Domain
         
         [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [DataType(DataType.Currency)]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
         [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         public ExtraServiceType ExtraServiceType { get; set; }
 
