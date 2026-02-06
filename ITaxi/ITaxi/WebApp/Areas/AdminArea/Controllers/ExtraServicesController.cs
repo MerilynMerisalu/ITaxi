@@ -7,41 +7,57 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using App.Contracts.DAL.IAppRepositories;
+using Microsoft.AspNetCore.Authorization;
+using WebApp.Areas.AdminArea.ViewModels;
+using System.Globalization;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
     [Area("AdminArea")]
+    [Authorize("Admin")]
     public class ExtraServicesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IExtraServiceRepository _repo;
 
-        public ExtraServicesController(AppDbContext context)
+        public ExtraServicesController(IExtraServiceRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         // GET: AdminArea/ExtraServices
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ExtraServices.ToListAsync());
+            return View(await _repo.GetAllExtraServicesOrderedByNameAsync());
         }
 
         // GET: AdminArea/ExtraServices/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            var vm = new DetailsDeleteExtraServiceViewModel();
+           
             if (id == null)
             {
                 return NotFound();
             }
+            
 
-            var extraService = await _context.ExtraServices
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var extraService = await _repo
+                .FirstOrDefaultAsync(id.Value);
             if (extraService == null)
             {
                 return NotFound();
             }
-
-            return View(extraService);
+            vm.Id = extraService.Id;
+            vm.ExtraServiceName = extraService.Name;
+            vm.Description = extraService.Description;
+            vm.Price = extraService.Price.ToString("C", CultureInfo.CurrentCulture);
+            vm.Type = extraService.ExtraServiceType.ToString();
+            vm.CreatedBy = extraService.CreatedBy;
+            vm.CreatedAt = extraService.CreatedAt;
+            vm.UpdatedBy = extraService.UpdatedBy;
+            vm.UpdatedAt = extraService.UpdatedAt;
+            return View(vm);
         }
 
         // GET: AdminArea/ExtraServices/Create
