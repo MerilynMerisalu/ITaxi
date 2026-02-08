@@ -1,183 +1,276 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <root>
-    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
-                id="root"
-                xmlns="">
-        <xsd:element name="root" msdata:IsDataSet="true">
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
 
-        </xsd:element>
-    </xsd:schema>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>1.3</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
-    </resheader>
-    <data name="RequiredAttributeErrorMessage" xml:space="preserve">
-        <value>Väli {0} on kohustuslik.</value>
-    </data>
-    <data name="StringLengthAttributeErrorMessage" xml:space="preserve">
-        <value>Väljale {0} sisestava väärtuse pikkus peab jääma vahemikku {2} ja {1} tähemärki.</value>
-    </data>
-    <data name="Create" xml:space="preserve">
-        <value>Loo</value>
-    </data>
-    <data name="BackToList" xml:space="preserve">
-        <value>Tagasi nimekirja vaatesse</value>
-    </data>
-    <data name="ErrorMessageAttemptedValueIsInvalid" xml:space="preserve">
-        <value>Väärtus '{0}' ei ole sobilik väljale '{1}'.</value>
-    </data>
-    <data name="ErrorMessageEmail" xml:space="preserve">
-        <value>Väli {0} ei ole legaalne e-posti aadress.</value>
-    </data>
-    <data name="ErrorMessageMaxLength" xml:space="preserve">
-        <value>Väli {0} ei saa olla pikem kui '{1}'.</value>
-    </data>
-    <data name="ErrorMessageMinLength" xml:space="preserve">
-        <value>Väli {0} ei saa olla lühem kui '{1}'.</value>
-    </data>
-    <data name="ErrorMessageMissingBindRequiredValue" xml:space="preserve">
-        <value>Väli '{0}' ei saanud väärtust.</value>
-    </data>
-    <data name="ErrorMessageMissingKeyOrValue" xml:space="preserve">
-        <value>Väärtus on vajalik.</value>
-    </data>
-    <data name="ErrorMessageMissingRequestBodyRequiredValue" xml:space="preserve">
-        <value>Päringul puudub sisu.</value>
-    </data>
-    <data name="ErrorMessageNonPropertyAttemptedValueIsInvalid" xml:space="preserve">
-        <value>Väärtus '{0}' ei ole korrektne.</value>
-    </data>
-    <data name="ErrorMessageNonPropertyUnknownValueIsInvalid" xml:space="preserve">
-        <value>Väärtus ei ole korrektne.</value>
-    </data>
-    <data name="ErrorMessageNonPropertyValueMustBeANumber" xml:space="preserve">
-        <value>Väli peab olema number.</value>
-    </data>
-    <data name="ErrorMessageNotValidPhone" xml:space="preserve">
-        <value>Väli {0} ei ole valiidne telefoninumber.</value>
-    </data>
-    <data name="ErrorMessageRange" xml:space="preserve">
-        <value>Väli {0} peab olema vahemikus {1} kuni {2}.</value>
-    </data>
-    <data name="ErrorMessageStringLengthMax" xml:space="preserve">
-        <value>Väli {0} peab olema sõne maksimum pikkusega {1}.</value>
-    </data>
-    <data name="ErrorMessageStringLengthMinMax" xml:space="preserve">
-        <value>Väli {0} peab olema sõne miinimum pikkusega {2} ja maksimum pikkusega {1}.</value>
-    </data>
-    <data name="ErrorMessageUnknownValueIsInvalid" xml:space="preserve">
-        <value>Väärtus ei sobi väljale '{0}'</value>
-    </data>
-    <data name="ErrorMessageValueIsInvalid" xml:space="preserve">
-        <value>Väärtus '{0}' ei ole sobilik.</value>
-    </data>
-    <data name="ErrorMessageValueMustBeANumber" xml:space="preserve">
-        <value>Väli '{0}' peab olema number.</value>
-    </data>
-    <data name="ErrorMessageValueMustNotBeNull" xml:space="preserve">
-        <value>Väärtus '{0}' ei ole valiidne.</value>
-    </data>
-    <data name="Edit" xml:space="preserve">
-        <value>Muuda</value>
-    </data>
-    <data name="Details" xml:space="preserve">
-        <value>Detailid</value>
-    </data>
-    <data name="Delete" xml:space="preserve">
-        <value>Kustuta</value>
-    </data>
-    <data name="Index" xml:space="preserve">
-        <value>Nimekiri</value>
-    </data>
-    <data name="CreateNew" xml:space="preserve">
-        <value>Loo Uus</value>
-    </data>
-    <data name="Save" xml:space="preserve">
-        <value>Salvesta</value>
-    </data>
-    <data name="AreYouSureYouWantToDeleteThis" xml:space="preserve">
-        <value>Kas olete kindel, et soovite antud üksuse kustutada?</value>
-    </data>
-    <data name="PleaseSelect" xml:space="preserve">
-        <value>Palun valige</value>
-    </data>
-    <data name="InActive" xml:space="preserve">
-        <value>Mitteaktiivne</value>
-    </data>
-    <data name="IsActive" xml:space="preserve">
-        <value>Aktiivne?</value>
-    </data>
-    <data name="Active" xml:space="preserve">
-        <value>Aktiivne</value>
-    </data>
-    <data name="ProfilePhoto" xml:space="preserve">
-        <value>Profiilifoto</value>
-    </data>
-    <data name="Female" xml:space="preserve">
-        <value>Naine</value>
-    </data>
-    <data name="Gender" xml:space="preserve">
-        <value>Sugu</value>
-    </data>
-    <data name="Male" xml:space="preserve">
-        <value>Mees</value>
-    </data>
-    <data name="Custom" xml:space="preserve">
-        <value>Kohandatud</value>
-    </data>
-    <data name="PhoneNumber" xml:space="preserve">
-        <value>Telefoninumber</value>
-    </data>
-    <data name="Email" xml:space="preserve">
-        <value>E-post</value>
-    </data>
-    <data name="ConfirmPassword" xml:space="preserve">
-        <value>Salasõna Kinnitamine</value>
-    </data>
-    <data name="Password" xml:space="preserve">
-        <value>Salasõna</value>
-    </data>
-    <data name="ErrorMessageComparePasswords" xml:space="preserve">
-        <value>Salasõna ja salasõna kinnitus ei kattu.</value>
-    </data>
-    <data name="Search" xml:space="preserve">
-        <value>Otsi</value>
-    </data>
-    <data name="ShowHide" xml:space="preserve">
-        <value>Näita / Peida</value>
-    </data>
-    <data name="IsIgnored" xml:space="preserve">
-        <value>Ignoreeritud?</value>
-    </data>
-    <data name="FilesAreRequired" xml:space="preserve">
-        <value>Failid peavad olema lisatud!</value>
-    </data>
-    <data name="FilesAreNotCorrect" xml:space="preserve">
-        <value>Failid ei vasta nõuetele!</value>
-    </data>
-    <data name="NumberOfImagesErrorMessage" xml:space="preserve">
-        <value>Saate üles laadida kuni {0} fotot.</value>
-    </data>
-    <data name="FileErrorMessage" xml:space="preserve">
-        <value>Üleslaetavate failide suurus peab jääma vahemikku {0}{1} kuni {3}{4} ja lubatud faililaiendideks on .png ja .jpg.</value>
-    </data>
-    <data name="FileExists" xml:space="preserve">
-        <value>Faili ei saa üles laadida, sest fail {0} eksistreerib kettal. </value>
-    </data>
-    <data name="UploadFailed" xml:space="preserve">
-        <value>Faili üleslaadimine ebaõnnestus!</value>
-    </data>
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="RequiredAttributeErrorMessage" xml:space="preserve">
+    <value>Väli {0} on kohustuslik.</value>
+  </data>
+  <data name="StringLengthAttributeErrorMessage" xml:space="preserve">
+    <value>Väljale {0} sisestava väärtuse pikkus peab jääma vahemikku {2} ja {1} tähemärki.</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Loo</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Tagasi nimekirja vaatesse</value>
+  </data>
+  <data name="ErrorMessageAttemptedValueIsInvalid" xml:space="preserve">
+    <value>Väärtus '{0}' ei ole sobilik väljale '{1}'.</value>
+  </data>
+  <data name="ErrorMessageEmail" xml:space="preserve">
+    <value>Väli {0} ei ole legaalne e-posti aadress.</value>
+  </data>
+  <data name="ErrorMessageMaxLength" xml:space="preserve">
+    <value>Väli {0} ei saa olla pikem kui '{1}'.</value>
+  </data>
+  <data name="ErrorMessageMinLength" xml:space="preserve">
+    <value>Väli {0} ei saa olla lühem kui '{1}'.</value>
+  </data>
+  <data name="ErrorMessageMissingBindRequiredValue" xml:space="preserve">
+    <value>Väli '{0}' ei saanud väärtust.</value>
+  </data>
+  <data name="ErrorMessageMissingKeyOrValue" xml:space="preserve">
+    <value>Väärtus on vajalik.</value>
+  </data>
+  <data name="ErrorMessageMissingRequestBodyRequiredValue" xml:space="preserve">
+    <value>Päringul puudub sisu.</value>
+  </data>
+  <data name="ErrorMessageNonPropertyAttemptedValueIsInvalid" xml:space="preserve">
+    <value>Väärtus '{0}' ei ole korrektne.</value>
+  </data>
+  <data name="ErrorMessageNonPropertyUnknownValueIsInvalid" xml:space="preserve">
+    <value>Väärtus ei ole korrektne.</value>
+  </data>
+  <data name="ErrorMessageNonPropertyValueMustBeANumber" xml:space="preserve">
+    <value>Väli peab olema number.</value>
+  </data>
+  <data name="ErrorMessageNotValidPhone" xml:space="preserve">
+    <value>Väli {0} ei ole valiidne telefoninumber.</value>
+  </data>
+  <data name="ErrorMessageRange" xml:space="preserve">
+    <value>Väli {0} peab olema vahemikus {1} kuni {2}.</value>
+  </data>
+  <data name="ErrorMessageStringLengthMax" xml:space="preserve">
+    <value>Väli {0} peab olema sõne maksimum pikkusega {1}.</value>
+  </data>
+  <data name="ErrorMessageStringLengthMinMax" xml:space="preserve">
+    <value>Väli {0} peab olema sõne miinimum pikkusega {2} ja maksimum pikkusega {1}.</value>
+  </data>
+  <data name="ErrorMessageUnknownValueIsInvalid" xml:space="preserve">
+    <value>Väärtus ei sobi väljale '{0}'</value>
+  </data>
+  <data name="ErrorMessageValueIsInvalid" xml:space="preserve">
+    <value>Väärtus '{0}' ei ole sobilik.</value>
+  </data>
+  <data name="ErrorMessageValueMustBeANumber" xml:space="preserve">
+    <value>Väli '{0}' peab olema number.</value>
+  </data>
+  <data name="ErrorMessageValueMustNotBeNull" xml:space="preserve">
+    <value>Väärtus '{0}' ei ole valiidne.</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Muuda</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Detailid</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Kustuta</value>
+  </data>
+  <data name="Index" xml:space="preserve">
+    <value>Nimekiri</value>
+  </data>
+  <data name="CreateNew" xml:space="preserve">
+    <value>Loo Uus</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Salvesta</value>
+  </data>
+  <data name="AreYouSureYouWantToDeleteThis" xml:space="preserve">
+    <value>Kas olete kindel, et soovite antud üksuse kustutada?</value>
+  </data>
+  <data name="PleaseSelect" xml:space="preserve">
+    <value>Palun valige</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Aktiivne?</value>
+  </data>
+  <data name="InActive" xml:space="preserve">
+    <value>Mitteaktiivne</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Aktiivne</value>
+  </data>
+  <data name="ProfilePhoto" xml:space="preserve">
+    <value>Profiilifoto</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Sugu</value>
+  </data>
+  <data name="Female" xml:space="preserve">
+    <value>Naine</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>Mees</value>
+  </data>
+  <data name="Custom" xml:space="preserve">
+    <value>Kohandatud</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Telefoninumber</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-post</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Salasõna</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Salasõna Kinnitamine</value>
+  </data>
+  <data name="ErrorMessageComparePasswords" xml:space="preserve">
+    <value>Salasõna ja salasõna kinnitus ei kattu.</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Otsi</value>
+  </data>
+  <data name="ShowHide" xml:space="preserve">
+    <value>Näita / Peida</value>
+  </data>
+  <data name="IsIgnored" xml:space="preserve">
+    <value>Ignoreeritud?</value>
+  </data>
+  <data name="FilesAreRequired" xml:space="preserve">
+    <value>Failid peavad olema lisatud!</value>
+  </data>
+  <data name="FilesAreNotCorrect" xml:space="preserve">
+    <value>Failid ei vasta nõuetele!</value>
+  </data>
+  <data name="NumberOfImagesErrorMessage" xml:space="preserve">
+    <value>Saate üles laadida kuni {0} fotot.</value>
+  </data>
+  <data name="FileErrorMessage" xml:space="preserve">
+    <value>Üleslaetavate failide suurus peab jääma vahemikku {0}{1} kuni {2}{3} ja lubatud faililaiendideks on .png ja .jpg.</value>
+  </data>
+  <data name="FileExists" xml:space="preserve">
+    <value>Faili ei saa üles laadida, sest fail {0} eksistreerib kettal. </value>
+  </data>
+  <data name="UploadFailed" xml:space="preserve">
+    <value>Faili üleslaadimine ebaõnnestus!</value>
+  </data>
 </root>

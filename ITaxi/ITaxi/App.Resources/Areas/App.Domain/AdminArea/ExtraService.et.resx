@@ -135,4 +135,7 @@
   <data name="Vehicle" xml:space="preserve">
     <value>Sõiduk</value>
   </data>
+  <data name="ExtraServicePageName" xml:space="preserve">
+    <value>Lisateenus</value>
+  </data>
 </root>

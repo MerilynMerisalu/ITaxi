@@ -135,4 +135,7 @@
   <data name="Vehicle" xml:space="preserve">
     <value>Vehicle</value>
   </data>
+  <data name="ExtraServicePageName" xml:space="preserve">
+    <value>Extra Service</value>
+  </data>
 </root>
