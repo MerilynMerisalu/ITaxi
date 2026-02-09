@@ -25,4 +25,5 @@ public interface IAppUnitOfWork : IUnitOfWork
     IDriveRepository Drives { get; }
     ICommentRepository Comments { get; }
     IPhotoRepository Photos { get; }
+    IExtraServiceRepository ExtraServices { get; }
 }

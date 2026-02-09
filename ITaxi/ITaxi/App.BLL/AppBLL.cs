@@ -85,6 +85,9 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     public virtual ICommentService Comments => _comments ??= new CommentService(UnitOfWork.Comments, new CommentMapper(_mapper));
     public virtual IPhotoService Photos => _photos ??= new PhotoService(UnitOfWork.Photos, new PhotoMapper(_mapper));
 
+    public virtual IExtraService ExtraServices => _extraServices ??= new ExtraService(UnitOfWork.ExtraServices, new ExtraServiceMapper(_mapper));
+
+
     private ICountryService? _countries;
     private ICountyService? _counties;
     private ICityService? _cities;
@@ -105,4 +108,5 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     private IDriveService? _drives;
     private ICommentService? _comments;
     private IPhotoService? _photos;
+    private IExtraService? _extraServices;
 }

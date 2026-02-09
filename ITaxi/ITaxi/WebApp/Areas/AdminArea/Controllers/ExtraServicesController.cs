@@ -15,6 +15,8 @@ using Base.Extensions;
 using App.DAL.EF.Repositories;
 using Base.Contracts;
 using AutoMapper;
+using App.Contracts.BLL;
+using App.BLL.DTO.AdminArea;
 
 namespace WebApp.Areas.AdminArea.Controllers
 {
@@ -22,20 +24,19 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Authorize("Admin")]
     public class ExtraServicesController : Controller
     {
-        private readonly ExtraServiceRepository _repo;
+        private readonly IAppBLL _appBLL;
         private readonly IMapper _mapper;
-        private readonly AppDbContext _context;
-        public ExtraServicesController(ExtraServiceRepository repo, IMapper mapper, AppDbContext context )
+        
+        public ExtraServicesController(IAppBLL appBLL, IMapper mapper)
         {
-            _repo = repo;
+            _appBLL = appBLL;
             _mapper = mapper;
-            _context = context;
         }
 
         // GET: AdminArea/ExtraServices
         public async Task<IActionResult> Index()
         {
-            return View(await _repo.GetAllExtraServicesOrderedByNameAsync());
+            return View(await _appBLL.ExtraServices.GetAllExtraServicesOrderedByNameAsync());
         }
 
         // GET: AdminArea/ExtraServices/Details/5
@@ -49,17 +50,17 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
             
 
-            var extraService = await _repo
+            var extraService = await _appBLL.ExtraServices
                 .FirstOrDefaultAsync(id.Value);
             if (extraService == null)
             {
                 return NotFound();
             }
             vm.Id = extraService.Id;
-            vm.ExtraServiceName = extraService.Name;
+            vm.ExtraServiceName = extraService.ExtraServiceName;
             vm.Description = extraService.Description;
             vm.Price = extraService.Price.ToString("C", CultureInfo.CurrentUICulture);
-            vm.Type = extraService.ExtraServiceType.ToString();
+            vm.Type = extraService.Type.ToString();
             vm.CreatedBy = extraService.CreatedBy;
             vm.CreatedAt = extraService.CreatedAt;
             vm.UpdatedBy = extraService.UpdatedBy;
@@ -83,7 +84,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         {
             if (ModelState.IsValid)
             {
-                var extraService = new ExtraService()
+                var extraService = new ExtraServiceDTO()
                 {
                     Id = Guid.NewGuid(),
                     ExtraServiceName = vm.ExtraServiceName,
@@ -95,8 +96,8 @@ namespace WebApp.Areas.AdminArea.Controllers
                     UpdatedBy = User.GettingUserEmail(),
                     UpdatedAt = DateTime.Now.ToUniversalTime(),
                 };
-                _repo.Add(_mapper.Map<App.DAL.DTO.AdminArea.ExtraServiceDTO>(extraService));
-                await _context.SaveChangesAsync();
+                _appBLL.ExtraServices.Add(extraService);
+                await _appBLL.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(vm);
@@ -111,16 +112,16 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var extraService = await _repo.GetExtraServiceByIdWithIncludesAsync(id.Value, roleName: null);
+            var extraService = await _appBLL.ExtraServices.GetExtraServiceByIdWithIncludesAsync(id.Value, roleName: null);
             if (extraService == null)
             {
                 return NotFound();
             }
             vm.Id = extraService.Id;
-            vm.ExtraServiceName = extraService.Name;
+            vm.ExtraServiceName = extraService.ExtraServiceName;
             vm.Description = extraService.Description;
             vm.Price = (decimal)extraService.Price;
-            vm.ExtraServiceType = extraService.ExtraServiceType;
+            vm.ExtraServiceType = extraService.Type;
             return View(vm);
         }
 
@@ -131,7 +132,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditExtraServiceViewModel vm)
         {
-            var extraService = await _repo.GetExtraServiceByIdWithoutIncludesAsync(id, roleName: null);
+            var extraService = await _appBLL.ExtraServices.GetExtraServiceByIdWithoutIncludesAsync(id, roleName: null);
             if (extraService == null || extraService.Id != id )
             {
                 return NotFound();
@@ -142,14 +143,14 @@ namespace WebApp.Areas.AdminArea.Controllers
                 try
                 {
                     extraService.Id = id;
-                    extraService.Name = vm.ExtraServiceName;
+                    extraService.ExtraServiceName = vm.ExtraServiceName;
                     extraService.Description = vm.Description;
-                    extraService.Price = (double)vm.Price;
-                    extraService.ExtraServiceType = vm.ExtraServiceType;
+                    extraService.Price = vm.Price;
+                    extraService.Type = vm.ExtraServiceType;
                     extraService.UpdatedBy = User.GettingUserEmail();
                     extraService.UpdatedAt = DateTime.UtcNow;
-                    _repo.Update(extraService);
-                    await _context.SaveChangesAsync();
+                    _appBLL.ExtraServices.Update(extraService);
+                    await _appBLL.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -176,17 +177,17 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return NotFound();
             }
 
-            var extraService = await _repo
+            var extraService = await _appBLL.ExtraServices
                 .FirstOrDefaultAsync(id.Value);
             if (extraService == null)
             {
                 return NotFound();
             }
             vm.Id = extraService.Id;
-            vm.ExtraServiceName = extraService.Name;
+            vm.ExtraServiceName = extraService.ExtraServiceName;
             vm.Description = extraService.Description;
             vm.Price = extraService.Price.ToString("C", CultureInfo.CurrentUICulture);
-            vm.Type = extraService.ExtraServiceType.ToString();
+            vm.Type = extraService.Type.ToString();
 
             return View(vm);
         }
@@ -196,19 +197,19 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var extraService = await _repo.GetExtraServiceByIdWithoutIncludesAsync(id);
+            var extraService = await _appBLL.ExtraServices.GetExtraServiceByIdWithoutIncludesAsync(id);
             if (extraService != null)
             {
-                _repo.Remove(extraService);
+                _appBLL.ExtraServices.Remove(extraService);
             }
 
-            await _context.SaveChangesAsync();
+            await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private async Task< bool> ExtraServiceExists(Guid id)
         {
-            return await _repo.ExistsAsync(id);
+            return await _appBLL.ExtraServices.ExistsAsync(id);
         }
     }
 }

@@ -73,5 +73,7 @@ public class AutoMapperConfig: Profile
         
         CreateMap<App.BLL.DTO.AdminArea.PhotoDTO, App.DAL.DTO.AdminArea.PhotoDTO>()
             .ReverseMap();
+        CreateMap<App.BLL.DTO.AdminArea.ExtraServiceDTO, App.DAL.DTO.AdminArea.ExtraServiceDTO>()
+            .ReverseMap();
     }
 }
