@@ -409,7 +409,7 @@ public static class DataHelper
                 {
                     Id = new Guid(),
                     ExtraServiceName = "Luggage Handling",
-                    ExtraServiceType = ExtraServiceType.Driver,
+                    Type = ExtraServiceType.Driver,
                     Price = 2.00m,
                     Description = "Accessible taxi service with luggage handling.",
                     CreatedBy = "System",

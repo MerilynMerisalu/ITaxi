@@ -20,32 +20,35 @@ namespace App.DAL.EF.Repositories
 
         public IEnumerable<ExtraServiceDTO> GetAllExtraServicesOrderedByName(bool noTracking = true, bool noIncludes = false)
         {
-            throw new NotImplementedException();
+            return CreateQuery(noTracking: noTracking, noIncludes: noIncludes).OrderBy(e => e.ExtraServiceName).Select(e => Mapper.Map(e)).ToList()!;
         }
 
-        public Task<IEnumerable<ExtraServiceDTO>> GetAllExtraServicesOrderedByNameAsync(bool noTracking = true, bool noIncludes = false)
+        public async Task<IEnumerable<ExtraServiceDTO>> GetAllExtraServicesOrderedByNameAsync(bool noTracking = true, bool noIncludes = false)
         {
-            throw new NotImplementedException();
+            return await CreateQuery(noTracking: noTracking, noIncludes: noIncludes).OrderBy(e => e.ExtraServiceName).Select(e => Mapper.Map(e)).ToListAsync()!;
         }
 
-        public IEnumerable<ExtraServiceDTO> GetExtraServiceByIdWithIncludes(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+        public ExtraServiceDTO? GetExtraServiceByIdWithIncludes(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
         {
-            throw new NotImplementedException();
+            return Mapper.Map(CreateQuery(noIncludes: noIncludes, noTracking: noTracking)
+                .FirstOrDefault(e => e.Id.Equals(id)))!;
         }
 
-        public Task<ExtraServiceDTO?> GetExtraServiceByIdWithIncludesAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+        public async Task<ExtraServiceDTO?> GetExtraServiceByIdWithIncludesAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
         {
-            throw new NotImplementedException();
+            return Mapper.Map(await CreateQuery(noIncludes: noIncludes, noTracking: noTracking).FirstOrDefaultAsync(e => e.Id.Equals(id)));
         }
 
-        public IEnumerable<ExtraServiceDTO> GetExtraServiceByIdWithoutIncludes(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+        public ExtraServiceDTO? GetExtraServiceByIdWithoutIncludes(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
         {
-            throw new NotImplementedException();
+            return Mapper.Map(base.CreateQuery(noIncludes: noIncludes, noTracking: noTracking).FirstOrDefault(e => e.Id.Equals(id)));
         }
 
-        public Task<ExtraServiceDTO?> GetExtraServiceByIdWithoutIncludesAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
+        public async Task<ExtraServiceDTO?> GetExtraServiceByIdWithoutIncludesAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)
         {
-            throw new NotImplementedException();
+       
+            return Mapper.Map( await base.
+                CreateQuery(noIncludes: noIncludes, noTracking: noTracking).FirstOrDefaultAsync(e => e.Id.Equals(id)));
         }
 
         protected override IQueryable<ExtraService> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)

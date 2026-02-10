@@ -21,7 +21,7 @@ using App.BLL.DTO.AdminArea;
 namespace WebApp.Areas.AdminArea.Controllers
 {
     [Area("AdminArea")]
-    [Authorize("Admin")]
+    [Authorize(Roles = "Admin")]
     public class ExtraServicesController : Controller
     {
         private readonly IAppBLL _appBLL;
