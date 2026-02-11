@@ -11,4 +11,8 @@
       <PackageReference Include="Microsoft.Build" Version="18.0.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Base.Resources\Base.Resources.csproj" />
+    </ItemGroup>
+
 </Project>

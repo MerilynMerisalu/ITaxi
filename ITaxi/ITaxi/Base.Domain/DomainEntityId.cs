@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Base.Contracts.Domain;
-using Base.Resources;
+using Base.Resources.Base.Domain;
 
 namespace Base.Domain;
 
@@ -12,8 +12,8 @@ public abstract class DomainEntityId<TKey> : IDomainEntityId<TKey>
     where TKey : IEquatable<TKey>
 {
     public TKey Id { get; set; } = default!;
-    
-    
+
+    [Display(ResourceType = typeof(Common), Name = nameof(IsDeleted))]
     public bool IsDeleted { get; set; } = false;
     [Display(ResourceType = typeof(Common), Name = nameof(IsIgnored))]
     public bool IsIgnored { get; set; } = false;

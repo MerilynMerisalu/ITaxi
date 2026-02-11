@@ -1,4 +1,8 @@
-﻿namespace Base.Contracts.Domain;
+﻿
+using Base.Resources;
+using System.ComponentModel.DataAnnotations;
+
+namespace Base.Contracts.Domain;
 
 /// <summary>
 ///     Guid based domain entity id
@@ -15,6 +19,7 @@ public interface IDomainEntityId<TKey>
     where TKey : IEquatable<TKey>
 {
     public TKey Id { get; set; }
+    [Display(ResourceType = typeof(Common), Name = nameof(IsDeleted))]
     public bool IsDeleted { get; set; }
-    public bool IsIgnored { get; set; }
+   public bool IsIgnored { get; set; }
 }

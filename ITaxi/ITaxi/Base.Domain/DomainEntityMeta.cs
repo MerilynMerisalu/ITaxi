@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Resources.Areas.App.Domain;
+
 using Base.Contracts.Domain;
+using Base.Resources.Base.Domain;
 
 namespace Base.Domain;
 
@@ -21,10 +22,10 @@ public abstract class DomainEntityMetaId : DomainEntityId<Guid>, IDomainEntityId
     [Display(ResourceType = typeof(Common), Name = nameof(DeletedBy))]
     public string? DeletedBy { get; set; }
 
-    [Display(ResourceType = typeof(Common), Name = nameof(DeletedAt))]
+    [Display(ResourceType = typeof(Base.Resources.Base.Domain.Common), Name = nameof(DeletedAt))]
     public DateTime? DeletedAt { get; set; } = null;
-    /*[Display(ResourceType = typeof(Common), Name = nameof(IsIgnored))]
-    public bool IsIgnored { get; set; }*/
+    [Display(ResourceType = typeof(Common), Name = nameof(IsIgnored))]
+    public virtual bool IsIgnored { get; set; }
 }
 
 public abstract class DomainEntityMetaId<TKey> : DomainEntityId<TKey>,
@@ -43,7 +44,7 @@ public abstract class DomainEntityMetaId<TKey> : DomainEntityId<TKey>,
     [MaxLength(32)] public string? DeletedBy { get; set; }
     
     public DateTime? DeletedAt { get; set; } = null;
-    //[Display(ResourceType = typeof(Common), Name = nameof(IsIgnored))]
-    //public bool IsIgnored { get; set; }
+    [Display(ResourceType = typeof(Common), Name = nameof(IsIgnored))]
+    public bool IsIgnored { get; set; }
     
 }

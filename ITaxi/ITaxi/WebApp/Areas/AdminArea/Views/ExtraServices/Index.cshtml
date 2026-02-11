@@ -1,17 +1,21 @@
-@model IEnumerable<App.Domain.ExtraService>
+@using Base.Resources
+@model IEnumerable<App.BLL.DTO.AdminArea.ExtraServiceDTO>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = @Common.Index;
 }
 
-<h1>Index</h1>
+<h1>@Common.Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Common.CreateNew</a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ExtraServiceName)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
@@ -49,47 +53,51 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsIgnored)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExtraServiceName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeletedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeletedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsDeleted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsIgnored)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

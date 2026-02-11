@@ -24,6 +24,8 @@ namespace App.BLL.DTO.AdminArea
         [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [MaxLength(128, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
         [StringLength(128, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+        [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.ExtraService),
+        Name = nameof(Description))]
         public string Description { get; set; } = default!;
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
