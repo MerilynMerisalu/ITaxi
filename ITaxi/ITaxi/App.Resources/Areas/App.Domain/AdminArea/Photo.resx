@@ -183,13 +183,13 @@
   <data name="OriginalPhotoHeight" xml:space="preserve">
     <value>Original Photo Height</value>
   </data>
-  <data name="OrginalPhotoWidth" xml:space="preserve">
+  <data name="OriginalPhotoWidth" xml:space="preserve">
     <value>Original Photo Width </value>
   </data>
   <data name="PhotoHeight" xml:space="preserve">
     <value>Profile Photo Height</value>
   </data>
-  <data name="PhotoWidth" xml:space="preserve">
+  <data name="ProfilePhotoWidth" xml:space="preserve">
     <value>Profile Photo Width</value>
   </data>
   <data name="ContentType" xml:space="preserve">
@@ -209,5 +209,8 @@
   </data>
   <data name="PhotoType" xml:space="preserve">
     <value>Photo Type</value>
+  </data>
+  <data name="ProfilePhotoHeight" xml:space="preserve">
+    <value>Profile Image Height</value>
   </data>
 </root>

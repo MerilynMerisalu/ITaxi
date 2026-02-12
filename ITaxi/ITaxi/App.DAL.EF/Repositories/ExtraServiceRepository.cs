@@ -25,7 +25,8 @@ namespace App.DAL.EF.Repositories
 
         public async Task<IEnumerable<ExtraServiceDTO>> GetAllExtraServicesOrderedByNameAsync(bool noTracking = true, bool noIncludes = false)
         {
-            return await CreateQuery(noTracking: noTracking, noIncludes: noIncludes).OrderBy(e => e.ExtraServiceName).Select(e => Mapper.Map(e)).ToListAsync()!;
+            var res = await CreateQuery(noTracking: noTracking, noIncludes: noIncludes).OrderBy(e => e.ExtraServiceName).Select(e => Mapper.Map(e)).ToListAsync()!;
+            return res!;
         }
 
         public ExtraServiceDTO? GetExtraServiceByIdWithIncludes(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false)

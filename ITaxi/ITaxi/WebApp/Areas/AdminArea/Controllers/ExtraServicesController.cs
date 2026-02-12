@@ -36,7 +36,8 @@ namespace WebApp.Areas.AdminArea.Controllers
         // GET: AdminArea/ExtraServices
         public async Task<IActionResult> Index()
         {
-            return View(await _appBLL.ExtraServices.GetAllExtraServicesOrderedByNameAsync());
+            var res = await _appBLL.ExtraServices.GetAllExtraServicesOrderedByNameAsync();
+            return View(res);
         }
 
         // GET: AdminArea/ExtraServices/Details/5

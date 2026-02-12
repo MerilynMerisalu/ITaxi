@@ -76,8 +76,8 @@ public class PhotosController : Controller
         vm.PhotoHeight = photo.PhotoHeight;
         vm.PhotoWidth = photo.PhotoWidth;
         vm.ContentType = photo.ContentType;
-        vm.ProfileImageHeight = photo.ProfileImageHeight;
-        vm.ProfileImageWidth = photo.ProfileImageWidth;
+        vm.ProfilePhotoHeight = photo.ProfilePhotoHeight;
+        vm.ProfilePhotoWidth = photo.ProfilePhotoWidth;
         
         if (photo.VehicleId.HasValue)
         {
@@ -132,8 +132,8 @@ public class PhotosController : Controller
         vm.PhotoHeight = photo.PhotoHeight;
         vm.PhotoWidth = photo.PhotoWidth;
         vm.ContentType = photo.ContentType;
-        vm.ProfileImageHeight = photo.ProfileImageHeight;
-        vm.ProfileImageWidth = photo.ProfileImageWidth;
+        vm.ProfilePhotoHeight = photo.ProfilePhotoHeight;
+        vm.ProfilePhotoWidth = photo.ProfilePhotoWidth;
         if (photo.AdminId.HasValue)
         {
             var isAdmin = await _appBLL.Photos.IsPhotoOfAdminAsync(photoId: photo.Id, adminId: photo.AdminId.Value);
@@ -182,8 +182,8 @@ public class PhotosController : Controller
         vm.PhotoHeight = photo.PhotoHeight;
         vm.PhotoWidth = photo.PhotoWidth;
         vm.ContentType = photo.ContentType;
-        vm.ProfileImageHeight = photo.ProfileImageHeight;
-        vm.ProfileImageWidth = photo.ProfileImageWidth;
+        vm.ProfilePhotoHeight = photo.ProfilePhotoHeight;
+        vm.ProfilePhotoWidth = photo.ProfilePhotoWidth;
         if (photo.DriverId.HasValue)
         {
             var isDriver = await _appBLL.Photos.IsPhotoOfDriverAsync(photoId: photo.Id, driverId: photo.DriverId!.Value);
@@ -226,8 +226,8 @@ public class PhotosController : Controller
         vm.PhotoHeight = photo.PhotoHeight;
         vm.PhotoWidth = photo.PhotoWidth;
         vm.ContentType = photo.ContentType;
-        vm.ProfileImageHeight = photo.ProfileImageHeight;
-        vm.ProfileImageWidth = photo.ProfileImageWidth;
+        vm.ProfilePhotoHeight = photo.ProfilePhotoHeight;
+        vm.ProfilePhotoWidth = photo.ProfilePhotoWidth;
         if (photo.DriverId.HasValue)
         {
             var isCustomer = await _appBLL.Photos.IsPhotoOfCustomerAsync(photoId: photo.Id, customerId: photo.CustomerId!.Value);
@@ -278,8 +278,8 @@ public class PhotosController : Controller
         vm.PhotoHeight = photo.PhotoHeight;
         vm.PhotoWidth = photo.PhotoWidth;
         vm.ContentType = photo.ContentType;
-        vm.ProfileImageHeight = photo.ProfileImageHeight;
-        vm.ProfileImageWidth = photo.ProfileImageWidth;
+        vm.ProfilePhotoHeight = photo.ProfilePhotoHeight;
+        vm.ProfilePhotoWidth = photo.ProfilePhotoWidth;
         if (photo.VehicleId.HasValue)
         {
             var isVehicle = await _appBLL.Photos.IsPhotoOfVehicleAsync(photoId: photo.Id, vehicleId: photo.VehicleId.Value);
@@ -386,8 +386,8 @@ public class PhotosController : Controller
         vm.PhotoHeight = photo.PhotoHeight;
         vm.PhotoWidth = photo.PhotoWidth;
         vm.ContentType = photo.ContentType;
-        vm.ProfileImageHeight = photo.ProfileImageHeight;
-        vm.ProfileImageWidth = photo.ProfileImageWidth;
+        vm.ProfilePhotoHeight = photo.ProfilePhotoHeight;
+        vm.ProfilePhotoWidth = photo.ProfilePhotoWidth;
         if (photo.AdminId.HasValue)
         {
             var isAdmin = await _appBLL.Photos.IsPhotoOfAdminAsync(photoId: photo.Id, adminId: photo.AdminId.Value);

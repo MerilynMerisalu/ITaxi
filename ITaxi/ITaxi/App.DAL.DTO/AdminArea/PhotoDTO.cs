@@ -68,9 +68,9 @@ public class PhotoDTO : DomainEntityMetaId
     public string ContentType { get; set; } = default!;
 
     [Range(minimum: 128, maximum: 1024, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
-    public int? ProfileImageHeight { get; set; }
+    public int? ProfilePhotoHeight { get; set; }
     [Range(minimum: 128, maximum: 1024, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
-    public int? ProfileImageWidth { get; set; }
+    public int? ProfilePhotoWidth { get; set; }
     public Guid? AdminId { get; set; }
     public AdminDTO? Admin { get; set; }
     public Guid? DriverId { get; set; }

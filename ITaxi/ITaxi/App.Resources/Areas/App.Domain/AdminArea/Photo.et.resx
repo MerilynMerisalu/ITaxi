@@ -183,13 +183,13 @@
   <data name="OriginalPhotoHeight" xml:space="preserve">
     <value>Originaal pildifaili kõrgus</value>
   </data>
-  <data name="OrginalPhotoWidth" xml:space="preserve">
+  <data name="OriginalPhotoWidth" xml:space="preserve">
     <value>Originaal pildifaili laius</value>
   </data>
   <data name="PhotoHeight" xml:space="preserve">
     <value>Profiilifoto kõrgus </value>
   </data>
-  <data name="PhotoWidth" xml:space="preserve">
+  <data name="ProfilePhotoWidth" xml:space="preserve">
     <value>Profiilifoto laius</value>
   </data>
   <data name="ContentType" xml:space="preserve">
@@ -209,5 +209,8 @@
   </data>
   <data name="PhotoType" xml:space="preserve">
     <value>Pildifaili tüüp</value>
+  </data>
+  <data name="ProfilePhotoHeight" xml:space="preserve">
+    <value>Profiilipildi kõrgus</value>
   </data>
 </root>

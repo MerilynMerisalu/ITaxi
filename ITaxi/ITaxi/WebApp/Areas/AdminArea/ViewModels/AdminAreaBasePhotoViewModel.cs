@@ -68,7 +68,7 @@ namespace WebApp.Areas.AdminArea.ViewModels
 
         [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [Range(minimum: 300, maximum: 4096, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
-        [Display(ResourceType = typeof(Photo), Name = nameof(PhotoWidth))]
+        [Display(ResourceType = typeof(Photo), Name = "ProfilePhotoWidth")]
         public int PhotoWidth { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
@@ -77,11 +77,11 @@ namespace WebApp.Areas.AdminArea.ViewModels
         public string ContentType { get; set; } = default!;
 
         [Range(minimum: 128, maximum: 1024, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
-        [Display(ResourceType = typeof(Photo), Name = nameof(ProfileImageHeight))]
-        public int? ProfileImageHeight { get; set; }
+        [Display(ResourceType = typeof(Photo), Name = "ProfilePhotoHeight")]
+        public int? ProfilePhotoHeight { get; set; }
         [Range(minimum: 128, maximum: 1024, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageRange")]
-        [Display(ResourceType = typeof(Photo), Name = nameof(ProfileImageWidth))]
-        public int? ProfileImageWidth { get; set; }
+        [Display(ResourceType = typeof(Photo), Name = nameof(ProfilePhotoWidth))]
+        public int? ProfilePhotoWidth { get; set; }
 
         /// <summary>
         /// Photo's directory id
