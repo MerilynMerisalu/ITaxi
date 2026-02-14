@@ -24,7 +24,8 @@ namespace App.BLL.Services
 
         public async Task<IEnumerable<ExtraServiceDTO>> GetAllExtraServicesOrderedByNameAsync(bool noTracking = true, bool noIncludes = false)
         {
-            return (await Repository.GetAllExtraServicesOrderedByNameAsync(noTracking: noTracking, noIncludes: noIncludes)).Select(e => Mapper.Map(e)!);
+            var res = (await Repository.GetAllExtraServicesOrderedByNameAsync(noTracking: noTracking, noIncludes: noIncludes)).Select(e => Mapper.Map(e));
+            return res!;
         }
 
 
