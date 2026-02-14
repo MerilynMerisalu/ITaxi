@@ -16,7 +16,7 @@ namespace App.DAL.DTO.AdminArea
         [MaxLength(128, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
         [StringLength(128, ErrorMessageResourceType = typeof(Common),
            ErrorMessageResourceName = "ErrorMessageMaxLength")]
-        public string ExtraServiceName { get; set; } = default!;
+        public LangStr ExtraServiceName { get; set; } = default!;
 
 
         [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
