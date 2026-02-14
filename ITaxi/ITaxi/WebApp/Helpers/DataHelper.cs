@@ -416,6 +416,7 @@ public static class DataHelper
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
                 extraService.ExtraServiceName.SetTranslation("Pagasikanne", "et-EE");
+                extraService.Description.SetTranslation("Ligipääsetav taksoteenus koos pagasikandega.", "et-EE");
                 await context.ExtraServices.AddAsync(extraService);
                 await context.SaveChangesAsync();
 

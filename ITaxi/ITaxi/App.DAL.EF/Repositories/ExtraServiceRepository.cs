@@ -59,14 +59,18 @@ namespace App.DAL.EF.Repositories
 
                 return RepoDbSet
                     .Include(c => c.ExtraServiceName)
-                    .ThenInclude(c => c.Translations).Where(c => c.IsIgnored == false)
+                        .ThenInclude(c => c.Translations).Where(c => c.IsIgnored == false)
+                    .Include(c => c.Description)
+                        .ThenInclude(c => c.Translations).Where(c => c.IsIgnored == false)
                     .AsNoTracking();
             }
             if (noTracking)
             {
                 return RepoDbSet
                     .Include(c => c.ExtraServiceName)
-                    .ThenInclude(c => c.Translations).Where(c => c.IsDeleted == false)
+                        .ThenInclude(c => c.Translations).Where(c => c.IsDeleted == false)
+                    .Include(c => c.Description)
+                        .ThenInclude(c => c.Translations).Where(c => c.IsIgnored == false)
                     .AsNoTracking();
             }
 
@@ -79,6 +83,8 @@ namespace App.DAL.EF.Repositories
             return RepoDbSet
                 .Include(c => c.ExtraServiceName)
                 .ThenInclude(c => c.Translations)
+                .Include(c => c.Description)
+                    .ThenInclude(c => c.Translations).Where(c => c.IsIgnored == false)
                 .AsNoTracking();
         }
     }
