@@ -59,7 +59,7 @@ namespace App.DAL.EF.Repositories
 
                 return RepoDbSet
                     .Include(c => c.ExtraServiceName)
-                    .ThenInclude(c => c.Translations).Where(c => c.IsIgnored == true)
+                    .ThenInclude(c => c.Translations).Where(c => c.IsIgnored == false)
                     .AsNoTracking();
             }
             if (noTracking)
