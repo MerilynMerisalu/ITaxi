@@ -61,7 +61,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.ExtraServiceName = extraService.ExtraServiceName;
             vm.Description = extraService.Description;
             vm.Price = extraService.Price.ToString("C", CultureInfo.CurrentUICulture);
-            vm.Type = extraService.Type.ToString();
+            vm.Type = extraService.ExtraServiceType.ToString();
             vm.CreatedBy = extraService.CreatedBy;
             vm.CreatedAt = extraService.CreatedAt;
             vm.UpdatedBy = extraService.UpdatedBy;
@@ -91,7 +91,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                     ExtraServiceName = vm.ExtraServiceName,
                     Description = vm.Description,
                     Price = vm.Price,
-                    Type = vm.ExtraServiceType,
+                    ExtraServiceType = vm.ExtraServiceType,
                     CreatedBy = User.GettingUserEmail(),
                     CreatedAt = DateTime.Now.ToUniversalTime(),
                     UpdatedBy = User.GettingUserEmail(),
@@ -122,7 +122,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.ExtraServiceName = extraService.ExtraServiceName;
             vm.Description = extraService.Description;
             vm.Price = (decimal)extraService.Price;
-            vm.ExtraServiceType = extraService.Type;
+            vm.ExtraServiceType = extraService.ExtraServiceType;
             return View(vm);
         }
 
@@ -147,7 +147,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                     extraService.ExtraServiceName = vm.ExtraServiceName;
                     extraService.Description = vm.Description;
                     extraService.Price = vm.Price;
-                    extraService.Type = vm.ExtraServiceType;
+                    extraService.ExtraServiceType = vm.ExtraServiceType;
                     extraService.UpdatedBy = User.GettingUserEmail();
                     extraService.UpdatedAt = DateTime.UtcNow;
                     _appBLL.ExtraServices.Update(extraService);
@@ -188,7 +188,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.ExtraServiceName = extraService.ExtraServiceName;
             vm.Description = extraService.Description;
             vm.Price = extraService.Price.ToString("C", CultureInfo.CurrentUICulture);
-            vm.Type = extraService.Type.ToString();
+            vm.Type = extraService.ExtraServiceType.ToString();
 
             return View(vm);
         }

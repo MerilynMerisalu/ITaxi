@@ -69,7 +69,7 @@ public enum ExtraServiceType
     [Display(ResourceType = typeof(ExtraService), Name = "Driver")]
     Driver = 1,
     [Display(ResourceType = typeof(ExtraService), Name = "Vehicle")]
-    Vehicle
+    Vehicle = 2
 }
 
 public enum PhotoType

@@ -97,20 +97,20 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extra Service Type.
+        /// </summary>
+        public static string ExtraServiceType {
+            get {
+                return ResourceManager.GetString("ExtraServiceType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extra Service Price.
         /// </summary>
         public static string Price {
             get {
                 return ResourceManager.GetString("Price", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Extra Service Type.
-        /// </summary>
-        public static string Type {
-            get {
-                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
         

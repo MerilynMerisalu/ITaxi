@@ -126,7 +126,7 @@
   <data name="Price" xml:space="preserve">
     <value>Lisateenuse hind</value>
   </data>
-  <data name="Type" xml:space="preserve">
+  <data name="ExtraServiceType" xml:space="preserve">
     <value>Lisateenuse tüüp</value>
   </data>
   <data name="Driver" xml:space="preserve">

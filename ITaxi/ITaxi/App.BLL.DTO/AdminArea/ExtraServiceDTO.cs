@@ -36,8 +36,8 @@ namespace App.BLL.DTO.AdminArea
         public decimal Price { get; set; }
         [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.ExtraService),
-        Name = nameof(Type))]
-        public ExtraServiceType Type { get; set; }
+        Name = nameof(ExtraServiceType))]
+        public ExtraServiceType ExtraServiceType { get; set; }
 
     }
 }

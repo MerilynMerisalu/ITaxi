@@ -126,7 +126,7 @@
   <data name="Price" xml:space="preserve">
     <value>Extra Service Price</value>
   </data>
-  <data name="Type" xml:space="preserve">
+  <data name="ExtraServiceType" xml:space="preserve">
     <value>Extra Service Type</value>
   </data>
   <data name="Driver" xml:space="preserve">
