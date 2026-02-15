@@ -328,13 +328,21 @@ public class IndexModel : PageModel
         var customer = await _context.Customers.SingleOrDefaultAsync(c => c.AppUserId.Equals(user.Id));
         var photoTitle = admin != null ? "AdminProfilePhoto" : driver != null ? "DriverProfilePhoto" :
             customer != null ? "CustomerProfilePhoto" : "Unknown";
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            path = "/Images/Icons/icons8-selfies-50.png";
+        }
         var photoUrlPath = Path.GetRelativePath(_webHostEnvironment.WebRootPath, path);
+       
         photoUrlPath = "\\" + photoUrlPath;
         Guid? adminId = null;
         Guid? driverId = null;
         Guid? customerId = null;
-        var fileName = Input.ImageFile!.FileName;
-
+        var fileName = Input.ImageFile?.FileName;
+        if (string.IsNullOrWhiteSpace(fileName))
+        {
+            fileName = "icons8-selfies-50.png";
+        }
         if (admin != null)
         {
             adminId = admin.Id;
@@ -395,12 +403,21 @@ public class IndexModel : PageModel
         if (Input.LastName != user.LastName) user.LastName = Input.LastName;
 
         if (Input.Gender != user.Gender!.Value) user.Gender = Input.Gender;
+        if (Input.CountryId.HasValue)
+        {
+            if (Input.CountryId.Value != user.CountryId)
+            {
+                user.CountryId = user.CountryId!;
+            }
+        }
         if (admin != null)
         {
             if (Input.PersonalIdentifier != admin.PersonalIdentifier)
             {
                 admin.PersonalIdentifier = Input.PersonalIdentifier!;
-            } 
+            }
+            
+            
             if (Input.CityId != admin.CityId)
             {
                 if (Input.CityId != null) admin.CityId = Input.CityId.Value;
