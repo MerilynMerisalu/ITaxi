@@ -355,26 +355,31 @@ public class IndexModel : PageModel
         {
             customerId = customer!.Id;
         }
-
-        var photo = new Photo { 
-            Id = Guid.NewGuid(),
-            Title = photoTitle,
-            PhotoURL = photoUrlPath,
-            FileName = fileName,
-            PhotoFullPath = path,
-            DirectoryTitleId = directoryId,
-            FileNameInDirectory = fileNameOnDisk,
-            AdminId = adminId,
-            DriverId = driverId,
-            CustomerId = customerId,
-            AppUserId = user.Id,
-            CreatedBy = User.Identity!.Name,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedBy = User.Identity!.Name,
-            UpdatedAt = DateTime.UtcNow,
-        };
-        _context.Photos.Add(photo);
-        await _context.SaveChangesAsync();
+        if (Input.ImageFile != null)
+        {
+            var photo = new Photo
+            {
+                Id = Guid.NewGuid(),
+                Title = photoTitle,
+                PhotoURL = photoUrlPath,
+                FileName = fileName,
+                ContentType = Input.ImageFile!.ContentType,
+                PhotoFullPath = path,
+                DirectoryTitleId = directoryId,
+                FileNameInDirectory = fileNameOnDisk,
+                AdminId = adminId,
+                DriverId = driverId,
+                CustomerId = customerId,
+                AppUserId = user.Id,
+                CreatedBy = User.Identity!.Name,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedBy = User.Identity!.Name,
+                UpdatedAt = DateTime.UtcNow,
+            };
+            _context.Photos.Add(photo);
+            await _context.SaveChangesAsync();
+        }
+        
 
         var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
         if (Input.PhoneNumber != phoneNumber)
@@ -407,7 +412,7 @@ public class IndexModel : PageModel
         {
             if (Input.CountryId.Value != user.CountryId)
             {
-                user.CountryId = user.CountryId!;
+                user.CountryId = Input.CountryId.Value;
             }
         }
         if (admin != null)
