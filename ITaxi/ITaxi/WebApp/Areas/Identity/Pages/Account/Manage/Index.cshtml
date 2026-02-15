@@ -36,6 +36,7 @@
                 <label asp-for="Input.Gender" class="form-label"></label>
                 <span asp-validation-for="Input.Gender" class="text-danger"></span>
             </div>
+
             <div class="form-floating">
                 <input asp-for="Input.DateOfBirth" class="form-control" disabled/>
                 <label asp-for="Input.DateOfBirth" class="form-label"></label>
@@ -54,6 +55,14 @@
                     <label asp-for="Input.PersonalIdentifier" class="form-label"></label>
                     <span asp-validation-for="Input.PersonalIdentifier" class="text-danger"></span>
                 </div>
+                <div class="form-group">
+                    <label asp-for="Input.CountryId"></label>
+                    <select asp-for="Input.CountryId" class="form-control" asp-items="Model.Countries">
+                        <option>@Common.PleaseSelect</option>
+                    </select>
+                    <span asp-validation-for="Input.CountryId" class="text-danger"></span>
+                </div>
+
                 <div class="form-group">
                     <label asp-for="Input.CityId"></label>
                     <select asp-for="Input.CityId" class="form-control" asp-items="Model.Cities">

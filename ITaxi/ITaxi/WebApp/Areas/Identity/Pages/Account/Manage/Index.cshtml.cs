@@ -3,18 +3,21 @@
 
 #nullable enable
 
-using System.ComponentModel.DataAnnotations;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
 using App.Enum.Enum;
 using Base.Resources;
+using Google.Apis.PeopleService.v1.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using Gender = App.Enum.Enum.Gender;
 using Index = App.Resources.Areas.Identity.Pages.Account.Manage.Index;
+using Photo = App.Domain.Photo;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
@@ -66,6 +69,11 @@ public class IndexModel : PageModel
     [BindProperty]
     public InputModel Input { get; set; } = default!;
     /// <summary>
+    /// List of countries
+    /// </summary>
+    public SelectList? Countries { get; set; }
+
+    /// <summary>
     /// List of cities
     /// </summary>
     public SelectList? Cities { get; set; }
@@ -104,6 +112,16 @@ public class IndexModel : PageModel
         var lastName = user.LastName;
         var gender = user.Gender;
         var dateOfBirth = user.DateOfBirth.Date;
+        var countryId = user.CountryId;
+
+        Countries = new SelectList(await _context.Countries.
+            Include(c => c.CountryName)
+            .ThenInclude(t => t.Translations)
+           .OrderBy(c => c.ISOCode)
+           .Select(c => new { c.Id, c.CountryName })
+           .ToListAsync(), nameof(Country.Id),
+           nameof(Country.CountryName));
+
 
         Cities = new SelectList(await _context.Cities
             .OrderBy(c => c.CityName)
@@ -131,6 +149,7 @@ public class IndexModel : PageModel
                     Gender = Enum.Parse<Gender>(gender.Value.ToString()),
                     DateOfBirth = dateOfBirth,
                     PersonalIdentifier = admin.PersonalIdentifier,
+                    CountryId = countryId,
                     CityId = admin.CityId,
                     AddressOfResidence = admin.Address,
                     ImageFile = user.ProfileImage,
@@ -538,6 +557,11 @@ public class IndexModel : PageModel
         [StringLength(50, MinimumLength = 1)]
         [Display(ResourceType = typeof(Index), Name = "PersonalIdentifier")]
         public string? PersonalIdentifier { get; set; }
+        /// <summary>
+        /// Country id for user's profile page 
+        /// </summary>
+        [Display(ResourceType = typeof(Index), Name = "Country")]
+        public Guid? CountryId { get; set; }
 
         /// <summary>
         /// City id for user's profile page
