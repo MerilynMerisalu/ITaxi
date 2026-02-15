@@ -184,6 +184,7 @@ public class IndexModel : PageModel
                     Gender = Enum.Parse<Gender>(gender.Value.ToString()),
                     DateOfBirth = dateOfBirth,
                     PersonalIdentifier = driver.PersonalIdentifier,
+                    CountryId = countryId,
                     CityId = driver.CityId,
                     AddressOfResidence = driver.Address,
                     DriverLicenseNumber = driver.DriverLicenseNumber,
@@ -217,6 +218,7 @@ public class IndexModel : PageModel
                         FirstName = firstname,
                         LastName = lastName,
                         Gender = Enum.Parse<Gender>(gender.Value.ToString()),
+                        CountryId = countryId,
                         DateOfBirth = dateOfBirth,
                         DisabilityId = customer.DisabilityTypeId.Value,
                         ImageFile = user.ProfileImage,
@@ -378,6 +380,7 @@ public class IndexModel : PageModel
             };
             _context.Photos.Add(photo);
             await _context.SaveChangesAsync();
+            
         }
         
 
@@ -415,6 +418,9 @@ public class IndexModel : PageModel
                 user.CountryId = Input.CountryId.Value;
             }
         }
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+
         if (admin != null)
         {
             if (Input.PersonalIdentifier != admin.PersonalIdentifier)
