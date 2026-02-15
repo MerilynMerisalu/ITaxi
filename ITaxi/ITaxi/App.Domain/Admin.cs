@@ -15,9 +15,6 @@ public class Admin : DomainEntityMetaId
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     
     public string? PersonalIdentifier { get; set; }
-
-    public Guid CountryId { get; set; }
-    public Country? Country { get; set; }
     public Guid CityId { get; set; }
 
     public City? City { get; set; }

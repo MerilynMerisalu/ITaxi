@@ -60,14 +60,23 @@ public class RegisterAdminModel : PageModel
         _logger = logger;
         _emailSender = emailSender;
         _appBLL = appBLL;
+        Countries = new SelectList(_appBLL.Countries.GetAllCountriesOrderedByCountryISOCode(), 
+            nameof(CountryDTO.Id), nameof(CountryDTO.CountryName));
         Cities = new SelectList( _appBLL.Cities.GetAllOrderedCities(),
         nameof(CityDTO.Id), nameof(CityDTO.CityName));
     }
 
     /// <summary>
+    /// List of countries
+    /// </summary>
+
+    public SelectList? Countries { get; set; }
+    /// <summary>
     /// List of cities
     /// </summary>
     public SelectList? Cities { get; set; }
+    
+    
 
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -116,6 +125,7 @@ public class RegisterAdminModel : PageModel
                 LastName = Input.LastName,
                 Gender = Input.Gender,
                 DateOfBirth = Input.DateOfBirth,
+                CountryId = Input.CountryId,
                 PhoneNumber = Input.PhoneNumber,
                 Email = Input.Email,
                 EmailConfirmed = true
@@ -238,6 +248,14 @@ public class RegisterAdminModel : PageModel
         [StringLength(50)]
         [Display(ResourceType = typeof(AdminRegister), Name = nameof(PersonalIdentifier))]
         public string? PersonalIdentifier { get; set; }
+        /// <summary>
+        /// Country id for admin
+        /// </summary>
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+        
+        [Display(ResourceType = typeof(AdminRegister), Name = "Country")]
+        public Guid CountryId { get; set; }
 
         /// <summary>
         /// City id for admin

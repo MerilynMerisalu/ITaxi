@@ -157,14 +157,11 @@ public static class DataHelper
                 //country.CountryName.SetTranslation("Eesti", "et-EE");
                 //await context.Countries.AddAsync(country);
                 //await context.SaveChangesAsync();
-
+                var countryId = context.Countries.SingleOrDefault(c => c.ISOCode == "EST")!.Id;
                 var county = new County
                 {
                     Id = new Guid(),
-                    CountryId = context.Countries!
-                        //.SingleOrDefault(c => c.CountryName.Equals("Estonia"))!.Id,
-                        //.SingleOrDefault(c => c.CountryName.Translations!.Any(t => t.Value.Equals("Estonia")))!.Id,
-                        .SingleOrDefault(c => c.ISOCode == "EST")!.Id,
+                    CountryId = countryId,
                     CountyName = "Harjumaa",
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
@@ -192,6 +189,7 @@ public static class DataHelper
                     LastName = "Salu",
                     DateOfBirth = DateTime.Parse("1992-08-20"),
                     Gender = Gender.Female,
+                    CountryId = countryId,
                     Email = "kati@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "22356891",
@@ -223,7 +221,6 @@ public static class DataHelper
                     Id = new Guid(),
                     AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                         a.FirstName.Equals("Katrin") && a.LastName.Equals("Salu")).Id,
-                    CountryId = context.Countries.First(c => c.ISOCode == "EST").Id,
                     CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
                     PersonalIdentifier = "49208202221",
                     Address = "Kalda 23",
@@ -241,6 +238,7 @@ public static class DataHelper
                     LastName = "Pilv",
                     DateOfBirth = DateTime.Parse("1977-08-22"),
                     Gender = Gender.Female,
+                    CountryId = countryId,
                     Email = "tiina.pilv@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "22356891"
@@ -271,7 +269,6 @@ public static class DataHelper
                     Id = new Guid(),
                     AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                         a.FirstName.Equals("Tiina") && a.LastName.Equals("Pilv")).Id,
-                    CountryId = context.Countries.First(c => c.ISOCode == "EST").Id,
                     CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
                     PersonalIdentifier = "47708222221",
                     Address = "Suurmäe 13-9",
@@ -281,7 +278,7 @@ public static class DataHelper
                 
                 await context.Admins.AddAsync(admin);
                 await context.SaveChangesAsync();
-                
+
                 appUser = new AppUser
                 {
                     Id = new Guid(),
@@ -289,6 +286,7 @@ public static class DataHelper
                     LastName = "Paju",
                     DateOfBirth = DateTime.Parse("1988-06-23"),
                     Gender = Gender.Male,
+                    CountryId = countryId,
                     Email = "toomas.paju@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "55358834"
@@ -349,7 +347,7 @@ public static class DataHelper
                 
                 await context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategory);
                 await context.SaveChangesAsync();
-                
+
                 appUser = new AppUser
                 {
                     Id = new Guid(),
@@ -357,6 +355,7 @@ public static class DataHelper
                     LastName = "Tolmusk",
                     DateOfBirth = DateTime.Parse("1966-05-13"),
                     Gender = Gender.Male,
+                    CountryId = countryId,
                     Email = "peep.tolmusk@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "22447799"
@@ -611,6 +610,7 @@ public static class DataHelper
                     LastName = "Mätas",
                     DateOfBirth = DateTime.Parse("2001-02-14"),
                     Gender = Enum.Parse<Gender>(Gender.Female.ToString()),
+                    CountryId = countryId,
                     Email = "maarika.matas@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "66357754"
@@ -649,6 +649,7 @@ public static class DataHelper
                     LastName = "Suursalu",
                     DateOfBirth = DateTime.Parse("2000-04-14"),
                     Gender = Enum.Parse<Gender>(Gender.Male.ToString()),
+                    CountryId = countryId,
                     Email = "kristjan.suursalu@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "88452236"

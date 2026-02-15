@@ -53,6 +53,14 @@
                 <span asp-validation-for="Input.PersonalIdentifier" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Input.CountryId"></label>
+                <select asp-for="Input.CountryId" class="form-control" asp-items="Model.Countries">
+                    <option>@Common.PleaseSelect</option>
+                </select>
+                <span asp-validation-for="Input.CountryId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <label asp-for="Input.CityId"></label>
                 <select asp-for="Input.CityId" class="form-control" asp-items="Model.Cities">
                     <option>@Common.PleaseSelect</option>

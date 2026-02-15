@@ -35,7 +35,10 @@ public class AppUser : BaseUser
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.DateTime)]
     public DateTime DateOfBirth { get; set; }
-
+   
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    public Guid CountryId { get; set; }
+    public Country? Country { get; set; }
     [NotMapped]
     public IFormFile? ProfileImage { get; set; }
 
