@@ -59,57 +59,79 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
             .HasOne(e => e.DriverLicenseCategory)
             .WithMany(d => d.Drivers)
             .HasForeignKey(d => d.DriverLicenseCategoryId);
+
+        builder.Entity<County>()
+                .HasIndex(c => new { c.CountryId, c.CountyEHAKCode })
+                .IsUnique()
+                .HasFilter("[CountyEHAKCode] IS NOT NULL");
+
+        builder.Entity<Country>()
+            .HasIndex(c => c.ISOCode)
+            .IsUnique();
+
+    }
+    private void NormalizeCountyNames()
+    {
+        foreach (var entry in ChangeTracker.Entries<County>()
+                     .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified))
+        {
+            if (!string.IsNullOrWhiteSpace(entry.Entity.CountyName))
+            {
+                entry.Entity.CountyName = entry.Entity.CountyName.Trim();
+                entry.Entity.CountyNameNormalized = entry.Entity.CountyName.ToUpperInvariant();
+            }
+        }
     }
 
-    // only needed if postgres db is used
-    /*public override int SaveChanges()
+    
+    public override int SaveChanges()
     {
-        FixEntities(this);
-        
+        //FixEntities(this); Only needed if postgres db is used
+        NormalizeCountyNames();
         return base.SaveChanges();
     }
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
-        FixEntities(this);
-        
+        //FixEntities(this); Only needed if postgres db is used
+        NormalizeCountyNames();
         return base.SaveChangesAsync(cancellationToken);
+
     }
 
-    private void FixEntities(AppDbContext context)
-    {
-        var dateProperties = context.Model.GetEntityTypes()
-            .SelectMany(t => t.GetProperties())
-            .Where(p => p.ClrType == typeof(DateTime))
-            .Select(z => new
-            {
-                ParentName = z.DeclaringEntityType.Name,
-                PropertyName = z.Name
-            });
+    //private void FixEntities(AppDbContext context)
+    //{
+    //    var dateProperties = context.Model.GetEntityTypes()
+    //        .SelectMany(t => t.GetProperties())
+    //        .Where(p => p.ClrType == typeof(DateTime))
+    //        .Select(z => new
+    //        {
+    //            ParentName = z.DeclaringEntityType.Name,
+    //            PropertyName = z.Name
+    //        });
 
-        var editedEntitiesInTheDbContextGraph = context.ChangeTracker.Entries()
-            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
-            .Select(x => x.Entity);
+    //    var editedEntitiesInTheDbContextGraph = context.ChangeTracker.Entries()
+    //        .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+    //        .Select(x => x.Entity);
 
 
-        foreach (var entity in editedEntitiesInTheDbContextGraph)
-        {
-            var entityFields = dateProperties.Where(d => d.ParentName == entity.GetType().FullName);
+    //    foreach (var entity in editedEntitiesInTheDbContextGraph)
+    //    {
+    //        var entityFields = dateProperties.Where(d => d.ParentName == entity.GetType().FullName);
 
-            foreach (var property in entityFields)
-            {
-                var prop = entity.GetType().GetProperty(property.PropertyName);
+    //        foreach (var property in entityFields)
+    //        {
+    //            var prop = entity.GetType().GetProperty(property.PropertyName);
 
-                if (prop == null)
-                    continue;
+    //            if (prop == null)
+    //                continue;
 
-                var originalValue = prop.GetValue(entity) as DateTime?;
-                if (originalValue == null)
-                    continue;
+    //            var originalValue = prop.GetValue(entity) as DateTime?;
+    //            if (originalValue == null)
+    //                continue;
 
-                prop.SetValue(entity, DateTime.SpecifyKind(originalValue.Value, DateTimeKind.Utc));
-            }
-        }
+    //            prop.SetValue(entity, DateTime.SpecifyKind(originalValue.Value, DateTimeKind.Utc));
+    //        }
+    //    }
         
 
-    } */
-}
+    } 

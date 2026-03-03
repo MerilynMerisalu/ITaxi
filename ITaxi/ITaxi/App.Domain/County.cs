@@ -10,9 +10,14 @@ public class County : DomainEntityMetaId
         ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     public string CountyName { get; set; } = default!;
-
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+    public string CountyNameNormalized { get; set; } = default!;
     public Guid CountryId { get; set; }
     public Country? Country { get; set; }
+    
+    [MaxLength(4, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.County), Name = nameof(CountyEHAKCode) )]
+    public string? CountyEHAKCode { get; set; }
 
     public ICollection<City>? Cities { get; set; }
 }

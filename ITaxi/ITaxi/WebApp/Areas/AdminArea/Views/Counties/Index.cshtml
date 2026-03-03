@@ -23,7 +23,9 @@
         @*<th>
             @Html.DisplayNameFor(model => model.NumberOfCities)
         </th>*@
-
+            <th>
+                @Html.DisplayNameFor(model => model.CountyEHAKCode)
+            </th>
         <th>
             @Html.DisplayNameFor(model => model.CreatedBy)
         </th>
@@ -50,6 +52,9 @@
             
             <td>
                 @Html.DisplayFor(modelItem => item.CountyName)
+            </td>
+                <td>
+                @Html.DisplayFor(modelItem => item.CountyEHAKCode)
             </td>
             @*<td>
                 @Html.DisplayFor(modelItem => item.NumberOfCities)

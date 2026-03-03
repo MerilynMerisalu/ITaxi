@@ -22,7 +22,7 @@ public class CountyDTO : DomainEntityMetaId
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     
     public string CountyName { get; set; } = default!;
-
-    
+    [MaxLength(4, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+    public string? CountyEHAKCode { get; set; }
     public int NumberOfCities { get; set; }
 }

@@ -18,4 +18,9 @@ public class CountyDTO : DomainEntityMetaId
     public CountryDTO? Country { get; set; }
     
     public int NumberOfCities { get; set; }
+
+    [MaxLength(4, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.County)
+        , Name = nameof(CountyEHAKCode))]
+    public string? CountyEHAKCode { get; set; }
 }
