@@ -88,6 +88,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fetch Counties.
+        /// </summary>
+        public static string FetchCounties {
+            get {
+                return ResourceManager.GetString("FetchCounties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of Cities.
         /// </summary>
         public static string NumberOfCities {

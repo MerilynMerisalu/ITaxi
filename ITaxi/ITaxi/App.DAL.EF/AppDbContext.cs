@@ -69,6 +69,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
             .HasIndex(c => c.ISOCode)
             .IsUnique();
 
+        
     }
     private void NormalizeCountyNames()
     {

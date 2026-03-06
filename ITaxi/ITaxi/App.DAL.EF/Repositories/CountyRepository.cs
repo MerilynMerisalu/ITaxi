@@ -70,4 +70,15 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
 
         return query;
     }
+
+    public async Task<bool> IsThereACorrespondingCountryToTheISO2CodeAsync(string iso2Code, string? userId = null, string? roleName = null, bool noIncludes = false)
+    {
+        var result = await CreateQuery(noIncludes: noIncludes).AnyAsync(c => c.Country!.ISOCode.Equals(iso2Code.ToUpperInvariant()));
+        return result;
+    }
+
+    public bool IsThereACorrespondingCountryToTheISO2Code(string iso2Code, string? userId = null, string? roleName = null, bool noIncludes = false)
+    {
+        return CreateQuery(noIncludes: noIncludes).Any(c => c.Country!.ISOCode.Equals(iso2Code.ToUpperInvariant()));
+    }
 }

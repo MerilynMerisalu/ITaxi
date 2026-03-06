@@ -108,7 +108,7 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CountryNameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ISOCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ISOCode = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -1072,6 +1072,12 @@ namespace App.DAL.EF.Migrations
                 name: "IX_Countries_CountryNameId",
                 table: "Countries",
                 column: "CountryNameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Countries_ISOCode",
+                table: "Countries",
+                column: "ISOCode",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_AppUserId",

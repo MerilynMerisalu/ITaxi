@@ -142,8 +142,8 @@ public static class DataHelper
                 Debug.WriteLine(testDisabilityType);
 
 
-                var cultures = languageOptions.Value.SupportedUICultures.ToArray();
-                await appBLL.Countries.UpdateCountriesFromAPIAsync(cultures);
+                var cultures = languageOptions?.Value?.SupportedUICultures?.ToArray();
+                await appBLL.Countries.UpdateCountriesFromAPIAsync(cultures!);
                 await appBLL.SaveChangesAsync();
 
                 //var country = new Country()
@@ -157,7 +157,7 @@ public static class DataHelper
                 //country.CountryName.SetTranslation("Eesti", "et-EE");
                 //await context.Countries.AddAsync(country);
                 //await context.SaveChangesAsync();
-                var countryId = context.Countries.SingleOrDefault(c => c.ISOCode == "EST")!.Id;
+                var countryId = context.Countries.SingleOrDefault(c => c.ISOCode == "EE")!.Id;
                 var county = new County
                 {
                     Id = new Guid(),
@@ -166,7 +166,7 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
-                
+
                 await context.Counties.AddAsync(county);
                 await context.SaveChangesAsync();
 
@@ -178,7 +178,7 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
-                
+
                 await context.Cities.AddAsync(city);
                 await context.SaveChangesAsync();
 
@@ -195,13 +195,13 @@ public static class DataHelper
                     PhoneNumber = "22356891",
 
                 };
-                
+
                 appUser.UserName = appUser.Email;
 
                 var result = userManager!.CreateAsync(appUser, "Katrinkass123$").Result;
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
-                
+
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant create user! Error: " + identityError.Description);
@@ -227,7 +227,7 @@ public static class DataHelper
                     CreatedAt = DateTime.Now.ToUniversalTime(),
                     CreatedBy = "System"
                 };
-                
+
                 await context.Admins.AddAsync(admin);
                 await context.SaveChangesAsync();
 
@@ -243,27 +243,27 @@ public static class DataHelper
                     EmailConfirmed = true,
                     PhoneNumber = "22356891"
                 };
-                
+
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Tiinakass123$").Result;
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
-                
+
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant create user! Error: " + identityError.Description);
                 result = userManager.AddToRoleAsync(appUser, "Admin").Result;
-                
+
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
                 result = userManager.AddToRoleAsync(appUser, "Admin").Result;
-                
+
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
-                
+
                 admin = new Admin
                 {
                     Id = new Guid(),
@@ -275,7 +275,7 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
-                
+
                 await context.Admins.AddAsync(admin);
                 await context.SaveChangesAsync();
 
@@ -291,27 +291,27 @@ public static class DataHelper
                     EmailConfirmed = true,
                     PhoneNumber = "55358834"
                 };
-                
+
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Toomaskoer123$").Result;
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
-                
+
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant create user! Error: " + identityError.Description);
                 result = userManager.AddToRoleAsync(appUser, "Driver").Result;
-                
+
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
                 result = userManager.AddToRoleAsync(appUser, "Driver").Result;
-                
+
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant add user to role! Error: " + identityError.Description);
-                
+
                 var driver = new Driver
                 {
                     Id = new Guid(),
@@ -324,7 +324,7 @@ public static class DataHelper
                     Address = "Veerenni 13",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
-                
+
                 await context.Drivers.AddAsync(driver);
                 await context.SaveChangesAsync();
 
@@ -344,7 +344,7 @@ public static class DataHelper
                     DriverId = driver.Id,
                     DriverLicenseCategoryId = driverLicenseCategory.Id
                 };
-                
+
                 await context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategory);
                 await context.SaveChangesAsync();
 
@@ -360,13 +360,13 @@ public static class DataHelper
                     EmailConfirmed = true,
                     PhoneNumber = "22447799"
                 };
-                
+
                 appUser.UserName = appUser.Email;
 
                 result = userManager!.CreateAsync(appUser, "Peepkoer123$").Result;
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.firstname", appUser.FirstName));
                 result = await userManager.AddClaimAsync(appUser, new Claim("aspnet.lastname", appUser.LastName));
-                
+
                 if (!result.Succeeded)
                     foreach (var identityError in result.Errors)
                         Console.WriteLine("Cant create user! Error: " + identityError.Description);
@@ -403,7 +403,7 @@ public static class DataHelper
                 };
                 await context.DriverAndDriverLicenseCategories.AddAsync(driverAndDriverLicenseCategory);
                 await context.SaveChangesAsync();
-                
+
                 var extraService = new ExtraService
                 {
                     Id = new Guid(),
@@ -808,15 +808,15 @@ public static class DataHelper
                 await context.Comments.AddAsync(comment);
                 await context.SaveChangesAsync();
                 */
-                
 
-               var comment = new Comment
+
+                var comment = new Comment
                 {
                     Id = new Guid(),
                     CommentText = "Takso hilines",
                     StarRating = 3,
                     Drive = await context.Drives.Include(d => d.Driver)
-                        .SingleOrDefaultAsync(d => d.Driver!.PersonalIdentifier!.Equals("36605138911")),
+                         .SingleOrDefaultAsync(d => d.Driver!.PersonalIdentifier!.Equals("36605138911")),
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };

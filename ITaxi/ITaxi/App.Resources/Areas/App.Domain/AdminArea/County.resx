@@ -129,4 +129,7 @@
   <data name="CountyEHAKCode" xml:space="preserve">
     <value>County EHAK Code</value>
   </data>
+  <data name="FetchCounties" xml:space="preserve">
+    <value>Fetch Counties</value>
+  </data>
 </root>

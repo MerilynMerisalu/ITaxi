@@ -10,6 +10,9 @@ using Base.Resources;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Processing.Processors.Transforms;
 using WebApp.Areas.AdminArea.ViewModels;
 using WebApp.Helpers;
 using PhotoDTO = App.BLL.DTO.AdminArea.PhotoDTO;
@@ -398,8 +401,7 @@ public class PhotosController : Controller
 
         }
 
-
-        vm.CreatedBy = photo.CreatedBy;
+    vm.CreatedBy = photo.CreatedBy;
         vm.CreatedAt = photo.CreatedAt;
         vm.UpdatedBy = photo.UpdatedBy;
         vm.UpdatedAt = photo.UpdatedAt;
@@ -494,7 +496,7 @@ public class PhotosController : Controller
 
             int fileNameMaximumLength = 255;
             string fileName = _appBLL.Photos.FileNameFormat(file.FileName, fileNameMaximumLength);
-            string title = _appBLL.Photos.FileNameFormat(file.FileName, fileNameMaximumLength);
+            string title = fileName; // _appBLL.Photos.FileNameFormat(file.FileName, fileNameMaximumLength);
             title = FileHelper.ReplaceUnderscoreWithSpaceInFileName(title);
             title = FileHelper.RemoveFileExtensionFromTitle(title);
             string fileExtension = Path.GetExtension(file.FileName);
@@ -510,9 +512,14 @@ public class PhotosController : Controller
             if (!uploadResult)
                 return Content(Common.UploadFailed);
             var thumbnailFilePath = await _appBLL.Photos.CreateThumbnailAsync(fullFilePath, fileName: fileName, fileExtension, thumbnailFolderPath);
+
+            var image = await PhotoHelper.GetImage(file);
+
             //var (w, h) = 
             var thumbnailRelativePath = FileHelper.GetImageRelativePath(Path.GetRelativePath(_webHostEnvironment.WebRootPath, thumbnailFilePath));
-           // var originalPhotoHeight =  
+
+            
+
             var photo = new PhotoDTO()
             {
                 Id = Guid.NewGuid(),
@@ -521,6 +528,9 @@ public class PhotosController : Controller
                 DriverId = driverId,
                 VehicleId = vehicle.Id,
                 DirectoryTitleId = directoryId,
+                ContentType = file.ContentType,
+                OriginalPhotoHeight = image.Height,
+                OriginalPhotoWidth = image.Width,
                 PhotoFullPath = fullFilePath,
                 ThumbnailFullPath = thumbnailFilePath,
                 FileNameInDirectory = fileNameOnDisk,

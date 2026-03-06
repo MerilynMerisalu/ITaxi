@@ -324,7 +324,8 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<string>("ISOCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -341,6 +342,9 @@ namespace App.DAL.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CountryNameId");
+
+                    b.HasIndex("ISOCode")
+                        .IsUnique();
 
                     b.ToTable("Countries");
                 });

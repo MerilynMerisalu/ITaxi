@@ -20,6 +20,8 @@ public class Country: DomainEntityMetaId
         ErrorMessageResourceName = nameof(Common.RequiredAttributeErrorMessage))]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Country),
         Name = nameof(ISOCode))]
+    [MaxLength(2, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = nameof(Common.ErrorMessageStringLengthMax))]
     public string ISOCode { get; set; } = default!;
 
     

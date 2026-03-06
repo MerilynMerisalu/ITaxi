@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260303184733_Initial")]
+    [Migration("20260303201641_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -327,7 +327,8 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<string>("ISOCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -344,6 +345,9 @@ namespace App.DAL.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CountryNameId");
+
+                    b.HasIndex("ISOCode")
+                        .IsUnique();
 
                     b.ToTable("Countries");
                 });

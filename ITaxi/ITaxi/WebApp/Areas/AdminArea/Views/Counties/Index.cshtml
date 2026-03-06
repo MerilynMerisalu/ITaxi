@@ -1,3 +1,4 @@
+@using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
 @model IEnumerable<App.BLL.DTO.AdminArea.CountyDTO>
 
@@ -8,7 +9,11 @@
 <h1>@Common.Index</h1>
 
 <p>
-    <a asp-action="Create">@Common.CreateNew</a>
+    <a asp-action="Create">@Common.CreateNew</a> |
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn-primary" asp-action="FetchingCountiesFromEHAK">@County.FetchCounties</button>
+    </form>
 </p>
 <table class="table">
     <thead>

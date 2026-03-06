@@ -95,10 +95,18 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
                 var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
                 if (!fileExtension.Equals(".png") && !fileExtension.Equals(".jpg"))
                 {
-
                     return false;
                 }
 
+                try
+                {
+                    using var imageStream = file.OpenReadStream();
+                    var image = Image.Identify(imageStream);
+                }
+                catch(Exception)
+                {
+                    return false;
+                }
 
             }
         return true;
@@ -166,15 +174,16 @@ public class PhotoService : BaseEntityService<App.BLL.DTO.AdminArea.PhotoDTO,
         return Repository.GetDirectoryIdByVehicleIdAsString(vehicleId, userId, roleName, noTracking, noIncludes);
     }
 
-    public async Task<bool> UploadImagesAsync(string fullFilePath, string fileNameOnDisk, IFormFile file)
+    public async Task<Image> UploadImagesAsync(string fullFilePath, string fileNameOnDisk, IFormFile file)
     {
         fullFilePath = Path.Combine(fullFilePath, fileNameOnDisk);
 
         try
         {
-            await using var stream = new FileStream(fullFilePath, FileMode.Create);
-            await file.CopyToAsync(stream);
-
+            using var uploadStream = file.OpenReadStream();
+            var image = await Image.LoadAsync(uploadStream);
+            await image.SaveAsync(fullFilePath);
+            return image;
         }
         catch (Exception ex) when (ex is UnauthorizedAccessException || ex is DirectoryNotFoundException
             || ex is IOException)

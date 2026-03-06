@@ -129,4 +129,7 @@
   <data name="CountyEHAKCode" xml:space="preserve">
     <value>Maakonna EHAK Kood</value>
   </data>
+  <data name="FetchCounties" xml:space="preserve">
+    <value>Lae Maakonnad</value>
+  </data>
 </root>

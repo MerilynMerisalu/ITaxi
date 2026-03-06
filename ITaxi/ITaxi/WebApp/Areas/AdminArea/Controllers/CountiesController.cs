@@ -4,6 +4,7 @@ using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Public.DTO.v1.AdminArea;
 using Base.Extensions;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -38,7 +39,7 @@ public class CountiesController : Controller
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
-        
+
         return View(res);
     }
 
@@ -119,9 +120,9 @@ public class CountiesController : Controller
         var vm = new CreateEditCountyViewModel();
         if (id == null) return NotFound();
 
-        var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value, noIncludes:false);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value, noIncludes: false);
         var countries = await _appBLL.Countries.GetAllCountriesOrderedByCountryNameAsync();
-        vm.Countries = new SelectList(countries,nameof(Country.Id), nameof(Country.CountryName),
+        vm.Countries = new SelectList(countries, nameof(Country.Id), nameof(Country.CountryName),
             nameof(county.CountryId));
 
         if (county == null) return NotFound();
@@ -145,7 +146,7 @@ public class CountiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditCountyViewModel vm)
     {
-        var county = await _appBLL.Counties.FirstOrDefaultAsync(id, true, noIncludes:true);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id, true, noIncludes: true);
         if (ModelState.IsValid)
             if (county != null && county.Id.Equals(id))
             {
@@ -184,9 +185,9 @@ public class CountiesController : Controller
 
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value);
         if (county == null) return NotFound();
-       // vm.CountryName = county.Country.CountryName;
-       vm.CountryName = county.Country.CountryName;
-           vm.CountyName = county.CountyName;
+        // vm.CountryName = county.Country.CountryName;
+        vm.CountryName = county.Country.CountryName;
+        vm.CountyName = county.CountyName;
         vm.CreatedAt = county.CreatedAt;
         vm.CreatedBy = county.CreatedBy ?? "";
         vm.UpdatedAt = county.UpdatedAt;
@@ -209,7 +210,7 @@ public class CountiesController : Controller
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id);
         if (county != null)
         {
-            
+
             if (await _appBLL.Cities.HasAnyCitiesAsync(county.Id))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
@@ -227,3 +228,14 @@ public class CountiesController : Controller
         return _appBLL.Counties.Exists(id);
     }
 }
+   /* [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> FetchingCountiesFromEHAK()
+    {
+        const string ESTONIAISO2CODE = "EE";
+        var isCountry = await _appBLL.Counties.IsThereACorrespondingCountryToTheISO2CodeAsync(ESTONIAISO2CODE);
+        if (!isCountry) return NotFound();
+
+        return RedirectToAction(nameof(Index));
+    }
+}*/
