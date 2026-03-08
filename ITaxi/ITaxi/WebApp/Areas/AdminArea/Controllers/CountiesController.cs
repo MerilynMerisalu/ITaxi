@@ -17,7 +17,7 @@ namespace WebApp.Areas.AdminArea.Controllers;
 /// Admin area counties controller
 /// </summary>
 [Area(nameof(AdminArea))]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class CountiesController : Controller
 {
     private readonly IAppBLL _appBLL;
@@ -227,15 +227,15 @@ public class CountiesController : Controller
     {
         return _appBLL.Counties.Exists(id);
     }
-}
-   /* [HttpPost]
+
+    [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> FetchingCountiesFromEHAK()
     {
         const string ESTONIAISO2CODE = "EE";
-        var isCountry = await _appBLL.Counties.IsThereACorrespondingCountryToTheISO2CodeAsync(ESTONIAISO2CODE);
+        var isCountry = await _appBLL.Countries.IsThereACorrespondingCountryToTheISO2CodeAsync(ESTONIAISO2CODE);
         if (!isCountry) return NotFound();
 
         return RedirectToAction(nameof(Index));
     }
-}*/
+}

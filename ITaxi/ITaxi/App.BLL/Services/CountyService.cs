@@ -41,13 +41,5 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
         throw new NotImplementedException();
     }
 
-    public async Task<bool> IsThereACorrespondingCountryToTheISO2CodeAsync(string iso2Code, string? userId = null, string? roleName = null, bool noIncludes = false)
-    {
-        return await Repository.IsThereACorrespondingCountryToTheISO2CodeAsync(iso2Code, userId, roleName);
-    }
-
-    public bool IsThereACorrespondingCountryToTheISO2Code(string iso2Code, string? userId = null, string? roleName = null, bool noIncludes = false)
-    {
-        return Repository.IsThereACorrespondingCountryToTheISO2Code(iso2Code, userId, roleName);
-    }
+   
 }

@@ -247,4 +247,13 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
     {
         return Mapper.Map(Repository.GetCountryByISOCode(isoCode, noTracking, noIncludes, showDeleted, showIgnored));
     }
+    public async Task<bool> IsThereACorrespondingCountryToTheISO2CodeAsync(string iso2Code, string? userId = null, string? roleName = null)
+    {
+        return await Repository.IsThereACorrespondingCountryToTheISO2CodeAsync(iso2Code, userId, roleName);
+    }
+
+    public bool IsThereACorrespondingCountryToTheISO2Code(string iso2Code, string? userId = null, string? roleName = null)
+    {
+        return Repository.IsThereACorrespondingCountryToTheISO2Code(iso2Code, userId, roleName);
+    }
 }

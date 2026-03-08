@@ -116,6 +116,16 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
        return Mapper.Map(CreateQuery(noTracking, noIncludes, showDeleted, showIgnored)
             .FirstOrDefault(c => c.ISOCode.Equals(isoCode)));
     }
+    public async Task<bool> IsThereACorrespondingCountryToTheISO2CodeAsync(string iso2Code, string? userId = null, string? roleName = null)
+    {
+        var result = await RepoDbSet.AnyAsync(c => c.
+            ISOCode.Equals(iso2Code.ToUpperInvariant()));
+        return result;
+    }
 
-    
+    public bool IsThereACorrespondingCountryToTheISO2Code(string iso2Code, string? userId = null, string? roleName = null)
+    {
+        return RepoDbSet.Any(c => c.ISOCode.Equals(iso2Code.ToUpperInvariant()));
+    }
+
 }

@@ -508,9 +508,9 @@ public class PhotosController : Controller
             if (_appBLL.Photos.DoesFileExist(Path.Combine(uploadFolderPath, fileNameOnDisk)))
                 return Content(string.Format(Common.FileExists, fileNameOnDisk));
 
-            bool uploadResult = await _appBLL.Photos.UploadImagesAsync(uploadFolderPath, fileNameOnDisk, file);
-            if (!uploadResult)
-                return Content(Common.UploadFailed);
+           // bool uploadResult = await _appBLL.Photos.UploadImagesAsync(uploadFolderPath, fileNameOnDisk, file);
+            //if (!uploadResult)
+            //    return Content(Common.UploadFailed);
             var thumbnailFilePath = await _appBLL.Photos.CreateThumbnailAsync(fullFilePath, fileName: fileName, fileExtension, thumbnailFolderPath);
 
             var image = await PhotoHelper.GetImage(file);
@@ -607,9 +607,9 @@ public class PhotosController : Controller
         string fullFilePath = FileHelper.GetFileFullPath(uploadFolderPath, fileNameOnDisk);
         if (_appBLL.Photos.DoesFileExist(Path.Combine(uploadFolderPath, fileNameOnDisk)))
             return Content(string.Format(Common.FileExists, fileNameOnDisk));
-        bool uploadResult = await _appBLL.Photos.UploadImagesAsync(uploadFolderPath, fileNameOnDisk, file);
-        if (!uploadResult)
-            return Content(Common.UploadFailed);
+        //bool uploadResult = await _appBLL.Photos.UploadImagesAsync(uploadFolderPath, fileNameOnDisk, file);
+        //if (!uploadResult)
+        //    return Content(Common.UploadFailed);
         var thumbnailFolderPath = Path.Combine(uploadFolderPath, THUMBNAILFOLDERNAME);
         var thumbnailFilePath = await _appBLL.Photos.CreateThumbnailAsync(fullFilePath, fileName: fileName, fileExtension, thumbnailFolderPath);
         var thumbnailRelativePath = FileHelper.GetImageRelativePath(Path.GetRelativePath(_webHostEnvironment.WebRootPath, thumbnailFilePath));
