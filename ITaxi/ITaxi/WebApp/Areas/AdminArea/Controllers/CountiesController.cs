@@ -4,11 +4,13 @@ using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Public.DTO.v1.AdminArea;
 using Base.Extensions;
+using Google.Apis.PeopleService.v1.Data;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using WebApp.Areas.AdminArea.ViewModels;
 
 namespace WebApp.Areas.AdminArea.Controllers;
@@ -21,14 +23,15 @@ namespace WebApp.Areas.AdminArea.Controllers;
 public class CountiesController : Controller
 {
     private readonly IAppBLL _appBLL;
-
+    private readonly HttpClient _httpClient;
     /// <summary>
     /// Admin area counties controller constructor
     /// </summary>
     /// <param name="appBLL">AppBLL</param>
-    public CountiesController(IAppBLL appBLL)
+    public CountiesController(IAppBLL appBLL, HttpClient httpClient)
     {
         _appBLL = appBLL;
+        _httpClient = httpClient;
     }
 
     // GET: AdminArea/Counties
@@ -232,9 +235,9 @@ public class CountiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> FetchingCountiesFromEHAK()
     {
-        const string ESTONIAISO2CODE = "EE";
-        var isCountry = await _appBLL.Countries.IsThereACorrespondingCountryToTheISO2CodeAsync(ESTONIAISO2CODE);
-        if (!isCountry) return NotFound();
+        var client = new HttpClient();
+        var result = await _appBLL.Counties.ImportCountiesFromEHAKAsync(client);
+        if(!result) return NotFound(); 
 
         return RedirectToAction(nameof(Index));
     }

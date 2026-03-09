@@ -9,8 +9,10 @@ namespace App.BLL.Services;
 public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, DAL.DTO.AdminArea.CountyDTO, ICountyRepository>
 , ICountyService
 {
-    public CountyService(ICountyRepository repository, IMapper<CountyDTO, DAL.DTO.AdminArea.CountyDTO> mapper) : base(repository, mapper)
+    private readonly AppBLL _appBLL;
+    public CountyService(ICountyRepository repository, IMapper<CountyDTO, DAL.DTO.AdminArea.CountyDTO> mapper, AppBLL appBLL) : base(repository, mapper)
     {
+        _appBLL = appBLL;
     }
 
     public async Task<IEnumerable<CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true, bool noIncludes = false)
@@ -41,5 +43,28 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
         throw new NotImplementedException();
     }
 
-   
+    public async Task<bool> ImportCountiesFromEHAKAsync(HttpClient client)
+    {
+        const string ESTONIANISO2CODE = "EE";
+        var result = await _appBLL.Countries.IsThereACorrespondingCountryToTheISO2CodeAsync(iso2Code: ESTONIANISO2CODE);
+        if (!result)
+        {
+            return false;
+        }
+
+        const string AADRESSURL = "https://gsavalik.envir.ee/geoserver/ehak/wfs" +
+              "?service=WFS&version=1.1.0" +
+              "&request=GetFeature" +
+              "&typeName=ehak:maakondade_piirid" +
+              "&outputFormat=application/json";
+        var response = await client.GetAsync(AADRESSURL);
+        if(!response.IsSuccessStatusCode) return false;
+
+        return true;
+    }
+
+    public Task<IEnumerable<CountyDTO>> GetCountiesByCountryIdAsync(Guid countryId)
+    {
+        throw new NotImplementedException();
+    }
 }
