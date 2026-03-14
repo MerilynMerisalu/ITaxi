@@ -12,8 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="16.1.0" />
-      <PackageReference Include="Microsoft.Build" Version="18.3.3" />
+      <PackageReference Include="AutoMapper" Version="16.1.1" />
+      <PackageReference Include="Microsoft.Build" Version="18.4.0" />
     </ItemGroup>
 
 </Project>

@@ -21,6 +21,7 @@ public interface ICountryRepositoryCustom<TEntity>
     TEntity? GetCountryByISOCode(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = true);
     Task<bool> IsThereACorrespondingCountryToTheISO2CodeAsync(string iso2Code, string? userId = null, string? roleName = null);
     bool IsThereACorrespondingCountryToTheISO2Code(string iso2Code, string? userId = null, string? roleName = null);
-
+    Task<Guid?> GetCountryIdByISOCodeAsync(string iso2Code, string? userId = null, string? roleName = null);
+    Guid? GetCountryIdByISOCode(string iso2Code, string? userId = null, string? roleName = null);
 
 }

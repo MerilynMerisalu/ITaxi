@@ -128,4 +128,15 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
         return RepoDbSet.Any(c => c.ISOCode.Equals(iso2Code.ToUpperInvariant()));
     }
 
+    public async Task<Guid?> GetCountryIdByISOCodeAsync(string iso2Code, string? userId = null, string? roleName = null)
+    {
+        var result = await RepoDbSet.FirstOrDefaultAsync(c => c.ISOCode.Equals(iso2Code.ToUpperInvariant()));
+        return result?.Id;
+    }
+
+    public Guid? GetCountryIdByISOCode(string iso2Code, string? userId = null, string? roleName = null)
+    {
+        var result =  RepoDbSet.FirstOrDefault(c => c.ISOCode.Equals(iso2Code.ToUpperInvariant()));
+        return result?.Id;
+    }
 }

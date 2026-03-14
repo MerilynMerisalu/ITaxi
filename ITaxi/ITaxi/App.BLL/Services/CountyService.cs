@@ -1,8 +1,11 @@
 ﻿using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL.ImportResults;
 using App.Contracts.BLL.Services;
 using App.Contracts.DAL.IAppRepositories;
 using Base.BLL;
 using Base.Contracts;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 
 namespace App.BLL.Services;
 
@@ -10,9 +13,11 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
 , ICountyService
 {
     private readonly AppBLL _appBLL;
-    public CountyService(ICountyRepository repository, IMapper<CountyDTO, DAL.DTO.AdminArea.CountyDTO> mapper, AppBLL appBLL) : base(repository, mapper)
+    private readonly ILogger<CountyService> _logger;
+    public CountyService(ICountyRepository repository, IMapper<CountyDTO, DAL.DTO.AdminArea.CountyDTO> mapper, AppBLL appBLL, ILogger<CountyService> logger) : base(repository, mapper)
     {
         _appBLL = appBLL;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true, bool noIncludes = false)
@@ -43,28 +48,101 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
         throw new NotImplementedException();
     }
 
-    public async Task<bool> ImportCountiesFromEHAKAsync(HttpClient client)
+    public async Task<CountyImportResult> ImportCountiesFromEHAKAsync(HttpClient client)
     {
+        var importResult = new CountyImportResult();
         const string ESTONIANISO2CODE = "EE";
+       
         var result = await _appBLL.Countries.IsThereACorrespondingCountryToTheISO2CodeAsync(iso2Code: ESTONIANISO2CODE);
         if (!result)
         {
-            return false;
+            importResult.CountryNotFound = true;
+            importResult.Success = false;
+            _logger.LogWarning($"Country with ISO2 code {ESTONIANISO2CODE} could not be found in the database.");
+            return importResult;
         }
-
+        var countryId = await _appBLL.Countries.GetCountryIdByISOCodeAsync(ESTONIANISO2CODE);
         const string AADRESSURL = "https://gsavalik.envir.ee/geoserver/ehak/wfs" +
               "?service=WFS&version=1.1.0" +
               "&request=GetFeature" +
               "&typeName=ehak:maakondade_piirid" +
               "&outputFormat=application/json";
         var response = await client.GetAsync(AADRESSURL);
-        if(!response.IsSuccessStatusCode) return false;
+        if (!response.IsSuccessStatusCode)
+        {
+            importResult.Success = false;
+            _logger.LogError($"EHAK unavailable. Status: {response.StatusCode}");
+            return importResult;
+        }
+        var jsonResult = await response.Content.ReadAsStringAsync();
+        var root = JObject.Parse(jsonResult);
+        var features = root["features"];
+        if (features != null)
+        {
+            foreach (var feature in features)
+            {
+                var props = feature["properties"] as JObject;
+                if (props == null)
+                {
+                    _logger.LogError("Invalid EHAK API response. Feature without properties encountered.");
+                    importResult.ApiError = true;
+                    importResult.Success = false;
+                    return importResult;
+                }
+                var countyName = props["maakond"]?.Value<string>();
+                var ehakCode = props["ehak_kood"]?.Value<string>();
+                _logger.LogInformation("Importing county {Name} with EHAK {Code}", countyName, ehakCode);
+                if (string.IsNullOrWhiteSpace(countyName))
+                {
+                    _logger.LogWarning($"Skipping county due to missing required data. Name: {countyName}");
+                    continue;
+                }
+                else if (string.IsNullOrWhiteSpace(ehakCode))
+                {
+                    _logger.LogWarning($"Skipping county due to missing required data. EhakCode: {ehakCode}");
+                    continue;
+                }
 
-        return true;
+                if(countryId.HasValue && !string.IsNullOrWhiteSpace(ehakCode))
+                {
+                    var exists =
+                        await _appBLL.Counties.DoesCountyExistsByCountryIdAndEHAKCodeAsync(countryId.Value, ehakCode);
+                    if (exists) continue;
+
+                    var county = new CountyDTO() { 
+                        Id = Guid.NewGuid(), 
+                        CountyName = countyName, 
+                        CountyEHAKCode = ehakCode, 
+                        CountryId = countryId.Value, 
+                        CreatedBy = "System", 
+                        CreatedAt = DateTime.UtcNow,
+                    };
+
+                    _appBLL.Counties.Add(county);
+                };
+                
+            }
+            await _appBLL.SaveChangesAsync();
+            
+        }
+        
+
+        importResult.Success = true;
+        return importResult;
     }
 
-    public Task<IEnumerable<CountyDTO>> GetCountiesByCountryIdAsync(Guid countryId)
+    public async Task<IEnumerable<CountyDTO>> GetCountiesByCountryIdAsync(Guid countryId)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<bool> DoesCountyExistsByCountryIdAndEHAKCodeAsync(Guid countryId, string ehakCode)
+    {
+        return await Repository.DoesCountyExistsByCountryIdAndEHAKCodeAsync(countryId, ehakCode);
+    }
+
+    public bool DoesCountyExistsByCountryIdAndEHAKCode(Guid countryId, string ehakCode)
+    {
+        return Repository.DoesCountyExistsByCountryIdAndEHAKCode(countryId, ehakCode);
     }
 }

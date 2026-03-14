@@ -237,7 +237,9 @@ public class CountiesController : Controller
     {
         var client = new HttpClient();
         var result = await _appBLL.Counties.ImportCountiesFromEHAKAsync(client);
-        if(!result) return NotFound(); 
+        if(result.CountryNotFound) return NotFound();
+        if (!result.Success) return StatusCode(503);
+
 
         return RedirectToAction(nameof(Index));
     }

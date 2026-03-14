@@ -256,4 +256,14 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
     {
         return Repository.IsThereACorrespondingCountryToTheISO2Code(iso2Code, userId, roleName);
     }
+
+    public async Task<Guid?> GetCountryIdByISOCodeAsync(string iso2Code, string? userId = null, string? roleName = null)
+    {
+        return await Repository.GetCountryIdByISOCodeAsync(iso2Code, userId, roleName);
+    }
+
+    public Guid? GetCountryIdByISOCode(string iso2Code, string? userId = null, string? roleName = null)
+    {
+        return Repository.GetCountryIdByISOCode(iso2Code, userId, roleName);
+    }
 }
