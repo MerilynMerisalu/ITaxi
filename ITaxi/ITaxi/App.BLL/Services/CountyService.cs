@@ -122,7 +122,6 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
                 };
                 
             }
-            await _appBLL.SaveChangesAsync();
             
         }
         
@@ -131,7 +130,7 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
         return importResult;
     }
 
-    public async Task<IEnumerable<CountyDTO>> GetCountiesByCountryIdAsync(Guid countryId)
+    public Task<IEnumerable<CountyDTO>> GetCountiesByCountryIdAsync(Guid countryId)
     {
         throw new NotImplementedException();
     }

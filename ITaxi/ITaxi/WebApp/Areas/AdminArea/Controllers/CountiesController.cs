@@ -2,6 +2,7 @@
 
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using App.DAL.DTO.AdminArea;
 using App.Public.DTO.v1.AdminArea;
 using Base.Extensions;
 using Google.Apis.PeopleService.v1.Data;
@@ -235,11 +236,12 @@ public class CountiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> FetchingCountiesFromEHAK()
     {
+        
         var client = new HttpClient();
         var result = await _appBLL.Counties.ImportCountiesFromEHAKAsync(client);
         if(result.CountryNotFound) return NotFound();
         if (!result.Success) return StatusCode(503);
-
+       
 
         return RedirectToAction(nameof(Index));
     }
