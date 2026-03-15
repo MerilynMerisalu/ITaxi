@@ -249,7 +249,8 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
     }
     public async Task<bool> IsThereACorrespondingCountryToTheISO2CodeAsync(string iso2Code, string? userId = null, string? roleName = null)
     {
-        return await Repository.IsThereACorrespondingCountryToTheISO2CodeAsync(iso2Code, userId, roleName);
+        var result = await Repository.IsThereACorrespondingCountryToTheISO2CodeAsync(iso2Code, userId, roleName);
+        return result;
     }
 
     public bool IsThereACorrespondingCountryToTheISO2Code(string iso2Code, string? userId = null, string? roleName = null)

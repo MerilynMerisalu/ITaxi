@@ -99,7 +99,7 @@ public class CountiesController : Controller
     {
         if (ModelState.IsValid)
         {
-            var county = new CountyDTO();
+            var county = new App.BLL.DTO.AdminArea.CountyDTO();
             county.Id = Guid.NewGuid();
             county.CountryId = vm.CountryId;
             county.CountyName = vm.CountyName;

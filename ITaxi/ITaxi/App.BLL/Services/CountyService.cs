@@ -1,4 +1,5 @@
 ﻿using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
 using App.Contracts.BLL.ImportResults;
 using App.Contracts.BLL.Services;
 using App.Contracts.DAL.IAppRepositories;
@@ -12,12 +13,13 @@ namespace App.BLL.Services;
 public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, DAL.DTO.AdminArea.CountyDTO, ICountyRepository>
 , ICountyService
 {
-    private readonly AppBLL _appBLL;
+    private readonly IAppBLL _appBLL;
     private readonly ILogger<CountyService> _logger;
-    public CountyService(ICountyRepository repository, IMapper<CountyDTO, DAL.DTO.AdminArea.CountyDTO> mapper, AppBLL appBLL, ILogger<CountyService> logger) : base(repository, mapper)
+    public CountyService(ICountyRepository repository, IMapper<CountyDTO, DAL.DTO.AdminArea.CountyDTO> mapper, ILogger<CountyService> logger, IAppBLL appBLL) : base(repository, mapper)
     {
-        _appBLL = appBLL;
+
         _logger = logger;
+        _appBLL = appBLL;
     }
 
     public async Task<IEnumerable<CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true, bool noIncludes = false)
@@ -54,7 +56,7 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
         const string ESTONIANISO2CODE = "EE";
        
         var result = await _appBLL.Countries.IsThereACorrespondingCountryToTheISO2CodeAsync(iso2Code: ESTONIANISO2CODE);
-        if (!result)
+        if (result == false)
         {
             importResult.CountryNotFound = true;
             importResult.Success = false;
@@ -122,6 +124,7 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
                 };
                 
             }
+            await _appBLL.SaveChangesAsync();
             
         }
         

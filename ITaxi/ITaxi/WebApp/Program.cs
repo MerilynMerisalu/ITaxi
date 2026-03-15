@@ -52,7 +52,7 @@ builder.Services.AddIdentity<AppUser, AppRole>(
 builder.Services.AddLocalization(options => { options.ResourcesPath = ""; });
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
+builder.Services.AddHttpClient();
 /*
 builder.Services.AddControllersWithViews(options =>
     {
