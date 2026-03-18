@@ -16,11 +16,13 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     private readonly AutoMapper.IMapper _mapper;
     protected IAppUnitOfWork UnitOfWork;
     private readonly ILoggerFactory _loggerFactory;
-    public AppBLL(IAppUnitOfWork unitOfWork, IMapper mapper, ILoggerFactory loggerFactory)
+    private readonly IHttpClientFactory _httpClientFactory;
+    public AppBLL(IAppUnitOfWork unitOfWork, IMapper mapper, ILoggerFactory loggerFactory, IHttpClientFactory httpClientFactory)
     {
         UnitOfWork = unitOfWork;
         _mapper = mapper;
         _loggerFactory = loggerFactory;
+        _httpClientFactory = httpClientFactory;
     }
     public override async Task<int> SaveChangesAsync()
     {
@@ -35,7 +37,7 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     public virtual ICountryService Countries =>
         _countries ?? new CountryService(UnitOfWork.Countries, new CountryMapper(_mapper));
     public virtual ICountyService Counties => _counties ??= new CountyService(UnitOfWork.Counties,
-        new CountyMapper(_mapper), _loggerFactory.CreateLogger<CountyService>(), this);
+        new CountyMapper(_mapper), _loggerFactory.CreateLogger<CountyService>(), this, _httpClientFactory);
     public virtual ICityService Cities => _cities ??= new CityService(UnitOfWork.Cities, new CityMapper(_mapper));
     public virtual IAdminService Admins => _admins ??= new AdminService(UnitOfWork.Admins, new AdminMapper(_mapper));
     public virtual IAppUserService AppUsers => _appUsers ??= new AppUserService(UnitOfWork.AppUsers, new AppUserMapper(_mapper));

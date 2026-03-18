@@ -15,11 +15,13 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
 {
     private readonly IAppBLL _appBLL;
     private readonly ILogger<CountyService> _logger;
-    public CountyService(ICountyRepository repository, IMapper<CountyDTO, DAL.DTO.AdminArea.CountyDTO> mapper, ILogger<CountyService> logger, IAppBLL appBLL) : base(repository, mapper)
+    private readonly IHttpClientFactory _httpClientFactory;
+    public CountyService(ICountyRepository repository, IMapper<CountyDTO, DAL.DTO.AdminArea.CountyDTO> mapper, ILogger<CountyService> logger, IAppBLL appBLL, IHttpClientFactory httpClientFactory) : base(repository, mapper)
     {
 
         _logger = logger;
         _appBLL = appBLL;
+        _httpClientFactory = httpClientFactory;
     }
 
     public async Task<IEnumerable<CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true, bool noIncludes = false)
@@ -50,8 +52,9 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
         throw new NotImplementedException();
     }
 
-    public async Task<CountyImportResult> ImportCountiesFromEHAKAsync(HttpClient client)
+    public async Task<CountyImportResult> ImportCountiesFromEHAKAsync()
     {
+        var client = _httpClientFactory.CreateClient();
         var importResult = new CountyImportResult();
         const string ESTONIANISO2CODE = "EE";
        
@@ -146,5 +149,15 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
     public bool DoesCountyExistsByCountryIdAndEHAKCode(Guid countryId, string ehakCode)
     {
         return Repository.DoesCountyExistsByCountryIdAndEHAKCode(countryId, ehakCode);
+    }
+
+    public async Task<CountyDTO?> GetCountyByEHAKCodeAsync(string ehakCode)
+    {
+        return (Mapper.Map(await Repository.GetCountyByEHAKCodeAsync(ehakCode)));
+    }
+
+    public CountyDTO? GetCountyByEHAKCode(string ehakCode)
+    {
+        return Mapper.Map( Repository.GetCountyByEHAKCode(ehakCode));
     }
 }

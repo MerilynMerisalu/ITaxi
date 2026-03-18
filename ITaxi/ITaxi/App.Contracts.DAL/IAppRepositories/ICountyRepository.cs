@@ -13,5 +13,7 @@ public interface ICountyRepositoryCustom<TEntity>
     IEnumerable<TEntity> GetAllCountiesOrderedByCountyName(bool noTracking = true, bool noIncludes = false);
     Task<bool> DoesCountyExistsByCountryIdAndEHAKCodeAsync(Guid countryId, string ehakCode);
     bool DoesCountyExistsByCountryIdAndEHAKCode(Guid countryId, string ehakCode);
+    Task<TEntity?> GetCountyByEHAKCodeAsync(string ehakCode);
+    TEntity?GetCountyByEHAKCode(string ehakCode);
     Task<bool> HasCities(Guid countyId);
 }

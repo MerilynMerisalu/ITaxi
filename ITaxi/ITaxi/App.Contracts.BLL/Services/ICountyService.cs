@@ -8,6 +8,6 @@ namespace App.Contracts.BLL.Services;
 public interface ICountyService: IEntityService<App.BLL.DTO.AdminArea.CountyDTO>,
     ICountyRepositoryCustom<App.BLL.DTO.AdminArea.CountyDTO> // Add custom stuff
 {
-    Task<CountyImportResult> ImportCountiesFromEHAKAsync(HttpClient client);
+    Task<CountyImportResult> ImportCountiesFromEHAKAsync();
     Task<IEnumerable<CountyDTO>>GetCountiesByCountryIdAsync(Guid countryId);
 }

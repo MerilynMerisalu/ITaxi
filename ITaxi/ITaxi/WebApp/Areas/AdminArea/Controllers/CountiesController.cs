@@ -20,7 +20,7 @@ namespace WebApp.Areas.AdminArea.Controllers;
 /// Admin area counties controller
 /// </summary>
 [Area(nameof(AdminArea))]
-//[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 public class CountiesController : Controller
 {
     private readonly IAppBLL _appBLL;
@@ -236,9 +236,7 @@ public class CountiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> FetchingCountiesFromEHAK()
     {
-        
-        var client = new HttpClient();
-        var result = await _appBLL.Counties.ImportCountiesFromEHAKAsync(client);
+        var result = await _appBLL.Counties.ImportCountiesFromEHAKAsync();
         if(result.CountryNotFound) return NotFound();
         if (!result.Success) return StatusCode(503);
        

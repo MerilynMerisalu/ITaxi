@@ -78,6 +78,16 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
 
     public bool DoesCountyExistsByCountryIdAndEHAKCode(Guid countryId, string ehakCode)
     {
-        return CreateQuery().Any(c => c.CountryId == countryId && c.CountyEHAKCode!.Equals(ehakCode.ToUpperInvariant()));
+        return CreateQuery().Any(c => c.CountryId == countryId && c.CountyEHAKCode!.Equals(ehakCode.Trim().ToUpperInvariant()));
+    }
+
+    public async Task<CountyDTO?> GetCountyByEHAKCodeAsync(string ehakCode)
+    {
+        return (Mapper.Map(await CreateQuery().FirstOrDefaultAsync(c => c.CountyEHAKCode!.Equals(ehakCode.Trim().ToUpperInvariant()))));
+    }
+
+    public CountyDTO? GetCountyByEHAKCode(string ehakCode)
+    {
+        return (Mapper.Map( CreateQuery().FirstOrDefault(c => c.CountyEHAKCode!.Equals(ehakCode.Trim().ToUpperInvariant()))));
     }
 }
