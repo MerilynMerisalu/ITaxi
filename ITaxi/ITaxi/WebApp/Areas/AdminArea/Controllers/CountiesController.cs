@@ -237,10 +237,16 @@ public class CountiesController : Controller
     public async Task<IActionResult> FetchingCountiesFromEHAK()
     {
         var result = await _appBLL.Counties.ImportCountiesFromEHAKAsync();
-        if(result.CountryNotFound) return NotFound();
+        if (result.CountryNotFound) return NotFound();
         if (!result.Success) return StatusCode(503);
-       
+        return RedirectToAction(nameof(Index));
+    }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ShowHideCountyAsync([FromRoute] Guid countyId)
+    {
+        var result = await _appBLL.Counties.ToggleCountryIsIgnoredAsync(id: countyId);
         return RedirectToAction(nameof(Index));
     }
 }

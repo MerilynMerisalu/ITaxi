@@ -145,6 +145,7 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
             {
                 countryDTO.Id = Guid.NewGuid();
                 countryDTO.ISOCode = country.Cca2;
+                countryDTO.DataOrigin = DataOrigin.Api;
                 countryDTO.CreatedAt = DateTime.Now.ToUniversalTime();
             }
 
@@ -196,6 +197,7 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
             Id = Guid.NewGuid(),
             CountryName = GetCountryCommonNameTranslated(langCode, c),
             ISOCode = c.Cca2,
+            DataOrigin = DataOrigin.Api,
             CreatedAt = DateTime.UtcNow.ToLocalTime(),
         });
     }

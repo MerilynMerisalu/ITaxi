@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using App.BLL.DTO.AdminArea;
-using App.Enum.Enum;
+
 using Base.Domain;
 using Base.Resources;
 

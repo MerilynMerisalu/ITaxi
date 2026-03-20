@@ -1,4 +1,4 @@
-﻿using App.Enum.Enum;
+﻿
 using Base.Resources;
 using System.ComponentModel.DataAnnotations;
 

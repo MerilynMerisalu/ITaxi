@@ -117,7 +117,8 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
                     var county = new CountyDTO() { 
                         Id = Guid.NewGuid(), 
                         CountyName = countyName, 
-                        CountyEHAKCode = ehakCode, 
+                        CountyEHAKCode = ehakCode,
+                        DataOrigin =  DataOrigin.Api,
                         CountryId = countryId.Value, 
                         CreatedBy = "System", 
                         CreatedAt = DateTime.UtcNow,

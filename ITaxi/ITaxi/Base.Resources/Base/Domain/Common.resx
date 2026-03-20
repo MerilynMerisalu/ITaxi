@@ -150,4 +150,13 @@
   <data name="IsIgnored" xml:space="preserve">
     <value>Is Ignored?</value>
   </data>
+  <data name="Imported" xml:space="preserve">
+    <value>Imported</value>
+  </data>
+  <data name="ManuallyAdded" xml:space="preserve">
+    <value>Manually Added</value>
+  </data>
+  <data name="DataOrigin" xml:space="preserve">
+    <value>Data Origin</value>
+  </data>
 </root>

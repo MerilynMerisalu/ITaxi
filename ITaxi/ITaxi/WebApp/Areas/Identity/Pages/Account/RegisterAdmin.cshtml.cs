@@ -11,7 +11,7 @@ using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Domain;
 using App.Domain.Identity;
-using App.Enum.Enum;
+
 using App.Resources.Areas.Identity.Pages.Account;
 using Base.Resources;
 using Microsoft.AspNetCore.Authentication;

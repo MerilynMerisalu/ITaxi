@@ -16,7 +16,7 @@ public class County : DomainEntityMetaId
     public Country? Country { get; set; }
     
     [MaxLength(4, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.County), Name = nameof(CountyEHAKCode) )]
+    [Display(ResourceType = typeof(App.Resources.Areas.App_Domain.AdminArea.County), Name = nameof(CountyEHAKCode) )]
     public string? CountyEHAKCode { get; set; }
 
     public ICollection<City>? Cities { get; set; }

@@ -6,7 +6,7 @@
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
-using App.Enum.Enum;
+
 using Base.Resources;
 using Google.Apis.PeopleService.v1.Data;
 using Microsoft.AspNetCore.Identity;
@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using Gender = App.Enum.Enum.Gender;
+
 using Index = App.Resources.Areas.Identity.Pages.Account.Manage.Index;
 using Photo = App.Domain.Photo;
 

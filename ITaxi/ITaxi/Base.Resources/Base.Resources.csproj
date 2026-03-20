@@ -60,6 +60,10 @@
           <Generator>PublicResXFileCodeGenerator</Generator>
           <LastGenOutput>Index.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Base\Domain\Common.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Common.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
 
 
     </ItemGroup>

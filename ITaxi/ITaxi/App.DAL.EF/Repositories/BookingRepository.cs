@@ -1,7 +1,6 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
 using App.DAL.DTO.AdminArea;
 using App.Domain;
-using App.Enum.Enum;
 using Base.Contracts;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;

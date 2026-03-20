@@ -150,4 +150,13 @@
   <data name="IsIgnored" xml:space="preserve">
     <value>Ignoreeritud</value>
   </data>
+  <data name="Imported" xml:space="preserve">
+    <value>Imporditud</value>
+  </data>
+  <data name="ManuallyAdded" xml:space="preserve">
+    <value>Käsitsi lisatud</value>
+  </data>
+  <data name="DataOrigin" xml:space="preserve">
+    <value>Andmete sisestusviis</value>
+  </data>
 </root>

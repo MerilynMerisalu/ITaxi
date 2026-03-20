@@ -1,7 +1,7 @@
 ﻿
 
 using System.ComponentModel.DataAnnotations;
-using Base.Resources.Base.Domain;
+using Base.Resources.Base_Domain;
 
 namespace Base.Contracts.Domain;
 

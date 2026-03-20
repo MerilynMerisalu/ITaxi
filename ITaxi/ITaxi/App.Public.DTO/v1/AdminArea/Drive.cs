@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Enum.Enum;
+
 
 namespace App.Public.DTO.v1.AdminArea;
 

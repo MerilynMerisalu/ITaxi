@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Base.Resources.Base.Domain {
+namespace Base.Resources.Base_Domain {
     using System;
     
     
@@ -88,6 +88,15 @@ namespace Base.Resources.Base.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data Origin.
+        /// </summary>
+        public static string DataOrigin {
+            get {
+                return ResourceManager.GetString("DataOrigin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date and Time of the Decline .
         /// </summary>
         public static string DeclineDateAndTime {
@@ -115,6 +124,15 @@ namespace Base.Resources.Base.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Imported.
+        /// </summary>
+        public static string Imported {
+            get {
+                return ResourceManager.GetString("Imported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is Deleted?.
         /// </summary>
         public static string IsDeleted {
@@ -129,6 +147,15 @@ namespace Base.Resources.Base.Domain {
         public static string IsIgnored {
             get {
                 return ResourceManager.GetString("IsIgnored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manually Added.
+        /// </summary>
+        public static string ManuallyAdded {
+            get {
+                return ResourceManager.GetString("ManuallyAdded", resourceCulture);
             }
         }
         

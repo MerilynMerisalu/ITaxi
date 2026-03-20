@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using App.Domain.Identity;
-using App.Enum.Enum;
+
 using App.Resources.Areas.Identity.Pages.Account.Manage;
 using Base.Resources;
 using Google.Apis.Auth.OAuth2.Responses;

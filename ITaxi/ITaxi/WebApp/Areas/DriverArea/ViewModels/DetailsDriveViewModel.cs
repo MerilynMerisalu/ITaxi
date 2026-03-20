@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Enum.Enum;
 using App.Resources.Areas.App.Domain.DriverArea;
 
 namespace WebApp.Areas.DriverArea.ViewModels;

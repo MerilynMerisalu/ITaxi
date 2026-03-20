@@ -8,7 +8,6 @@ using App.Contracts.BLL;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
-using App.Enum.Enum;
 using App.Public.DTO.v1.Identity;
 using Base.Extensions;
 using Microsoft.AspNetCore.Identity;

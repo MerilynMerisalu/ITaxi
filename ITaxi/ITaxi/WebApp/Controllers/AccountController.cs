@@ -1,5 +1,4 @@
 ﻿using App.DAL.DTO.Identity;
-using App.Enum.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

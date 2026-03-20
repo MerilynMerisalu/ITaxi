@@ -6,7 +6,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using App.Domain.Identity;
-using App.Enum.Enum;
 using Base.Resources;
 using Base.Resources.Identity.Pages.Account;
 using Microsoft.AspNetCore.Authentication;

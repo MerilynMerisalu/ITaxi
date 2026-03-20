@@ -1,6 +1,5 @@
 ﻿using App.Domain.Identity;
-using App.Enum.Enum;
-using App.Resources.Areas.App.Domain.AdminArea;
+
 using Base.Domain;
 using Base.Resources;
 using Microsoft.AspNetCore.Http;

@@ -1,3 +1,4 @@
+@using App.Resources.Areas.App_Domain.AdminArea
 @using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
 @model IEnumerable<App.BLL.DTO.AdminArea.CountyDTO>
@@ -80,6 +81,10 @@
 
 
             <td>
+                @if (!string.IsNullOrWhiteSpace(item.CountyEHAKCode))
+                    {
+                        <a asp-action="">@Common.ShowHide</a>
+                    }
                 <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Enum.Enum;
+
 using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Resources;
 using Microsoft.AspNetCore.Mvc.Rendering;
