@@ -24,9 +24,9 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<IEnumerable<CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true, bool noIncludes = false)
+    public async Task<IEnumerable<CountyDTO>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
     {
-        return (await Repository.GetAllCountiesOrderedByCountyNameAsync(noTracking, noIncludes))
+        return (await Repository.GetAllCountiesOrderedByCountyNameAsync(noTracking, noIncludes, showIgnored: showIgnored))
             .Select(e => Mapper.Map(e))!;
     }
 

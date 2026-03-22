@@ -18,6 +18,8 @@ public class CountryDTO: DomainEntityMetaId
         Name = nameof(ISOCode))]
     public string ISOCode { get; set; } = default!;
 
-    
-    
+     
+
+
+
 }

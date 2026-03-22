@@ -18,78 +18,93 @@
 </p>
 <table class="table">
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Country)
-        </th>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
 
-        <th>
-            @Html.DisplayNameFor(model => model.CountyName)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.NumberOfCities)
-        </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.CountyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataOrigin)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.CountyEHAKCode)
             </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsIgnored)
+            </th>
         
-        <th></th>
-    </tr>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayTextFor(modelItem => item.Country!.CountryName)
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.CountyName)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
                 <td>
-                @Html.DisplayFor(modelItem => item.CountyEHAKCode)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.NumberOfCities)
-            </td>*@
+                    @Html.DisplayTextFor(modelItem => item.Country!.CountryName)
+                </td>
+            
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataOrigin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountyEHAKCode)
+                </td>
+               
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsIgnored)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
-            </td>
-
-
-            <td>
-                @if (!string.IsNullOrWhiteSpace(item.CountyEHAKCode))
+                <td>
+                    @if (item.DataOrigin == DataOrigin.Manual)
                     {
-                        <a asp-action="">@Common.ShowHide</a>
+                       
+                        <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a>
+                        <span>|</span>
+                        <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
+
+                        <span>|</span>
+                
                     }
-                <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
-            </td>
-        </tr>
-    }
+                    <form method="post">
+                        <button type="submit" asp-action="ShowHide" asp-route-id="@item.Id" class="btn btn-link p-0 align-baseline" formmethod="post">@Common.ShowHide</button> |
+                    </form>
+                    
+                    <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
+                
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

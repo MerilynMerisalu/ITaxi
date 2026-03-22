@@ -97,7 +97,7 @@ public class CitiesController : Controller
             city.CountyId = vm.CountyId;
             city.CityName = vm.CityName;
             city.CreatedBy = User.Identity!.Name;
-            city.CreatedAt = DateTime.Now;
+            city.CreatedAt = DateTime.Now.ToUniversalTime();
             _appBLL.Cities.Add(city);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

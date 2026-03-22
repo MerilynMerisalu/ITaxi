@@ -42,7 +42,7 @@ public class CountiesController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync();
+        var res = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync(showIgnored: true);
 
         return View(res);
     }
@@ -244,9 +244,9 @@ public class CountiesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ShowHideCountyAsync([FromRoute] Guid countyId)
+    public async Task<IActionResult> ShowHide([FromRoute] Guid id)
     {
-        var result = await _appBLL.Counties.ToggleCountryIsIgnoredAsync(id: countyId);
+        var result = await _appBLL.Counties.ToggleIsIgnoredAsync(id: id);
         return RedirectToAction(nameof(Index));
     }
 }

@@ -263,7 +263,7 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         return query;
     }
 
-    public async Task<TDalEntity?> ToggleCountryIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false)
+    public async Task<TDalEntity?> ToggleIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false)
     {
         var dalEntity = await FirstOrDefaultAsync(id, noTracking, noIncludes);
         if (dalEntity == null)
@@ -271,16 +271,20 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
             return null;
         }
         dalEntity.IsIgnored = !dalEntity.IsIgnored;
+        RepoDbSet.Update(Mapper.Map(dalEntity)!);
+        await RepoDbContext.SaveChangesAsync();
         return dalEntity;
     }
 
-    public TDalEntity? ToggleCountryIsIgnored(TDalEntity? dalEntity, bool noTracking = true, bool noIncludes = false)
+    public TDalEntity? ToggleIsIgnored(TDalEntity? dalEntity, bool noTracking = true, bool noIncludes = false)
     {
         if (dalEntity == null)
         {
             return null;
         }
         dalEntity.IsIgnored = !dalEntity.IsIgnored;
+        RepoDbSet.Update(Mapper.Map(dalEntity)!);
+         RepoDbContext.SaveChanges();
         return dalEntity;
     }
 }

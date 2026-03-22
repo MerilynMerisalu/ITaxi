@@ -178,13 +178,13 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
         return Mapper.Map(await Repository.FirstAsync(noTracking, noIncludes));
     }
 
-    public async Task<TBllEntity?> ToggleCountryIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false)
+    public async Task<TBllEntity?> ToggleIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await Repository.ToggleCountryIsIgnoredAsync(id, noTracking, noIncludes));
+        return Mapper.Map(await Repository.ToggleIsIgnoredAsync(id, noTracking, noIncludes));
     }
 
-    public TBllEntity? ToggleCountryIsIgnored(TBllEntity? dalEntity, bool noTracking = true, bool noIncludes = false)
+    public TBllEntity? ToggleIsIgnored(TBllEntity? dalEntity, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(Repository.ToggleCountryIsIgnored(Mapper.Map(dalEntity), noTracking, noIncludes));
+        return Mapper.Map(Repository.ToggleIsIgnored(Mapper.Map(dalEntity), noTracking, noIncludes));
     }
 }

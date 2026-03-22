@@ -27,7 +27,7 @@ public interface IEntityRepository<TEntity, TKey>
     TEntity? SingleOrDefault(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
 
     TEntity? First(bool noTracking = true, bool noIncludes = false);
-    TEntity? ToggleCountryIsIgnored(TEntity? dalEntity, bool noTracking = true, bool noIncludes = false);
+    TEntity? ToggleIsIgnored(TEntity? dalEntity, bool noTracking = true, bool noIncludes = false);
 
 
     // async
@@ -39,6 +39,6 @@ public interface IEntityRepository<TEntity, TKey>
     Task<bool> AnyAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
     Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
     Task<TEntity?> FirstAsync(bool noTracking = true, bool noIncludes = false);
-    Task<TEntity?> ToggleCountryIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false);
+    Task<TEntity?> ToggleIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false);
 
 }

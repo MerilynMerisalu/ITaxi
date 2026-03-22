@@ -9,7 +9,8 @@ public interface ICountyRepository : IEntityRepository<CountyDTO>,ICountyReposit
 }
 public interface ICountyRepositoryCustom<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true, bool noIncludes = false);
+    Task<IEnumerable<TEntity>> GetAllCountiesOrderedByCountyNameAsync(bool noTracking = true, bool noIncludes = false, 
+        bool showIgnored = false);
     IEnumerable<TEntity> GetAllCountiesOrderedByCountyName(bool noTracking = true, bool noIncludes = false);
     Task<bool> DoesCountyExistsByCountryIdAndEHAKCodeAsync(Guid countryId, string ehakCode);
     bool DoesCountyExistsByCountryIdAndEHAKCode(Guid countryId, string ehakCode);

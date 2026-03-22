@@ -61,9 +61,9 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
         return Mapper.Map(await Repository.GetCountryByISOCodeAsync(isoCode, noTracking, noIncludes, showDeleted));
     }
 
-    public async Task<CountryDTO?> ToggleCountryIsIgnoredAsync(Guid id, bool noTracking = true, bool noIncludes = false)
+    public async Task<CountryDTO?> ToggleIsIgnoredAsync(Guid id, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await Repository.ToggleCountryIsIgnoredAsync(id, noTracking, noIncludes));
+        return Mapper.Map(await Repository.ToggleIsIgnoredAsync(id, noTracking, noIncludes));
         
     }
 
