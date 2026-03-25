@@ -273,4 +273,10 @@
   <data name="UploadFailed" xml:space="preserve">
     <value>Faili üleslaadimine ebaõnnestus!</value>
   </data>
+  <data name="Show" xml:space="preserve">
+    <value>Näita</value>
+  </data>
+  <data name="Hide" xml:space="preserve">
+    <value>Peida</value>
+  </data>
 </root>

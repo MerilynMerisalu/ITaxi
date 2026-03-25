@@ -98,7 +98,11 @@
                 
                     }
                     <form method="post">
-                        <button type="submit" asp-action="ShowHide" asp-route-id="@item.Id" class="btn btn-link p-0 align-baseline" formmethod="post">@Common.ShowHide</button> |
+                        <button type="submit" asp-action="ShowHide" 
+                        asp-route-id="@item.Id" class="btn btn-link p-0 align-baseline"
+                        formmethod="post">
+                            @(item.IsIgnored ? Common.Show : Common.Hide)
+                    </button> |
                     </form>
                     
                     <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
@@ -108,3 +112,6 @@
         }
     </tbody>
 </table>
+
+
+}
