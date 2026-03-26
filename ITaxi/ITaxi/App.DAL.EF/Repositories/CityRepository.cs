@@ -68,9 +68,9 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
         return (await CreateQuery().Where(x => x.CountyId == countyId).ToListAsync()).Select(x => Mapper.Map(x))!;
     }
 
-    public override async Task<CityDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false)
+    public override async Task<CityDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes);
+        var query = base.CreateQuery(noTracking, noIncludes, showIgnored: showIgnored);
         if (noTracking) query = query.AsNoTracking();
         if (!noIncludes) query = query.Include(c => c.County);
 

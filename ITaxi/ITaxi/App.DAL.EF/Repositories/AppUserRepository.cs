@@ -24,9 +24,9 @@ public class AppUserRepository : BaseEntityRepository<App.DAL.DTO.Identity.AppUs
         return (await CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public override async Task<DTO.Identity.AppUser?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false)
+    public override async Task<DTO.Identity.AppUser?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
     {
-        return Mapper.Map(await CreateQuery(noTracking, noIncludes).FirstOrDefaultAsync(e => e.Id.Equals(id)));
+        return Mapper.Map(await CreateQuery(noTracking, noIncludes, showIgnored: showIgnored).FirstOrDefaultAsync(e => e.Id.Equals(id)));
     }
 
     public override DTO.Identity.AppUser? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false)

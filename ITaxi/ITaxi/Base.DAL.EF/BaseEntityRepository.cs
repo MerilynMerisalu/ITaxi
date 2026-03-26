@@ -193,9 +193,9 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
     }
 
 
-    public virtual async Task<TDalEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false)
+    public virtual async Task<TDalEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
     {
-        var dalEntity = await CreateQuery(noTracking, noIncludes).FirstOrDefaultAsync(e => e.Id.Equals(id));
+        var dalEntity = await CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showIgnored: showIgnored).FirstOrDefaultAsync(e => e.Id.Equals(id));
         return Mapper.Map(dalEntity);
     }
 
@@ -263,9 +263,9 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         return query;
     }
 
-    public async Task<TDalEntity?> ToggleIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false)
+    public async Task<TDalEntity?> ToggleIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
     {
-        var dalEntity = await FirstOrDefaultAsync(id, noTracking, noIncludes);
+        var dalEntity = await FirstOrDefaultAsync(id: id, noTracking: noTracking, noIncludes: noIncludes, showIgnored:showIgnored );
         if (dalEntity == null)
         {
             return null;
@@ -287,4 +287,6 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
          RepoDbContext.SaveChanges();
         return dalEntity;
     }
+
+    
 }

@@ -14,9 +14,9 @@ public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Drive
     {
     }
 
-    public override async Task<DriverDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false)
+    public override async Task<DriverDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
     {
-        return Mapper.Map(await CreateQuery(noTracking, noIncludes).FirstOrDefaultAsync(d => d.Id.Equals(id)));
+        return Mapper.Map(await CreateQuery(noTracking, noIncludes, showIgnored: showIgnored).FirstOrDefaultAsync(d => d.Id.Equals(id)));
     }
 
     public override DriverDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false)
