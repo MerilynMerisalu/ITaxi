@@ -246,7 +246,7 @@ public class CountiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ShowHide([FromRoute] Guid id)
     {
-        var result = await _appBLL.Counties.ToggleIsIgnoredAsync(id: id);
+        var result = await _appBLL.Counties.ToggleIsIgnoredAsync(id: id, showIgnored: true);
         return RedirectToAction(nameof(Index));
     }
 }

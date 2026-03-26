@@ -87,9 +87,9 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
         
     }
 
-    public override async Task<CountryDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false)
+    public override async Task<CountryDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
     {
-        var country = (await CreateQuery(noTracking, noIncludes)
+        var country = (await CreateQuery(noTracking, noIncludes, showIgnored: showIgnored)
             .FirstOrDefaultAsync(c => c.Id.Equals(id)));
         return Mapper.Map(country);
     }

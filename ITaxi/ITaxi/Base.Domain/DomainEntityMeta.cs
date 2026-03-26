@@ -25,8 +25,8 @@ public abstract class DomainEntityMetaId : DomainEntityId<Guid>, IDomainEntityId
     public DateTime? DeletedAt { get; set; } = null;
     [Display(ResourceType = typeof(Common), Name = nameof(DataOrigin))]
     public DataOrigin DataOrigin { get; set; }
-    [Display(ResourceType = typeof(Common), Name = nameof(IsIgnored))]
-    public virtual bool IsIgnored { get; set; }
+    //[Display(ResourceType = typeof(Common), Name = nameof(IsIgnored))]
+    //public virtual bool IsIgnored { get; set; }
 }
 
 public abstract class DomainEntityMetaId<TKey> : DomainEntityId<TKey>,
@@ -45,8 +45,8 @@ public abstract class DomainEntityMetaId<TKey> : DomainEntityId<TKey>,
     [MaxLength(32)] public string? DeletedBy { get; set; }
     
     public DateTime? DeletedAt { get; set; } = null;
-    [Display(ResourceType = typeof(Common), Name = nameof(IsIgnored))]
-    public bool IsIgnored { get; set; }
+    //[Display(ResourceType = typeof(Common), Name = nameof(IsIgnored))]
+    //public bool IsIgnored { get; set; }
     [Display(ResourceType = typeof(Common), Name = nameof(DataOrigin))]
     public DataOrigin DataOrigin { get; set; }
 

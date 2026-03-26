@@ -32,13 +32,13 @@ public interface IEntityRepository<TEntity, TKey>
 
     // async
     List<TEntity> AddRange(List<TEntity> entities);
-    Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false);
+    Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false);
     Task<IEnumerable<TEntity>> GetAllAsync(bool noTracking = true);
     Task<bool> ExistsAsync(TKey id);
     Task<TEntity> RemoveAsync(TKey id, bool hardDelete = false);
     Task<bool> AnyAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
     Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
     Task<TEntity?> FirstAsync(bool noTracking = true, bool noIncludes = false);
-    Task<TEntity?> ToggleIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false);
+    Task<TEntity?> ToggleIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false);
 
 }

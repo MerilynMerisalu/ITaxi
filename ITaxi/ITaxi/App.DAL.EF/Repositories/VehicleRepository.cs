@@ -26,7 +26,7 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
         return CreateQuery(null, null, noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
-    public override async Task<VehicleDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false)
+    public override async Task<VehicleDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
     {
         return Mapper.Map(await CreateQuery(null, null, noTracking, noIncludes).FirstOrDefaultAsync(v => v.Id.Equals(id)));
     }

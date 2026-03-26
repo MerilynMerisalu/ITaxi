@@ -25,9 +25,9 @@ public class AdminRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.AdminD
         return (await CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public override async Task<AdminDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false)
+    public override async Task<AdminDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
     {
-        return Mapper.Map(await CreateQuery(noTracking, noIncludes).FirstOrDefaultAsync(e => e.Id.Equals(id)));
+        return Mapper.Map(await CreateQuery(noTracking, noIncludes, showIgnored: showIgnored).FirstOrDefaultAsync(e => e.Id.Equals(id)));
     }
 
     public override AdminDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false)

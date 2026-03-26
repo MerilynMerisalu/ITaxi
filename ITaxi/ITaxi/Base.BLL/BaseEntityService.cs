@@ -137,9 +137,9 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
         return entities;
     }
 
-    public async Task<TBllEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false)
+    public async Task<TBllEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
     {
-        var dalEntity = await Repository.FirstOrDefaultAsync(id, noTracking, noIncludes);
+        var dalEntity = await Repository.FirstOrDefaultAsync(id, noTracking, noIncludes, showIgnored: showIgnored);
         return Mapper.Map(dalEntity);
     }
 
@@ -178,9 +178,9 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
         return Mapper.Map(await Repository.FirstAsync(noTracking, noIncludes));
     }
 
-    public async Task<TBllEntity?> ToggleIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false)
+    public async Task<TBllEntity?> ToggleIsIgnoredAsync(TKey id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
     {
-        return Mapper.Map(await Repository.ToggleIsIgnoredAsync(id, noTracking, noIncludes));
+        return Mapper.Map(await Repository.ToggleIsIgnoredAsync(id, noTracking, noIncludes, showIgnored: showIgnored));
     }
 
     public TBllEntity? ToggleIsIgnored(TBllEntity? dalEntity, bool noTracking = true, bool noIncludes = false)
