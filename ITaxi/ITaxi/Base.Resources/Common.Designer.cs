@@ -394,6 +394,15 @@ namespace Base.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide from Users.
+        /// </summary>
+        public static string HideFromUsers {
+            get {
+                return ResourceManager.GetString("HideFromUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In-Active.
         /// </summary>
         public static string InActive {
@@ -426,6 +435,15 @@ namespace Base.Resources {
         public static string IsIgnored {
             get {
                 return ResourceManager.GetString("IsIgnored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make Visible.
+        /// </summary>
+        public static string MakeVisible {
+            get {
+                return ResourceManager.GetString("MakeVisible", resourceCulture);
             }
         }
         

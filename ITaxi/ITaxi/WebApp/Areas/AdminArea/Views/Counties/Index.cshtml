@@ -5,6 +5,7 @@
 
 @{
     ViewData["Title"] = Common.Index;
+
 }
 
 <h1>@Common.Index</h1>
@@ -52,6 +53,7 @@
             <th></th>
         </tr>
     </thead>
+    
     <tbody>
         @foreach (var item in Model)
         {
@@ -86,26 +88,29 @@
                     @Html.DisplayFor(modelItem => item.IsIgnored)
                 </td>
 
-                <td>
+                @{
+                    var showHideClass = item.IsIgnored ? "text-success" : "text-danger";
+                    var showHideText = item.IsIgnored ? Common.Show : Common.Hide;
+                    var showHideTitle = item.IsIgnored ? Common.MakeVisible : Common.HideFromUsers;
+                }
+                
+
+                <td class="action-links">
                     @if (item.DataOrigin == DataOrigin.Manual)
                     {
                        
                         <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a>
-                        <span>|</span>
                         <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a>
-
-                        <span>|</span>
+                  
                 
                     }
-                    <form method="post">
-                        <button type="submit" asp-action="ShowHide" 
-                        asp-route-id="@item.Id" class="btn btn-link p-0 align-baseline"
-                        formmethod="post">
-                            @(item.IsIgnored ? Common.Show : Common.Hide)
-                    </button> |
+                    <form asp-action="ShowHide" asp-route-id="@item.Id" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" title="@showHideTitle" class="btn btn-link p-0 align-baseline @showHideClass">
+                            @showHideText
+                        </button>
                     </form>
-                    
-                    <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> 
                 
                 </td>
             </tr>
@@ -114,4 +119,3 @@
 </table>
 
 
-}

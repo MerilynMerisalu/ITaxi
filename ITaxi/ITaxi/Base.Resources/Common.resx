@@ -279,4 +279,10 @@
   <data name="Hide" xml:space="preserve">
     <value>Hide</value>
   </data>
+  <data name="MakeVisible" xml:space="preserve">
+    <value>Make Visible</value>
+  </data>
+  <data name="HideFromUsers" xml:space="preserve">
+    <value>Hide from Users</value>
+  </data>
 </root>

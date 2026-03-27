@@ -16,3 +16,8 @@ html {
 body {
     margin-bottom: 60px;
 }
+
+.action-links a:not(:last-child)::after,
+.action-links form:not(:last-child)::after {
+    content: "| ";
+}

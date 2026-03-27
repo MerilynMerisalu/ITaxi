@@ -279,4 +279,10 @@
   <data name="Hide" xml:space="preserve">
     <value>Peida</value>
   </data>
+  <data name="MakeVisible" xml:space="preserve">
+    <value>Muuda nähtavaks</value>
+  </data>
+  <data name="HideFromUsers" xml:space="preserve">
+    <value>Muuda mittenähtavaks</value>
+  </data>
 </root>
