@@ -22,10 +22,10 @@ body {
     content: "| ";
 }
 
-.show-hide--show {
+.show {
     color: green;
 }
 
-.show-hide--hide {
+.hide {
     color: red;
 }
