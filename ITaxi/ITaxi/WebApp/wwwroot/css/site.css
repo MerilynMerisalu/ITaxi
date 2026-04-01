@@ -21,3 +21,11 @@ body {
 .action-links form:not(:last-child)::after {
     content: "| ";
 }
+
+.show-hide--show {
+    color: green;
+}
+
+.show-hide--hide {
+    color: red;
+}

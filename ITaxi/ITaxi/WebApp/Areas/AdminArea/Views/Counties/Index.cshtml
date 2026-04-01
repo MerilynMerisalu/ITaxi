@@ -1,6 +1,7 @@
 @using App.Resources.Areas.App_Domain.AdminArea
 @using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
+
 @model IEnumerable<App.BLL.DTO.AdminArea.CountyDTO>
 
 @{
@@ -10,8 +11,8 @@
 
 <h1>@Common.Index</h1>
 
-<p>
-    <a asp-action="Create">@Common.CreateNew</a> |
+<p class="action-links">
+    <a asp-action="Create">@Common.CreateNew</a> 
     <form method="post">
         @Html.AntiForgeryToken()
         <button type="submit" class="btn-primary" asp-action="FetchingCountiesFromEHAK">@County.FetchCounties</button>
@@ -88,13 +89,8 @@
                     @Html.DisplayFor(modelItem => item.IsIgnored)
                 </td>
 
-                @{
-                    var showHideClass = item.IsIgnored ? "text-success" : "text-danger";
-                    var showHideText = item.IsIgnored ? Common.Show : Common.Hide;
-                    var showHideTitle = item.IsIgnored ? Common.MakeVisible : Common.HideFromUsers;
-                }
                 
-
+                
                 <td class="action-links">
                     @if (item.DataOrigin == DataOrigin.Manual)
                     {
@@ -104,12 +100,8 @@
                   
                 
                     }
-                    <form asp-action="ShowHide" asp-route-id="@item.Id" method="post" class="d-inline">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" title="@showHideTitle" class="btn btn-link p-0 align-baseline @showHideClass">
-                            @showHideText
-                        </button>
-                    </form>
+                    <partial name="_ShowHideButton" model="item" />
+                    
                     <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> 
                 
                 </td>

@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Base.Contracts.ViewModels;
 using Base.Domain;
 using Base.Resources;
 
 namespace App.BLL.DTO.AdminArea;
 
-public class CountyDTO : DomainEntityMetaId
+public class CountyDTO : DomainEntityMetaId, IShowHideItem
 {
     [Required(ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "RequiredAttributeErrorMessage")]

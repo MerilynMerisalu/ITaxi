@@ -1,0 +1,17 @@
+﻿@using Base.Resources
+@model Base.Contracts.ViewModels.IShowHideItem
+
+@{
+    var showHideClass = Model.IsIgnored ? "show-hide--show" : "show-hide--hide";
+    var showHideText = Model.IsIgnored ? Common.Show : Common.Hide;
+    var showHideTitle = Model.IsIgnored ? Common.MakeVisible : Common.HideFromUsers;
+}
+
+<form asp-action="ShowHide" asp-route-id="@Model.Id" method="post" class="d-inline">
+    @Html.AntiForgeryToken()
+    <button type="submit"
+            title="@showHideTitle"
+            class="btn btn-link p-0 align-baseline @showHideClass">
+        @showHideText
+    </button>
+</form>
