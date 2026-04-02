@@ -81,9 +81,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                 country.Id = Guid.NewGuid();
                 country.CountryName = vm.CountryName;
                 country.ISOCode = vm.ISOCode.ToUpper();
-                country.CreatedBy = User.GettingUserEmail();
+                country.CreatedBy = User.GetUserEmail();
                 country.CreatedAt = DateTime.Now.ToUniversalTime();
-                country.UpdatedBy = User.GettingUserEmail();
+                country.UpdatedBy = User.GetUserEmail();
                 country.UpdatedAt = DateTime.Now.ToUniversalTime();
                 _appBLL.Countries.Add(country);
                 await _appBLL.SaveChangesAsync();
@@ -135,7 +135,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                     {
                         country.CountryName.SetTranslation(vm.CountryName); 
                         country.ISOCode = vm.ISOCode.ToUpper();
-                        country.UpdatedBy = User.GettingUserEmail();
+                        country.UpdatedBy = User.GetUserEmail();
                         country.UpdatedAt = DateTime.Now.ToUniversalTime();
                         _appBLL.Countries.Update(country);
                         await _appBLL.SaveChangesAsync();
@@ -225,7 +225,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return BadRequest();
             }
             
-            country.UpdatedBy = User.GettingUserEmail();
+            country.UpdatedBy = User.GetUserEmail();
             country.UpdatedAt = DateTime.Now.ToUniversalTime();
             _appBLL.Countries.Update(country);
             await _appBLL.SaveChangesAsync();

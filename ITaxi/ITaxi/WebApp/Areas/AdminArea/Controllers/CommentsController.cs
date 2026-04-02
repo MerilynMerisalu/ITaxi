@@ -35,8 +35,8 @@ public class CommentsController : Controller
     /// <returns>Index page view with data</returns>
     public async Task<IActionResult> Index()
     {
-        var roleName = User.GettingUserRoleName();
-        var res = await _appBLL.Comments.GettingAllOrderedCommentsWithIncludesAsync(roleName:roleName);
+        var roleName = User.GetUserRoleName();
+        var res = await _appBLL.Comments.GettingAllOrderedCommentsWithIncludesAsync(roleName: roleName);
         return View(res);
     }
 
@@ -51,13 +51,13 @@ public class CommentsController : Controller
         var vm = new DetailsDeleteCommentViewModel();
         if (id == null) return NotFound();
 
-        var roleName = User.GettingUserRoleName();
+        var roleName = User.GetUserRoleName();
 
         var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id.Value, null, roleName);
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.BookingNumber = comment!.Drive.Booking.BookingNumber;
+        vm.BookingNumber = comment!.Drive!.Booking!.BookingNumber;
         vm.Drive = comment.DriveCustomerStr;
         vm.CustomerName = comment.CustomerName;
         vm.DriverName = comment.DriverName;
@@ -67,23 +67,24 @@ public class CommentsController : Controller
         vm.CreatedBy = comment.CreatedBy!;
         vm.UpdatedAt = comment.UpdatedAt;
         vm.UpdatedBy = comment.UpdatedBy!;
-        
+
         return View(vm);
     }
-    
+
     /// <summary>
     /// sets booking number for comment
     /// </summary>
     /// <param name="id">Drive id</param>
     /// <returns>Status 200 OK</returns>
-    
+
     [HttpPost("/AdminArea/Comments/GetBookingNumber")]
     public async Task<IActionResult> GetBookingNumber([FromBody] Guid? id = null)
     {
-        
-        var  bookingNumber = await _appBLL.Bookings.GettingBookingNumberByDriveIdAsync(id.Value, null, User.GettingUserRoleName(),
+
+        var bookingNumber = await _appBLL.Bookings.GettingBookingNumberByDriveIdAsync(id.Value, null, 
+            User.GetUserRoleName(),
             true, false);
-        return Content(bookingNumber.ToString()?? String.Empty, "text/plain");
+        return Content(bookingNumber.ToString() ?? String.Empty, "text/plain");
     }
 
 
@@ -96,13 +97,13 @@ public class CommentsController : Controller
     {
         var vm = new CreateCommentViewModel();
 
-        var roleName = User.GettingUserRoleName();
+        var roleName = User.GetUserRoleName();
         var drives = await _appBLL.Drives.GettingFinishedDrivesWithoutCommentAsync(null, roleName);
-        
+
         vm.Drives = new SelectList(drives,
-            nameof(DriveDTO.Id), 
+            nameof(DriveDTO.Id),
             nameof(DriveDTO.DriveDescription));
-        
+
         return View(vm);
     }
 
@@ -118,7 +119,7 @@ public class CommentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateCommentViewModel vm)
     {
-        var roleName = User.GettingUserRoleName();
+        var roleName = User.GetUserRoleName();
         var comment = new CommentDTO();
         if (ModelState.IsValid)
         {
@@ -128,9 +129,9 @@ public class CommentsController : Controller
             if (vm.StarRating > 0)
             {
                 comment.StarRating = vm.StarRating;
-                
+
             }
-            
+
             comment.CommentText = vm.CommentText;
             comment.CreatedBy = User.Identity!.Name;
             comment.CreatedAt = DateTime.Now.ToUniversalTime();
@@ -143,7 +144,7 @@ public class CommentsController : Controller
         vm.Drives = new SelectList(await _appBLL.Drives.GettingFinishedDrivesWithoutCommentAsync(null, roleName),
             nameof(DriverDTO.Id),
             nameof(BookingDTO.DriveTime));
-        
+
         return View(vm);
     }
 
@@ -155,7 +156,7 @@ public class CommentsController : Controller
     /// <returns>View model</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
-        var roleName = User.GettingUserRoleName();
+        var roleName = User.GetUserRoleName();
         var vm = new EditCommentViewModel();
         if (id == null) return NotFound();
 
@@ -167,7 +168,7 @@ public class CommentsController : Controller
         if (comment.StarRating != null) vm.StarRating = comment.StarRating;
         if (comment.CommentText != null) vm.CommentText = comment.CommentText;
         vm.DriveId = comment.DriveId;
-        vm.BookingNumber = comment.Drive!.Booking.BookingNumber;
+        vm.BookingNumber = comment.Drive?.Booking?.BookingNumber;
         vm.DriveTimeAndDriver = $"{comment.DriveCustomerStr} - {comment.DriverName}";
 
         return View(vm);
@@ -186,8 +187,8 @@ public class CommentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditCommentViewModel vm)
     {
-        var roleName = User.GettingUserRoleName();
-        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, null, roleName, noIncludes:true);
+        var roleName = User.GetUserRoleName();
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, null, roleName, noIncludes: true);
         if (comment != null && id != comment.Id) return NotFound();
 
         if (ModelState.IsValid)
@@ -203,7 +204,7 @@ public class CommentsController : Controller
                         {
                             comment.StarRating = vm.StarRating;
                         }
-                    } 
+                    }
                     if (comment.CommentText != vm.CommentText)
                         comment.CommentText = vm.CommentText;
                     comment.UpdatedBy = User.Identity!.Name;
@@ -237,13 +238,13 @@ public class CommentsController : Controller
         var vm = new DetailsDeleteCommentViewModel();
         if (id == null) return NotFound();
 
-        var roleName = User.GettingUserRoleName();
+        var roleName = User.GetUserRoleName();
         var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id.Value, null, roleName);
         if (comment == null) return NotFound();
 
         vm.Id = comment.Id;
-        vm.BookingNumber = comment.Drive.Booking.BookingNumber;
-        
+        vm.BookingNumber = comment.Drive!.Booking!.BookingNumber;
+
         vm.Drive = comment.DriveCustomerStr;
         vm.CustomerName = comment.CustomerName;
         vm.DriverName = comment.DriverName;
@@ -268,14 +269,14 @@ public class CommentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var roleName = User.GettingUserRoleName();
-        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, null, roleName, noIncludes:true);
+        var roleName = User.GetUserRoleName();
+        var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, null, roleName, noIncludes: true);
         if (comment != null && comment.DriveId != null)
         {
             comment.DriveId = null;
             _appBLL.Comments.Update(comment);
             await _appBLL.SaveChangesAsync();
-                   
+
         }
         if (comment != null) await _appBLL.Comments.RemoveAsync(comment.Id);
         await _appBLL.SaveChangesAsync();

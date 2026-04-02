@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Base.Contracts;
+namespace Base.Contracts.Mappers;
 
 public interface IMapper<TOut, TIn>
 {

@@ -35,81 +35,81 @@ public class DrivesController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        var roleName = User.GettingUserRoleName();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.Drives.GettingAllOrderedDrivesWithIncludesAsync(null, roleName);
 
         return View(res);
     }
 
-    
-/// <summary>
-/// Search drives by inserted date
-/// </summary>
-/// <param name="search">Date</param>
-/// <returns>An index view with search results</returns>
-[HttpPost]
-public async Task<IActionResult> SearchByDateAsync([FromForm] DateTime search)
-{
-    var roleName = User.GettingUserRoleName();
-    var drives = await _appBLL.Drives.SearchByDateAsync(search, null, roleName);
-    return View(nameof(Index), drives);
-}
 
-/// <summary>
-/// Generates a pdf view of drives
-/// </summary>
-/// <returns>A pdf of drives</returns>
-public async Task<IActionResult> Print()
-{
-    var roleName = User.GettingUserRoleName();
-    
-    var drives = await _appBLL.Drives.PrintAsync( null, roleName );
-        
-    return new ViewAsPdf("PrintDrives", drives) 
+    /// <summary>
+    /// Search drives by inserted date
+    /// </summary>
+    /// <param name="search">Date</param>
+    /// <returns>An index view with search results</returns>
+    [HttpPost]
+    public async Task<IActionResult> SearchByDateAsync([FromForm] DateTime search)
     {
-        PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape
-    };
-}
+        var roleName = User.GetUserRoleName();
+        var drives = await _appBLL.Drives.SearchByDateAsync(search, null, roleName);
+        return View(nameof(Index), drives);
+    }
 
-// GET: AdminArea/Drives/Accept/5
-/// <summary>
-/// Admin area drives controller GET method accept
-/// </summary>
-/// <param name="id">Id</param>
-/// <returns>View</returns>
-public async Task<IActionResult> Accept(Guid? id)
-{
-    if (id == null) return NotFound();
+    /// <summary>
+    /// Generates a pdf view of drives
+    /// </summary>
+    /// <returns>A pdf of drives</returns>
+    public async Task<IActionResult> Print()
+    {
+        var roleName = User.GetUserRoleName();
 
-    var roleName = User.GettingUserRoleName();
-    var vm = new DriveStateViewModel();
-    var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, null, roleName);
-    if (drive == null) return NotFound();
+        var drives = await _appBLL.Drives.PrintAsync(null, roleName);
 
-    vm.Id = drive.Id;
-    vm.BookingNumber = drive.Booking!.BookingNumber;
-    drive.Booking!.Schedule!.StartDateAndTime = drive.Booking!.Schedule!.StartDateAndTime;
-    drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
-    vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
-    vm.City = drive.Booking.City!.CityName;
-    vm.CustomerInfo = drive!.CustomerInfo;
-    vm.DriverInfo = drive!.DriverInfo;
-    vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
-    vm.DestinationAddress = drive.Booking.DestinationAddress;
-    vm.NeedAssistanceLeavingTheBuilding = drive.Booking!.NeedAssistanceLeavingTheBuilding;
-    if (drive.Booking!.NeedAssistanceLeavingTheBuilding)
+        return new ViewAsPdf("PrintDrives", drives)
+        {
+            PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape
+        };
+    }
+
+    // GET: AdminArea/Drives/Accept/5
+    /// <summary>
+    /// Admin area drives controller GET method accept
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
+    public async Task<IActionResult> Accept(Guid? id)
+    {
+        if (id == null) return NotFound();
+
+        var roleName = User.GetUserRoleName();
+        var vm = new DriveStateViewModel();
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, null, roleName);
+        if (drive == null) return NotFound();
+
+        vm.Id = drive.Id;
+        vm.BookingNumber = drive.Booking!.BookingNumber;
+        drive.Booking!.Schedule!.StartDateAndTime = drive.Booking!.Schedule!.StartDateAndTime;
+        drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
+        vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
+        vm.City = drive.Booking.City!.CityName;
+        vm.CustomerInfo = drive!.CustomerInfo!;
+        vm.DriverInfo = drive!.DriverInfo!;
+        vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
+        vm.DestinationAddress = drive.Booking.DestinationAddress;
+        vm.NeedAssistanceLeavingTheBuilding = drive.Booking!.NeedAssistanceLeavingTheBuilding;
+        if (drive.Booking!.NeedAssistanceLeavingTheBuilding)
         {
             vm.PickupFloorNumber = drive.Booking!.PickupFloorNumber;
             vm.HasAnElevatorInThePickupBuilding = drive.Booking!.HasAnElevatorInThePickupBuilding;
         }
-            
-    vm.NeedAssistanceEnteringTheBuilding = drive.Booking!.NeedAssistanceEnteringTheBuilding;
+
+        vm.NeedAssistanceEnteringTheBuilding = drive.Booking!.NeedAssistanceEnteringTheBuilding;
         if (drive.Booking!.NeedAssistanceEnteringTheBuilding)
         {
             vm.DestinationFloorNumber = drive.Booking!.DestinationFloorNumber;
             vm.HasAnElevatorInTheDestinationBuilding = drive.Booking!.HasAnElevatorInTheDestinationBuilding;
         }
-             
+
         vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("G");
         vm.PickupAddress = drive.Booking.PickupAddress;
         vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
@@ -117,11 +117,11 @@ public async Task<IActionResult> Accept(Guid? id)
         vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
         vm.StatusOfBooking = drive.Booking.StatusOfBooking;
         vm.StatusOfDrive = drive.StatusOfDrive;
-        if (vm.IsDriveAccepted )
+        if (vm.IsDriveAccepted)
         {
             vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("G");
         }
-        if (vm.IsDriveDeclined )
+        if (vm.IsDriveDeclined)
         {
             vm.DriveAcceptedDateAndTime = drive.DriveAcceptedDateAndTime.ToString("G");
             vm.DriveDeclineDateAndTime = drive.DriveDeclineDateAndTime.ToString("G");
@@ -145,299 +145,301 @@ public async Task<IActionResult> Accept(Guid? id)
         vm.CreatedAt = drive.CreatedAt;
         vm.UpdatedBy = drive.UpdatedBy!;
         vm.UpdatedAt = drive.UpdatedAt;
-    
+
         return View(vm);
-}
-
-// POST: AdminArea/Bookings/Accept/5
-/// <summary>
-/// Admin area drives controller POST method accept
-/// </summary>
-/// <param name="id">Id</param>
-/// <returns>Redirect to index</returns>
-[HttpPost]
-[ActionName(nameof(Accept))]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> AcceptConfirmed(Guid id)
-{
-    var roleName = User.GettingUserRoleName();
-    var drive = await _appBLL.Drives.AcceptingDriveAsync(id, null, roleName, noIncludes:true);
-    if (drive == null) return NotFound();
-
-    drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
-    drive.StatusOfDrive = StatusOfDrive.Accepted;
-    drive.IsDriveAccepted = true;
-    drive.UpdatedAt = DateTime.Now.ToUniversalTime();
-    drive.UpdatedBy = User.GettingUserEmail();
-
-    _appBLL.Drives.Update(drive);
-    await _appBLL.SaveChangesAsync();
-    
-    var booking = await _appBLL.Bookings.GettingBookingByDriveIdAsync(id, noTracking:true);
-    
-    if (booking != null)
-    {
-        booking.StatusOfBooking = StatusOfBooking.Accepted;
-        booking.ConfirmedBy = User.GettingUserName();
-        booking.UpdatedAt = DateTime.Now.ToUniversalTime();
-        _appBLL.Bookings.Update(booking);
-        await _appBLL.SaveChangesAsync();
     }
 
-    return RedirectToAction(nameof(Index));
-}
+    // POST: AdminArea/Bookings/Accept/5
+    /// <summary>
+    /// Admin area drives controller POST method accept
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
+    [HttpPost]
+    [ActionName(nameof(Accept))]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AcceptConfirmed(Guid id)
+    {
+        var roleName = User.GetUserRoleName();
+        var drive = await _appBLL.Drives.AcceptingDriveAsync(id, null, roleName, noIncludes: true);
+        if (drive == null) return NotFound();
 
-// GET: AdminArea/Drives/Decline/5
-/// <summary>
-/// Admin area drives controller GET method decline
-/// </summary>
-/// <param name="id">Id</param>
-/// <returns>View</returns>
-public async Task<IActionResult> Decline(Guid? id)
-{
-    if (id == null) return NotFound();
+        drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
+        drive.StatusOfDrive = StatusOfDrive.Accepted;
+        drive.IsDriveAccepted = true;
+        drive.UpdatedAt = DateTime.Now.ToUniversalTime();
+        drive.UpdatedBy = User.GetUserEmail();
 
-    var roleName = User.GettingUserRoleName();
-    var vm = new DriveStateViewModel();
-    var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, null, roleName);
-    if (drive == null) return NotFound();
+        _appBLL.Drives.Update(drive);
+        await _appBLL.SaveChangesAsync();
 
-    vm.Id = drive.Id;
-    vm.BookingNumber = drive.Booking!.BookingNumber;
-    vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
-    vm.City = drive.Booking.City!.CityName;
-    vm.CustomerInfo = drive!.CustomerInfo;
-    vm.DriverInfo = drive!.DriverInfo;
-    vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
-    vm.DestinationAddress = drive.Booking.DestinationAddress;
-    vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
+        var booking = await _appBLL.Bookings.GettingBookingByDriveIdAsync(id, noTracking: true);
+
+        if (booking != null)
+        {
+            booking.StatusOfBooking = StatusOfBooking.Accepted;
+            booking.ConfirmedBy = User.GetUserName();
+            booking.UpdatedAt = DateTime.Now.ToUniversalTime();
+            _appBLL.Bookings.Update(booking);
+            await _appBLL.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // GET: AdminArea/Drives/Decline/5
+    /// <summary>
+    /// Admin area drives controller GET method decline
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
+    public async Task<IActionResult> Decline(Guid? id)
+    {
+        if (id == null) return NotFound();
+
+        var roleName = User.GetUserRoleName();
+        var vm = new DriveStateViewModel();
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, null, roleName);
+        if (drive == null) return NotFound();
+
+        vm.Id = drive.Id;
+        vm.BookingNumber = drive.Booking!.BookingNumber;
+        vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
+        vm.City = drive.Booking.City!.CityName;
+        vm.CustomerInfo = drive!.CustomerInfo!;
+        vm.DriverInfo = drive!.DriverInfo!;
+        vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
+        vm.DestinationAddress = drive.Booking.DestinationAddress;
+        vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
         if (vm.NeedAssistanceEnteringTheBuilding)
         {
             vm.DestinationFloorNumber = drive.Booking.DestinationFloorNumber;
             vm.HasAnElevatorInTheDestinationBuilding = drive.Booking.HasAnElevatorInTheDestinationBuilding;
         }
-        
-    vm.PickupAddress = drive.Booking.PickupAddress;
-    vm.NeedAssistanceLeavingTheBuilding = drive.Booking.NeedAssistanceLeavingTheBuilding;
-    if(vm.NeedAssistanceLeavingTheBuilding) {
-       vm.PickupFloorNumber = drive.Booking.PickupFloorNumber;
-        vm.HasAnElevatorInThePickupBuilding = drive.Booking.HasAnElevatorInThePickupBuilding;
 
-    }
-        
-    vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
-    vm.HasAnAssistant = drive.Booking.HasAnAssistant;
-    vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
-    vm.StatusOfBooking = drive.Booking.StatusOfBooking;
-    vm.StatusOfDrive = drive.StatusOfDrive;
-    vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("G");
-    vm.CreatedBy = drive.CreatedBy!;
-    vm.CreatedAt = drive.CreatedAt;
-    vm.UpdatedBy = drive.UpdatedBy!;
-    vm.UpdatedAt = drive.UpdatedAt;
-    
-    return View(vm);
-}
-
-// POST: AdminArea/Drives/Decline/5
-/// <summary>
-/// Admin area drives controller POST method decline
-/// </summary>
-/// <param name="id">Id</param>
-/// <returns>Redirect to index</returns>
-[HttpPost]
-[ActionName(nameof(Decline))]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> DeclineConfirmed(Guid id)
-{
-    var roleName = User.GettingUserRoleName();
-    var drive = await _appBLL.Drives.DecliningDriveAsync(id, null, roleName, noTracking:true, noIncludes:true);
-    if (drive == null) return NotFound();
-
-    drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
-    drive.StatusOfDrive = StatusOfDrive.Declined;
-    drive.IsDriveDeclined = true;
-    drive.UpdatedBy = User.GettingUserEmail();
-    drive.UpdatedAt = DateTime.Now.ToUniversalTime();
-
-    _appBLL.Drives.Update(drive);
-    await _appBLL.SaveChangesAsync();
-
-    var booking = await _appBLL.Bookings.GettingBookingByDriveIdAsync(id);
-    if (booking != null)
-    {
-        booking.StatusOfBooking = StatusOfBooking.Declined;
-        booking.UpdatedAt = DateTime.Now.ToUniversalTime();
-        _appBLL.Bookings.Update(booking);
-        
-        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByBookingIdAsync(booking.Id, null, null, true, noIncludes:true);
-        if (rideTime != null)
+        vm.PickupAddress = drive.Booking.PickupAddress;
+        vm.NeedAssistanceLeavingTheBuilding = drive.Booking.NeedAssistanceLeavingTheBuilding;
+        if (vm.NeedAssistanceLeavingTheBuilding)
         {
-            rideTime.BookingId = null;
-            rideTime.ExpiryTime = null;
-            rideTime.IsTaken = false;
-            _appBLL.RideTimes.Update(rideTime);
+            vm.PickupFloorNumber = drive.Booking.PickupFloorNumber;
+            vm.HasAnElevatorInThePickupBuilding = drive.Booking.HasAnElevatorInThePickupBuilding;
+
         }
 
-        await _appBLL.SaveChangesAsync();
+        vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
+        vm.HasAnAssistant = drive.Booking.HasAnAssistant;
+        vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
+        vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+        vm.StatusOfDrive = drive.StatusOfDrive;
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("G");
+        vm.CreatedBy = drive.CreatedBy!;
+        vm.CreatedAt = drive.CreatedAt;
+        vm.UpdatedBy = drive.UpdatedBy!;
+        vm.UpdatedAt = drive.UpdatedAt;
+
+        return View(vm);
     }
 
-    return RedirectToAction(nameof(Index));
-}
+    // POST: AdminArea/Drives/Decline/5
+    /// <summary>
+    /// Admin area drives controller POST method decline
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
+    [HttpPost]
+    [ActionName(nameof(Decline))]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeclineConfirmed(Guid id)
+    {
+        var roleName = User.GetUserRoleName();
+        var drive = await _appBLL.Drives.DecliningDriveAsync(id, null, roleName, noTracking: true, noIncludes: true);
+        if (drive == null) return NotFound();
 
-// GET: AdminArea/Drives/StartDrive/5
-/// <summary>
-/// Admin area drives controller GET method start drive
-/// </summary>
-/// <param name="id">Id</param>
-/// <returns>View</returns>
-public async Task<IActionResult> StartDrive(Guid? id)
-{
-    if (id == null) return NotFound();
-    var roleName = User.GettingUserRoleName();
-    var vm = new DriveStateViewModel();
-    var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, null, roleName);
-    if (drive == null) return NotFound();
+        drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
+        drive.StatusOfDrive = StatusOfDrive.Declined;
+        drive.IsDriveDeclined = true;
+        drive.UpdatedBy = User.GetUserEmail();
+        drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
-    vm.Id = drive.Id;
-    vm.BookingNumber = drive.Booking!.BookingNumber;
-    vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
-    vm.City = drive.Booking.City!.CityName;
-    vm.CustomerInfo = drive!.CustomerInfo;
-    vm.DriverInfo= drive!.DriverInfo;
-    vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
-    vm.DestinationAddress = drive.Booking.DestinationAddress;
-    vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
-    if (vm.NeedAssistanceEnteringTheBuilding)
+        _appBLL.Drives.Update(drive);
+        await _appBLL.SaveChangesAsync();
+
+        var booking = await _appBLL.Bookings.GettingBookingByDriveIdAsync(id);
+        if (booking != null)
+        {
+            booking.StatusOfBooking = StatusOfBooking.Declined;
+            booking.UpdatedAt = DateTime.Now.ToUniversalTime();
+            _appBLL.Bookings.Update(booking);
+
+            var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByBookingIdAsync(booking.Id, null, null, true, noIncludes: true);
+            if (rideTime != null)
+            {
+                rideTime.BookingId = null;
+                rideTime.ExpiryTime = null;
+                rideTime.IsTaken = false;
+                _appBLL.RideTimes.Update(rideTime);
+            }
+
+            await _appBLL.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // GET: AdminArea/Drives/StartDrive/5
+    /// <summary>
+    /// Admin area drives controller GET method start drive
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
+    public async Task<IActionResult> StartDrive(Guid? id)
+    {
+        if (id == null) return NotFound();
+        var roleName = User.GetUserRoleName();
+        var vm = new DriveStateViewModel();
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, null, roleName);
+        if (drive == null) return NotFound();
+
+        vm.Id = drive.Id;
+        vm.BookingNumber = drive.Booking!.BookingNumber;
+        vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
+        vm.City = drive.Booking.City!.CityName;
+        vm.CustomerInfo = drive!.CustomerInfo!;
+        vm.DriverInfo = drive!.DriverInfo!;
+        vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
+        vm.DestinationAddress = drive.Booking.DestinationAddress;
+        vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
+        if (vm.NeedAssistanceEnteringTheBuilding)
         {
             vm.DestinationFloorNumber = drive.Booking.DestinationFloorNumber;
             vm.HasAnElevatorInThePickupBuilding = drive.Booking.HasAnElevatorInTheDestinationBuilding;
         }
-        
-    vm.PickupAddress = drive.Booking.PickupAddress;
-    vm.NeedAssistanceLeavingTheBuilding = drive.Booking.NeedAssistanceLeavingTheBuilding;
-    if (vm.NeedAssistanceLeavingTheBuilding) { 
-            vm.PickupFloorNumber = drive.Booking.PickupFloorNumber;
-            vm.HasAnElevatorInThePickupBuilding = drive.Booking.HasAnElevatorInThePickupBuilding; 
-        }
-        
-    vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
-    vm.HasAnAssistant = drive.Booking.HasAnAssistant;
-    vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
-    vm.StatusOfBooking = drive.Booking.StatusOfBooking;
-    vm.StatusOfDrive = drive.StatusOfDrive;
-    vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
-    vm.CreatedBy = drive.CreatedBy!;
-    vm.CreatedAt = drive.CreatedAt;
-    vm.UpdatedBy = drive.UpdatedBy!;
-    vm.UpdatedAt = drive.UpdatedAt;
 
-    return View(vm);
-}
-
-// POST: AdminArea/Drives/Start/5
-/// <summary>
-/// Admin area drives controller POST method start
-/// </summary>
-/// <param name="id">Id</param>
-/// <returns>Redirect to index</returns>
-[HttpPost]
-[ActionName(nameof(StartDrive))]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> StartConfirmed(Guid id)
-{
-    var roleName = User.GettingUserRoleName();
-    var drive = await _appBLL.Drives.StartingDriveAsync(id, null, roleName);
-    if (drive == null) return NotFound();
-
-    drive.DriveStartDateAndTime = DateTime.Now.ToUniversalTime();
-    drive.StatusOfDrive = StatusOfDrive.Started;
-    drive.IsDriveStarted = true;
-    drive.UpdatedBy = User.GettingUserEmail();
-    drive.UpdatedAt = DateTime.Now.ToUniversalTime();
-
-    _appBLL.Drives.Update(drive);
-    await _appBLL.SaveChangesAsync();
-    return RedirectToAction(nameof(Index));
-}
-
-// GET: AdminArea/Drives/EndDrive/5
-/// <summary>
-/// Admin area drives controller GET method end drive
-/// </summary>
-/// <param name="id">Id</param>
-/// <returns>View</returns>
-public async Task<IActionResult> EndDrive(Guid? id)
-{
-    if (id == null) return NotFound();
-
-    var roleName = User.GettingUserRoleName();
-    var vm = new DriveStateViewModel();
-    var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, null, roleName);
-    if (drive == null) return NotFound();
-
-    vm.Id = drive.Id;
-    vm.BookingNumber = drive.Booking!.BookingNumber;
-    vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
-    vm.City = drive.Booking.City!.CityName;
-    vm.CustomerInfo = drive!.CustomerInfo;
-    vm.DriverInfo = drive.DriverInfo;
-    vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
-    vm.DestinationAddress = drive.Booking.DestinationAddress;
-    vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
-    if (vm.NeedAssistanceEnteringTheBuilding)
-        {
-            vm.DestinationFloorNumber = drive.Booking.DestinationFloorNumber;
-            vm.HasAnElevatorInTheDestinationBuilding = drive.Booking.HasAnElevatorInTheDestinationBuilding;
-        }
-        
-    vm.PickupAddress = drive.Booking.PickupAddress;
+        vm.PickupAddress = drive.Booking.PickupAddress;
         vm.NeedAssistanceLeavingTheBuilding = drive.Booking.NeedAssistanceLeavingTheBuilding;
-    if (vm.NeedAssistanceLeavingTheBuilding)
+        if (vm.NeedAssistanceLeavingTheBuilding)
         {
             vm.PickupFloorNumber = drive.Booking.PickupFloorNumber;
             vm.HasAnElevatorInThePickupBuilding = drive.Booking.HasAnElevatorInThePickupBuilding;
         }
-        
-    vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
-    vm.HasAnAssistant = drive.Booking.HasAnAssistant;
-    vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
-    vm.StatusOfBooking = drive.Booking.StatusOfBooking;
-    vm.StatusOfDrive = drive.StatusOfDrive;
-    vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
-    vm.CreatedBy = drive.CreatedBy!;
-    vm.CreatedAt = drive.CreatedAt;
-    vm.UpdatedBy = drive.UpdatedBy!;
-    vm.UpdatedAt = drive.UpdatedAt;
 
-    return View(vm);
-}
+        vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
+        vm.HasAnAssistant = drive.Booking.HasAnAssistant;
+        vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
+        vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+        vm.StatusOfDrive = drive.StatusOfDrive;
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
+        vm.CreatedBy = drive.CreatedBy!;
+        vm.CreatedAt = drive.CreatedAt;
+        vm.UpdatedBy = drive.UpdatedBy!;
+        vm.UpdatedAt = drive.UpdatedAt;
+
+        return View(vm);
+    }
+
+    // POST: AdminArea/Drives/Start/5
+    /// <summary>
+    /// Admin area drives controller POST method start
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
+    [HttpPost]
+    [ActionName(nameof(StartDrive))]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> StartConfirmed(Guid id)
+    {
+        var roleName = User.GetUserRoleName();
+        var drive = await _appBLL.Drives.StartingDriveAsync(id, null, roleName);
+        if (drive == null) return NotFound();
+
+        drive.DriveStartDateAndTime = DateTime.Now.ToUniversalTime();
+        drive.StatusOfDrive = StatusOfDrive.Started;
+        drive.IsDriveStarted = true;
+        drive.UpdatedBy = User.GetUserEmail();
+        drive.UpdatedAt = DateTime.Now.ToUniversalTime();
+
+        _appBLL.Drives.Update(drive);
+        await _appBLL.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    // GET: AdminArea/Drives/EndDrive/5
+    /// <summary>
+    /// Admin area drives controller GET method end drive
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>View</returns>
+    public async Task<IActionResult> EndDrive(Guid? id)
+    {
+        if (id == null) return NotFound();
+
+        var roleName = User.GetUserRoleName();
+        var vm = new DriveStateViewModel();
+        var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, null, roleName);
+        if (drive == null) return NotFound();
+
+        vm.Id = drive.Id;
+        vm.BookingNumber = drive.Booking!.BookingNumber;
+        vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
+        vm.City = drive.Booking.City!.CityName;
+        vm.CustomerInfo = drive!.CustomerInfo!;
+        vm.DriverInfo = drive.DriverInfo!;
+        vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
+        vm.DestinationAddress = drive.Booking.DestinationAddress;
+        vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
+        if (vm.NeedAssistanceEnteringTheBuilding)
+        {
+            vm.DestinationFloorNumber = drive.Booking.DestinationFloorNumber;
+            vm.HasAnElevatorInTheDestinationBuilding = drive.Booking.HasAnElevatorInTheDestinationBuilding;
+        }
+
+        vm.PickupAddress = drive.Booking.PickupAddress;
+        vm.NeedAssistanceLeavingTheBuilding = drive.Booking.NeedAssistanceLeavingTheBuilding;
+        if (vm.NeedAssistanceLeavingTheBuilding)
+        {
+            vm.PickupFloorNumber = drive.Booking.PickupFloorNumber;
+            vm.HasAnElevatorInThePickupBuilding = drive.Booking.HasAnElevatorInThePickupBuilding;
+        }
+
+        vm.VehicleType = drive.Booking.Vehicle.VehicleType!.VehicleTypeName;
+        vm.HasAnAssistant = drive.Booking.HasAnAssistant;
+        vm.NumberOfPassengers = drive.Booking.NumberOfPassengers;
+        vm.StatusOfBooking = drive.Booking.StatusOfBooking;
+        vm.StatusOfDrive = drive.StatusOfDrive;
+        vm.PickupDateAndTime = drive.Booking.PickUpDateAndTime.ToString("g");
+        vm.CreatedBy = drive.CreatedBy!;
+        vm.CreatedAt = drive.CreatedAt;
+        vm.UpdatedBy = drive.UpdatedBy!;
+        vm.UpdatedAt = drive.UpdatedAt;
+
+        return View(vm);
+    }
 
 
-// POST: AdminArea/Drives/EndDrive/5
-/// <summary>
-/// Admin area drives controller POST method end drive
-/// </summary>
-/// <param name="id">Id</param>
-/// <returns>Redirect to index</returns>
-[HttpPost]
-[ActionName(nameof(EndDrive))]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> EndDriveConfirmed(Guid id)
-{
-    var roleName = User.GettingUserRoleName();
-    var drive = await _appBLL.Drives.EndingDriveAsync(id, null, roleName);
-    if (drive == null) return NotFound();
+    // POST: AdminArea/Drives/EndDrive/5
+    /// <summary>
+    /// Admin area drives controller POST method end drive
+    /// </summary>
+    /// <param name="id">Id</param>
+    /// <returns>Redirect to index</returns>
+    [HttpPost]
+    [ActionName(nameof(EndDrive))]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> EndDriveConfirmed(Guid id)
+    {
+        var roleName = User.GetUserRoleName();
+        var drive = await _appBLL.Drives.EndingDriveAsync(id, null, roleName);
+        if (drive == null) return NotFound();
 
-    drive.IsDriveFinished = true;
-    drive.StatusOfDrive = StatusOfDrive.Finished;
-    drive.DriveEndDateAndTime = DateTime.Now.ToUniversalTime();
-    drive.UpdatedAt = DateTime.Now.ToUniversalTime();
-    drive.UpdatedBy = User.GettingUserEmail();
+        drive.IsDriveFinished = true;
+        drive.StatusOfDrive = StatusOfDrive.Finished;
+        drive.DriveEndDateAndTime = DateTime.Now.ToUniversalTime();
+        drive.UpdatedAt = DateTime.Now.ToUniversalTime();
+        drive.UpdatedBy = User.GetUserEmail();
 
-    _appBLL.Drives.Update(drive);
-    await _appBLL.SaveChangesAsync();
-    
-    return RedirectToAction(nameof(Index));
-}
+        _appBLL.Drives.Update(drive);
+        await _appBLL.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
 }

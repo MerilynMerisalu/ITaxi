@@ -3,7 +3,7 @@ using App.Contracts.BLL.Services;
 using App.Contracts.DAL.IAppRepositories;
 using App.DAL.DTO.Identity;
 using Base.BLL;
-using Base.Contracts;
+using Base.Contracts.Mappers;
 using AppUser = App.BLL.DTO.Identity.AppUser;
 
 namespace App.BLL.Services;

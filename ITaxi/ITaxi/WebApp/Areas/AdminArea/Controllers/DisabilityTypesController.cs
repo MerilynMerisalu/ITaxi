@@ -1,5 +1,6 @@
 #nullable enable
 using App.Contracts.BLL;
+using Base.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.AdminArea.ViewModels;
@@ -32,7 +33,7 @@ public class DisabilityTypesController : Controller
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.DisabilityTypes.GetAllOrderedDisabilityTypesAsync();
-        
+
         return View(res);
     }
 
@@ -89,8 +90,8 @@ public class DisabilityTypesController : Controller
         {
             disabilityType.Id = Guid.NewGuid();
             disabilityType.DisabilityTypeName = vm.DisabilityTypeName;
-            disabilityType.CreatedBy = User.Identity!.Name;
-            disabilityType.CreatedAt = DateTime.Now;
+            disabilityType.CreatedBy = User.GetUserEmail();
+            disabilityType.CreatedAt = DateTime.Now.ToUniversalTime();
             _appBLL.DisabilityTypes.Add(disabilityType);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -112,7 +113,7 @@ public class DisabilityTypesController : Controller
 
         var disabilityType = await _appBLL.DisabilityTypes.FirstOrDefaultAsync(id.Value);
         if (disabilityType == null) return NotFound();
-        
+
         vm.DisabilityTypeName = disabilityType.DisabilityTypeName;
         return View(vm);
     }
@@ -146,7 +147,7 @@ public class DisabilityTypesController : Controller
                     _appBLL.DisabilityTypes.Update(disabilityType);
                     await _appBLL.SaveChangesAsync();
                 }
-                
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -181,7 +182,7 @@ public class DisabilityTypesController : Controller
         vm.CreatedAt = disabilityType.CreatedAt;
         vm.UpdatedBy = disabilityType.UpdatedBy!;
         vm.UpdatedAt = disabilityType.UpdatedAt;
-        
+
         return View(vm);
     }
 

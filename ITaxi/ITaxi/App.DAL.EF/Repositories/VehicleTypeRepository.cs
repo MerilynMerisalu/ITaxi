@@ -3,7 +3,7 @@ using App.Domain;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.DTO.AdminArea;
-using Base.Contracts;
+using Base.Contracts.Mappers;
 
 namespace App.DAL.EF.Repositories;
 

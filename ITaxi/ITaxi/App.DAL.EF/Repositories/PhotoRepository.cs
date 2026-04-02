@@ -2,7 +2,7 @@
 using App.DAL.DTO.AdminArea;
 using App.Domain;
 using App.Resources.Areas.App.Domain.AdminArea;
-using Base.Contracts;
+using Base.Contracts.Mappers;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 

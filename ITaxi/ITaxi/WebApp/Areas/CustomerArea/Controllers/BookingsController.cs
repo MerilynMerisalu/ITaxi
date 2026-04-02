@@ -35,8 +35,8 @@ public class BookingsController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.Bookings.GettingAllOrderedBookingsAsync(userId, roleName);
         
         return View(res);
@@ -141,8 +141,8 @@ public class BookingsController : Controller
     {
         var vm = new DetailsDeleteBookingViewModel();
         if (id == null) return NotFound();
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, userId, roleName);
         if (booking == null) return NotFound();
 
@@ -203,7 +203,7 @@ public class BookingsController : Controller
         var booking = new BookingDTO();
         if (ModelState.IsValid)
         {
-            var userId = User.GettingUserId();
+            var userId = User.GetUserId();
             
             booking.Id = Guid.NewGuid();
             booking.BookingNumber = Guid.NewGuid();
@@ -238,7 +238,7 @@ public class BookingsController : Controller
             booking.DriverId = rideTimeLookup.Schedule!.DriverId;
             booking.VehicleId = rideTimeLookup.Schedule!.VehicleId;
             booking.CreatedAt = DateTime.Now.ToLocalTime();
-            booking.CreatedBy = User.GettingUserEmail();
+            booking.CreatedBy = User.GetUserEmail();
             booking.UpdatedAt = booking.CreatedAt;
             booking.UpdatedBy = booking.CreatedBy;
             _appBLL.Bookings.Add(booking);
@@ -284,8 +284,8 @@ public class BookingsController : Controller
     {
         var vm = new DeclineBookingViewModel();
         if (id == null) return NotFound();
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, userId, roleName);
         if (booking == null) return NotFound();
 
@@ -329,8 +329,8 @@ public class BookingsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeclineConfirmed(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName, false);
         if (booking != null)
         {
@@ -349,8 +349,8 @@ public class BookingsController : Controller
     {
         var vm = new DetailsDeleteBookingViewModel();
         if (id == null) return NotFound();
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var booking = await _appBLL.Bookings.GettingBookingAsync(id.Value, userId, roleName, false);
         if (booking == null) return NotFound();
         
@@ -395,8 +395,8 @@ public class BookingsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName, noIncludes:true );
         var drive = await _appBLL.Drives.GettingDriveByBookingIdAsync(booking!.Id, noIncludes:true);
         var comment =
@@ -423,8 +423,8 @@ public class BookingsController : Controller
     [HttpPost]
     public async Task<IActionResult> SearchByCityAsync([FromForm] string search)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var results = await _appBLL.Bookings.SearchByCityAsync(search, userId, roleName);
         return View(nameof(Index), results);
     }
@@ -435,7 +435,7 @@ public class BookingsController : Controller
     /// <returns>pdf view for customer's bookings</returns>
     public async Task<IActionResult> PrintAsync()
     {
-        var userId = User.GettingUserId();
+        var userId = User.GetUserId();
         var bookings = await _appBLL.Bookings.GettingAllOrderedBookingsAsync(userId);
         return new ViewAsPdf("PrintBookings", bookings);
     }

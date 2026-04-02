@@ -2,7 +2,7 @@
 using App.Contracts.BLL.Services;
 using App.Contracts.DAL.IAppRepositories;
 using Base.BLL;
-using Base.Contracts;
+using Base.Contracts.Mappers;
 using Microsoft.AspNetCore.Http;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;

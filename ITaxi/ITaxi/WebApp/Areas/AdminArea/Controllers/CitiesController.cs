@@ -1,6 +1,7 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -96,7 +97,7 @@ public class CitiesController : Controller
             city.Id = Guid.NewGuid();
             city.CountyId = vm.CountyId;
             city.CityName = vm.CityName;
-            city.CreatedBy = User.Identity!.Name;
+            city.CreatedBy = User.GetUserEmail();
             city.CreatedAt = DateTime.Now.ToUniversalTime();
             _appBLL.Cities.Add(city);
             await _appBLL.SaveChangesAsync();
@@ -152,8 +153,8 @@ public class CitiesController : Controller
                 city.Id = id;
                 city.CountyId = vm.CountyId;
                 city.CityName = vm.CityName;
-                city.UpdatedBy = User.Identity!.Name;
-                city.UpdatedAt = DateTime.Now;
+                city.UpdatedBy = User.GetUserEmail();
+                city.UpdatedAt = DateTime.Now.ToUniversalTime();
                 _appBLL.Cities.Update(city);
                 await _appBLL.SaveChangesAsync();
             }

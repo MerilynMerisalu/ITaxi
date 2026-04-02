@@ -4,7 +4,7 @@ using App.Contracts.BLL.ImportResults;
 using App.Contracts.BLL.Services;
 using App.Contracts.DAL.IAppRepositories;
 using Base.BLL;
-using Base.Contracts;
+using Base.Contracts.Mappers;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 

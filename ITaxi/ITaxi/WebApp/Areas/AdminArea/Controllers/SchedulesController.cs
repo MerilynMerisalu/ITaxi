@@ -51,7 +51,7 @@ public class SchedulesController : Controller
         var vm = new DetailsDeleteScheduleViewModel();
         if (id == null) return NotFound();
 
-        var roleName = User.GettingUserRoleName();
+        var roleName = User.GetUserRoleName();
         var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id.Value );
         if (schedule == null) return NotFound();
 
@@ -91,7 +91,7 @@ public class SchedulesController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateScheduleViewModel();
-        var roleName = User.GettingUserRoleName();
+        var roleName = User.GetUserRoleName();
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
             nameof(DriverDTO.Id), $"{nameof(DriverDTO.AppUser)}.{nameof(DriverDTO.AppUser.LastAndFirstName)}");
         vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(),

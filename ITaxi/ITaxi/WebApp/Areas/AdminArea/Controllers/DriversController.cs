@@ -19,7 +19,7 @@ public class DriversController : Controller
 {
     private readonly IAppBLL _appBLL;
     private readonly UserManager<App.Domain.Identity.AppUser> _userManager;
-    
+
     /// <summary>
     /// Admin area drivers controller constructor
     /// </summary>
@@ -88,12 +88,12 @@ public class DriversController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateDriverViewModel();
-        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(), 
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
             nameof(CityDTO.Id),
             nameof(CityDTO.CityName));
         vm.DriverLicenseCategories = new SelectList(
             await _appBLL.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
-            nameof(DriverLicenseCategoryDTO.Id), 
+            nameof(DriverLicenseCategoryDTO.Id),
             nameof(DriverLicenseCategoryDTO.DriverLicenseCategoryName));
         return View(vm);
     }
@@ -128,7 +128,7 @@ public class DriversController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesWithoutCountyAsync(), 
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesWithoutCountyAsync(),
             nameof(CityDTO.Id),
             nameof(CityDTO.CityName), driver.CityId);
         return View(vm);
@@ -185,7 +185,7 @@ public class DriversController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditDriverViewModel vm)
     {
-        var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id, noIncludes:true, noTracking:true);
+        var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id, noIncludes: true, noTracking: true);
         var appuser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(driver!.AppUserId, noIncludes: true);
 
         if (driver != null && id != driver.Id) return NotFound();
@@ -204,7 +204,7 @@ public class DriversController : Controller
                             .RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(driver.Id);
 
                         await _appBLL.SaveChangesAsync();
-                        
+
                         foreach (var selectedDriverLicenseCategory in vm.DriverAndDriverLicenseCategories)
                         {
                             var driverAndDriverLicenseCategory = new DriverAndDriverLicenseCategoryDTO()
@@ -215,7 +215,7 @@ public class DriversController : Controller
                             _appBLL.DriverAndDriverLicenseCategories.Add(driverAndDriverLicenseCategory);
                         }
                     }
-                    
+
                     appuser.FirstName = vm.FirstName;
                     appuser.LastName = vm.LastName;
                     appuser.Gender = vm.Gender;
@@ -224,7 +224,7 @@ public class DriversController : Controller
                     appuser.Email = vm.Email;
                     appuser.IsActive = vm.IsActive;
                     _appBLL.AppUsers.Update(appuser);
-                    
+
                     driver.DriverLicenseNumber = vm.DriverLicenseNumber;
                     driver.DriverLicenseExpiryDate = DateTime.Parse(vm.DriverLicenseExpiryDate.ToString("d")).ToUniversalTime();
                     driver.CityId = vm.CityId;
@@ -297,13 +297,13 @@ public class DriversController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var noTracking = true;
-        var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id, noTracking, noIncludes:true);
+        var driver = await _appBLL.Drivers.FirstOrDefaultAsync(id, noTracking, noIncludes: true);
         if (await _appBLL.Drivers.HasAnySchedulesAsync(id) || await _appBLL.Drivers.HasAnyBookingsAsync(id))
             return Content("Entity cannot be deleted because it has dependent entities!");
 
         await _appBLL.DriverAndDriverLicenseCategories.
             RemovingAllDriverAndDriverLicenseEntitiesByDriverIdAsync(id, noTracking);
-        
+
         if (driver != null)
         {
             driver.AppUser = null;
@@ -311,7 +311,7 @@ public class DriversController : Controller
             await _userManager.RemoveFromRoleAsync(appUser!, "Driver");
             await _appBLL.Drivers.RemoveAsync(driver.Id);
             await _appBLL.SaveChangesAsync();
-            
+
             var claims = await _userManager.GetClaimsAsync(appUser!);
             await _userManager.RemoveClaimsAsync(appUser!, claims);
             await _userManager.DeleteAsync(appUser!);

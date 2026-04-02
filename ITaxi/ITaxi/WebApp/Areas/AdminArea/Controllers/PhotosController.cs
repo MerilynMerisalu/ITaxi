@@ -81,7 +81,7 @@ public class PhotosController : Controller
         vm.ContentType = photo.ContentType;
         vm.ProfilePhotoHeight = photo.ProfilePhotoHeight;
         vm.ProfilePhotoWidth = photo.ProfilePhotoWidth;
-        
+
         if (photo.VehicleId.HasValue)
         {
             var isVehicle = await _appBLL.Photos.IsPhotoOfVehicleAsync(photoId: photo.Id, vehicleId: photo.VehicleId.Value);
@@ -262,7 +262,7 @@ public class PhotosController : Controller
     {
         var vm = new DetailsDeleteVehiclePhotoViewModel();
         if (id == null) return NotFound();
-        var roleName = User.GettingUserRoleName();
+        var roleName = User.GetUserRoleName();
         var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
         if (photo == null) return NotFound();
 
@@ -328,7 +328,7 @@ public class PhotosController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> VehicleDeleteConfirmed(Guid id, Guid vehicleId)
     {
-        var userRole = User.GettingUserRoleName();
+        var userRole = User.GetUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(vehicleId, null, roleName: userRole);
         if (vehicle == null) return NotFound();
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(id, roleName: userRole);
@@ -348,7 +348,7 @@ public class PhotosController : Controller
         }
 
         photo.IsDeleted = true;
-        photo.DeletedBy = User.GettingUserEmail();
+        photo.DeletedBy = User.GetUserEmail();
         photo.DeletedAt = DateTime.UtcNow;
 
         await _appBLL.Photos.RemoveAsync(photo.Id);
@@ -369,7 +369,7 @@ public class PhotosController : Controller
     {
         var vm = new DetailsDeleteAdminPhotoViewModel();
         if (id == null) return NotFound();
-        var roleName = User.GettingUserRoleName();
+        var roleName = User.GetUserRoleName();
         var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
         if (photo == null) return NotFound();
 
@@ -401,7 +401,7 @@ public class PhotosController : Controller
 
         }
 
-    vm.CreatedBy = photo.CreatedBy;
+        vm.CreatedBy = photo.CreatedBy;
         vm.CreatedAt = photo.CreatedAt;
         vm.UpdatedBy = photo.UpdatedBy;
         vm.UpdatedAt = photo.UpdatedAt;
@@ -410,8 +410,8 @@ public class PhotosController : Controller
         return View(vm);
     }
 
-    
-    
+
+
     private bool PhotoExists(Guid id)
     {
         return _appBLL.Photos.Exists(id);
@@ -426,7 +426,7 @@ public class PhotosController : Controller
     public async Task<IActionResult> VehicleImagesUpload(Guid? vehicleId)
     {
         if (vehicleId == null) return NotFound();
-        var userRole = User.GettingUserRoleName();
+        var userRole = User.GetUserRoleName();
 
         var vm = new VehicleImagesUploadViewModel();
 
@@ -447,7 +447,7 @@ public class PhotosController : Controller
     {
         List<IFormFile> files = new List<IFormFile> { photo1, photo2, photo3, photo4 };
 
-        string userRoleName = User.GettingUserRoleName();
+        string userRoleName = User.GetUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id: vehicleId, null, roleName: userRoleName);
         if (vehicle == null) return NotFound();
 
@@ -508,7 +508,7 @@ public class PhotosController : Controller
             if (_appBLL.Photos.DoesFileExist(Path.Combine(uploadFolderPath, fileNameOnDisk)))
                 return Content(string.Format(Common.FileExists, fileNameOnDisk));
 
-           // bool uploadResult = await _appBLL.Photos.UploadImagesAsync(uploadFolderPath, fileNameOnDisk, file);
+            // bool uploadResult = await _appBLL.Photos.UploadImagesAsync(uploadFolderPath, fileNameOnDisk, file);
             //if (!uploadResult)
             //    return Content(Common.UploadFailed);
             var thumbnailFilePath = await _appBLL.Photos.CreateThumbnailAsync(fullFilePath, fileName: fileName, fileExtension, thumbnailFolderPath);
@@ -518,7 +518,7 @@ public class PhotosController : Controller
             //var (w, h) = 
             var thumbnailRelativePath = FileHelper.GetImageRelativePath(Path.GetRelativePath(_webHostEnvironment.WebRootPath, thumbnailFilePath));
 
-            
+
 
             var photo = new PhotoDTO()
             {
@@ -537,9 +537,9 @@ public class PhotosController : Controller
                 PhotoType = PhotoType.Vehicle,
                 PhotoURL = relativeFilePath,
                 ThumbnailRelativePath = thumbnailRelativePath,
-                CreatedBy = User.GettingUserEmail(),
+                CreatedBy = User.GetUserEmail(),
                 CreatedAt = DateTime.UtcNow,
-                UpdatedBy = User.GettingUserEmail(),
+                UpdatedBy = User.GetUserEmail(),
                 UpdatedAt = DateTime.UtcNow,
             };
             _appBLL.Photos.Add(photo);
@@ -556,7 +556,7 @@ public class PhotosController : Controller
     [ActionName("UpdateVehicleImageAsync")]
     public async Task<IActionResult> UpdateVehicleImageAsync(Guid vehicleId, Guid vehicleImageId, IFormFile file)
     {
-        var userRole = User.GettingUserRoleName();
+        var userRole = User.GetUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(vehicleId, null, roleName: userRole);
         if (vehicle == null) return NotFound();
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(vehicleImageId, roleName: userRole);
@@ -582,7 +582,7 @@ public class PhotosController : Controller
             FileHelper.DeleteFile(fullImagePath);
         }
         photo.IsDeleted = true;
-        photo.DeletedBy = User.GettingUserEmail();
+        photo.DeletedBy = User.GetUserEmail();
         photo.DeletedAt = DateTime.UtcNow;
 
         await _appBLL.Photos.RemoveAsync(photo.Id);
@@ -628,9 +628,9 @@ public class PhotosController : Controller
             FileNameInDirectory = fileNameOnDisk,
             ThumbnailFullPath = thumbnailFilePath,
             ThumbnailRelativePath = thumbnailRelativePath,
-            CreatedBy = User.GettingUserEmail(),
+            CreatedBy = User.GetUserEmail(),
             CreatedAt = DateTime.UtcNow,
-            UpdatedBy = User.GettingUserEmail(),
+            UpdatedBy = User.GetUserEmail(),
             UpdatedAt = DateTime.UtcNow,
         };
         _appBLL.Photos.Add(replacementPhoto);
@@ -650,7 +650,7 @@ public class PhotosController : Controller
             return View();
         }
 
-        var roleName = User.GettingUserRoleName();
+        var roleName = User.GetUserRoleName();
 
         var vehicle = await _appBLL.Vehicles
             .GettingVehicleWithIncludesByIdAsync(vehicleId.Value, roleName: null);
@@ -681,10 +681,10 @@ public class PhotosController : Controller
 
 
     [HttpPost("{vehicleId:guid}")]
-    
-    public async Task<IActionResult> DeleteAllVehiclePhotos([FromRoute]Guid vehicleId)
+
+    public async Task<IActionResult> DeleteAllVehiclePhotos([FromRoute] Guid vehicleId)
     {
-        
+
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id: vehicleId);
         if (vehicle == null) return NotFound();
         string directoryId = await _appBLL.Photos.GetDirectoryIdByVehicleIdAsStringAsync(vehicle.Id);
@@ -693,18 +693,19 @@ public class PhotosController : Controller
         if (photos == null) return RedirectToAction("Gallery", "Vehicles", new { vehicleId = vehicle.Id });
         var result = _appBLL.Photos.DoAllPhotosBelongToDirectory(photos: photos, directoryId: directoryId);
         if (!result) return Forbid();
-        
-        string directoryFullPath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", "Vehicles", directoryId); 
+
+        string directoryFullPath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", "Vehicles", directoryId);
         DirectoryHelper.DeleteDirectory(directoryFullPath);
 
-        foreach(var photo in photos)
-        { photo.DeletedBy = User.GettingUserEmail(); 
+        foreach (var photo in photos)
+        {
+            photo.DeletedBy = User.GetUserEmail();
             photo.DeletedAt = DateTime.UtcNow;
             photo.IsDeleted = true;
             _appBLL.Photos.Remove(photo);
             await _appBLL.SaveChangesAsync();
         }
-        
+
         return RedirectToAction("Gallery", "Vehicles", new { vehicleId = vehicle.Id });
     }
 }

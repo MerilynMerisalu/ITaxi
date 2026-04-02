@@ -34,7 +34,7 @@ public class DriverLicenseCategoriesController : Controller
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync();
-        
+
         return View(res);
     }
 
@@ -202,7 +202,7 @@ public class DriverLicenseCategoriesController : Controller
         {
             return Content("Entity cannot be deleted because it has dependent entities!");
         }
-        
+
         if (driverLicenseCategory != null) await _appBLL.DriverLicenseCategories.RemoveAsync(driverLicenseCategory.Id);
         await _appBLL.SaveChangesAsync();
         return RedirectToAction(nameof(Index));

@@ -9,13 +9,13 @@ namespace Base.Extensions;
 
 public static class IdentityExtension
 {
-    public static Guid GettingUserId(this ClaimsPrincipal user)
+    public static Guid GetUserId(this ClaimsPrincipal user)
     {
-        return GettingUserId<Guid>(user);
+        return GetUserId<Guid>(user);
     }
 
 
-    public static TKeyType GettingUserId<TKeyType>(this ClaimsPrincipal user)
+    public static TKeyType GetUserId<TKeyType>(this ClaimsPrincipal user)
     {
         if (typeof(TKeyType) != typeof(Guid) 
             && typeof(TKeyType) != typeof(string)
@@ -49,7 +49,12 @@ public static class IdentityExtension
             .ToList();
         return claimRoles.Contains(role, StringComparer.OrdinalIgnoreCase);
     }
-
+    public static string? GetUserRoleName(this ClaimsPrincipal user)
+    {
+        return user.Claims
+            .FirstOrDefault(u => u.Type == ClaimTypes.Role)?
+            .Value;
+    }
     /// <summary>
     ///     Check if this user has any role claims that match the requirement
     /// </summary>
@@ -57,35 +62,28 @@ public static class IdentityExtension
     /// <param name="role">The role that we want to match on</param>
     /// <returns>True if the user has a claim that matches the required <paramref name="role" /></returns>
     /// <exception cref="NullReferenceException">Expecting that the current user has a role claim</exception>
-    public static IEnumerable<string> GettingUserRoleNames(this ClaimsPrincipal user)
+    public static IEnumerable<string> GetUserRoleNames(this ClaimsPrincipal user)
     {
-        if (!user.Claims.Any(u => u.Type.Equals(ClaimTypes.Role)))
-            throw new NullReferenceException("Role identifier claim not found!");
-        var claimRoles = user.Claims.Where(u => u.Type.Equals(ClaimTypes.Role))
-            .SelectMany(c => c.Value.Split(','))
-            .Distinct()
-            .ToList();
-        return claimRoles;
+        return user.Claims
+         .Where(u => u.Type == ClaimTypes.Role)
+         .SelectMany(c => c.Value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+         .Distinct(StringComparer.OrdinalIgnoreCase)
+         .ToList();
     }
 
-    public static string GettingUserRoleName(this ClaimsPrincipal user)
-    {
-        // role: "Admin,User"
-        // role: "Driver"
-        var claimRole = user.Claims.FirstOrDefault(u => u.Type.Equals(ClaimTypes.Role));
-        if (claimRole == null) throw new NullReferenceException("Role identifier claim not found!");
-
-        /*var res = (TKeyType) TypeDescriptor.GetConverter(typeof(TKeyType))
-            .ConvertFromInvariantString(claimRole.Value)!;
-        return res;*/
-        return claimRole.Value;
-    }
+    
 
    
-    public static string GettingUserName(this ClaimsPrincipal user)
+    public static string? GetUserName(this ClaimsPrincipal user)
     {
-        return $"{user.Claims.FirstOrDefault(c => c.Type.Equals("aspnet.lastname"))?.Value ?? "???"} " +
-               $"{user.Claims.FirstOrDefault(c => c.Type.Equals("aspnet.firstname"))?.Value ?? "???"}";
+       var firstName = user.Claims.FirstOrDefault(c => c.Type.Equals("aspnet.firstname", StringComparison.Ordinal))?.Value;
+        var lastName = user.Claims.FirstOrDefault(c => c.Type.Equals("aspnet.lastname", StringComparison.Ordinal))?.Value;
+        if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
+        {
+            return null;
+        }
+
+        return $"{firstName} {lastName}";
     }
 
     public static string GenerateJwt(IEnumerable<Claim> claims, 
@@ -102,7 +100,7 @@ public static class IdentityExtension
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
     
-    public static string GettingUserEmail(this ClaimsPrincipal user)
+    public static string GetUserEmail(this ClaimsPrincipal user)
     {
         // role: "Admin,User"
         // role: "Driver"

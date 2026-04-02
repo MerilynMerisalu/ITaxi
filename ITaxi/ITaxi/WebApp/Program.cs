@@ -1,8 +1,5 @@
-using System.Configuration;
-using System.Globalization;
-using System.Security.Claims;
-using System.Text;
 using App.BLL;
+using App.BLL.Services;
 using App.Contracts.BLL;
 using App.Contracts.BLL.Services;
 using App.Contracts.DAL;
@@ -11,8 +8,9 @@ using App.DAL.EF;
 using App.DAL.EF.Repositories;
 using App.Domain;
 using App.Domain.Identity;
-using Google.Apis.Auth.OAuth2.Responses;
+using Base.Contracts.Services;
 using Google.Apis.Auth.OAuth2;
+using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -23,17 +21,21 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Rotativa.AspNetCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Configuration;
+using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using WebApp;
 using WebApp.ApiControllers;
-using WebApp.Helpers;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.JsonWebTokens;
 using WebApp.Filters;
-using App.BLL.Services;
+using WebApp.Helpers;
+using WebApp.Helpers.Services;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,6 +46,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IAppUnitOfWork, AppUOW>();
 builder.Services.AddScoped<IAppBLL, AppBLL>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddIdentity<AppUser, AppRole>(
         options => options.SignIn.RequireConfirmedAccount = false)
     .AddDefaultTokenProviders()
@@ -53,6 +56,8 @@ builder.Services.AddLocalization(options => { options.ResourcesPath = ""; });
 
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
+
 /*
 builder.Services.AddControllersWithViews(options =>
     {

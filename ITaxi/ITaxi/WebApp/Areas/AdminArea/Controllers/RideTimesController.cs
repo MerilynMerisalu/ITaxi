@@ -21,7 +21,7 @@ namespace WebApp.Areas.AdminArea.Controllers;
 public class RideTimesController : Controller
 {
     private readonly IAppBLL _appBLL;
-    
+
     /// <summary>
     /// Admin area ride times controller constructor
     /// </summary>
@@ -39,7 +39,7 @@ public class RideTimesController : Controller
     public async Task<IActionResult> Index()
     {
         var res = await _appBLL.RideTimes.GettingAllOrderedRideTimesAsync(null, null);
-        
+
         return View(res);
     }
 
@@ -54,7 +54,7 @@ public class RideTimesController : Controller
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
         var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id.Value);
-        
+
         if (rideTime == null) return NotFound();
 
         vm.Id = rideTime.Id;
@@ -77,14 +77,14 @@ public class RideTimesController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Create()
     {
-        var roleName = User.GettingUserRoleName();
+        var roleName = User.GetUserRoleName();
         var vm = new CreateRideTimeViewModel();
         vm.Drivers = new SelectList(await _appBLL.Drivers.GetAllDriversOrderedByLastNameAsync(),
             nameof(DriverDTO.Id), "AppUser.LastAndFirstName");
         vm.Schedules = new SelectList(new Schedule[0]
             , nameof(ScheduleDTO.Id), nameof(Schedule.ShiftDurationTime));
         vm.RideTimes = new SelectList(new string[0]);
-    
+
         return View(vm);
     }
 
@@ -124,7 +124,7 @@ public class RideTimesController : Controller
                     };
 
                     rideTimes.Add(rideTime);
-                    
+
                 }
                 await _appBLL.RideTimes.AddRangeAsync(rideTimes);
                 await _appBLL.SaveChangesAsync();
@@ -162,9 +162,9 @@ public class RideTimesController : Controller
             {
                 // Select the RideTimes form the currently selected schedule, for the current driver
                 var rideTimesList = _appBLL.RideTimes.GettingRemainingRideTimesByScheduleId(vm.ScheduleId);
-                
+
                 // The times in schedules have already been converted!
-                vm.RideTimes = new SelectList(rideTimesList.Select(x => new {RideTime = x}), "RideTime", "RideTime");
+                vm.RideTimes = new SelectList(rideTimesList.Select(x => new { RideTime = x }), "RideTime", "RideTime");
             }
         }
 
@@ -189,8 +189,8 @@ public class RideTimesController : Controller
     /// <summary>
     /// Generic method that will update the VM to reflect the new SelectLists if any need to be changed
     /// </summary>
-    
-    
+
+
     /// <param name="parameters">Parameters</param>
     /// <returns>Status 200 OK</returns>
     [HttpPost]
@@ -198,7 +198,7 @@ public class RideTimesController : Controller
     {
         // Using the EditRideTimeViewModel because I want to send through the SelectLists and Ids that have now changed
         var vm = new EditRideTimeViewModel();
-        IEnumerable<ScheduleDTO>? schedules; 
+        IEnumerable<ScheduleDTO>? schedules;
 
         if (parameters.ListType == nameof(RideTime.DriverId))
         {
@@ -207,7 +207,7 @@ public class RideTimesController : Controller
             var driverId = Guid.Parse(parameters.Value!);
 
             schedules = await _appBLL.Schedules.GettingTheScheduleByDriverIdAsync(driverId, null);
- 
+
             //_appBLL.Schedules.
             var scheduleDtos = schedules.ToList();
             vm.Schedules = new SelectList(
@@ -224,7 +224,7 @@ public class RideTimesController : Controller
             if (parameters.Value != null) vm.ScheduleId = Guid.Parse(parameters.Value);
 
             // reload the schedules, but just the current one so we can rebuild the ride times
-            schedules = new[] {await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(vm.ScheduleId, null)}!;
+            schedules = new[] { await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(vm.ScheduleId, null) }!;
 
             // NOTE: I do not need to rebuild the SelectList for schedules, only the RideTimes
         }
@@ -235,15 +235,15 @@ public class RideTimesController : Controller
         var rideTimes = _appBLL.RideTimes.GettingRemainingRideTimesByScheduleId(vm.ScheduleId);
 
         // The times in schedules have already been converted!
-        vm.RideTimes = new SelectList(rideTimes.Select(x => new {RideTime = x}),
+        vm.RideTimes = new SelectList(rideTimes.Select(x => new { RideTime = x }),
             nameof(vm.RideTime), nameof(vm.RideTime));
 
         // I need to select one of these!
         vm.RideTime = rideTimes.First();
-        
+
         return Ok(vm);
     }
-    
+
     // GET: AdminArea/RideTimes/Delete/5
     /// <summary>
     /// Admin area ride times controller GET method delete
@@ -254,8 +254,8 @@ public class RideTimesController : Controller
     {
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
-        
-        var rideTime =  await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id.Value);
+
+        var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id.Value);
         if (rideTime == null) return NotFound();
 
         rideTime.Schedule!.StartDateAndTime = rideTime.Schedule.StartDateAndTime.ToLocalTime();
@@ -284,7 +284,7 @@ public class RideTimesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        
+
         var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id);
         if (rideTime != null && rideTime.IsTaken)
         {

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Base.Contracts;
+using Base.Contracts.Mappers;
 
 namespace Base.DAL;
 

@@ -2,7 +2,7 @@
 using App.Contracts.BLL.Services;
 using App.Contracts.DAL.IAppRepositories;
 using Base.BLL;
-using Base.Contracts;
+using Base.Contracts.Mappers;
 using System;
 using System.Collections.Generic;
 using System.Text;

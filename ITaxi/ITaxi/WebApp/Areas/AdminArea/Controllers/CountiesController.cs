@@ -61,7 +61,7 @@ public class CountiesController : Controller
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value);
         if (county == null) return NotFound();
 
-        vm.CountryName = county.Country.CountryName;
+        vm.CountryName = county.Country!.CountryName;
         vm.CountyName = county.CountyName;
         vm.CreatedAt = county.CreatedAt;
         vm.CreatedBy = county.CreatedBy!;
@@ -103,7 +103,7 @@ public class CountiesController : Controller
             county.Id = Guid.NewGuid();
             county.CountryId = vm.CountryId;
             county.CountyName = vm.CountyName;
-            county.CreatedBy = User.GettingUserEmail();
+            county.CreatedBy = User.GetUserEmail();
             county.CreatedAt = DateTime.Now.ToUniversalTime();
             _appBLL.Counties.Add(county);
             await _appBLL.SaveChangesAsync();
@@ -158,7 +158,7 @@ public class CountiesController : Controller
                 {
                     county.CountryId = vm.CountryId;
                     county.CountyName = vm.CountyName;
-                    county.UpdatedBy = User.GettingUserEmail();
+                    county.UpdatedBy = User.GetUserEmail();
                     county.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _appBLL.Counties.Update(county);
                     await _appBLL.SaveChangesAsync();
@@ -190,7 +190,7 @@ public class CountiesController : Controller
         var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value);
         if (county == null) return NotFound();
         // vm.CountryName = county.Country.CountryName;
-        vm.CountryName = county.Country.CountryName;
+        vm.CountryName = county.Country!.CountryName;
         vm.CountyName = county.CountyName;
         vm.CreatedAt = county.CreatedAt;
         vm.CreatedBy = county.CreatedBy ?? "";

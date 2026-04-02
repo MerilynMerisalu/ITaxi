@@ -26,7 +26,7 @@ namespace WebApp.Areas.AdminArea.Controllers
     {
         private readonly IAppBLL _appBLL;
         private readonly IMapper _mapper;
-        
+
         public ExtraServicesController(IAppBLL appBLL, IMapper mapper)
         {
             _appBLL = appBLL;
@@ -44,12 +44,12 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Details(Guid? id)
         {
             var vm = new DetailsDeleteExtraServiceViewModel();
-           
+
             if (id == null)
             {
                 return NotFound();
             }
-            
+
 
             var extraService = await _appBLL.ExtraServices
                 .FirstOrDefaultAsync(id.Value);
@@ -81,7 +81,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateEditExtraServiceViewModel vm )
+        public async Task<IActionResult> Create(CreateEditExtraServiceViewModel vm)
         {
             if (ModelState.IsValid)
             {
@@ -92,9 +92,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                     Description = vm.Description,
                     Price = vm.Price,
                     ExtraServiceType = vm.ExtraServiceType,
-                    CreatedBy = User.GettingUserEmail(),
+                    CreatedBy = User.GetUserEmail(),
                     CreatedAt = DateTime.Now.ToUniversalTime(),
-                    UpdatedBy = User.GettingUserEmail(),
+                    UpdatedBy = User.GetUserEmail(),
                     UpdatedAt = DateTime.Now.ToUniversalTime(),
                 };
                 _appBLL.ExtraServices.Add(extraService);
@@ -134,7 +134,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Edit(Guid id, CreateEditExtraServiceViewModel vm)
         {
             var extraService = await _appBLL.ExtraServices.GetExtraServiceByIdWithoutIncludesAsync(id, roleName: null);
-            if (extraService == null || extraService.Id != id )
+            if (extraService == null || extraService.Id != id)
             {
                 return NotFound();
             }
@@ -148,7 +148,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                     extraService.Description = vm.Description;
                     extraService.Price = vm.Price;
                     extraService.ExtraServiceType = vm.ExtraServiceType;
-                    extraService.UpdatedBy = User.GettingUserEmail();
+                    extraService.UpdatedBy = User.GetUserEmail();
                     extraService.UpdatedAt = DateTime.UtcNow;
                     _appBLL.ExtraServices.Update(extraService);
                     await _appBLL.SaveChangesAsync();
@@ -208,7 +208,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task< bool> ExtraServiceExists(Guid id)
+        private async Task<bool> ExtraServiceExists(Guid id)
         {
             return await _appBLL.ExtraServices.ExistsAsync(id);
         }
