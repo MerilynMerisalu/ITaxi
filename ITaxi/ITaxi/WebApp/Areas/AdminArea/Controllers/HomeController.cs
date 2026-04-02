@@ -4,7 +4,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 {
     using Base.Contracts.Services;
     using Microsoft.AspNetCore.Mvc;
-
+    [Area("AdminArea")]
     public class TestController : Controller
     {
         private readonly ICurrentUserService _currentUserService;
