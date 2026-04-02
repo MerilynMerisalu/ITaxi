@@ -116,8 +116,8 @@ public class AdminsController : ControllerBase
             admin.CityId = adminDTO.CityId;
             admin.Address = adminDTO.Address;
             admin.PersonalIdentifier = adminDTO.PersonalIdentifier;
-            admin.CreatedBy = User.GettingUserEmail();
-            admin.UpdatedBy = User.GettingUserEmail();
+            admin.CreatedBy = User.GetUserEmail();
+            admin.UpdatedBy = User.GetUserEmail();
             _appBLL.AppUsers.Update(appUser);
             _appBLL.Admins.Update(admin);
             await _appBLL.SaveChangesAsync();

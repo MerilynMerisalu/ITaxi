@@ -35,8 +35,8 @@ public class DrivesController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.Drives.GettingAllOrderedDrivesWithIncludesAsync(userId, roleName);
         
         return View(res);
@@ -51,8 +51,8 @@ public class DrivesController : Controller
 [HttpPost]
 public async Task<IActionResult> SearchByDateAsync([FromForm] DateTime search)
 {
-    var roleName = User.GettingUserRoleName();
-    var userId = User.GettingUserId();
+    var roleName = User.GetUserRoleName();
+    var userId = User.GetUserId();
     var drives = await _appBLL.Drives.SearchByDateAsync(search, userId, roleName);
     return View(nameof(Index), drives);
 }
@@ -83,8 +83,8 @@ public async Task<IActionResult> Accept(Guid? id)
 {
     if (id == null) return NotFound();
 
-    var userId = User.GettingUserId();
-    var roleName = User.GettingUserRoleName();
+    var userId = User.GetUserId();
+    var roleName = User.GetUserRoleName();
     var vm = new DriveStateViewModel();
     var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, userId, roleName);
     
@@ -158,8 +158,8 @@ public async Task<IActionResult> Accept(Guid? id)
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> AcceptConfirmed(Guid id)
 {
-    var userId = User.GettingUserId();
-    var roleName = User.GettingUserRoleName();
+    var userId = User.GetUserId();
+    var roleName = User.GetUserRoleName();
     
     var drive = await _appBLL.Drives.AcceptingDriveAsync(id, userId, roleName);
     if (drive == null) return NotFound();
@@ -167,7 +167,7 @@ public async Task<IActionResult> AcceptConfirmed(Guid id)
     drive.DriveAcceptedDateAndTime = DateTime.Now.ToUniversalTime();
     drive.StatusOfDrive = StatusOfDrive.Accepted;
     drive.IsDriveAccepted = true;
-    drive.AcceptedBy = User.GettingUserEmail();
+    drive.AcceptedBy = User.GetUserEmail();
     drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
     _appBLL.Drives.Update(drive);
@@ -194,8 +194,8 @@ public async Task<IActionResult> AcceptConfirmed(Guid id)
 public async Task<IActionResult> Decline(Guid? id)
 {
     if (id == null) return NotFound();
-    var userId = User.GettingUserId();
-    var roleName = User.GettingUserRoleName();
+    var userId = User.GetUserId();
+    var roleName = User.GetUserRoleName();
 
     var vm = new DriveStateViewModel();
     var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, userId, roleName);
@@ -206,7 +206,7 @@ public async Task<IActionResult> Decline(Guid? id)
     drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
     vm.City = drive.Booking.City!.CityName;
-    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerInfo;
+    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerInfo!;
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
@@ -269,15 +269,15 @@ public async Task<IActionResult> Decline(Guid? id)
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> DeclineConfirmed(Guid id)
 {
-    var userId = User.GettingUserId();
-    var roleName = User.GettingUserRoleName();
+    var userId = User.GetUserId();
+    var roleName = User.GetUserRoleName();
     var drive = await _appBLL.Drives.DecliningDriveAsync(id, userId, roleName, noTracking:true);
     if (drive == null) return NotFound();
 
     drive.DriveDeclineDateAndTime = DateTime.Now.ToUniversalTime();
     drive.StatusOfDrive = StatusOfDrive.Declined;
     drive.IsDriveDeclined = true;
-    drive.UpdatedBy = User.GettingUserEmail();
+    drive.UpdatedBy = User.GetUserEmail();
     drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
     _appBLL.Drives.Update(drive);
@@ -308,8 +308,8 @@ public async Task<IActionResult> StartDrive(Guid? id)
     if (id == null) return NotFound();
 
     var vm = new DriveStateViewModel();
-    var userId = User.GettingUserId();
-    var roleName = User.GettingUserRoleName();
+    var userId = User.GetUserId();
+    var roleName = User.GetUserRoleName();
     var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value, userId, roleName);
     if (drive == null) return NotFound();
 
@@ -318,7 +318,7 @@ public async Task<IActionResult> StartDrive(Guid? id)
     drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
     vm.City = drive.Booking.City!.CityName;
-    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerInfo;
+    vm.CustomerFullNameAndPhoneNumber = drive!.CustomerInfo!;
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
     vm.NeedAssistanceEnteringTheBuilding = drive.Booking.NeedAssistanceEnteringTheBuilding;
@@ -382,15 +382,15 @@ public async Task<IActionResult> StartDrive(Guid? id)
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> StartConfirmed(Guid id)
 {
-    var userId = User.GettingUserId();
-    var roleName = User.GettingUserRoleName();
+    var userId = User.GetUserId();
+    var roleName = User.GetUserRoleName();
     
     var drive = await _appBLL.Drives.StartingDriveAsync(id, userId, roleName);
     if (drive == null) return NotFound();
 
     drive.DriveStartDateAndTime = DateTime.Now.ToUniversalTime();
     drive.StatusOfDrive = StatusOfDrive.Started;
-    drive.UpdatedBy = User.GettingUserEmail();
+    drive.UpdatedBy = User.GetUserEmail();
     drive.IsDriveStarted = true;
     drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
@@ -408,8 +408,8 @@ public async Task<IActionResult> StartConfirmed(Guid id)
 public async Task<IActionResult> EndDrive(Guid? id)
 {
     if (id == null) return NotFound();
-    var userId = User.GettingUserId();
-    var roleName = User.GettingUserRoleName();
+    var userId = User.GetUserId();
+    var roleName = User.GetUserRoleName();
     var vm = new DriveStateViewModel();
     var drive = await _appBLL.Drives.GettingFirstDriveAsync(id.Value,userId, roleName );
     if (drive == null) return NotFound();
@@ -469,8 +469,8 @@ public async Task<IActionResult> EndDrive(Guid? id)
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> EndDriveConfirmed(Guid id)
 {
-    var userId = User.GettingUserId();
-    var roleName = User.GettingUserRoleName();
+    var userId = User.GetUserId();
+    var roleName = User.GetUserRoleName();
     
     var drive = await _appBLL.Drives.EndingDriveAsync(id, userId, roleName);
     if (drive == null) return NotFound();
@@ -478,7 +478,7 @@ public async Task<IActionResult> EndDriveConfirmed(Guid id)
     drive.IsDriveFinished = true;
     drive.StatusOfDrive = StatusOfDrive.Finished;
     drive.DriveEndDateAndTime = DateTime.Now.ToUniversalTime();
-    drive.UpdatedBy = User.GettingUserEmail();
+    drive.UpdatedBy = User.GetUserEmail();
     drive.UpdatedAt = DateTime.Now.ToUniversalTime();
 
     _appBLL.Drives.Update(drive);
