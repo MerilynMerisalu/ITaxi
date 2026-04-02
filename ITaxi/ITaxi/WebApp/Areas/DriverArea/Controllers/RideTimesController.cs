@@ -34,8 +34,8 @@ public class RideTimesController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.RideTimes.GettingAllOrderedRideTimesAsync(userId, roleName);
         
         return View(res);
@@ -52,8 +52,8 @@ public class RideTimesController : Controller
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
 
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, userId, roleName);
         if (rideTime == null) return NotFound();
 
@@ -76,8 +76,8 @@ public class RideTimesController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateRideTimeViewModel();
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
 
         vm.Schedules = new SelectList(
             await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName)
@@ -126,8 +126,8 @@ public class RideTimesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateRideTimeViewModel vm)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var driver = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(userId);
         if (ModelState.IsValid)
         {
@@ -172,8 +172,8 @@ public class RideTimesController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var vm = new EditRideTimeViewModel();
         if (id == null) return NotFound();
 
@@ -213,8 +213,8 @@ public class RideTimesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditRideTimeViewModel vm)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
 
         if (id != rideTime!.Id) return NotFound();
@@ -257,8 +257,8 @@ public class RideTimesController : Controller
         var vm = new DetailsDeleteRideTimeViewModel();
         if (id == null) return NotFound();
 
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id.Value, userId, roleName);
         if (rideTime == null) return NotFound();
 

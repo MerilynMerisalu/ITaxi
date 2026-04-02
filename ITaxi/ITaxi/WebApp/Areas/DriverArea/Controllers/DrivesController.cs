@@ -63,8 +63,8 @@ public async Task<IActionResult> SearchByDateAsync([FromForm] DateTime search)
 /// <returns>A pdf of drives</returns>
 public async Task<IActionResult> Print()
 {
-    var roleName = User.GettingUserRoleName();
-    var userId = User.GettingUserId();
+    var roleName = User.GetUserRoleName();
+    var userId = User.GetUserId();
     var drives = await _appBLL.Drives.PrintAsync( userId, roleName );
     
     return new ViewAsPdf("PrintDrives", drives)

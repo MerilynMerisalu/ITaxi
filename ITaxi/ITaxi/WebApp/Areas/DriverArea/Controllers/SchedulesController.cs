@@ -34,8 +34,8 @@ public class SchedulesController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.Schedules
             .GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
         
@@ -53,8 +53,8 @@ public class SchedulesController : Controller
         var vm = new DetailsDeleteScheduleViewModel();
         if (id == null) return NotFound();
 
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id.Value,userId, roleName);
 
         if (schedule == null) return NotFound();
@@ -75,8 +75,8 @@ public class SchedulesController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateScheduleViewModel();
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId, roleName),
             nameof(Vehicle.Id), nameof(Vehicle.VehicleIdentifier));
 
@@ -98,7 +98,7 @@ public class SchedulesController : Controller
     {
         if (ModelState.IsValid)
         {
-            var userId = User.GettingUserId();
+            var userId = User.GetUserId();
             var driver = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(userId);
             
             schedule.Id = Guid.NewGuid();
@@ -131,8 +131,8 @@ public class SchedulesController : Controller
         var vm = new DetailsDeleteScheduleViewModel();
         if (id == null) return NotFound();
 
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
 
         var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id.Value,userId, roleName);
         if (schedule == null) return NotFound();
@@ -156,8 +156,8 @@ public class SchedulesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id, userId, roleName, noTracking: true);
         if (await _appBLL.RideTimes.HasScheduleAnyAsync(id) || await _appBLL.Bookings.HasAnyScheduleAsync(id))
             return Content("Entity cannot be deleted because it has dependent entities!");

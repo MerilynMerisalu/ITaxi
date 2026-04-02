@@ -36,8 +36,8 @@ public class VehiclesController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId, roleName);
         return View(res);
     }
@@ -52,8 +52,8 @@ public class VehiclesController : Controller
     {
         if (id == null) return NotFound();
         var vm = new DetailsDeleteVehicleViewModel();
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName);
         if (vehicle == null) return NotFound();
 
@@ -119,7 +119,7 @@ public class VehiclesController : Controller
     {
         if (ModelState.IsValid)
         {
-            var userId = User.GettingUserId();
+            var userId = User.GetUserId();
             var driver = await _appBLL.Drivers.GettingDriverByVehicleAsync(userId);
 
             vehicle.Id = Guid.NewGuid();
@@ -163,8 +163,8 @@ public class VehiclesController : Controller
         var vm = new CreateEditVehicleViewModel();
         if (id == null) return NotFound();
 
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName);
         if (vehicle == null) return NotFound();
 
@@ -205,8 +205,8 @@ public class VehiclesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditVehicleViewModel vm)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id, userId, roleName);
         if (vehicle != null && id != vehicle.Id) return NotFound();
 
@@ -252,8 +252,8 @@ public class VehiclesController : Controller
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null) return NotFound();
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var vm = new DetailsDeleteVehicleViewModel();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName);
         if (vehicle == null) return NotFound();
@@ -281,8 +281,8 @@ public class VehiclesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, userId, roleName);
         if (vehicle != null)
         {
@@ -314,8 +314,8 @@ public class VehiclesController : Controller
         if (id == null) return NotFound();
 
         var vm = new GalleryViewModel();
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id.Value, userId, roleName);
         if (vehicle == null) return NotFound();
 

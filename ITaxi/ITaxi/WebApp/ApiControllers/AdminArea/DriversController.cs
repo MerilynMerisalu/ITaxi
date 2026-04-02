@@ -119,7 +119,7 @@ public class DriversController : ControllerBase
             driver.DriverLicenseNumber = driver.DriverLicenseNumber;
             driver.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
             driver.PersonalIdentifier = driver.PersonalIdentifier;
-            driver.UpdatedBy = User.GettingUserEmail();
+            driver.UpdatedBy = User.GetUserEmail();
             driver.UpdatedAt = DateTime.Now.ToUniversalTime();
 
             var driverDto = _mapper.Map<DriverDTO>(driver);

@@ -36,8 +36,8 @@ public class PhotosController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PhotoDTO>>> GetPhotos()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.Photos.GetAllPhotosWithIncludesAsync(userId, roleName);
         
         return Ok(res);
@@ -52,8 +52,8 @@ public class PhotosController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<PhotoDTO>> GetPhoto(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(id, userId, roleName);
         if (photo == null) return NotFound();
         photo.CreatedAt = photo.CreatedAt;
@@ -73,8 +73,8 @@ public class PhotosController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> PutPhoto(Guid id, PhotoDTO? photo)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
          photo = await _appBLL.Photos.GetPhotoByIdAsync(id, userId, roleName);
         if (photo == null) return NotFound();
         
@@ -105,8 +105,8 @@ public class PhotosController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<PhotoDTO>> PostPhoto([FromBody]PhotoDTO photo)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         if (roleName != "Admin" || photo.AppUserId != userId)
         {
             return Forbid();
@@ -139,8 +139,8 @@ public class PhotosController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePhoto(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(id, userId, roleName);
         if (photo == null) return NotFound();
 

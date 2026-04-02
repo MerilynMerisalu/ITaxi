@@ -46,8 +46,8 @@ public class CommentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.Comments.GettingAllOrderedCommentsWithIncludesAsync(userId, roleName);
 
         return Ok(res.Select(c=> _mapper.Map<Comment>(c)));
@@ -68,8 +68,8 @@ public class CommentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<Comment>> GetComment(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, userId, roleName);
 
         if (comment == null) return NotFound();
@@ -95,8 +95,8 @@ public class CommentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PutComment(Guid id, Comment? comment)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var commentDTO = await _appBLL.Comments.GettingTheFirstCommentAsync(id, userId, roleName);
         if (commentDTO == null)
         {
@@ -160,8 +160,8 @@ public class CommentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<Comment>> PostComment([FromBody]Comment comment)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         if (roleName != "Admin" || comment.Drive!.Booking!.Customer!.AppUserId != userId )
         {
             return Forbid();
@@ -205,8 +205,8 @@ public class CommentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteComment(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, userId, roleName);
         if (comment == null) return NotFound();
 

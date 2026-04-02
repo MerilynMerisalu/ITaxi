@@ -88,7 +88,7 @@ namespace WebApp.ApiControllers.AdminArea
                 if (country != null)
                 {
                     country.CountryName = countryDto.CountryName;
-                    country.UpdatedBy = User.GettingUserEmail();
+                    country.UpdatedBy = User.GetUserEmail();
                     country.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _appBLL.Countries.Update(country);
                     await _appBLL.SaveChangesAsync();
@@ -122,9 +122,9 @@ namespace WebApp.ApiControllers.AdminArea
         public async Task<ActionResult<Country>> PostCountry(Country country)
         {
             country.Id = Guid.NewGuid();
-            country.CreatedBy = User.GettingUserEmail();
+            country.CreatedBy = User.GetUserEmail();
             country.CreatedAt = DateTime.Now.ToUniversalTime();
-            country.UpdatedBy = User.GettingUserEmail();
+            country.UpdatedBy = User.GetUserEmail();
             country.UpdatedAt = DateTime.Now.ToUniversalTime();
             _appBLL.Countries.Add(_mapper.Map<App.BLL.DTO.AdminArea.CountryDTO>(country));
             await _appBLL.SaveChangesAsync();

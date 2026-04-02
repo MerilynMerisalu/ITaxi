@@ -23,7 +23,7 @@ namespace WebApp.Filters
         {
             if (_contextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false)
             {
-                var userId = _contextAccessor.HttpContext?.User.GettingUserId();
+                var userId = _contextAccessor.HttpContext?.User.GetUserId();
 
                 if (userId != null)
                 {

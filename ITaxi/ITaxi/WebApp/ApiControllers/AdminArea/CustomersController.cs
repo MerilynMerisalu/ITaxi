@@ -105,7 +105,7 @@ public class CustomersController : ControllerBase
             if (custumerDTO != null)
             {
                 custumerDTO.DisabilityTypeId = customer.DisabilityTypeId;
-                custumerDTO.UpdatedBy = User.GettingUserEmail();
+                custumerDTO.UpdatedBy = User.GetUserEmail();
                 custumerDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
                 _appBLL.Customers.Update(custumerDTO);
             }

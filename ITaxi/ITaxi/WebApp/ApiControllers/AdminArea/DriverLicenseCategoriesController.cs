@@ -130,8 +130,8 @@ public class DriverLicenseCategoriesController : ControllerBase
         
         dto.Id = Guid.NewGuid();
         dto.DriverLicenseCategoryName = driverLicenseCategory.DriverLicenseCategoryName;
-        dto.CreatedBy = User.GettingUserEmail();
-        dto.UpdatedBy = User.GettingUserEmail();
+        dto.CreatedBy = User.GetUserEmail();
+        dto.UpdatedBy = User.GetUserEmail();
         dto.CreatedAt = DateTime.Now.ToUniversalTime();
         dto.UpdatedAt = DateTime.Now.ToUniversalTime();
 

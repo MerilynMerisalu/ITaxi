@@ -106,7 +106,7 @@ public class VehiclesController : ControllerBase
                 vehicleDTO.VehicleModelId = vehicle.VehicleModelId;
                 vehicleDTO.VehiclePlateNumber = vehicle.VehiclePlateNumber;
                 vehicleDTO.VehicleTypeId = vehicle.VehicleTypeId;
-                vehicleDTO.UpdatedBy = User.GettingUserEmail();
+                vehicleDTO.UpdatedBy = User.GetUserEmail();
                 vehicleDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
                 _appBLL.Vehicles.Update(vehicleDTO);
             }
@@ -145,8 +145,8 @@ public class VehiclesController : ControllerBase
 
         var vehicleDto = _mapper.Map<VehicleDTO>(vehicle);
         vehicleDto.Id = Guid.NewGuid();
-        vehicleDto.CreatedBy = User.GettingUserEmail();
-        vehicleDto.UpdatedBy = User.GettingUserEmail();
+        vehicleDto.CreatedBy = User.GetUserEmail();
+        vehicleDto.UpdatedBy = User.GetUserEmail();
         vehicleDto.CreatedAt = DateTime.Now.ToUniversalTime();
         vehicleDto.UpdatedAt = DateTime.Now.ToUniversalTime();
         _appBLL.Vehicles.Add(vehicleDto);

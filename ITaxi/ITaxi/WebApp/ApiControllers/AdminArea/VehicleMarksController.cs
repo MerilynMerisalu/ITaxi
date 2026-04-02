@@ -102,7 +102,7 @@ public class VehicleMarksController : ControllerBase
             if (vehicleMarkDto != null)
             {
                 vehicleMarkDto.VehicleMarkName = vehicleMark.VehicleMarkName;
-                vehicleMarkDto.UpdatedBy = User.GettingUserEmail();
+                vehicleMarkDto.UpdatedBy = User.GetUserEmail();
                 vehicleMarkDto.UpdatedAt = DateTime.Now.ToUniversalTime();
             }
 
@@ -141,9 +141,9 @@ public class VehicleMarksController : ControllerBase
 
         var vehicleMarkDto = new VehicleMarkDTO();
         vehicleMarkDto.VehicleMarkName = vehicleMark.VehicleMarkName;
-        vehicleMarkDto.CreatedBy = User.GettingUserEmail();
+        vehicleMarkDto.CreatedBy = User.GetUserEmail();
         vehicleMarkDto.CreatedAt = DateTime.Now.ToUniversalTime();
-        vehicleMarkDto.UpdatedBy = User.GettingUserEmail();
+        vehicleMarkDto.UpdatedBy = User.GetUserEmail();
         vehicleMarkDto.UpdatedAt = DateTime.Now.ToUniversalTime();
         _appBLL.VehicleMarks.Add(vehicleMarkDto);
         await _appBLL.SaveChangesAsync();

@@ -100,7 +100,7 @@ public class VehicleModelsController : ControllerBase
             {
                 vehicleModelDto.VehicleMarkId = vehicleModel.VehicleMarkId;
                 vehicleModelDto.VehicleModelName = vehicleModel.VehicleModelName;
-                vehicleModelDto.UpdatedBy = User.GettingUserEmail();
+                vehicleModelDto.UpdatedBy = User.GetUserEmail();
                 vehicleModelDto.CreatedAt = DateTime.Now.ToUniversalTime();
                 _appBLL.VehicleModels.Update(vehicleModelDto);
             }
@@ -141,9 +141,9 @@ public class VehicleModelsController : ControllerBase
         vehicleModelDto.Id = Guid.NewGuid();
         vehicleModel.VehicleMarkId = vehicleModel.VehicleMarkId;
         vehicleModelDto.VehicleModelName = vehicleModel.VehicleModelName;
-        vehicleModelDto.CreatedBy = User.GettingUserEmail();
+        vehicleModelDto.CreatedBy = User.GetUserEmail();
         vehicleModelDto.CreatedAt = DateTime.Now.ToUniversalTime();
-        vehicleModelDto.UpdatedBy = User.GettingUserEmail();
+        vehicleModelDto.UpdatedBy = User.GetUserEmail();
         vehicleModelDto.UpdatedAt = DateTime.Now.ToUniversalTime();
         _appBLL.VehicleModels.Add(vehicleModelDto);
         await _appBLL.SaveChangesAsync();

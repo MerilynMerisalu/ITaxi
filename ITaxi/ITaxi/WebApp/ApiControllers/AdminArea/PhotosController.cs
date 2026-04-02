@@ -99,7 +99,7 @@ public class PhotosController : ControllerBase
         {
             if (photoDTO != null)
             {
-                photoDTO.UpdatedBy = User.GettingUserEmail();
+                photoDTO.UpdatedBy = User.GetUserEmail();
                 photoDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
                 _appBLL.Photos.Update(photoDTO);
             }
@@ -137,9 +137,9 @@ public class PhotosController : ControllerBase
 
         var photoDTO = new PhotoDTO();
         photoDTO.Id = Guid.NewGuid();
-        photoDTO.CreatedBy = User.GettingUserEmail();
+        photoDTO.CreatedBy = User.GetUserEmail();
         photoDTO.CreatedAt = DateTime.Now.ToUniversalTime();
-        photoDTO.UpdatedBy = User.GettingUserEmail();
+        photoDTO.UpdatedBy = User.GetUserEmail();
         photoDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
         _appBLL.Photos.Add(photoDTO);
         await _appBLL.SaveChangesAsync();

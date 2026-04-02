@@ -49,8 +49,8 @@ public class VehiclesController : ControllerBase
     
     public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId, roleName);
         
         return Ok(res.Select(v => _mapper.Map<Vehicle>(v)));
@@ -71,8 +71,8 @@ public class VehiclesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<Vehicle>> GetVehicle(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var vehicle = await _appBLL.Vehicles.GettingVehicleWithIncludesByIdAsync(id, userId, roleName);
         
         if (vehicle == null) return NotFound();
@@ -100,8 +100,8 @@ public class VehiclesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PutVehicle(Guid id, Vehicle vehicle)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var vehicleDto = await _appBLL.Vehicles.GettingVehicleWithoutIncludesByIdAsync(id, userId, roleName);
         var currentDriver = await _appBLL.Drivers.GettingDriverByVehicleAsync(vehicleDto!.Id);
         
@@ -157,7 +157,7 @@ public class VehiclesController : ControllerBase
         var vehicleDto = _mapper.Map<VehicleDTO>(vehicle);
         
         vehicleDto.Id = Guid.NewGuid();
-        vehicleDto.DriverId = _appBLL.Drivers.GettingDriverByAppUserIdAsync(User.GettingUserId()).Result.Id;
+        vehicleDto.DriverId = _appBLL.Drivers.GettingDriverByAppUserIdAsync(User.GetUserId()).Result.Id;
         vehicleDto.CreatedBy = User.Identity!.Name;
         vehicle.CreatedAt = DateTime.Now;
         vehicle.UpdatedBy = User.Identity!.Name;
@@ -259,8 +259,8 @@ public class VehiclesController : ControllerBase
             Title = file.FileName,
             PhotoURL = blob.Uri.ToString(),
             VehicleId = vehicle.Id,
-            AppUserId = User.GettingUserId(),
-            CreatedBy = User.GettingUserEmail(),
+            AppUserId = User.GetUserId(),
+            CreatedBy = User.GetUserEmail(),
             CreatedAt = DateTime.Now.ToUniversalTime()
         };
         var dbEntry = _mapper.Map<PhotoDTO>(photo);
@@ -282,7 +282,7 @@ public class VehiclesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehiclesByDriverId()
     {
-        var userId = User.GettingUserId();
+        var userId = User.GetUserId();
         var driver = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(userId); 
         var res = await _appBLL.Vehicles.GettingVehiclesByDriverIdAsync(driver.Id, userId);
         

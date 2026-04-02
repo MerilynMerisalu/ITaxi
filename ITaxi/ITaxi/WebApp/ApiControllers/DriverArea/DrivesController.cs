@@ -47,8 +47,8 @@ public class DrivesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<Drive>>> GetDrives()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.Drives.GettingAllOrderedDrivesWithIncludesAsync(userId, roleName);
         var results = res.Select(d => _mapper.Map<Drive>(d));
         return Ok(results);
@@ -69,8 +69,8 @@ public class DrivesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<Drive>> GetDrive(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, userId, roleName);
 
         if (drive == null) return NotFound();
@@ -92,8 +92,8 @@ public class DrivesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Accept (Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var drive = await _appBLL.Drives.GettingFirstDriveAsync(id, userId, roleName, false);
         if (drive != null)
         {

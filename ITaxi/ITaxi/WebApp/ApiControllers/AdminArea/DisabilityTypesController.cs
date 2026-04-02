@@ -104,7 +104,7 @@ public class DisabilityTypesController : ControllerBase
         try
         {
             disabilityTypeDTO.DisabilityTypeName = disabilityType.DisabilityTypeName;
-            disabilityTypeDTO.UpdatedBy = User.GettingUserEmail();
+            disabilityTypeDTO.UpdatedBy = User.GetUserEmail();
             disabilityTypeDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
             
             _appBLL.DisabilityTypes.Update(disabilityTypeDTO);

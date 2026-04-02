@@ -103,7 +103,7 @@ public class VehicleTypesController : ControllerBase
             {
                 vehicleTypeDto.VehicleTypeName = vehicleType.VehicleTypeName;
                 vehicleTypeDto.UpdatedAt = DateTime.Now.ToUniversalTime();
-                vehicleTypeDto.UpdatedBy = User.GettingUserEmail();
+                vehicleTypeDto.UpdatedBy = User.GetUserEmail();
             }
 
             if (vehicleTypeDto != null) _appBLL.VehicleTypes.Update(vehicleTypeDto);
@@ -142,7 +142,7 @@ public class VehicleTypesController : ControllerBase
         var vehicleTypeDto = new VehicleTypeDTO();
         vehicleTypeDto.Id = Guid.NewGuid();
         vehicleTypeDto.VehicleTypeName = vehicleType.VehicleTypeName;
-        vehicleTypeDto.CreatedBy = User.GettingUserEmail();
+        vehicleTypeDto.CreatedBy = User.GetUserEmail();
         vehicleTypeDto.CreatedAt = DateTime.Now.ToUniversalTime();
         _appBLL.VehicleTypes.Add(vehicleTypeDto);
         await _appBLL.SaveChangesAsync();

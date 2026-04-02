@@ -22,7 +22,7 @@
                 @* ReSharper disable once ConditionIsAlwaysTrueOrFalse *@
                 @if (User != null)
                 {
-                    @string.Format(_LoginPartial.GreetingLoggedInUser, User.GettingUserName() + "!")
+                    @string.Format(_LoginPartial.GreetingLoggedInUser, User.GetUserName() + "!")
                     
                 }
                 else

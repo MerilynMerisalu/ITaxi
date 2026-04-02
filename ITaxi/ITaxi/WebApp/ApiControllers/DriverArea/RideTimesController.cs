@@ -45,8 +45,8 @@ public class RideTimesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<RideTime>>> GetRideTimes()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.RideTimes.GettingAllOrderedRideTimesAsync(userId, roleName);
        
         return Ok(res.Select(r=> _mapper.Map<RideTime>(r)));
@@ -67,8 +67,8 @@ public class RideTimesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<RideTime>> GetRideTime(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
 
         if (rideTime == null) return NotFound();
@@ -91,8 +91,8 @@ public class RideTimesController : ControllerBase
     public Task<ActionResult<IEnumerable<string?>>> GetAvailableRideTimes(
         [FromQuery]Guid scheduleId)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res =  _appBLL.RideTimes.GettingRemainingRideTimesByScheduleId(scheduleId);
        
         return Task.FromResult<ActionResult<IEnumerable<string?>>>(Ok(res));
@@ -117,8 +117,8 @@ public class RideTimesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PutRideTime(Guid id, RideTime? rideTime)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var rideTimeDTO = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
         
         if (rideTime == null)
@@ -164,16 +164,16 @@ public class RideTimesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<RideTime>> PostRideTime([FromBody]RideTime rideTime)
     {
-        var userId = User.GettingUserId();
+        var userId = User.GetUserId();
         var driverId =  _appBLL.Drivers.GettingDriverByAppUserIdAsync(userId).Result.Id;
         var rideTimeDTO = new RideTimeDTO();
         rideTimeDTO.Id = Guid.NewGuid();
         rideTimeDTO.DriverId = driverId;
         rideTimeDTO.RideDateTime = rideTime.RideDateTime;
         rideTimeDTO.ScheduleId = rideTime.ScheduleId;
-        rideTimeDTO.CreatedBy = User.GettingUserEmail();
+        rideTimeDTO.CreatedBy = User.GetUserEmail();
         rideTimeDTO.CreatedAt = DateTime.Now.ToUniversalTime();
-        rideTimeDTO.UpdatedBy = User.GettingUserEmail();
+        rideTimeDTO.UpdatedBy = User.GetUserEmail();
         rideTimeDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
         
         if (HttpContext.GetRequestedApiVersion() == null)
@@ -204,8 +204,8 @@ public class RideTimesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteRideTime(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var rideTime = await _appBLL.RideTimes.GettingFirstRideTimeByIdAsync(id, userId, roleName);
         if (rideTime == null) return NotFound();
         if (rideTime.IsTaken)

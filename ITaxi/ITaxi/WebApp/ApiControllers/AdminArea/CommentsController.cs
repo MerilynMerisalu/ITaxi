@@ -103,7 +103,7 @@ public class CommentsController : ControllerBase
             }
             commentDTO.CommentText = comment.CommentText;
             commentDTO.DriveId = comment.DriveId;
-            commentDTO.UpdatedBy = User.GettingUserEmail();
+            commentDTO.UpdatedBy = User.GetUserEmail();
             commentDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
 
             try
@@ -144,7 +144,8 @@ public class CommentsController : ControllerBase
     public async Task<IActionResult> GetBookingNumber([FromBody] Guid? id = null)
     {
         
-        var  bookingNumber = await _appBLL.Bookings.GettingBookingNumberByDriveIdAsync(id.Value, null, User.GettingUserRoleName(),
+        var  bookingNumber = await _appBLL.Bookings.GettingBookingNumberByDriveIdAsync(id.Value, null, User.
+            GetUserRoleName(),
             true, false);
         return Ok(bookingNumber.ToString());
     }
@@ -176,9 +177,9 @@ public class CommentsController : ControllerBase
         }
         commentDTO.CommentText = comment.CommentText;
         commentDTO.DriveId = comment.DriveId;
-        commentDTO.CreatedBy = User.GettingUserEmail();
+        commentDTO.CreatedBy = User.GetUserEmail();
         commentDTO.CreatedAt = DateTime.Now.ToUniversalTime();
-        commentDTO.UpdatedBy = User.GettingUserEmail();
+        commentDTO.UpdatedBy = User.GetUserEmail();
         commentDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
         
         _appBLL.Comments.Add(commentDTO);

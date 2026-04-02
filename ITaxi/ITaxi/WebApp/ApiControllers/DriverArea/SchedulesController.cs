@@ -46,8 +46,8 @@ public class SchedulesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(userId, roleName);
         
         return Ok(res.Select(s => _mapper.Map<Schedule>(s)));
@@ -68,8 +68,8 @@ public class SchedulesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<Schedule>> GetSchedule(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id, userId, roleName);
         
         if (schedule == null) return NotFound();
@@ -96,8 +96,8 @@ public class SchedulesController : ControllerBase
     public async Task<IActionResult> PutSchedule(Guid id, Schedule schedule)
     {
         var scheduleDTO = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id);
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var driver = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(schedule.Driver!.AppUserId);
         
         try
@@ -114,9 +114,9 @@ public class SchedulesController : ControllerBase
                 scheduleDTO.VehicleId = schedule.VehicleId;
                 scheduleDTO.StartDateAndTime = schedule.StartDateAndTime.ToUniversalTime();
                 scheduleDTO.EndDateAndTime = schedule.EndDateAndTime.ToUniversalTime();
-                scheduleDTO.CreatedBy = User.GettingUserEmail();
+                scheduleDTO.CreatedBy = User.GetUserEmail();
                 scheduleDTO.CreatedAt = DateTime.Now.ToUniversalTime();
-                scheduleDTO.UpdatedBy = User.GettingUserEmail();
+                scheduleDTO.UpdatedBy = User.GetUserEmail();
                 scheduleDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
 
                 if (schedule != null) _appBLL.Schedules.Update(scheduleDTO);
@@ -147,8 +147,8 @@ public class SchedulesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<Schedule>> PostSchedule([FromBody]Schedule schedule)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
 
         var driverId =  _appBLL.Drivers.GettingDriverByAppUserIdAsync(userId).Result.Id;
         var scheduleDTO = new ScheduleDTO()
@@ -158,9 +158,9 @@ public class SchedulesController : ControllerBase
             VehicleId = schedule.VehicleId,
             StartDateAndTime = schedule.StartDateAndTime.ToUniversalTime(),
             EndDateAndTime = schedule.EndDateAndTime.ToUniversalTime(),
-            CreatedBy = User.GettingUserEmail(),
+            CreatedBy = User.GetUserEmail(),
             CreatedAt = DateTime.Now.ToUniversalTime(),
-            UpdatedBy = User.GettingUserEmail(),
+            UpdatedBy = User.GetUserEmail(),
             UpdatedAt = DateTime.Now.ToUniversalTime()
         };
         if (HttpContext.GetRequestedApiVersion() == null)
@@ -192,8 +192,8 @@ public class SchedulesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteSchedule(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var schedule = await _appBLL.Schedules.GettingTheFirstScheduleByIdAsync(id, userId, roleName);
         if (await _appBLL.RideTimes.HasScheduleAnyAsync(id) || await _appBLL.Bookings.HasAnyScheduleAsync(id))
             return BadRequest("Schedule cannot be deleted!");

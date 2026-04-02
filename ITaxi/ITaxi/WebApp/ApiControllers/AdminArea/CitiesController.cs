@@ -105,8 +105,8 @@ public class CitiesController : ControllerBase
         {
             cityDTO.CityName = city.CityName;
             cityDTO.CountyId = city.CountyId;
-            cityDTO.CreatedBy = User.GettingUserEmail();
-            cityDTO.UpdatedBy = User.GettingUserEmail();
+            cityDTO.CreatedBy = User.GetUserEmail();
+            cityDTO.UpdatedBy = User.GetUserEmail();
             _appBLL.Cities.Update(cityDTO);
             await _appBLL.SaveChangesAsync();
         }
@@ -142,7 +142,7 @@ public class CitiesController : ControllerBase
 
         var dto = _mapper.Map<CityDTO>(city);
         
-        dto.CreatedBy = User.GettingUserEmail();
+        dto.CreatedBy = User.GetUserEmail();
         _appBLL.Cities.Add(dto);
         await _appBLL.SaveChangesAsync();
 

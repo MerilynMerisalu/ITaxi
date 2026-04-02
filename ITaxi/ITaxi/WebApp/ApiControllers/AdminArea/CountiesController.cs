@@ -139,8 +139,8 @@ public class CountiesController : ControllerBase
         dto.Id = Guid.NewGuid();
         dto.CountryId = county.CountryId;
         dto.CountyName = county.CountyName;
-        dto.CreatedBy = User.GettingUserEmail();
-        dto.UpdatedBy = User.GettingUserEmail();
+        dto.CreatedBy = User.GetUserEmail();
+        dto.UpdatedBy = User.GetUserEmail();
         dto.CreatedAt = DateTime.Now.ToUniversalTime();
         dto.UpdatedAt = DateTime.Now.ToUniversalTime();
 

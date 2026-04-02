@@ -34,8 +34,8 @@ public class PhotosController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.Photos.GetAllPhotosWithIncludesAsync(userId, roleName);
         return View(res);
     }
@@ -49,8 +49,8 @@ public class PhotosController : Controller
     public async Task<IActionResult> Details(Guid? id)
     {
         var vm = new DetailsDeletePhotoViewModel();
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         if (id == null) return NotFound();
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(id.Value, userId, roleName);
         if (photo == null) return NotFound();
@@ -68,7 +68,7 @@ public class PhotosController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Create()
     {
-        var userId = User.GettingUserId();
+        var userId = User.GetUserId();
         var vm = new CreateEditPhotoViewModel();
         vm.Vehicles = new SelectList(await _appBLL.Vehicles.GettingOrderedVehiclesAsync(userId),
             nameof(VehicleDTO.Id), nameof(VehicleDTO.VehicleIdentifier));
@@ -94,7 +94,7 @@ public class PhotosController : Controller
             photo.Id = Guid.NewGuid();
             photo.Title = vm.Title;
             photo.PhotoURL = vm.PhotoURL;
-            photo.AppUserId = User.GettingUserId();
+            photo.AppUserId = User.GetUserId();
             _appBLL.Photos.Add(photo);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -112,7 +112,7 @@ public class PhotosController : Controller
     public async Task<IActionResult> Edit(Guid? id)
     {
         var vm = new CreateEditPhotoViewModel();
-        var userId = User.GettingUserId();
+        var userId = User.GetUserId();
         if (id == null) return NotFound();
         var photo = await _appBLL.Photos.FirstOrDefaultAsync(id.Value);
         if (photo == null) return NotFound();
@@ -141,7 +141,7 @@ public class PhotosController : Controller
     public async Task<IActionResult> Edit(Guid id,
          CreateEditPhotoViewModel vm)
     {
-        var userId = User.GettingUserId();
+        var userId = User.GetUserId();
         var photo = await _appBLL.Photos.GetPhotoByIdAsync(id, userId);
         if (photo != null && id != photo.Id) return NotFound();
 
@@ -154,7 +154,7 @@ public class PhotosController : Controller
                     photo.Title = vm.Title;
                     photo.AppUserId = userId;
                     photo.VehicleId = vm.VehicleId;
-                    photo.CreatedBy = User.GettingUserEmail();
+                    photo.CreatedBy = User.GetUserEmail();
                     _appBLL.Photos.Update(photo);
                 }
 

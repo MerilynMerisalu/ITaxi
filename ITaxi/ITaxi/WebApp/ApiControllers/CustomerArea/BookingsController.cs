@@ -46,8 +46,8 @@ public class BookingsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.Bookings.GettingAllOrderedBookingsAsync(userId, roleName);
         
         return Ok(res.Select(b => _mapper.Map<Booking>(b)));
@@ -68,8 +68,8 @@ public class BookingsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<Booking>> GetBooking(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName);
 
         if (booking == null) return NotFound();
@@ -102,7 +102,7 @@ public class BookingsController : ControllerBase
             return BadRequest("Api version is mandatory");
         }
         
-        var userId = User.GettingUserId();
+        var userId = User.GetUserId();
         
         var rideTimes = await _appBLL.RideTimes.GettingBestAvailableRideTimeAsync(booking.PickUpDateAndTime,
             booking.CityId, booking.NumberOfPassengers, booking.VehicleTypeId, false, userId, roleName: null);
@@ -132,9 +132,9 @@ public class BookingsController : ControllerBase
         bookingDTO.VehicleTypeId = booking.VehicleTypeId;
         bookingDTO.StatusOfBooking = StatusOfBooking.Awaiting;
         bookingDTO.PickUpDateAndTime = booking.PickUpDateAndTime.ToUniversalTime();
-        bookingDTO.CreatedBy = User.GettingUserEmail();
+        bookingDTO.CreatedBy = User.GetUserEmail();
         bookingDTO.CreatedAt = DateTime.Now.ToUniversalTime();
-        bookingDTO.UpdatedBy = User.GettingUserEmail();
+        bookingDTO.UpdatedBy = User.GetUserEmail();
         bookingDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
         
         _appBLL.Bookings.Add(bookingDTO);
@@ -174,8 +174,8 @@ public class BookingsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteBooking(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName);
         if (booking == null) return NotFound();
 
@@ -200,8 +200,8 @@ public class BookingsController : ControllerBase
     
     public async Task<IActionResult> Decline(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var booking = await _appBLL.Bookings.GettingBookingAsync(id, userId, roleName, false);
         if (booking != null)
         {

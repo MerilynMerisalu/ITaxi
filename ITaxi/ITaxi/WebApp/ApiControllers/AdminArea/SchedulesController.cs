@@ -101,7 +101,7 @@ public class SchedulesController : ControllerBase
                 sheduleDTO.VehicleId = schedule.VehicleId;
                 sheduleDTO.StartDateAndTime = schedule.StartDateAndTime.ToUniversalTime();
                 sheduleDTO.EndDateAndTime = schedule.EndDateAndTime.ToUniversalTime();
-                sheduleDTO.UpdatedBy = User.GettingUserEmail();
+                sheduleDTO.UpdatedBy = User.GetUserEmail();
                 sheduleDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
                 _appBLL.Schedules.Update(sheduleDTO);
             }
@@ -143,7 +143,7 @@ public class SchedulesController : ControllerBase
         scheduleDTO.VehicleId = schedule.VehicleId;
         scheduleDTO.StartDateAndTime = schedule.StartDateAndTime.ToUniversalTime();
         scheduleDTO.EndDateAndTime = schedule.EndDateAndTime.ToUniversalTime();
-        scheduleDTO.CreatedBy = User.GettingUserEmail();
+        scheduleDTO.CreatedBy = User.GetUserEmail();
         scheduleDTO.CreatedAt = DateTime.Now.ToUniversalTime();
         _appBLL.Schedules.Add(scheduleDTO);
         await _appBLL.SaveChangesAsync();

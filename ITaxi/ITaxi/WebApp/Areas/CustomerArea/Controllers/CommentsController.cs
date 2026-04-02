@@ -36,8 +36,8 @@ public class CommentsController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Index()
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var res = await _appBLL.Comments.
             GettingAllOrderedCommentsWithIncludesAsync(userId, roleName);
         
@@ -52,8 +52,8 @@ public class CommentsController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Details(Guid? id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var vm = new DetailsDeleteCommentViewModel();
         if (id == null) return NotFound();
 
@@ -82,7 +82,7 @@ public class CommentsController : Controller
     {
         if (id == null) return NotFound();
         var bookingNumber = await _appBLL.Bookings.GettingBookingNumberByDriveIdAsync(id.Value, 
-            User.GettingUserId());
+            User.GetUserId());
         return Content(bookingNumber.ToString() ?? String.Empty, contentType: "text/plain");
         
     }
@@ -95,8 +95,8 @@ public class CommentsController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateCommentViewModel();
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
 
         var drives = await _appBLL.Drives.GettingFinishedDrivesWithoutCommentAsync(userId, roleName);
         foreach (var drive in drives)
@@ -121,8 +121,8 @@ public class CommentsController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateCommentViewModel vm)
-    {var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+    {var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var comment = new CommentDTO();
         if (ModelState.IsValid)
         {
@@ -156,8 +156,8 @@ public class CommentsController : Controller
     /// <returns>View</returns>
     public async Task<IActionResult> Edit(Guid? id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserName();
         var vm = new EditCommentViewModel();
         if (id == null) return NotFound();
         
@@ -187,8 +187,8 @@ public class CommentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, EditCommentViewModel vm)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserRoleName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserRoleName();
         var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, userId, roleName, noIncludes:true);
         if (comment != null && id != comment.Id) return NotFound();
 
@@ -242,8 +242,8 @@ public class CommentsController : Controller
     {
         var vm = new DetailsDeleteCommentViewModel();
         if (id == null) return NotFound();
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserName();
         var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id.Value, userId, roleName);
         if (comment == null) return NotFound();
 
@@ -269,8 +269,8 @@ public class CommentsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var userId = User.GettingUserId();
-        var roleName = User.GettingUserName();
+        var userId = User.GetUserId();
+        var roleName = User.GetUserName();
         var comment = await _appBLL.Comments.GettingTheFirstCommentAsync(id, userId, roleName, noIncludes:true);
         if (comment != null)
         {

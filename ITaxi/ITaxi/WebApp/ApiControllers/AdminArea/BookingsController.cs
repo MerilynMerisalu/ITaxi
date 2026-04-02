@@ -104,9 +104,9 @@ public class BookingsController : ControllerBase
         bookingDTO.VehicleTypeId = booking.VehicleTypeId;
         bookingDTO.StatusOfBooking = StatusOfBooking.Awaiting;
         bookingDTO.PickUpDateAndTime = booking.PickUpDateAndTime.ToUniversalTime();
-        bookingDTO.CreatedBy = User.GettingUserEmail();
+        bookingDTO.CreatedBy = User.GetUserEmail();
         bookingDTO.CreatedAt = DateTime.Now.ToUniversalTime();
-        bookingDTO.UpdatedBy = User.GettingUserEmail();
+        bookingDTO.UpdatedBy = User.GetUserEmail();
         bookingDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
         
         if (HttpContext.GetRequestedApiVersion() == null)
