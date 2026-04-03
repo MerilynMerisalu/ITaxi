@@ -5,10 +5,14 @@ namespace App.DAL.EF;
 
 public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
+    public AppDbContextFactory()
+    {
+        
+    }
     public AppDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
         optionsBuilder.UseSqlServer("Server=localhost,1433;Database=ITaxiDb;User=sa;Password=Hobujaama10;Encrypt=true;TrustServerCertificate=True;");
-        return new AppDbContext(optionsBuilder.Options);
+        return new AppDbContext(optionsBuilder.Options, new DesignTimeCurrentUserService());
     }
 }

@@ -28,7 +28,7 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
     protected readonly TDbContext RepoDbContext;
     protected readonly DbSet<TDomainEntity> RepoDbSet;
     protected readonly IMapper<TDalEntity, TDomainEntity> Mapper;
-
+    
 
     public BaseEntityRepository(TDbContext dbContext, IMapper<TDalEntity, TDomainEntity> mapper)
     {
@@ -270,6 +270,7 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         {
             return null;
         }
+        
         dalEntity.IsIgnored = !dalEntity.IsIgnored;
         RepoDbSet.Update(Mapper.Map(dalEntity)!);
         await RepoDbContext.SaveChangesAsync();

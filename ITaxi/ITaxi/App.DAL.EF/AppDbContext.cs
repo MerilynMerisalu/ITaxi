@@ -1,5 +1,7 @@
 ﻿using App.Domain;
 using App.Domain.Identity;
+using Base.Contracts.Domain;
+using Base.Contracts.Services;
 using Base.Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +10,12 @@ namespace App.DAL.EF;
 
 public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
+    private readonly ICurrentUserService _currentUserService;
+    public AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService currentUserService)
         : base(options)
     {
         this.ChangeTracker.LazyLoadingEnabled = false;
+        _currentUserService = currentUserService;
     }
 
     public DbSet<LangStr> LangStrings { get; set; } = default!;
@@ -89,12 +93,14 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     {
         //FixEntities(this); Only needed if postgres db is used
         NormalizeCountyNames();
+        ChangeMetadata();
         return base.SaveChanges();
     }
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         //FixEntities(this); Only needed if postgres db is used
         NormalizeCountyNames();
+        ChangeMetadata();
         return base.SaveChangesAsync(cancellationToken);
 
     }
@@ -134,5 +140,25 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     //        }
     //    }
         
+    private void ChangeMetadata()
+    {
+        var currentUserEmail = _currentUserService.UserEmail ?? "System";
+        var currentUtcTime = DateTime.UtcNow;
+        foreach (var entity in ChangeTracker.Entries<IDomainEntityMeta>())
+        {
+            if (entity.State == EntityState.Modified)
+            {
+                entity.Entity.UpdatedBy = currentUserEmail;
+                entity.Entity.UpdatedAt = currentUtcTime;
+            }
+            else if (entity.State == EntityState.Added)
+            {
+                entity.Entity.CreatedBy = currentUserEmail ?? "System";
+                entity.Entity.CreatedAt = currentUtcTime;
+                entity.Entity.UpdatedBy = currentUserEmail ?? "System";
+                entity.Entity.UpdatedAt = currentUtcTime;
+            }
+        }
+    }
 
     } 
