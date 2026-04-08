@@ -249,15 +249,16 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
     {
         return Mapper.Map(Repository.GetCountryByISOCode(isoCode, noTracking, noIncludes, showDeleted, showIgnored));
     }
-    public async Task<bool> IsThereACorrespondingCountryToTheISO2CodeAsync(string iso2Code, string? userId = null, string? roleName = null)
+    public async Task<bool> IsThereACorrespondingCountryToTheISO2CodeAsync(string iso2Code, string? userId = null, string? roleName = null,bool showDeleted = true, bool showIgnored = true)
     {
-        var result = await Repository.IsThereACorrespondingCountryToTheISO2CodeAsync(iso2Code, userId, roleName);
+        var result = await Repository.IsThereACorrespondingCountryToTheISO2CodeAsync(iso2Code, userId, roleName, showDeleted: showDeleted, showIgnored: showIgnored);
         return result;
     }
 
-    public bool IsThereACorrespondingCountryToTheISO2Code(string iso2Code, string? userId = null, string? roleName = null)
+    public bool IsThereACorrespondingCountryToTheISO2Code(string iso2Code, string? userId = null, string? roleName = null, bool showDeleted = true, bool showIgnored = true)
+    
     {
-        return Repository.IsThereACorrespondingCountryToTheISO2Code(iso2Code, userId, roleName);
+        return Repository.IsThereACorrespondingCountryToTheISO2Code(iso2Code, userId, roleName, showDeleted: showDeleted, showIgnored: showIgnored);
     }
 
     public async Task<Guid?> GetCountryIdByISOCodeAsync(string iso2Code, string? userId = null, string? roleName = null)

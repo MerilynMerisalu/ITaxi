@@ -75,16 +75,19 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateEditCountryViewModel vm)
         {
+            var countryExists = await _appBLL.Countries.IsThereACorrespondingCountryToTheISO2CodeAsync(vm.ISOCode);
+            if (countryExists)
+            {
+                ModelState.AddModelError("CountryExists", "The country with corresponding ISO2 code already exists!");
+               
+            }
             if (ModelState.IsValid)
             {
                 var country = new CountryDTO();
                 country.Id = Guid.NewGuid();
                 country.CountryName = vm.CountryName;
+                country.DataOrigin = DataOrigin.Manual;
                 country.ISOCode = vm.ISOCode.ToUpper();
-                country.CreatedBy = User.GetUserEmail();
-                country.CreatedAt = DateTime.Now.ToUniversalTime();
-                country.UpdatedBy = User.GetUserEmail();
-                country.UpdatedAt = DateTime.Now.ToUniversalTime();
                 _appBLL.Countries.Add(country);
                 await _appBLL.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

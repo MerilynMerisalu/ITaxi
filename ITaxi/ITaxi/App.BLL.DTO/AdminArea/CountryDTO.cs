@@ -14,6 +14,8 @@ public class CountryDTO: DomainEntityMetaId
     public LangStr CountryName { get; set; } = default!;
     [Required(ErrorMessageResourceType = typeof(Base.Resources.Common), 
         ErrorMessageResourceName = nameof(Common.RequiredAttributeErrorMessage))]
+    [StringLength(2, MinimumLength = 2, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = nameof(Common.ErrorMessageStringLengthMinMax))]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Country),
         Name = nameof(ISOCode))]
     public string ISOCode { get; set; } = default!;

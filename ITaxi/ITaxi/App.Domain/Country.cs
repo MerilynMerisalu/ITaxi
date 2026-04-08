@@ -21,7 +21,9 @@ public class Country: DomainEntityMetaId
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Country),
         Name = nameof(ISOCode))]
     [MaxLength(2, ErrorMessageResourceType = typeof(Common),
-        ErrorMessageResourceName = nameof(Common.ErrorMessageStringLengthMax))]
+        ErrorMessageResourceName = nameof(Common.ErrorMessageMaxLength))]
+    [StringLength(2, MinimumLength = 2, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = nameof(Common.ErrorMessageStringLengthMinMax))]
     public string ISOCode { get; set; } = default!;
 
 
