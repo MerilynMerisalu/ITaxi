@@ -285,4 +285,7 @@
   <data name="HideFromUsers" xml:space="preserve">
     <value>Muuda mittenähtavaks</value>
   </data>
+  <data name="ErrorMessageValueExists" xml:space="preserve">
+    <value>Sisestatud väärtusele {0} vastab juba olemasolev väärtus.</value>
+  </data>
 </root>

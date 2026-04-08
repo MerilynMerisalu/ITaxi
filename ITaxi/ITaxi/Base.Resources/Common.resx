@@ -285,4 +285,7 @@
   <data name="HideFromUsers" xml:space="preserve">
     <value>Hide from Users</value>
   </data>
+  <data name="ErrorMessageValueExists" xml:space="preserve">
+    <value>The value {0} already exists.</value>
+  </data>
 </root>

@@ -304,6 +304,15 @@ namespace Base.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value {0} already exists..
+        /// </summary>
+        public static string ErrorMessageValueExists {
+            get {
+                return ResourceManager.GetString("ErrorMessageValueExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value &apos;{0}&apos; is invalid..
         /// </summary>
         public static string ErrorMessageValueIsInvalid {

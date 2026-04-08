@@ -157,6 +157,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
                 entity.Entity.CreatedAt = currentUtcTime;
                 entity.Entity.UpdatedBy = currentUserEmail ?? "System";
                 entity.Entity.UpdatedAt = currentUtcTime;
+                
             }
         }
     }

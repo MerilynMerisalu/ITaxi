@@ -11,6 +11,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using RESTCountries.NET.Services;
 using WebApp.Areas.AdminArea.ViewModels;
+using Base.Resources;
 
 
 namespace WebApp.Areas.AdminArea.Controllers
@@ -78,7 +79,8 @@ namespace WebApp.Areas.AdminArea.Controllers
             var countryExists = await _appBLL.Countries.IsThereACorrespondingCountryToTheISO2CodeAsync(vm.ISOCode);
             if (countryExists)
             {
-                ModelState.AddModelError("CountryExists", "The country with corresponding ISO2 code already exists!");
+                ModelState.AddModelError("CountryExists",
+    string              .Format(Common.ErrorMessageValueExists, vm.CountryName)); 
                
             }
             if (ModelState.IsValid)
