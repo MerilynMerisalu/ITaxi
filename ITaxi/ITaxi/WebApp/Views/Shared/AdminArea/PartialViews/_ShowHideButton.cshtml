@@ -2,7 +2,7 @@
 @model Base.Contracts.ViewModels.IShowHideItem
 
 @{
-    var showHideClass = Model.IsIgnored ? "show-hide--show" : "show-hide--hide";
+    var showHideClass = Model.IsIgnored ? "show" : "hide";
     var showHideText = Model.IsIgnored ? Common.Show : Common.Hide;
     var showHideTitle = Model.IsIgnored ? Common.MakeVisible : Common.HideFromUsers;
 }

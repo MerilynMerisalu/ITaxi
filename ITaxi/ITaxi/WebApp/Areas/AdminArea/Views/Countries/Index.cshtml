@@ -71,15 +71,15 @@
                 @Html.DisplayFor(model => item.UpdatedAt)
             </td>
             
-            <td>
+            <td class="action-links">
                 @if (item.DataOrigin == DataOrigin.Manual)
                     {
-                        <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> <span>|</span>
-                        <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a> <span>|</span>
+                        <a asp-action="Edit" asp-route-id="@item.Id">@Common.Edit</a> 
+                        <a asp-action="Delete" asp-route-id="@item.Id">@Common.Delete</a> 
 
                     }
-                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> |
-                <a asp-action="ToggleCountryIgnore" asp-route-id="@item.Id">@Common.ShowHide</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> 
+                <partial name="_ShowHideButton" model="@item" />
                
             </td>
         </tr>

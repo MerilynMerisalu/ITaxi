@@ -19,7 +19,7 @@ body {
 
 .action-links a:not(:last-child)::after,
 .action-links form:not(:last-child)::after {
-    content: "| ";
+    content: " | ";
 }
 
 .show {

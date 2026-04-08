@@ -225,13 +225,17 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return BadRequest();
             }
             
-            country.UpdatedBy = User.GetUserEmail();
-            country.UpdatedAt = DateTime.Now.ToUniversalTime();
-            _appBLL.Countries.Update(country);
-            await _appBLL.SaveChangesAsync();
             
             return RedirectToAction(nameof(Index));
         }
-        
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ShowHide([FromRoute] Guid id)
+        {
+            var result = await _appBLL.Countries.ToggleIsIgnoredAsync(id: id, showIgnored: true);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
