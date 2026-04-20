@@ -103,8 +103,7 @@ public class CountiesController : Controller
             county.Id = Guid.NewGuid();
             county.CountryId = vm.CountryId;
             county.CountyName = vm.CountyName;
-            county.CreatedBy = User.GetUserEmail();
-            county.CreatedAt = DateTime.Now.ToUniversalTime();
+            county.DataOrigin = DataOrigin.Manual;
             _appBLL.Counties.Add(county);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
