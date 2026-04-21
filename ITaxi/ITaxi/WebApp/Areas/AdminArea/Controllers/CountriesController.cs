@@ -173,7 +173,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var vm = new DetailsDeleteCountryViewModel();
-            var country = await _appBLL.Countries.FirstOrDefaultAsync(id.Value);
+            var country = await _appBLL.Countries.FirstOrDefaultAsync(id.Value, showIgnored: true );
 
 
             if (country != null)
