@@ -55,9 +55,9 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Id = country.Id;
             vm.CountryName = country.CountryName;
             vm.CreatedBy = country.CreatedBy!;
-            vm.CreatedAt = country.CreatedAt.ToLocalTime().ToString("g");
+            vm.CreatedAt = country.CreatedAt.ToString("g");
             vm.UpdatedBy = country.UpdatedBy!;
-            vm.UpdatedAt = country.UpdatedAt.ToLocalTime().ToString("g");
+            vm.UpdatedAt = country.UpdatedAt.ToString("g");
 
             return View(vm);
         }
@@ -106,7 +106,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var vm = new CreateEditCountryViewModel();
-            var country = await _appBLL.Countries.FirstOrDefaultAsync(id.Value, noIncludes:true, noTracking:true);
+            var country = await _appBLL.Countries.FirstOrDefaultAsync(id.Value, noIncludes:true, noTracking:true, showIgnored: true);
             if (country == null)
             {
                 return NotFound();
@@ -126,7 +126,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, CreateEditCountryViewModel vm)
         {
-            var country = await _appBLL.Countries.FirstOrDefaultAsync(id, noIncludes:true);
+            var country = await _appBLL.Countries.FirstOrDefaultAsync(id, noIncludes:true, showIgnored: true);
             if (country != null && id != country.Id)
             {
                 return NotFound();
