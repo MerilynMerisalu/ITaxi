@@ -183,7 +183,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                 vm.CreatedBy = country.CreatedBy!;
                 vm.CreatedAt = country.CreatedAt.ToString("g");
                 vm.UpdatedBy = country.UpdatedBy!;
-                vm.UpdatedAt = country.CreatedAt.ToString("g");
+                vm.UpdatedAt = country.UpdatedAt.ToString("g");
             }
 
             return View(vm);

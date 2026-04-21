@@ -58,7 +58,7 @@ public class CountiesController : Controller
         var vm = new DetailsDeleteCountyViewModel();
         if (id == null) return NotFound();
 
-        var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value);
+        var county = await _appBLL.Counties.FirstOrDefaultAsync(id.Value, showIgnored: true);
         if (county == null) return NotFound();
 
         vm.CountryName = county.Country!.CountryName;
