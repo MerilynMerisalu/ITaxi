@@ -46,7 +46,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             }
 
             var vm = new DetailsDeleteCountryViewModel();
-            var country = await _appBLL.Countries.FirstOrDefaultAsync(id.Value);
+            var country = await _appBLL.Countries.FirstOrDefaultAsync(id.Value, showIgnored: true);
             if (country == null)
             {
                 return NotFound();
@@ -181,9 +181,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                 vm.Id = country.Id;
                 vm.CountryName = country.CountryName;
                 vm.CreatedBy = country.CreatedBy!;
-                vm.CreatedAt = country.CreatedAt.ToLocalTime().ToString("g");
+                vm.CreatedAt = country.CreatedAt.ToString("g");
                 vm.UpdatedBy = country.UpdatedBy!;
-                vm.UpdatedAt = country.CreatedAt.ToLocalTime().ToString("g");
+                vm.UpdatedAt = country.CreatedAt.ToString("g");
             }
 
             return View(vm);
