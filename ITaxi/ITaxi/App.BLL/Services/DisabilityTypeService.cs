@@ -23,9 +23,9 @@ public class DisabilityTypeService: BaseEntityService<App.BLL.DTO.AdminArea.Disa
         return Repository.GetAllDisabilityTypeDto(roleName, noTracking).Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<DisabilityTypeDTO>> GetAllOrderedDisabilityTypesAsync(bool noTracking = true)
+    public async Task<IEnumerable<DisabilityTypeDTO>> GetAllOrderedDisabilityTypesAsync(bool noTracking = true, bool showIgnored = true)
     {
-        return (await Repository.GetAllOrderedDisabilityTypesAsync(noTracking)).Select(e => Mapper.Map(e))!;
+        return (await Repository.GetAllOrderedDisabilityTypesAsync(noTracking, showIgnored: showIgnored)).Select(e => Mapper.Map(e))!;
     }
 
     public IEnumerable<DisabilityTypeDTO> GetAllOrderedDisabilityTypes(bool noTracking = true)

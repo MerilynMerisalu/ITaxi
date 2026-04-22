@@ -49,9 +49,9 @@ public class DisabilityTypeRepository : BaseEntityRepository<DisabilityTypeDTO, 
         return disabilityTypeDtoList;
     }
 
-    public async Task<IEnumerable<DisabilityTypeDTO>> GetAllOrderedDisabilityTypesAsync(bool noTracking = true)
+    public async Task<IEnumerable<DisabilityTypeDTO>> GetAllOrderedDisabilityTypesAsync(bool noTracking = true, bool showIgnored = false)
     {
-        return (await CreateQuery(noTracking)
+        return (await CreateQuery(noTracking, showIgnored: showIgnored)
                 .OrderBy(d => d.DisabilityTypeName).ToListAsync())
             .Select(e => Mapper.Map(e))!;
     }

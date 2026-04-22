@@ -90,8 +90,6 @@ public class DisabilityTypesController : Controller
         {
             disabilityType.Id = Guid.NewGuid();
             disabilityType.DisabilityTypeName = vm.DisabilityTypeName;
-            disabilityType.CreatedBy = User.GetUserEmail();
-            disabilityType.CreatedAt = DateTime.Now.ToUniversalTime();
             _appBLL.DisabilityTypes.Add(disabilityType);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -142,8 +140,6 @@ public class DisabilityTypesController : Controller
                 {
                     disabilityType.Id = id;
                     disabilityType.DisabilityTypeName.SetTranslation(vm.DisabilityTypeName);
-                    disabilityType.UpdatedBy = User.Identity!.Name;
-                    disabilityType.UpdatedAt = DateTime.Now;
                     _appBLL.DisabilityTypes.Update(disabilityType);
                     await _appBLL.SaveChangesAsync();
                 }
@@ -210,5 +206,11 @@ public class DisabilityTypesController : Controller
     private bool DisabilityTypeExists(Guid id)
     {
         return _appBLL.DisabilityTypes.Exists(id);
+    }
+
+    public async Task<IActionResult> ShowHide(Guid id)
+    {
+        var result = await _appBLL.DisabilityTypes.ToggleIsIgnoredAsync(id: id, showIgnored: true);
+        return RedirectToAction(nameof(Index));
     }
 }
