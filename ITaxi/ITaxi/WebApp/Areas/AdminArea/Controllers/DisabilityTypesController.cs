@@ -49,7 +49,7 @@ public class DisabilityTypesController : Controller
         if (id == null) return NotFound();
 
         var disabilityType = await _appBLL.DisabilityTypes
-            .FirstOrDefaultAsync(id.Value);
+            .FirstOrDefaultAsync(id.Value, showIgnored: true);
         if (disabilityType == null) return NotFound();
 
         vm.Id = disabilityType.Id;
