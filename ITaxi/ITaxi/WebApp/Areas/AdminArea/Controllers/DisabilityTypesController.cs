@@ -195,7 +195,7 @@ public class DisabilityTypesController : Controller
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
         var disabilityType = await _appBLL.DisabilityTypes
-            .FirstOrDefaultAsync(id);
+            .FirstOrDefaultAsync(id: id, showIgnored: true);
         if (await _appBLL.DisabilityTypes.HasAnyCustomersAsync(id))
             return Content("Entity cannot be deleted because it has dependent entities!");
 
