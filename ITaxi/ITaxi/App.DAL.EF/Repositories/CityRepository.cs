@@ -29,9 +29,9 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
         return res!;
     }
 
-    public async Task<IEnumerable<CityDTO>> GetAllOrderedCitiesAsync()
+    public async Task<IEnumerable<CityDTO>> GetAllOrderedCitiesAsync(bool showIgnored = false)
     {
-        return (await CreateQuery().OrderBy(c => c.County!.CountyName)
+        return (await CreateQuery(showIgnored: showIgnored).OrderBy(c => c.County!.CountyName)
             .ThenBy(c => c.CityName).ToListAsync())
             .Select(e => Mapper.Map(e))!;
     }

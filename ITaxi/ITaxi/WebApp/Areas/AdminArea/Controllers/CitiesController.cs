@@ -35,7 +35,7 @@ public class CitiesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Index()
     {
-        var res = await _appBLL.Cities.GetAllOrderedCitiesAsync();
+        var res = await _appBLL.Cities.GetAllOrderedCitiesAsync(showIgnored: true);
 
         return View(res);
     }
@@ -51,7 +51,7 @@ public class CitiesController : Controller
         if (id == null) return NotFound();
 
         var vm = new DetailsDeleteCityViewModel();
-        var city = await _appBLL.Cities.FirstOrDefaultAsync(id.Value);
+        var city = await _appBLL.Cities.FirstOrDefaultAsync(id.Value, showIgnored: true);
         if (city == null) return NotFound();
 
         vm.Id = city.Id;
@@ -97,8 +97,6 @@ public class CitiesController : Controller
             city.Id = Guid.NewGuid();
             city.CountyId = vm.CountyId;
             city.CityName = vm.CityName;
-            city.CreatedBy = User.GetUserEmail();
-            city.CreatedAt = DateTime.Now.ToUniversalTime();
             _appBLL.Cities.Add(city);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -228,5 +226,11 @@ public class CitiesController : Controller
     private bool CityExists(Guid id)
     {
         return _appBLL.Cities.Exists(id);
+    }
+
+    public async Task<IActionResult> ShowHide(Guid id)
+    {
+        var result = await _appBLL.Cities.ToggleIsIgnoredAsync(id: id, showIgnored: true);
+        return RedirectToAction(nameof(Index));
     }
 }
