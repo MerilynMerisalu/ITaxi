@@ -17,6 +17,9 @@
                 @Html.DisplayNameFor(model => model.DisabilityTypeName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.DataOrigin)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CreatedBy)
             </th>
             <th>
@@ -41,6 +44,9 @@
             <tr>
                 <td>
                     @Html.DisplayTextFor(modelItem => item.DisabilityTypeName)
+                </td>
+                <td>
+                    @Html.DisplayTextFor(modelItem => item.DataOrigin)
                 </td>
                 <td>
                     @Html.DisplayTextFor(modelItem => item.CreatedBy)

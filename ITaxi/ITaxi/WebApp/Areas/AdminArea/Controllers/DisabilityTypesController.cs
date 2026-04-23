@@ -90,6 +90,7 @@ public class DisabilityTypesController : Controller
         {
             disabilityType.Id = Guid.NewGuid();
             disabilityType.DisabilityTypeName = vm.DisabilityTypeName;
+            disabilityType.DataOrigin = DataOrigin.Manual;
             _appBLL.DisabilityTypes.Add(disabilityType);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
