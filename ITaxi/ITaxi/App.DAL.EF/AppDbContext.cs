@@ -5,6 +5,9 @@ using Base.Contracts.Services;
 using Base.Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Identity.Client;
+using System.Collections;
 
 namespace App.DAL.EF;
 
@@ -94,14 +97,19 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
         //FixEntities(this); Only needed if postgres db is used
         NormalizeCountyNames();
         ChangeMetadata();
+       // ApplyIgnoredCascadeAsync()
         return base.SaveChanges();
     }
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         //FixEntities(this); Only needed if postgres db is used
+        
         NormalizeCountyNames();
         ChangeMetadata();
-        return base.SaveChangesAsync(cancellationToken);
+        var result = await base.SaveChangesAsync(cancellationToken);
+
+        await ApplyIgnoredCascadeAsync(cancellationToken);
+        return result;
 
     }
 
@@ -160,6 +168,64 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
                 
             }
         }
+    }
+
+    public async Task ApplyIgnoredCascadeAsync(CancellationToken cancellationToken)
+    {
+        var ignoredParentsByType = ChangeTracker.Entries()
+            .Where(entry => entry.Entity is IDomainEntityMeta meta &&
+            (entry.State == EntityState.Added || entry.State == EntityState.Modified)
+                && meta.IsIgnored)
+            .Select(entry => new
+            {
+                Id = (Guid)entry.Property("Id").CurrentValue!,
+                EntityType = entry.Metadata.ClrType
+            })
+            .GroupBy(x => x.EntityType).
+                ToDictionary(x =>  x.Key,x => 
+                    x.Select(x => x.Id).Distinct().ToList());
+        if (ignoredParentsByType.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var (parentType, parentIds) in ignoredParentsByType)
+        {
+            var foreignKeys = Model.GetEntityTypes().SelectMany(entityType => entityType.GetForeignKeys())
+                .Where(fk => fk.PrincipalEntityType.ClrType == parentType)
+                .Where(fk => fk.Properties.Count == 1)
+                .Where(fk => typeof(IDomainEntityMeta).IsAssignableFrom(fk.DeclaringEntityType.ClrType))
+                .Where(fk =>  !IsExcludedFromIgnoreCascade(fk.DeclaringEntityType.ClrType))
+                .ToList();
+
+            foreach (var foreignKey in foreignKeys)
+            {
+                var childType = foreignKey.DeclaringEntityType.ClrType;
+                var foreignKeyPropertyName = foreignKey.Properties[0].Name;
+                var method = typeof(AppDbContext)
+                    .GetMethod(nameof(ExecuteIgnoreCascadeForChildTypeAsync),
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
+                    .MakeGenericMethod(childType);
+                var rowsUpdated = await (Task<int>)method
+                    .Invoke(this, new object[] { foreignKeyPropertyName, parentIds, cancellationToken });
+            }
+        }
+    }
+
+    private  Task<int> ExecuteIgnoreCascadeForChildTypeAsync<TChild>(string foreignKeyPropertyName, 
+        List<Guid> parentIds, CancellationToken cancellationToken) where TChild: class, IDomainEntityMeta 
+    {
+        return Set<TChild>()
+            .Where(child => parentIds.Contains(
+                Microsoft.EntityFrameworkCore.EF.Property<Guid>(
+                    child, foreignKeyPropertyName)) &&
+                    !child.IsIgnored)
+                    .ExecuteUpdateAsync(setters => setters.SetProperty(
+                        child => child.IsIgnored, true), cancellationToken);
+    }
+    private static bool IsExcludedFromIgnoreCascade(Type type)
+    {
+        return type == typeof(DriverAndDriverLicenseCategory);
     }
 
     } 

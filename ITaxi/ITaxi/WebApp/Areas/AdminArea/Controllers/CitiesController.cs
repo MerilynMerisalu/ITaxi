@@ -59,7 +59,7 @@ public class CitiesController : Controller
         vm.CityName = city.CityName;
         vm.CreatedAt = city.CreatedAt;
         vm.CreatedBy = city.CreatedBy!;
-        vm.UpdatedBy = User.Identity!.Name!;
+        vm.UpdatedBy = city.UpdatedBy;
         vm.UpdatedAt = city.UpdatedAt;
         
         return View(vm);
@@ -74,7 +74,7 @@ public class CitiesController : Controller
     {
         var vm = new CreateEditCityViewModel();
 
-        vm.Counties = new SelectList(await _appBLL.Counties.GetAllAsync(),
+        vm.Counties = new SelectList(await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync(showIgnored: true),
             nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
         return View(vm);
     }
@@ -97,6 +97,9 @@ public class CitiesController : Controller
             city.Id = Guid.NewGuid();
             city.CountyId = vm.CountyId;
             city.CityName = vm.CityName;
+            if (city.County!.IsIgnored)
+              city.IsIgnored = true;  
+   
             _appBLL.Cities.Add(city);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -151,8 +154,6 @@ public class CitiesController : Controller
                 city.Id = id;
                 city.CountyId = vm.CountyId;
                 city.CityName = vm.CityName;
-                city.UpdatedBy = User.GetUserEmail();
-                city.UpdatedAt = DateTime.Now.ToUniversalTime();
                 _appBLL.Cities.Update(city);
                 await _appBLL.SaveChangesAsync();
             }
@@ -180,7 +181,7 @@ public class CitiesController : Controller
         var vm = new DetailsDeleteCityViewModel();
         if (id == null) return NotFound();
 
-        var city = await _appBLL.Cities.FirstOrDefaultAsync(id.Value);
+        var city = await _appBLL.Cities.FirstOrDefaultAsync(id: id.Value, showIgnored: true);
         if (city == null) return NotFound();
 
         vm.CityName = city.CityName;
