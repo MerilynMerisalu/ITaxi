@@ -106,9 +106,10 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
         
         NormalizeCountyNames();
         ChangeMetadata();
+        var ignoredParentsByType = GetIgnoredParentsByType();
         var result = await base.SaveChangesAsync(cancellationToken);
 
-        await ApplyIgnoredCascadeAsync(cancellationToken);
+        await ApplyIgnoredCascadeAsync(ignoredParentsByType: ignoredParentsByType, cancellationToken: cancellationToken);
         return result;
 
     }
@@ -170,20 +171,9 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
         }
     }
 
-    public async Task ApplyIgnoredCascadeAsync(CancellationToken cancellationToken)
+    public async Task ApplyIgnoredCascadeAsync(Dictionary<Type, List<Guid>> ignoredParentsByType, CancellationToken cancellationToken)
     {
-        var ignoredParentsByType = ChangeTracker.Entries()
-            .Where(entry => entry.Entity is IDomainEntityMeta meta &&
-            (entry.State == EntityState.Added || entry.State == EntityState.Modified)
-                && meta.IsIgnored)
-            .Select(entry => new
-            {
-                Id = (Guid)entry.Property("Id").CurrentValue!,
-                EntityType = entry.Metadata.ClrType
-            })
-            .GroupBy(x => x.EntityType).
-                ToDictionary(x =>  x.Key,x => 
-                    x.Select(x => x.Id).Distinct().ToList());
+        
         if (ignoredParentsByType.Count == 0)
         {
             return;
@@ -226,6 +216,23 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     private static bool IsExcludedFromIgnoreCascade(Type type)
     {
         return type == typeof(DriverAndDriverLicenseCategory);
+    }
+
+    private Dictionary<Type, List<Guid>>GetIgnoredParentsByType()
+    {
+        var ignoredParentsByType = ChangeTracker.Entries()
+            .Where(entry => entry.Entity is IDomainEntityMeta meta &&
+            (entry.State == EntityState.Added || entry.State == EntityState.Modified)
+                && meta.IsIgnored)
+            .Select(entry => new
+            {
+                Id = (Guid)entry.Property("Id").CurrentValue!,
+                EntityType = entry.Metadata.ClrType
+            })
+            .GroupBy(x => x.EntityType).
+                ToDictionary(x => x.Key, x =>
+                    x.Select(x => x.Id).Distinct().ToList());
+        return ignoredParentsByType;
     }
 
     } 
