@@ -1,17 +1,27 @@
 ﻿@using Base.Resources
-
+@using Base.ViewModels
+@model ShowHideButtonVM
 
 @{
     var showHideClass = Model.IsIgnored ? "show" : "hide";
     var showHideText = Model.IsIgnored ? Common.Show : Common.Hide;
     var showHideTitle = Model.IsIgnored ? Common.MakeVisible : Common.HideFromUsers;
+   
 }
 
 <form asp-action="ShowHide" asp-route-id="@Model.Id" method="post" class="d-inline">
     @Html.AntiForgeryToken()
-    <button type="submit"
-            title="@showHideTitle"
-            class="btn btn-link p-0 align-baseline @showHideClass">
-        @showHideText
-    </button>
+    @if (Model.CanBeShown || !Model.IsIgnored)
+        {
+        <button type="submit"
+                title="@showHideTitle"
+                class="btn btn-link p-0 align-baseline @showHideClass">
+            @showHideText
+        </button>
+        }
+        else
+        {
+            <button disabled="disabled"></button>
+        }
+
 </form>

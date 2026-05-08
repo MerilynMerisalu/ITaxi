@@ -5,7 +5,7 @@ using Base.Resources;
 
 namespace App.BLL.DTO.AdminArea;
 
-public class CountyDTO : DomainEntityMetaId, IShowHideItem
+public class CountyDTO : DomainEntityMetaId
 {
     [Required(ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
@@ -24,4 +24,6 @@ public class CountyDTO : DomainEntityMetaId, IShowHideItem
     [Display(ResourceType = typeof(App.Resources.Areas.App_Domain.AdminArea.County),
         Name = nameof(CountyEHAKCode))]
     public string? CountyEHAKCode { get; set; }
+
+   
 }

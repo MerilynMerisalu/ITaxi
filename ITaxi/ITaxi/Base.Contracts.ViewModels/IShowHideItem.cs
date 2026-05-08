@@ -4,5 +4,6 @@
     {
         Guid Id { get; }
         bool IsIgnored { get; }
+        
     }
 }
