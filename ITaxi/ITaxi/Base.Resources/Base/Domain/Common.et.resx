@@ -159,4 +159,7 @@
   <data name="DataOrigin" xml:space="preserve">
     <value>Andmete sisestusviis</value>
   </data>
+  <data name="ParentVisibility" xml:space="preserve">
+    <value>Esmalt muutke ülemolem nähtavaks</value>
+  </data>
 </root>

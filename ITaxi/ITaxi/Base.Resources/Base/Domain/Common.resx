@@ -159,4 +159,7 @@
   <data name="DataOrigin" xml:space="preserve">
     <value>Data Origin</value>
   </data>
+  <data name="ParentVisibility" xml:space="preserve">
+    <value>The parent must be visible first</value>
+  </data>
 </root>

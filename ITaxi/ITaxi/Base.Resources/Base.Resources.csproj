@@ -69,6 +69,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Update="Base\Domain\Common.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Common.resx</DependentUpon>
+        </Compile>
         <Compile Update="Views\Shared\_Layout.Designer.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>

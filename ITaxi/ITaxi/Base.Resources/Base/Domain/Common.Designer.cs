@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Base.Resources.Base_Domain {
+namespace Base.Resources.Base.Domain {
     using System;
     
     
@@ -156,6 +156,15 @@ namespace Base.Resources.Base_Domain {
         public static string ManuallyAdded {
             get {
                 return ResourceManager.GetString("ManuallyAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The parent must be visible first.
+        /// </summary>
+        public static string ParentVisibility {
+            get {
+                return ResourceManager.GetString("ParentVisibility", resourceCulture);
             }
         }
         

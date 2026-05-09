@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using App.Resources.Areas.App.Domain.AdminArea;
-using Base.Resources.Base_Domain;
+using Base.Resources;
+
 
 
 public enum Gender
@@ -83,6 +84,6 @@ public enum DataOrigin
 {
     [Display(ResourceType = typeof(Common), Name = "ManuallyAdded")]
     Manual = 1,
-    [Display(ResourceType = typeof(Common), Name = "Imported")]
+    [Display(ResourceType = typeof(Base.Resources.Base.Domain.Common), Name = "Imported")]
     Api
 }
