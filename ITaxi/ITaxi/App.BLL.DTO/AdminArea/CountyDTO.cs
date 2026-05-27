@@ -5,7 +5,7 @@ using Base.Resources;
 
 namespace App.BLL.DTO.AdminArea;
 
-public class CountyDTO : DomainEntityMetaId
+public class CountyDTO : DomainEntityMetaId, IShowHideItem
 {
     [Required(ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "RequiredAttributeErrorMessage")]

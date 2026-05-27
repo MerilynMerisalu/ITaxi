@@ -1,6 +1,6 @@
 @using App.Resources.Areas.App.Domain.AdminArea
 @using Base.Resources
-
+@using WebApp.Helpers
 @using Base.ViewModels
 @model IEnumerable<App.BLL.DTO.AdminArea.CountryDTO>
 @{
@@ -81,12 +81,7 @@
 
                     }
                 <a asp-action="Details" asp-route-id="@item.Id">@Common.Details</a> 
-                <partial name="_ShowHideButton" model="new ShowHideButtonVM
-    {
-                 Id = item.Id,
-                 IsIgnored = item.IsIgnored,
-                 CanBeShown = item is not null && !item.IsIgnored
-       }" />
+                <partial name="_ShowHideButton" model="@item.ToShowHideVM()" />
                
             </td>
         </tr>
