@@ -74,7 +74,7 @@ public class CitiesController : Controller
     {
         var vm = new CreateEditCityViewModel();
 
-        vm.Counties = new SelectList(await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync(showIgnored: true),
+        vm.Counties = new SelectList(await _appBLL.Counties.GetAllCountiesOrderedByCountyNameAsync(showIgnored: false),
             nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
         return View(vm);
     }
@@ -97,9 +97,8 @@ public class CitiesController : Controller
             city.Id = Guid.NewGuid();
             city.CountyId = vm.CountyId;
             city.CityName = vm.CityName;
-            if (city.County!.IsIgnored)
-              city.IsIgnored = true;  
-   
+            city.DataOrigin = DataOrigin.Manual;
+            
             _appBLL.Cities.Add(city);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

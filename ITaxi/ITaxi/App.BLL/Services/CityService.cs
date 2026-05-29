@@ -53,4 +53,5 @@ public class CityService : BaseEntityService<App.BLL.DTO.AdminArea.CityDTO, DAL.
         return Repository.HasAnyCities(id, noTracking);
     }
 
+   
 }
