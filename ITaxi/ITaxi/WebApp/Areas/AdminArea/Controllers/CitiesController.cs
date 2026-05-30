@@ -35,7 +35,7 @@ public class CitiesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Index()
     {
-        var res = await _appBLL.Cities.GetAllOrderedCitiesAsync(showIgnored: true);
+        var res = await _appBLL.Cities.GetAllOrderedCitiesAsync(showIgnored: true, showDeleted: true);
 
         return View(res);
     }
@@ -210,7 +210,7 @@ public class CitiesController : Controller
         {
             try
             {
-                await _appBLL.Cities.RemoveAsync(city.Id);
+                await _appBLL.Cities.RemoveAsync(city.Id, hardDelete: false);
             }
             catch (ApplicationException e)
             {
