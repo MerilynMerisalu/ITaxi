@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup Condition="'$(SIXLABORS_LICENSE_KEY)' != ''">
+    <SixLaborsLicenseKey>$(SIXLABORS_LICENSE_KEY)</SixLaborsLicenseKey>
+  </PropertyGroup>
+</Project>

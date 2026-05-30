@@ -80,7 +80,7 @@ public class CountiesController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateEditCountyViewModel();
-        var countries = await _appBLL.Countries.GetAllCountriesOrderedByCountryNameAsync();
+        var countries = await _appBLL.Countries.GetAllCountriesOrderedByCountryNameAsync(showIgnored: false);
         vm.Countries = new SelectList(countries, nameof(Country.Id), nameof(Country.CountryName));
         return View(vm);
     }

@@ -21,16 +21,16 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
     }
 
     public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryNameAsync(
-        bool noTracking = true, bool noIncludes = false)
+        bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
     {
-        return (await Repository.GetAllCountriesOrderedByCountryNameAsync(noTracking, noIncludes))
+        return (await Repository.GetAllCountriesOrderedByCountryNameAsync(noTracking: noTracking, noIncludes: noIncludes, showIgnored: showIgnored))
             .Select(e => Mapper.Map(e))!;
     }
 
     public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryName(
-        bool noTracking = true, bool noIncludes = false)
+        bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
     {
-        return Repository.GetAllCountriesOrderedByCountryName(noTracking, noIncludes)
+        return Repository.GetAllCountriesOrderedByCountryName(noTracking: noTracking, noIncludes: noIncludes, showIgnored: showIgnored)
             .Select(e => Mapper.Map(e))!;
     }
 
