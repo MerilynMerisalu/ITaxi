@@ -87,16 +87,16 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
         
     }
 
-    public override async Task<CountryDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
+    public override async Task<CountryDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        var country = (await CreateQuery(noTracking, noIncludes, showIgnored: showIgnored)
+        var country = (await CreateQuery(noTracking, noIncludes, showIgnored: showIgnored, showDeleted: showDeleted)
             .FirstOrDefaultAsync(c => c.Id.Equals(id)));
         return Mapper.Map(country);
     }
 
-    public override CountryDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false)
+    public override CountryDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        return Mapper.Map(CreateQuery(noTracking, noIncludes).FirstOrDefault(c => c.Id.Equals(id)));
+        return Mapper.Map(CreateQuery(noTracking, noIncludes, showIgnored: showIgnored, showDeleted: showDeleted).FirstOrDefault(c => c.Id.Equals(id)));
     }
 
     public async Task<CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true)

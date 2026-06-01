@@ -205,12 +205,12 @@ public class CitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var city = await _appBLL.Cities.FirstOrDefaultAsync(id);
+        var city = await _appBLL.Cities.FirstOrDefaultAsync(id: id, showIgnored: true);
         if (city != null)
         {
             try
             {
-                await _appBLL.Cities.RemoveAsync(city.Id, hardDelete: false);
+                 _appBLL.Cities.Remove(city.Id, hardDelete: false, showIgnored: true);
             }
             catch (ApplicationException e)
             {

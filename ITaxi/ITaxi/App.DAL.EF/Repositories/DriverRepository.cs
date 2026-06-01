@@ -14,14 +14,14 @@ public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Drive
     {
     }
 
-    public override async Task<DriverDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
+    public override async Task<DriverDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false, bool showDeleted = false)
     {
-        return Mapper.Map(await CreateQuery(noTracking, noIncludes, showIgnored: showIgnored).FirstOrDefaultAsync(d => d.Id.Equals(id)));
+        return Mapper.Map(await CreateQuery(noTracking, noIncludes, showIgnored: showIgnored, showDeleted: showDeleted).FirstOrDefaultAsync(d => d.Id.Equals(id)));
     }
 
-    public override DriverDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false)
+    public override DriverDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false, bool showDeleted = false)
     {
-        return Mapper.Map(CreateQuery(noTracking, noIncludes).FirstOrDefault(d => d.Id.Equals(id)));
+        return Mapper.Map(CreateQuery(noTracking, noIncludes, showIgnored: showIgnored, showDeleted: showDeleted).FirstOrDefault(d => d.Id.Equals(id)));
     }
 
     public async Task<IEnumerable<DriverDTO>> GetAllDriversOrderedByLastNameAsync(bool noTracking = true)

@@ -64,14 +64,14 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
         
     }
 
-    public TBllEntity Remove(TBllEntity entity, bool hardDelete = false)
+    public TBllEntity Remove(TBllEntity entity, bool hardDelete = false, bool showDeleted = false, bool showIgnored = false)
     {
-        return Mapper.Map(Repository.Remove(Mapper.Map(entity)!, hardDelete))!;
+        return Mapper.Map(Repository.Remove(Mapper.Map(entity)!, hardDelete: hardDelete, showDeleted: showDeleted, showIgnored: showIgnored))!;
     }
 
-    public TBllEntity Remove(TKey id, bool hardDelete = false)
+    public TBllEntity Remove(TKey id, bool hardDelete = false ,bool showDeleted = false, bool showIgnored = false)
     {
-        return Mapper.Map(Repository.Remove(id, hardDelete))!;
+        return Mapper.Map(Repository.Remove(id, hardDelete, showIgnored: showIgnored, showDeleted: showDeleted))!;
     }
 
     public List<TBllEntity> RemoveAll(List<TBllEntity> entities)
@@ -94,9 +94,9 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
         return tBllEntities;
     }
 
-    public TBllEntity? FirstOrDefault(TKey id, bool noTracking = true, bool noIncludes = false)
+    public TBllEntity? FirstOrDefault(TKey id, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        return Mapper.Map(Repository.FirstOrDefault(id, noTracking, noIncludes));
+        return Mapper.Map(Repository.FirstOrDefault(id, noTracking, noIncludes, showDeleted: showDeleted, showIgnored: showIgnored));
     }
 
     public IEnumerable<TBllEntity> GetAll(bool noTracking = true)
@@ -137,9 +137,9 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
         return entities;
     }
 
-    public async Task<TBllEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
+    public async Task<TBllEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool showDeleted = false, bool noIncludes = false, bool showIgnored = false)
     {
-        var dalEntity = await Repository.FirstOrDefaultAsync(id, noTracking, noIncludes, showIgnored: showIgnored);
+        var dalEntity = await Repository.FirstOrDefaultAsync(id, noTracking, noIncludes, showIgnored: showIgnored, showDeleted: showDeleted);
         return Mapper.Map(dalEntity);
     }
 
@@ -153,9 +153,9 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
         return (await Repository.ExistsAsync(id));
     }
 
-    public Task<TBllEntity> RemoveAsync(TKey id, bool hardDelete = false)
+    public Task<TBllEntity> RemoveAsync(TKey id, bool hardDelete = false, bool showDeleted = false, bool showIgnored = false)
     {
-        var t = Repository.Remove(id, hardDelete);
+        var t = Repository.Remove(id, hardDelete, showIgnored: showIgnored, showDeleted: showDeleted );
         return Task.FromResult(Mapper.Map(t)!);
     }
 
@@ -187,4 +187,8 @@ public class BaseEntityService<TBllEntity, TDalEntity, TRepository, TKey> :
     {
         return Mapper.Map(Repository.ToggleIsIgnored(Mapper.Map(dalEntity), noTracking, noIncludes));
     }
+
+    
+    
+    
 }

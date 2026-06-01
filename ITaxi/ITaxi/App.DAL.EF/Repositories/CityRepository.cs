@@ -68,9 +68,9 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
         return (await CreateQuery().Where(x => x.CountyId == countyId).ToListAsync()).Select(x => Mapper.Map(x))!;
     }
 
-    public override async Task<CityDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
+    public override async Task<CityDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false, bool showDeleted = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes, showIgnored: showIgnored);
+        var query = base.CreateQuery(noTracking, noIncludes, showIgnored: showIgnored, showDeleted: showDeleted);
         if (noTracking) query = query.AsNoTracking();
         if (!noIncludes) query = query.Include(c => c.County);
 
@@ -80,9 +80,9 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
     }
 
 
-    public override CityDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false)
+    public override CityDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        return Mapper.Map(CreateQuery(noTracking).FirstOrDefault(c => c.Id.Equals(id)));
+        return Mapper.Map(CreateQuery(noTracking, showIgnored: showIgnored).FirstOrDefault(c => c.Id.Equals(id)));
     }
 
     public async /*override */ Task<CityDTO?> SingleOrDefaultAsync(Expression<Func<City?, bool>> filter, bool noTracking = true)
@@ -95,13 +95,13 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
         return Mapper.Map(CreateQuery(noTracking).SingleOrDefault(e => e.Id.Equals(filter)));
     }
 
-    public override CityDTO Remove(CityDTO entity, bool hardDelete = false)
+    public override CityDTO Remove(CityDTO entity, bool hardDelete = false, bool showIgnored = false, bool showDeleted = false)
     {
         if (RepoDbContext.Admins.Any(x => x.CityId == entity.Id) ||
             RepoDbContext.Bookings.Any(x => x.CityId == entity.Id) ||
             RepoDbContext.Drivers.Any(x => x.CityId == entity.Id))
             throw new ApplicationException("Entity cannot be deleted because it has dependent entities!");
-        return base.Remove(entity, hardDelete);
+        return base.Remove(entity, hardDelete, showIgnored);
     }
     protected override IQueryable<City> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false
         , bool showIgnored = false)

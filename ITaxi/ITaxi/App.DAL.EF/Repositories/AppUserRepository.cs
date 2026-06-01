@@ -24,14 +24,14 @@ public class AppUserRepository : BaseEntityRepository<App.DAL.DTO.Identity.AppUs
         return (await CreateQuery(noTracking).ToListAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public override async Task<DTO.Identity.AppUser?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
+    public override async Task<DTO.Identity.AppUser?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false, bool showDeleted = false)
     {
-        return Mapper.Map(await CreateQuery(noTracking, noIncludes, showIgnored: showIgnored).FirstOrDefaultAsync(e => e.Id.Equals(id)));
+        return Mapper.Map(await CreateQuery(noTracking, noIncludes, showIgnored: showIgnored, showDeleted: showDeleted).FirstOrDefaultAsync(e => e.Id.Equals(id)));
     }
 
-    public override DTO.Identity.AppUser? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false)
+    public override DTO.Identity.AppUser? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false, bool showDeleted = false)
     {
-        return Mapper.Map(CreateQuery(noTracking, noIncludes).FirstOrDefault(a => a.Id.Equals(id)));
+        return Mapper.Map(CreateQuery(noTracking, noIncludes, showIgnored: showIgnored, showDeleted: showDeleted).FirstOrDefault(a => a.Id.Equals(id)));
     }
 
     public async Task<IEnumerable<DTO.Identity.AppUser>> GetAllAppUsersOrderedByLastNameAsync(bool noTracking = true)

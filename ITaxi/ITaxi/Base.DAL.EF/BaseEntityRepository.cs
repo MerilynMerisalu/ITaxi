@@ -64,7 +64,7 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         return Mapper.Map(RepoDbSet.Update(Mapper.Map(entity)!).Entity)!;
     }
 
-    public virtual TDalEntity Remove(TDalEntity entity, bool hardDelete = false)
+    public virtual TDalEntity Remove(TDalEntity entity, bool hardDelete = false, bool showDeleted = false, bool showIgnored = false)
     {
         if (hardDelete)
         {
@@ -75,7 +75,7 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         {
             // I can't just edit the entity that is provided
             // I need re-fetch the entity from THIS context (not whatever is passed in)
-            var data = RepoDbSet.Find(entity.Id);
+            var data = RepoDbSet.FirstOrDefault(e => e.Id.Equals(entity.Id) );
             if (data == null)
                 // TODO: implement custom exception for entity not found
                 throw new NullReferenceException($"Entity {typeof(TDalEntity).Name} with id {entity.Id} was not found");
@@ -93,15 +93,15 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
 
             return Mapper.Map(RepoDbSet.Update(data).Entity)!;
         }
-    }
+    } 
 
-    public virtual TDalEntity Remove(TKey id, bool hardDelete = false)
+    public virtual TDalEntity Remove(TKey id, bool hardDelete = false, bool showDeleted = false, bool showIgnored = false)
     {
-        var entity = FirstOrDefault(id, noTracking:true, noIncludes:true);
+        var entity = FirstOrDefault(id, noTracking:true, noIncludes:true, showDeleted: showDeleted, showIgnored: showIgnored);
         if (entity == null)
             // TODO: implement custom exception for entity not found
             throw new NullReferenceException($"Entity {typeof(TDalEntity).Name} with id {id} was not found");
-        return Remove(entity, hardDelete);
+        return Remove(entity, hardDelete, showIgnored);
     }
 
     public virtual List<TDalEntity> RemoveAll(List<TDalEntity> entities)
@@ -131,9 +131,9 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
         return entities.ToList();
     }
 
-    public virtual TDalEntity? FirstOrDefault(TKey id, bool noTracking = true, bool noIncludes = false)
+    public virtual TDalEntity? FirstOrDefault(TKey id, bool noTracking = true, bool showDeleted = false, bool noIncludes = false, bool showIgnored = false)
     {
-        return Mapper.Map(CreateQuery(noTracking, noIncludes)
+        return Mapper.Map(CreateQuery(noIncludes: noIncludes,showDeleted: showDeleted, noTracking: noTracking, showIgnored: showIgnored)
             .FirstOrDefault(e => e.Id.Equals(id)));
     }
 
@@ -193,9 +193,9 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
     }
 
 
-    public virtual async Task<TDalEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
+    public virtual async Task<TDalEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false, bool showDeleted = false)
     {
-        var dalEntity = await CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showIgnored: showIgnored).FirstOrDefaultAsync(e => e.Id.Equals(id));
+        var dalEntity = await CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showIgnored: showIgnored, showDeleted: showDeleted).FirstOrDefaultAsync(e => e.Id.Equals(id));
         return Mapper.Map(dalEntity);
     }
 
@@ -211,13 +211,13 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
 
     
 
-    public virtual async Task<TDalEntity> RemoveAsync(TKey id, bool hardDelete = false)
+    public virtual async Task<TDalEntity> RemoveAsync(TKey id, bool hardDelete = false, bool showDeleted = false, bool showIgnored = false)
     {
-        var entity = await FirstOrDefaultAsync(id);
+        var entity = await FirstOrDefaultAsync(id: id, showIgnored: showIgnored, showDeleted: showDeleted, noTracking: false, noIncludes: true);
         if (entity == null)
             // TODO: implement custom exception for entity not found
             throw new NullReferenceException($"Entity {typeof(TDalEntity).Name} with id {id} was not found");
-        return Remove(entity, hardDelete);
+        return Remove(entity, hardDelete, showIgnored);
     }
 
     public virtual async Task<bool> AnyAsync(Expression<Func<TDalEntity?, bool>> filter, bool noTracking = true)
@@ -290,4 +290,6 @@ public class BaseEntityRepository<TDalEntity, TDomainEntity, TKey, TDbContext> :
     }
 
     
+
+   
 }

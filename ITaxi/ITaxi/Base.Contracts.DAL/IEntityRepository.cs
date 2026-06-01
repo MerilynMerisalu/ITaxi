@@ -15,12 +15,12 @@ public interface IEntityRepository<TEntity, TKey>
     TEntity Add(TEntity entity);
     Task<List<TEntity>> AddRangeAsync(List<TEntity> entities);
     TEntity Update(TEntity entity);
-    TEntity Remove(TEntity entity, bool hardDelete = false);
-    TEntity Remove(TKey id, bool hardDelete = false);
+    TEntity Remove(TEntity entity, bool hardDelete = false, bool showDeleted = false, bool showIgnored = false);
+    TEntity Remove(TKey id, bool hardDelete = false, bool showDeleted = false, bool showIgnored = false );
 
 
     List<TEntity> RemoveAll(List<TEntity> entities);
-    TEntity? FirstOrDefault(TKey id, bool noTracking = true, bool noIncludes = false);
+    TEntity? FirstOrDefault(TKey id, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false);
     IEnumerable<TEntity> GetAll(bool noTracking = true);
     bool Exists(TKey id);
     bool Any(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
@@ -32,10 +32,10 @@ public interface IEntityRepository<TEntity, TKey>
 
     // async
     List<TEntity> AddRange(List<TEntity> entities);
-    Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false);
+    Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false);
     Task<IEnumerable<TEntity>> GetAllAsync(bool noTracking = true);
     Task<bool> ExistsAsync(TKey id);
-    Task<TEntity> RemoveAsync(TKey id, bool hardDelete = false);
+    Task<TEntity> RemoveAsync(TKey id, bool hardDelete = false, bool showDeleted = false, bool showIgnored = false);
     Task<bool> AnyAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
     Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity?, bool>> filter, bool noTracking = true);
     Task<TEntity?> FirstAsync(bool noTracking = true, bool noIncludes = false);

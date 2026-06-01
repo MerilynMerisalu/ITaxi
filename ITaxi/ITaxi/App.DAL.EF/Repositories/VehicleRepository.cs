@@ -25,14 +25,14 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
         return CreateQuery(null, null, noTracking).ToList().Select(e => Mapper.Map(e))!;
     }
 
-    public override async Task<VehicleDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
+    public override async Task<VehicleDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false, bool showDeleted = false)
     {
-        return Mapper.Map(await CreateQuery(null, null, noTracking, noIncludes).FirstOrDefaultAsync(v => v.Id.Equals(id)));
+        return Mapper.Map(await CreateQuery(null, null, noTracking, noIncludes, showIgnored: showIgnored, showDeleted: showDeleted).FirstOrDefaultAsync(v => v.Id.Equals(id)));
     }
 
-    public override VehicleDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false)
+    public override VehicleDTO? FirstOrDefault(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false, bool showDeleted = false)
     {
-        return Mapper.Map(CreateQuery(null, null, noTracking, noIncludes).FirstOrDefault(v => v.Id.Equals(id)));
+        return Mapper.Map(CreateQuery(null, null, noTracking, noIncludes, showDeleted: showDeleted).FirstOrDefault(v => v.Id.Equals(id)));
     }
 
     public async Task<IEnumerable<VehicleDTO>> GettingOrderedVehiclesAsync(Guid? userId, string? roleName =
@@ -209,9 +209,10 @@ public class VehicleRepository : BaseEntityRepository<VehicleDTO, Vehicle, AppDb
 
     
 
-    protected IQueryable<Vehicle> CreateQuery(Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false, bool showDeleted = false)
+    protected IQueryable<Vehicle> CreateQuery(Guid? userId = null, string? roleName = null,
+        bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        var query = CreateQuery(noTracking, noIncludes, showDeleted);
+        var query = CreateQuery(noTracking, noIncludes, showDeleted, showIgnored: showIgnored);
         if (noTracking) query = query.AsNoTracking();
 
         if (!noIncludes)
