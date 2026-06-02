@@ -182,6 +182,8 @@ public class CitiesController : Controller
 
         var city = await _appBLL.Cities.GetCityByIdAsync(id: id.Value, showIgnored: true);
         if (city == null) return NotFound();
+        if (city.County!.IsIgnored)
+            vm.IsCountyIgnored = true;
 
         vm.CityName = city.CityName;
         vm.CountyName = city.County!.CountyName;

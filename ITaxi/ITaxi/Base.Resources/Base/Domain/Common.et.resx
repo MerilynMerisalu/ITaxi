@@ -162,4 +162,7 @@
   <data name="ParentVisibility" xml:space="preserve">
     <value>Esmalt muutke ülemolem nähtavaks</value>
   </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Hoiatus!</value>
+  </data>
 </root>

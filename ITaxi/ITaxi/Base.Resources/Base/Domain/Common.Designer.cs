@@ -194,5 +194,14 @@ namespace Base.Resources.Base.Domain {
                 return ResourceManager.GetString("UpdatedBy", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning!.
+        /// </summary>
+        public static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
+            }
+        }
     }
 }

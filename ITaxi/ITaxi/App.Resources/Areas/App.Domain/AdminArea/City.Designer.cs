@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace App.Resources.Areas.App.Domain.AdminArea {
+namespace App.Resources.Areas.App_Domain.AdminArea {
     using System;
     
     
@@ -19,7 +19,7 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class City {
@@ -75,6 +75,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string CountyName {
             get {
                 return ResourceManager.GetString("CountyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The county is hidden! Are you sure you want to delete this city?.
+        /// </summary>
+        public static string WarningCountyIsIgnored {
+            get {
+                return ResourceManager.GetString("WarningCountyIsIgnored", resourceCulture);
             }
         }
     }

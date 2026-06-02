@@ -1,6 +1,13 @@
-﻿@model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteCityViewModel
+﻿@using App.Resources.Areas.App_Domain.AdminArea
+@using Base.Resources.Base.Domain
+@model WebApp.Areas.AdminArea.ViewModels.DetailsDeleteCityViewModel
 
-
+@if (Model.IsCountyIgnored)
+{
+    <div class=" alert alert-warning">
+        <strong>@Common.Warning</strong> @City.WarningCountyIsIgnored 
+    </div>
+}
 <dt class="col-sm-2">
     @Html.DisplayNameFor(model => model.CountyName)
 </dt>
