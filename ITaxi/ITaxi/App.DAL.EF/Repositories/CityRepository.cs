@@ -70,7 +70,7 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
 
     public override async Task<CityDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showIgnored = false, bool showDeleted = false)
     {
-        var query = base.CreateQuery(noTracking, noIncludes, showIgnored: showIgnored, showDeleted: showDeleted);
+        var query = CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored);
         if (noTracking) query = query.AsNoTracking();
         if (!noIncludes) query = query.Include(c => c.County);
 
@@ -111,5 +111,11 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
         if (!noIncludes)
             query = query.Include(c => c.County);
         return query;
+    }
+
+    public async Task<CityDTO?> GetCityByIdAsync(Guid id, bool noTracking = false, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    {
+        var result = (await CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored).FirstOrDefaultAsync(e => e.Id.Equals(id)));
+        return Mapper.Map(result);
     }
 }

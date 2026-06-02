@@ -180,7 +180,7 @@ public class CitiesController : Controller
         var vm = new DetailsDeleteCityViewModel();
         if (id == null) return NotFound();
 
-        var city = await _appBLL.Cities.FirstOrDefaultAsync(id: id.Value, showIgnored: true);
+        var city = await _appBLL.Cities.GetCityByIdAsync(id: id.Value, showIgnored: true);
         if (city == null) return NotFound();
 
         vm.CityName = city.CityName;
@@ -205,7 +205,7 @@ public class CitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var city = await _appBLL.Cities.FirstOrDefaultAsync(id: id, showIgnored: true);
+        var city = await _appBLL.Cities.GetCityByIdAsync(id: id, showIgnored: true);
         if (city != null)
         {
             try

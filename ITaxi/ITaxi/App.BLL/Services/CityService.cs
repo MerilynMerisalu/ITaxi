@@ -53,5 +53,8 @@ public class CityService : BaseEntityService<App.BLL.DTO.AdminArea.CityDTO, DAL.
         return Repository.HasAnyCities(id, noTracking);
     }
 
-   
+    public async Task<CityDTO?> GetCityByIdAsync(Guid id, bool noTracking = false, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    {
+        return Mapper.Map(await Repository.GetCityByIdAsync(id: id, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored));
+    }
 }
