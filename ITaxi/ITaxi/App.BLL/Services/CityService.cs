@@ -28,9 +28,9 @@ public class CityService : BaseEntityService<App.BLL.DTO.AdminArea.CityDTO, DAL.
         return (await Repository.GetAllOrderedCitiesAsync(showIgnored: showIgnored, showDeleted: showDeleted)).Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<CityDTO?> FirstOrDefaultCityWithoutCountyAsync(Guid id)
+    public async Task<CityDTO?> FirstOrDefaultCityWithoutCountyAsync(Guid id, bool showIgnored = false)
     {
-        return Mapper.Map(await Repository.FirstOrDefaultCityWithoutCountyAsync(id));
+        return Mapper.Map(await Repository.FirstOrDefaultCityWithoutCountyAsync(id, showIgnored: showIgnored));
     }
 
     public IEnumerable<CityDTO> GetAllOrderedCitiesWithoutCounty()

@@ -79,7 +79,16 @@ namespace App.Resources.Areas.App_Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The county is hidden! Are you sure you want to delete this city?.
+        ///   Looks up a localized string similar to The County is hidden!.
+        /// </summary>
+        public static string WarningCountyIsHidden {
+            get {
+                return ResourceManager.GetString("WarningCountyIsHidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The county for this city is hidden! Are you sure you want to delete this city?.
         /// </summary>
         public static string WarningCountyIsIgnored {
             get {

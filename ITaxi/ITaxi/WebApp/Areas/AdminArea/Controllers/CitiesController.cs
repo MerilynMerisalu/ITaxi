@@ -118,9 +118,10 @@ public class CitiesController : Controller
         var vm = new CreateEditCityViewModel();
         if (id == null) return NotFound();
 
-        var city = await _appBLL.Cities.FirstOrDefaultAsync(id.Value);
+        var city = await _appBLL.Cities.GetCityByIdAsync(id: id.Value, showIgnored: true);
         if (city == null) return NotFound();
-
+        if (city.County!.IsIgnored) 
+            vm.IsCountyIgnored = true;
         vm.Counties = new SelectList(await _appBLL.Counties.GetAllAsync(),
             nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
         vm.CityName = city.CityName;
@@ -142,7 +143,7 @@ public class CitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditCityViewModel vm)
     {
-        var city = await _appBLL.Cities.FirstOrDefaultCityWithoutCountyAsync(id);
+        var city = await _appBLL.Cities.FirstOrDefaultCityWithoutCountyAsync(id, showIgnored: true);
 
         if (id != city!.Id) return NotFound();
 
@@ -151,8 +152,14 @@ public class CitiesController : Controller
             try
             {
                 city.Id = id;
-                city.CountyId = vm.CountyId;
-                city.CityName = vm.CityName;
+                if (vm.CountyId.Equals(Guid.Empty))
+                    city.CityName = vm.CityName;
+                else 
+                {
+                    city.CountyId = vm.CountyId;
+                    city.CityName = vm.CityName;
+                    
+                }
                 _appBLL.Cities.Update(city);
                 await _appBLL.SaveChangesAsync();
             }

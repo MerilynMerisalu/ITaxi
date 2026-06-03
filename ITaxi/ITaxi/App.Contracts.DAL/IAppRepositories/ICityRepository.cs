@@ -15,7 +15,7 @@ public interface ICityRepositoryCustom<TEntity>
     Task<IEnumerable<TEntity>> GetAllCitiesWithoutCountyAsync();
     Task<IEnumerable<TEntity>> GetAllOrderedCitiesWithoutCountyAsync();
     Task<IEnumerable<TEntity>> GetAllOrderedCitiesAsync(bool showDeleted = false, bool showIgnored = false);
-    Task<TEntity?> FirstOrDefaultCityWithoutCountyAsync(Guid id);
+    Task<TEntity?> FirstOrDefaultCityWithoutCountyAsync(Guid id, bool showIgnored = false);
     IEnumerable<TEntity> GetAllOrderedCitiesWithoutCounty();
     IEnumerable<TEntity> GetAllOrderedCities(bool noTracking = true);
     Task<bool> HasAnyCitiesAsync(Guid id, bool noTracking = true);

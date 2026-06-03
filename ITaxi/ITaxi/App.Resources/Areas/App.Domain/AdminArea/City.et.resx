@@ -124,6 +124,9 @@
     <value>Linn</value>
   </data>
   <data name="WarningCountyIsIgnored" xml:space="preserve">
-    <value>Maakond on peidetud! Kas olete kindel, et soovite antud üksuse kustutada?</value>
+    <value>Selle linna maakond on peidetud! Kas olete kindel, et soovite antud üksuse kustutada?</value>
+  </data>
+  <data name="WarningCountyIsHidden" xml:space="preserve">
+    <value>Selle linna maakond on peidetud!</value>
   </data>
 </root>

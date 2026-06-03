@@ -36,9 +36,9 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
             .Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<CityDTO?> FirstOrDefaultCityWithoutCountyAsync(Guid id)
+    public async Task<CityDTO?> FirstOrDefaultCityWithoutCountyAsync(Guid id, bool showIgnored = false)
     {
-        var res = await base.CreateQuery(noIncludes: true).FirstOrDefaultAsync(c => c.Id.Equals(id));
+        var res = await base.CreateQuery(noIncludes: true, showIgnored: showIgnored).FirstOrDefaultAsync(c => c.Id.Equals(id));
         return Mapper.Map(res);
     }
 

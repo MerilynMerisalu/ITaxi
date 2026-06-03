@@ -35,4 +35,6 @@ public class CreateEditCityViewModel
     [StringLength(50, MinimumLength = 1)]
     [Display(ResourceType = typeof(City), Name = "CityName")]
     public string CityName { get; set; } = default!;
+
+    public bool IsCountyIgnored { get; set; }
 }

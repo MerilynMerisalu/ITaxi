@@ -124,6 +124,9 @@
     <value>City</value>
   </data>
   <data name="WarningCountyIsIgnored" xml:space="preserve">
-    <value>The county is hidden! Are you sure you want to delete this city?</value>
+    <value>The county for this city is hidden! Are you sure you want to delete this city?</value>
+  </data>
+  <data name="WarningCountyIsHidden" xml:space="preserve">
+    <value>The County is hidden!</value>
   </data>
 </root>
