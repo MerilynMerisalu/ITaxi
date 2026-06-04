@@ -152,13 +152,10 @@ public class CitiesController : Controller
             try
             {
                 city.Id = id;
-                if (vm.CountyId.Equals(Guid.Empty))
-                    city.CityName = vm.CityName;
-                else 
+                city.CityName = vm.CityName;
+                if (city.CountyId != Guid.Empty)
                 {
                     city.CountyId = vm.CountyId;
-                    city.CityName = vm.CityName;
-                    
                 }
                 _appBLL.Cities.Update(city);
                 await _appBLL.SaveChangesAsync();
