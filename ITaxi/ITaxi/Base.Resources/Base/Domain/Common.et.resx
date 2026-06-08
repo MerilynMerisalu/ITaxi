@@ -165,4 +165,7 @@
   <data name="Warning" xml:space="preserve">
     <value>Hoiatus!</value>
   </data>
+  <data name="UsersManagement" xml:space="preserve">
+    <value>Kasutajate Haldus</value>
+  </data>
 </root>

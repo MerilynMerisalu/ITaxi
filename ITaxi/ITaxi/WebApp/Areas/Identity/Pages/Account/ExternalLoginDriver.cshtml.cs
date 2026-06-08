@@ -30,6 +30,7 @@ using Index = System.Index;
 using App.Domain;
 using App.DAL.EF;
 using System.Data;
+using App.Enum.Enum;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 

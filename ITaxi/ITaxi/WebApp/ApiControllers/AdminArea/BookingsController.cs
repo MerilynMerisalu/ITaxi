@@ -1,6 +1,7 @@
 #nullable enable
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
+using App.Enum.Enum;
 using App.Public.DTO.v1.AdminArea;
 using AutoMapper;
 using Base.Extensions;

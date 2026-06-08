@@ -3,6 +3,7 @@ using App.Contracts.BLL;
 using App.Contracts.BLL.ImportResults;
 using App.Contracts.BLL.Services;
 using App.Contracts.DAL.IAppRepositories;
+using App.Enum.Enum;
 using Base.BLL;
 using Base.Contracts.Mappers;
 using Microsoft.Extensions.Logging;

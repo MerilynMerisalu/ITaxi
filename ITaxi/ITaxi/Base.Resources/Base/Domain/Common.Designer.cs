@@ -196,6 +196,15 @@ namespace Base.Resources.Base.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Users Management.
+        /// </summary>
+        public static string UsersManagement {
+            get {
+                return ResourceManager.GetString("UsersManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warning!.
         /// </summary>
         public static string Warning {

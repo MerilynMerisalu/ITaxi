@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.AccessControl;
 using System.Xml.Linq;
+using App.Enum.Enum;
 
 namespace App.Domain;
 

@@ -192,4 +192,7 @@
   <data name="ExtraServices" xml:space="preserve">
     <value>Extra Services</value>
   </data>
+  <data name="UsersManagement" xml:space="preserve">
+    <value>Users Management</value>
+  </data>
 </root>

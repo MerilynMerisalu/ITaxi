@@ -192,4 +192,7 @@
   <data name="ExtraServices" xml:space="preserve">
     <value>Lisateenused</value>
   </data>
+  <data name="UsersManagement" xml:space="preserve">
+    <value>Kasutajate Haldus</value>
+  </data>
 </root>

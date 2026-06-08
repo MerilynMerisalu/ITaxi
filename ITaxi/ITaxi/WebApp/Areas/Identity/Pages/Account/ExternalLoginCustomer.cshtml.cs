@@ -29,6 +29,7 @@ using Index = System.Index;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using App.Domain;
 using App.DAL.EF;
+using App.Enum.Enum;
 using WebApp.Filters;
 using NuGet.Packaging;
 

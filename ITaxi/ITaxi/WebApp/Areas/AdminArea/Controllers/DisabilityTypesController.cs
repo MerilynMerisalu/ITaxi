@@ -1,5 +1,6 @@
 #nullable enable
 using App.Contracts.BLL;
+using App.Enum.Enum;
 using Base.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

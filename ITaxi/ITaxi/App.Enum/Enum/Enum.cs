@@ -2,7 +2,7 @@
 using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Resources;
 
-
+namespace App.Enum.Enum;
 
 public enum Gender
 {
@@ -82,7 +82,7 @@ public enum PhotoType
 
 public enum DataOrigin
 {
-    [Display(ResourceType = typeof(Common), Name = "ManuallyAdded")]
+    [Display(ResourceType = typeof(Base.Resources.Base.Domain.Common), Name = "ManuallyAdded")]
     Manual = 1,
     [Display(ResourceType = typeof(Base.Resources.Base.Domain.Common), Name = "Imported")]
     Api

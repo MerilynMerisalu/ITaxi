@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using App.Enum.Enum;
 using Base.Contracts.Domain;
 using Base.Resources.Base.Domain;
 

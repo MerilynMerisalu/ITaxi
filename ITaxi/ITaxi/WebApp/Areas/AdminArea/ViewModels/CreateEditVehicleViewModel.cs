@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using App.BLL.DTO.AdminArea;
 using App.Domain;
-
+using App.Enum.Enum;
 using Base.Resources;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Vehicle = App.Resources.Areas.App.Domain.AdminArea.Vehicle;

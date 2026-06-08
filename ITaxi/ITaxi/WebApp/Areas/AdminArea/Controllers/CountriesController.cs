@@ -4,6 +4,7 @@ using App.Contracts.BLL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using App.Domain;
+using App.Enum.Enum;
 using AutoMapper;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;

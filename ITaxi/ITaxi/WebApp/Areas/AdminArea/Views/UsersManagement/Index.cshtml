@@ -1,0 +1,25 @@
+﻿@using App.Domain.Identity
+@using Base.Resources.Base.Domain
+@using WebApp.Areas.AdminArea.ViewModels
+@model IEnumerable<AppUser>
+@{
+    ViewData["Title"] = Common.UsersManagement;
+}
+
+<h1>@Common.UsersManagement</h1>
+
+<table class="table table-striped table-hover">
+    <thead>
+       <tr>
+            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+       </tr> 
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+          <tr>
+              <td>@item.FirstName</td>
+          </tr>  
+        }
+    </tbody>
+</table>

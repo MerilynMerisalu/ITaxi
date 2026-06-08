@@ -250,6 +250,15 @@ namespace App.Resources.Areas.WebApp.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Users Management.
+        /// </summary>
+        public static string UsersManagement {
+            get {
+                return ResourceManager.GetString("UsersManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vehicle Marks.
         /// </summary>
         public static string VehicleMarks {

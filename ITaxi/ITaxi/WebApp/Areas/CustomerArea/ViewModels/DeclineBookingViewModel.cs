@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using App.Enum.Enum;
 using App.Resources.Areas.App.Domain.CustomerArea;
 
 namespace WebApp.Areas.CustomerArea.ViewModels;

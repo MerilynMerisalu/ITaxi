@@ -5,7 +5,7 @@ using App.Contracts.BLL;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
-
+using App.Enum.Enum;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;

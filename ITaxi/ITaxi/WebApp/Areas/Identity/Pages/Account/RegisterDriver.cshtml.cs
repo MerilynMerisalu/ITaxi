@@ -9,7 +9,7 @@ using System.Text.Encodings.Web;
 using App.Contracts.BLL;
 using App.DAL.EF;
 using App.Domain.Identity;
-
+using App.Enum.Enum;
 using App.Resources.Areas.Identity.Pages.Account;
 using Base.Resources;
 using Microsoft.AspNetCore.Authentication;
