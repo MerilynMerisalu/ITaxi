@@ -12,5 +12,6 @@ namespace WebApp.Areas.AdminArea.ViewModels
         public string FirstAndLastName => $"{FirstName} {LastName}";
         public string LastAndFirstName => $"{LastName} {FirstName}";
         public string Role { get; set; } = default!;
+
     }
 }
