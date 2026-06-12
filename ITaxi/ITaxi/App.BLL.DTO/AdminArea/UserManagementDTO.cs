@@ -18,7 +18,7 @@ namespace App.BLL.DTO.AdminArea
         public string FirstAndLastName => $"{FirstName} {LastName}";
         public string LastAndFirstName => $"{LastName} {FirstName}";
 
-
+        [Display(ResourceType = typeof(App.Resources.Areas.App_Domain.AdminArea.AppUser), Name = "RoleName")]
         public string Role { get; set; } = default!;
         [Display(ResourceType = typeof(Resources.Areas.App_Domain.AdminArea.AppUser), Name = nameof(Email))]
         public string Email { get; set; } = default!;
