@@ -1,4 +1,5 @@
-﻿using App.BLL.DTO.Identity;
+﻿using App.BLL.DTO.AdminArea;
+using App.BLL.DTO.Identity;
 using Base.Contracts.BLL;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace App.Contracts.BLL.Services
 {
     public interface IUserManagementService
     {
-        Task<IEnumerable<>
+        Task<IEnumerable<UserManagementDTO>>GetUsersAsync(bool noTracking = false);
     }
         
 }

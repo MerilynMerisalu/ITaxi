@@ -54,6 +54,7 @@ builder.Services.AddIdentity<AppUser, AppRole>(
     .AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddLocalization(options => { options.ResourcesPath = ""; });
 
+builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();

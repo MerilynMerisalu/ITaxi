@@ -1,7 +1,8 @@
-﻿@using App.Domain.Identity
+﻿@using App.BLL.DTO.AdminArea
+@using App.Domain.Identity
 @using Base.Resources.Base.Domain
 @using WebApp.Areas.AdminArea.ViewModels
-@model IEnumerable<AppUser>
+@model IEnumerable<UserManagementDTO>
 @{
     ViewData["Title"] = Common.UsersManagement;
 }
@@ -13,7 +14,9 @@
        <tr>
             <th>@Html.DisplayNameFor(model => model.FirstName)</th>
             <th>@Html.DisplayNameFor(model => model.LastName)</th>
-
+            <th>@Html.DisplayNameFor(model => model.Role)</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
        </tr> 
     </thead>
     <tbody>
@@ -21,6 +24,10 @@
         {
           <tr>
               <td>@item.FirstName</td>
+              <td>@item.LastName</td>
+              <td>@item.Role</td>
+              <td>@item.Email</td>
+              <td>@item.PhoneNumber</td>
           </tr>  
         }
     </tbody>

@@ -1,4 +1,5 @@
 ﻿
+using App.Contracts.BLL.Services;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,16 +14,19 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Authorize]
     public class UsersManagementController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
-        public UsersManagementController(UserManager<AppUser> userManager)
+        private readonly IUserManagementService _userManagementService;
+
+        public UsersManagementController(IUserManagementService userManagementService)
         {
-            _userManager = userManager;
+            _userManagementService = userManagementService;
         }
+
         // GET: UsersManagementController
         public async Task<ActionResult> Index()
         {
-            var users = await _userManager.Users.ToListAsync();
-            return View(users );
+            var users = await _userManagementService.GetUsersAsync();
+            return View(users);
+           
         }
 
         // GET: UsersManagementController/Details/5
