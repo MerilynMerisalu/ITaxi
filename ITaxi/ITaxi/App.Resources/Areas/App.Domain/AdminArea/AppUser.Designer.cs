@@ -99,9 +99,9 @@ namespace App.Resources.Areas.App_Domain.AdminArea {
         /// <summary>
         ///   Looks up a localized string similar to Role.
         /// </summary>
-        public static string RoleName {
+        public static string Role {
             get {
-                return ResourceManager.GetString("RoleName", resourceCulture);
+                return ResourceManager.GetString("Role", resourceCulture);
             }
         }
     }

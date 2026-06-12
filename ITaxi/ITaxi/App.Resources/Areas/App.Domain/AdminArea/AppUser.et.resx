@@ -129,7 +129,7 @@
   <data name="PhoneNumber" xml:space="preserve">
     <value>Telefoninumber</value>
   </data>
-  <data name="RoleName" xml:space="preserve">
+  <data name="Role" xml:space="preserve">
     <value>Roll</value>
   </data>
 </root>
