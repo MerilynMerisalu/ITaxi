@@ -17,7 +17,7 @@ namespace App.DAL.EF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.5")
+                .HasAnnotation("ProductVersion", "10.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -76,7 +76,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Admins", (string)null);
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("App.Domain.Booking", b =>
@@ -210,7 +210,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("VehicleTypeId");
 
-                    b.ToTable("Bookings", (string)null);
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("App.Domain.City", b =>
@@ -258,7 +258,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("CountyId");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("App.Domain.Comment", b =>
@@ -310,7 +310,7 @@ namespace App.DAL.EF.Migrations
                         .IsUnique()
                         .HasFilter("[DriveId] IS NOT NULL");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("App.Domain.Country", b =>
@@ -361,7 +361,7 @@ namespace App.DAL.EF.Migrations
                     b.HasIndex("ISOCode")
                         .IsUnique();
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("App.Domain.County", b =>
@@ -420,7 +420,7 @@ namespace App.DAL.EF.Migrations
                         .IsUnique()
                         .HasFilter("[CountyEHAKCode] IS NOT NULL");
 
-                    b.ToTable("Counties", (string)null);
+                    b.ToTable("Counties");
                 });
 
             modelBuilder.Entity("App.Domain.Customer", b =>
@@ -468,7 +468,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("DisabilityTypeId");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("App.Domain.DisabilityType", b =>
@@ -511,7 +511,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("DisabilityTypeNameId");
 
-                    b.ToTable("DisabilityTypes", (string)null);
+                    b.ToTable("DisabilityTypes");
                 });
 
             modelBuilder.Entity("App.Domain.Drive", b =>
@@ -584,7 +584,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("DriverId");
 
-                    b.ToTable("Drives", (string)null);
+                    b.ToTable("Drives");
                 });
 
             modelBuilder.Entity("App.Domain.Driver", b =>
@@ -652,7 +652,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Drivers", (string)null);
+                    b.ToTable("Drivers");
                 });
 
             modelBuilder.Entity("App.Domain.DriverAndDriverLicenseCategory", b =>
@@ -679,7 +679,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("DriverLicenseCategoryId");
 
-                    b.ToTable("DriverAndDriverLicenseCategories", (string)null);
+                    b.ToTable("DriverAndDriverLicenseCategories");
                 });
 
             modelBuilder.Entity("App.Domain.DriverLicenseCategory", b =>
@@ -722,7 +722,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DriverLicenseCategories", (string)null);
+                    b.ToTable("DriverLicenseCategories");
                 });
 
             modelBuilder.Entity("App.Domain.ExtraService", b =>
@@ -777,7 +777,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("ExtraServiceNameId");
 
-                    b.ToTable("ExtraServices", (string)null);
+                    b.ToTable("ExtraServices");
                 });
 
             modelBuilder.Entity("App.Domain.Identity.AppRole", b =>
@@ -790,10 +790,8 @@ namespace App.DAL.EF.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                    b.Property<Guid>("DisplayNameId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -810,6 +808,8 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DisplayNameId");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -958,7 +958,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("App.Domain.Photo", b =>
@@ -1091,7 +1091,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("Photos", (string)null);
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("App.Domain.RideTime", b =>
@@ -1153,7 +1153,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("ScheduleId");
 
-                    b.ToTable("RideTimes", (string)null);
+                    b.ToTable("RideTimes");
                 });
 
             modelBuilder.Entity("App.Domain.Schedule", b =>
@@ -1207,7 +1207,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("Schedules", (string)null);
+                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("App.Domain.Vehicle", b =>
@@ -1282,7 +1282,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("VehicleTypeId");
 
-                    b.ToTable("Vehicles", (string)null);
+                    b.ToTable("Vehicles");
                 });
 
             modelBuilder.Entity("App.Domain.VehicleMark", b =>
@@ -1325,7 +1325,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VehicleMarks", (string)null);
+                    b.ToTable("VehicleMarks");
                 });
 
             modelBuilder.Entity("App.Domain.VehicleModel", b =>
@@ -1373,7 +1373,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("VehicleMarkId");
 
-                    b.ToTable("VehicleModels", (string)null);
+                    b.ToTable("VehicleModels");
                 });
 
             modelBuilder.Entity("App.Domain.VehicleType", b =>
@@ -1419,7 +1419,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("VehicleTypeNameId");
 
-                    b.ToTable("VehicleTypes", (string)null);
+                    b.ToTable("VehicleTypes");
                 });
 
             modelBuilder.Entity("Base.Domain.LangStr", b =>
@@ -1436,7 +1436,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LangStrings", (string)null);
+                    b.ToTable("LangStrings");
                 });
 
             modelBuilder.Entity("Base.Domain.Translation", b =>
@@ -1468,7 +1468,7 @@ namespace App.DAL.EF.Migrations
 
                     b.HasIndex("LangStrId");
 
-                    b.ToTable("Translations", (string)null);
+                    b.ToTable("Translations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -1788,6 +1788,17 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("Description");
 
                     b.Navigation("ExtraServiceName");
+                });
+
+            modelBuilder.Entity("App.Domain.Identity.AppRole", b =>
+                {
+                    b.HasOne("Base.Domain.LangStr", "DisplayName")
+                        .WithMany()
+                        .HasForeignKey("DisplayNameId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DisplayName");
                 });
 
             modelBuilder.Entity("App.Domain.Identity.AppUser", b =>

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Security.Claims;
-using App.BLL;
+﻿using App.BLL;
 using App.Contracts.BLL;
 using App.DAL.EF;
 using App.Domain;
@@ -10,6 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using System.Data;
+using System.Diagnostics;
+using System.Security.Claims;
 
 namespace WebApp.Helpers;
 
@@ -85,19 +86,50 @@ public static class DataHelper
                 var role = roleManager!.FindByNameAsync(roleInfo.name).Result;
                 if (role == null)
                 {
+
                     var identityResult = roleManager.CreateAsync(new AppRole
                     {
                         Name = roleInfo.name,
-                        DisplayName = roleInfo.displayName
+                        DisplayName = roleInfo.displayName,
+                        
                     });
+                   
                     if (!identityResult.Result.Succeeded)
                         foreach (var identityError in identityResult.Result.Errors)
                             Console.WriteLine("Cant create role! Error: " + identityError.Description);
                 }
+
+
             }
 
             if (seedData)
             {
+                var rolesDb = await context.Roles.Distinct().ToListAsync();
+                foreach (var role in rolesDb)
+                {
+                    
+                    {
+                        if (role.Name!.ToLower().Equals("admin"))
+                        {
+                            role.DisplayName.SetTranslation("Administraator", "et-EE");
+                            context.Roles.Update(role);
+                            await context.SaveChangesAsync();
+                        }
+                        else if (role.Name.ToLower().Equals("driver"))
+                        {
+                            role.DisplayName.SetTranslation("Sõidukijuht", "et-EE");
+                            context.Roles.Update(role);
+                            await context.SaveChangesAsync();
+                        }
+                        else if (role.Name.ToLower().Equals("customer"))
+                        {
+                            role.DisplayName.SetTranslation("Klient", "et-EE");
+                            context.Roles.Update(role);
+                            await context.SaveChangesAsync();
+                        }
+                    }
+                    
+                }
                 var regularVehicleType = new VehicleType
                 {
                     Id = Guid.NewGuid(),

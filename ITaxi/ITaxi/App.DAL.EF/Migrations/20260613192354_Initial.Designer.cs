@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260320204851_DataOriginAddedPropertyToDomainMetaIdClass")]
-    partial class DataOriginAddedPropertyToDomainMetaIdClass
+    [Migration("20260613192354_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.5")
+                .HasAnnotation("ProductVersion", "10.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -793,10 +793,8 @@ namespace App.DAL.EF.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                    b.Property<Guid>("DisplayNameId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -813,6 +811,8 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DisplayNameId");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -1791,6 +1791,17 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("Description");
 
                     b.Navigation("ExtraServiceName");
+                });
+
+            modelBuilder.Entity("App.Domain.Identity.AppRole", b =>
+                {
+                    b.HasOne("Base.Domain.LangStr", "DisplayName")
+                        .WithMany()
+                        .HasForeignKey("DisplayNameId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DisplayName");
                 });
 
             modelBuilder.Entity("App.Domain.Identity.AppUser", b =>

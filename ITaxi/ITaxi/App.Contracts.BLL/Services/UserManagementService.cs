@@ -31,11 +31,16 @@ namespace App.Contracts.BLL.Services
             foreach (var user in users)
             {
                 var roles = await _userManager.GetRolesAsync(user);
+                var displayNames = await _roleManager.Roles.Include(r => r.DisplayName).ThenInclude(r => r.Translations)
+                .Where(role => roles.Contains(role.Name!))
+                .Select(role => role.DisplayName)
+                .ToListAsync();
+
                 result.Add(new UserManagementDTO
                 {
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    Role = roles.Any() ? String.Join(", ", roles) : "-",
+                    Role = roles.Any() ? String.Join(", ", displayNames) : "-",
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
 
