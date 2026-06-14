@@ -74,23 +74,18 @@ public static class DataHelper
     {
         if (seedIdentity)
         {
-            var roles = new (string name, string displayName)[]
-            {
-                ("Admin", "Administrator"),
-                ("Driver", "Driver"),
-                ("Customer", "Customer")
-            };
+            
 
-            foreach (var roleInfo in roles)
+            foreach (var roleInfo in Roles)
             {
-                var role = roleManager!.FindByNameAsync(roleInfo.name).Result;
+                var role = roleManager!.FindByNameAsync(roleInfo.Name).Result;
                 if (role == null)
                 {
 
                     var identityResult = roleManager.CreateAsync(new AppRole
                     {
-                        Name = roleInfo.name,
-                        DisplayName = roleInfo.displayName,
+                        Name = roleInfo.Name,
+                        DisplayName = roleInfo.DisplayNameEn,
                         
                     });
                    
@@ -107,28 +102,22 @@ public static class DataHelper
                 var rolesDb = await context.Roles.Distinct().ToListAsync();
                 foreach (var role in rolesDb)
                 {
-                    
+                    foreach (var (name, displayNameEn, displayNameEt) in Roles)
                     {
-                        if (role.Name!.ToLower().Equals("admin"))
+                        var roleDb = rolesDb
+                            .FirstOrDefault(role =>
+                                string.Equals(role.Name, name, StringComparison.OrdinalIgnoreCase));
+
+                        if (roleDb is not null)
                         {
-                            role.DisplayName.SetTranslation("Administraator", "et-EE");
-                            context.Roles.Update(role);
-                            await context.SaveChangesAsync();
-                        }
-                        else if (role.Name.ToLower().Equals("driver"))
-                        {
-                            role.DisplayName.SetTranslation("Sõidukijuht", "et-EE");
-                            context.Roles.Update(role);
-                            await context.SaveChangesAsync();
-                        }
-                        else if (role.Name.ToLower().Equals("customer"))
-                        {
-                            role.DisplayName.SetTranslation("Klient", "et-EE");
-                            context.Roles.Update(role);
-                            await context.SaveChangesAsync();
+                            roleDb.DisplayName.SetTranslation(displayNameEt, "et-EE");
                         }
                     }
-                    
+
+
+                    await context.SaveChangesAsync();
+
+
                 }
                 var regularVehicleType = new VehicleType
                 {
@@ -886,6 +875,13 @@ public static class DataHelper
         }
         }
 
-    }
+    private static readonly (string Name, string DisplayNameEn, string DisplayNameEt)[] Roles =
+ {
+    ("Admin", "Administrator", "Administraator"),
+    ("Driver", "Driver", "Sõidukijuht"),
+    ("Customer", "Customer", "Klient")
+};
+
+}
 
     
