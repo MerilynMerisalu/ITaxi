@@ -30,8 +30,9 @@ namespace WebApp.Areas.AdminArea.Controllers
         }
 
         // GET: UsersManagementController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
+             
             return View();
         }
 

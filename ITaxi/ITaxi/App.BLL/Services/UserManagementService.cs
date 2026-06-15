@@ -6,27 +6,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using App.Contracts.BLL.Services;
 
-namespace App.Contracts.BLL.Services
+namespace App.BLL.Services
 {
     public class UserManagementService : IUserManagementService
     {
-        private readonly UserManager<App.Domain.Identity.AppUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
         public UserManagementService(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public async Task<IEnumerable<UserManagementDTO>> GetUsersAsync(bool noTracking = false)
-        {
-            var query = _userManager.Users.AsQueryable();
-            if (noTracking)
-            {
-                query = query.AsNoTracking();
-            }
 
-            var users = await query.ToListAsync();
+        public async Task<List<UserManagementDTO>> CreateUserManagementDTOAsync(List<AppUser> users)
+        {
             var result = new List<UserManagementDTO>();
             foreach (var user in users)
             {
@@ -46,8 +41,27 @@ namespace App.Contracts.BLL.Services
 
                 });
 
-               
+
             }
+            return result;
+        }
+        
+
+        public async Task<UserManagementDTO?> GetUserByIdAsync(Guid id, bool noTracking = false, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<UserManagementDTO>> GetUsersAsync(bool noTracking = false)
+        {
+            var query = _userManager.Users.AsQueryable();
+            if (noTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            var users = await query.ToListAsync();
+            var result = await CreateUserManagementDTOAsync(users);
             return result;
         }
 
