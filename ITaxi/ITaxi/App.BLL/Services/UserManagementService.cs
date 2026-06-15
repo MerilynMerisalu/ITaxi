@@ -49,7 +49,15 @@ namespace App.BLL.Services
 
         public async Task<UserManagementDTO?> GetUserByIdAsync(Guid id, bool noTracking = false, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
         {
-            throw new NotImplementedException();
+            var users = new List<AppUser>();
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user != null)
+            {
+                users.Add(user);
+                var result = await CreateUserManagementDTOAsync(users);
+                return result[0];
+            }
+            return null;
         }
 
         public async Task<IEnumerable<UserManagementDTO>> GetUsersAsync(bool noTracking = false)
