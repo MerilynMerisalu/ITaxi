@@ -13,7 +13,7 @@ public class CountyDTO : DomainEntityMetaId
     [Required(ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
-    [Display(ResourceType = typeof(App.Resources.Areas.App_Domain.AdminArea.County),
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.County),
          Name = "Country")]
     public CountryDTO? Country { get; set; } = default!;
 

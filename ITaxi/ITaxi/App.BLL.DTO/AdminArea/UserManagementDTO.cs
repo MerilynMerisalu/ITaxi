@@ -10,20 +10,20 @@ namespace App.BLL.DTO.AdminArea
 {
     public class UserManagementDTO: DomainEntityMetaId
     {
-        [Display(ResourceType = typeof(App.Resources.Areas.App_Domain.AdminArea.AppUser), Name = nameof(FirstName))]
+        [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.AppUser), Name = nameof(FirstName))]
         public string FirstName { get; set; } = default!;
-        [Display(ResourceType = typeof(App.Resources.Areas.App_Domain.AdminArea.AppUser), Name = nameof(LastName))]
+        [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.AppUser), Name = nameof(LastName))]
         public string LastName { get; set; } = default!;
 
         public string FirstAndLastName => $"{FirstName} {LastName}";
         public string LastAndFirstName => $"{LastName} {FirstName}";
 
-        [Display(ResourceType = typeof(App.Resources.Areas.App_Domain.AdminArea.AppUser), Name = nameof(Role))]
+        [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.AppUser), Name = nameof(Role))]
         public string Role { get; set; } = default!;
-        [Display(ResourceType = typeof(Resources.Areas.App_Domain.AdminArea.AppUser), Name = nameof(Email))]
-        public string Email { get; set; } = default!;
+        [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = nameof(EmailAddress))]
+        public string EmailAddress { get; set; } = default!;
 
-        [Display(ResourceType = typeof(Resources.Areas.App_Domain.AdminArea.AppUser),
+        [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser),
             Name = nameof(PhoneNumber))]
         public string PhoneNumber { get; set; } = default!;
     }

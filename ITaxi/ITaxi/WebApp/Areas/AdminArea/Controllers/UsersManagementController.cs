@@ -30,10 +30,23 @@ namespace WebApp.Areas.AdminArea.Controllers
         }
 
         // GET: UsersManagementController/Details/5
-        public async Task<ActionResult> Details(int id)
-        {
-             
-            return View();
+        public async Task<ActionResult> Details(Guid? id)
+            {
+            
+            var user = await _userManagementService.GetUserByIdAsync(id.Value);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var vm = new UserManagementViewModel();
+            vm.Id = user.Id;
+            vm.FirstName = user.FirstName;
+            vm.LastName = user.LastName;
+            vm.Role = user.Role;
+            vm.EmailAddress = user.EmailAddress;
+            vm.PhoneNumber = user.PhoneNumber;
+            
+            return View(vm);
         }
 
         

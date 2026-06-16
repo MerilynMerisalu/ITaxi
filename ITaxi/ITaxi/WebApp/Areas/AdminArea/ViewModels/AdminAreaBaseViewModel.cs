@@ -11,6 +11,7 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 /// </summary>
 public class AdminAreaBaseViewModel
 {
+    public Guid Id { get; set; }
     /// <summary>
     /// Created at
     /// </summary>

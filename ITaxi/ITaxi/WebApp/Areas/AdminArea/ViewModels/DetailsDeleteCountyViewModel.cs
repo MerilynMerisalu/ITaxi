@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using App.Resources.Areas.App_Domain.AdminArea;
 using App.Resources.Areas.App.Domain.AdminArea;
 
 namespace WebApp.Areas.AdminArea.ViewModels;

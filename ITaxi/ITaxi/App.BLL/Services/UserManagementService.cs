@@ -33,11 +33,14 @@ namespace App.BLL.Services
 
                 result.Add(new UserManagementDTO
                 {
+                    Id = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Role = roles.Any() ? String.Join(", ", displayNames) : "-",
-                    Email = user.Email,
+                    EmailAddress = user.Email,
                     PhoneNumber = user.PhoneNumber,
+                    IsDeleted = user.IsDeleted,
+                    IsIgnored = user.IsIgnored,
 
                 });
 
