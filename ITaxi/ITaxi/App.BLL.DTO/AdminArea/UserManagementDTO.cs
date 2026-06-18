@@ -1,4 +1,6 @@
-﻿using Base.Domain;
+﻿using App.Enum.Enum;
+using App.Resources.Areas.App.Domain.AdminArea;
+using Base.Domain;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,6 +28,21 @@ namespace App.BLL.DTO.AdminArea
         [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser),
             Name = nameof(PhoneNumber))]
         public string PhoneNumber { get; set; } = default!;
+        public Gender Gender { get; set; }
+
+        [Display(ResourceType = typeof(AppUser), Name = nameof(DateOfBirth))]
+        public string DateOfBirth { get; set; }
+
+        [Display(ResourceType = typeof(AppUser), Name = nameof(PersonalIdentifier))]
+        public string PersonalIdentifier { get; set; }
+        [Display(ResourceType = typeof(AppUser), Name = nameof(Country))]
+        public string Country { get; set; }
+
+        [Display(ResourceType = typeof(AppUser), Name = nameof(County))]
+        public string County { get; set; }
+
+        [Display(ResourceType = typeof(AppUser), Name = nameof(AddressOfResidence))]
+        public string AddressOfResidence { get; set; }
     }
 }
 

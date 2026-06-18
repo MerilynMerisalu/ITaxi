@@ -30,12 +30,15 @@ namespace App.BLL.Services
                 .Where(role => roles.Contains(role.Name!))
                 .Select(role => role.DisplayName)
                 .ToListAsync();
-
-                result.Add(new UserManagementDTO
+                var result 
+                result.Add(
                 {
                     Id = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    Gender = user.Gender!.Value,
+                    DateOfBirth = user.DateOfBirth.ToString("d"),
+
                     Role = roles.Any() ? String.Join(", ", displayNames) : "-",
                     EmailAddress = user.Email,
                     PhoneNumber = user.PhoneNumber,
