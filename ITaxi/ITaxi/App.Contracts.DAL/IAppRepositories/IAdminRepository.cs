@@ -14,5 +14,6 @@ public interface IAdminRepositoryCustom<TEntity>
 {
     Task<IEnumerable<TEntity>> GetAllAdminsOrderedByLastNameAsync(bool noTracking = true);
     Task<TEntity?>GetAdminWithIncludesByAdminIdAsync(Guid adminId, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false);
-    TEntity? GetAdminByAdminId(Guid adminId, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false  );
+    TEntity? GetAdminByAdminId(Guid adminId, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false);
+    Task<TEntity?> GetAdminByAppUserIdAsync(Guid appuserId, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false);
 }

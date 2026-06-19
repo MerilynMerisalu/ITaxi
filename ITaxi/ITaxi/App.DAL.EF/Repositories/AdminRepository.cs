@@ -71,4 +71,11 @@ public class AdminRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.AdminD
         var result = Mapper.Map( CreateQuery(noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored).FirstOrDefault(a => a.Id.Equals(adminId)));
         return result;
     }
+
+    public async Task<AdminDTO?> GetAdminByAppUserIdAsync(Guid appuserId, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false)
+    {
+        var result = await CreateQuery(noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored)
+             .FirstOrDefaultAsync(u => u.AppUserId.Equals(appuserId));
+        return Mapper.Map( result );
+    }
 }

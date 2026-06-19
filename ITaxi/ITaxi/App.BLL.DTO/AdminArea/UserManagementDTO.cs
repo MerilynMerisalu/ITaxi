@@ -31,18 +31,21 @@ namespace App.BLL.DTO.AdminArea
         public Gender Gender { get; set; }
 
         [Display(ResourceType = typeof(AppUser), Name = nameof(DateOfBirth))]
-        public string DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; } = default!;
 
         [Display(ResourceType = typeof(AppUser), Name = nameof(PersonalIdentifier))]
-        public string PersonalIdentifier { get; set; }
+        public string? PersonalIdentifier { get; set; }
+        public Guid CountryId { get; set; }
         [Display(ResourceType = typeof(AppUser), Name = nameof(Country))]
-        public string Country { get; set; }
+        public string Country { get; set; } = default!;
+
+        public Guid CountyId { get; set; }
 
         [Display(ResourceType = typeof(AppUser), Name = nameof(County))]
-        public string County { get; set; }
+        public string County { get; set; } = default!;
 
         [Display(ResourceType = typeof(AppUser), Name = nameof(AddressOfResidence))]
-        public string AddressOfResidence { get; set; }
+        public string AddressOfResidence { get; set; } = default!;
     }
 }
 

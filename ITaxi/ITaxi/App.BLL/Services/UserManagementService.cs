@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using App.Contracts.BLL.Services;
+using App.Contracts.BLL;
 
 namespace App.BLL.Services
 {
@@ -14,10 +15,13 @@ namespace App.BLL.Services
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
-        public UserManagementService(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+        private readonly IAppBLL _appBll;
+        
+        public UserManagementService(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IAppBLL appBll)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _appBll = appBll;
         }
 
         public async Task<List<UserManagementDTO>> CreateUserManagementDTOAsync(List<AppUser> users)
@@ -30,23 +34,25 @@ namespace App.BLL.Services
                 .Where(role => roles.Contains(role.Name!))
                 .Select(role => role.DisplayName)
                 .ToListAsync();
-                var result 
-                result.Add(
+                var data = new UserManagementDTO()
                 {
                     Id = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Gender = user.Gender!.Value,
-                    DateOfBirth = user.DateOfBirth.ToString("d"),
+                    DateOfBirth = user.DateOfBirth.ToShortDateString(),
+                    Role = roles.Any() ? string.Join(", ", roles) : "-",
+                    EmailAddress = user.Email!,
+                    PhoneNumber = user.PhoneNumber!
+                };
+                var admin = await _appBll.Admins.GetAdminByAppUserIdAsync(user.Id);
+                if (admin != null)
+                {
+                  data.PersonalIdentifier = admin.PersonalIdentifier;
+                    
+                }
 
-                    Role = roles.Any() ? String.Join(", ", displayNames) : "-",
-                    EmailAddress = user.Email,
-                    PhoneNumber = user.PhoneNumber,
-                    IsDeleted = user.IsDeleted,
-                    IsIgnored = user.IsIgnored,
-
-                });
-
+                result.Add(data);
 
             }
             return result;

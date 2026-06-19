@@ -14,7 +14,7 @@ public enum Gender
     Female = 2,
 
     [Display(ResourceType = typeof(Base.Resources.Common), Name = "Male")]
-    Male= 3
+    Male = 3
 }
 
 public enum VehicleAvailability

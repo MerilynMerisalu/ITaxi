@@ -22,6 +22,11 @@ public class AdminService: BaseEntityService<App.BLL.DTO.AdminArea.AdminDTO,App.
         return Mapper.Map(Repository.GetAdminByAdminId(id, noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored));
     }
 
+    public async Task<AdminDTO?> GetAdminByAppUserIdAsync(Guid appuserId, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false)
+    {
+        return Mapper.Map(await Repository.GetAdminByAppUserIdAsync(appuserId: appuserId, noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored));
+    }
+
     public async Task<AdminDTO?>? GetAdminWithIncludesByAdminIdAsync(Guid adminId, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false)
     {
         return Mapper.Map(await Repository.GetAdminWithIncludesByAdminIdAsync(adminId, noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored));
