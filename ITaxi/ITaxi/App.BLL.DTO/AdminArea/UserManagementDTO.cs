@@ -28,6 +28,9 @@ namespace App.BLL.DTO.AdminArea
         [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser),
             Name = nameof(PhoneNumber))]
         public string PhoneNumber { get; set; } = default!;
+        [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser),
+            Name = nameof(Gender))]
+        
         public Gender Gender { get; set; }
 
         [Display(ResourceType = typeof(AppUser), Name = nameof(DateOfBirth))]

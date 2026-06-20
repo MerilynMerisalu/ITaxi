@@ -1,13 +1,13 @@
 ﻿using App.BLL.DTO.AdminArea;
-
+using App.Contracts.BLL;
+using App.Contracts.BLL.Services;
 using App.Domain.Identity;
+using App.Enum.Enum;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
-using App.Contracts.BLL.Services;
-using App.Contracts.BLL;
 
 namespace App.BLL.Services
 {
@@ -39,7 +39,7 @@ namespace App.BLL.Services
                     Id = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    Gender = user.Gender!.Value,
+                    Gender = user.Gender.Value,
                     DateOfBirth = user.DateOfBirth.ToShortDateString(),
                     Role = roles.Any() ? string.Join(", ", roles) : "-",
                     EmailAddress = user.Email!,
