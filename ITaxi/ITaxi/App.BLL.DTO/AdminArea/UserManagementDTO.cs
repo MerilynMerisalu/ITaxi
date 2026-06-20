@@ -43,6 +43,8 @@ namespace App.BLL.DTO.AdminArea
 
         [Display(ResourceType = typeof(AppUser), Name = nameof(County))]
         public string County { get; set; } = default!;
+        [Display(ResourceType = typeof(AppUser), Name = nameof(City))]
+        public string City { get; set; } = default!;
 
         [Display(ResourceType = typeof(AppUser), Name = nameof(AddressOfResidence))]
         public string AddressOfResidence { get; set; } = default!;

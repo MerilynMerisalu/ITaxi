@@ -120,6 +120,9 @@
   <data name="AddressOfResidence" xml:space="preserve">
     <value>Elukoha aadress</value>
   </data>
+  <data name="City" xml:space="preserve">
+    <value>Linn</value>
+  </data>
   <data name="Country" xml:space="preserve">
     <value>Riik</value>
   </data>
