@@ -49,6 +49,10 @@ namespace App.BLL.Services
                 if (admin != null)
                 {
                   data.PersonalIdentifier = admin.PersonalIdentifier;
+                  data.Country = admin.City.County.Country.CountryName;
+                  data.County = admin.City.County.CountyName;
+                  data.City = admin.City.CityName;
+                  data.AddressOfResidence = admin.Address;
                     
                 }
 
