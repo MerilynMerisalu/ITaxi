@@ -27,4 +27,6 @@ public interface ICustomerRepositoryCustom<TEntity>
         bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false);
     TEntity? GettingCustomerByPhotoCustomerId(Guid customerId, Guid? userId = null, string? roleName = null,
        bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false);
+    Task<TEntity?> GettingCustomerByAppuserIdAsync(Guid appUserId, string? roleName = null,
+        bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false);
 }

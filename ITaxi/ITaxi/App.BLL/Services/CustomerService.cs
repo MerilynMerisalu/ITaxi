@@ -77,4 +77,9 @@ ICustomerRepository>, ICustomerService
     {
         throw new NotImplementedException();
     }
+
+    public async Task<CustomerDTO?> GettingCustomerByAppuserIdAsync(Guid appUserId, string? roleName = null, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false)
+    {
+        return Mapper.Map(await Repository.GettingCustomerByAppuserIdAsync(appUserId: appUserId, roleName: roleName, noIncludes: noIncludes, noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored));
+    }
 }

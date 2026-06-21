@@ -134,4 +134,10 @@ public class CustomerRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Cus
             return customer;
         }
     }
+
+    public async Task<CustomerDTO?> GettingCustomerByAppuserIdAsync(Guid appUserId, string? roleName = null, bool noIncludes = false, bool noTracking = true, bool showDeleted = false, bool showIgnored = false)
+    {
+        var result = await CreateQuery(noIncludes: noIncludes,noTracking: noTracking, showDeleted: showDeleted, showIgnored: showIgnored).FirstOrDefaultAsync(c => c.AppUserId.Equals(appUserId));
+        return Mapper.Map(result);
+    }
 }

@@ -39,22 +39,41 @@ namespace App.BLL.Services
                     Id = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    Gender = user.Gender.Value,
+                    Gender = user.Gender!.Value,
                     DateOfBirth = user.DateOfBirth.ToShortDateString(),
                     Role = roles.Any() ? string.Join(", ", roles) : "-",
                     EmailAddress = user.Email!,
                     PhoneNumber = user.PhoneNumber!
                 };
                 var admin = await _appBll.Admins.GetAdminByAppUserIdAsync(user.Id);
+                var driver = await _appBll.Drivers.GettingDriverByAppUserIdAsync(user.Id);
+                var customer = await _appBll.Customers.GettingCustomerByAppuserIdAsync(user.Id);
+                
                 if (admin != null)
                 {
-                  data.PersonalIdentifier = admin.PersonalIdentifier;
-                  data.Country = admin.City.County.Country.CountryName;
+                  data.PersonalIdentifier = (string.IsNullOrWhiteSpace(data.PersonalIdentifier)) ? "-" : admin.PersonalIdentifier ;
+                  data.Country = admin.City!.County!.Country!.CountryName;
                   data.County = admin.City.County.CountyName;
                   data.City = admin.City.CityName;
                   data.AddressOfResidence = admin.Address;
+                }
+                else if (driver != null)
+                {
+                    data.PersonalIdentifier = (string.IsNullOrWhiteSpace(data.PersonalIdentifier)) ? "-" : driver.PersonalIdentifier;
+                    data.Country = driver.City!.County!.Country!.CountryName;
+                    data.County = driver.City.County.CountyName;
+                    data.City = driver.City.CityName;
+                    data.AddressOfResidence = driver.Address;
+                }
+                else if (customer != null  )
+                {
+                    data.PersonalIdentifier = "-";
+                    data.Country = "-";
+                    data.County = "-";
+                    data.AddressOfResidence = "-";
                     
                 }
+
 
                 result.Add(data);
 
