@@ -21,7 +21,7 @@ namespace App.BLL.DTO.AdminArea
         public string LastAndFirstName => $"{LastName} {FirstName}";
 
         [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.AppUser), Name = nameof(Role))]
-        public string Role { get; set; } = default!;
+        public LangStr Role { get; set; } = default!;
         [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = nameof(EmailAddress))]
         public string EmailAddress { get; set; } = default!;
 
@@ -51,6 +51,9 @@ namespace App.BLL.DTO.AdminArea
 
         [Display(ResourceType = typeof(AppUser), Name = nameof(AddressOfResidence))]
         public string AddressOfResidence { get; set; } = default!;
+
+        [Display(ResourceType = typeof(AppUser), Name = nameof(DriverLicenseCategories))]
+        public string? DriverLicenseCategories { get; set; }
     }
 }
 

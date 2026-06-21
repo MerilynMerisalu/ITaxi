@@ -132,6 +132,9 @@
   <data name="DateOfBirth" xml:space="preserve">
     <value>Date of Birth</value>
   </data>
+  <data name="DriverLicenseCategories" xml:space="preserve">
+    <value>Driver License Categories</value>
+  </data>
   <data name="EmailAddress" xml:space="preserve">
     <value>Email Address</value>
   </data>

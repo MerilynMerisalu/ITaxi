@@ -45,6 +45,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Role = user.Role;
             vm.EmailAddress = user.EmailAddress;
             vm.PhoneNumber = user.PhoneNumber;
+
             
             return View(vm);
         }

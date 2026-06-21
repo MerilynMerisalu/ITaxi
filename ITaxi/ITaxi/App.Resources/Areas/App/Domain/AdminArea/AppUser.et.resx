@@ -132,6 +132,9 @@
   <data name="DateOfBirth" xml:space="preserve">
     <value>Sünnikuupäev</value>
   </data>
+  <data name="DriverLicenseCategories" xml:space="preserve">
+    <value>Juhilubade Kategooriad</value>
+  </data>
   <data name="EmailAddress" xml:space="preserve">
     <value>Emaili Aadress</value>
   </data>

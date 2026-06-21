@@ -112,10 +112,12 @@ public static class DataHelper
                         {
                             roleDb.DisplayName.SetTranslation(displayNameEt, "et-EE");
                         }
+
+                        await context.SaveChangesAsync();
                     }
 
 
-                    await context.SaveChangesAsync();
+                    
 
 
                 }

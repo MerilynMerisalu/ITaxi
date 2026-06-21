@@ -30,7 +30,8 @@ namespace App.BLL.Services
             foreach (var user in users)
             {
                 var roles = await _userManager.GetRolesAsync(user);
-                var displayNames = await _roleManager.Roles.Include(r => r.DisplayName).ThenInclude(r => r.Translations)
+                var displayNames = await _roleManager.Roles.Include(r => r.DisplayName)
+                    .ThenInclude(r => r.Translations)
                 .Where(role => roles.Contains(role.Name!))
                 .Select(role => role.DisplayName)
                 .ToListAsync();
@@ -46,7 +47,7 @@ namespace App.BLL.Services
                     PhoneNumber = user.PhoneNumber!
                 };
                 var admin = await _appBll.Admins.GetAdminByAppUserIdAsync(user.Id);
-                var driver = await _appBll.Drivers.GettingDriverByAppUserIdAsync(user.Id);
+                var driver = await _appBll.Drivers.GettingDriverByAppUserIdAsync(driverAppUserId: user.Id);
                 var customer = await _appBll.Customers.GettingCustomerByAppuserIdAsync(user.Id);
                 
                 if (admin != null)
@@ -56,14 +57,25 @@ namespace App.BLL.Services
                   data.County = admin.City.County.CountyName;
                   data.City = admin.City.CityName;
                   data.AddressOfResidence = admin.Address;
+                  data.DriverLicenseCategories = "-";
                 }
                 else if (driver != null)
                 {
+                    var driverLicenseCategories = await _appBll.DriverAndDriverLicenseCategories.GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver.Id);
                     data.PersonalIdentifier = (string.IsNullOrWhiteSpace(data.PersonalIdentifier)) ? "-" : driver.PersonalIdentifier;
                     data.Country = driver.City!.County!.Country!.CountryName;
                     data.County = driver.City.County.CountyName;
                     data.City = driver.City.CityName;
                     data.AddressOfResidence = driver.Address;
+                    if (driverLicenseCategories?.Length == 0)
+                    {
+                        data.DriverLicenseCategories = "-";
+                    }
+                    else
+                    {
+                        data.DriverLicenseCategories = driverLicenseCategories;
+                    }
+                    
                 }
                 else if (customer != null  )
                 {
@@ -71,7 +83,7 @@ namespace App.BLL.Services
                     data.Country = "-";
                     data.County = "-";
                     data.AddressOfResidence = "-";
-                    
+                    data.DriverLicenseCategories = "-";
                 }
 
 

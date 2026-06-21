@@ -47,8 +47,9 @@ public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Drive
 
     public async Task<DriverDTO> GettingDriverByAppUserIdAsync(Guid driverAppUserId, bool noTracking = true, bool noIncludes = false)
     {
-        return Mapper.Map(await CreateQuery(noTracking, noIncludes)
+        var result = Mapper.Map(await CreateQuery(noIncludes: noIncludes, noTracking: noTracking)
             .SingleOrDefaultAsync(d => d.AppUserId.Equals(driverAppUserId)))!;
+        return result;
     }
 
     public async Task<bool> HasAnySchedulesAsync(Guid driverId, bool noTracking = true)
@@ -70,9 +71,6 @@ public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Drive
     {
         return RepoDbContext.Bookings.Any(b => b.DriverId.Equals(driverId));
     }
-
-    
-   
 
 
     public async Task<bool> HasAnyDriversAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true)

@@ -106,6 +106,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Driver License Categories.
+        /// </summary>
+        public static string DriverLicenseCategories {
+            get {
+                return ResourceManager.GetString("DriverLicenseCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email Address.
         /// </summary>
         public static string EmailAddress {
