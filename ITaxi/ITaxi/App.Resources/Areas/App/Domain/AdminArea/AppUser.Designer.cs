@@ -106,11 +106,29 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disability Type.
+        /// </summary>
+        public static string DisabilityType {
+            get {
+                return ResourceManager.GetString("DisabilityType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Driver License Categories.
         /// </summary>
         public static string DriverLicenseCategories {
             get {
                 return ResourceManager.GetString("DriverLicenseCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Driver License Expiry Date.
+        /// </summary>
+        public static string DriverLicenseExpiryDate {
+            get {
+                return ResourceManager.GetString("DriverLicenseExpiryDate", resourceCulture);
             }
         }
         
@@ -196,7 +214,16 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User&apos;s Details.
+        ///   Looks up a localized string similar to Service Card Identifier.
+        /// </summary>
+        public static string ServiceCardIdentifier {
+            get {
+                return ResourceManager.GetString("ServiceCardIdentifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Details.
         /// </summary>
         public static string UserDetails {
             get {

@@ -132,8 +132,14 @@
   <data name="DateOfBirth" xml:space="preserve">
     <value>Date of Birth</value>
   </data>
+  <data name="DisabilityType" xml:space="preserve">
+    <value>Disability Type</value>
+  </data>
   <data name="DriverLicenseCategories" xml:space="preserve">
     <value>Driver License Categories</value>
+  </data>
+  <data name="DriverLicenseExpiryDate" xml:space="preserve">
+    <value>Driver License Expiry Date</value>
   </data>
   <data name="DriverLicenseNumber" xml:space="preserve">
     <value>Driver License Number</value>
@@ -162,7 +168,10 @@
   <data name="Role" xml:space="preserve">
     <value>Role</value>
   </data>
+  <data name="ServiceCardIdentifier" xml:space="preserve">
+    <value>Service Card Identifier</value>
+  </data>
   <data name="UserDetails" xml:space="preserve">
-    <value>User's Details</value>
+    <value>User Details</value>
   </data>
 </root>

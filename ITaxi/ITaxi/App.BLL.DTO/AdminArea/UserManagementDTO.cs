@@ -57,6 +57,12 @@ namespace App.BLL.DTO.AdminArea
 
         [Display(ResourceType = typeof(AppUser), Name = nameof(DriverLicenseNumber))]
         public string? DriverLicenseNumber { get; set; }
+
+        [Display(ResourceType = typeof(AppUser), Name = nameof(DriverLicenseExpiryDate))]
+        public string? DriverLicenseExpiryDate { get; set; }
+
+        [Display(ResourceType = typeof(AppUser), Name = nameof(DisabilityType))]
+        public string? DisabilityType { get; set; }
     }
 }
 

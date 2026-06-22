@@ -25,6 +25,8 @@
             <th>@Html.DisplayNameFor(model => model.AddressOfResidence)</th>
             <th>@Html.DisplayNameFor(model => model.DriverLicenseCategories)</th>
             <th>@Html.DisplayNameFor(model => model.DriverLicenseNumber)</th>
+            <th>@Html.DisplayNameFor(model => model.DriverLicenseExpiryDate)</th>
+            <th>@Html.DisplayNameFor(model => model.DisabilityType)</th>
             <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
             <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
        </tr> 
@@ -45,8 +47,11 @@
               <td>@Html.DisplayFor(modelItem => item.AddressOfResidence)</td>
               <td>@Html.DisplayFor(modelItem => item.DriverLicenseCategories)</td>
               <td>@Html.DisplayFor(modelItem => item.DriverLicenseNumber)</td>
+              <td>@Html.DisplayFor(modelItem => item.DriverLicenseExpiryDate)</td>
+                <td>@Html.DisplayTextFor(modelItem => item.DisabilityType)</td>
               <td>@Html.DisplayFor(modelItem => item.EmailAddress)</td>
                <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+              
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id" class="link-info link-info">@Common.Details</a> |
                     @* <button class="btn btn-primary">@Common.Edit</button> |
