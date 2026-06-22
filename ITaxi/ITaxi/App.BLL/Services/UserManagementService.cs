@@ -42,7 +42,7 @@ namespace App.BLL.Services
                     LastName = user.LastName,
                     Gender = user.Gender!.Value,
                     DateOfBirth = user.DateOfBirth.ToShortDateString(),
-                    Role = roles.Any() ? string.Join(", ", roles) : "-",
+                    Role = roles.Any() ? string.Join(", ", displayNames) : "-",
                     EmailAddress = user.Email!,
                     PhoneNumber = user.PhoneNumber!
                 };
@@ -52,7 +52,7 @@ namespace App.BLL.Services
                 
                 if (admin != null)
                 {
-                  data.PersonalIdentifier = (string.IsNullOrWhiteSpace(data.PersonalIdentifier)) ? "-" : admin.PersonalIdentifier ;
+                  data.PersonalIdentifier = (string.IsNullOrWhiteSpace(admin.PersonalIdentifier)) ? "-" : admin.PersonalIdentifier ;
                   data.Country = admin.City!.County!.Country!.CountryName;
                   data.County = admin.City.County.CountyName;
                   data.City = admin.City.CityName;
@@ -67,7 +67,7 @@ namespace App.BLL.Services
                 else if (driver != null)
                 {
                     var driverLicenseCategories = await _appBll.DriverAndDriverLicenseCategories.GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver.Id);
-                    data.PersonalIdentifier = (string.IsNullOrWhiteSpace(data.PersonalIdentifier)) ? "-" : driver.PersonalIdentifier;
+                    data.PersonalIdentifier = (string.IsNullOrWhiteSpace(driver.PersonalIdentifier)) ? "-" : driver.PersonalIdentifier;
                     data.Country = driver.City!.County!.Country!.CountryName;
                     data.County = driver.City.County.CountyName;
                     data.City = driver.City.CityName;
