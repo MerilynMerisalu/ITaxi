@@ -135,6 +135,9 @@
   <data name="DriverLicenseCategories" xml:space="preserve">
     <value>Juhilubade Kategooriad</value>
   </data>
+  <data name="DriverLicenseNumber" xml:space="preserve">
+    <value>Juhiloa Number</value>
+  </data>
   <data name="EmailAddress" xml:space="preserve">
     <value>Emaili Aadress</value>
   </data>

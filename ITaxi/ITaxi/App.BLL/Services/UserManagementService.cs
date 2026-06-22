@@ -58,6 +58,7 @@ namespace App.BLL.Services
                   data.City = admin.City.CityName;
                   data.AddressOfResidence = admin.Address;
                   data.DriverLicenseCategories = "-";
+                  data.DriverLicenseNumber = "-";
                 }
                 else if (driver != null)
                 {
@@ -75,15 +76,16 @@ namespace App.BLL.Services
                     {
                         data.DriverLicenseCategories = driverLicenseCategories;
                     }
-                    
+                    data.DriverLicenseNumber = driver.DriverLicenseNumber;
                 }
-                else if (customer != null  )
+                else if (customer != null)
                 {
                     data.PersonalIdentifier = "-";
                     data.Country = "-";
                     data.County = "-";
                     data.AddressOfResidence = "-";
                     data.DriverLicenseCategories = "-";
+                    data.DriverLicenseNumber = "-";
                 }
 
 
