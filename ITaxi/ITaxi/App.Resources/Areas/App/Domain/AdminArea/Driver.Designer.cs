@@ -115,7 +115,7 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Enter Your Service Provider Card Identifier Number.
         /// </summary>
         public static string EnterYourServiceProviderCardIdentifierHere {
             get {

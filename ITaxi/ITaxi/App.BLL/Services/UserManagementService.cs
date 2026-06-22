@@ -59,7 +59,11 @@ namespace App.BLL.Services
                   data.AddressOfResidence = admin.Address;
                   data.DriverLicenseCategories = "-";
                   data.DriverLicenseNumber = "-";
+                  data.DriverLicenseExpiryDate = "-";
+                  data.DisabilityType = "-";
+                  
                 }
+                  
                 else if (driver != null)
                 {
                     var driverLicenseCategories = await _appBll.DriverAndDriverLicenseCategories.GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver.Id);
@@ -77,6 +81,8 @@ namespace App.BLL.Services
                         data.DriverLicenseCategories = driverLicenseCategories;
                     }
                     data.DriverLicenseNumber = driver.DriverLicenseNumber;
+                    data.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToShortDateString();
+                    data.DisabilityType = "-";
                 }
                 else if (customer != null)
                 {
@@ -86,6 +92,9 @@ namespace App.BLL.Services
                     data.AddressOfResidence = "-";
                     data.DriverLicenseCategories = "-";
                     data.DriverLicenseNumber = "-";
+                    data.DriverLicenseExpiryDate = "-";
+                    data.DisabilityType = customer.DisabilityType.DisabilityTypeName;
+                    
                 }
 
 

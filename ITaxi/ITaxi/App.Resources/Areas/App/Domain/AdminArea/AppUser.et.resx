@@ -132,8 +132,14 @@
   <data name="DateOfBirth" xml:space="preserve">
     <value>Sünnikuupäev</value>
   </data>
+  <data name="DisabilityType" xml:space="preserve">
+    <value>Puudeliik</value>
+  </data>
   <data name="DriverLicenseCategories" xml:space="preserve">
     <value>Juhilubade Kategooriad</value>
+  </data>
+  <data name="DriverLicenseExpiryDate" xml:space="preserve">
+    <value>Juhilubade Aegumiskuupäev</value>
   </data>
   <data name="DriverLicenseNumber" xml:space="preserve">
     <value>Juhiloa Number</value>
@@ -161,6 +167,9 @@
   </data>
   <data name="Role" xml:space="preserve">
     <value>Roll</value>
+  </data>
+  <data name="ServiceCardIdentifier" xml:space="preserve">
+    <value>Teenindajakaardi Number</value>
   </data>
   <data name="UserDetails" xml:space="preserve">
     <value>Kasutaja Detaild</value>
