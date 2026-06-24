@@ -1,5 +1,6 @@
 ﻿using App.Enum.Enum;
 using App.Resources.Areas.App.Domain.AdminArea;
+using Base.Contracts.ViewModels;
 using Base.Domain;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,11 @@ using System.Xml.Linq;
 
 namespace App.BLL.DTO.AdminArea
 {
-    public class UserManagementDTO: DomainEntityMetaId
+    public class UserManagementDTO: DomainEntityMetaId, IShowHideItem
     {
+        public Guid? AdminId { get; set; }
+        public Guid? DriverId { get; set; }
+        public Guid? CustomerId { get; set; }
         [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.AppUser), Name = nameof(FirstName))]
         public string FirstName { get; set; } = default!;
         [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.AppUser), Name = nameof(LastName))]
@@ -22,6 +26,7 @@ namespace App.BLL.DTO.AdminArea
 
         [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.AppUser), Name = nameof(Role))]
         public LangStr Role { get; set; } = default!;
+
         [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = nameof(EmailAddress))]
         public string EmailAddress { get; set; } = default!;
 

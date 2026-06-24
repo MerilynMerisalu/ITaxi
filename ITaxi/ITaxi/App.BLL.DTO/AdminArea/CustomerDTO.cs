@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using App.BLL.DTO.Identity;
+using Base.Contracts.ViewModels;
 using Base.Domain;
 
 namespace App.BLL.DTO.AdminArea;
 
-public class CustomerDTO : DomainEntityMetaId
+public class CustomerDTO : DomainEntityMetaId, IShowHideItem
 {
     public Guid AppUserId { get; set; }
 

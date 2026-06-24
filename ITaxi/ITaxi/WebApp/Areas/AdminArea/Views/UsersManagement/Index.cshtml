@@ -53,10 +53,17 @@
                <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
               
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="link-info link-info">@Common.Details</a> |
-                    @* <button class="btn btn-primary">@Common.Edit</button> |
-                    <button class="btn btn-danger">@Common.Delete</button> |
-                    <button class="btn btn-secondary">@Common.IsIgnored</button> *@
+                    
+                        <a asp-action="Details" asp-route-id="@item.Id" class="link-info link-info">@Common.Details</a> <span>|</span>
+                        @if (item.AdminId.HasValue)
+                        {
+                             <a asp-area="AdminArea" asp-controller="Admins" asp-action="Edit" asp-route-id="@item.AdminId" >@Common.Edit</a><span>|</span> 
+                             <a asp-area="AdminArea" asp-controller="Admins" asp-action="Delete" asp-route-id="@item.AdminId">@Common.Delete</a> <span>|</span>
+                        <partial name="_ShowHideButton" model="@item()" />
+                        }
+                    
+                    
+                   
 
                 </td>
           </tr> 

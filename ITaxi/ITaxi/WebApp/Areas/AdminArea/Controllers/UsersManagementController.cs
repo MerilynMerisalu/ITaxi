@@ -1,4 +1,5 @@
 ﻿
+using App.Contracts.BLL;
 using App.Contracts.BLL.Services;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -14,11 +15,13 @@ namespace WebApp.Areas.AdminArea.Controllers
     [Authorize]
     public class UsersManagementController : Controller
     {
+        private readonly IAppBLL _appBLL;
         private readonly IUserManagementService _userManagementService;
 
-        public UsersManagementController(IUserManagementService userManagementService)
+        public UsersManagementController(IUserManagementService userManagementService, IAppBLL appBLL)
         {
             _userManagementService = userManagementService;
+            _appBLL = appBLL;
         }
 
         // GET: UsersManagementController
@@ -38,15 +41,41 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 return NotFound();
             }
+            var admin = await _appBLL.Admins.GetAdminByAppUserIdAsync(user.Id);
+            var driver = await _appBLL.Drivers.GettingDriverByAppUserIdAsync(user.Id);
+            var customer = await _appBLL.Customers.GettingCustomerByAppuserIdAsync(user.Id);
+                
             var vm = new UserManagementViewModel();
             vm.Id = user.Id;
             vm.FirstName = user.FirstName;
             vm.LastName = user.LastName;
             vm.Role = user.Role;
+            vm.Gender = user.Gender;
+            vm.DateOfBirth = user.DateOfBirth;
             vm.EmailAddress = user.EmailAddress;
             vm.PhoneNumber = user.PhoneNumber;
+            if (admin != null)
+            {
+                vm.AdminId = admin.Id;
+                vm.PersonalIdentifier = admin.PersonalIdentifier;
+                vm.Country = admin.City.County.Country.CountryName;
+                vm.County = admin.City.County.CountyName;
+                vm.City = admin.City.CityName;
+                vm.AddressOfResidence = admin.Address;
+            }
+            if (driver != null)
+            {
+                vm.DriverId = driver.Id;
+                vm.PersonalIdentifier = driver.PersonalIdentifier;
+                vm.Country = driver.City.County.Country.CountryName;
+                vm.County = driver.City.County.CountyName;
+                vm.City = driver.City.CityName;
+                vm.AddressOfResidence = driver.Address;
+                
+            }
 
-            
+
+
             return View(vm);
         }
 
@@ -93,6 +122,12 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 return View();
             }
+        }
+
+        public async Task<IActionResult> ShowHide(Guid? adminId = null, Guid? adminId = null)
+        {
+            var result = await _appBLL.Cities.ToggleIsIgnoredAsync(id: id, showIgnored: true);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

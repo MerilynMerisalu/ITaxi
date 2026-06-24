@@ -1,13 +1,15 @@
 ﻿using Base.Resources.Base.Domain;
 using System.ComponentModel.DataAnnotations;
 using App.Resources.Areas.App.Domain.AdminArea;
+using App.Enum.Enum;
 
 
 namespace WebApp.Areas.AdminArea.ViewModels
 {
     public class UserManagementViewModel: AdminAreaBaseViewModel
     {
-        
+        public Guid? AdminId { get; set; }
+        public Guid? DriverId { get; set; }
         [Display(ResourceType = typeof(AppUser), Name = nameof(FirstName))]
         public string FirstName { get; set; } = default!;
         [Display(ResourceType = typeof(AppUser), Name = nameof(LastName))]
@@ -17,7 +19,7 @@ namespace WebApp.Areas.AdminArea.ViewModels
         public string LastAndFirstName => $"{LastName} {FirstName}";
 
         [Display(ResourceType = typeof(AppUser), Name = nameof(Gender))]
-        public string Gender { get; set; } = default!;
+        public Gender Gender { get; set; } = default!;
         [Display(ResourceType = typeof(AppUser), Name = nameof(DateOfBirth))]
         public string DateOfBirth { get; set; }
 
@@ -28,6 +30,9 @@ namespace WebApp.Areas.AdminArea.ViewModels
 
         [Display(ResourceType = typeof(AppUser), Name = nameof(County))]
         public string County { get; set; }
+
+        [Display(ResourceType = typeof(AppUser), Name = nameof(City))]
+        public string City { get; set; }
 
         [Display(ResourceType = typeof(AppUser), Name = nameof(AddressOfResidence))]
         public string AddressOfResidence { get; set; }
