@@ -174,4 +174,7 @@
   <data name="Country" xml:space="preserve">
     <value>Country</value>
   </data>
+  <data name="ServiceProviderCardIdentifier" xml:space="preserve">
+    <value>Service Provider Card Identifier</value>
+  </data>
 </root>

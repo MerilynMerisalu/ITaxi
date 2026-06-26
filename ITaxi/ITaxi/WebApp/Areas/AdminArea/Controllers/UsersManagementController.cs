@@ -123,11 +123,28 @@ namespace WebApp.Areas.AdminArea.Controllers
                 return View();
             }
         }
-
-        public async Task<IActionResult> ShowHide(Guid? adminId = null, Guid? adminId = null)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ShowHide(Guid? adminId = null, Guid? driverId = null, Guid? customerId = null)
         {
-            var result = await _appBLL.Cities.ToggleIsIgnoredAsync(id: id, showIgnored: true);
-            return RedirectToAction(nameof(Index));
+            if (adminId != null)
+            {
+                var result = await _appBLL.Admins.ToggleIsIgnoredAsync(id: adminId.Value, showIgnored: true);
+                return RedirectToAction(nameof(Index));
+            }
+            else if (driverId != null)
+            {
+                var result = await _appBLL.Drivers.ToggleIsIgnoredAsync(id: driverId.Value, showIgnored: true);
+                return RedirectToAction(nameof(Index));
+            }
+
+            else
+            {
+                var result = await _appBLL.Customers.ToggleIsIgnoredAsync(id: customerId.Value, showIgnored: true);
+                return RedirectToAction(nameof(Index));
+            }
+
+
         }
     }
 }
