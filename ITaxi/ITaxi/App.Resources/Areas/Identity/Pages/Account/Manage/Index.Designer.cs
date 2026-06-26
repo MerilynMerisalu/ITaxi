@@ -223,6 +223,15 @@ namespace App.Resources.Areas.Identity.Pages.Account.Manage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service Provider Card Identifier.
+        /// </summary>
+        public static string ServiceProviderCardIdentifier {
+            get {
+                return ResourceManager.GetString("ServiceProviderCardIdentifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Name.
         /// </summary>
         public static string UserName {

@@ -276,7 +276,7 @@ public class RegisterDriverModel : PageModel
 
         
         [DataType(DataType.Text)]
-        [Display(ResourceType = typeof(DriverRegister), Name = nameof(ServiceProviderCardIdentifier))]
+        [Display(ResourceType = typeof(DriverRegister), Name = "ServiceProviderCardIdentifier")]
         [MaxLength(10, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
         public string? ServiceProviderCardIdentifier { get; set; } 
         

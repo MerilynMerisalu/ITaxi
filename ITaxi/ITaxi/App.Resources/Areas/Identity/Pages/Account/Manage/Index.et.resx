@@ -174,4 +174,7 @@
   <data name="Country" xml:space="preserve">
     <value>Riik</value>
   </data>
+  <data name="ServiceProviderCardIdentifier" xml:space="preserve">
+    <value>Teenusepakkuja teenindajakaardi number</value>
+  </data>
 </root>

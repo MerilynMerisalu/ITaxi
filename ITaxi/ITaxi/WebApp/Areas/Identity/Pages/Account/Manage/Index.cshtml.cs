@@ -189,7 +189,7 @@ public class IndexModel : PageModel
                     AddressOfResidence = driver.Address,
                     DriverLicenseNumber = driver.DriverLicenseNumber,
                     DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate?.Date,
-
+                    ServiceProviderCardIdentifier = driver.ServiceProviderCardIdentifier,
                     ImageFile = user.ProfileImage
                 };
             }
@@ -651,11 +651,19 @@ public class IndexModel : PageModel
         public IFormFile? ImageFile { get; set; }
 
         /// <summary>
-        /// The path to a user photo
+        /// The title for the default image photo
         /// </summary>
         [Display(ResourceType = typeof(Index), Name = "ProfileImage")]
         public string? DefaultPhotoTitle { get; set; } = "icons8-selfies-50.png";
-
+       
+        /// <summary>
+        /// The path to a user photo
+        /// </summary>
         public string? PhotoPath { get; set; }
+        /// <summary>
+        /// The service provider card identifier
+        /// </summary>
+        [Display(ResourceType = typeof(Index), Name = "ServiceProviderCardIdentifier")]
+        public string? ServiceProviderCardIdentifier { get; set; } 
     }
 }
