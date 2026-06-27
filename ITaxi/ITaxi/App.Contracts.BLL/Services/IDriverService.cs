@@ -8,4 +8,5 @@ public interface IDriverService: IEntityService<App.BLL.DTO.AdminArea.DriverDTO>
     IDriverRepositoryCustom<App.BLL.DTO.AdminArea.DriverDTO> // Add custom stuff
 {
     Task<DriverDTO> GettingDriverByAppUserIdAsync(Guid Id);
+    bool ValidatingServiceCardIdentificationNumber(string serviceCardIdentificationNumber);
 }

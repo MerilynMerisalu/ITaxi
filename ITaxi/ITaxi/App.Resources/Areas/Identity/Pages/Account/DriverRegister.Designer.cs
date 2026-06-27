@@ -268,6 +268,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service provider card identifier number must be exactly 6 digits!.
+        /// </summary>
+        public static string InvalidServiceProviderCardIdentifierNumberError {
+            get {
+                return ResourceManager.GetString("InvalidServiceProviderCardIdentifierNumberError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Name.
         /// </summary>
         public static string LastName {

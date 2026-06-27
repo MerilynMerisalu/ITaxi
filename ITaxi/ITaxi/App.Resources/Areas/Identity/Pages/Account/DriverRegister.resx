@@ -204,4 +204,7 @@
   <data name="Country" xml:space="preserve">
     <value>Country</value>
   </data>
+  <data name="InvalidServiceProviderCardIdentifierNumberError" xml:space="preserve">
+    <value>Service provider card identifier number must be exactly 6 digits!</value>
+  </data>
 </root>

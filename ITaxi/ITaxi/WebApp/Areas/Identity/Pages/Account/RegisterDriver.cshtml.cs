@@ -157,6 +157,7 @@ public class RegisterDriverModel : PageModel
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
                 await _userManager.AddToRoleAsync(user, "Driver");
                 await _appBLL.SaveChangesAsync();
+                
                 var driver = new App.BLL.DTO.AdminArea.DriverDTO()
                 {
                     Id = Guid.NewGuid(),
@@ -166,7 +167,9 @@ public class RegisterDriverModel : PageModel
                     DriverLicenseExpiryDate = Input.ExpiryDate,
                     ServiceProviderCardIdentifier = Input.ServiceProviderCardIdentifier,
                 };
-                 _appBLL.Drivers.Add(driver);
+                
+                
+                _appBLL.Drivers.Add(driver);
                 if (Input.DriverAndDriverLicenseCategories != null)
                 {
                     foreach (var driverLicenseCategoryId in Input.DriverAndDriverLicenseCategories)
@@ -274,11 +277,12 @@ public class RegisterDriverModel : PageModel
         [Display(ResourceType = typeof(DriverRegister), Name = "City")]
         public Guid CityId { get; set; }
 
-        
-        [DataType(DataType.Text)]
+        [Required( ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [Display(ResourceType = typeof(DriverRegister), Name = "ServiceProviderCardIdentifier")]
-        [MaxLength(10, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
-        public string? ServiceProviderCardIdentifier { get; set; } 
+        [RegularExpression(@"^\d{6}$",ErrorMessageResourceType = typeof(DriverRegister),
+        ErrorMessageResourceName = "InvalidServiceProviderCardIdentifierNumberError")]
+        public string ServiceProviderCardIdentifier { get; set; } = default!;
+        
         
         /// <summary>
         /// Driver and driver license categories
