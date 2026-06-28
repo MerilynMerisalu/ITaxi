@@ -205,6 +205,6 @@
     <value>Riik</value>
   </data>
   <data name="InvalidServiceProviderCardIdentifierNumberError" xml:space="preserve">
-    <value>Teenusepakkuja teenusekaardi numbri pikkus peab olema täpselt 6 numbrit!</value>
+    <value>Teenusepakkuja teenusekaardi numbri pikkus peab olema täpselt {0} numbrit!</value>
   </data>
 </root>

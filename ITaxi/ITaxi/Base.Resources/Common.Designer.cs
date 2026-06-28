@@ -268,6 +268,15 @@ namespace Base.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The {0} field must contain only digits..
+        /// </summary>
+        public static string ErrorMessageOnlyDigits {
+            get {
+                return ResourceManager.GetString("ErrorMessageOnlyDigits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The field {0} must be between {1} and {2}..
         /// </summary>
         public static string ErrorMessageRange {

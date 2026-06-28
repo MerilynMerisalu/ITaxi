@@ -277,10 +277,12 @@ public class RegisterDriverModel : PageModel
         [Display(ResourceType = typeof(DriverRegister), Name = "City")]
         public Guid CityId { get; set; }
 
+
         [Required( ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [Display(ResourceType = typeof(DriverRegister), Name = "ServiceProviderCardIdentifier")]
-        [RegularExpression(@"^\d{6}$",ErrorMessageResourceType = typeof(DriverRegister),
-        ErrorMessageResourceName = "InvalidServiceProviderCardIdentifierNumberError")]
+        [StringLength(6, MinimumLength = 6, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMinMax")]
+        [RegularExpression(@"^\d$",ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "ErrorMessageOnlyDigits")]
         public string ServiceProviderCardIdentifier { get; set; } = default!;
         
         

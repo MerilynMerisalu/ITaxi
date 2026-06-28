@@ -268,7 +268,7 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Service provider card identifier number must be exactly 6 digits!.
+        ///   Looks up a localized string similar to Service provider card identifier number must be exactly {0} digits!.
         /// </summary>
         public static string InvalidServiceProviderCardIdentifierNumberError {
             get {

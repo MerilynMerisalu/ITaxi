@@ -288,4 +288,7 @@
   <data name="ErrorMessageValueExists" xml:space="preserve">
     <value>The value {0} already exists.</value>
   </data>
+  <data name="ErrorMessageOnlyDigits" xml:space="preserve">
+    <value>The {0} field must contain only digits.</value>
+  </data>
 </root>
