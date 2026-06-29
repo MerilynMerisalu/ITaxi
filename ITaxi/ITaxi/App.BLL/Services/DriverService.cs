@@ -71,12 +71,13 @@ public class DriverService: BaseEntityService<App.BLL.DTO.AdminArea.DriverDTO, A
         return Mapper.Map(Repository.GettingDriverByDriverId(driverId: driverId, userId: userId, roleName:roleName, noTracking: noTracking));
     }
 
-    public bool ValidatingServiceCardIdentificationNumber(string serviceCardIdentificationNumber)
+    public string? CreateServiceCardIdentification(string serviceCardIdentificationNumber)
     {
+        string result = "TK-"; 
         if (string.IsNullOrWhiteSpace(serviceCardIdentificationNumber) || serviceCardIdentificationNumber.Length != 6)
         {
-            return false;
+            return null;
         }
-       return true;
+       return result += serviceCardIdentificationNumber;
     }
 }

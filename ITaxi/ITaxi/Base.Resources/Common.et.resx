@@ -289,6 +289,6 @@
     <value>Sisestatud väärtusele {0} vastab juba olemasolev väärtus.</value>
   </data>
   <data name="ErrorMessageOnlyDigits" xml:space="preserve">
-    <value>Väljale „{0}” võib sisestada ainult numbreid.</value>
+    <value>Väljale {0} võib sisestada ainult numbreid.</value>
   </data>
 </root>

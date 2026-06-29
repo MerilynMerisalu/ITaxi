@@ -20,9 +20,12 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
     }
 
     public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryName(bool noTracking = true,
-    bool noIncludes = false, bool showIgnored = false )
+    bool noIncludes = false, bool showIgnored = false, bool showDeleted = false )
     {
-        return CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showIgnored: showIgnored).OrderBy(c => c.CountryName).Select(c => Mapper.Map(c))!;
+        var result = CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showIgnored: showIgnored, showDeleted: showDeleted)
+            .ToList();
+        return result.OrderBy(c => (string) c.CountryName).Select(c => Mapper.Map(c))!;
+        
     }
 
     public async Task<bool> HasAnyCountiesAsync(Guid id, bool noTracking = true)
@@ -58,6 +61,13 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
 
     protected override IQueryable<Country> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = true)
     {
+        if (!showIgnored && !showDeleted)
+        {
+            return RepoDbSet
+                .Include(c => c.CountryName)
+                .ThenInclude(c => c.Translations).Where(c => c.IsIgnored == false)
+                .AsNoTracking();
+        }
         if (!showIgnored) 
         {
 

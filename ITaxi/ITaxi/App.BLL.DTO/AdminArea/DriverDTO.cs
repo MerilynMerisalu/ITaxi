@@ -38,11 +38,16 @@ public class DriverDTO: DomainEntityMetaId, IShowHideItem
     [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
     public DateTime DriverLicenseExpiryDate { get; set; }
 
+
     public int NumberOfDriverLicenseCategories { get; set; }
     public Guid CityId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "City")]
     public CityDTO? City { get; set; }
+    public Guid CountryId { get; set; }
+
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "Country")]
+    public CountryDTO? Country { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(30, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]

@@ -60,6 +60,8 @@ public class RegisterDriverModel : PageModel
         _emailSender = emailSender;
         _appBLL = appBLL;
 
+        Countries = new SelectList(_appBLL.Countries.GetAllCountriesOrderedByCountryName(showIgnored: false, showDeleted: false),
+            nameof(App.BLL.DTO.AdminArea.CountryDTO.Id), nameof(App.BLL.DTO.AdminArea.CountryDTO.CountryName));
         Cities = new SelectList(_appBLL.Cities.GetAllOrderedCities(),
         nameof(App.BLL.DTO.AdminArea.CityDTO.Id), nameof(App.BLL.DTO.AdminArea.CityDTO.CityName));
         DriverLicenseCategories = new SelectList(_appBLL.DriverLicenseCategories
@@ -74,6 +76,10 @@ public class RegisterDriverModel : PageModel
     /// Driver license categories
     /// </summary>
     public SelectList DriverLicenseCategories { get; set; }
+    /// <summary>
+    /// List of countries
+    /// </summary>
+    public SelectList Countries { get; set; }
 
     /// <summary>
     /// List of cities
@@ -155,21 +161,23 @@ public class RegisterDriverModel : PageModel
 
                 await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
-                await _userManager.AddToRoleAsync(user, "Driver");
-                await _appBLL.SaveChangesAsync();
-                
                 var driver = new App.BLL.DTO.AdminArea.DriverDTO()
                 {
                     Id = Guid.NewGuid(),
-                    AppUserId = user.Id, PersonalIdentifier = Input.PersonalIdentifier,
-                    Address = Input.Address, CityId = Input.CityId,
+                    AppUserId = user.Id,
+                    PersonalIdentifier = Input.PersonalIdentifier,
+                    
+                    Address = Input.Address,
+                    CityId = Input.CityId,
                     DriverLicenseNumber = Input.DriverLicenseNumber,
                     DriverLicenseExpiryDate = Input.ExpiryDate,
                     ServiceProviderCardIdentifier = Input.ServiceProviderCardIdentifier,
                 };
-                
-                
+
+
+
                 _appBLL.Drivers.Add(driver);
+
                 if (Input.DriverAndDriverLicenseCategories != null)
                 {
                     foreach (var driverLicenseCategoryId in Input.DriverAndDriverLicenseCategories)
@@ -179,10 +187,14 @@ public class RegisterDriverModel : PageModel
                             DriverId = driver.Id,
                             DriverLicenseCategoryId = driverLicenseCategoryId
                         };
-                         _appBLL.DriverAndDriverLicenseCategories.Add(driverAndDriverLicenseCategories);
+                        _appBLL.DriverAndDriverLicenseCategories.Add(driverAndDriverLicenseCategories);
                         await _appBLL.SaveChangesAsync();
                     }
                 }
+                await _userManager.AddToRoleAsync(user, "Driver");
+                await _appBLL.SaveChangesAsync();
+                var resultServiceProviderCardIdentifier = _appBLL.Drivers.CreateServiceCardIdentification(Input.ServiceProviderCardIdentifier);
+                
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl});
@@ -269,6 +281,12 @@ public class RegisterDriverModel : PageModel
         [StringLength(50)]
         [Display(ResourceType = typeof(DriverRegister), Name = nameof(PersonalIdentifier))]
         public string? PersonalIdentifier { get; set; }
+        /// <summary>
+        /// Country id for driver
+        /// </summary>
+        [DataType(DataType.Text)]
+        [Display(ResourceType = typeof(DriverRegister), Name = "Country")]
+        public Guid CountryId { get; set; }
 
         /// <summary>
         /// City id for driver
@@ -277,11 +295,13 @@ public class RegisterDriverModel : PageModel
         [Display(ResourceType = typeof(DriverRegister), Name = "City")]
         public Guid CityId { get; set; }
 
-
+        /// <summary>
+        /// Driver's service card identifier
+        /// </summary>
         [Required( ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         [Display(ResourceType = typeof(DriverRegister), Name = "ServiceProviderCardIdentifier")]
         [StringLength(6, MinimumLength = 6, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMinMax")]
-        [RegularExpression(@"^\d$",ErrorMessageResourceType = typeof(Common),
+        [RegularExpression(@"^\d+$",ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "ErrorMessageOnlyDigits")]
         public string ServiceProviderCardIdentifier { get; set; } = default!;
         

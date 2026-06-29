@@ -29,7 +29,7 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
     }
 
     public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryName(
-        bool noTracking = true, bool noIncludes = false, bool showIgnored = false)
+        bool noTracking = true, bool noIncludes = false, bool showIgnored = false, bool showDeleted = false)
     {
         return Repository.GetAllCountriesOrderedByCountryName(noTracking: noTracking, noIncludes: noIncludes, showIgnored: showIgnored)
             .Select(e => Mapper.Map(e))!;
