@@ -3,6 +3,7 @@
 
 #nullable enable
 
+using App.Contracts.BLL;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
@@ -40,13 +41,15 @@ public class IndexModel : PageModel
     /// <param name="webHostEnvironment">Web host environment</param>
     public IndexModel(
         UserManager<AppUser> userManager,
-        SignInManager<AppUser> signInManager, AppDbContext context,
-        IWebHostEnvironment webHostEnvironment)
+        SignInManager<AppUser> signInManager,
+        IWebHostEnvironment webHostEnvironment,
+        AppDbContext context)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _context = context;
         _webHostEnvironment = webHostEnvironment;
+        _context = context;
     }
 
     /// <summary>
@@ -97,6 +100,8 @@ public class IndexModel : PageModel
     /// List of disability types
     /// </summary>
     public SelectList? DisabilityTypes { get; set; }
+    
+
     private async Task LoadAsync(AppUser user)
     {
         var userName = await _userManager.GetUserNameAsync(user);
@@ -114,13 +119,11 @@ public class IndexModel : PageModel
         var dateOfBirth = user.DateOfBirth.Date;
         var countryId = user.CountryId;
 
-        Countries = new SelectList(await _context.Countries.
+        Countries = new SelectList(_context.Countries.
             Include(c => c.CountryName)
             .ThenInclude(t => t.Translations)
-           .OrderBy(c => c.ISOCode)
-           .Select(c => new { c.Id, c.CountryName })
-           .ToListAsync(), nameof(Country.Id),
-           nameof(Country.CountryName));
+          .Select(c => new { c.Id, c.CountryName })
+           .ToListAsync().Result.OrderBy(c => (string)c.CountryName), nameof(Country.Id), nameof(Country.CountryName));
 
 
         Cities = new SelectList(await _context.Cities
@@ -239,18 +242,18 @@ public class IndexModel : PageModel
     {
          
         var user = await _userManager.GetUserAsync(User);
-        var userProfilePhotoUrl = _context.Photos.FirstOrDefaultAsync(upp => upp.AppUserId == user!.Id).Result?.PhotoURL;
+        var userProfilePhoto = await _context.Photos.SingleOrDefaultAsync(upp => upp.AppUserId == user!.Id);
         if (Input == null)
         {
             Input = new InputModel(); 
         }
-        if (userProfilePhotoUrl == null)
+        if (userProfilePhoto == null)
         {
             Input.PhotoPath = "/Images/Icons/icons8-selfies-50.png";
         }
         else
         {
-            Input.PhotoPath = userProfilePhotoUrl;
+            Input.PhotoPath = userProfilePhoto.PhotoURL;
         }
 
     }
