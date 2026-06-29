@@ -214,6 +214,15 @@ namespace App.Resources.Areas.Identity.Pages.Account.Manage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Request Change Permission.
+        /// </summary>
+        public static string RequestChangePermission {
+            get {
+                return ResourceManager.GetString("RequestChangePermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selected Driver License Categories.
         /// </summary>
         public static string SelectedDriverLicenseCategories {

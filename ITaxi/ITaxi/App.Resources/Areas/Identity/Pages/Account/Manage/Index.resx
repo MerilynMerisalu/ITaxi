@@ -177,4 +177,7 @@
   <data name="ServiceProviderCardIdentifier" xml:space="preserve">
     <value>Service Provider Card Identifier</value>
   </data>
+  <data name="RequestChangePermission" xml:space="preserve">
+    <value>Request Change Permission</value>
+  </data>
 </root>

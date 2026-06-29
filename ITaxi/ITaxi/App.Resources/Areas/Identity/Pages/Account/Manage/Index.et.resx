@@ -177,4 +177,7 @@
   <data name="ServiceProviderCardIdentifier" xml:space="preserve">
     <value>Teenusepakkuja teenindajakaardi number</value>
   </data>
+  <data name="RequestChangePermission" xml:space="preserve">
+    <value>Taotle muutmisluba</value>
+  </data>
 </root>
