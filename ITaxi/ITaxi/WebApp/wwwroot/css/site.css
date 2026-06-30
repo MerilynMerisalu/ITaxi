@@ -29,3 +29,14 @@ body {
 .hide {
     color: red;
 }
+
+.profile-links {
+    color: #0dcaf0; 
+    text-decoration: none;
+    
+}
+
+.profile-links:hover
+{
+    text-decoration: underline
+}
