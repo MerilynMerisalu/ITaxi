@@ -132,12 +132,12 @@ public class IndexModel : PageModel
             .ToListAsync(), nameof(City.Id),
             nameof(City.CityName));
 
-        DisabilityTypes = new SelectList(await _context.DisabilityTypes
+        DisabilityTypes = new SelectList(_context.DisabilityTypes
             .Include(t => t.DisabilityTypeName)
             .ThenInclude(t => t.Translations)
             .OrderBy(c => c.DisabilityTypeName)
             .Select(c => new { c.Id, c.DisabilityTypeName })
-            .ToListAsync(), nameof(DisabilityType.Id),
+            .ToListAsync().Result.OrderBy(d => (string) d.DisabilityTypeName ), nameof(DisabilityType.Id),
         nameof(DisabilityType.DisabilityTypeName));
 
         Username = userName!;
