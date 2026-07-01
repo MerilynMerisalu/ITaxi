@@ -17,5 +17,6 @@ public interface ICountyRepositoryCustom<TEntity>
     Task<TEntity?> GetCountyByEHAKCodeAsync(string ehakCode);
     TEntity?GetCountyByEHAKCode(string ehakCode);
     Task<bool> HasCities(Guid countyId);
+    Task<List<TEntity?>>GetAllCountiesOrderedByCountyNameByCountryIdAsync(Guid countryId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false);
     
 }

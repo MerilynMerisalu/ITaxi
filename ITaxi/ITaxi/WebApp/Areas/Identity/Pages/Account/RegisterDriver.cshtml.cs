@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
+using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.DAL.EF;
 using App.Domain.Identity;
@@ -79,7 +80,12 @@ public class RegisterDriverModel : PageModel
     /// <summary>
     /// List of countries
     /// </summary>
-    public SelectList Countries { get; set; }
+    public SelectList? Countries { get; set; }
+
+    /// <summary>
+    /// List of Counties
+    /// </summary>
+    public SelectList? Counties { get; set; }
 
     /// <summary>
     /// List of cities
@@ -235,6 +241,27 @@ public class RegisterDriverModel : PageModel
     ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
     ///     directly from your code. This API may change or be removed in future releases.
     /// </summary>
+
+    /// <summary>
+    /// Admin area driver register set drop down list
+    /// </summary>
+    /// <param name="countryId">Country id</param>
+    /// <returns>new JsonResult</returns>
+    
+    public async Task<IActionResult> OnGetSetDropDownCountiesListAsync([FromQuery (Name = "id")] Guid countryId)
+    {
+        // Select the Counties for the currently selected CountryId
+        var counties = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameByCountryIdAsync(countryId);
+        
+        var result = counties.Select(c => new
+        {
+            value = c.Id,
+            text = c.CountyName
+        }); 
+        
+
+        return new JsonResult(result);
+    }
     public class InputModel
     {
         /// <summary>
@@ -287,6 +314,14 @@ public class RegisterDriverModel : PageModel
         [DataType(DataType.Text)]
         [Display(ResourceType = typeof(DriverRegister), Name = "Country")]
         public Guid CountryId { get; set; }
+
+        /// <summary>
+        /// County id for driver
+        /// </summary>
+        [DataType(DataType.Text)]
+        [Display(ResourceType = typeof(DriverRegister), Name = "County")]
+        public Guid CountyId { get; set; }
+
 
         /// <summary>
         /// City id for driver

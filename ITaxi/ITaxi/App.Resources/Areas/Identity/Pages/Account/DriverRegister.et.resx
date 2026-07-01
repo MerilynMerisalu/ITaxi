@@ -207,4 +207,7 @@
   <data name="InvalidServiceProviderCardIdentifierNumberError" xml:space="preserve">
     <value>Teenusepakkuja teenusekaardi numbri pikkus peab olema täpselt {0} numbrit!</value>
   </data>
+  <data name="County" xml:space="preserve">
+    <value>Maakond</value>
+  </data>
 </root>

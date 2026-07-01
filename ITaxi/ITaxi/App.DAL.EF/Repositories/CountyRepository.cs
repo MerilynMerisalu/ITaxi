@@ -45,9 +45,7 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
         // special handling of OrderBy to account for language transalation
         return CreateQuery(noTracking)
             .ToList() // Bring into memory "Materialize"
-            .OrderBy(v => v.Country!.CountryName)
-            
-            .ToList().Select(e => Mapper.Map(e))!;
+            .Select(e => Mapper.Map(e)).OrderBy(e => (string)e!.CountyName)!;
     }
     
 
@@ -89,5 +87,12 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
     public CountyDTO? GetCountyByEHAKCode(string ehakCode)
     {
         return (Mapper.Map( CreateQuery().FirstOrDefault(c => c.CountyEHAKCode!.Equals(ehakCode.Trim().ToUpperInvariant()))));
+    }
+
+    public async Task<List<CountyDTO?>> GetAllCountiesOrderedByCountyNameByCountryIdAsync(Guid countryId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    {
+        var result = await CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)
+            .Where(c => c.CountryId == countryId).OrderBy(c => c.CountyName).Select(c => Mapper.Map(c)).ToListAsync();
+        return result;
     }
 }

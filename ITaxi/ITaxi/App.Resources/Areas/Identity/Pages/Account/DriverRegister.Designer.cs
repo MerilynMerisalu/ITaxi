@@ -106,6 +106,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to County.
+        /// </summary>
+        public static string County {
+            get {
+                return ResourceManager.GetString("County", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date of Birth.
         /// </summary>
         public static string DateOfBirth {

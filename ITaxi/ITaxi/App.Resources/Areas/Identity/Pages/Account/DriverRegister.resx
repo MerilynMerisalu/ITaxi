@@ -207,4 +207,7 @@
   <data name="InvalidServiceProviderCardIdentifierNumberError" xml:space="preserve">
     <value>Service provider card identifier number must be exactly {0} digits!</value>
   </data>
+  <data name="County" xml:space="preserve">
+    <value>County</value>
+  </data>
 </root>
