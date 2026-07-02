@@ -34,7 +34,7 @@ public class Driver: DomainEntityMetaId
     public int NumberOfDriverLicenseCategories { get; set; }
     public Guid CityId { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "City")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "City")]
     public City? City { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
