@@ -96,7 +96,7 @@ public class EditDriverViewModel
     /// <summary>
     /// City id
     /// </summary>
-    [Display(ResourceType = typeof(Driver), Name = "City")]
+    [Display(ResourceType = typeof(AppUser), Name = "City")]
     public Guid CityId { get; set; }
 
     /// <summary>

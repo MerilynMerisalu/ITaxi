@@ -63,8 +63,7 @@ public class RegisterDriverModel : PageModel
 
         Countries = new SelectList(_appBLL.Countries.GetAllCountriesOrderedByCountryName(showIgnored: false, showDeleted: false),
             nameof(App.BLL.DTO.AdminArea.CountryDTO.Id), nameof(App.BLL.DTO.AdminArea.CountryDTO.CountryName));
-        Cities = new SelectList(_appBLL.Cities.GetAllOrderedCities(),
-        nameof(App.BLL.DTO.AdminArea.CityDTO.Id), nameof(App.BLL.DTO.AdminArea.CityDTO.CityName));
+        Cities = new SelectList(Enumerable.Empty<CityDTO>(), nameof(CityDTO.Id), nameof(CityDTO.CityName));
         DriverLicenseCategories = new SelectList(_appBLL.DriverLicenseCategories
             .GetAllDriverLicenseCategoriesOrdered(),
                 
@@ -172,9 +171,7 @@ public class RegisterDriverModel : PageModel
                     Id = Guid.NewGuid(),
                     AppUserId = user.Id,
                     PersonalIdentifier = Input.PersonalIdentifier,
-                    
                     Address = Input.Address,
-                    CityId = Input.CityId,
                     DriverLicenseNumber = Input.DriverLicenseNumber,
                     DriverLicenseExpiryDate = Input.ExpiryDate,
                     ServiceProviderCardIdentifier = Input.ServiceProviderCardIdentifier,
@@ -248,7 +245,7 @@ public class RegisterDriverModel : PageModel
     /// <param name="countryId">Country id</param>
     /// <returns>new JsonResult</returns>
     
-    public async Task<IActionResult> OnGetSetDropDownCountiesListAsync([FromQuery (Name = "id")] Guid countryId)
+    public async Task<IActionResult> OnGetSetDropDownCountiesListAsync([FromQuery] Guid countryId)
     {
         // Select the Counties for the currently selected CountryId
         var counties = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameByCountryIdAsync(countryId);
@@ -260,6 +257,19 @@ public class RegisterDriverModel : PageModel
         }); 
         
 
+        return new JsonResult(result);
+    }
+
+    public async Task<IActionResult> OnGetSetDropDownCitiesListAsync([FromQuery] Guid countyId)
+    {
+        // Select the Counties for the currently selected CountryId
+        var cities = await _appBLL.Cities.GetCitiesByCountyIdAsync(countyId);
+        var result = cities.Select(c => new
+        {
+            value = c.Id,
+            text = c.CityName
+        });
+        
         return new JsonResult(result);
     }
     public class InputModel

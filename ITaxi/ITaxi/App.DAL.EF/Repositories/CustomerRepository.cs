@@ -99,7 +99,15 @@ public class CustomerRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Cus
         if (noTracking)
             query = query.AsNoTracking();
         if (!noIncludes)
-            query = query.Include(a => a.AppUser).Include(a => a.DisabilityType).ThenInclude(a => a!.DisabilityTypeName).ThenInclude(a => a.Translations);
+            query = query.Include(a => a.AppUser).Include(a => a.DisabilityType).ThenInclude(a => a!.DisabilityTypeName).ThenInclude(a => a.Translations)
+                .Include(a => a.AppUser)
+                    .ThenInclude(a => a.Country)
+                        .ThenInclude(a => a.CountryName)
+                            .ThenInclude(a => a.Translations)
+                .Include(a => a.AppUser)
+                    .ThenInclude(a => a.County)
+                .Include(a => a.AppUser)
+                    .ThenInclude(a => a.City);
         return query;
     }
 

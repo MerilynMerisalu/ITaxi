@@ -153,7 +153,7 @@ public class IndexModel : PageModel
                     DateOfBirth = dateOfBirth,
                     PersonalIdentifier = admin.PersonalIdentifier,
                     CountryId = countryId,
-                    CityId = admin.CityId,
+                    CityId = admin.AppUser!.CityId,
                     AddressOfResidence = admin.Address,
                     ImageFile = user.ProfileImage,
                     
@@ -188,7 +188,7 @@ public class IndexModel : PageModel
                     DateOfBirth = dateOfBirth,
                     PersonalIdentifier = driver.PersonalIdentifier,
                     CountryId = countryId,
-                    CityId = driver.CityId,
+                    CityId = driver.AppUser!.CityId,
                     AddressOfResidence = driver.Address,
                     DriverLicenseNumber = driver.DriverLicenseNumber,
                     DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate?.Date,
@@ -432,9 +432,9 @@ public class IndexModel : PageModel
             }
             
             
-            if (Input.CityId != admin.CityId)
+            if (Input.CityId != admin.AppUser!.CityId)
             {
-                if (Input.CityId != null) admin.CityId = Input.CityId.Value;
+                if (Input.CityId != null) admin.AppUser!.CityId = Input.CityId.Value;
             }
 
             if (Input.AddressOfResidence != admin.Address)
@@ -456,9 +456,9 @@ public class IndexModel : PageModel
                 driver.PersonalIdentifier = Input.PersonalIdentifier!;
             }
 
-            if (Input.CityId != driver.CityId)
+            if (Input.CityId != driver.AppUser!.CityId)
             {
-                if (Input.CityId != null) driver.CityId = Input.CityId.Value;
+                if (Input.CityId != null) driver.AppUser!.CityId = Input.CityId.Value;
             }
 
             if (Input.AddressOfResidence != driver.Address)

@@ -403,7 +403,6 @@ public class AccountController : ControllerBase
             Id = new Guid(),
             AppUserId = appUser.Id,
             PersonalIdentifier = driverRegistrationDto.PersonalIdentifier,
-            CityId = driverRegistrationDto.CityId,
             Address = driverRegistrationDto.Address,
             DriverLicenseNumber = driverRegistrationDto.DriverLicenseNumber,
             DriverLicenseExpiryDate = DateTime.Parse(driverRegistrationDto.DriverLicenseExpiryDate)
@@ -442,7 +441,6 @@ public class AccountController : ControllerBase
             AppUserId = driver.AppUserId,
             Address = driver.Address,
             PersonalIdentifier = driver.PersonalIdentifier,
-            CityId = driver.CityId,
             NumberOfDriverLicenseCategories = driverRegistrationDto.DriverLicenseCategoryIds!.Length,
             
             DriverLicenseNumber = driver.DriverLicenseNumber,

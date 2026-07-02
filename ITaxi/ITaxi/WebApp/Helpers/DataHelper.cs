@@ -208,7 +208,8 @@ public static class DataHelper
 
                 await context.Cities.AddAsync(city);
                 await context.SaveChangesAsync();
-
+               
+                var cityId = context.Cities.OrderBy(c => c.CityName).First().Id;
                 var appUser = new AppUser
                 {
                     Id = Guid.NewGuid(),
@@ -217,6 +218,8 @@ public static class DataHelper
                     DateOfBirth = DateTime.Parse("1992-08-20"),
                     Gender = Gender.Female,
                     CountryId = countryId,
+                    CountyId = county.Id,
+                    CityId = cityId,
                     Email = "kati@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "22356891",
@@ -248,7 +251,6 @@ public static class DataHelper
                     Id = Guid.NewGuid(),
                     AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                         a.FirstName.Equals("Katrin") && a.LastName.Equals("Salu")).Id,
-                    CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
                     PersonalIdentifier = "49208202221",
                     Address = "Kalda 23",
                     CreatedAt = DateTime.Now.ToUniversalTime(),
@@ -267,6 +269,8 @@ public static class DataHelper
                     DateOfBirth = DateTime.Parse("1977-08-22"),
                     Gender = Gender.Female,
                     CountryId = countryId,
+                    CountyId = county.Id,
+                    CityId = cityId,
                     Email = "tiina.pilv@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "22356891"
@@ -297,7 +301,6 @@ public static class DataHelper
                     Id = Guid.NewGuid(),
                     AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                         a.FirstName.Equals("Tiina") && a.LastName.Equals("Pilv")).Id,
-                    CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
                     PersonalIdentifier = "47708222221",
                     Address = "Suurmäe 13-9",
                     CreatedBy = "System",
@@ -316,6 +319,8 @@ public static class DataHelper
                     DateOfBirth = DateTime.Parse("1988-06-23"),
                     Gender = Gender.Male,
                     CountryId = countryId,
+                    CountyId = county.Id,
+                    CityId = cityId,
                     Email = "toomas.paju@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "55358834"
@@ -346,10 +351,8 @@ public static class DataHelper
                     Id = Guid.NewGuid(),
                     AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                         a.FirstName.Equals("Toomas") && a.LastName.Equals("Paju")).Id,
-                    CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
                     PersonalIdentifier = "38806237921",
                     DriverLicenseNumber = "AAC 123",
-                    DriverLicenseExpiryDate = DateTime.Parse("2026-09-22"),
                     ServiceProviderCardIdentifier = "TK-000111",
                     Address = "Veerenni 13",
                     CreatedAt = DateTime.Now.ToUniversalTime(),
@@ -388,6 +391,8 @@ public static class DataHelper
                     DateOfBirth = DateTime.Parse("1966-05-13"),
                     Gender = Gender.Male,
                     CountryId = countryId,
+                    CountyId = county.Id,
+                    CityId = cityId,
                     Email = "peep.tolmusk@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "22447799"
@@ -416,7 +421,6 @@ public static class DataHelper
                     Id = Guid.NewGuid(),
                     AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                         a.FirstName.Equals("Peep") && a.LastName.Equals("Tolmusk")).Id,
-                    CityId = context.Cities.OrderBy(c => c.CityName).First().Id,
                     PersonalIdentifier = "36605138911",
                     DriverLicenseNumber = "BCC 445",
                     DriverLicenseExpiryDate = DateTime.Parse("2028-09-22"),
@@ -657,6 +661,8 @@ public static class DataHelper
                     DateOfBirth = DateTime.Parse("2001-02-14"),
                     Gender = Enum.Parse<Gender>(Gender.Female.ToString()),
                     CountryId = countryId,
+                    CountyId = county.Id,
+                    CityId = cityId,
                     Email = "maarika.matas@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "66357754"
@@ -697,6 +703,8 @@ public static class DataHelper
                     DateOfBirth = DateTime.Parse("2000-04-14"),
                     Gender = Enum.Parse<Gender>(Gender.Male.ToString()),
                     CountryId = countryId,
+                    CountyId = county.Id,
+                    CityId = cityId,
                     Email = "kristjan.suursalu@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "88452236"

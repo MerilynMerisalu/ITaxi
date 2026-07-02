@@ -92,7 +92,7 @@ public class CreateDriverViewModel
     /// <summary>
     /// City id for create a driver
     /// </summary>
-    [Display(ResourceType = typeof(Driver), Name = "City")]
+    [Display(ResourceType = typeof(AppUser), Name = "City")]
     public Guid CityId { get; set; }
 
     /// <summary>

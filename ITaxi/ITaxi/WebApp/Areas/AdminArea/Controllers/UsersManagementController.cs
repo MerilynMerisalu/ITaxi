@@ -67,9 +67,9 @@ namespace WebApp.Areas.AdminArea.Controllers
             {
                 vm.DriverId = driver.Id;
                 vm.PersonalIdentifier = driver.PersonalIdentifier;
-                vm.Country = driver.City.County.Country.CountryName;
-                vm.County = driver.City.County.CountyName;
-                vm.City = driver.City.CityName;
+                vm.Country = driver.AppUser!.City.County.Country.CountryName;
+                vm.County = driver.AppUser!.City.County.CountyName;
+                vm.City = driver.AppUser!.City.CityName;
                 vm.AddressOfResidence = driver.Address;
                 
             }

@@ -21,4 +21,6 @@ public interface ICityRepositoryCustom<TEntity>
     Task<bool> HasAnyCitiesAsync(Guid id, bool noTracking = true);
     bool HasAnyCities(Guid id, bool noTracking = true);
     Task<TEntity?>GetCityByIdAsync(Guid id, bool noTracking = false, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false);
+    Task<List<TEntity?>> GetCitiesByCountyIdAsync(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false);
+    List<TEntity?> GetCitiesByCountyId(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false);
 }

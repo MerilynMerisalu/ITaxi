@@ -36,9 +36,6 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CityId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -61,8 +58,7 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PersonalIdentifier")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -73,8 +69,6 @@ namespace App.DAL.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
-
-                    b.HasIndex("CityId");
 
                     b.ToTable("Admins");
                 });
@@ -601,9 +595,6 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CityId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -649,8 +640,6 @@ namespace App.DAL.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
-
-                    b.HasIndex("CityId");
 
                     b.ToTable("Drivers");
                 });
@@ -828,11 +817,17 @@ namespace App.DAL.EF.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("CityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("CountryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CountyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateOfBirth")
@@ -911,7 +906,11 @@ namespace App.DAL.EF.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CityId");
+
                     b.HasIndex("CountryId");
+
+                    b.HasIndex("CountyId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -1582,15 +1581,7 @@ namespace App.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("App.Domain.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("AppUser");
-
-                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("App.Domain.Booking", b =>
@@ -1742,14 +1733,7 @@ namespace App.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("App.Domain.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("AppUser");
-
-                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("App.Domain.DriverAndDriverLicenseCategory", b =>
@@ -1803,13 +1787,29 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Identity.AppUser", b =>
                 {
+                    b.HasOne("App.Domain.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("App.Domain.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("App.Domain.County", "County")
+                        .WithMany()
+                        .HasForeignKey("CountyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("City");
+
                     b.Navigation("Country");
+
+                    b.Navigation("County");
                 });
 
             modelBuilder.Entity("App.Domain.Identity.RefreshToken", b =>

@@ -57,4 +57,17 @@ public class CityService : BaseEntityService<App.BLL.DTO.AdminArea.CityDTO, DAL.
     {
         return Mapper.Map(await Repository.GetCityByIdAsync(id: id, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored));
     }
+
+    public async Task<List<CityDTO?>> GetCitiesByCountyIdAsync(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    {
+        return (await Repository.GetCitiesByCountyIdAsync(countyId: countyId, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored))
+            .Select(c => Mapper.Map(c)).ToList();
+            
+    }
+
+    public List<CityDTO?> GetCitiesByCountyId(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    {
+        return ( Repository.GetCitiesByCountyId(countyId: countyId, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)
+            .Select(c => Mapper.Map(c)).ToList());
+    }
 }

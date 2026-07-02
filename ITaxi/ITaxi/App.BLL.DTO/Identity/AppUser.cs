@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using App.BLL.DTO.AdminArea;
 using App.Enum.Enum;
 using Base.Domain;
 using Base.Resources;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.BLL.DTO.Identity;
 
@@ -42,6 +43,19 @@ public class AppUser: DomainEntityId
     [NotMapped]
     [Display(ResourceType = typeof(Common), Name = "ProfilePhoto")]
     public IFormFile? ProfileImage { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "City")]
+    public Guid CityId { get; set; }
+
+    public Guid CountryId { get; set; }
+    public CityDTO? City { get; set; }
+
+    public Guid? CountyId { get; set; }
+
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "County")]
+    public CountyDTO? County { get; set; }
+
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "Country")]
+    public CountryDTO? Country { get; set; }
 
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]

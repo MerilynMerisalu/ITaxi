@@ -35,11 +35,7 @@ public class DriverDTO: DomainEntityMetaId
     public DateTime DriverLicenseExpiryDate { get; set; }
 
     public int NumberOfDriverLicenseCategories { get; set; }
-    public Guid CityId { get; set; }
-
     
-    public CityDTO? City { get; set; }
-
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(30, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     [StringLength(30, MinimumLength = 1,

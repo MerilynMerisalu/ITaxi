@@ -120,9 +120,6 @@
   <data name="PersonalIdentifier" xml:space="preserve">
     <value>Isikukood</value>
   </data>
-  <data name="City" xml:space="preserve">
-    <value>Linn</value>
-  </data>
   <data name="DriverLicenseCategories" xml:space="preserve">
     <value>Juhilubade kategooriad</value>
   </data>

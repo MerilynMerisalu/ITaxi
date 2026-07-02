@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using App.DAL.DTO.AdminArea;
 using App.Enum.Enum;
 using Base.Domain;
 using Base.Resources;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.DAL.DTO.Identity;
 
@@ -31,6 +32,22 @@ public class AppUser: DomainEntityId
     [Display(ResourceType = typeof(Common), Name = nameof(Gender))]
     [EnumDataType(typeof(Gender))]
     public Gender Gender { get; set; }
+
+    public Guid CityId { get; set; }
+
+    public Guid CountryId { get; set; }
+
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "City")]
+    public CityDTO? City { get; set; }
+
+    public Guid? CountyId { get; set; }
+
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "County")]
+    public CountyDTO? County { get; set; }
+
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "Country")]
+    public CountryDTO? Country { get; set; }
+
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.DateTime)]

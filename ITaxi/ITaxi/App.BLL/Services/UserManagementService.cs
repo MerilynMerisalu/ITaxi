@@ -68,9 +68,9 @@ namespace App.BLL.Services
                 {
                     var driverLicenseCategories = await _appBll.DriverAndDriverLicenseCategories.GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver.Id);
                     data.PersonalIdentifier = (string.IsNullOrWhiteSpace(driver.PersonalIdentifier)) ? "-" : driver.PersonalIdentifier;
-                    data.Country = driver.City!.County!.Country!.CountryName;
-                    data.County = driver.City.County.CountyName;
-                    data.City = driver.City.CityName;
+                    data.Country = driver.AppUser!.City!.County!.Country!.CountryName;
+                    data.County = driver.AppUser!.City.County.CountyName;
+                    data.City = driver.AppUser!.City.CityName;
                     data.AddressOfResidence = driver.Address;
                     if (driverLicenseCategories?.Length == 0)
                     {

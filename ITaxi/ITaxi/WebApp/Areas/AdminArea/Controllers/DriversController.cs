@@ -66,7 +66,7 @@ public class DriversController : Controller
             vm.DriverLicenseCategoryNames = await _appBLL.DriverAndDriverLicenseCategories
                 .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
             vm.PersonalIdentifier = driver.PersonalIdentifier;
-            vm.CityName = driver.City!.CityName;
+            vm.CityName = driver.AppUser!.City!.CityName;
             vm.DriverLicenseNumber = driver.DriverLicenseNumber;
             vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLocalTime();
             vm.Address = driver.Address;
@@ -119,7 +119,7 @@ public class DriversController : Controller
             driver.AppUser!.Gender = vm.Gender;
             driver.AppUser.DateOfBirth = DateTime.Parse(vm.DateOfBirth).ToUniversalTime();
             driver.PersonalIdentifier = vm.PersonalIdentifier;
-            driver.CityId = vm.CityId;
+            driver.AppUser.CityId = vm.CityId;
             driver.Address = vm.Address;
             driver.DriverLicenseNumber = vm.DriverLicenseNumber;
             driver.DriverLicenseExpiryDate = DateTime.Parse(vm.DriverLicenseExpiryDate).ToUniversalTime();
@@ -130,7 +130,7 @@ public class DriversController : Controller
 
         vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesWithoutCountyAsync(),
             nameof(CityDTO.Id),
-            nameof(CityDTO.CityName), driver.CityId);
+            nameof(CityDTO.CityName), driver.AppUser!.CityId);
         return View(vm);
     }
 
@@ -161,7 +161,7 @@ public class DriversController : Controller
             vm.LastName = driver.AppUser!.LastName;
             vm.Gender = driver.AppUser!.Gender;
             vm.Address = driver.Address;
-            vm.CityId = driver.CityId;
+            vm.CityId = driver.AppUser.CityId;
             vm.PersonalIdentifier = driver.PersonalIdentifier;
             vm.DateOfBirth = driver.AppUser!.DateOfBirth;
             vm.DriverLicenseNumber = driver.DriverLicenseNumber;
@@ -227,7 +227,7 @@ public class DriversController : Controller
 
                     driver.DriverLicenseNumber = vm.DriverLicenseNumber;
                     driver.DriverLicenseExpiryDate = DateTime.Parse(vm.DriverLicenseExpiryDate.ToString("d")).ToUniversalTime();
-                    driver.CityId = vm.CityId;
+                    driver.AppUser!.CityId = vm.CityId;
                     driver.Address = vm.Address;
                     driver.UpdatedBy = User.Identity!.Name!;
                     driver.UpdatedAt = DateTime.Now.ToUniversalTime();
@@ -272,7 +272,7 @@ public class DriversController : Controller
         vm.DriverLicenseCategoryNames = await _appBLL.DriverAndDriverLicenseCategories
             .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
         vm.PersonalIdentifier = driver.PersonalIdentifier;
-        vm.CityName = driver.City!.CityName;
+        vm.CityName = driver.AppUser!.City!.CityName;
         vm.DriverLicenseNumber = driver.DriverLicenseNumber;
         vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLocalTime();
         vm.Address = driver.Address;

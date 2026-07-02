@@ -56,11 +56,13 @@ public class AdminRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.AdminD
         var query = base.CreateQuery(noTracking, noIncludes, showDeleted, showIgnored);
         if (!noIncludes)
             query = query.Include(a => a.AppUser)
-                         .Include(a => a.City)
-                            .ThenInclude(a => a.County)
-                                .ThenInclude(a => a.Country)
+                            .ThenInclude(a => a.Country)
                                 .ThenInclude(a => a.CountryName)
-                                    .ThenInclude(a => a.Translations);
+                                    .ThenInclude(a => a.Translations)
+                           .Include(a => a.AppUser)
+                                .ThenInclude(a => a.County)
+                           .Include(a => a.AppUser)
+                                .ThenInclude(a => a.City);
         return query;
     }
 

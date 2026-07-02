@@ -167,7 +167,7 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
         var rideTimesQuery = CreateQuery(userId, roleName, false) // overwrite the user, we need tracking
             .Where(rt => rt.IsTaken == false)
             .Where(rt => rt.ExpiryTime == null || rt.ExpiryTime < utcNow)
-            .Where(rt => rt.Schedule!.Driver!.CityId.Equals(cityId))
+            .Where(rt => rt.Schedule!.Driver!.AppUser!.CityId.Equals(cityId))
             .Where(rt => rt.Schedule!.Vehicle!.VehicleTypeId.Equals(vehicleType))
             .Where(rt => rt.Schedule!.Vehicle!.NumberOfSeats > numberOfPassengers);
 
@@ -224,7 +224,7 @@ public class RideTimeRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Rid
         var maxTime = pickUpDateAndTime.AddMinutes(60);
         var rideTimes = CreateQuery(userId, roleName)
             .Where(rt => rt.IsTaken == false)
-            .Where(rt => rt.Schedule!.Driver!.CityId.Equals(cityId))
+            .Where(rt => rt.Schedule!.Driver!.AppUser!.CityId.Equals(cityId))
             .Where(rt => rt.Schedule!.Vehicle!.NumberOfSeats > numberOfPassengers)
             .Where(rt => rt.RideDateTime >= minTime && rt.RideDateTime <= maxTime)
             .ToList();

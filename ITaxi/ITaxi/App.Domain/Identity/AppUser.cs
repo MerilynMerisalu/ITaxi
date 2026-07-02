@@ -39,6 +39,15 @@ public class AppUser : BaseUser
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     public Guid CountryId { get; set; }
     public Country? Country { get; set; }
+
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    public Guid CountyId { get; set; }
+    public County? County { get; set; }
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    public Guid CityId { get; set; }
+    public City? City { get; set; }
+
+
     [NotMapped]
     public IFormFile? ProfileImage { get; set; }
 

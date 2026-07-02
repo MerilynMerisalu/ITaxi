@@ -41,7 +41,7 @@
             @Html.DisplayNameFor(model => model.DriverLicenseExpiryDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.City)
+            @Html.DisplayNameFor(model => model.AppUser!.City)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Address)
@@ -99,7 +99,7 @@
                 @Html.DisplayFor(modelItem => item.DriverLicenseExpiryDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.City!.CityName)
+                @Html.DisplayFor(modelItem => item.AppUser!.City!.CityName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Address)

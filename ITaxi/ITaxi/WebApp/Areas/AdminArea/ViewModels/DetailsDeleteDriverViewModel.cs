@@ -74,7 +74,7 @@ public class DetailsDeleteDriverViewModel : AdminAreaBaseViewModel
     /// <summary>
     /// City name
     /// </summary>
-    [Display(ResourceType = typeof(Driver), Name = "City")]
+    [Display(ResourceType = typeof(AppUser), Name = "City")]
     public string CityName { get; set; } = default!;
 
     /// <summary>

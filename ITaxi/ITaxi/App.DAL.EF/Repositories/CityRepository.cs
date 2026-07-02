@@ -97,9 +97,9 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
 
     public override CityDTO Remove(CityDTO entity, bool hardDelete = false, bool showIgnored = false, bool showDeleted = false)
     {
-        if (RepoDbContext.Admins.Any(x => x.CityId == entity.Id) ||
+        if (RepoDbContext.Admins.Any(x => x.AppUser!.CityId == entity.Id) ||
             RepoDbContext.Bookings.Any(x => x.CityId == entity.Id) ||
-            RepoDbContext.Drivers.Any(x => x.CityId == entity.Id))
+            RepoDbContext.Drivers.Any(x => x.AppUser!.CityId == entity.Id))
             throw new ApplicationException("Entity cannot be deleted because it has dependent entities!");
         return base.Remove(entity, hardDelete, showIgnored);
     }
@@ -117,5 +117,19 @@ public class CityRepository : BaseEntityRepository<CityDTO, City, AppDbContext>,
     {
         var result = (await CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored).FirstOrDefaultAsync(e => e.Id.Equals(id)));
         return Mapper.Map(result);
+    }
+
+    public async Task<List<CityDTO?>> GetCitiesByCountyIdAsync(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    {
+        var result = await CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored : showIgnored)
+            .Where(c => c.CountyId == countyId).OrderBy(c => c.CityName).ToListAsync();
+        return result.Select(c => Mapper.Map(c)).ToList();
+    }
+
+    public List<CityDTO?> GetCitiesByCountyId(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    {
+        var result = CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)
+            .Where(c => c.CountyId == countyId).OrderBy(c => c.CityName).ToList();
+        return result.Select(c => Mapper.Map(c)).ToList();
     }
 }

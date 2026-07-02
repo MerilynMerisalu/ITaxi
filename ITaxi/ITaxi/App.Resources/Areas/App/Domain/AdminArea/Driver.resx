@@ -120,9 +120,6 @@
   <data name="PersonalIdentifier" xml:space="preserve">
     <value>Personal Identifier</value>
   </data>
-  <data name="City" xml:space="preserve">
-    <value>City</value>
-  </data>
   <data name="DriverLicenseCategories" xml:space="preserve">
     <value>Driver License Categories</value>
   </data>

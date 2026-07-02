@@ -164,9 +164,9 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
         return Mapper.Map( Repository.GetCountyByEHAKCode(ehakCode));
     }
 
-    public async Task<List<CountyDTO?>> GetAllCountiesOrderedByCountyNameByCountryIdAsync(Guid countryId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    public async Task<List<CountyDTO?>> GetAllCountiesOrderedByCountyNameByCountryIdAsync(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        return (await Repository.GetAllCountiesOrderedByCountyNameByCountryIdAsync(countryId: countryId, noTracking: noTracking,
+        return (await Repository.GetAllCountiesOrderedByCountyNameByCountryIdAsync(countyId: countyId, noTracking: noTracking,
             noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)).Select(c => Mapper.Map(c)).ToList();
     }
 }
