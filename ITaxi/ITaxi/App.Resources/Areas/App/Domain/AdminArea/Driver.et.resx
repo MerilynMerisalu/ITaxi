@@ -153,4 +153,7 @@
   <data name="EnterYourServiceProviderCardIdentifierHere" xml:space="preserve">
     <value>Palun sisestage oma teenidaja kaardi number</value>
   </data>
+  <data name="City" xml:space="preserve">
+    <value>Linn</value>
+  </data>
 </root>

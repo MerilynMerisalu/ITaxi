@@ -153,4 +153,7 @@
   <data name="EnterYourServiceProviderCardIdentifierHere" xml:space="preserve">
     <value>Enter Your Service Provider Card Identifier Number</value>
   </data>
+  <data name="City" xml:space="preserve">
+    <value>City</value>
+  </data>
 </root>

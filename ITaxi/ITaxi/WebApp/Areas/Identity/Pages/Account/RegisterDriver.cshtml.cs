@@ -139,6 +139,9 @@ public class RegisterDriverModel : PageModel
                 LastName = Input.LastName,
                 Gender = Input.Gender,
                 DateOfBirth = Input.DateOfBirth,
+                CountryId = Input.CountryId,
+                CountyId = Input.CountyId,
+                CityId = Input.CityId,
                 PhoneNumber = Input.PhoneNumber,
                 Email = Input.Email,
                 EmailConfirmed = true
@@ -166,6 +169,7 @@ public class RegisterDriverModel : PageModel
 
                 await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
+                var res = _appBLL.Drivers.CreateServiceCardIdentification(Input.ServiceProviderCardIdentifier);
                 var driver = new App.BLL.DTO.AdminArea.DriverDTO()
                 {
                     Id = Guid.NewGuid(),
@@ -174,7 +178,7 @@ public class RegisterDriverModel : PageModel
                     Address = Input.Address,
                     DriverLicenseNumber = Input.DriverLicenseNumber,
                     DriverLicenseExpiryDate = Input.ExpiryDate,
-                    ServiceProviderCardIdentifier = Input.ServiceProviderCardIdentifier,
+                    ServiceProviderCardIdentifier = res,
                 };
 
 
