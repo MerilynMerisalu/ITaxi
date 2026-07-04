@@ -291,4 +291,19 @@
   <data name="ErrorMessageOnlyDigits" xml:space="preserve">
     <value>The {0} field must contain only digits.</value>
   </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Page Not Found</value>
+  </data>
+  <data name="NotFoundText" xml:space="preserve">
+    <value>OOPS, THE PAGE YOU ARE LOOKING FOR CAN'T BE FOUND!</value>
+  </data>
+  <data name="ForbiddenTitle" xml:space="preserve">
+    <value>Access Forbidden!</value>
+  </data>
+  <data name="ServerErrorTitle" xml:space="preserve">
+    <value>Server Error</value>
+  </data>
+  <data name="GeneralErrorMessage" xml:space="preserve">
+    <value>Something went wrong. Please try again later.</value>
+  </data>
 </root>

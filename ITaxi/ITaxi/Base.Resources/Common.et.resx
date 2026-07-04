@@ -291,4 +291,19 @@
   <data name="ErrorMessageOnlyDigits" xml:space="preserve">
     <value>Väljale {0} võib sisestada ainult numbreid.</value>
   </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Lehte ei leitud</value>
+  </data>
+  <data name="NotFoundText" xml:space="preserve">
+    <value>OOPS, LEHTE, MIDA OTSITE, EI LEITA!</value>
+  </data>
+  <data name="ForbiddenTitle" xml:space="preserve">
+    <value>Ligipääs keelatud!</value>
+  </data>
+  <data name="ServerErrorTitle" xml:space="preserve">
+    <value>Serveripoolne viga</value>
+  </data>
+  <data name="GeneralErrorMessage" xml:space="preserve">
+    <value>Midagi läks valesti. Palun proovige hiljem uuesti</value>
+  </data>
 </root>

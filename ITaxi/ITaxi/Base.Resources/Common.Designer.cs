@@ -394,11 +394,29 @@ namespace Base.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Access Forbidden!.
+        /// </summary>
+        public static string ForbiddenTitle {
+            get {
+                return ResourceManager.GetString("ForbiddenTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gender.
         /// </summary>
         public static string Gender {
             get {
                 return ResourceManager.GetString("Gender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Something went wrong. Please try again later..
+        /// </summary>
+        public static string GeneralErrorMessage {
+            get {
+                return ResourceManager.GetString("GeneralErrorMessage", resourceCulture);
             }
         }
         
@@ -475,6 +493,24 @@ namespace Base.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OOPS, THE PAGE YOU ARE LOOKING FOR CAN&apos;T BE FOUND!.
+        /// </summary>
+        public static string NotFoundText {
+            get {
+                return ResourceManager.GetString("NotFoundText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page Not Found.
+        /// </summary>
+        public static string NotFoundTitle {
+            get {
+                return ResourceManager.GetString("NotFoundTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can upload up to {0} images..
         /// </summary>
         public static string NumberOfImagesErrorMessage {
@@ -543,6 +579,15 @@ namespace Base.Resources {
         public static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Error.
+        /// </summary>
+        public static string ServerErrorTitle {
+            get {
+                return ResourceManager.GetString("ServerErrorTitle", resourceCulture);
             }
         }
         

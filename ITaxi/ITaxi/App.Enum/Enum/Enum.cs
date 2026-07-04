@@ -88,3 +88,10 @@ public enum DataOrigin
     [Display(ResourceType = typeof(Base.Resources.Base.Domain.Common), Name = "Imported")]
     Api
 }
+
+public enum ErrorStatusCode
+{
+    NotFound = 404,
+    Forbidden = 403,
+    ServerError = 500,
+}
