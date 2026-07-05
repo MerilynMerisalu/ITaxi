@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using App.Domain;
+using Base.Resources;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 
@@ -25,7 +26,7 @@ public class CreateCommentViewModel
     /// <summary>
     /// Drive id
     /// </summary>
-    [Required(ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Comment), Name = nameof(Drive))]
     public Guid? DriveId { get; set; }
 
@@ -47,7 +48,7 @@ public class CreateCommentViewModel
     /// <summary>
     /// Comment text
     /// </summary>
-    [Required(ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [StringLength(1000)]
     [DataType(DataType.MultilineText)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Comment),

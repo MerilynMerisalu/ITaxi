@@ -8,19 +8,22 @@ namespace WebApp.Base.Controllers;
 public abstract class BaseErrorController : Controller
 {
     protected IActionResult GetErrorView(int statusCode)
-    { 
+    {
         Response.StatusCode = statusCode;
 
         var errorStatusCode = Enum.IsDefined(typeof(ErrorStatusCode), statusCode) ?
-            (ErrorStatusCode)statusCode : ErrorStatusCode.ServerError; 
-            
-        var vm = new ErrorPageViewModel() { 
-            StatusCode = errorStatusCode,
-        };
+            (ErrorStatusCode)statusCode : ErrorStatusCode.ServerError;
 
+        var vm = new ErrorPageViewModel()
+        {
+            StatusCode = errorStatusCode,
+            Title = GetTitle(errorStatusCode),
+            Message = GetMessage(errorStatusCode)
+        };
+        return View("~/Views/Error/StatusCodeError.cshtml", vm);
     }
 
-    private static string GetTitle(ErrorStatusCode statusCode) 
+    private static string GetTitle(ErrorStatusCode statusCode)
     {
         return statusCode switch
         {
@@ -29,7 +32,7 @@ public abstract class BaseErrorController : Controller
             ErrorStatusCode.ServerError => Common.ServerErrorTitle,
             _ => Common.GeneralErrorMessage
         };
-        
+
     }
 
     private static string GetMessage(ErrorStatusCode statusCode)
@@ -42,3 +45,4 @@ public abstract class BaseErrorController : Controller
             _ => Common.GeneralErrorMessage
         };
     }
+}

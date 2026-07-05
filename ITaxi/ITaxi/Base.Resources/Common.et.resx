@@ -306,4 +306,7 @@
   <data name="GeneralErrorMessage" xml:space="preserve">
     <value>Midagi läks valesti. Palun proovige hiljem uuesti</value>
   </data>
+  <data name="BackToIndex" xml:space="preserve">
+    <value>Tagasi avalehele</value>
+  </data>
 </root>

@@ -70,11 +70,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base.Contracts.ViewModels",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base.ViewModels", "Base.ViewModels\Base.ViewModels.csproj", "{9D0E0DA7-7B9F-73EA-DD73-CAE16AE41301}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ViewModels", "ViewModels", "{F9D5B052-9646-49A0-8CE6-84D0CDC097F7}"
-	ProjectSection(SolutionItems) = preProject
-		Base.ViewModels\ErrorPageViewModel.cs = Base.ViewModels\ErrorPageViewModel.cs
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -211,7 +206,6 @@ Global
 		{FBA557A4-561E-403A-AB5A-5018C2E070E5} = {38740732-4F8D-4433-8A6E-92F14CC1801C}
 		{4FFCB3C1-EDFD-4AC0-B59C-D20DE8A0E480} = {724232EE-4AB7-492E-A01F-6F15A6CCF06A}
 		{9D0E0DA7-7B9F-73EA-DD73-CAE16AE41301} = {A020224E-88AF-44AD-ADA1-42A838592208}
-		{F9D5B052-9646-49A0-8CE6-84D0CDC097F7} = {A020224E-88AF-44AD-ADA1-42A838592208}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F0FC1EA4-AC6B-4ED5-9D61-58CE6D76A2D1}

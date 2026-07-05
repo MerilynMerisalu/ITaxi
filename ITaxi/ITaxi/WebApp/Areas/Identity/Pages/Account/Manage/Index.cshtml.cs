@@ -19,6 +19,7 @@ using System.ComponentModel.DataAnnotations;
 using Gender = App.Enum.Enum.Gender;
 using Index = App.Resources.Areas.Identity.Pages.Account.Manage.Index;
 using Photo = App.Domain.Photo;
+using Profile = Base.Resources.Identity.Pages.Account.Manage.Index;
 
 namespace WebApp.Areas.Identity.Pages.Account.Manage;
 
@@ -517,7 +518,7 @@ public class IndexModel : PageModel
         //var photo = new Photo() { } 
         await _signInManager.RefreshSignInAsync(user);
 
-        StatusMessage = Base.Resources.Identity.Pages.Account.Manage.Index.ProfileUpdated;
+        StatusMessage = Profile.ProfileUpdated;
 
         return RedirectToPage();
     }

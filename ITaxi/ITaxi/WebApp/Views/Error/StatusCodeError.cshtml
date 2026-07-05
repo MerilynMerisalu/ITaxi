@@ -1,3 +1,11 @@
+﻿@using Base.Resources
+@model Base.ViewModels.ErrorPageViewModel
+
+
+@{
+	Layout = null;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,13 +15,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<title>404 HTML Template by Colorlib</title>
+	<title>@Common.NotFoundTitle</title>
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
 
 	<!-- Custom stlylesheet -->
-	<link type="text/css" rel="stylesheet" href="css/style.css" />
+	<link type="text/css" rel="stylesheet" href=@Url.Content("error-pages/colorlib-error-404-5/css/style.css") />
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,15 +39,18 @@
 			<div class="notfound-404">
 				<h1>404</h1>
 			</div>
-			<h2>Oops, The Page you are looking for can't be found!</h2>
-			<form class="notfound-search">
-				<input type="text" placeholder="Search...">
-				<button type="button">Search</button>
-			</form>
-			<a href="#"><span class="arrow"></span>Go Back</a>
+			<h2>@Common.NotFoundText</h2>
+			
+			<a asp-controller="Home" asp-action="Index"><span class="arrow"></span>@Common.BackToIndex</a>
+			
 		</div>
 	</div>
+	
 
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 
 </html>
+<p class="colorlib-credit">
+	This template was made by
+	<a href="https://colorlib.com" target="_blank" rel="noopener noreferrer">Colorlib</a>
+</p>
