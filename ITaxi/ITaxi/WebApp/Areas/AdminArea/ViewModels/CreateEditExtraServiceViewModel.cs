@@ -15,13 +15,13 @@ namespace WebApp.Areas.AdminArea.ViewModels
         /// Extra service name
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-        [StringLength(maximumLength:128, MinimumLength = 1,ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+        [StringLength(maximumLength:128, MinimumLength = 1,ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
         public string ExtraServiceName { get; set; } = default!;
         /// <summary>
         /// extra service description 
         /// </summary>
         [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-        [StringLength(maximumLength: 128, MinimumLength = 1, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+        [StringLength(maximumLength: 128, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
         public string Description { get; set; } = default!;
         /// <summary>
         /// Extra service price

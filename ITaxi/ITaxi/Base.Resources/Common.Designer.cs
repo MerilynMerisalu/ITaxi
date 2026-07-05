@@ -79,6 +79,15 @@ namespace Base.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back To Index.
+        /// </summary>
+        public static string BackToIndex {
+            get {
+                return ResourceManager.GetString("BackToIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back to List.
         /// </summary>
         public static string BackToList {

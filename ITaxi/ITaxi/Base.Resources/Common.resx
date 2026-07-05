@@ -306,4 +306,7 @@
   <data name="GeneralErrorMessage" xml:space="preserve">
     <value>Something went wrong. Please try again later.</value>
   </data>
+  <data name="BackToIndex" xml:space="preserve">
+    <value>Back To Index</value>
+  </data>
 </root>

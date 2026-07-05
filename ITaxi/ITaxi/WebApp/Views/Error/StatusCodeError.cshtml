@@ -1,3 +1,11 @@
+﻿@using Base.Resources
+@model Base.ViewModels.ErrorPageViewModel
+
+
+@{
+	Layout = null;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +21,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
 
 	<!-- Custom stlylesheet -->
-	<link type="text/css" rel="stylesheet" href="css/style.css" />
+	<link type="text/css" rel="stylesheet" href=@Url.Content("error-pages/colorlib-error-404-5/css/style.css") />
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,12 +39,9 @@
 			<div class="notfound-404">
 				<h1>404</h1>
 			</div>
-			<h2>Oops, The Page you are looking for can't be found!</h2>
-			<form class="notfound-search">
-				<input type="text" placeholder="Search...">
-				<button type="button">Search</button>
-			</form>
-			<a href="#"><span class="arrow"></span>Go Back</a>
+			<h2>@Common.NotFoundText</h2>
+			
+			<a asp-controller="Home" asp-action="Index"><span class="arrow"></span>@Common.BackToIndex</a>
 		</div>
 	</div>
 
