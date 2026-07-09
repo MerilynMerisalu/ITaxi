@@ -65,17 +65,27 @@ public class RegisterCustomerModel : PageModel
         DisabilityTypes = new SelectList(_context.DisabilityTypes
                 .Include(d =>
                     d.DisabilityTypeName).ThenInclude(d => d.Translations)
-                .OrderBy(d => d.DisabilityTypeName)
+                .OrderBy(d => (string)d.DisabilityTypeName)
                 .Select(d => new {d.Id, d.DisabilityTypeName}).ToList(),
             nameof(DisabilityType.Id), nameof(DisabilityType.DisabilityTypeName));
+        Countries = new SelectList(_context.Countries.Include(d => d.CountryName)
+            .ThenInclude(d => d.Translations)
+            .OrderBy(d => (string)d.CountryName).ToList());
+        Counties = new SelectList(Enumerable.Empty<County>(), nameof(County.Id), nameof());
     }
 
     /// <summary>
     /// Customer disability types
     /// </summary>
     public SelectList? DisabilityTypes { get; set; }
-
-
+    /// <summary>
+    /// List of countries
+    /// </summary>
+    public SelectList? Countries { get; set; }
+    /// <summary>
+    /// List of counties
+    /// </summary>
+    public SelectList? Counties { get; set; }
     /// <summary>
     ///  Input
     /// </summary>

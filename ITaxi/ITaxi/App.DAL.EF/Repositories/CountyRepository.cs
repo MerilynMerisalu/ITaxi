@@ -2,6 +2,7 @@
 using App.DAL.DTO.AdminArea;
 using App.DAL.EF.Mappers;
 using App.Domain;
+using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Contracts.Mappers;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
@@ -92,7 +93,14 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
     public async Task<List<CountyDTO?>> GetAllCountiesOrderedByCountyNameByCountryIdAsync(Guid countryId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
         var result = await CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)
-            .Where(c => c.CountryId == countryId).OrderBy(c => c.CountyName).Select(c => Mapper.Map(c)).ToListAsync();
+            .Where(c => c.CountryId == countryId).OrderBy(c => (string) c.CountyName).Select(c => Mapper.Map(c)).ToListAsync();
+        return result;
+    }
+
+    public List<CountyDTO?> GetAllCountiesOrderedByCountyNameByCountryId(Guid countryId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    {
+        var result = CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)
+            .Where(c => c.CountryId == countryId).OrderBy(c => (string)c.CountyName).Select(c => Mapper.Map(c)).ToList();
         return result;
     }
 }

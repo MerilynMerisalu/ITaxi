@@ -362,7 +362,7 @@
                 // d - day of month,2 digits
                 // j - day of month, no leading zero
                 // m - month, 2 digits
-                // n - mont, no leading zero
+                // n - month, no leading zero
                 // y - 2 digit year, Y - 4 digit year
 
                 // https://docs.microsoft.com/en-us/dotnet/api/system.globalization.datetimeformatinfo?view=netcore-3.1
@@ -384,6 +384,8 @@
                         .Replace("tt", "K");
                 var dateTimePattern = timePattern + " " + datePattern;
         }
+
+        
     </script>
 
     @await RenderSectionAsync("Scripts", false)

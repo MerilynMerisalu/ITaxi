@@ -14,6 +14,7 @@ using App.Domain.Identity;
 using App.Enum.Enum;
 using App.Resources.Areas.Identity.Pages.Account;
 using Base.Resources;
+using Google.Apis.PeopleService.v1.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -60,10 +61,13 @@ public class RegisterAdminModel : PageModel
         _logger = logger;
         _emailSender = emailSender;
         _appBLL = appBLL;
-        Countries = new SelectList(_appBLL.Countries.GetAllCountriesOrderedByCountryISOCode(), 
+        Countries = new SelectList(_appBLL.Countries.GetAllCountriesOrderedByCountryName(), 
             nameof(CountryDTO.Id), nameof(CountryDTO.CountryName));
-        Cities = new SelectList( _appBLL.Cities.GetAllOrderedCities(),
-        nameof(CityDTO.Id), nameof(CityDTO.CityName));
+        Counties = new SelectList(Enumerable.Empty<CountyDTO>(),
+            nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
+        Cities = new SelectList(Enumerable.Empty<CityDTO>(), 
+            nameof(CityDTO.Id), nameof(CityDTO.CityName));
+        
     }
 
     /// <summary>
@@ -75,8 +79,13 @@ public class RegisterAdminModel : PageModel
     /// List of cities
     /// </summary>
     public SelectList? Cities { get; set; }
-    
-    
+
+    /// <summary>
+    /// List of cities
+    /// </summary>
+
+    public SelectList? Counties { get; set; }
+
 
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -230,8 +239,8 @@ public class RegisterAdminModel : PageModel
         /// Admin gender
         /// </summary>
         [Display(ResourceType = typeof(AdminRegister), Name = nameof(Gender))]
-        [EnumDataType(typeof(Gender))]
-        public Gender Gender { get; set; }
+        [EnumDataType(typeof(App.Enum.Enum.Gender))]
+        public App.Enum.Enum.Gender Gender { get; set; }
 
         /// <summary>
         /// Admin date of birth
@@ -256,6 +265,15 @@ public class RegisterAdminModel : PageModel
         
         [Display(ResourceType = typeof(AdminRegister), Name = "Country")]
         public Guid CountryId { get; set; }
+
+        /// <summary>
+        /// County id for admin
+        /// </summary>
+        [Required(ErrorMessageResourceType = typeof(Common),
+            ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+
+        [Display(ResourceType = typeof(AdminRegister), Name = "County")]
+        public Guid CountyId { get; set; }
 
         /// <summary>
         /// City id for admin

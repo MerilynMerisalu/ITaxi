@@ -62,7 +62,8 @@ public class RegisterDriverModel : PageModel
         _appBLL = appBLL;
 
         Countries = new SelectList(_appBLL.Countries.GetAllCountriesOrderedByCountryName(showIgnored: false, showDeleted: false),
-            nameof(App.BLL.DTO.AdminArea.CountryDTO.Id), nameof(App.BLL.DTO.AdminArea.CountryDTO.CountryName));
+           nameof(App.BLL.DTO.AdminArea.CountryDTO.Id), nameof(App.BLL.DTO.AdminArea.CountryDTO.CountryName));
+        Counties = new SelectList(Enumerable.Empty<CountyDTO>(), nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
         Cities = new SelectList(Enumerable.Empty<CityDTO>(), nameof(CityDTO.Id), nameof(CityDTO.CityName));
         DriverLicenseCategories = new SelectList(_appBLL.DriverLicenseCategories
             .GetAllDriverLicenseCategoriesOrdered(),
@@ -84,7 +85,7 @@ public class RegisterDriverModel : PageModel
     /// <summary>
     /// List of Counties
     /// </summary>
-    public SelectList? Counties { get; set; }
+    public SelectList? Counties { get; set; }                       
 
     /// <summary>
     /// List of cities
