@@ -45,13 +45,14 @@ public class RegisterDriverModel : PageModel
     /// <param name="logger">Logger for the driver registration</param>
     /// <param name="emailSender">Email sender</param>
     /// <param name="appBLL">AppBLL</param>
-    /// <param name="context">DB context for driver registration</param>
+   
     public RegisterDriverModel(
         UserManager<AppUser> userManager,
         IUserStore<AppUser> userStore,
         SignInManager<AppUser> signInManager,
         ILogger<RegisterDriverModel> logger,
-        IEmailSender emailSender, IAppBLL appBLL, AppDbContext context)
+        IEmailSender emailSender, 
+        IAppBLL appBLL)
     {
         _userManager = userManager;
         _userStore = userStore;
@@ -143,6 +144,7 @@ public class RegisterDriverModel : PageModel
                 CountryId = Input.CountryId,
                 CountyId = Input.CountyId,
                 CityId = Input.CityId,
+                Address = Input.Address,
                 PhoneNumber = Input.PhoneNumber,
                 Email = Input.Email,
                 EmailConfirmed = true
@@ -176,21 +178,17 @@ public class RegisterDriverModel : PageModel
                     Id = Guid.NewGuid(),
                     AppUserId = user.Id,
                     PersonalIdentifier = Input.PersonalIdentifier,
-                    Address = Input.Address,
                     DriverLicenseNumber = Input.DriverLicenseNumber,
                     DriverLicenseExpiryDate = Input.ExpiryDate,
                     ServiceProviderCardIdentifier = res,
                 };
-
-
-
                 _appBLL.Drivers.Add(driver);
 
                 if (Input.DriverAndDriverLicenseCategories != null)
                 {
                     foreach (var driverLicenseCategoryId in Input.DriverAndDriverLicenseCategories)
                     {
-                        var driverAndDriverLicenseCategories = new App.BLL.DTO.AdminArea.DriverAndDriverLicenseCategoryDTO()
+                        var driverAndDriverLicenseCategories = new DriverAndDriverLicenseCategoryDTO()
                         {
                             DriverId = driver.Id,
                             DriverLicenseCategoryId = driverLicenseCategoryId
@@ -250,7 +248,7 @@ public class RegisterDriverModel : PageModel
     /// <param name="countryId">Country id</param>
     /// <returns>new JsonResult</returns>
     
-    public async Task<IActionResult> OnGetSetDropDownCountiesListAsync([FromQuery] Guid countryId)
+    public async Task<IActionResult> OnGetSetDropDownCountiesListAsync(Guid countryId)
     {
         // Select the Counties for the currently selected CountryId
         var counties = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameByCountryIdAsync(countryId);
@@ -265,7 +263,7 @@ public class RegisterDriverModel : PageModel
         return new JsonResult(result);
     }
 
-    public async Task<IActionResult> OnGetSetDropDownCitiesListAsync([FromQuery] Guid countyId)
+    public async Task<IActionResult> OnGetSetDropDownCitiesListAsync(Guid countyId)
     {
         // Select the Counties for the currently selected CountryId
         var cities = await _appBLL.Cities.GetCitiesByCountyIdAsync(countyId);
