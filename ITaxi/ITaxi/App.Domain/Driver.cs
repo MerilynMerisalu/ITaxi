@@ -33,12 +33,6 @@ public class Driver : DomainEntityMetaId
     
     public DateTime? DriverLicenseExpiryDate { get; set; }
 
-    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-    [MaxLength(30, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
-    [StringLength(30, MinimumLength = 1,
-        ErrorMessageResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver),
-        ErrorMessageResourceName = "AddressOfResidence")]
-    public string? Address { get; set; } 
 
 
     public ICollection<Vehicle>? Vehicles { get; set; }

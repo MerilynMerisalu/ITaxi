@@ -117,6 +117,30 @@ public class RegisterAdminModel : PageModel
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
 
+    public async Task<IActionResult> OnGetSetDropDownCountiesListAsync(Guid countryId)
+    {
+        var result = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameByCountryIdAsync(countryId, showDeleted: false, showIgnored: false);
+        var counties = result.Select(c => new
+        {
+            text = c.CountyName,
+            value = c.Id
+        });
+        return new JsonResult(counties);
+    }
+
+    public async Task<IActionResult> OnGetSetDropDownCitiesListAsync( Guid countyId)
+    {
+        // Select the Counties for the currently selected CountryId
+        var cities = await _appBLL.Cities.GetCitiesByCountyIdAsync(countyId);
+        var result = cities.Select(c => new
+        {
+            value = c.Id,
+            text = c.CityName
+        });
+
+        return new JsonResult(result);
+    }
+
     /// <summary>
     /// On post async method for admin registration
     /// </summary>
@@ -263,7 +287,7 @@ public class RegisterAdminModel : PageModel
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
         
-        [Display(ResourceType = typeof(AdminRegister), Name = "Country")]
+        [Display(ResourceType = typeof(Register), Name = "Country")]
         public Guid CountryId { get; set; }
 
         /// <summary>
@@ -272,14 +296,14 @@ public class RegisterAdminModel : PageModel
         [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
 
-        [Display(ResourceType = typeof(AdminRegister), Name = "County")]
+        [Display(ResourceType = typeof(Register), Name = "County")]
         public Guid CountyId { get; set; }
 
         /// <summary>
         /// City id for admin
         /// </summary>
         [DataType(DataType.Text)]
-        [Display(ResourceType = typeof(AdminRegister), Name = "City")]
+        [Display(ResourceType = typeof(Register), Name = "City")]
         public Guid CityId { get; set; }
 
 
@@ -289,7 +313,7 @@ public class RegisterAdminModel : PageModel
         [DataType(DataType.Text)]
         [StringLength(72, MinimumLength = 2, ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-        [Display(ResourceType = typeof(AdminRegister), Name = "AddressOfResidence")]
+        [Display(ResourceType = typeof(Register), Name = nameof(Address))]
         public string Address { get; set; } = default!;
 
         /// <summary>

@@ -11,10 +11,4 @@ public class Admin : DomainEntityMetaId
     public AppUser? AppUser { get; set; }
     public string? PersonalIdentifier { get; set; }
     
-
-    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
-    [StringLength(50, MinimumLength = 1)]
-    
-    public string Address { get; set; } = default!;
 }

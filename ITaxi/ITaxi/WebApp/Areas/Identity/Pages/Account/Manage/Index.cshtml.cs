@@ -155,7 +155,7 @@ public class IndexModel : PageModel
                     PersonalIdentifier = admin.PersonalIdentifier,
                     CountryId = countryId,
                     CityId = admin.AppUser!.CityId,
-                    AddressOfResidence = admin.Address,
+                    AddressOfResidence = admin.AppUser.Address,
                     ImageFile = user.ProfileImage,
                     
                 };
@@ -190,7 +190,7 @@ public class IndexModel : PageModel
                     PersonalIdentifier = driver.PersonalIdentifier,
                     CountryId = countryId,
                     CityId = driver.AppUser!.CityId,
-                    AddressOfResidence = driver.Address,
+                    AddressOfResidence = driver.AppUser.Address,
                     DriverLicenseNumber = driver.DriverLicenseNumber,
                     DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate?.Date,
                     ServiceProviderCardIdentifier = driver.ServiceProviderCardIdentifier,
@@ -438,9 +438,9 @@ public class IndexModel : PageModel
                 if (Input.CityId != null) admin.AppUser!.CityId = Input.CityId.Value;
             }
 
-            if (Input.AddressOfResidence != admin.Address)
+            if (Input.AddressOfResidence != admin.AppUser.Address)
             {
-                if (Input.AddressOfResidence != null) admin.Address = Input.AddressOfResidence;
+                if (Input.AddressOfResidence != null) admin.AppUser.Address = Input.AddressOfResidence;
             }
 
             admin.UpdatedBy = User.Identity!.Name;
@@ -462,9 +462,9 @@ public class IndexModel : PageModel
                 if (Input.CityId != null) driver.AppUser!.CityId = Input.CityId.Value;
             }
 
-            if (Input.AddressOfResidence != driver.Address)
+            if (Input.AddressOfResidence != driver.AppUser.Address)
             {
-                if (Input.AddressOfResidence != null) driver.Address = Input.AddressOfResidence;
+                if (Input.AddressOfResidence != null) driver.AppUser.Address = Input.AddressOfResidence;
             }
 
             if (Input.DriverLicenseNumber != driver.DriverLicenseNumber)

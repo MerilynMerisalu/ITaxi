@@ -220,6 +220,7 @@ public static class DataHelper
                     CountryId = countryId,
                     CountyId = county.Id,
                     CityId = cityId,
+                    Address = "Kalda 23",
                     Email = "kati@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "22356891",
@@ -252,7 +253,7 @@ public static class DataHelper
                     AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                         a.FirstName.Equals("Katrin") && a.LastName.Equals("Salu")).Id,
                     PersonalIdentifier = "49208202221",
-                    Address = "Kalda 23",
+                    
                     CreatedAt = DateTime.Now.ToUniversalTime(),
                     CreatedBy = "System",
                     DataOrigin = DataOrigin.Manual,
@@ -271,6 +272,7 @@ public static class DataHelper
                     CountryId = countryId,
                     CountyId = county.Id,
                     CityId = cityId,
+                    Address = "Suurmäe 13-9",
                     Email = "tiina.pilv@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "22356891"
@@ -302,7 +304,6 @@ public static class DataHelper
                     AppUserId = context.Users.OrderBy(u => u.LastName).First(a =>
                         a.FirstName.Equals("Tiina") && a.LastName.Equals("Pilv")).Id,
                     PersonalIdentifier = "47708222221",
-                    Address = "Suurmäe 13-9",
                     CreatedBy = "System",
                     DataOrigin = DataOrigin.Manual,
                     CreatedAt = DateTime.Now.ToUniversalTime()
@@ -321,6 +322,7 @@ public static class DataHelper
                     CountryId = countryId,
                     CountyId = county.Id,
                     CityId = cityId,
+                    Address = "Veerenni 13",
                     Email = "toomas.paju@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "55358834"
@@ -354,7 +356,6 @@ public static class DataHelper
                     PersonalIdentifier = "38806237921",
                     DriverLicenseNumber = "AAC 123",
                     ServiceProviderCardIdentifier = "TK-000111",
-                    Address = "Veerenni 13",
                     CreatedAt = DateTime.Now.ToUniversalTime(),
                     DataOrigin = DataOrigin.Manual,
                 };
@@ -393,6 +394,7 @@ public static class DataHelper
                     CountryId = countryId,
                     CountyId = county.Id,
                     CityId = cityId,
+                    Address = "Pelguranna 13 - 5",
                     Email = "peep.tolmusk@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "22447799"
@@ -425,7 +427,6 @@ public static class DataHelper
                     DriverLicenseNumber = "BCC 445",
                     DriverLicenseExpiryDate = DateTime.Parse("2028-09-22"),
                     ServiceProviderCardIdentifier = "TK-111000",
-                    Address = "Pelguranna 13 - 5",
                     CreatedAt = DateTime.Now.ToUniversalTime(),
                     CreatedBy = "System",
                     DataOrigin = DataOrigin.Manual,
@@ -663,6 +664,7 @@ public static class DataHelper
                     CountryId = countryId,
                     CountyId = county.Id,
                     CityId = cityId,
+                    Address = "Ristiveli 13 - 5",
                     Email = "maarika.matas@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "66357754"
@@ -705,6 +707,7 @@ public static class DataHelper
                     CountryId = countryId,
                     CountyId = county.Id,
                     CityId = cityId,
+                    Address = "Aia 15-10",
                     Email = "kristjan.suursalu@gmail.com",
                     EmailConfirmed = true,
                     PhoneNumber = "88452236"

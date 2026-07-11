@@ -7,11 +7,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
+using App.BLL.DTO.AdminArea;
+using App.Contracts.BLL;
+using App.DAL.DTO.AdminArea;
 using App.DAL.EF;
 using App.Domain;
 using App.Domain.Identity;
 using App.Enum.Enum;
 using App.Resources.Areas.Identity.Pages.Account;
+using Base.Contracts.Mappers;
 using Base.Resources;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -31,13 +35,14 @@ namespace WebApp.Areas.Identity.Pages.Account;
 /// </summary>
 public class RegisterCustomerModel : PageModel
 {
-    private readonly AppDbContext _context;
+    
     private readonly IEmailSender _emailSender;
     private readonly IUserEmailStore<AppUser> _emailStore;
     private readonly ILogger<RegisterCustomerModel> _logger;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserStore<AppUser> _userStore;
+    private readonly IAppBLL _appBLL;
 
     /// <summary>
     /// Register customer model constructor
@@ -47,13 +52,16 @@ public class RegisterCustomerModel : PageModel
     /// <param name="signInManager">Sign in manager</param>
     /// <param name="logger">Logger for customer register</param>
     /// <param name="emailSender">Email sender</param>
-    /// <param name="context">DB context for customer registration</param>
+    /// <param name="appBLL">AppBLL</param>
+
     public RegisterCustomerModel(
         UserManager<AppUser> userManager,
         IUserStore<AppUser> userStore,
         SignInManager<AppUser> signInManager,
         ILogger<RegisterCustomerModel> logger,
-        IEmailSender emailSender, AppDbContext context)
+        IEmailSender emailSender, 
+        
+         IAppBLL appBLL)
     {
         _userManager = userManager;
         _userStore = userStore;
@@ -61,17 +69,14 @@ public class RegisterCustomerModel : PageModel
         _signInManager = signInManager;
         _logger = logger;
         _emailSender = emailSender;
-        _context = context;
-        DisabilityTypes = new SelectList(_context.DisabilityTypes
-                .Include(d =>
-                    d.DisabilityTypeName).ThenInclude(d => d.Translations)
-                .OrderBy(d => (string)d.DisabilityTypeName)
-                .Select(d => new {d.Id, d.DisabilityTypeName}).ToList(),
-            nameof(DisabilityType.Id), nameof(DisabilityType.DisabilityTypeName));
-        Countries = new SelectList(_context.Countries.Include(d => d.CountryName)
-            .ThenInclude(d => d.Translations)
-            .OrderBy(d => (string)d.CountryName).ToList());
-        Counties = new SelectList(Enumerable.Empty<County>(), nameof(County.Id), nameof());
+       
+        _appBLL = appBLL;
+        DisabilityTypes = new SelectList(_appBLL.DisabilityTypes.GetAllOrderedDisabilityTypes(), nameof(DisabilityType.Id), nameof(DisabilityType.DisabilityTypeName));
+                
+        Countries = new SelectList(_appBLL.Countries.GetAllCountriesOrderedByCountryName(), nameof(Country.Id), nameof(Country.CountryName));
+        Counties = new SelectList(Enumerable.Empty<County>(), nameof(County.Id), nameof(County.CountyName));
+
+        Cities = new SelectList(Enumerable.Empty<City>(), nameof(City.Id), nameof(City.CityName));
     }
 
     /// <summary>
@@ -86,6 +91,10 @@ public class RegisterCustomerModel : PageModel
     /// List of counties
     /// </summary>
     public SelectList? Counties { get; set; }
+    /// <summary>
+    /// List of cities
+    /// </summary>
+    public SelectList? Cities { get; set; }
     /// <summary>
     ///  Input
     /// </summary>
@@ -111,7 +120,33 @@ public class RegisterCustomerModel : PageModel
         ReturnUrl = returnUrl;
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
+    public async Task<IActionResult> OnGetSetDropDownCountiesListAsync( Guid countryId)
+    {
+        // Select the Counties for the currently selected CountryId
+        var counties = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameByCountryIdAsync(countryId, showDeleted: false, showIgnored: false);
 
+        var result = counties.Select(c => new
+        {
+            value = c.Id,
+            text = c.CountyName
+        });
+
+
+        return new JsonResult(result);
+    }
+
+    public async Task<IActionResult> OnGetSetDropDownCitiesListAsync([FromQuery] Guid countyId)
+    {
+        // Select the Counties for the currently selected CountryId
+        var cities = await _appBLL.Cities.GetCitiesByCountyIdAsync(countyId);
+        var result = cities.Select(c => new
+        {
+            value = c.Id,
+            text = c.CityName
+        });
+
+        return new JsonResult(result);
+    }
     /// <summary>
     /// On post async method
     /// </summary>
@@ -130,6 +165,10 @@ public class RegisterCustomerModel : PageModel
                 Gender = Input.Gender,
                 DateOfBirth = Input.DateOfBirth,
                 PhoneNumber = Input.PhoneNumber,
+                CountryId = Input.CountryId.Value,
+                CountyId = Input.CountyId.Value,
+                CityId = Input.CityId.Value,
+                Address = Input.Address!,
                 Email = Input.Email,
                 EmailConfirmed = true
             };
@@ -159,13 +198,13 @@ public class RegisterCustomerModel : PageModel
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
 
                 await _userManager.AddToRoleAsync(user, nameof(Customer));
-                await _context.SaveChangesAsync();
-                var customer = new Customer
+                await _appBLL.SaveChangesAsync();
+                var customer = new App.BLL.DTO.AdminArea.CustomerDTO
                 {
-                    AppUserId = user.Id, DisabilityTypeId = Input.DisabilityTypeId
+                    AppUserId = user.Id, DisabilityTypeId = Input.DisabilityTypeId.Value
                 };
-                await _context.Customers.AddAsync(customer);
-                await _context.SaveChangesAsync();
+                 _appBLL.Customers.Add(customer);
+                await _appBLL.SaveChangesAsync();
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl});
 
@@ -249,6 +288,32 @@ public class RegisterCustomerModel : PageModel
         /// </summary>
         [Display(ResourceType = typeof(CustomerRegister), Name = "DisabilityType")]
         public Guid? DisabilityTypeId { get; set; }
+        
+        /// <summary>
+        /// Country id for costumer
+        /// </summary>
+
+        [Display(ResourceType = typeof(Register), Name = "Country")]
+        public Guid? CountryId { get; set; }
+
+        /// <summary>
+        /// County id for customer
+        /// </summary>
+
+        [Display(ResourceType = typeof(Register), Name = "County")]
+        public Guid? CountyId { get; set; }
+        
+        /// <summary>
+        /// City id for customer
+        /// </summary>
+        [Display(ResourceType = typeof(Register), Name = "City")]
+        public Guid? CityId { get; set; }
+
+        /// <summary>
+        /// home address for customer
+        /// </summary>
+        [Display(ResourceType = typeof(Register), Name = "Address")]
+        public string? Address { get; set; }
 
         /// <summary>
         /// Customer phone number

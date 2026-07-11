@@ -47,6 +47,7 @@ public class AppUser : BaseUser
     public Guid CityId { get; set; }
     public City? City { get; set; }
 
+    public string Address { get; set; } = default!;
 
     [NotMapped]
     public IFormFile? ProfileImage { get; set; }
