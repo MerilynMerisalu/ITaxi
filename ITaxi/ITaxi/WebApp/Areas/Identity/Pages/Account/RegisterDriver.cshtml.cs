@@ -147,6 +147,7 @@ public class RegisterDriverModel : PageModel
                 Address = Input.Address,
                 PhoneNumber = Input.PhoneNumber,
                 Email = Input.Email,
+                IsActive = true,
                 EmailConfirmed = true
             };
 

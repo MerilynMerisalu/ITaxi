@@ -170,6 +170,7 @@ public class RegisterCustomerModel : PageModel
                 CityId = Input.CityId.Value,
                 Address = Input.Address!,
                 Email = Input.Email,
+                IsActive = true,
                 EmailConfirmed = true
             };
 

@@ -31,10 +31,11 @@ public class LoginModel : PageModel
     /// </summary>
     /// <param name="signInManager">Sign in manager</param>
     /// <param name="logger">Logger for the user's</param>
-    public LoginModel(SignInManager<AppUser> signInManager, ILogger<LoginModel> logger)
+    public LoginModel(SignInManager<AppUser> signInManager, ILogger<LoginModel> logger, UserManager<AppUser> userManager)
     {
         _signInManager = signInManager;
         _logger = logger;
+        _userManager = userManager;
     }
 
     /// <summary>
@@ -93,12 +94,15 @@ public class LoginModel : PageModel
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
             var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, false);
-            if (result.Succeeded)
+            var user = await _userManager.FindByEmailAsync(Input.Email);
+            if (result.Succeeded || user != null)
             {
+                user.IsActive = true;
+                await _userManager.UpdateAsync(user);
                 _logger.LogInformation("User logged in.");
                 return LocalRedirect(returnUrl);
             }
-
+            
             if (result.RequiresTwoFactor)
                 return RedirectToPage("./LoginWith2fa", new {ReturnUrl = returnUrl, Input.RememberMe});
             if (result.IsLockedOut)

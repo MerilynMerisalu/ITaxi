@@ -160,6 +160,7 @@ public class RegisterAdminModel : PageModel
                 DateOfBirth = Input.DateOfBirth,
                 CountryId = Input.CountryId,
                 PhoneNumber = Input.PhoneNumber,
+                IsActive = true,
                 Email = Input.Email,
                 EmailConfirmed = true
             };
