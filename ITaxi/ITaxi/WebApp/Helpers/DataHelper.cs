@@ -355,6 +355,7 @@ public static class DataHelper
                         a.FirstName.Equals("Toomas") && a.LastName.Equals("Paju")).Id,
                     PersonalIdentifier = "38806237921",
                     DriverLicenseNumber = "AAC 123",
+                    DriverLicenseExpiryDate = DateTime.Parse("2028-12-31"),
                     ServiceProviderCardIdentifier = "TK-000111",
                     CreatedAt = DateTime.Now.ToUniversalTime(),
                     DataOrigin = DataOrigin.Manual,

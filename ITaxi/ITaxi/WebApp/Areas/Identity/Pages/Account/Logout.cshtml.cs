@@ -39,8 +39,12 @@ public class LogoutModel : PageModel
     public async Task<IActionResult> OnPost(string returnUrl = null)
     {
         var user = await _userManager.GetUserAsync(User);
-        user.IsActive = false;
-        await _userManager.UpdateAsync(user);
+        if (User.Identity.IsAuthenticated && user != null)
+        {
+            user.IsActive = false;
+            await _userManager.UpdateAsync(user);
+        }
+       
         await _signInManager.SignOutAsync();
         _logger.LogInformation("User logged out.");
         if (returnUrl != null)

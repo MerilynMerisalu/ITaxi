@@ -156,6 +156,9 @@
   <data name="Gender" xml:space="preserve">
     <value>Sugu</value>
   </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Aktiivne?</value>
+  </data>
   <data name="LastName" xml:space="preserve">
     <value>Perekonnanimi</value>
   </data>

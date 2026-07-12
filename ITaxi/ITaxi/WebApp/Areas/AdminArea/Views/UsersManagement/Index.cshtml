@@ -29,6 +29,7 @@
             <th>@Html.DisplayNameFor(model => model.DisabilityType)</th>
             <th>@Html.DisplayNameFor(model => model.EmailAddress)</th>
             <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+            <th>@Html.DisplayNameFor(model => model.IsActive)</th>
        </tr> 
     </thead>
     <tbody>
@@ -50,7 +51,8 @@
               <td>@Html.DisplayFor(modelItem => item.DriverLicenseExpiryDate)</td>
               <td>@Html.DisplayTextFor(modelItem => item.DisabilityType)</td>
               <td>@Html.DisplayFor(modelItem => item.EmailAddress)</td>
-               <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+              <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+              <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
               
                 <td>
                     

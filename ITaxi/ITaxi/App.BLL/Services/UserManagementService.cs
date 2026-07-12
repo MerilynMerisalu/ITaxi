@@ -26,6 +26,7 @@ namespace App.BLL.Services
 
         public async Task<List<UserManagementDTO>> CreateUserManagementDTOAsync(List<AppUser> users)
         {
+            
             var result = new List<UserManagementDTO>();
             foreach (var user in users)
             {
@@ -43,20 +44,21 @@ namespace App.BLL.Services
                     Gender = user.Gender!.Value,
                     DateOfBirth = user.DateOfBirth.ToShortDateString(),
                     Role = roles.Any() ? string.Join(", ", displayNames) : "-",
+                    Country = user.Country?.CountryName,
+                    County = user.County?.CountyName!,
+                    City = user.City?.CityName!,
+                    AddressOfResidence = user.Address,
                     EmailAddress = user.Email!,
-                    PhoneNumber = user.PhoneNumber!
+                    PhoneNumber = user.PhoneNumber!,
+                    IsActive = user.IsActive ? true : false,
                 };
-                var admin = await _appBll.Admins.GetAdminByAppUserIdAsync(user.Id);
+                var admin = await _appBll.Admins.GetAdminByAppUserIdAsync(user.Id, noIncludes: false);
                 var driver = await _appBll.Drivers.GettingDriverByAppUserIdAsync(driverAppUserId: user.Id);
                 var customer = await _appBll.Customers.GettingCustomerByAppuserIdAsync(user.Id);
                 
                 if (admin != null)
                 {
-                  data.PersonalIdentifier = (string.IsNullOrWhiteSpace(admin.PersonalIdentifier)) ? "-" : admin.PersonalIdentifier ;
-                  data.Country = admin.City!.County!.Country!.CountryName;
-                  data.County = admin.City.County.CountyName;
-                  data.City = admin.City.CityName;
-                  data.AddressOfResidence = admin.Address;
+                  data.PersonalIdentifier = (string.IsNullOrWhiteSpace(admin.PersonalIdentifier)) ? "-" : admin.PersonalIdentifier;
                   data.DriverLicenseCategories = "-";
                   data.DriverLicenseNumber = "-";
                   data.DriverLicenseExpiryDate = "-";
@@ -68,10 +70,7 @@ namespace App.BLL.Services
                 {
                     var driverLicenseCategories = await _appBll.DriverAndDriverLicenseCategories.GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver.Id);
                     data.PersonalIdentifier = (string.IsNullOrWhiteSpace(driver.PersonalIdentifier)) ? "-" : driver.PersonalIdentifier;
-                    data.Country = driver.AppUser!.City!.County!.Country!.CountryName;
-                    data.County = driver.AppUser!.City.County.CountyName;
-                    data.City = driver.AppUser!.City.CityName;
-                    data.AddressOfResidence = driver.Address;
+                    
                     if (driverLicenseCategories?.Length == 0)
                     {
                         data.DriverLicenseCategories = "-";
@@ -87,9 +86,6 @@ namespace App.BLL.Services
                 else if (customer != null)
                 {
                     data.PersonalIdentifier = "-";
-                    data.Country = "-";
-                    data.County = "-";
-                    data.AddressOfResidence = "-";
                     data.DriverLicenseCategories = "-";
                     data.DriverLicenseNumber = "-";
                     data.DriverLicenseExpiryDate = "-";
@@ -120,7 +116,9 @@ namespace App.BLL.Services
 
         public async Task<IEnumerable<UserManagementDTO>> GetUsersAsync(bool noTracking = false)
         {
-            var query = _userManager.Users.AsQueryable();
+            var query = _userManager.Users.Include(a => a.Country)
+                    .ThenInclude(a => a.CountryName).ThenInclude(a => a.Translations)
+                .Include(a => a.County).Include(a => a.City).AsQueryable();
             if (noTracking)
             {
                 query = query.AsNoTracking();

@@ -35,7 +35,7 @@ public class AppUser: DomainEntityId
 
     public Guid CityId { get; set; }
 
-    public Guid CountryId { get; set; }
+    
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "City")]
     public CityDTO? City { get; set; }
@@ -44,6 +44,7 @@ public class AppUser: DomainEntityId
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "County")]
     public CountyDTO? County { get; set; }
+    public Guid CountryId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "Country")]
     public CountryDTO? Country { get; set; }

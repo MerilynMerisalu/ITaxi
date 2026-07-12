@@ -68,6 +68,9 @@ namespace App.BLL.DTO.AdminArea
 
         [Display(ResourceType = typeof(AppUser), Name = nameof(DisabilityType))]
         public string? DisabilityType { get; set; }
+
+        [Display(ResourceType = typeof(AppUser), Name = nameof(IsActive))]
+        public bool IsActive { get; set; }
     }
 }
 
