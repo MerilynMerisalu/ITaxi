@@ -43,7 +43,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.DateOfBirth"></label>
-                <input asp-for="Input.DateOfBirth" class="form-control" alt="@AdminRegister.EnterYourDateOfBirthHere"/>
+                <input type="date" asp-for="Input.DateOfBirth"
+                class="form-control" 
+                data-error-message = "@Register.DateOfBirthInvalid"
+                alt="@AdminRegister.EnterYourDateOfBirthHere" 
+                onchange="BirthDateValidation(this)"/>
+                <span id="error-display" class="text-danger"></span>
                 <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
             </div>
 

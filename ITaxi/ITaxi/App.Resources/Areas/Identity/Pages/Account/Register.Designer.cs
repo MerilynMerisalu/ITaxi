@@ -106,6 +106,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date of Birth must be earlier than today&apos;s date..
+        /// </summary>
+        public static string DateOfBirthInvalid {
+            get {
+                return ResourceManager.GetString("DateOfBirthInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter Your Address of Residence Here.
         /// </summary>
         public static string EnterYourAddressOfResidenceHere {

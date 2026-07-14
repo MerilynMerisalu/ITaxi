@@ -24,3 +24,27 @@ async function CountyIdChanged(value) {
     const data = await response.json();
     PopulateDropDownList("cityId", data, false);
 }
+
+function BirthDateValidation(input) {
+    const value = input.value;
+    const errorMessage = input.dataset.errorMessage;
+    let dateOfToday = new Date();
+    dateOfToday.setHours(0, 0, 0, 0);
+
+    console.log(dateOfToday);
+    let DATEOFBIRTHERRORSPAN = document.getElementById("error-display");
+    console.log(DATEOFBIRTHERRORSPAN);
+
+    let dateOfBirth = new Date(value);
+    dateOfBirth.setHours(0, 0, 0, 0);
+   
+    if (dateOfBirth >= dateOfToday) {
+        DATEOFBIRTHERRORSPAN.textContent = input.dataset.errorMessage;
+    }
+    else {
+        DATEOFBIRTHERRORSPAN.textContent = "";
+    }
+    
+
+    
+}

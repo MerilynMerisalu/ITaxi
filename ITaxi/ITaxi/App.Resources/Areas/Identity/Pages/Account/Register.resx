@@ -144,4 +144,7 @@
   <data name="Address" xml:space="preserve">
     <value>Address</value>
   </data>
+  <data name="DateOfBirthInvalid" xml:space="preserve">
+    <value>Date of Birth must be earlier than today's date.</value>
+  </data>
 </root>

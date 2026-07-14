@@ -144,4 +144,7 @@
   <data name="Address" xml:space="preserve">
     <value>Aadress</value>
   </data>
+  <data name="DateOfBirthInvalid" xml:space="preserve">
+    <value>Sünnikuupäev peab olema varasem kui tänane kuupäev.</value>
+  </data>
 </root>
