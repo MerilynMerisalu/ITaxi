@@ -81,7 +81,7 @@ namespace WebApp.Areas.AdminArea.Controllers
             if (countryExists)
             {
                 ModelState.AddModelError("CountryExists",
-    string              .Format(Common.ErrorMessageValueExists, vm.CountryName)); 
+                string.Format(Common.ErrorMessageValueExists, vm.CountryName)); 
                
             }
             if (ModelState.IsValid)

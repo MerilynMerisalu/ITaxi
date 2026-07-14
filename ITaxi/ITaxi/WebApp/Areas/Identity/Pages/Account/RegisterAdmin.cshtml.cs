@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace WebApp.Areas.Identity.Pages.Account;
 
@@ -141,6 +142,16 @@ public class RegisterAdminModel : PageModel
         return new JsonResult(result);
     }
 
+    public void DateOfBirthValidation()
+    {
+        bool isDateOfBirthValid = _appBLL.AppUsers.ValidateUsersDateOfBirth(Input.DateOfBirth);
+        if (!isDateOfBirthValid)
+        {
+          ModelState.AddModelError("Input.DateOfBirth", Register.DateOfBirthInvalid);
+              
+        }
+    }
+
     /// <summary>
     /// On post async method for admin registration
     /// </summary>
@@ -150,6 +161,8 @@ public class RegisterAdminModel : PageModel
     {
         returnUrl ??= Url.Content("~/");
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        DateOfBirthValidation();
+
         if (ModelState.IsValid)
         {
             var user = new AppUser
