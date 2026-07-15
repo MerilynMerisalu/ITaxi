@@ -13,6 +13,6 @@ public interface IAppUserService : IEntityService<App.BLL.DTO.Identity.AppUser>,
     Task<AppUser> GettingAppUserByAppUserIdAsync(Guid appUserId, bool noTracking = true,
         bool noIncludes = false);
     bool ValidateUsersDateOfBirth(DateTime dateOfBirth);
-
+    bool ValidateAge(DateTime dateOfBirth);
     
 }

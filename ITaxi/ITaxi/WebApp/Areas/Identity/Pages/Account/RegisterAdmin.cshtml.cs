@@ -152,6 +152,16 @@ public class RegisterAdminModel : PageModel
         }
     }
 
+    public void AgeValidation()
+    {
+        bool isAgeValid = _appBLL.AppUsers.ValidateAge(Input.DateOfBirth);
+        if (!isAgeValid)
+        {
+            ModelState.AddModelError("Input.DateOfBirth", Register.MinimumRegistrationAgeError);
+
+        }
+    }
+
     /// <summary>
     /// On post async method for admin registration
     /// </summary>
@@ -162,7 +172,7 @@ public class RegisterAdminModel : PageModel
         returnUrl ??= Url.Content("~/");
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         DateOfBirthValidation();
-
+        AgeValidation();
         if (ModelState.IsValid)
         {
             var user = new AppUser

@@ -35,4 +35,26 @@ public class AppUserService : BaseEntityService<App.BLL.DTO.Identity.AppUser, Ap
         bool result = dateOfBirth <= dateOfToday;
         return result;
     }
+
+    public bool ValidateAge(DateTime dateOfBirth)
+    {
+        var dateOfToday = DateTime.Today;
+        int age = 0;
+        const int MINIMUMREGISTRATIONAGE = 18;
+        if ((dateOfBirth.Month > dateOfToday.Month) || (dateOfBirth.Month == dateOfToday.Month && 
+            (dateOfBirth.Day > dateOfToday.Day)))
+        {
+            age = dateOfToday.Year - dateOfBirth.Year - 1;
+        }
+        else
+        {
+            age = dateOfToday.Year - dateOfBirth.Year;
+        }
+
+        if (age < MINIMUMREGISTRATIONAGE)
+            return false;
+        return true;
+      
+
+    }
 }
