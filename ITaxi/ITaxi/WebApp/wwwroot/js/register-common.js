@@ -26,16 +26,14 @@ async function CountyIdChanged(value) {
 }
 
 function BirthDateValidation(input) {
-    const value = input.value;
-    const errorMessage = input.dataset.errorMessage;
+    const VALUE = input.value;
+    const ERRORMESSAGE = input.dataset.errorMessage;
     let dateOfToday = new Date();
     dateOfToday.setHours(0, 0, 0, 0);
 
-    console.log(dateOfToday);
-    let DATEOFBIRTHERRORSPAN = document.getElementById("error-display");
-    console.log(DATEOFBIRTHERRORSPAN);
+    const DATEOFBIRTHERRORSPAN = document.getElementById("error-display");
 
-    let dateOfBirth = new Date(value);
+    let dateOfBirth = new Date(VALUE);
     dateOfBirth.setHours(0, 0, 0, 0);
    
     if (dateOfBirth >= dateOfToday) {
@@ -43,8 +41,30 @@ function BirthDateValidation(input) {
     }
     else {
         DATEOFBIRTHERRORSPAN.textContent = "";
+        CalculateAge(dateOfBirth, dateOfToday, input);
     }
-    
+}
 
-    
+function CalculateAge(dateOfBirth, dateOfToday, input) {
+    let age = dateOfToday.getFullYear() - dateOfBirth.getFullYear();
+
+    const birthdayHasNotOccurred =
+        dateOfBirth.getMonth() > dateOfToday.getMonth() ||
+        (
+            dateOfBirth.getMonth() === dateOfToday.getMonth() &&
+            dateOfBirth.getDate() > dateOfToday.getDate()
+        );
+
+    if (birthdayHasNotOccurred) {
+        age--;
+    }
+
+    const minimumRegistrationAge = 18;
+    const ageErrorSpan = document.getElementById("error-display");
+
+    if (age < minimumRegistrationAge) {
+        ageErrorSpan.textContent = input.dataset.ageErrorMessage;
+    } else {
+        ageErrorSpan.textContent = "";
+    }
 }

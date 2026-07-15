@@ -46,8 +46,9 @@
                 <input type="date" asp-for="Input.DateOfBirth"
                 class="form-control" 
                 data-error-message = "@Register.DateOfBirthInvalid"
+                data-age-error-message="@Register.MinimumRegistrationAgeError"
                 alt="@AdminRegister.EnterYourDateOfBirthHere" 
-                onchange="BirthDateValidation(this)"/>
+                       onchange="BirthDateValidation(this)" />
                 <span id="error-display" class="text-danger"></span>
                 <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
             </div>

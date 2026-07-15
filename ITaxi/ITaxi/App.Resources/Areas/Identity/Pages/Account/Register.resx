@@ -147,4 +147,7 @@
   <data name="DateOfBirthInvalid" xml:space="preserve">
     <value>Date of Birth must be earlier than today's date.</value>
   </data>
+  <data name="MinimumRegistrationAgeError" xml:space="preserve">
+    <value>You must be at least 18 years old.</value>
+  </data>
 </root>

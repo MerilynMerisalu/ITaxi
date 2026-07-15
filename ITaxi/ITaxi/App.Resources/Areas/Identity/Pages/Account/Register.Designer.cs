@@ -133,6 +133,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You must be at least 18 years old..
+        /// </summary>
+        public static string MinimumRegistrationAgeError {
+            get {
+                return ResourceManager.GetString("MinimumRegistrationAgeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are no external authentication services configured..
         /// </summary>
         public static string NoThirdParty {

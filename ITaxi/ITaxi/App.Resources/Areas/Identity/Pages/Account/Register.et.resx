@@ -147,4 +147,7 @@
   <data name="DateOfBirthInvalid" xml:space="preserve">
     <value>Sünnikuupäev peab olema varasem kui tänane kuupäev.</value>
   </data>
+  <data name="MinimumRegistrationAgeError" xml:space="preserve">
+    <value>Registreerimiseks, tuleb olla vähemalt 18-aastane.</value>
+  </data>
 </root>
