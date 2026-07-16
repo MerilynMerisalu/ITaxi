@@ -11,7 +11,6 @@ using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Domain;
 using App.Domain.Identity;
-using App.Enum.Enum;
 using App.Resources.Areas.Identity.Pages.Account;
 using Base.Resources;
 using Google.Apis.PeopleService.v1.Data;
@@ -64,9 +63,17 @@ public class RegisterAdminModel : PageModel
         _appBLL = appBLL;
         PreSelectedCountry = appBLL.Countries.GetCountryByISOCode("EE");
         Countries = new SelectList(_appBLL.Countries.GetAllCountriesOrderedByCountryName(), 
-            nameof(CountryDTO.Id), nameof(CountryDTO.CountryName), nameof(PreSelectedCountry));
-      //  Counties = new SelectList(Enumerable.Empty<CountyDTO>()
+            nameof(CountryDTO.Id), nameof(CountryDTO.CountryName), PreSelectedCountry?.Id);
+        if (PreSelectedCountry == null)
+        {
+            Counties = new SelectList(Enumerable.Empty<CountyDTO>(),
             nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
+        }
+        else
+        {
+            Counties = new(appBLL.Counties.GetAllCountiesOrderedByCountyNameByCountryId(PreSelectedCountry.Id), nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
+        }
+      
         Cities = new SelectList(Enumerable.Empty<CityDTO>(), 
             nameof(CityDTO.Id), nameof(CityDTO.CityName));
         
