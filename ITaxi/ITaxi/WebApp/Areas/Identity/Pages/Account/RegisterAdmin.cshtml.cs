@@ -62,9 +62,10 @@ public class RegisterAdminModel : PageModel
         _logger = logger;
         _emailSender = emailSender;
         _appBLL = appBLL;
+        PreSelectedCountry = appBLL.Countries.GetCountryByISOCode("EE");
         Countries = new SelectList(_appBLL.Countries.GetAllCountriesOrderedByCountryName(), 
-            nameof(CountryDTO.Id), nameof(CountryDTO.CountryName));
-        Counties = new SelectList(Enumerable.Empty<CountyDTO>(),
+            nameof(CountryDTO.Id), nameof(CountryDTO.CountryName), nameof(PreSelectedCountry));
+      //  Counties = new SelectList(Enumerable.Empty<CountyDTO>()
             nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
         Cities = new SelectList(Enumerable.Empty<CityDTO>(), 
             nameof(CityDTO.Id), nameof(CityDTO.CityName));
@@ -76,6 +77,9 @@ public class RegisterAdminModel : PageModel
     /// </summary>
 
     public SelectList? Countries { get; set; }
+
+    public CountryDTO? PreSelectedCountry { get; set; }
+
     /// <summary>
     /// List of cities
     /// </summary>
@@ -117,6 +121,8 @@ public class RegisterAdminModel : PageModel
         ReturnUrl = returnUrl;
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
+
+    
 
     public async Task<IActionResult> OnGetSetDropDownCountiesListAsync(Guid countryId)
     {
@@ -313,6 +319,8 @@ public class RegisterAdminModel : PageModel
         
         [Display(ResourceType = typeof(Register), Name = "Country")]
         public Guid CountryId { get; set; }
+
+        
 
         /// <summary>
         /// County id for admin

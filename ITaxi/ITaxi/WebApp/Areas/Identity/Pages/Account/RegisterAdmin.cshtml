@@ -14,24 +14,24 @@
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2>@Register.CreateANewAccount</h2>
-            <hr/>
+            <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" alt="@AdminRegister.EnterYourEmailAddressHere"
-                       placeholder="@AdminRegister.EnterYourEmailAddressHere"/>
+                       placeholder="@AdminRegister.EnterYourEmailAddressHere" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.FirstName"></label>
                 <input asp-for="Input.FirstName" class="form-control" alt="@AdminRegister.EnterYourFirstNameHere"
-                       placeholder="@AdminRegister.EnterYourFirstNameHere"/>
+                       placeholder="@AdminRegister.EnterYourFirstNameHere" />
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.LastName"></label>
                 <input asp-for="Input.LastName" class="form-control" alt="@AdminRegister.EnterYourLastNameHere"
-                       placeholder="@AdminRegister.EnterYourLastNameHere"/>
+                       placeholder="@AdminRegister.EnterYourLastNameHere" />
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -44,11 +44,11 @@
             <div class="form-group">
                 <label asp-for="Input.DateOfBirth"></label>
                 <input type="date" asp-for="Input.DateOfBirth"
-                class="form-control" 
-                data-error-message = "@Register.DateOfBirthInvalid"
-                data-age-error-message="@Register.MinimumRegistrationAgeError"
-                alt="@AdminRegister.EnterYourDateOfBirthHere" 
-                        onchange="BirthDateValidation(this)" />
+                       class="form-control"
+                       data-error-message="@Register.DateOfBirthInvalid"
+                       data-age-error-message="@Register.MinimumRegistrationAgeError"
+                       alt="@AdminRegister.EnterYourDateOfBirthHere"
+                       onchange="BirthDateValidation(this)" />
                 <span id="error-display" class="text-danger"></span>
                 <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
             </div>
@@ -56,24 +56,33 @@
             <div class="form-group">
                 <label asp-for="Input.PersonalIdentifier"></label>
                 <input asp-for="Input.PersonalIdentifier" class="form-control" alt="@AdminRegister.EnterYourPersonalIdentifierCodeHere"
-                       placeholder="@AdminRegister.EnterYourPersonalIdentifierCodeHere"/>
+                       placeholder="@AdminRegister.EnterYourPersonalIdentifierCodeHere" />
                 <span asp-validation-for="Input.PersonalIdentifier" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.CountryId"></label>
-                <select asp-for="Input.CountryId" id="countryId" class="form-control" asp-items="Model.Countries" 
-                onchange="CountryIdChanged(this.value)">
-                    <option>@Common.PleaseSelect</option>
+                <select asp-for="Input.CountryId" id="countryId" class="form-control" asp-items="Model.Countries"
+                        onchange="CountryIdChanged(this.value)">
+                    @if (Model.PreSelectedCountry == null)
+                    {
+                        <option value="">@Common.PleaseSelect</option>
+                    }
+                    else
+                    {
+                        <option value="@Model.PreSelectedCountry?.Id">@Model.PreSelectedCountry?.CountryName</option>
+                    }
+
+                     
                 </select>
                 <span asp-validation-for="Input.CountryId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.CountyId"></label>
                 <select asp-for="Input.CountyId" id="countyId" class="form-control" asp-items="Model.Counties"
-                onchange="CountyIdChanged(this.value)">
-                <option value="">@Common.PleaseSelect</option>
-            </select>
-            <span asp-validation-for="Input.CountyId" class="text-danger"></span>
+                        onchange="CountyIdChanged(this.value)">
+                    <option value="">@Common.PleaseSelect</option>
+                </select>
+                <span asp-validation-for="Input.CountyId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.CityId"></label>
@@ -85,25 +94,25 @@
             <div class="form-group">
                 <label asp-for="Input.Address"></label>
                 <input asp-for="Input.Address" class="form-control" alt="@AdminRegister.EnterYourAddressOfResidenceHere"
-                       placeholder="@AdminRegister.EnterYourAddressOfResidenceHere"/>
+                       placeholder="@AdminRegister.EnterYourAddressOfResidenceHere" />
                 <span asp-validation-for="Input.Address" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.PhoneNumber"></label>
                 <input asp-for="Input.PhoneNumber" class="form-control" alt="@AdminRegister.EnterYourPhoneNumberHere"
-                       placeholder="@AdminRegister.EnterYourPhoneNumberHere"/>
+                       placeholder="@AdminRegister.EnterYourPhoneNumberHere" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.Password"></label>
                 <input asp-for="Input.Password" class="form-control" alt="@AdminRegister.EnterYourPasswordHere"
-                       placeholder="@AdminRegister.EnterYourPasswordHere"/>
+                       placeholder="@AdminRegister.EnterYourPasswordHere" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.ConfirmPassword"></label>
                 <input asp-for="Input.ConfirmPassword" class="form-control"
-                       alt="@AdminRegister.ConfirmPassword" placeholder="@AdminRegister.EnterPasswordConfirmationHere"/>
+                       alt="@AdminRegister.ConfirmPassword" placeholder="@AdminRegister.EnterPasswordConfirmationHere" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
 
@@ -114,7 +123,7 @@
     <div class="col-md-6 col-md-offset-2">
         <section>
             <h3>@Register.LoginThirdParty</h3>
-            <hr/>
+            <hr />
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
@@ -143,6 +152,6 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial"/>
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/register-common.js" asp-append-version="true"></script>
 }
