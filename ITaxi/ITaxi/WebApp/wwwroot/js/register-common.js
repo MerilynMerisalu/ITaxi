@@ -68,3 +68,5 @@ function CalculateAge(dateOfBirth, dateOfToday, input) {
         ageErrorSpan.textContent = "";
     }
 }
+
+
