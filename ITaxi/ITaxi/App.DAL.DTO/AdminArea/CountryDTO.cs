@@ -18,7 +18,8 @@ public class CountryDTO : DomainEntityMetaId
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Country),
         Name = nameof(ISOCode))]
     public string ISOCode { get; set; } = default!;
+    public bool IsRegistrationSupported { get; set; }
 
-    
-    
+
+
 }

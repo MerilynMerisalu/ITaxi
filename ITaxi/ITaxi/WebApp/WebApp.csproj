@@ -17,29 +17,29 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="16.1.1" />
+        <PackageReference Include="AutoMapper" Version="16.2.0" />
         <PackageReference Include="Azure.Identity" Version="1.21.0" />
-        <PackageReference Include="Azure.Storage.Blobs" Version="12.29.0" />
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.29.1" />
         <PackageReference Include="Google.Apis.PeopleService.v1" Version="1.74.0.3973" />
         <PackageReference Include="jQuery" Version="3.7.1" />
         <PackageReference Include="jQuery.Validation" Version="1.21.0" />
         <PackageReference Include="jQuery.Validation.Globalize" Version="1.1.0" />
         <PackageReference Include="MailKit" Version="4.17.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="10.0.9" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.9" />
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.9" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.9" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.9" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="10.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
-        <PackageReference Include="Microsoft.Build" Version="18.7.1" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="5.3.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.3.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.Scripting.Common" Version="5.3.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.3.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.9" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.9">
+        <PackageReference Include="Microsoft.Build" Version="18.8.2" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.6.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="5.6.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.6.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Scripting.Common" Version="5.6.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.6.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.10">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -49,9 +49,9 @@
         <PackageReference Include="RESTCountries.NET" Version="3.6.0" />
         <PackageReference Include="Rotativa.AspNetCore" Version="1.4.0" />
         <PackageReference Include="SixLabors.ImageSharp" Version="4.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.1" />
-        <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="33.2.12" />
-        <PackageReference Include="Syncfusion.Licensing" Version="33.2.12" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+        <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="34.1.31" />
+        <PackageReference Include="Syncfusion.Licensing" Version="34.1.31" />
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     </ItemGroup>
 

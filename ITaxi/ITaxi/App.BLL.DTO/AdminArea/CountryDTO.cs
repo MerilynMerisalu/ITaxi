@@ -21,7 +21,9 @@ public class CountryDTO: DomainEntityMetaId, IShowHideItem
         Name = nameof(ISOCode))]
     public string ISOCode { get; set; } = default!;
 
-     
+    public bool IsRegistrationSupported { get; set; }
+
+
 
 
 

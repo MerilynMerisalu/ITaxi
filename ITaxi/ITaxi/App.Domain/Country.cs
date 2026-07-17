@@ -26,7 +26,7 @@ public class Country: DomainEntityMetaId
         ErrorMessageResourceName = nameof(Common.ErrorMessageStringLengthMinMax))]
     public string ISOCode { get; set; } = default!;
 
-
+    public bool IsRegistrationSupported { get; set; }
     public ICollection<County>? Counties { get; set; }
     
     

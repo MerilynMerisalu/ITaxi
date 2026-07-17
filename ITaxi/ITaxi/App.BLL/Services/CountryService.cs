@@ -124,6 +124,7 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
 
         foreach (var country in countries)
         {
+            var supportedCountriesISOCodes = new List<string?>() { "EE" };
             country.Cca3 = country.Cca3.ToUpper();
             var existingCountryDTO = await Repository.GetCountryByISOCodeAsync(country.Cca3);
 
@@ -133,6 +134,7 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
             {
                 if (existingCountryDTO.IsDeleted == true)
                 {
+                    
                     existingCountryDTO.IsDeleted = false;
                     Repository.Update(existingCountryDTO);
                     
@@ -148,6 +150,7 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
                 countryDTO.ISOCode = country.Cca2;
                 countryDTO.DataOrigin = DataOrigin.Api;
                 countryDTO.CreatedAt = DateTime.Now.ToUniversalTime();
+                countryDTO.IsRegistrationSupported = supportedCountriesISOCodes.Any(s => s!.ToUpperInvariant().Equals(countryDTO.ISOCode.ToUpperInvariant()));
             }
 
             foreach (var langCode in cultures) //langCodes)
@@ -192,7 +195,9 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
     }
     public IEnumerable<CountryDTO?> GetAllCountriesThroughRestAPI(string langCode = "eng")
     {
+        
         var countries = RestCountriesService.GetAllCountries();
+        
         return countries.Select(c => new CountryDTO()
         {
             Id = Guid.NewGuid(),
@@ -200,6 +205,7 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
             ISOCode = c.Cca2,
             DataOrigin = DataOrigin.Api,
             CreatedAt = DateTime.UtcNow.ToLocalTime(),
+            
         });
     }
 
