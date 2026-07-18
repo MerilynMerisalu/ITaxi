@@ -35,15 +35,15 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
             .Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryISOCodeAsync(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = true)
+    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryISOCca2CodeAsync(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = true)
     {
-        return (await Repository.GetAllCountriesOrderedByCountryISOCodeAsync(noTracking, noIncludes, showDeleted,showIgnored ))
+        return (await Repository.GetAllCountriesOrderedByCountryISOCca2CodeAsync(noTracking, noIncludes, showDeleted,showIgnored ))
             .Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryISOCode(bool noTracking = true, bool noIncludes = false)
+    public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryISOCca2Code(bool noTracking = true, bool noIncludes = false)
     {
-        return Repository.GetAllCountriesOrderedByCountryISOCode(noTracking, noIncludes)
+        return Repository.GetAllCountriesOrderedByCountryISOCca2Code(noTracking, noIncludes)
             .Select(e => Mapper.Map(e))!;
     }
 
@@ -57,9 +57,9 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
         return Repository.HasAnyCounties(id, noTracking);
     }
 
-    public async Task<CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true)
+    public async Task<CountryDTO?> GetCountryByISOCca2CodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true)
     {
-        return Mapper.Map(await Repository.GetCountryByISOCodeAsync(isoCode, noTracking, noIncludes, showDeleted));
+        return Mapper.Map(await Repository.GetCountryByISOCodeCca2Async(isoCode, noTracking, noIncludes, showDeleted));
     }
 
     public async Task<CountryDTO?> ToggleIsIgnoredAsync(Guid id, bool noTracking = true, bool noIncludes = false)
@@ -108,6 +108,7 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
 
     public async Task UpdateCountriesFromAPIAsync(CultureInfo[] cultures)//, string[] langCodes)
     {
+        var supportedCountriesISOCodes = new List<string?>() { "EE" };
         if (cultures == null) //langCodes == null)
         {
             return;
@@ -124,33 +125,34 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
 
         foreach (var country in countries)
         {
-            var supportedCountriesISOCodes = new List<string?>() { "EE" };
-            country.Cca3 = country.Cca3.ToUpper();
-            var existingCountryDTO = await Repository.GetCountryByISOCodeAsync(country.Cca3);
-
             var countryDTO = new CountryDTO();
+            countryDTO.ISOCodeAlpha2 = country.Cca2.ToUpperInvariant();
+            var existingCountryDTO = await Repository.GetCountryByISOCodeCca2Async(countryDTO.ISOCodeAlpha2);
 
             if (existingCountryDTO != null) // we are updating a country
             {
+                if (string.IsNullOrWhiteSpace(existingCountryDTO.ISOCodeAlpha3))
+                {
+                    existingCountryDTO.ISOCodeAlpha3 = country.Cca3.ToUpperInvariant();
+                }
                 if (existingCountryDTO.IsDeleted == true)
                 {
-                    
-                    existingCountryDTO.IsDeleted = false;
-                    Repository.Update(existingCountryDTO);
-                    
+                    existingCountryDTO.IsDeleted = false;   
                     
                 }
-                //Repository.Update(existingCountryDTO);
+                Repository.Update(existingCountryDTO);
                 countryDTO = Mapper.Map(existingCountryDTO);
                 
             }
             else // adding a new country
             {
                 countryDTO.Id = Guid.NewGuid();
-                countryDTO.ISOCode = country.Cca2;
+                countryDTO.ISOCodeAlpha3 = country.Cca3.ToUpperInvariant();
                 countryDTO.DataOrigin = DataOrigin.Api;
-                countryDTO.CreatedAt = DateTime.Now.ToUniversalTime();
-                countryDTO.IsRegistrationSupported = supportedCountriesISOCodes.Any(s => s!.ToUpperInvariant().Equals(countryDTO.ISOCode.ToUpperInvariant()));
+                countryDTO.CreatedAt = DateTime.UtcNow;
+                countryDTO.IsRegistrationSupported = supportedCountriesISOCodes
+                    .Any(s => s!.ToUpperInvariant()
+                    .Equals(countryDTO.ISOCodeAlpha2));
             }
 
             foreach (var langCode in cultures) //langCodes)
@@ -180,7 +182,7 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
                     countryDTO.CountryName.SetTranslation(translation, langCode.Name);
                 }
             }
-            countryDTO.UpdatedAt = DateTime.Now.ToUniversalTime();
+            countryDTO.UpdatedAt = DateTime.UtcNow;
 
             if (existingCountryDTO != null)
             {
@@ -202,7 +204,8 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
         {
             Id = Guid.NewGuid(),
             CountryName = GetCountryCommonNameTranslated(langCode, c),
-            ISOCode = c.Cca2,
+            ISOCodeAlpha2 = c.Cca2,
+            ISOCodeAlpha3 = c.Cca3,
             DataOrigin = DataOrigin.Api,
             CreatedAt = DateTime.UtcNow.ToLocalTime(),
             
@@ -241,21 +244,18 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
         throw new NotImplementedException();
     }
 
-    public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryISOCode(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = true)
+    public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryISOCca2Code(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = true)
     {
-        return(Repository.GetAllCountriesOrderedByCountryISOCode(noTracking, noIncludes, showDeleted, showIgnored)
+        return(Repository.GetAllCountriesOrderedByCountryISOCca2Code(noTracking, noIncludes, showDeleted, showIgnored)
             .Select(e => Mapper.Map(e)).ToList());
     }
 
-    public async Task<CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = true)
+    public async Task<CountryDTO?> GetCountryByISOCodeCca2Async(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = true)
     {
-        return Mapper.Map(await Repository.GetCountryByISOCodeAsync(isoCode, noIncludes, showDeleted, showIgnored));
+        return Mapper.Map(await Repository.GetCountryByISOCodeCca2Async(isoCode, noIncludes, showDeleted, showIgnored));
     }
 
-    public CountryDTO? GetCountryByISOCode(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = true)
-    {
-        return Mapper.Map(Repository.GetCountryByISOCode(isoCode, noTracking, noIncludes, showDeleted, showIgnored));
-    }
+    
     public async Task<bool> IsThereACorrespondingCountryToTheISO2CodeAsync(string iso2Code, string? userId = null, string? roleName = null,bool showDeleted = true, bool showIgnored = true)
     {
         var result = await Repository.IsThereACorrespondingCountryToTheISO2CodeAsync(iso2Code, userId, roleName, showDeleted: showDeleted, showIgnored: showIgnored);
@@ -268,15 +268,12 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
         return Repository.IsThereACorrespondingCountryToTheISO2Code(iso2Code, userId, roleName, showDeleted: showDeleted, showIgnored: showIgnored);
     }
 
-    public async Task<Guid?> GetCountryIdByISOCodeAsync(string iso2Code, string? userId = null, string? roleName = null)
+    public async Task<Guid?> GetCountryIdByISOCodeCca2Async(string iso2Code, string? userId = null, string? roleName = null)
     {
-        return await Repository.GetCountryIdByISOCodeAsync(iso2Code, userId, roleName);
+        return await Repository.GetCountryIdByISOCodeCca2Async(iso2Code, userId, roleName);
     }
 
-    public Guid? GetCountryIdByISOCode(string iso2Code, string? userId = null, string? roleName = null)
-    {
-        return Repository.GetCountryIdByISOCode(iso2Code, userId, roleName);
-    }
+   
 
     public async Task<IEnumerable<CountryDTO?>> GetAllCountriesWhereIsRegisterSupportedAsync(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false, bool showIsRegisterSupport = false)
     {
@@ -288,5 +285,15 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
     {
         var result = (Repository.GetAllCountriesWhereIsRegisterSupported(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)).Select(c => Mapper.Map(c));
         return result;
+    }
+
+    public CountryDTO? GetCountryByISOCodeCca2(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = true)
+    {
+        return Mapper.Map(Repository.GetCountryByISOCodeCca2(isoCode, noTracking, noIncludes, showDeleted, showIgnored));
+    }
+
+    public Guid? GetCountryIdByISOCca2Code(string iso2Code, string? userId = null, string? roleName = null)
+    {
+        return Repository.GetCountryIdByISOCca2Code(iso2Code, userId, roleName);
     }
 }

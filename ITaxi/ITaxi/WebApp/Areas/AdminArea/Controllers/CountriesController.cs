@@ -34,7 +34,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         public async Task<IActionResult> Index()
         {
             var res = //_appBLL.Countries.GetAllCountriesThroughRestAPI(CultureInfo.CurrentCulture.ThreeLetterISOLanguageName);
-            await _appBLL.Countries.GetAllCountriesOrderedByCountryISOCodeAsync();
+            await _appBLL.Countries.GetAllCountriesOrderedByCountryISOCca2CodeAsync();
             return View(res);
         }
 
@@ -77,7 +77,7 @@ namespace WebApp.Areas.AdminArea.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateEditCountryViewModel vm)
         {
-            var countryExists = await _appBLL.Countries.IsThereACorrespondingCountryToTheISO2CodeAsync(vm.ISOCode);
+            var countryExists = await _appBLL.Countries.IsThereACorrespondingCountryToTheISO2CodeAsync(vm.ISOCodeAlpha2);
             if (countryExists)
             {
                 ModelState.AddModelError("CountryExists",
@@ -90,7 +90,9 @@ namespace WebApp.Areas.AdminArea.Controllers
                 country.Id = Guid.NewGuid();
                 country.CountryName = vm.CountryName;
                 country.DataOrigin = DataOrigin.Manual;
-                country.ISOCode = vm.ISOCode.ToUpper();
+                country.ISOCodeAlpha2 = vm.ISOCodeAlpha2.ToUpper();
+                country.ISOCodeAlpha3 = vm.ISOCodeAlpha3.ToUpper();
+                country.IsRegistrationSupported = false;
                 _appBLL.Countries.Add(country);
                 await _appBLL.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -115,7 +117,7 @@ namespace WebApp.Areas.AdminArea.Controllers
 
             vm.Id = country.Id;
             vm.CountryName = country.CountryName;
-            vm.ISOCode = country.ISOCode;
+            vm.ISOCodeAlpha2 = country.ISOCodeAlpha2;
             
             return View(vm);
         }
@@ -140,7 +142,7 @@ namespace WebApp.Areas.AdminArea.Controllers
                     if (country != null)
                     {
                         country.CountryName.SetTranslation(vm.CountryName); 
-                        country.ISOCode = vm.ISOCode.ToUpper();
+                        country.ISOCodeAlpha2 = vm.ISOCodeAlpha2.ToUpper();
                         country.UpdatedBy = User.GetUserEmail();
                         country.UpdatedAt = DateTime.Now.ToUniversalTime();
                         _appBLL.Countries.Update(country);

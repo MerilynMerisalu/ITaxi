@@ -67,7 +67,7 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
             _logger.LogWarning($"Country with ISO2 code {ESTONIANISO2CODE} could not be found in the database.");
             return importResult;
         }
-        var countryId = await _appBLL.Countries.GetCountryIdByISOCodeAsync(ESTONIANISO2CODE);
+        var countryId = await _appBLL.Countries.GetCountryIdByISOCodeCca2Async(ESTONIANISO2CODE);
         const string AADRESSURL = "https://gsavalik.envir.ee/geoserver/ehak/wfs" +
               "?service=WFS&version=1.1.0" +
               "&request=GetFeature" +

@@ -73,7 +73,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
                 .HasFilter("[CountyEHAKCode] IS NOT NULL");
 
         builder.Entity<Country>()
-            .HasIndex(c => c.ISOCode)
+            .HasIndex(c => c.ISOCodeAlpha2)
             .IsUnique();
 
         

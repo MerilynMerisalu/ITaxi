@@ -61,7 +61,7 @@ public class RegisterAdminModel : PageModel
         _logger = logger;
         _emailSender = emailSender;
         _appBLL = appBLL;
-        PreSelectedCountry = appBLL.Countries.GetCountryByISOCode("EE");
+        PreSelectedCountry = appBLL.Countries.GetCountryByISOCodeCca2("EE");
         Countries = new SelectList(_appBLL.Countries.GetAllCountriesWhereIsRegisterSupported(showDeleted: false, showIgnored: false), 
             nameof(CountryDTO.Id), nameof(CountryDTO.CountryName), PreSelectedCountry?.Id);
         if (PreSelectedCountry == null)

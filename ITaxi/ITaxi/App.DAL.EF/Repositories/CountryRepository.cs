@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.DAL.EF.Repositories;
 
-public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbContext>, ICountryRepository
+public class CountryRepository : BaseEntityRepository<CountryDTO, Country, AppDbContext>, ICountryRepository
 {
     public CountryRepository(AppDbContext dbContext, IMapper<CountryDTO, Country> mapper) : base(dbContext, mapper)
     {
@@ -20,12 +20,12 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
     }
 
     public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryName(bool noTracking = true,
-    bool noIncludes = false, bool showIgnored = false, bool showDeleted = false )
+    bool noIncludes = false, bool showIgnored = false, bool showDeleted = false)
     {
         var result = CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showIgnored: showIgnored, showDeleted: showDeleted)
             .ToList();
-        return result.OrderBy(c => (string) c.CountryName).Select(c => Mapper.Map(c))!;
-        
+        return result.OrderBy(c => (string)c.CountryName).Select(c => Mapper.Map(c))!;
+
     }
 
     public async Task<bool> HasAnyCountiesAsync(Guid id, bool noTracking = true)
@@ -38,24 +38,16 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
         return RepoDbContext.Counties.Any(c => c.CountryId.Equals(id));
     }
 
-    
 
-    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryISOCodeAsync(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = true)
-    {
-        // special handling of OrderBy to account for language transalation
-        return (await CreateQuery(noTracking, showDeleted: showDeleted, showIgnored: showIgnored)
-            .ToListAsync()) // Bring into memory "Materialize"
-            .OrderBy(v => v.ISOCode)
-            .ToList().Select(e => Mapper.Map(e))!;
-    }
 
-    public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryISOCode(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+
+
+    public IEnumerable<CountryDTO> GetAllCountriesOrderedByCountryISOCca2Code(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
         // special handling of OrderBy to account for language transalation
         return CreateQuery(noTracking, showIgnored: showIgnored, showDeleted: showDeleted)
             .ToList() // Bring into memory "Materialize"
-            .OrderBy(v => v.ISOCode)
-            
+            .OrderBy(v => v.ISOCodeAlpha2)
             .ToList().Select(e => Mapper.Map(e))!;
     }
 
@@ -68,7 +60,7 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
                 .ThenInclude(c => c.Translations).Where(c => c.IsIgnored == false)
                 .AsNoTracking();
         }
-        if (!showIgnored) 
+        if (!showIgnored)
         {
 
             return RepoDbSet
@@ -94,7 +86,7 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
             .Include(c => c.CountryName)
             .ThenInclude(c => c.Translations)
             .AsNoTracking();
-        
+
     }
 
     public override async Task<CountryDTO?> FirstOrDefaultAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
@@ -109,44 +101,40 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
         return Mapper.Map(CreateQuery(noTracking, noIncludes, showIgnored: showIgnored, showDeleted: showDeleted).FirstOrDefault(c => c.Id.Equals(id)));
     }
 
-    public async Task<CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true)
-    {
-        return Mapper.Map(CreateQuery(noTracking, noIncludes, showDeleted).FirstOrDefault(c => c.ISOCode.Equals(isoCode)));
-    }
 
-    
-    public async Task<CountryDTO?> GetCountryByISOCodeAsync(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = true)
+
+    public async Task<CountryDTO?> GetCountryByISOCodeCca2Async(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = true)
     {
         return Mapper.Map(await CreateQuery(noTracking, noIncludes, showDeleted, showIgnored)
-            .FirstOrDefaultAsync(c => c.ISOCode.Equals(isoCode)));
+            .FirstOrDefaultAsync(c => c.ISOCodeAlpha2.Equals(isoCode)));
     }
 
-    public CountryDTO? GetCountryByISOCode(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = true)
+    public CountryDTO? GetCountryByISOCodeCca2(string isoCode, bool noTracking = true, bool noIncludes = false, bool showDeleted = true, bool showIgnored = true)
     {
-       return Mapper.Map(CreateQuery(noTracking, noIncludes, showDeleted, showIgnored)
-            .FirstOrDefault(c => c.ISOCode.Equals(isoCode)));
+        return Mapper.Map(CreateQuery(noTracking, noIncludes, showDeleted, showIgnored)
+             .FirstOrDefault(c => c.ISOCodeAlpha2.Equals(isoCode)));
     }
     public async Task<bool> IsThereACorrespondingCountryToTheISO2CodeAsync(string iso2Code, string? userId = null, string? roleName = null, bool showDeleted = true, bool showIgnored = true)
     {
         var result = await CreateQuery(showDeleted: showDeleted, showIgnored: showIgnored).AnyAsync(c => c.
-            ISOCode.Equals(iso2Code.ToUpperInvariant()));
+          ISOCodeAlpha2.Equals(iso2Code.ToUpperInvariant()));
         return result;
     }
 
     public bool IsThereACorrespondingCountryToTheISO2Code(string iso2Code, string? userId = null, string? roleName = null, bool showDeleted = true, bool showIgnored = true)
     {
-        return RepoDbSet.Any(c => c.ISOCode.Equals(iso2Code.ToUpperInvariant()));
+        return RepoDbSet.Any(c => c.ISOCodeAlpha2.Equals(iso2Code.ToUpperInvariant()));
     }
 
-    public async Task<Guid?> GetCountryIdByISOCodeAsync(string iso2Code, string? userId = null, string? roleName = null)
+    public async Task<Guid?> GetCountryIdByISOCodeCca2Async(string iso2Code, string? userId = null, string? roleName = null)
     {
-        var result = await RepoDbSet.FirstOrDefaultAsync(c => c.ISOCode.Equals(iso2Code.ToUpperInvariant()));
+        var result = await RepoDbSet.FirstOrDefaultAsync(c => c.ISOCodeAlpha2.Equals(iso2Code.ToUpperInvariant()));
         return result?.Id;
     }
 
-    public Guid? GetCountryIdByISOCode(string iso2Code, string? userId = null, string? roleName = null)
+    public Guid? GetCountryIdByISOCca2Code(string iso2Code, string? userId = null, string? roleName = null)
     {
-        var result =  RepoDbSet.FirstOrDefault(c => c.ISOCode.Equals(iso2Code.ToUpperInvariant()));
+        var result = RepoDbSet.FirstOrDefault(c => c.ISOCodeAlpha2.Equals(iso2Code.ToUpperInvariant()));
         return result?.Id;
     }
 
@@ -160,9 +148,19 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
 
     public IEnumerable<CountryDTO?> GetAllCountriesWhereIsRegisterSupported(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false, bool showIsRegisterSupport = false)
     {
-        var result =  CreateQuery(noTracking: noTracking, noIncludes: noIncludes,
+        var result = CreateQuery(noTracking: noTracking, noIncludes: noIncludes,
             showDeleted: showDeleted, showIgnored: showIgnored)
             .Where(c => c.IsRegistrationSupported == true).ToList();
         return result.Select(c => Mapper.Map(c));
     }
+
+    public async Task<IEnumerable<CountryDTO>> GetAllCountriesOrderedByCountryISOCca2CodeAsync(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = true)
+    {
+        // special handling of OrderBy to account for language transalation
+        return (await CreateQuery(noTracking, showDeleted: showDeleted, showIgnored: showIgnored)
+            .ToListAsync()) // Bring into memory "Materialize"
+            .OrderBy(v => v.ISOCodeAlpha2)
+            .ToList().Select(e => Mapper.Map(e))!;
+    }
+
 }

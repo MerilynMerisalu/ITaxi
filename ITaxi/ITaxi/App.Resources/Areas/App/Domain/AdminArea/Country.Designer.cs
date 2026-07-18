@@ -70,11 +70,20 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ISO Code.
+        ///   Looks up a localized string similar to ISO 3166-1 alpha-2 code.
         /// </summary>
-        public static string ISOCode {
+        public static string ISOCodeAlpha2 {
             get {
-                return ResourceManager.GetString("ISOCode", resourceCulture);
+                return ResourceManager.GetString("ISOCodeAlpha2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ISO 3166-1 alpha-3 code.
+        /// </summary>
+        public static string ISOCodeAlpha3 {
+            get {
+                return ResourceManager.GetString("ISOCodeAlpha3", resourceCulture);
             }
         }
         

@@ -183,7 +183,7 @@ public static class DataHelper
                 //country.CountryName.SetTranslation("Eesti", "et-EE");
                 //await context.Countries.AddAsync(country);
                 //await context.SaveChangesAsync();
-                  var countryId = context.Countries.SingleOrDefault(c => c.ISOCode == "EE")!.Id;
+                  var countryId = context.Countries.SingleOrDefault(c => c.ISOCodeAlpha2 == "EE")!.Id;
                 //    var county = new County
                 //    {
                 //        Id = Guid.NewGuid(),

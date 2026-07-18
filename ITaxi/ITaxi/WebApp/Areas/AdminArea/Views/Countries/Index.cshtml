@@ -22,7 +22,10 @@
                 @Html.DisplayNameFor(model => model.CountryName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ISOCode)
+                @Html.DisplayNameFor(model => model.ISOCodeAlpha2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ISOCodeAlpha3)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DataOrigin)
@@ -53,8 +56,11 @@
                 @Html.DisplayTextFor(modelItem => item.CountryName)
             </td>
             <td>
-                @Html.DisplayTextFor(modelItem => item.ISOCode)
+                @Html.DisplayTextFor(modelItem => item.ISOCodeAlpha2)
             </td>
+                <td>
+                    @Html.DisplayTextFor(modelItem => item.ISOCodeAlpha3)
+                </td>
                 <td>
                     @Html.DisplayTextFor(modelItem => item.DataOrigin)
                 </td>
