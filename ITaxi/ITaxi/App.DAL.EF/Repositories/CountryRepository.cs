@@ -149,4 +149,20 @@ public class CountryRepository: BaseEntityRepository<CountryDTO, Country, AppDbC
         var result =  RepoDbSet.FirstOrDefault(c => c.ISOCode.Equals(iso2Code.ToUpperInvariant()));
         return result?.Id;
     }
+
+    public async Task<IEnumerable<CountryDTO?>> GetAllCountriesWhereIsRegisterSupportedAsync(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false, bool showIsRegisterSupport = false)
+    {
+        var result = await CreateQuery(noTracking: noTracking, noIncludes: noIncludes,
+            showDeleted: showDeleted, showIgnored: showIgnored)
+            .Where(c => c.IsRegistrationSupported == true).ToListAsync();
+        return result.Select(c => Mapper.Map(c));
+    }
+
+    public IEnumerable<CountryDTO?> GetAllCountriesWhereIsRegisterSupported(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false, bool showIsRegisterSupport = false)
+    {
+        var result =  CreateQuery(noTracking: noTracking, noIncludes: noIncludes,
+            showDeleted: showDeleted, showIgnored: showIgnored)
+            .Where(c => c.IsRegistrationSupported == true).ToList();
+        return result.Select(c => Mapper.Map(c));
+    }
 }

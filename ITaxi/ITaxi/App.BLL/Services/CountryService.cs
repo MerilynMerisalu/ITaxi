@@ -277,4 +277,16 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
     {
         return Repository.GetCountryIdByISOCode(iso2Code, userId, roleName);
     }
+
+    public async Task<IEnumerable<CountryDTO?>> GetAllCountriesWhereIsRegisterSupportedAsync(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false, bool showIsRegisterSupport = false)
+    {
+        var result = (await Repository.GetAllCountriesWhereIsRegisterSupportedAsync(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)).Select(c => Mapper.Map(c));
+        return result;
+    }
+
+    public IEnumerable<CountryDTO?> GetAllCountriesWhereIsRegisterSupported(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false, bool showIsRegisterSupport = false)
+    {
+        var result = (Repository.GetAllCountriesWhereIsRegisterSupported(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)).Select(c => Mapper.Map(c));
+        return result;
+    }
 }

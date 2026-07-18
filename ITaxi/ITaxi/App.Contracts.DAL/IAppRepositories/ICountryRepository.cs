@@ -23,5 +23,8 @@ public interface ICountryRepositoryCustom<TEntity>
     bool IsThereACorrespondingCountryToTheISO2Code(string iso2Code, string? userId = null, string? roleName = null, bool showDeleted = true, bool showIgnored = true);
     Task<Guid?> GetCountryIdByISOCodeAsync(string iso2Code, string? userId = null, string? roleName = null);
     Guid? GetCountryIdByISOCode(string iso2Code, string? userId = null, string? roleName = null);
+    Task<IEnumerable<TEntity?>> GetAllCountriesWhereIsRegisterSupportedAsync(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false, bool showIsRegisterSupport = false);
+    IEnumerable<TEntity?> GetAllCountriesWhereIsRegisterSupported(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false, bool showIsRegisterSupport = false);
+
 
 }
