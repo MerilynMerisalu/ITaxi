@@ -206,6 +206,7 @@ public class CountryService : BaseEntityService<App.BLL.DTO.AdminArea.CountryDTO
             CountryName = GetCountryCommonNameTranslated(langCode, c),
             ISOCodeAlpha2 = c.Cca2,
             ISOCodeAlpha3 = c.Cca3,
+            IsRegistrationSupported = false,
             DataOrigin = DataOrigin.Api,
             CreatedAt = DateTime.UtcNow.ToLocalTime(),
             
