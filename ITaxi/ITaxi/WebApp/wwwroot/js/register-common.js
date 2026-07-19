@@ -69,6 +69,58 @@ function CalculateAge(dateOfBirth, dateOfToday, input) {
     }
 }
 
+function ValidatePersonalIdentifierNumber(input) {
+    const PERSONALIDENTIFIERNUMBERERRORSPAN = document.getElementById('personal-identifier-error');
+    const VALUE = input.value;
+    const GENDER = Number.parseInt(document.getElementById('gender-value').value);
+    const PERSONALIDENTIFIERFIRSTDIGIT = VALUE[0];
+    const BIRTHYEARDIGITS = VALUE.substring(1, 3);
+    const BIRTHYEARBASE = GetBirthYearBase(PERSONALIDENTIFIERFIRSTDIGIT);
+    console.log(BIRTHYEARBASE);
+
+
+    if (GENDER === 2) {
+        if (PERSONALIDENTIFIERFIRSTDIGIT % 2 !== 0) {
+            PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+            PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "The first digit of a personal identifier number does not match the selected gender";
+        }
+        else {
+            PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+        }
+    }
+    else if (GENDER === 3) {
+        if (PERSONALIDENTIFIERFIRSTDIGIT % 2 !== 1) {
+            PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+            PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "The first digit of a personal identifier number does not match the selected gender";
+        }
+        else {
+            PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+        }
+    }
+    else {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+    }
+}
+function GetBirthYearBase(personalIdentifierFirstDigit) {
+    switch (personalIdentifierFirstDigit) {
+        case 1:
+        case 2:
+            return 1800;
+        case 3:
+        case 4:
+            return 1900;
+        case 5:
+        case 6:
+            return 2000;
+        case 7:
+        case 8:
+            return 2100;
+        default:
+            return null;
+    }
+}
+
+
 
 
 
