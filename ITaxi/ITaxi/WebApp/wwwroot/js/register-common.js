@@ -70,36 +70,51 @@ function CalculateAge(dateOfBirth, dateOfToday, input) {
 }
 
 function ValidatePersonalIdentifierNumber(input) {
+    
     const PERSONALIDENTIFIERNUMBERERRORSPAN = document.getElementById('personal-identifier-error');
     const VALUE = input.value;
-    const GENDER = Number.parseInt(document.getElementById('gender-value').value);
-    const PERSONALIDENTIFIERFIRSTDIGIT = VALUE[0];
-    const BIRTHYEARDIGITS = VALUE.substring(1, 3);
-    const BIRTHYEARBASE = GetBirthYearBase(PERSONALIDENTIFIERFIRSTDIGIT);
-    console.log(BIRTHYEARBASE);
-
-
-    if (GENDER === 2) {
-        if (PERSONALIDENTIFIERFIRSTDIGIT % 2 !== 0) {
-            PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-            PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "The first digit of a personal identifier number does not match the selected gender";
-        }
-        else {
-            PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-        }
-    }
-    else if (GENDER === 3) {
-        if (PERSONALIDENTIFIERFIRSTDIGIT % 2 !== 1) {
-            PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-            PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "The first digit of a personal identifier number does not match the selected gender";
-        }
-        else {
-            PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-        }
+    let result = ValidatePersonalIdentifierLength(VALUE);
+    if (result !== true) {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+        return PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "The length of the value must be exactly 11 numbers."
     }
     else {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
     }
+    const GENDER = Number.parseInt(document.getElementById('gender-value').value);
+    const PERSONALIDENTIFIERFIRSTDIGIT = Number.parseInt(VALUE[0]);
+    result = ValidateGenderBasedOnPersonalIdentifier(GENDER, PERSONALIDENTIFIERFIRSTDIGIT);
+    if (result !== true) {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+        return PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "The first digit of a personal identifier number does not match the selected gender";
+    }
+    else {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+    }
+    const BIRTHYEARBASE = GetBirthYearBase(PERSONALIDENTIFIERFIRSTDIGIT);
+
+
+    
+}
+
+function ValidateGenderBasedOnPersonalIdentifier(GENDER, PERSONALIDENTIFIERFIRSTDIGIT) {
+    if (GENDER === 2) {
+        if (PERSONALIDENTIFIERFIRSTDIGIT % 2 !== 0)
+            return false;
+        else
+            return true
+
+    }
+    else if (GENDER === 3) {
+        if (PERSONALIDENTIFIERFIRSTDIGIT % 2 !== 1)
+            return false;
+        else
+            return true;
+
+    }
+
+    else
+        return true;
 }
 function GetBirthYearBase(personalIdentifierFirstDigit) {
     switch (personalIdentifierFirstDigit) {
@@ -120,7 +135,11 @@ function GetBirthYearBase(personalIdentifierFirstDigit) {
     }
 }
 
-
+function ValidatePersonalIdentifierLength(personalIdentifier) {
+    if (personalIdentifier.length !== 11 )
+        return false;
+    return true;
+}
 
 
 
