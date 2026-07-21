@@ -60,10 +60,11 @@ function CalculateAge(dateOfBirth, dateOfToday, input) {
     }
 
     let result = ValidateAge(age);
+    const AGE_ERROR_DISPLAY_SPAN = document.getElementById("error-display");
     if (result !== true)
-        ageErrorSpan.textContent = input.dataset.ageErrorMessage;
+        AGE_ERROR_DISPLAY_SPAN.textContent = input.dataset.ageErrorMessage;
     else
-        ageErrorSpan.textContent = "";
+        AGE_ERROR_DISPLAY_SPAN.textContent = "";
 }
 
 function ValidatePersonalIdentifierNumber(input) {
@@ -77,10 +78,41 @@ function ValidatePersonalIdentifierNumber(input) {
     const GENDER_MISMATCH_ERROR_MESSAGE = input.dataset.genderMismatchErrorMessage;
     const STRING_LENGTH_MIN = input.minLength;
     const STRING_LENGTH_MAX = input.maxLength;
+    const CONTAINS_ONLY_DIGITS_ERROR_MESSAGE = input.dataset.onlyDigitsErrorMessage;
+    const GENDER = Number.parseInt(document.getElementById('gender-value').value);
+    if (Number.isNaN(GENDER) === true) {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "Before entering your personal identifier number, please choose your sex.";
+        return PERSONALIDENTIFIERNUMBERERRORSPAN;
+    }
+    else {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+    }
+
+    const DATE_OF_BIRTH_VALUE = document.getElementById("date_value").value;
+
+    if (IsNotEmpty(DATE_OF_BIRTH_VALUE) !== true) {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "Before entering your personal identifier number, please fill out your date of birth.";
+        return PERSONALIDENTIFIERNUMBERERRORSPAN;
+    }
+    else {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+    }
+
     let result = IsNotEmpty(VALUE);
     if (result !== true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = REQUIRED_ERROR_MESSAGE;
+    }
+    result = ContainsOnlyDigits(VALUE);
+    if (result !== true) {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = CONTAINS_ONLY_DIGITS_ERROR_MESSAGE.replace("{0}", FIELD_NAME);
+        return PERSONALIDENTIFIERNUMBERERRORSPAN;
+    }
+    else {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
     }
      result = ValidatePersonalIdentifierLength(VALUE);
     if (result !== true) {
@@ -95,7 +127,7 @@ function ValidatePersonalIdentifierNumber(input) {
     else {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
     }
-    const GENDER = Number.parseInt(document.getElementById('gender-value').value);
+    
     const PERSONALIDENTIFIERFIRSTDIGIT = Number.parseInt(VALUE[0]);
     result = ValidateGenderBasedOnPersonalIdentifier(GENDER, PERSONALIDENTIFIERFIRSTDIGIT);
     if (result !== true) {
@@ -105,10 +137,9 @@ function ValidatePersonalIdentifierNumber(input) {
     else {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
     }
-    const BIRTHYEARBASE = GetBirthYearBase(PERSONALIDENTIFIERFIRSTDIGIT);
-
-
     
+    const BIRTHYEARBASE = GetBirthYearBase(PERSONALIDENTIFIERFIRSTDIGIT);
+     GetDateOfBirthFromPersonalIdentifierNumber(BIRTHYEARBASE, VALUE);
 }
 
 function ValidateGenderBasedOnPersonalIdentifier(GENDER, PERSONALIDENTIFIERFIRSTDIGIT) {
@@ -173,5 +204,17 @@ function IsNotEmpty(value) {
     return true;
 }
 
+function ContainsOnlyDigits(value) {
+    return /^\d+$/.test(value); 
+}
+
+function GetDateOfBirthFromPersonalIdentifierNumber(BASE_OF_DATE_OF_BIRTH, DATE_OF_BIRTH) {
+    const BASE_OF_YEAR_PREFIX = BASE_OF_DATE_OF_BIRTH.toString().substring(0, 2);
+    const DATE_OF_BIRTH_YEAR_DIGITS = DATE_OF_BIRTH.toString().substring(1, 3);
+    const YEAR = BASE_OF_YEAR_PREFIX + DATE_OF_BIRTH_YEAR_DIGITS;
+    let personal_identifier_date_of_birth = `${YEAR} `;
+    console.log(personal_identifier_date_of_birth);
+
+}
 
 
