@@ -43,7 +43,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.DateOfBirth"></label>
-                <input type="date" asp-for="Input.DateOfBirth"
+                <input id="date_value" type="date" asp-for="Input.DateOfBirth"
                        class="form-control"
                        data-error-message="@Register.DateOfBirthInvalid"
                        data-age-error-message="@Register.MinimumRegistrationAgeError"
@@ -58,6 +58,7 @@
                 <input inputmode="numeric" type="text" asp-for="Input.PersonalIdentifier" data-error-message="@Common.RequiredAttributeErrorMessage"
                 data-length-error-message="@Common.ErrorMessageStringLengthMinMax" 
                 data-gender-mismatch-error-message="@Register.GenderError"
+                data-only-digits-error-message="@Common.ErrorMessageOnlyDigits"
                  class="form-control" alt="@AdminRegister.EnterYourPersonalIdentifierCodeHere"
                        placeholder="@AdminRegister.EnterYourPersonalIdentifierCodeHere" minlength="11" maxlength="11" 
                        onchange="ValidatePersonalIdentifierNumber(this)" />
