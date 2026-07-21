@@ -150,4 +150,7 @@
   <data name="MinimumRegistrationAgeError" xml:space="preserve">
     <value>You must be at least 18 years old.</value>
   </data>
+  <data name="GenderError" xml:space="preserve">
+    <value>The first digit of a personal identifier number does not match the selected gender.</value>
+  </data>
 </root>

@@ -150,4 +150,7 @@
   <data name="MinimumRegistrationAgeError" xml:space="preserve">
     <value>Registreerimiseks, tuleb olla vähemalt 18-aastane.</value>
   </data>
+  <data name="GenderError" xml:space="preserve">
+    <value>Isikukoodi esimene number ei ühti valitud sooga.</value>
+  </data>
 </root>

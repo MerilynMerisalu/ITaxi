@@ -124,6 +124,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The first digit of a personal identifier number does not match the selected gender..
+        /// </summary>
+        public static string GenderError {
+            get {
+                return ResourceManager.GetString("GenderError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use another service to log in..
         /// </summary>
         public static string LoginThirdParty {

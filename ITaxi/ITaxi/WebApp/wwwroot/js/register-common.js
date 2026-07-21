@@ -59,24 +59,38 @@ function CalculateAge(dateOfBirth, dateOfToday, input) {
         age--;
     }
 
-    const minimumRegistrationAge = 18;
-    const ageErrorSpan = document.getElementById("error-display");
-
-    if (age < minimumRegistrationAge) {
+    let result = ValidateAge(age);
+    if (result !== true)
         ageErrorSpan.textContent = input.dataset.ageErrorMessage;
-    } else {
+    else
         ageErrorSpan.textContent = "";
-    }
 }
 
 function ValidatePersonalIdentifierNumber(input) {
     
     const PERSONALIDENTIFIERNUMBERERRORSPAN = document.getElementById('personal-identifier-error');
+    const FIELD_NAME = input.labels[0].textContent.trim();
     const VALUE = input.value;
-    let result = ValidatePersonalIdentifierLength(VALUE);
+    const REQUIRED_ERROR_MESSAGE = input.dataset.errorMessage;
+    REQUIRED_ERROR_MESSAGE.replace("{0}", FIELD_NAME);
+    const STRING_LENGTH_ERROR_MESSAGE = input.dataset.lengthErrorMessage;
+    const GENDER_MISMATCH_ERROR_MESSAGE = input.dataset.genderMismatchErrorMessage;
+    const STRING_LENGTH_MIN = input.minLength;
+    const STRING_LENGTH_MAX = input.maxLength;
+    let result = IsNotEmpty(VALUE);
     if (result !== true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-        return PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "The length of the value must be exactly 11 numbers."
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = REQUIRED_ERROR_MESSAGE;
+    }
+     result = ValidatePersonalIdentifierLength(VALUE);
+    if (result !== true) {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent =
+            STRING_LENGTH_ERROR_MESSAGE.replace("{0}", FIELD_NAME)
+                .replace("{1}", STRING_LENGTH_MIN)
+                .replace("{2}", STRING_LENGTH_MAX);
+        return PERSONALIDENTIFIERNUMBERERRORSPAN;
+
     }
     else {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
@@ -86,7 +100,7 @@ function ValidatePersonalIdentifierNumber(input) {
     result = ValidateGenderBasedOnPersonalIdentifier(GENDER, PERSONALIDENTIFIERFIRSTDIGIT);
     if (result !== true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-        return PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "The first digit of a personal identifier number does not match the selected gender";
+        return PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = GENDER_MISMATCH_ERROR_MESSAGE;
     }
     else {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
@@ -138,6 +152,24 @@ function GetBirthYearBase(personalIdentifierFirstDigit) {
 function ValidatePersonalIdentifierLength(personalIdentifier) {
     if (personalIdentifier.length !== 11 )
         return false;
+    return true;
+}
+
+function ValidateAge(age) {
+    const minimumRegistrationAge = 18;
+    
+    if (age < minimumRegistrationAge) 
+        return false;
+    else
+        return true;
+    
+
+}
+
+function IsNotEmpty(value) {
+    if (!value || value === "") {
+        return false; 
+    }
     return true;
 }
 
