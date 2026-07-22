@@ -83,10 +83,12 @@ function ValidatePersonalIdentifierNumber(input) {
     const STRING_LENGTH_MIN = input.minLength;
     const STRING_LENGTH_MAX = input.maxLength;
     const CONTAINS_ONLY_DIGITS_ERROR_MESSAGE = input.dataset.onlyDigitsErrorMessage;
+    const CHOOSE_GENDER_ERROR = input.dataset.chooseGenderFirstErrorMessage;
+    const ENTER_DOB_ERROR = input.dataset.enterDobFirstErrorMessage;
     const GENDER = Number.parseInt(document.getElementById('gender-value').value);
     if (Number.isNaN(GENDER) === true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "Before entering your personal identifier number, please choose your sex.";
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = CHOOSE_GENDER_ERROR;
         return PERSONALIDENTIFIERNUMBERERRORSPAN;
     }
     else {
@@ -97,7 +99,7 @@ function ValidatePersonalIdentifierNumber(input) {
 
     if (IsNotEmpty(DATE_OF_BIRTH_VALUE) !== true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "Before entering your personal identifier number, please fill out your date of birth.";
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = ENTER_DOB_ERROR;
         return PERSONALIDENTIFIERNUMBERERRORSPAN;
     }
     else {
