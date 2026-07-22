@@ -159,4 +159,7 @@
   <data name="EnterDateOfBirth" xml:space="preserve">
     <value>Enne isikukoodi sisestamist, palun valige sünnikuupäev.</value>
   </data>
+  <data name="PersonalIdentifierDateOfBirthInvalid" xml:space="preserve">
+    <value>Valitud kuupäev ei ühti isikukoodi kuupäeva osaga.</value>
+  </data>
 </root>
