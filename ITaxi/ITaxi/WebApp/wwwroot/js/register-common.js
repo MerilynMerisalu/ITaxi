@@ -234,12 +234,8 @@ function GetDateOfBirthFromPersonalIdentifierNumber(BASE_OF_DATE_OF_BIRTH, DATE_
 
 }
 
-function CompareDateOfBirths(personal_identifier_date_of_birth, selected_date_of_birth) {
-
-    const selected_date_of_birth_text = selected_date_of_birth.toString();
-    console.log(personal_identifier_date_of_birth);
-    console.log(selected_date_of_birth_text);
-    const result = selected_date_of_birth_text === personal_identifier_date_of_birth;
-    return result;
+function CompareDateOfBirths(PERSONALIDETIFICATIONDATEOFBIRTH, DATE_OF_BIRTH_VALUE) {
+    const DATE_OF_BIRTH_VALUE_TEXT = DATE_OF_BIRTH_VALUE.toString();
+    return DATE_OF_BIRTH_VALUE_TEXT === PERSONALIDETIFICATIONDATEOFBIRTH;
     }
 
