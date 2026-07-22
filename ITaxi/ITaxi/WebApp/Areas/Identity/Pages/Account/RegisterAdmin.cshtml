@@ -59,8 +59,11 @@
                 data-length-error-message="@Common.ErrorMessageStringLengthMinMax" 
                 data-gender-mismatch-error-message="@Register.GenderError"
                 data-only-digits-error-message="@Common.ErrorMessageOnlyDigits"
+                data-choose-gender-first="@Register.ChooseGenderError"
+                data-enter-your-dob-first="@Register.EnterDateOfBirth"
                  class="form-control" alt="@AdminRegister.EnterYourPersonalIdentifierCodeHere"
-                       placeholder="@AdminRegister.EnterYourPersonalIdentifierCodeHere" minlength="11" maxlength="11" 
+                       placeholder="@AdminRegister.EnterYourPersonalIdentifierCodeHere"
+                       minlength="11" maxlength="11" 
                        onchange="ValidatePersonalIdentifierNumber(this)" />
                 <span asp-validation-for="Input.PersonalIdentifier" class="text-danger"></span>
                 <span class="text-danger" id="personal-identifier-error"></span>

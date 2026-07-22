@@ -70,6 +70,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Before entering your personal identifier number, please choose your gender..
+        /// </summary>
+        public static string ChooseGenderError {
+            get {
+                return ResourceManager.GetString("ChooseGenderError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City.
         /// </summary>
         public static string City {
@@ -115,6 +124,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Before entering your personal identifier number, please fill out your date of birth..
+        /// </summary>
+        public static string EnterDateOfBirth {
+            get {
+                return ResourceManager.GetString("EnterDateOfBirth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter Your Address of Residence Here.
         /// </summary>
         public static string EnterYourAddressOfResidenceHere {
@@ -142,7 +160,7 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You must be at least 18 years old..
+        ///   Looks up a localized string similar to You must be at least {0} years old..
         /// </summary>
         public static string MinimumRegistrationAgeError {
             get {

@@ -61,8 +61,12 @@ function CalculateAge(dateOfBirth, dateOfToday, input) {
 
     let result = ValidateAge(age);
     const AGE_ERROR_DISPLAY_SPAN = document.getElementById("error-display");
-    if (result !== true)
-        AGE_ERROR_DISPLAY_SPAN.textContent = input.dataset.ageErrorMessage;
+
+    if (result !== true) {
+        const AGE_ERROR = input.dataset.ageErrorMessage.replace("{0}", 18);
+        AGE_ERROR_DISPLAY_SPAN.textContent = AGE_ERROR;
+    }
+        
     else
         AGE_ERROR_DISPLAY_SPAN.textContent = "";
 }
@@ -209,10 +213,12 @@ function ContainsOnlyDigits(value) {
 }
 
 function GetDateOfBirthFromPersonalIdentifierNumber(BASE_OF_DATE_OF_BIRTH, DATE_OF_BIRTH) {
+    const DATE_OF_BIRTH_TEXT = DATE_OF_BIRTH.toString();
     const BASE_OF_YEAR_PREFIX = BASE_OF_DATE_OF_BIRTH.toString().substring(0, 2);
-    const DATE_OF_BIRTH_YEAR_DIGITS = DATE_OF_BIRTH.toString().substring(1, 3);
+    const DATE_OF_BIRTH_YEAR_DIGITS = DATE_OF_BIRTH_TEXT.substring(1, 3);
     const YEAR = BASE_OF_YEAR_PREFIX + DATE_OF_BIRTH_YEAR_DIGITS;
-    let personal_identifier_date_of_birth = `${YEAR} `;
+    const DATE_OF_BIRTH_MONTH_DIGITS = DATE_OF_BIRTH_TEXT.substring(3, 5);
+    let personal_identifier_date_of_birth = `${YEAR}.${DATE_OF_BIRTH_MONTH_DIGITS}`;
     console.log(personal_identifier_date_of_birth);
 
 }

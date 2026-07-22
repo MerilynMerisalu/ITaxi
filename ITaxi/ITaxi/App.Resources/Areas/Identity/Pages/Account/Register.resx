@@ -148,9 +148,15 @@
     <value>Date of Birth must be earlier than today's date.</value>
   </data>
   <data name="MinimumRegistrationAgeError" xml:space="preserve">
-    <value>You must be at least 18 years old.</value>
+    <value>You must be at least {0} years old.</value>
   </data>
   <data name="GenderError" xml:space="preserve">
     <value>The first digit of a personal identifier number does not match the selected gender.</value>
+  </data>
+  <data name="ChooseGenderError" xml:space="preserve">
+    <value>Before entering your personal identifier number, please choose your gender.</value>
+  </data>
+  <data name="EnterDateOfBirth" xml:space="preserve">
+    <value>Before entering your personal identifier number, please fill out your date of birth.</value>
   </data>
 </root>

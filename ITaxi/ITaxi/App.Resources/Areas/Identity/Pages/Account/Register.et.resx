@@ -148,9 +148,15 @@
     <value>Sünnikuupäev peab olema varasem kui tänane kuupäev.</value>
   </data>
   <data name="MinimumRegistrationAgeError" xml:space="preserve">
-    <value>Registreerimiseks, tuleb olla vähemalt 18-aastane.</value>
+    <value>Registreerimiseks, tuleb olla vähemalt {0}-aastane.</value>
   </data>
   <data name="GenderError" xml:space="preserve">
     <value>Isikukoodi esimene number ei ühti valitud sooga.</value>
+  </data>
+  <data name="ChooseGenderError" xml:space="preserve">
+    <value>Enne isikukoodi sisestamist, palun valige sugu.</value>
+  </data>
+  <data name="EnterDateOfBirth" xml:space="preserve">
+    <value>Enne isikukoodi sisestamist, palun valige sünnikuupäev.</value>
   </data>
 </root>
