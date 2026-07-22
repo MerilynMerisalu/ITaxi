@@ -159,4 +159,7 @@
   <data name="EnterDateOfBirth" xml:space="preserve">
     <value>Before entering your personal identifier number, please fill out your date of birth.</value>
   </data>
+  <data name="PersonalIdentifierDateOfBirthInvalid" xml:space="preserve">
+    <value>Selected date does not equal with the date part of the personal identification code.</value>
+  </data>
 </root>

@@ -85,6 +85,7 @@ function ValidatePersonalIdentifierNumber(input) {
     const CONTAINS_ONLY_DIGITS_ERROR_MESSAGE = input.dataset.onlyDigitsErrorMessage;
     const CHOOSE_GENDER_ERROR = input.dataset.chooseGenderFirstErrorMessage;
     const ENTER_DOB_ERROR = input.dataset.enterDobFirstErrorMessage;
+    const SELECTED_DOB_MISMATCH_PERSONAL_IDENTIFIER_CODE_ERROR_MESSAGE = input.dataset.selectedDateMismatchPersonalIdentifierCodeErrorMessage;
     const GENDER = Number.parseInt(document.getElementById('gender-value').value);
     if (Number.isNaN(GENDER) === true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
@@ -96,7 +97,6 @@ function ValidatePersonalIdentifierNumber(input) {
     }
 
     const DATE_OF_BIRTH_VALUE = document.getElementById("date_value").value;
-
     if (IsNotEmpty(DATE_OF_BIRTH_VALUE) !== true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = ENTER_DOB_ERROR;
@@ -145,7 +145,15 @@ function ValidatePersonalIdentifierNumber(input) {
     }
     
     const BIRTHYEARBASE = GetBirthYearBase(PERSONALIDENTIFIERFIRSTDIGIT);
-     GetDateOfBirthFromPersonalIdentifierNumber(BIRTHYEARBASE, VALUE);
+    const PERSONALIDETIFICATIONDATEOFBIRTH = GetDateOfBirthFromPersonalIdentifierNumber(BIRTHYEARBASE, VALUE);
+   
+    result = CompareDateOfBirths(PERSONALIDETIFICATIONDATEOFBIRTH, DATE_OF_BIRTH_VALUE);
+    if (result !== true) {
+        return PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = SELECTED_DOB_MISMATCH_PERSONAL_IDENTIFIER_CODE_ERROR_MESSAGE;
+    }
+    else {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+    }
 }
 
 function ValidateGenderBasedOnPersonalIdentifier(GENDER, PERSONALIDENTIFIERFIRSTDIGIT) {
@@ -220,9 +228,18 @@ function GetDateOfBirthFromPersonalIdentifierNumber(BASE_OF_DATE_OF_BIRTH, DATE_
     const DATE_OF_BIRTH_YEAR_DIGITS = DATE_OF_BIRTH_TEXT.substring(1, 3);
     const YEAR = BASE_OF_YEAR_PREFIX + DATE_OF_BIRTH_YEAR_DIGITS;
     const DATE_OF_BIRTH_MONTH_DIGITS = DATE_OF_BIRTH_TEXT.substring(3, 5);
-    let personal_identifier_date_of_birth = `${YEAR}.${DATE_OF_BIRTH_MONTH_DIGITS}`;
-    console.log(personal_identifier_date_of_birth);
+    const DATE_OF_BIRTH_DAY_DIGITS = DATE_OF_BIRTH_TEXT.substring(5, 7);
+    let personal_identifier_date_of_birth = `${YEAR}-${DATE_OF_BIRTH_MONTH_DIGITS}-${DATE_OF_BIRTH_DAY_DIGITS}`;
+    return personal_identifier_date_of_birth;
 
 }
 
+function CompareDateOfBirths(personal_identifier_date_of_birth, selected_date_of_birth) {
+
+    const selected_date_of_birth_text = selected_date_of_birth.toString();
+    console.log(personal_identifier_date_of_birth);
+    console.log(selected_date_of_birth_text);
+    const result = selected_date_of_birth_text === personal_identifier_date_of_birth;
+    return result;
+    }
 

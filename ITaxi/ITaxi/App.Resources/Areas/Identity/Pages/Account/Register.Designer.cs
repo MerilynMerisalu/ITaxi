@@ -178,6 +178,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selected date does not equal with the date part of the personal identification code..
+        /// </summary>
+        public static string PersonalIdentifierDateOfBirthInvalid {
+            get {
+                return ResourceManager.GetString("PersonalIdentifierDateOfBirthInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register.
         /// </summary>
         public static string RegisterAccount {
