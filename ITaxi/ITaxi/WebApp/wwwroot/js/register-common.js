@@ -154,6 +154,17 @@ function ValidatePersonalIdentifierNumber(input) {
     else {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
     }
+
+    let computed_control_number = ComputeControlDigit(VALUE);
+    result = ValidateControlDigit(VALUE, computed_control_number);
+    if (result !== true) {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = `The control number of the personal identification code is not right.
+        Please check your person identification number.`;
+    }
+    else
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = '';
+    
+    
 }
 
 function ValidateGenderBasedOnPersonalIdentifier(GENDER, PERSONALIDENTIFIERFIRSTDIGIT) {
@@ -239,3 +250,37 @@ function CompareDateOfBirths(PERSONALIDETIFICATIONDATEOFBIRTH, DATE_OF_BIRTH_VAL
     return DATE_OF_BIRTH_VALUE_TEXT === PERSONALIDETIFICATIONDATEOFBIRTH;
     }
 
+function ComputeControlDigit(personalIdentificationCode) {
+    let sum = 0;
+    const FIRST_CHECKSUM_WEIGHTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1];
+    const SECOND_CHECKSUM_WEIGHTS = [3, 4, 5, 6, 7, 8, 9, 1, 2, 3];
+    
+    
+    for (let i = 0; i < personalIdentificationCode.length - 1; i++) {
+        sum += Number.parseInt(personalIdentificationCode.at(i)) * FIRST_CHECKSUM_WEIGHTS[i];
+    }
+    let computed_control_digit = sum % 11;
+    if (computed_control_digit === 10) {
+        sum = 0;
+        for (let i = 0; i < personalIdentificationCode.length; i++) {
+            sum += Number.parseInt(personalIdentificationCode.at(i)) * SECOND_CHECKSUM_WEIGHTS[i];
+        }
+        computed_control_digit = sum % 11;
+        if (computed_control_digit === 10) {
+            computed_control_digit = 0;
+            return computed_control_digit;
+        }
+        else
+            return computed_control_digit;
+
+
+    }
+    return computed_control_digit;
+}
+
+function ValidateControlDigit(personalIdentificationCode, computed_control_number) {
+    const PERSONAL_IDENTIFICATIONCODE_CONTROL_DIGIT = personalIdentificationCode.at(-1);
+    return Number.parseInt(PERSONAL_IDENTIFICATIONCODE_CONTROL_DIGIT) === computed_control_number;
+}
+   
+    
