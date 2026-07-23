@@ -162,4 +162,7 @@
   <data name="PersonalIdentifierDateOfBirthInvalid" xml:space="preserve">
     <value>Selected date does not equal with the date part of the personal identification code.</value>
   </data>
+  <data name="PersonalIdentificationCodeControlDigitError" xml:space="preserve">
+    <value>The entered personal identification code does not meet the requirements. Please check the code.</value>
+  </data>
 </root>

@@ -86,6 +86,7 @@ function ValidatePersonalIdentifierNumber(input) {
     const CHOOSE_GENDER_ERROR = input.dataset.chooseGenderFirstErrorMessage;
     const ENTER_DOB_ERROR = input.dataset.enterDobFirstErrorMessage;
     const SELECTED_DOB_MISMATCH_PERSONAL_IDENTIFIER_CODE_ERROR_MESSAGE = input.dataset.selectedDateMismatchPersonalIdentifierCodeErrorMessage;
+    const CONTROL_DIGIT_ERROR_MESSAGE = input.dataset.invalidPersonalIdenticationCodeErrorMessage;
     const GENDER = Number.parseInt(document.getElementById('gender-value').value);
     if (Number.isNaN(GENDER) === true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
@@ -158,8 +159,7 @@ function ValidatePersonalIdentifierNumber(input) {
     let computed_control_number = ComputeControlDigit(VALUE);
     result = ValidateControlDigit(VALUE, computed_control_number);
     if (result !== true) {
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = `The control number of the personal identification code is not right.
-        Please check your person identification number.`;
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = CONTROL_DIGIT_ERROR_MESSAGE;
     }
     else
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = '';

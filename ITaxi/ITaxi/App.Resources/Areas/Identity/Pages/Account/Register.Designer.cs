@@ -178,6 +178,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The entered personal identification code does not meet the requirements. Please check the code..
+        /// </summary>
+        public static string PersonalIdentificationCodeControlDigitError {
+            get {
+                return ResourceManager.GetString("PersonalIdentificationCodeControlDigitError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selected date does not equal with the date part of the personal identification code..
         /// </summary>
         public static string PersonalIdentifierDateOfBirthInvalid {
