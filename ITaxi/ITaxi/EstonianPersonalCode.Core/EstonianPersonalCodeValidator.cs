@@ -19,7 +19,7 @@
                     return EstonianPersonalCodeValidationResult
                     .Failure(EstonianPersonalCodeValidationError.InvalidLength);
                 }
-            int[] digits = new int[PersonalIdentificationCodeLength];
+            int[] digits = new int[PersonalIdentificationCodeLength]; 
             for (int i = 0; i < personalIdentifierCode.Length; i++)
             {
                 if (int.TryParse(personalIdentifierCode[i].ToString(), out int parsedDigit) == false)
