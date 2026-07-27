@@ -1,4 +1,6 @@
-﻿namespace EstonianPersonalCode.Core
+﻿using System.Globalization;
+
+namespace EstonianPersonalCode.Core
 {
     public static class EstonianPersonalCodeValidator
     {
@@ -70,11 +72,27 @@
                         break;
                 }
 
+            string yearDigits = personalIdentifierCode.Substring(startIndex: 1, 2);
+            string birthYear = birthYearBase + yearDigits;
+            string birthMonth = personalIdentifierCode.Substring(startIndex:3, 2);
+            string birthDay = personalIdentifierCode.Substring (startIndex: 5, 2);
+            string dateOfBirth = $"{birthYear}-{birthMonth}-{birthDay}";
+            bool isValid = DateOnly.TryParseExact(s: dateOfBirth, format: "yyyy-MM-dd", 
+                result: out DateOnly parsedDateOfBirth,
+                provider: CultureInfo.InvariantCulture, style: DateTimeStyles.None );
+            if (isValid == false)
+            {
+                return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidDate);
+            }
+
+
+            const [] 
+            throw new NotImplementedException();
+
             } 
          
 
 
-            throw new NotImplementedException();
             } 
     }
-}
+
