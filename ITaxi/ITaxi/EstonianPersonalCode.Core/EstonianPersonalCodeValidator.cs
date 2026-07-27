@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-
+using System;
 namespace EstonianPersonalCode.Core
 {
     public static class EstonianPersonalCodeValidator
@@ -85,8 +85,38 @@ namespace EstonianPersonalCode.Core
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidDate);
             }
 
+            
+            int[] firstChecksumWeights = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 1 };
+            int[] secondChecksumWeights = { 3, 4, 5, 6, 7, 8, 9, 1, 2, 3 };
+            int sum = 0; 
+            int personalIdentifierLastDigit = digits.ElementAt(10);
 
-            const [] 
+            for (int i = 0; i < personalIdentifierCode.Length - 1; i++)
+            {
+                sum += digits[i] * firstChecksumWeights[i];
+            }
+            int computedControlDigit = sum % 11;
+            if (computedControlDigit == 10)
+            {
+                sum = 0;
+                for (int i = 0; i < personalIdentifierCode.Length - 1; i++)
+                {
+                    sum += digits[i] * secondChecksumWeights[i];
+                    computedControlDigit = sum % 11;
+                }
+
+                if (computedControlDigit == 10)
+                {
+                    computedControlDigit = 0;
+                }
+            }
+
+            isValid = computedControlDigit == personalIdentifierLastDigit;
+            if (isValid == false)
+            {
+                return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidCheckDigit);
+            }
+
             throw new NotImplementedException();
 
             } 
