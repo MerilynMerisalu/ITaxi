@@ -89,7 +89,7 @@ namespace EstonianPersonalCode.Core
             int[] firstChecksumWeights = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 1 };
             int[] secondChecksumWeights = { 3, 4, 5, 6, 7, 8, 9, 1, 2, 3 };
             int sum = 0; 
-            int personalIdentifierLastDigit = digits.ElementAt(10);
+            int personalIdentifierLastDigit = digits.ElementAt(^1);
 
             for (int i = 0; i < personalIdentifierCode.Length - 1; i++)
             {
@@ -102,8 +102,9 @@ namespace EstonianPersonalCode.Core
                 for (int i = 0; i < personalIdentifierCode.Length - 1; i++)
                 {
                     sum += digits[i] * secondChecksumWeights[i];
-                    computedControlDigit = sum % 11;
+                  
                 }
+                computedControlDigit = sum % 11;
 
                 if (computedControlDigit == 10)
                 {
@@ -111,13 +112,13 @@ namespace EstonianPersonalCode.Core
                 }
             }
 
-            isValid = computedControlDigit == personalIdentifierLastDigit;
-            if (isValid == false)
+           bool isControlDigitValid = computedControlDigit == personalIdentifierLastDigit;
+            if (isControlDigitValid == false)
             {
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidCheckDigit);
             }
 
-            throw new NotImplementedException();
+            return EstonianPersonalCodeValidationResult.Success(dateOfBirth: parsedDateOfBirth, encodedSex: encodedSexValue);
 
             } 
          

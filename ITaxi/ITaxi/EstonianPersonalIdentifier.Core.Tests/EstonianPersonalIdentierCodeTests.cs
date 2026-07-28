@@ -52,10 +52,55 @@ namespace EstonianPersonalIdentifier.Core.Tests
             var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
 
             // Assert
+            Assert.False(personalIdentifierCode.All(c => c >= '0' && c <= '9'));
             Assert.False(validationResult.IsValid);
             Assert.Equal(EstonianPersonalCodeValidationError.ContainsNonDigits, validationResult.Error);
         }
+        [Theory]
+        [InlineData("08907120031")]
+        [InlineData("98806141141")]
+        public void Validate_WhenInputStartsWithInvalidDigit_ReturnsInvalidFirstDigitError(string personalIdentifierCode)
+        {
+            // Arrange
+            const int expectedInputLength = 11;
+            var actualLength = personalIdentifierCode.Length;
+            int firstDigit = int.Parse(personalIdentifierCode.ElementAt(0).ToString());
+           
+            // Verify test data
+            Assert.Equal(expectedInputLength, actualLength);
+            Assert.True(firstDigit < 1 || firstDigit > 8);
+            Assert.True(personalIdentifierCode.All(c => c >= '0' && c <= '9'));
 
+            // Act
+            var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
+            Assert.False(validationResult.IsValid);
+            Assert.Equal(EstonianPersonalCodeValidationError.InvalidFirstDigit, validationResult.Error);
+        }
+        [Theory]
+        [InlineData("38907120035", EncodedSex.Male)]
+        [InlineData("68806141144", EncodedSex.Female)]
+        public void Validate_WhenFirstDigitIsOddOrEven_ReturnsExpectedEncodedSex(string personalIdentifierCode, EncodedSex encodedSex)
+        {
+            // Arrange
+            const int expectedInputLength = 11;
+            var actualLength = personalIdentifierCode.Length;
+            int firstDigit = int.Parse(personalIdentifierCode.ElementAt(0).ToString());
+           
+
+            // Verify test data
+            Assert.Equal(expectedInputLength, actualLength);
+            Assert.True(firstDigit >= 1 && firstDigit <= 8);
+            Assert.True(personalIdentifierCode.All(c => c >= '0' && c <= '9'));
+          
+            // Act
+            var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
+            // Assert
+            Assert.Equal(encodedSex, validationResult.EncodedSex);
+            Assert.True(validationResult.IsValid);
+            Assert.Equal(EstonianPersonalCodeValidationError.None, validationResult.Error);
+
+            
+        }
 
     }
 }
