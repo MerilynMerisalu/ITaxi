@@ -42,12 +42,6 @@ namespace EstonianPersonalIdentifier.Core.Tests
         public void Validate_WhenInputContainsNonDigits_ReturnsContainsNonDigitsError(string personalIdentifierCode)
         {
             // Arrange
-
-            const int expectedInputLength = 11;
-            var actualLength = personalIdentifierCode.Length;
-            // Verify test data
-            Assert.Equal(expectedInputLength, actualLength);
-
             // Act
             var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
 
@@ -61,13 +55,10 @@ namespace EstonianPersonalIdentifier.Core.Tests
         [InlineData("98806141141")]
         public void Validate_WhenInputStartsWithInvalidDigit_ReturnsInvalidFirstDigitError(string personalIdentifierCode)
         {
-            // Arrange
-            const int expectedInputLength = 11;
-            var actualLength = personalIdentifierCode.Length;
+            
             int firstDigit = int.Parse(personalIdentifierCode.ElementAt(0).ToString());
            
             // Verify test data
-            Assert.Equal(expectedInputLength, actualLength);
             Assert.True(firstDigit < 1 || firstDigit > 8);
             Assert.True(personalIdentifierCode.All(c => c >= '0' && c <= '9'));
 
@@ -78,17 +69,15 @@ namespace EstonianPersonalIdentifier.Core.Tests
         }
         [Theory]
         [InlineData("38907120035", EncodedSex.Male)]
-        [InlineData("68806141144", EncodedSex.Female)]
+        [InlineData("48806141148", EncodedSex.Female)]
         public void Validate_WhenFirstDigitIsOddOrEven_ReturnsExpectedEncodedSex(string personalIdentifierCode, EncodedSex encodedSex)
         {
             // Arrange
-            const int expectedInputLength = 11;
-            var actualLength = personalIdentifierCode.Length;
+            
             int firstDigit = int.Parse(personalIdentifierCode.ElementAt(0).ToString());
-           
 
             // Verify test data
-            Assert.Equal(expectedInputLength, actualLength);
+           
             Assert.True(firstDigit >= 1 && firstDigit <= 8);
             Assert.True(personalIdentifierCode.All(c => c >= '0' && c <= '9'));
           
