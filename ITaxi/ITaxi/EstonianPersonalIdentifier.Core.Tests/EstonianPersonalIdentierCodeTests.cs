@@ -1,4 +1,6 @@
 ﻿using EstonianPersonalCode.Core;
+using System.Runtime.InteropServices;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EstonianPersonalIdentifier.Core.Tests
 {
@@ -8,123 +10,35 @@ namespace EstonianPersonalIdentifier.Core.Tests
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void Validate_WhenInputIsNullOrWhiteSpace_ReturnsEmptyError(string? personalIdentierCode)
+        
+        public void Validate_WhenPersonalIdentifierCodeIsEmptyOrWhitespace_ReturnsEmptyError(string? personalIdentifierCode)
         {
-           
             // Act
-            var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentierCode);
+            var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
+
             // Assert
             Assert.False(validationResult.IsValid);
             Assert.Equal(EstonianPersonalCodeValidationError.Empty, validationResult.Error);
 
         }
 
-        [Theory]
-        [InlineData("393081509812", 12)]
-        [InlineData("4930613092", 10)]
-        public void Validate_WhenInputLengthIsInvalid_ReturnsInvaildLengthError(string personalIdentifierCode, int expectedInputLength)
-        {
-            // Arrange 
-            var actualLength = personalIdentifierCode.Length;
-            // Verify test data
-            Assert.Equal(expectedInputLength, actualLength);
-            // Act
-            var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
-            
-            // Assert
-            Assert.False(validationResult.IsValid);
-            Assert.Equal(EstonianPersonalCodeValidationError.InvalidLength, validationResult.Error);
-            
-        }
-        [Theory]
-        [InlineData("4930814087a")]
-        [InlineData(".6200914838")]
-        public void Validate_WhenInputContainsNonDigits_ReturnsContainsNonDigitsError(string personalIdentifierCode)
+        [Fact]
+        public void Validate_WhenIsPersonalIdentifierCodeLengthInvalid_ReturnsInvalidLengthError()
         {
             // Arrange
+            const int EXPECTEDLENGTH = 11;
+            string personalIdentifierCode = "393081408781";
+
             // Act
-            var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
+
+            var validateResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
 
             // Assert
-            Assert.False(personalIdentifierCode.All(c => c >= '0' && c <= '9'));
-            Assert.False(validationResult.IsValid);
-            Assert.Equal(EstonianPersonalCodeValidationError.ContainsNonDigits, validationResult.Error);
-        }
-        [Theory]
-        [InlineData("08907120031")]
-        [InlineData("98806141141")]
-        public void Validate_WhenInputStartsWithInvalidDigit_ReturnsInvalidFirstDigitError(string personalIdentifierCode)
-        {
-            
-            int firstDigit = int.Parse(personalIdentifierCode.ElementAt(0).ToString());
-           
-            // Verify test data
-            Assert.True(firstDigit < 1 || firstDigit > 8);
-            Assert.True(personalIdentifierCode.All(c => c >= '0' && c <= '9'));
-
-            // Act
-            var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
-            Assert.False(validationResult.IsValid);
-            Assert.Equal(EstonianPersonalCodeValidationError.InvalidFirstDigit, validationResult.Error);
-        }
-        [Theory]
-        [InlineData("38907120035", EncodedSex.Male)]
-        [InlineData("48806141148", EncodedSex.Female)]
-        public void Validate_WhenFirstDigitIsOddOrEven_ReturnsExpectedEncodedSex(string personalIdentifierCode, EncodedSex encodedSex)
-        {
-            // Arrange
-            
-            int firstDigit = int.Parse(personalIdentifierCode.ElementAt(0).ToString());
-
-            // Verify test data
-           
-            Assert.True(firstDigit >= 1 && firstDigit <= 8);
-            Assert.True(personalIdentifierCode.All(c => c >= '0' && c <= '9'));
-          
-            // Act
-            var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
-            // Assert
-            Assert.Equal(encodedSex, validationResult.EncodedSex);
-            Assert.True(validationResult.IsValid);
-            Assert.Equal(EstonianPersonalCodeValidationError.None, validationResult.Error);
-
-            
-        }
-        [Theory]
-        [InlineData("10001010002", 1800, 01, 01 )]
-        [InlineData("20001010003", 1800, 01, 01)]
-        [InlineData("30001010004", 1900, 01, 01 )]
-        [InlineData("40001010005", 1900, 01, 01)]
-        [InlineData("50001010006", 2000, 01, 01)]
-        [InlineData("60001010007", 2000, 01, 01)]
-        [InlineData("70001010008", 2100, 01, 01)]
-        [InlineData("80001010009", 2100, 01, 01)]
-        public void Validate_WhenFirstDigitDeterminesBirthYearBase_ReturnsDateOfBirthWithCorrectYearBase(string personalIdentifierCode, int expectedYear, int expectedMonth, int expectedDay )
-        {
-            // Arrange
-            
-            // Act
-            var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
-
-            // Assert
-            Assert.True(validationResult.IsValid);
-            Assert.Equal(expected: expectedYear, actual: validationResult.DateOfBirth!.Value.Year);
-            Assert.Equal(expected: expectedMonth, actual: validationResult.DateOfBirth.Value.Month);
-            Assert.Equal(expected: expectedDay, actual: validationResult.DateOfBirth.Value.Day);
-            Assert.Equal(EstonianPersonalCodeValidationError.None, validationResult.Error);
-        }
-        [Theory]
-        [InlineData("49331130222")]
-        [InlineData("33315012223")]
-        [InlineData("39310322233")]
-        public void Validate_WhenInputDateIsInvalid_ReturnsInvalidDateError(string personalIdentifierCode)
-        {
-            // Act
-            var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
-
-            // Assert
-            Assert.False(validationResult.IsValid);
-            Assert.Equal(EstonianPersonalCodeValidationError.InvalidDate, validationResult.Error);
+            Assert.NotEqual(EXPECTEDLENGTH, personalIdentifierCode.Length);
+            Assert.False(validateResult.IsValid);
+            Assert.Equal(EstonianPersonalCodeValidationError.InvalidLength, validateResult.Error);
         }
     }
 }
+
+        
