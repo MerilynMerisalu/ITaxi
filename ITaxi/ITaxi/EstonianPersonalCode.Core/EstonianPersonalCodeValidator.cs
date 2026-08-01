@@ -20,6 +20,9 @@ namespace EstonianPersonalCode.Core
             isInvalid = DoesPersonalIdentierCodeHaveNonDigits(personalIdentifierCode);
             if (isInvalid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.ContainsNonDigits);
+            isInvalid = IsFirstDigitInvalid(personalIdentifierCode);
+            if (isInvalid)
+                return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidFirstDigit);
             throw new NotImplementedException();
 
 
@@ -37,7 +40,7 @@ namespace EstonianPersonalCode.Core
 
        public static bool IsPersonalIdentifierCodeLengthInvalid(string personalIdentifierCode)
         {
-            const int PersonalIdentificationCodeLength = 11;
+            
             if (personalIdentifierCode.Length != PersonalIdentificationCodeLength)
             {
                 return true;
@@ -58,7 +61,10 @@ namespace EstonianPersonalCode.Core
 
         public static bool IsFirstDigitInvalid(string personalIdentifierCode)
         {
-            throw new NotImplementedException();
+            int firstDigit = personalIdentifierCode.First() - '0';
+            if (firstDigit < LowestFirstDigitValue || firstDigit > HighestFirstDigitValue)
+                return true;
+            return false;
         }
     }
 }

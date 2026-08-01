@@ -56,7 +56,8 @@ namespace EstonianPersonalIdentifier.Core.Tests
         [Theory]
         [InlineData("99304218980")]
         [InlineData("09811152221")]
-        public void IsFirstDigitInvalid_WhenFirstDigitIsInvalid_Returns(string personalIdentifierCode)
+        
+        public void IsFirstDigitInvalid_WhenFirstDigitIsInvalid_ReturnsInvalidFirstDigit(string personalIdentifierCode)
         {
             // Act
             var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
