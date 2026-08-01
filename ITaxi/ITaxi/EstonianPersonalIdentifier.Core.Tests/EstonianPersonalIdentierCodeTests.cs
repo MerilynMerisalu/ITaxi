@@ -52,6 +52,19 @@ namespace EstonianPersonalIdentifier.Core.Tests
             Assert.Equal(EstonianPersonalCodeValidationError.ContainsNonDigits, validationResult.Error);
 
         }
+
+        [Theory]
+        [InlineData("99304218980")]
+        [InlineData("09811152221")]
+        public void IsFirstDigitInvalid_WhenFirstDigitIsInvalid_Returns(string personalIdentifierCode)
+        {
+            // Act
+            var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
+
+            // Assert
+            Assert.False(validationResult.IsValid);
+            Assert.Equal(EstonianPersonalCodeValidationError.InvalidFirstDigit, validationResult.Error);
+        }
     }
 }
 

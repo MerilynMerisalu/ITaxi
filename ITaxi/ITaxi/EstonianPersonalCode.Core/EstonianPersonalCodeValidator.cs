@@ -55,6 +55,11 @@ namespace EstonianPersonalCode.Core
             }
             return true;
         }
+
+        public static bool IsFirstDigitInvalid(string personalIdentifierCode)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
