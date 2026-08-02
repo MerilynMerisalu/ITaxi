@@ -11,31 +11,33 @@ namespace EstonianPersonalCode.Core
 
         public static EstonianPersonalCodeValidationResult Validate(string? personalIdentifierCode)
         {
-            bool isInvalid = PersonalIdentifierCodeIsEmptyOrWhitespace(personalIdentifierCode);
+            
+            bool isInvalid = PersonalIdentifierCodeIsEmptyOrWhitespace(personalIdentifierCode!);
             if (isInvalid)
-              return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.Empty);
-            isInvalid = IsPersonalIdentifierCodeLengthInvalid(personalIdentifierCode);
+                return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.Empty);
+            isInvalid = IsPersonalIdentifierCodeLengthInvalid(personalIdentifierCode!);
             if (isInvalid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidLength);
-            isInvalid = DoesPersonalIdentierCodeHaveNonDigits(personalIdentifierCode);
+            isInvalid = DoesPersonalIdentierCodeHaveNonDigits(personalIdentifierCode!);
             if (isInvalid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.ContainsNonDigits);
-            isInvalid = IsFirstDigitInvalid(personalIdentifierCode);
+            isInvalid = IsFirstDigitInvalid(personalIdentifierCode!);
             if (isInvalid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidFirstDigit);
-            var encodedSex = GetEncodedSex(personalIdentifierCode);
-            
+            var encodedSex = GetEncodedSex(personalIdentifierCode!);
+            int yearBase = GetYearBase(personalIdentifierCode!);
+
             throw new NotImplementedException();
 
 
         }
 
-        public static bool PersonalIdentifierCodeIsEmptyOrWhitespace(string? personalIdentifierCode)
+        public static bool PersonalIdentifierCodeIsEmptyOrWhitespace(string personalIdentifierCode)
         {
             return string.IsNullOrWhiteSpace(personalIdentifierCode);
         }
 
-       public static bool IsPersonalIdentifierCodeLengthInvalid(string personalIdentifierCode)
+        public static bool IsPersonalIdentifierCodeLengthInvalid(string personalIdentifierCode)
         {
             return personalIdentifierCode.Length != PersonalIdentificationCodeLength;
 
@@ -48,10 +50,40 @@ namespace EstonianPersonalCode.Core
 
         public static bool IsFirstDigitInvalid(string personalIdentifierCode)
         {
-          return personalIdentifierCode[0] >= LowestFirstDigitValue || personalIdentifierCode[0] <= HighestFirstDigitValue;
+            return personalIdentifierCode[0] >= LowestFirstDigitValue || personalIdentifierCode[0] <= HighestFirstDigitValue;
         }
 
-        public static EncodedSex GetEncodedSex(string personalIdentifierCode) => personalIdentifierCode[0] % 2 == 0 ? EncodedSex.Female : EncodedSex.Male; 
+        public static EncodedSex GetEncodedSex(string personalIdentifierCode) => personalIdentifierCode[0] % 2 == 0 ? EncodedSex.Female : EncodedSex.Male;
+
+        public static int GetYearBase(string personalIdentifierCode)
+        {
+            int firstDigit = personalIdentifierCode.First() - '0';
+            int yearBase;
+            switch (firstDigit)
+            {
+                case 1:
+                case 2:
+                    yearBase = 1800;
+                    break;
+                case 3:
+                case 4:
+                    yearBase = 1900;
+                    break;
+                case 5:
+                case 6:
+                    yearBase = 2000;
+                    break;
+                case 7:
+                case 8:
+                    yearBase = 2100;
+                    break;
+                default:
+                    yearBase = 0;
+                    break;
+                    
+            }
+            return yearBase;
+        }
     }
 }
 
