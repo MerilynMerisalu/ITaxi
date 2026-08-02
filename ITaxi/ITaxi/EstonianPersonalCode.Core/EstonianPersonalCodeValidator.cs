@@ -23,6 +23,8 @@ namespace EstonianPersonalCode.Core
             isInvalid = IsFirstDigitInvalid(personalIdentifierCode);
             if (isInvalid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidFirstDigit);
+            var encodedSex = GetEncodedSex(personalIdentifierCode);
+            
             throw new NotImplementedException();
 
 
@@ -30,42 +32,26 @@ namespace EstonianPersonalCode.Core
 
         public static bool PersonalIdentifierCodeIsEmptyOrWhitespace(string? personalIdentifierCode)
         {
-            if (string.IsNullOrWhiteSpace(personalIdentifierCode))
-            {
-                return true;
-            }
-
-            return false;
+            return string.IsNullOrWhiteSpace(personalIdentifierCode);
         }
 
        public static bool IsPersonalIdentifierCodeLengthInvalid(string personalIdentifierCode)
         {
-            
-            if (personalIdentifierCode.Length != PersonalIdentificationCodeLength)
-            {
-                return true;
-            }
-
-            return false;
+            return personalIdentifierCode.Length != PersonalIdentificationCodeLength;
 
         }
 
         public static bool DoesPersonalIdentierCodeHaveNonDigits(string personalIdentifierCode)
         {
-            if (personalIdentifierCode.All(c => c >= '0' && c <= '9'))
-            {
-                return false;
-            }
-            return true;
+            return personalIdentifierCode.All(c => c >= '0' && c <= '9') ? false : true;
         }
 
         public static bool IsFirstDigitInvalid(string personalIdentifierCode)
         {
-            int firstDigit = personalIdentifierCode.First() - '0';
-            if (firstDigit < LowestFirstDigitValue || firstDigit > HighestFirstDigitValue)
-                return true;
-            return false;
+          return personalIdentifierCode[0] >= LowestFirstDigitValue || personalIdentifierCode[0] <= HighestFirstDigitValue;
         }
+
+        public static EncodedSex GetEncodedSex(string personalIdentifierCode) => personalIdentifierCode[0] % 2 == 0 ? EncodedSex.Female : EncodedSex.Male; 
     }
 }
 

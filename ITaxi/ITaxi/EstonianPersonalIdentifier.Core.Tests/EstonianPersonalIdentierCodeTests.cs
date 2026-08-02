@@ -57,7 +57,7 @@ namespace EstonianPersonalIdentifier.Core.Tests
         [InlineData("99304218980")]
         [InlineData("09811152221")]
         
-        public void IsFirstDigitInvalid_WhenFirstDigitIsInvalid_ReturnsInvalidFirstDigit(string personalIdentifierCode)
+        public void IsFirstDigitInvalid_WhenFirstDigitIsInvalid_ReturnsInvalidFirstDigitError(string personalIdentifierCode)
         {
             // Act
             var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
@@ -65,6 +65,21 @@ namespace EstonianPersonalIdentifier.Core.Tests
             // Assert
             Assert.False(validationResult.IsValid);
             Assert.Equal(EstonianPersonalCodeValidationError.InvalidFirstDigit, validationResult.Error);
+        }
+        [Theory]
+        [InlineData("19304218980", EncodedSex.Male)]
+        [InlineData("29811152221", EncodedSex.Female)]
+        [InlineData("39304218980", EncodedSex.Male)]
+        [InlineData("49811152221", EncodedSex.Female)]
+        [InlineData("59304218980", EncodedSex.Male)]
+        [InlineData("69811152221", EncodedSex.Female)]
+        public void GetEncodedSex_WhenPersonalIdentifierCodeIsValid_ReturnsValidEncodedSex(string personalIdentifierCode, EncodedSex expectedEncodedSex)
+        {
+            // Act
+            var validationResult = EstonianPersonalCodeValidator.GetEncodedSex(personalIdentifierCode);
+            // Assert
+            Assert.Equal(expectedEncodedSex, validationResult);
+            
         }
     }
 }
