@@ -84,21 +84,38 @@ namespace EstonianPersonalIdentifier.Core.Tests
         }
 
         [Theory]
-        [InlineData("19304218980", 1800)]
-        [InlineData("29811152221", 1800)]
-        [InlineData("39304218980", 1900)]
-        [InlineData("49811152221", 1900)]
-        [InlineData("59304218980", 2000)]
-        [InlineData("69811152221", 2000)]
-        [InlineData("70611152221", 2100)]
-        [InlineData("80111152221", 2100)]
-        public static void GetYearBase_WhenPersonalIdentifierCodeIsValid_ReturnsValidYearBase(string personalIdentifierCode, int expectedYearBase)
+        [InlineData("19304218980", "18")]
+        [InlineData("29811152221", "18")]
+        [InlineData("39304218980", "19")]
+        [InlineData("49811152221", "19")]
+        [InlineData("59304218980", "20")]
+        [InlineData("69811152221", "20")]
+        [InlineData("70611152221", "21")]
+        [InlineData("80111152221", "21")]
+        public static void GetYearBase_WhenPersonalIdentifierCodeIsValid_ReturnsValidYearBase(string personalIdentifierCode, string expectedYearBase)
         {
             // Act
             var validationResult = EstonianPersonalCodeValidator.GetYearBase(personalIdentifierCode);
             // Assert
             Assert.Equal(expectedYearBase, validationResult);
 
+        }
+        [Fact]
+        public static void GetDate_WhenPersonalIdentifierCodeIsValid_ReturnsValidDate()
+        {
+            // Arrange
+            string personalIdentifierCode = "39308140878";
+
+            DateOnly expectedDate = DateOnly.Parse("14-08-1993");
+
+            // Act
+            var validateResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
+
+            // Assert
+
+            Assert.Equal(expectedDate, validateResult.DateOfBirth);
+            Assert.True(validateResult.IsValid);
+            Assert.Equal(EstonianPersonalCodeValidationError.None, validateResult.Error);
         }
     }
 }

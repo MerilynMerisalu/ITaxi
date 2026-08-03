@@ -25,7 +25,8 @@ namespace EstonianPersonalCode.Core
             if (isInvalid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidFirstDigit);
             var encodedSex = GetEncodedSex(personalIdentifierCode!);
-            int yearBase = GetYearBase(personalIdentifierCode!);
+            string yearBase = GetYearBase(personalIdentifierCode!);
+            
 
             throw new NotImplementedException();
 
@@ -55,34 +56,39 @@ namespace EstonianPersonalCode.Core
 
         public static EncodedSex GetEncodedSex(string personalIdentifierCode) => personalIdentifierCode[0] % 2 == 0 ? EncodedSex.Female : EncodedSex.Male;
 
-        public static int GetYearBase(string personalIdentifierCode)
+        public static string GetYearBase(string personalIdentifierCode)
         {
             int firstDigit = personalIdentifierCode.First() - '0';
-            int yearBase;
+            string yearBase;
             switch (firstDigit)
             {
                 case 1:
                 case 2:
-                    yearBase = 1800;
+                    yearBase = "18";
                     break;
                 case 3:
                 case 4:
-                    yearBase = 1900;
+                    yearBase = "19";
                     break;
                 case 5:
                 case 6:
-                    yearBase = 2000;
+                    yearBase = "20";
                     break;
                 case 7:
                 case 8:
-                    yearBase = 2100;
+                    yearBase = "21";
                     break;
                 default:
-                    yearBase = 0;
-                    break;
+                    throw new ArgumentOutOfRangeException(nameof(firstDigit));
+
                     
             }
             return yearBase;
+        }
+
+        public static DateOnly GetDate(string personalIdentifierCode, int yearBase)
+        {
+            throw new NotImplementedException();
         }
     }
 }
