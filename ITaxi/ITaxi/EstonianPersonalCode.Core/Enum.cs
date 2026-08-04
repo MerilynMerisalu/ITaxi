@@ -13,11 +13,12 @@ namespace EstonianPersonalCode.Core
 
     public enum EstonianPersonalCodeValidationError
     {
-        None,
+        None = 0,
         Empty,
         InvalidLength,
         ContainsNonDigits,
         InvalidFirstDigit,
+        InvalidDateFormat,
         InvalidDate,
         InvalidCheckDigit
     }

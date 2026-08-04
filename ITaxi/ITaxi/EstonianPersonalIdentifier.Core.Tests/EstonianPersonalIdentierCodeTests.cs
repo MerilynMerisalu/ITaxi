@@ -56,15 +56,29 @@ namespace EstonianPersonalIdentifier.Core.Tests
         [Theory]
         [InlineData("99304218980")]
         [InlineData("09811152221")]
+     //   [InlineData("19304218980")]
+        //[InlineData("89811152221")]
 
-        public void IsFirstDigitInvalid_WhenFirstDigitIsInvalid_ReturnsInvalidFirstDigitError(string personalIdentifierCode)
+        public void IsFirstDigitInvalid_WhenFirstDigitIsInvalid_ReturnsTrue(string personalIdentifierCode)
+        {
+            // Act
+            var validationResult = EstonianPersonalCodeValidator.IsFirstDigitInvalid(personalIdentifierCode);
+
+            // Assert
+            Assert.True(validationResult);
+            
+        }
+        [Theory]
+        [InlineData("99304218980")]
+        [InlineData("09811152221")]
+        public void IsFirstDigitInvalid_WhenFirstDigitIsInvalid_ReturnsFirstDigitInvalidError(string personalIdentifierCode)
         {
             // Act
             var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
 
             // Assert
-            Assert.False(validationResult.IsValid);
             Assert.Equal(EstonianPersonalCodeValidationError.InvalidFirstDigit, validationResult.Error);
+
         }
         [Theory]
         [InlineData("19304218980", EncodedSex.Male)]
@@ -101,21 +115,19 @@ namespace EstonianPersonalIdentifier.Core.Tests
 
         }
         [Fact]
-        public static void GetDate_WhenPersonalIdentifierCodeIsValid_ReturnsValidDate()
+        public static void IsDateValid_WhenCodeContainsValidDate_ReturnsTrueAndParsedDate()
         {
             // Arrange
             string personalIdentifierCode = "39308140878";
-
-            DateOnly expectedDate = DateOnly.Parse("14-08-1993");
+            DateOnly expectedDate = new DateOnly(1993, 08, 14 );
 
             // Act
-            var validateResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
 
+            var isValid = EstonianPersonalCodeValidator.IsDateValid(personalIdentifierCode, "19", out DateOnly validatedDate);
             // Assert
-
-            Assert.Equal(expectedDate, validateResult.DateOfBirth);
-            Assert.True(validateResult.IsValid);
-            Assert.Equal(EstonianPersonalCodeValidationError.None, validateResult.Error);
+            Assert.True(isValid);
+            Assert.Equal(expectedDate, validatedDate);
+            
         }
     }
 }

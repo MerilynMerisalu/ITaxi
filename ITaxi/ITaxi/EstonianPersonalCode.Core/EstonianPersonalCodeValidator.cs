@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System;
+using System.Text;
 namespace EstonianPersonalCode.Core
 {
     public static class EstonianPersonalCodeValidator
@@ -26,8 +27,10 @@ namespace EstonianPersonalCode.Core
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidFirstDigit);
             var encodedSex = GetEncodedSex(personalIdentifierCode!);
             string yearBase = GetYearBase(personalIdentifierCode!);
+            isInvalid = IsDateValid(personalIdentifierCode!, yearBase, out DateOnly parsedDate);
             
-
+            if (isInvalid == true)
+                return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidDateFormat);
             throw new NotImplementedException();
 
 
@@ -51,7 +54,8 @@ namespace EstonianPersonalCode.Core
 
         public static bool IsFirstDigitInvalid(string personalIdentifierCode)
         {
-            return personalIdentifierCode[0] >= LowestFirstDigitValue || personalIdentifierCode[0] <= HighestFirstDigitValue;
+            int firstDigit = personalIdentifierCode[0] - '0';
+            return firstDigit < LowestFirstDigitValue || firstDigit > HighestFirstDigitValue;
         }
 
         public static EncodedSex GetEncodedSex(string personalIdentifierCode) => personalIdentifierCode[0] % 2 == 0 ? EncodedSex.Female : EncodedSex.Male;
@@ -86,9 +90,18 @@ namespace EstonianPersonalCode.Core
             return yearBase;
         }
 
-        public static DateOnly GetDate(string personalIdentifierCode, int yearBase)
+        public static bool IsDateValid(string personalIdentifierCode, string yearBase, out DateOnly validatedDate)
         {
-            throw new NotImplementedException();
+            string dob = $"{yearBase}{personalIdentifierCode.AsSpan(1, 2)}-" +
+                 $"{personalIdentifierCode.AsSpan(3, 2)}-{personalIdentifierCode.AsSpan(5, 2)}";
+            bool isValid = DateOnly.TryParseExact(s: dob, format: "yyyy-MM-dd", out validatedDate);
+            
+            if (isValid == false)
+            {
+                return false;
+            }
+            return true;
+            
         }
     }
 }
