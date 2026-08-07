@@ -12,13 +12,14 @@ namespace EstonianPersonalIdentifier.Core.Tests
             {new DateOnly(1600, 11, 12)  },
 
         };
-        public static TheoryData<DateOnly> IsTodayOrInFutureTestData => new()
-        {
-            {DateOnly.FromDateTime(DateTime.Today)  },
-            {DateOnly.FromDateTime(DateTime.Today).AddDays(10)   },
-          //  {new DateOnly(2026, 08, 01)  },
+        public static TheoryData<DateOnly, bool, bool> IsTodayOrInFutureTestData => new()
+{
+            { DateOnly.FromDateTime(DateTime.Today), true, false },
+            { DateOnly.FromDateTime(DateTime.Today), false, true },
+            { DateOnly.FromDateTime(DateTime.Today).AddDays(10), true, true },
+            { DateOnly.FromDateTime(DateTime.Today).AddDays(10), false, true }
+};
 
-        };
         public static TheoryData<DateOnly> IsDateInFutureTestData => new()
         {
             
@@ -155,16 +156,20 @@ namespace EstonianPersonalIdentifier.Core.Tests
             Assert.Equal(expectedDate, validatedDate);
 
         }
+
+        
         [Theory]
         [MemberData(nameof(IsTodayOrInFutureTestData))]
-        public static void IsDateTodayOrInTheFuture_WhentTodaysDateIsAllowed_ReturnsTrue(DateOnly date, bool isTodaysDateAllowed = true)
+        public static void IsDateTodayOrInTheFuture_WhentTodaysDateIsAllowed_ReturnsExpectedResult(DateOnly date, bool isTodaysDateAllowed, bool expectedIsInvalid )
         {
             // Act
             var isInvalid = EstonianPersonalCodeValidator.IsDateInFuture(date, isTodaysDateAllowed);
 
             // Assert
-            Assert.True(isInvalid);
+            Assert.Equal(expectedIsInvalid, isInvalid);
         }
+
+      
 
         [Theory]
         [MemberData(nameof(IsDateInFutureTestData))]

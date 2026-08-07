@@ -106,13 +106,13 @@ namespace EstonianPersonalCode.Core
 
 
         public static bool IsDateLessThanTheMinimumDate(DateOnly validatedDate) => validatedDate < MinimumDateValueInEstonianPersonalCode;
-        public static bool IsDateInFuture(DateOnly validatedDate, bool? isDateOfTodayAllowed = false )
+        public static bool IsDateInFuture(DateOnly validatedDate, bool isDateOfTodayAllowed = false )
         {
             var todaysDate = DateOnly.FromDateTime(DateTime.Today);
             if (isDateOfTodayAllowed == true)
-                return todaysDate <= validatedDate;
+                return todaysDate < validatedDate;
             
-            return todaysDate < validatedDate;
+            return todaysDate <= validatedDate;
         }
         
     }
