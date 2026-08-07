@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System;
-using System.Text;
+﻿
 namespace EstonianPersonalCode.Core
 {
     public static class EstonianPersonalCodeValidator
@@ -8,18 +6,19 @@ namespace EstonianPersonalCode.Core
         private const int PersonalIdentificationCodeLength = 11;
         private const int LowestFirstDigitValue = 1;
         private const int HighestFirstDigitValue = 8;
-        private static readonly DateTime _dateOfToday = DateTime.Today;
+        private static readonly DateOnly MinimumDateValueInEstonianPersonalCode = new DateOnly(1800, 01, 01);
+        
 
         public static EstonianPersonalCodeValidationResult Validate(string? personalIdentifierCode)
         {
             
-            bool isInvalid = PersonalIdentifierCodeIsEmptyOrWhitespace(personalIdentifierCode!);
+            bool isInvalid = PersonalIdentifierCodeIsEmptyOrWhitespace(personalIdentifierCode);
             if (isInvalid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.Empty);
             isInvalid = IsPersonalIdentifierCodeLengthInvalid(personalIdentifierCode!);
             if (isInvalid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidLength);
-            isInvalid = DoesPersonalIdentierCodeHaveNonDigits(personalIdentifierCode!);
+            isInvalid = DoesPersonalIdentifierCodeHaveNonDigits(personalIdentifierCode!);
             if (isInvalid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.ContainsNonDigits);
             isInvalid = IsFirstDigitInvalid(personalIdentifierCode!);
@@ -27,16 +26,21 @@ namespace EstonianPersonalCode.Core
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidFirstDigit);
             var encodedSex = GetEncodedSex(personalIdentifierCode!);
             string yearBase = GetYearBase(personalIdentifierCode!);
-            isInvalid = IsDateValid(personalIdentifierCode!, yearBase, out DateOnly parsedDate);
-            
-            if (isInvalid == true)
+         bool isValid = IsDateValid(personalIdentifierCode!, yearBase, out DateOnly parsedDate);
+            if (!isValid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidDateFormat);
+            isInvalid = IsDateLessThanTheMinimumDate(parsedDate);
+            if (isInvalid )
+                return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidDate);
+            isInvalid = IsDateInFuture(parsedDate);
+            if(isInvalid)
+                return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidDate);
             throw new NotImplementedException();
 
 
         }
 
-        public static bool PersonalIdentifierCodeIsEmptyOrWhitespace(string personalIdentifierCode)
+        public static bool PersonalIdentifierCodeIsEmptyOrWhitespace(string? personalIdentifierCode)
         {
             return string.IsNullOrWhiteSpace(personalIdentifierCode);
         }
@@ -47,7 +51,7 @@ namespace EstonianPersonalCode.Core
 
         }
 
-        public static bool DoesPersonalIdentierCodeHaveNonDigits(string personalIdentifierCode)
+        public static bool DoesPersonalIdentifierCodeHaveNonDigits(string personalIdentifierCode)
         {
             return personalIdentifierCode.All(c => c >= '0' && c <= '9') ? false : true;
         }
@@ -58,7 +62,7 @@ namespace EstonianPersonalCode.Core
             return firstDigit < LowestFirstDigitValue || firstDigit > HighestFirstDigitValue;
         }
 
-        public static EncodedSex GetEncodedSex(string personalIdentifierCode) => personalIdentifierCode[0] % 2 == 0 ? EncodedSex.Female : EncodedSex.Male;
+        public static EncodedSex GetEncodedSex(string personalIdentifierCode) => (personalIdentifierCode[0] -'0') % 2 == 0 ? EncodedSex.Female : EncodedSex.Male;
 
         public static string GetYearBase(string personalIdentifierCode)
         {
@@ -92,17 +96,25 @@ namespace EstonianPersonalCode.Core
 
         public static bool IsDateValid(string personalIdentifierCode, string yearBase, out DateOnly validatedDate)
         {
+            
             string dob = $"{yearBase}{personalIdentifierCode.AsSpan(1, 2)}-" +
                  $"{personalIdentifierCode.AsSpan(3, 2)}-{personalIdentifierCode.AsSpan(5, 2)}";
             bool isValid = DateOnly.TryParseExact(s: dob, format: "yyyy-MM-dd", out validatedDate);
-            
-            if (isValid == false)
-            {
-                return false;
-            }
-            return true;
+            return isValid;
             
         }
+
+
+        public static bool IsDateLessThanTheMinimumDate(DateOnly validatedDate) => validatedDate < MinimumDateValueInEstonianPersonalCode;
+        public static bool IsDateInFuture(DateOnly validatedDate, bool? isDateOfTodayAllowed = false )
+        {
+            var todaysDate = DateOnly.FromDateTime(DateTime.Today);
+            if (isDateOfTodayAllowed == true)
+                return todaysDate <= validatedDate;
+            
+            return todaysDate < validatedDate;
+        }
+        
     }
 }
 

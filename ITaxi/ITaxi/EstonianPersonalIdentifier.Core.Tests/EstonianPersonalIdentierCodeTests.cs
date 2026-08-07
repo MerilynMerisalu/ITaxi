@@ -1,11 +1,36 @@
 ﻿using EstonianPersonalCode.Core;
-using System.Runtime.InteropServices;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace EstonianPersonalIdentifier.Core.Tests
 {
     public class EstonianPersonalIdentierCodeTests
     {
+        
+        public static TheoryData<DateOnly> IsEarlierThanMinimumDateTestData => new()
+        {
+            {new DateOnly(1700, 08, 08)  },
+            {new DateOnly(1600, 11, 12)  },
+
+        };
+        public static TheoryData<DateOnly> IsTodayOrInFutureTestData => new()
+        {
+            {DateOnly.FromDateTime(DateTime.Today)  },
+            {DateOnly.FromDateTime(DateTime.Today).AddDays(10)   },
+          //  {new DateOnly(2026, 08, 01)  },
+
+        };
+        public static TheoryData<DateOnly> IsDateInFutureTestData => new()
+        {
+            
+            {DateOnly.FromDateTime(DateTime.Today).AddDays(10)   },
+          //  {new DateOnly(2026, 08, 01)  },
+
+        };
+        public static TheoryData<string, string, DateOnly> TestData => new()
+        {
+            {"52608072223", "20", new DateOnly(2026, 08, 07)  },
+        };
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
@@ -56,7 +81,7 @@ namespace EstonianPersonalIdentifier.Core.Tests
         [Theory]
         [InlineData("99304218980")]
         [InlineData("09811152221")]
-     //   [InlineData("19304218980")]
+        //   [InlineData("19304218980")]
         //[InlineData("89811152221")]
 
         public void IsFirstDigitInvalid_WhenFirstDigitIsInvalid_ReturnsTrue(string personalIdentifierCode)
@@ -66,7 +91,7 @@ namespace EstonianPersonalIdentifier.Core.Tests
 
             // Assert
             Assert.True(validationResult);
-            
+
         }
         [Theory]
         [InlineData("99304218980")]
@@ -114,21 +139,70 @@ namespace EstonianPersonalIdentifier.Core.Tests
             Assert.Equal(expectedYearBase, validationResult);
 
         }
-        [Fact]
-        public static void IsDateValid_WhenCodeContainsValidDate_ReturnsTrueAndParsedDate()
+
+        [Theory]
+        [MemberData(nameof(TestData))]
+        public static void IsDateValid_WhenCodeContainsValidDate_ReturnsTrueAndParsedDate(string personalIdentifierCode,
+            string baseYear, DateOnly expectedDate)
         {
-            // Arrange
-            string personalIdentifierCode = "39308140878";
-            DateOnly expectedDate = new DateOnly(1993, 08, 14 );
 
             // Act
 
-            var isValid = EstonianPersonalCodeValidator.IsDateValid(personalIdentifierCode, "19", out DateOnly validatedDate);
+            var isValid = EstonianPersonalCodeValidator.IsDateValid(personalIdentifierCode, baseYear,
+                out DateOnly validatedDate);
             // Assert
             Assert.True(isValid);
             Assert.Equal(expectedDate, validatedDate);
+
+        }
+        [Theory]
+        [MemberData(nameof(IsTodayOrInFutureTestData))]
+        public static void IsDateTodayOrInTheFuture_WhentTodaysDateIsAllowed_ReturnsTrue(DateOnly date, bool isTodaysDateAllowed = true)
+        {
+            // Act
+            var isInvalid = EstonianPersonalCodeValidator.IsDateInFuture(date, isTodaysDateAllowed);
+
+            // Assert
+            Assert.True(isInvalid);
+        }
+
+        [Theory]
+        [MemberData(nameof(IsDateInFutureTestData))]
+        public static void IsDateTodayOrInTheFuture_WhentTodaysDateIsNotAllowed_ReturnsTrue(DateOnly date)
+        {
+            // Act
+            var isInvalid = EstonianPersonalCodeValidator.IsDateInFuture(date);
+
+            // Assert
+            Assert.True(isInvalid);
+        }
+
+        [Theory]
+        [MemberData(nameof(IsEarlierThanMinimumDateTestData))]
+        public static void IsDateLessThanTheMinimumDate_WhenTheDateIsLessThanTheMinimumDate_ReturnsTrue(DateOnly date)
+        {
+          
+            // Act
+            var validationResult = EstonianPersonalCodeValidator.IsDateLessThanTheMinimumDate(date);
+            // Assert
+            Assert.True(validationResult);
+        }
+
+
+        [Theory]
+        [InlineData("52613062231")]
+        public static void IsDateGreaterOrEqualThanToday_WhenDateFormatIsInvalid_ReturnsInvalidDateFormatError(string personalIdentifierCode)
+        {
+            // Act
+            var result = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
+
+            // Assert
+            Assert.False(result.IsValid);
+            Assert.Equal(EstonianPersonalCodeValidationError.InvalidDateFormat, result.Error);
             
         }
+
+
     }
 }
 
