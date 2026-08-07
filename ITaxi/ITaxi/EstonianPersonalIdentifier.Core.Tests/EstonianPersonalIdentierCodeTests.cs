@@ -9,8 +9,8 @@ namespace EstonianPersonalIdentifier.Core.Tests
         public static TheoryData<DateOnly> IsEarlierThanMinimumDateTestData => new()
         {
             {new DateOnly(1700, 08, 08)  },
-            {new DateOnly(1600, 11, 12)  },
-            {new DateOnly(1800, 01, 01) }
+            {new DateOnly(1799, 12, 31)  },
+            
 
         };
         public static TheoryData<DateOnly, bool, bool> IsTodayOrInFutureTestData => new()
@@ -35,6 +35,7 @@ namespace EstonianPersonalIdentifier.Core.Tests
         public static TheoryData<string, string, DateOnly> TestData => new()
         {
             {"52608072223", "20", new DateOnly(2026, 08, 07)  },
+            {"10001012233", "18" ,new DateOnly(1800, 01, 01) }
         };
 
         [Theory]
@@ -144,6 +145,20 @@ namespace EstonianPersonalIdentifier.Core.Tests
             // Assert
             Assert.Equal(expectedYearBase, validationResult);
 
+        }
+
+        [Fact]
+        public void IsDateLessThanTheMinimumDate_WhenDateEqualsMinimumDate_ReturnsFalse()
+        {
+            // Arrange
+            var minimumValidDate = new DateOnly(1800, 01, 01);
+
+            // Act
+            var validateResult = EstonianPersonalCodeValidator.IsDateLessThanTheMinimumDate(minimumValidDate);
+
+            // Assert
+            Assert.False(validateResult);
+            
         }
 
         [Theory]
