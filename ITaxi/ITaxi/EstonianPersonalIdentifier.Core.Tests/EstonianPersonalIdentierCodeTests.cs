@@ -29,7 +29,7 @@ namespace EstonianPersonalIdentifier.Core.Tests
         {
             
             {DateOnly.FromDateTime(DateTime.Today).AddDays(10)   },
-          //  {new DateOnly(2026, 08, 01)  },
+           {DateOnly.FromDateTime(DateTime.Today)  },
 
         };
         public static TheoryData<string, string, DateOnly> TestData => new()
