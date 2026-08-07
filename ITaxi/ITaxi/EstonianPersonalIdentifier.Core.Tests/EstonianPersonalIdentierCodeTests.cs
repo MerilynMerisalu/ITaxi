@@ -10,15 +10,20 @@ namespace EstonianPersonalIdentifier.Core.Tests
         {
             {new DateOnly(1700, 08, 08)  },
             {new DateOnly(1600, 11, 12)  },
+            {new DateOnly(1800, 01, 01) }
 
         };
         public static TheoryData<DateOnly, bool, bool> IsTodayOrInFutureTestData => new()
-{
-            { DateOnly.FromDateTime(DateTime.Today), true, false },
-            { DateOnly.FromDateTime(DateTime.Today), false, true },
-            { DateOnly.FromDateTime(DateTime.Today).AddDays(10), true, true },
-            { DateOnly.FromDateTime(DateTime.Today).AddDays(10), false, true }
-};
+            {
+                { DateOnly.FromDateTime(DateTime.Today).AddDays(-1), true,  false },
+                { DateOnly.FromDateTime(DateTime.Today).AddDays(-1), false, false },
+
+                { DateOnly.FromDateTime(DateTime.Today),             true,  false },
+                { DateOnly.FromDateTime(DateTime.Today),             false, true  },
+
+                { DateOnly.FromDateTime(DateTime.Today).AddDays(10), true,  true  },
+                { DateOnly.FromDateTime(DateTime.Today).AddDays(10), false, true  }
+            };
 
         public static TheoryData<DateOnly> IsDateInFutureTestData => new()
         {
@@ -160,7 +165,7 @@ namespace EstonianPersonalIdentifier.Core.Tests
         
         [Theory]
         [MemberData(nameof(IsTodayOrInFutureTestData))]
-        public static void IsDateTodayOrInTheFuture_WhentTodaysDateIsAllowed_ReturnsExpectedResult(DateOnly date, bool isTodaysDateAllowed, bool expectedIsInvalid )
+        public static void IsDateInFuture_WhenTodayAllowanceVaries_ReturnsExpectedResult(DateOnly date, bool isTodaysDateAllowed, bool expectedIsInvalid )
         {
             // Act
             var isInvalid = EstonianPersonalCodeValidator.IsDateInFuture(date, isTodaysDateAllowed);
@@ -173,7 +178,7 @@ namespace EstonianPersonalIdentifier.Core.Tests
 
         [Theory]
         [MemberData(nameof(IsDateInFutureTestData))]
-        public static void IsDateTodayOrInTheFuture_WhentTodaysDateIsNotAllowed_ReturnsTrue(DateOnly date)
+        public static void IsDateTodayOrInTheFuture_WhenTodaysDateIsNotAllowed_ReturnsTrue(DateOnly date)
         {
             // Act
             var isInvalid = EstonianPersonalCodeValidator.IsDateInFuture(date);
