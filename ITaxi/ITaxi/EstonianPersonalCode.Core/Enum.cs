@@ -18,7 +18,7 @@ namespace EstonianPersonalCode.Core
         InvalidLength,
         ContainsNonDigits,
         InvalidFirstDigit,
-        InvalidDateFormat,
+        InvalidEncodedDate,
         InvalidDate,
         InvalidCheckDigit
     }

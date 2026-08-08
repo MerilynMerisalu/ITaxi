@@ -25,10 +25,10 @@ namespace EstonianPersonalCode.Core
             if (isInvalid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidFirstDigit);
             var encodedSex = GetEncodedSex(personalIdentifierCode!);
-            string yearBase = GetYearBase(personalIdentifierCode!);
+            string yearBase = GetYearPrefix(personalIdentifierCode!);
          bool isValid = IsDateValid(personalIdentifierCode!, yearBase, out DateOnly parsedDate);
             if (!isValid)
-                return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidDateFormat);
+                return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidEncodedDate);
             isInvalid = IsDateLessThanTheMinimumDate(parsedDate);
             if (isInvalid )
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidDate);
@@ -64,7 +64,7 @@ namespace EstonianPersonalCode.Core
 
         public static EncodedSex GetEncodedSex(string personalIdentifierCode) => (personalIdentifierCode[0] -'0') % 2 == 0 ? EncodedSex.Female : EncodedSex.Male;
 
-        public static string GetYearBase(string personalIdentifierCode)
+        public static string GetYearPrefix(string personalIdentifierCode)
         {
             int firstDigit = personalIdentifierCode.First() - '0';
             string yearBase;
