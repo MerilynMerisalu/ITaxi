@@ -165,6 +165,15 @@ public class RegisterAdminModel : PageModel
         }
     }
 
+    public void GenderValueValidation()
+    {
+        var genderFromPersonalIdentifierCode = int.Parse(Input.PersonalIdentifier[0].ToString());
+        bool isGenderValid = _appBLL.AppUsers.ValidateUsersGender(Input.Gender, genderFromPersonalIdentifierCode);
+        if (!isGenderValid)
+        {
+            ModelState.AddModelError("Input.Gender", Register.GenderError);
+        }
+    }
     public void AgeValidation()
     {
         bool isAgeValid = _appBLL.AppUsers.ValidateAge(Input.DateOfBirth);
@@ -184,6 +193,7 @@ public class RegisterAdminModel : PageModel
     {
         returnUrl ??= Url.Content("~/");
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        GenderValueValidation();
         DateOfBirthValidation();
         AgeValidation();
         if (ModelState.IsValid)

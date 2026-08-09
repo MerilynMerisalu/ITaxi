@@ -2,6 +2,7 @@
 using App.BLL.DTO.Identity;
 using App.Contracts.BLL.Services;
 using App.Contracts.DAL.IAppRepositories;
+using App.Enum.Enum;
 using Base.BLL;
 using Base.Contracts.Mappers;
 
@@ -56,5 +57,25 @@ public class AppUserService : BaseEntityService<App.BLL.DTO.Identity.AppUser, Ap
         return true;
       
 
+    }
+
+    public bool ValidateUsersGender(Gender choosedGender, int genderFromPersonalIdentifierCode)
+    {
+        if (genderFromPersonalIdentifierCode == 2)
+        {
+            if (choosedGender == Gender.Female)
+                return true;
+            else
+                return false;
+        }
+        else if (genderFromPersonalIdentifierCode == 3)
+        {
+            if (choosedGender == Gender.Male)
+                return true;
+            else
+                return false;
+        }
+        else
+            return true; 
     }
 }

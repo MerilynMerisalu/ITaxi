@@ -1,6 +1,7 @@
 ﻿using App.Contracts.DAL.IAppRepositories;
 using App.DAL.DTO.Identity;
 using App.Domain.Identity;
+using App.Enum.Enum;
 using Base.Contracts.BLL;
 using AppUser = App.BLL.DTO.Identity.AppUser;
 
@@ -14,5 +15,5 @@ public interface IAppUserService : IEntityService<App.BLL.DTO.Identity.AppUser>,
         bool noIncludes = false);
     bool ValidateUsersDateOfBirth(DateTime dateOfBirth);
     bool ValidateAge(DateTime dateOfBirth);
-    
+    bool ValidateUsersGender(Gender choosedGender, int genderFromPersonalIdentifierCode);
 }
