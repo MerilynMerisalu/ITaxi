@@ -7,7 +7,8 @@ namespace EstonianPersonalCode.Core
         private const int LowestFirstDigitValue = 1;
         private const int HighestFirstDigitValue = 8;
         private static readonly DateOnly MinimumDateValueInEstonianPersonalCode = new DateOnly(1800, 01, 01);
-        private static readonly int[] FirstWeights = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1 };
+        private static readonly int[] FirstWeights = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 1 };
+        private static readonly int[] SecondWeigths = { 3, 4, 5, 6, 7, 8, 9, 1, 2, 3 };
 
         public static EstonianPersonalCodeValidationResult Validate(string? personalIdentifierCode)
         {
@@ -21,13 +22,13 @@ namespace EstonianPersonalCode.Core
             isInvalid = DoesPersonalIdentifierCodeHaveNonDigits(personalIdentifierCode!, out int[] digits);
             if (isInvalid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.ContainsNonDigits);
-            int firstDigit = digits[0];
+            int firstDigit = digits.First();
             isInvalid = IsFirstDigitInvalid(firstDigit);
             if (isInvalid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidFirstDigit);
             var encodedSex = GetEncodedSex(firstDigit!);
-            string yearBase = GetYearPrefix(firstDigit!);
-            bool isValid = IsDateValid(personalIdentifierCode!, yearBase, out DateOnly parsedDate);
+            string YearPrefix = GetYearPrefix(firstDigit!);
+            bool isValid = IsDateValid(personalIdentifierCode!, YearPrefix, out DateOnly parsedDate);
             if (!isValid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidEncodedDate);
             isInvalid = IsDateLessThanTheMinimumDate(parsedDate);
@@ -36,7 +37,14 @@ namespace EstonianPersonalCode.Core
             isInvalid = IsDateInFuture(parsedDate);
             if (isInvalid)
                 return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidDate);
-            throw new NotImplementedException();
+            int checkDigit = ComputeCheckDigit(digits, out bool isCalculatedusingFirstWeights);
+            int lastDigit = digits.Last();
+            isInvalid = IsNotEqualToLastDigitOfPersonalIdentifierCode(lastDigit, checkDigit);
+            if (isInvalid)
+            {
+                return EstonianPersonalCodeValidationResult.Failure(EstonianPersonalCodeValidationError.InvalidCheckDigit);
+            }
+            return EstonianPersonalCodeValidationResult.Success(parsedDate, encodedSex);
 
 
         }
@@ -123,12 +131,44 @@ namespace EstonianPersonalCode.Core
 
 
 
-        public static int ComputeCheckDigit(int[] digits)
+        public static int ComputeCheckDigit(int[] digits, out bool IsCalculatedUsingFirstWeights)
         {
+            
+            int digitsSum = 0;
+            for (int i = 0; i < digits.Length - 1; i++)
+            {
+                digitsSum += FirstWeights[i] * digits[i];
+            }
+            ;
+            int checkDigit = digitsSum % 11;
+            if (checkDigit == 10)
+            {
+                IsCalculatedUsingFirstWeights = false;
+                digitsSum = 0;
 
-            throw new NotImplementedException();
+                for (int i = 0; i < digits.Length - 1; i++)
+                {
+                    digitsSum += SecondWeigths[i] * digits[i];
+                }
+            ;
+                checkDigit = digitsSum % 11;
+                if (checkDigit == 10)
+                {
+                    checkDigit = 0;
+                    return checkDigit;
+                }
+
+            }
+            else
+            {
+                IsCalculatedUsingFirstWeights = true;
+                
+            }
+            return checkDigit;
 
         }
+
+        public static bool IsNotEqualToLastDigitOfPersonalIdentifierCode(int lastDigit, int checkDigit) => lastDigit != checkDigit;
     }
 }
 

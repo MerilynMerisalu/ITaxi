@@ -44,10 +44,25 @@ namespace EstonianPersonalIdentifier.Core.Tests
             {"62402291114", "20", new DateOnly(2024, 02, 29) }
 
         };
-        public static TheoryData<int[]> ValidatedDigits => new()
+        public static TheoryData<int[]> ValidatedDigitsForFirstWeight => new()
         {
 
             {[4,9,3,0,8,1,4,0,8,7,8] }
+
+        };
+
+
+        public static TheoryData<int[]> ValidatedDigitsForSecondWeight => new()
+        {
+
+            {[3,0,0,0,1,0,1,0,1,8,7] }
+
+        };
+
+        public static TheoryData<int[]> ValidatedDigitsEndingZeroForSecondWeight => new()
+        {
+
+            {[3,0,0,0,1,0,1,0,0,6,0] }
 
         };
 
@@ -283,16 +298,80 @@ namespace EstonianPersonalIdentifier.Core.Tests
         }
 
         [Theory]
-        [MemberData(nameof(ValidatedDigits))]
+        [MemberData(nameof(ValidatedDigitsForFirstWeight))]
         public static void ComputeChecksumDigit_WhenPersonalIdentifierCodeIsValidUsingFirstWeights_ReturnsCheckDigit(int[] digits)
         {
             
             // Act
 
-            int result = EstonianPersonalCodeValidator.ComputeCheckDigit(digits);
+            int result = EstonianPersonalCodeValidator.ComputeCheckDigit(digits, out bool isCalculatedUsingFirstWeights);
 
             // Assert
             Assert.InRange(result, 0, 9);
+            Assert.True(isCalculatedUsingFirstWeights);
+        }
+
+        [Theory]
+        [MemberData(nameof(ValidatedDigitsForSecondWeight))]
+        public static void ComputeChecksumDigit_WhenPersonalIdentifierCodeIsValidUsingSecondWeights_ReturnsCheckDigit(int[] digits)
+        {
+
+            // Act
+
+            int result = EstonianPersonalCodeValidator.ComputeCheckDigit(digits, out bool isCalculatedUsingFirstWeights);
+
+            // Assert
+            Assert.InRange(result, 0, 9);
+            Assert.False(isCalculatedUsingFirstWeights);
+        }
+
+        [Theory]
+        [MemberData(nameof(ValidatedDigitsEndingZeroForSecondWeight))]
+        public static void ComputeChecksumDigit_WhenPersonalIdentifierCodeEndsZeroIsValidUsingSecondWeights_ReturnsCheckDigit(int[] digits)
+        {
+
+            // Act
+
+            int result = EstonianPersonalCodeValidator.ComputeCheckDigit(digits, out bool isCalculatedUsingFirstWeights);
+
+            // Assert
+            Assert.Equal(0, result);
+            Assert.False(isCalculatedUsingFirstWeights);
+        }
+
+        [Theory]
+        [InlineData(8, 8)]
+        public static void IsNotEqualToLastDigitOfPersonalIdentifierCode_WhenTheLastDigitEqualWithControlDigit_ReturnsFalse(int lastDigit, int checkDigit)
+        {
+            // Act
+            bool result = EstonianPersonalCodeValidator.IsNotEqualToLastDigitOfPersonalIdentifierCode(lastDigit, checkDigit);
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Theory]
+        [InlineData("49308140875")]
+        public static void IsNotEqualToLastDigitOfPersonalIdentifierCode_WhenTheLastDigitEqualWithControlDigit_ReturnsInvalidCheckDigitError(string personalIdentifierCode)
+        {
+            // Act
+            var result = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
+
+            // Assert
+            Assert.False(result.IsValid);
+            Assert.Equal(EstonianPersonalCodeValidationError.InvalidCheckDigit, result.Error);
+        }
+
+        [Theory]
+        [InlineData("49308140878")]
+        public static void Validate_WhenThePersonalIdentifierCodeIsValid_ReturnsValidPersonalIdentifierCode(string personalIdentifierCode)
+        {
+            // Act
+            var result = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
+
+            // Assert
+            Assert.True(result.IsValid);
+            Assert.Equal(EstonianPersonalCodeValidationError.None, result.Error);
         }
     }
 
