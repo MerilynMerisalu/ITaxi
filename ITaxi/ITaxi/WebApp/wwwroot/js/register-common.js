@@ -25,51 +25,51 @@ async function CountyIdChanged(value) {
     PopulateDropDownList("cityId", data, false);
 }
 
-function BirthDateValidation(input) {
-    const VALUE = input.value;
-    const ERRORMESSAGE = input.dataset.errorMessage;
-    let dateOfToday = new Date();
-    dateOfToday.setHours(0, 0, 0, 0);
+// function BirthDateValidation(input) {
+//     const VALUE = input.value;
+//     const ERRORMESSAGE = input.dataset.errorMessage;
+//     let dateOfToday = new Date();
+//     dateOfToday.setHours(0, 0, 0, 0);
 
-    const DATEOFBIRTHERRORSPAN = document.getElementById("error-display");
+//     const DATEOFBIRTHERRORSPAN = document.getElementById("error-display");
 
-    let dateOfBirth = new Date(VALUE);
-    dateOfBirth.setHours(0, 0, 0, 0);
+//     let dateOfBirth = new Date(VALUE);
+//     dateOfBirth.setHours(0, 0, 0, 0);
    
-    if (dateOfBirth >= dateOfToday) {
-        DATEOFBIRTHERRORSPAN.textContent = input.dataset.errorMessage;
-    }
-    else {
-        DATEOFBIRTHERRORSPAN.textContent = "";
-        CalculateAge(dateOfBirth, dateOfToday, input);
-    }
-}
+//     if (dateOfBirth >= dateOfToday) {
+//         DATEOFBIRTHERRORSPAN.textContent = input.dataset.errorMessage;
+//     }
+//     else {
+//         DATEOFBIRTHERRORSPAN.textContent = "";
+//         CalculateAge(dateOfBirth, dateOfToday, input);
+//     }
+// }
 
-function CalculateAge(dateOfBirth, dateOfToday, input) {
-    let age = dateOfToday.getFullYear() - dateOfBirth.getFullYear();
+// function CalculateAge(dateOfBirth, dateOfToday, input) {
+//     let age = dateOfToday.getFullYear() - dateOfBirth.getFullYear();
 
-    const birthdayHasNotOccurred =
-        dateOfBirth.getMonth() > dateOfToday.getMonth() ||
-        (
-            dateOfBirth.getMonth() === dateOfToday.getMonth() &&
-            dateOfBirth.getDate() > dateOfToday.getDate()
-        );
+//     const birthdayHasNotOccurred =
+//         dateOfBirth.getMonth() > dateOfToday.getMonth() ||
+//         (
+//             dateOfBirth.getMonth() === dateOfToday.getMonth() &&
+//             dateOfBirth.getDate() > dateOfToday.getDate()
+//         );
 
-    if (birthdayHasNotOccurred) {
-        age--;
-    }
+//     if (birthdayHasNotOccurred) {
+//         age--;
+//     }
 
-    let result = ValidateAge(age);
-    const AGE_ERROR_DISPLAY_SPAN = document.getElementById("error-display");
+//     let result = ValidateAge(age);
+//     const AGE_ERROR_DISPLAY_SPAN = document.getElementById("error-display");
 
-    if (result !== true) {
-        const AGE_ERROR = input.dataset.ageErrorMessage.replace("{0}", 18);
-        AGE_ERROR_DISPLAY_SPAN.textContent = AGE_ERROR;
-    }
+//     if (result !== true) {
+//         const AGE_ERROR = input.dataset.ageErrorMessage.replace("{0}", 18);
+//         AGE_ERROR_DISPLAY_SPAN.textContent = AGE_ERROR;
+//     }
         
-    else
-        AGE_ERROR_DISPLAY_SPAN.textContent = "";
-}
+//     else
+//         AGE_ERROR_DISPLAY_SPAN.textContent = "";
+// }
 
 // function ValidatePersonalIdentifierNumber(input) {
     

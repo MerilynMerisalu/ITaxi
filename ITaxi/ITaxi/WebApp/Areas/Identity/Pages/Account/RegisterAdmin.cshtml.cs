@@ -7,12 +7,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
+using App.BLL;
 using App.BLL.DTO.AdminArea;
 using App.Contracts.BLL;
 using App.Domain;
 using App.Domain.Identity;
 using App.Resources.Areas.Identity.Pages.Account;
 using Base.Resources;
+using EstonianPersonalCode.Core;
 using Google.Apis.PeopleService.v1.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -163,6 +165,32 @@ public class RegisterAdminModel : PageModel
           ModelState.AddModelError("Input.DateOfBirth", Register.DateOfBirthInvalid);
               
         }
+
+        
+    }
+
+    public void ValidatePersonalIdentifierCode() 
+    {
+        var validationResult = EstonianPersonalCodeValidator.Validate(Input.PersonalIdentifier);
+        if (!validationResult.IsValid)
+        {
+            ModelState.AddModelError("Input.PersonalIdentifier", Register.PersonalIdentificationCodeControlDigitError);
+        }
+        else
+        {
+            ValidateSelectedDateOfBirth(validationResult.DateOfBirth);
+        }
+       
+
+    }
+
+    public void ValidateSelectedDateOfBirth(DateOnly? personalIdentifierDateOfBirth)
+    {
+        var result = _appBLL.AppUsers.ValidateUsersChosenDateOfBirth(chosenDateOfBirth: DateOnly.FromDateTime(Input.DateOfBirth), dateOfBirthFromPersonalIdentifierCode: personalIdentifierDateOfBirth.Value);
+        if (!result)
+        {
+            ModelState.AddModelError("Input.DateOfBirth", Register.PersonalIdentifierDateOfBirthInvalid);
+        }
     }
 
     public void GenderValueValidation()
@@ -196,6 +224,7 @@ public class RegisterAdminModel : PageModel
         GenderValueValidation();
         DateOfBirthValidation();
         AgeValidation();
+        ValidatePersonalIdentifierCode();
         if (ModelState.IsValid)
         {
             var user = new AppUser

@@ -16,4 +16,7 @@ public interface IAppUserService : IEntityService<App.BLL.DTO.Identity.AppUser>,
     bool ValidateUsersDateOfBirth(DateTime dateOfBirth);
     bool ValidateAge(DateTime dateOfBirth);
     bool ValidateUsersGender(Gender choosedGender, int genderFromPersonalIdentifierCode);
+    bool ValidateUsersChosenDateOfBirth(DateOnly dateOfBirthFromPersonalIdentifierCode,
+        DateOnly chosenDateOfBirth);
+
 }

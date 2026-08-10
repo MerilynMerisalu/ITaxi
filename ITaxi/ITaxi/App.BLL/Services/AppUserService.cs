@@ -78,4 +78,9 @@ public class AppUserService : BaseEntityService<App.BLL.DTO.Identity.AppUser, Ap
         else
             return true; 
     }
+
+    public bool ValidateUsersChosenDateOfBirth(DateOnly dateOfBirthFromPersonalIdentifierCode, DateOnly chosenDateOfBirth)
+    {
+        return dateOfBirthFromPersonalIdentifierCode == chosenDateOfBirth;
+    }
 }
