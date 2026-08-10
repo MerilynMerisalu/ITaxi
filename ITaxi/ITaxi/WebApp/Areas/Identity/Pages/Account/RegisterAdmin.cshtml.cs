@@ -162,7 +162,7 @@ public class RegisterAdminModel : PageModel
         bool isDateOfBirthValid = _appBLL.AppUsers.ValidateUsersDateOfBirth(Input.DateOfBirth);
         if (!isDateOfBirthValid)
         {
-          ModelState.AddModelError("Input.DateOfBirth", Register.DateOfBirthInvalid);
+          ModelState.AddModelError(nameof(Input.DateOfBirth), Register.DateOfBirthInvalid);
               
         }
 
@@ -172,9 +172,23 @@ public class RegisterAdminModel : PageModel
     public void ValidatePersonalIdentifierCode() 
     {
         var validationResult = EstonianPersonalCodeValidator.Validate(Input.PersonalIdentifier);
-        if (!validationResult.IsValid)
+
+        if (!validationResult.IsValid )
         {
-            ModelState.AddModelError("Input.PersonalIdentifier", Register.PersonalIdentificationCodeControlDigitError);
+            if (validationResult.Error == EstonianPersonalCodeValidationError.InvalidLength)
+            {
+                ModelState.AddModelError("Input.PersonalIdentifier",
+                    string.Format(Common.StringLengthAttributeErrorMessage, 11, 11));
+            }
+            else if (validationResult.Error == EstonianPersonalCodeValidationError.ContainsNonDigits)
+            {
+                ModelState.AddModelError("Input.PersonalIdentifier", 
+                    string.Format(Common.ErrorMessageOnlyDigits, AdminRegister.PersonalIdentifier));
+            }
+            else
+            {
+                ModelState.AddModelError("Input.PersonalIdentifier", Register.PersonalIdentificationCodeControlDigitError);
+            }
         }
         else
         {
@@ -189,7 +203,7 @@ public class RegisterAdminModel : PageModel
         var result = _appBLL.AppUsers.ValidateUsersChosenDateOfBirth(chosenDateOfBirth: DateOnly.FromDateTime(Input.DateOfBirth), dateOfBirthFromPersonalIdentifierCode: personalIdentifierDateOfBirth.Value);
         if (!result)
         {
-            ModelState.AddModelError("Input.DateOfBirth", Register.PersonalIdentifierDateOfBirthInvalid);
+            ModelState.AddModelError(nameof(Input.DateOfBirth), Register.PersonalIdentifierDateOfBirthInvalid);
         }
     }
 
@@ -199,7 +213,7 @@ public class RegisterAdminModel : PageModel
         bool isGenderValid = _appBLL.AppUsers.ValidateUsersGender(Input.Gender, genderFromPersonalIdentifierCode);
         if (!isGenderValid)
         {
-            ModelState.AddModelError("Input.Gender", Register.GenderError);
+            ModelState.AddModelError(nameof(Input.Gender), Register.GenderError);
         }
     }
     public void AgeValidation()
@@ -207,7 +221,7 @@ public class RegisterAdminModel : PageModel
         bool isAgeValid = _appBLL.AppUsers.ValidateAge(Input.DateOfBirth);
         if (!isAgeValid)
         {
-            ModelState.AddModelError("Input.DateOfBirth", Register.MinimumRegistrationAgeError);
+            ModelState.AddModelError(nameof(Input.DateOfBirth), Register.MinimumRegistrationAgeError);
 
         }
     }
