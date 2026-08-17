@@ -76,6 +76,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Validators", "Validators", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstonianPersonalIdentifier.Core.Tests", "EstonianPersonalIdentifier.Core.Tests\EstonianPersonalIdentifier.Core.Tests.csproj", "{D0DF2564-DEAB-477E-8C20-31248ABD2D44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonalIdentifierCode", "PersonalIdentifierCode\PersonalIdentifierCode.csproj", "{DBA7ED14-8598-4639-AA39-CACF8F6A3BBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -190,6 +192,10 @@ Global
 		{D0DF2564-DEAB-477E-8C20-31248ABD2D44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0DF2564-DEAB-477E-8C20-31248ABD2D44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0DF2564-DEAB-477E-8C20-31248ABD2D44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBA7ED14-8598-4639-AA39-CACF8F6A3BBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBA7ED14-8598-4639-AA39-CACF8F6A3BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBA7ED14-8598-4639-AA39-CACF8F6A3BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBA7ED14-8598-4639-AA39-CACF8F6A3BBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -222,6 +228,7 @@ Global
 		{9D0E0DA7-7B9F-73EA-DD73-CAE16AE41301} = {A020224E-88AF-44AD-ADA1-42A838592208}
 		{91371268-8521-4A79-834F-0AFACE05B544} = {A121D8E0-6295-4146-9969-7760DC0C122E}
 		{D0DF2564-DEAB-477E-8C20-31248ABD2D44} = {38740732-4F8D-4433-8A6E-92F14CC1801C}
+		{DBA7ED14-8598-4639-AA39-CACF8F6A3BBF} = {A121D8E0-6295-4146-9969-7760DC0C122E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F0FC1EA4-AC6B-4ED5-9D61-58CE6D76A2D1}

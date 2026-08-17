@@ -15,6 +15,8 @@ public class AppUserService : BaseEntityService<App.BLL.DTO.Identity.AppUser, Ap
     {
     }
 
+   
+
     public async Task<IEnumerable<AppUser>> GetAllAppUsersOrderedByLastNameAsync(bool noTracking = true)
     {
         return (await Repository.GetAllAppUsersOrderedByLastNameAsync(noTracking)).Select(e => Mapper.Map(e))!;
