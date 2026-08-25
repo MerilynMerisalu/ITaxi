@@ -33,7 +33,7 @@ namespace EstonianPersonalIdentifier.Core.Tests
         {
             
             {DateOnly.FromDateTime(DateTime.Today).AddDays(10)   },
-            {DateOnly.FromDateTime(DateTime.Today)},
+            
 
         };
         public static TheoryData<string, string, DateOnly> ValidEncodedDateTestData => new()

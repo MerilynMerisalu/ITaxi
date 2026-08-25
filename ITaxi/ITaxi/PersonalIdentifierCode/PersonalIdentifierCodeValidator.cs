@@ -15,10 +15,20 @@ namespace PersonalIdentifierCode
             _appBLL = appBLL;
         }
 
-        public PersonalIdentifierCodeValidatorResult Validate()
+        public PersonalIdentifierCodeValidatorResult Validate(DateOnly personalIdentifierDateOfBirth, DateOnly selectedDateOfBirth)
         {
-         
+            var result = ValidateChosenDateOfBirth(personalIdentifierDateOfBirth: personalIdentifierDateOfBirth, selectedDateOfBirth: selectedDateOfBirth);
+            if (!result)
+            {
+                var validatorResult = new PersonalIdentifierCodeValidatorResult
+                {
+                    IsValid = false,
+                    Error = PersonalIdentifierCodeValidatorError.SelectedDateOfBirthDoesNotMatch
+                };
+                return validatorResult;
+            }
             throw new NotImplementedException();
+
         }
 
         public bool ValidateChosenDateOfBirth(DateOnly personalIdentifierDateOfBirth, DateOnly selectedDateOfBirth) 
@@ -27,6 +37,8 @@ namespace PersonalIdentifierCode
              new DateOnly(1993, 08, 14), new DateOnly(1993, 08, 14));
             return result;
         } 
+
+
 
         
     }

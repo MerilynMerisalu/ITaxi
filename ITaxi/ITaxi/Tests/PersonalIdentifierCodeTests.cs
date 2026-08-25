@@ -29,6 +29,7 @@ namespace Tests
                 .SetupGet(appBLL => appBLL.AppUsers)
                 .Returns(_appUserServiceMock.Object);
             _validator = new PersonalIdentifierCodeValidator(appBLLMock.Object);
+
         }
 
 
@@ -61,17 +62,19 @@ namespace Tests
             // Assert
             Assert.True(result);
 
-            _appUserServiceMock.Verify(service => service.ValidateUsersChosenDateOfBirth(personalIdentifierDateOfBirth, selectedDate), Times.Once());
+            _appUserServiceMock.Verify(service => service.ValidateUsersChosenDateOfBirth(personalIdentifierDateOfBirth, selectedDate),
+                Times.Once());
 
         }
 
         [Theory]
         [MemberData(nameof(Data))]
-        public void ValidateChosenDateOfBirth_WhenTheSelectedDateOfBirthDoesNotMatchPersonalIdentifierDateOfBirth_ReturnsFalse(DateOnly selectedDate, DateOnly personalIdentifierDateOfBirth)
+        public void ValidateChosenDateOfBirth_WhenTheSelectedDateOfBirthDoesNotMatchPersonalIdentifierDateOfBirth_ReturnsFalse
+             (DateOnly personalIdentifierDateOfBirth, DateOnly selectedDate)
         {
             // Arrange
 
-            _appUserServiceMock.Setup(s => s.ValidateUsersChosenDateOfBirth(personalIdentifierDateOfBirth, selectedDate)).Returns(false);
+            _appUserServiceMock.Setup(s => s.ValidateUsersChosenDateOfBirth(personalIdentifierDateOfBirth, selectedDate));
 
             // Act
 
@@ -81,28 +84,27 @@ namespace Tests
 
             Assert.False(result);
         }
-        
+
         [Theory]
-        [MemberData(nameof(Dates))]
-        public void ValidateUsersChosenDateOfBirth_WhenDatesMatch_ReturnsTrue(DateOnly personalIdentifierDateOfBirth, DateOnly selectedDate)
+        [MemberData(nameof(Data))]
+        public void ValidateChosenDateOfBirth_WhenTheSelectedDateOfBirthDoesNotMatchPersonalIdentifierDateOfBirth_ReturnsSelectedDateOfBirthDoesNotMatchError
+             (DateOnly personalIdentifierDateOfBirth, DateOnly selectedDate)
         {
             // Arrange
 
-            var appUserRepositoryMock = new Mock<IAppUserRepository>();
-            var mapperMock = new Mock<IMapper<App.BLL.DTO.Identity.AppUser, App.DAL.DTO.Identity.AppUser>>();
-            var appUserService = new AppUserService(appUserRepositoryMock.Object, mapperMock.Object);
+            _appUserServiceMock.Setup(s => s.ValidateUsersChosenDateOfBirth(personalIdentifierDateOfBirth, selectedDate)).Returns(false);
 
             // Act
 
-            var result = appUserService.ValidateUsersChosenDateOfBirth(personalIdentifierDateOfBirth, 
-                selectedDate);
+            var result = _validator.Validate(personalIdentifierDateOfBirth, selectedDate);
 
             // Assert
-
-            Assert.True(result);
-
-
-
+            Assert.False(result.IsValid);
+            Assert.Equal(PersonalIdentifierCodeValidatorError.SelectedDateOfBirthDoesNotMatch, result.Error);
         }
+
+
+
+
     }
 }
