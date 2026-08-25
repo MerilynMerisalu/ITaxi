@@ -4,6 +4,7 @@ using App.Contracts.BLL;
 using App.Contracts.BLL.Services;
 using App.Contracts.DAL.IAppRepositories;
 using App.DAL.DTO.Identity;
+using App.Enum.Enum;
 using Base.Contracts.Mappers;
 using Moq;
 using PersonalIdentifierCode;
@@ -47,7 +48,11 @@ namespace Tests
             {new DateOnly(1993, 08, 14) , new DateOnly(1993, 08, 16)},
 
         };
+        public static TheoryData<int, Gender> Genders => new()
+        {
+            {2, Gender.Female },
 
+        };
         [Theory]
         [MemberData(nameof(Dates))]
         public void ValidateChosenDateOfBirth_WhenTheSelectedDateOfBirthMatchesPersonalIdentifierDateOfBirth_ReturnsTrue(DateOnly personalIdentifierDateOfBirth, DateOnly selectedDate)
@@ -105,6 +110,29 @@ namespace Tests
 
 
 
+        [Theory]
+        [MemberData(nameof(Genders))]
+        public void ValidateChosenGender_WhenTheSelectedGenderMatchesPersonalIdentifierCodeGender_ReturnsTrue
+             (int personalIdentifierGender, Gender selectedGender)
+        
+            {
+                // Arrange
 
+                _appUserServiceMock.Setup(s => s.ValidateUsersGender(chosenGender: selectedGender, genderFromPersonalIdentifierCode: personalIdentifierGender)).Returns(true);
+
+                // Act
+
+                var result = _validator.ValidateChosenGender(personalIdentifierCodeGender: personalIdentifierGender, selectedGender: selectedGender);
+
+                // Assert
+                Assert.True(result);
+                _appUserServiceMock.Verify(
+                    s => s.ValidateUsersGender(
+                    selectedGender,
+                    personalIdentifierGender),
+                    Times.Once());
+        }
+
+        
     }
 }
