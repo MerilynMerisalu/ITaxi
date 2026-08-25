@@ -13,7 +13,7 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="16.2.0" />
-      <PackageReference Include="Microsoft.Build" Version="18.8.2" />
+      <PackageReference Include="Microsoft.Build" Version="18.9.6" />
     </ItemGroup>
 
 </Project>
