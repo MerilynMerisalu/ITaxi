@@ -203,7 +203,7 @@ public class RegisterAdminModel : PageModel
         var result = _appBLL.AppUsers.ValidateUsersChosenDateOfBirth(chosenDateOfBirth: DateOnly.FromDateTime(Input.DateOfBirth), dateOfBirthFromPersonalIdentifierCode: personalIdentifierDateOfBirth.Value);
         if (!result)
         {
-            ModelState.AddModelError(nameof(Input.DateOfBirth), Register.PersonalIdentifierDateOfBirthInvalid);
+            ModelState.AddModelError("Input.DateOfBirth", Register.PersonalIdentifierDateOfBirthInvalid);
         }
     }
 
@@ -213,7 +213,7 @@ public class RegisterAdminModel : PageModel
         bool isGenderValid = _appBLL.AppUsers.ValidateUsersGender(Input.Gender, genderFromPersonalIdentifierCode);
         if (!isGenderValid)
         {
-            ModelState.AddModelError(nameof(Input.Gender), Register.GenderError);
+            ModelState.AddModelError("Input.Gender", Register.GenderError);
         }
     }
     public void AgeValidation()
