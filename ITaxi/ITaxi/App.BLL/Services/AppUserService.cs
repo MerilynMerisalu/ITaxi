@@ -61,24 +61,32 @@ public class AppUserService : BaseEntityService<App.BLL.DTO.Identity.AppUser, Ap
 
     }
 
-    public bool ValidateUsersGender(Gender choosedGender, int genderFromPersonalIdentifierCode)
+    public bool ValidateUsersGender(Gender chosenGender, int genderFromPersonalIdentifierCode)
     {
-        if (genderFromPersonalIdentifierCode == 2)
+        if (chosenGender == Gender.Female)
         {
-            if (choosedGender == Gender.Female)
+            if (genderFromPersonalIdentifierCode % 2 == 0)
+
                 return true;
             else
                 return false;
+
         }
-        else if (genderFromPersonalIdentifierCode == 3)
+
+        else if (chosenGender == Gender.Male)
         {
-            if (choosedGender == Gender.Male)
+            if (genderFromPersonalIdentifierCode % 2 != 0 )
+            {
                 return true;
+            }
             else
                 return false;
         }
+
+        else if (chosenGender == Gender.Custom)
+            return true;
         else
-            return true; 
+            return false;
     }
 
     public bool ValidateUsersChosenDateOfBirth(DateOnly dateOfBirthFromPersonalIdentifierCode, DateOnly chosenDateOfBirth)

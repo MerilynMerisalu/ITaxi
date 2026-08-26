@@ -16,7 +16,8 @@ namespace PersonalIdentifierCode
             _appBLL = appBLL;
         }
 
-        public PersonalIdentifierCodeValidatorResult Validate(DateOnly personalIdentifierDateOfBirth, DateOnly selectedDateOfBirth)
+        public PersonalIdentifierCodeValidatorResult Validate(DateOnly personalIdentifierDateOfBirth, DateOnly selectedDateOfBirth, int personalIdentifierCodeGender,
+            Gender selectedGender)
         {
             var result = ValidateChosenDateOfBirth(personalIdentifierDateOfBirth: personalIdentifierDateOfBirth, selectedDateOfBirth: selectedDateOfBirth);
             if (!result)
@@ -28,7 +29,18 @@ namespace PersonalIdentifierCode
                 };
                 return validatorResult;
             }
-            throw new NotImplementedException();
+            result = ValidateChosenGender(personalIdentifierCodeGender: personalIdentifierCodeGender, selectedGender: selectedGender);
+            if (!result)
+            {
+                var validatorResult = new PersonalIdentifierCodeValidatorResult
+                {
+                    IsValid = false,
+                    Error = PersonalIdentifierCodeValidatorError.SelectedGenderDoesNotMatch
+                };
+                return validatorResult;
+            }
+
+            return new PersonalIdentifierCodeValidatorResult { IsValid = true, Error = PersonalIdentifierCodeValidatorError.None };
 
         }
 

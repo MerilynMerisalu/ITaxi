@@ -43,6 +43,13 @@ namespace Tests
         };
 
 
+        public static TheoryData<DateOnly, DateOnly, int, Gender> AllData => new()
+        {
+            {new DateOnly(1993, 08, 14) , new DateOnly(1993, 08, 14), 2, Gender.Female},
+             {new DateOnly(1993, 08, 14) , new DateOnly(1993, 08, 14), 2, Gender.Custom},
+
+        };
+
         public static TheoryData<DateOnly, DateOnly> Data => new()
         {
             {new DateOnly(1993, 08, 14) , new DateOnly(1993, 08, 16)},
@@ -91,9 +98,9 @@ namespace Tests
         }
 
         [Theory]
-        [MemberData(nameof(Data))]
+        [MemberData(nameof(AllData))]
         public void ValidateChosenDateOfBirth_WhenTheSelectedDateOfBirthDoesNotMatchPersonalIdentifierDateOfBirth_ReturnsSelectedDateOfBirthDoesNotMatchError
-             (DateOnly personalIdentifierDateOfBirth, DateOnly selectedDate)
+             (DateOnly personalIdentifierDateOfBirth, DateOnly selectedDate, int personalIdentifierCodeGender, Gender selectedGender)
         {
             // Arrange
 
@@ -101,11 +108,35 @@ namespace Tests
 
             // Act
 
-            var result = _validator.Validate(personalIdentifierDateOfBirth, selectedDate);
+            var result = _validator.Validate(personalIdentifierDateOfBirth: personalIdentifierDateOfBirth, selectedDateOfBirth: selectedDate, 
+                        personalIdentifierCodeGender: personalIdentifierCodeGender, selectedGender: selectedGender);
 
             // Assert
             Assert.False(result.IsValid);
             Assert.Equal(PersonalIdentifierCodeValidatorError.SelectedDateOfBirthDoesNotMatch, result.Error);
+        }
+
+        [Theory]
+        [MemberData(nameof(AllData))]
+        public void ValidateUsersGender_WhenTheSelectedGenderDoesNotMatchPersonalIdentifierGender_ReturnsSelectedGenderDoesNotMatchError
+             (DateOnly personalIdentifierDateOfBirth, DateOnly selectedDate, int personalIdentifierCodeGender, Gender selectedGender)
+        {
+            // Arrange
+            _appUserServiceMock
+            .Setup(s => s.ValidateUsersChosenDateOfBirth(
+                personalIdentifierDateOfBirth,
+                selectedDate))
+                .Returns(true);
+            _appUserServiceMock.Setup(s => s.ValidateUsersGender(selectedGender, personalIdentifierCodeGender)).Returns(false);
+
+            // Act
+
+            var result = _validator.Validate(personalIdentifierDateOfBirth: personalIdentifierDateOfBirth, selectedDateOfBirth: selectedDate,
+                        personalIdentifierCodeGender: personalIdentifierCodeGender, selectedGender: selectedGender);
+
+            // Assert
+            Assert.False(result.IsValid);
+            Assert.Equal(PersonalIdentifierCodeValidatorError.SelectedGenderDoesNotMatch, result.Error);
         }
 
 
@@ -133,6 +164,31 @@ namespace Tests
                     Times.Once());
         }
 
-        
+
+        [Theory]
+        [MemberData(nameof(AllData))]
+        public void Validate_WhenAllValidationsPass_ReturnsValidResult(DateOnly personalIdentifierCodeDateOfBirth, DateOnly selectedDateOfBirth, 
+            int personalIdentifierCodeGender, Gender selectedGender)
+
+        {
+            // Arrange
+
+          _appUserServiceMock.Setup(s => s.ValidateUsersChosenDateOfBirth(
+                personalIdentifierCodeDateOfBirth,
+                selectedDateOfBirth))
+                .Returns(true);
+            _appUserServiceMock.Setup(s => s.ValidateUsersGender(selectedGender, personalIdentifierCodeGender)).Returns(true);
+            
+            // Act
+
+            var result = _validator.Validate(personalIdentifierDateOfBirth: personalIdentifierCodeDateOfBirth, selectedDateOfBirth: selectedDateOfBirth,
+                personalIdentifierCodeGender: personalIdentifierCodeGender, selectedGender: selectedGender);
+
+            // Assert
+            
+            Assert.True(result.IsValid);
+            Assert.Equal(PersonalIdentifierCodeValidatorError.None, result.Error);
+            
+        }
     }
 }
