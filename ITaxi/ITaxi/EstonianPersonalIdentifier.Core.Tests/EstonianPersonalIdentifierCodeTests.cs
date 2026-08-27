@@ -110,26 +110,17 @@ namespace EstonianPersonalIdentifier.Core.Tests
             var validationResult = EstonianPersonalCodeValidator.DoesPersonalIdentifierCodeHaveNonDigits(personalIdentifierCode, out int[] digits);
 
             // Assert
+            Assert.True(validationResult);
             Assert.Empty(digits);
 
         }
-        [Theory]
-        [InlineData("393081 4087")]
-        [InlineData(".3780613089")]
-        [InlineData("a4920515221")]
-        public void PersonalIdentifierCodeConsistOnlyDigits_WhenDigitsArrayEmpty_VerifiesDigitsEmpty(string personalIdentifierCode)
-        {
-            // Act
-            var validationResult = EstonianPersonalCodeValidator.DoesPersonalIdentifierCodeHaveNonDigits(personalIdentifierCode, out int[] digits);
-
-            Assert.Empty(digits);
-        }
+        
 
         [Theory]
         [InlineData("393081 4087")]
         [InlineData(".3780613089")]
         [InlineData("a4920515221")]
-        public void PersonalIdentifierCodeConsistOnlyDigits_WhenDigitsArrayEmpty_ReturnsInvalidLengthError(string personalIdentifierCode)
+        public void Validate_WhenPersonalIdentifierCodeContainsNonDigits_ReturnsContainsNonDigitsError(string personalIdentifierCode)
         {
             // Act
             var validationResult = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
@@ -208,7 +199,7 @@ namespace EstonianPersonalIdentifier.Core.Tests
         [Theory]
         [InlineData(0)]
         [InlineData(9)]
-        public static void GetYearPrefix_WhenPersonalIdentifierCodeIsInvalid_ReturnsArgumentOutOfRangeException(int firstDigit)
+        public static void GetYearPrefix_WhenPersonalIdentifierCodeIsInvalid_ThrowsArgumentOutOfRangeException(int firstDigit)
         {
           
             // Assert
@@ -381,7 +372,7 @@ namespace EstonianPersonalIdentifier.Core.Tests
 
         [Theory]
         [InlineData("49308140878")]
-        public static void Validate_WhenThePersonalIdentifierCodeIsValid_ReturnsValidPersonalIdentifierCode(string personalIdentifierCode)
+        public static void Validate_WhenPersonalIdentifierCodeIsValid_ReturnsValidResult(string personalIdentifierCode)
         {
             // Act
             var result = EstonianPersonalCodeValidator.Validate(personalIdentifierCode);
