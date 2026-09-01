@@ -165,4 +165,7 @@
   <data name="PersonalIdentificationCodeControlDigitError" xml:space="preserve">
     <value>The entered personal identification code does not meet the requirements. Please check the code.</value>
   </data>
+  <data name="FirstDigitError" xml:space="preserve">
+    <value>The first digit of a personal identifier code must be between 1 to 8.</value>
+  </data>
 </root>

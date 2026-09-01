@@ -76,8 +76,7 @@ function ValidatePersonalIdentifierNumber(input) {
     const PERSONALIDENTIFIERNUMBERERRORSPAN = document.getElementById('personal-identifier-error');
     const FIELD_NAME = input.labels[0].textContent.trim();
     const VALUE = input.value;
-    const REQUIRED_ERROR_MESSAGE = input.dataset.errorMessage;
-    REQUIRED_ERROR_MESSAGE.replace("{0}", FIELD_NAME);
+    const REQUIRED_ERROR_MESSAGE = input.dataset.errorMessage.replace("{0}", FIELD_NAME);
     const STRING_LENGTH_ERROR_MESSAGE = input.dataset.lengthErrorMessage;
     const GENDER_MISMATCH_ERROR_MESSAGE = input.dataset.genderMismatchErrorMessage;
     const STRING_LENGTH_MIN = input.minLength;
@@ -87,6 +86,17 @@ function ValidatePersonalIdentifierNumber(input) {
     const ENTER_DOB_ERROR = input.dataset.enterDobFirstErrorMessage;
     const SELECTED_DOB_MISMATCH_PERSONAL_IDENTIFIER_CODE_ERROR_MESSAGE = input.dataset.selectedDateMismatchPersonalIdentifierCodeErrorMessage;
     const CONTROL_DIGIT_ERROR_MESSAGE = input.dataset.invalidPersonalIdenticationCodeErrorMessage;
+    const FIRST_DIGIT_INVALID_ERROR_MESSAGE = input.dataset.firstDigitErrorMessage;
+    const PERSONALIDENTIFIERFIRSTDIGIT = Number.parseInt(VALUE[0]);
+    const IS_FIRST_DIGIT_VALID = IsFirstDigitValid(PERSONALIDENTIFIERFIRSTDIGIT);
+    if (IS_FIRST_DIGIT_VALID !== true) {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = FIRST_DIGIT_INVALID_ERROR_MESSAGE;
+        return PERSONALIDENTIFIERNUMBERERRORSPAN;
+    }
+    else {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+    }
     const GENDER = Number.parseInt(document.getElementById('gender-value').value);
     if (Number.isNaN(GENDER) === true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
@@ -110,7 +120,7 @@ function ValidatePersonalIdentifierNumber(input) {
     let result = IsNotEmpty(VALUE);
     if (result !== true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = REQUIRED_ERROR_MESSAGE;
+        return PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = REQUIRED_ERROR_MESSAGE;
     }
     result = ContainsOnlyDigits(VALUE);
     if (result !== true) {
@@ -135,7 +145,6 @@ function ValidatePersonalIdentifierNumber(input) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
     }
     
-    const PERSONALIDENTIFIERFIRSTDIGIT = Number.parseInt(VALUE[0]);
     result = ValidateGenderBasedOnPersonalIdentifier(GENDER, PERSONALIDENTIFIERFIRSTDIGIT);
     if (result !== true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";

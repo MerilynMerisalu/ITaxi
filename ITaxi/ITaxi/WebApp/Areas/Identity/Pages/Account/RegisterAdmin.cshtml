@@ -58,6 +58,7 @@
                 <label asp-for="Input.PersonalIdentifier"></label>
                 <input inputmode="numeric" type="text" asp-for="Input.PersonalIdentifier" data-error-message="@Common.RequiredAttributeErrorMessage"
                 data-length-error-message="@Common.ErrorMessageStringLengthMinMax" 
+                data-first-digit-error-message="@Register.FirstDigitError"
                 data-gender-mismatch-error-message="@Register.GenderError"
                 data-only-digits-error-message="@Common.ErrorMessageOnlyDigits"
                 data-choose-gender-first-error-message="@Register.ChooseGenderError"

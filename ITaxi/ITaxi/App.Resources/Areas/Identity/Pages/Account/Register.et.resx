@@ -165,4 +165,7 @@
   <data name="PersonalIdentificationCodeControlDigitError" xml:space="preserve">
     <value>Sisestatud isikukood ei vasta nõuetele. Palun kontrollige isikukoodi. </value>
   </data>
+  <data name="FirstDigitError" xml:space="preserve">
+    <value>Isikukoodi esimene number peab olema vahemikus 1–8.</value>
+  </data>
 </root>

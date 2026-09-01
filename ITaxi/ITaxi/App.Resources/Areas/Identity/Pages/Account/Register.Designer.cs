@@ -142,6 +142,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The first digit of a personal identifier code must be between 1 to 8..
+        /// </summary>
+        public static string FirstDigitError {
+            get {
+                return ResourceManager.GetString("FirstDigitError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The first digit of a personal identifier number does not match the selected gender..
         /// </summary>
         public static string GenderError {
