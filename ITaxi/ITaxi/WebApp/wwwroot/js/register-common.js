@@ -88,15 +88,7 @@ function ValidatePersonalIdentifierNumber(input) {
     const CONTROL_DIGIT_ERROR_MESSAGE = input.dataset.invalidPersonalIdenticationCodeErrorMessage;
     const FIRST_DIGIT_INVALID_ERROR_MESSAGE = input.dataset.firstDigitErrorMessage;
     const PERSONALIDENTIFIERFIRSTDIGIT = Number.parseInt(VALUE[0]);
-    const IS_FIRST_DIGIT_VALID = IsFirstDigitValid(PERSONALIDENTIFIERFIRSTDIGIT);
-    if (IS_FIRST_DIGIT_VALID !== true) {
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = FIRST_DIGIT_INVALID_ERROR_MESSAGE;
-        return PERSONALIDENTIFIERNUMBERERRORSPAN;
-    }
-    else {
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-    }
+    
     const GENDER = Number.parseInt(document.getElementById('gender-value').value);
     if (Number.isNaN(GENDER) === true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
@@ -140,6 +132,16 @@ function ValidatePersonalIdentifierNumber(input) {
                 .replace("{2}", STRING_LENGTH_MAX);
         return PERSONALIDENTIFIERNUMBERERRORSPAN;
 
+    }
+    else {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+    }
+
+    const IS_FIRST_DIGIT_VALID = IsFirstDigitValid(PERSONALIDENTIFIERFIRSTDIGIT);
+    if (IS_FIRST_DIGIT_VALID !== true) {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = FIRST_DIGIT_INVALID_ERROR_MESSAGE;
+        return PERSONALIDENTIFIERNUMBERERRORSPAN;
     }
     else {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
