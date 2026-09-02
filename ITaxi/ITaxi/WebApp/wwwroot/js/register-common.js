@@ -1,4 +1,5 @@
-﻿async function CountryIdChanged(value) {
+﻿
+async function CountryIdChanged(value) {
     PopulateDropDownList("countyId", [], false);
     PopulateDropDownList("cityId", [], false);
     if (!value) return;
@@ -162,7 +163,9 @@ function ValidatePersonalIdentifierNumber(input) {
     
     const BIRTHYEARBASE = GetBirthYearBase(PERSONALIDENTIFIERFIRSTDIGIT);
     const PERSONALIDETIFICATIONDATEOFBIRTH = GetDateOfBirthFromPersonalIdentifierNumber(BIRTHYEARBASE, VALUE);
-   
+
+    dateofbirthvalidation(PERSONALIDETIFICATIONDATEOFBIRTH);
+
     result = CompareDateOfBirths(PERSONALIDETIFICATIONDATEOFBIRTH, DATE_OF_BIRTH_VALUE);
     if (result !== true) {
         return PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = SELECTED_DOB_MISMATCH_PERSONAL_IDENTIFIER_CODE_ERROR_MESSAGE;
@@ -272,6 +275,8 @@ function GetDateOfBirthFromPersonalIdentifierNumber(BASE_OF_DATE_OF_BIRTH, DATE_
 
 }
 
+
+dateofbirthvalidation();
 function CompareDateOfBirths(PERSONALIDETIFICATIONDATEOFBIRTH, DATE_OF_BIRTH_VALUE) {
     const DATE_OF_BIRTH_VALUE_TEXT = DATE_OF_BIRTH_VALUE.toString();
     return DATE_OF_BIRTH_VALUE_TEXT === PERSONALIDETIFICATIONDATEOFBIRTH;
