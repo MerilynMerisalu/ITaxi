@@ -1,4 +1,9 @@
-﻿ function dateofbirthvalidation(personal_identifier_date_of_birth) {
-    let date_of_birth = new Date(personal_identifier_date_of_birth);
-    console.log(date_of_birth);
+﻿function selecteddateofbirthvalidation(selected_date_of_birth) {
+    let date_of_birth = selected_date_of_birth.getTime();
+    if (Number.isNaN(date_of_birth)) {
+        return false;
+    }
+    else {
+        return true;
+    }
 }
