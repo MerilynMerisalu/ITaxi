@@ -29,6 +29,7 @@ async function CountyIdChanged(value) {
 function BirthDateValidation(input) {
     const VALUE = input.value;
     const ERRORMESSAGE = input.dataset.errorMessage;
+    const INVALIDDATEERRORMESSAGE = input.dataset.invalidDateofbirthErrormessage
     let dateOfToday = new Date();
     dateOfToday.setHours(0, 0, 0, 0);
 
@@ -37,10 +38,10 @@ function BirthDateValidation(input) {
     let dateOfBirth = new Date(VALUE);
     dateOfBirth.setHours(0, 0, 0, 0);
 
-    result = selecteddateofbirthvalidation(dateOfBirth);
+    result = IsDateOfBirthValid(dateOfBirth);
     if (!result) {
         DATEOFBIRTHERRORSPAN.textContent = '';
-        return DATEOFBIRTHERRORSPAN.textContent = "Entered date of birth is invalid!";
+        return DATEOFBIRTHERRORSPAN.textContent = INVALIDDATEERRORMESSAGE;
 
     }
     else {
