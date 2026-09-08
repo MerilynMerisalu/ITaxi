@@ -144,7 +144,7 @@
   <data name="Address" xml:space="preserve">
     <value>Address</value>
   </data>
-  <data name="DateOfBirthInvalid" xml:space="preserve">
+  <data name="DateOfBirthLaterThanTodayError" xml:space="preserve">
     <value>Date of Birth must be earlier than today's date.</value>
   </data>
   <data name="MinimumRegistrationAgeError" xml:space="preserve">
@@ -159,13 +159,19 @@
   <data name="EnterDateOfBirth" xml:space="preserve">
     <value>Before entering your personal identifier number, please fill out your date of birth.</value>
   </data>
-  <data name="PersonalIdentifierDateOfBirthInvalid" xml:space="preserve">
-    <value>Selected date does not equal with the date part of the personal identification code.</value>
+  <data name="PersonalIdentifierDateOfBirthAndSelectedDateMismatch" xml:space="preserve">
+    <value>The selected date does not match the date of birth in the personal identification code.</value>
   </data>
   <data name="PersonalIdentificationCodeControlDigitError" xml:space="preserve">
     <value>The entered personal identification code does not meet the requirements. Please check the code.</value>
   </data>
   <data name="FirstDigitError" xml:space="preserve">
     <value>The first digit of a personal identifier code must be between 1 to 8</value>
+  </data>
+  <data name="PersonalIdentifierCodeInvalidDateOfBirthError" xml:space="preserve">
+    <value>The entered personal identification code contains an invalid date of birth</value>
+  </data>
+  <data name="EnteredInvalidDateOfBirthError" xml:space="preserve">
+    <value>Entered date of birth is invalid</value>
   </data>
 </root>

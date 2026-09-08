@@ -159,10 +159,10 @@ public class RegisterAdminModel : PageModel
 
     public void DateOfBirthValidation()
     {
-        bool isDateOfBirthValid = _appBLL.AppUsers.ValidateUsersDateOfBirth(Input.DateOfBirth);
+        bool isDateOfBirthValid = _appBLL.AppUsers.ValidateUsersDateOfBirthIsEarlierThanToday(Input.DateOfBirth);
         if (!isDateOfBirthValid)
         {
-          ModelState.AddModelError(nameof(Input.DateOfBirth), Register.DateOfBirthInvalid);
+          ModelState.AddModelError(nameof(Input.DateOfBirth), Register.DateOfBirthLaterThanTodayError);
               
         }
 
@@ -203,7 +203,7 @@ public class RegisterAdminModel : PageModel
         var result = _appBLL.AppUsers.ValidateUsersChosenDateOfBirth(chosenDateOfBirth: DateOnly.FromDateTime(Input.DateOfBirth), dateOfBirthFromPersonalIdentifierCode: personalIdentifierDateOfBirth.Value);
         if (!result)
         {
-            ModelState.AddModelError("Input.DateOfBirth", Register.PersonalIdentifierDateOfBirthInvalid);
+            ModelState.AddModelError("Input.DateOfBirth", Register.PersonalIdentifierDateOfBirthAndSelectedDateMismatch);
         }
     }
 

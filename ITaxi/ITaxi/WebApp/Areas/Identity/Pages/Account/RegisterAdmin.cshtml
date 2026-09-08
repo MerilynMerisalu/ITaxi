@@ -46,7 +46,8 @@
                 <label asp-for="Input.DateOfBirth"></label>
                 <input id="date_value" type="date" asp-for="Input.DateOfBirth"
                        class="form-control"
-                       data-error-message="@Register.DateOfBirthInvalid"
+                       data-invalid-dateofbirth-errormessage="@Register.EnteredInvalidDateOfBirthError"
+                       data-error-message="@Register.DateOfBirthLaterThanTodayError"
                        data-age-error-message="@Register.MinimumRegistrationAgeError"
                        alt="@AdminRegister.EnterYourDateOfBirthHere"
                        onblur="BirthDateValidation(this)" />
@@ -63,7 +64,7 @@
                 data-only-digits-error-message="@Common.ErrorMessageOnlyDigits"
                 data-choose-gender-first-error-message="@Register.ChooseGenderError"
                 data-enter-dob-first-error-message="@Register.EnterDateOfBirth"
-                data-selected-date-mismatch-personal-identifier-code-error-message="@Register.PersonalIdentifierDateOfBirthInvalid"
+                data-selected-date-mismatch-personal-identifier-code-error-message="@Register.PersonalIdentifierDateOfBirthAndSelectedDateMismatch"
                 data-invalid-personal-identication-code-error-message=@Register.PersonalIdentificationCodeControlDigitError"
                  class="form-control" alt="@AdminRegister.EnterYourPersonalIdentifierCodeHere"
                        placeholder="@AdminRegister.EnterYourPersonalIdentifierCodeHere"

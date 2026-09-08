@@ -32,7 +32,7 @@ public class AppUserService : BaseEntityService<App.BLL.DTO.Identity.AppUser, Ap
         return Mapper.Map(await Repository.FirstOrDefaultAsync(appUserId, noTracking, noIncludes))!;
     }
 
-    public bool ValidateUsersDateOfBirth(DateTime dateOfBirth)
+    public bool ValidateUsersDateOfBirthIsEarlierThanToday(DateTime dateOfBirth)
     {
         var dateOfToday = DateTime.Today;
         bool result = dateOfBirth <= dateOfToday;

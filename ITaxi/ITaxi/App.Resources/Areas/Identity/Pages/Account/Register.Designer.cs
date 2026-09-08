@@ -117,9 +117,9 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         /// <summary>
         ///   Looks up a localized string similar to Date of Birth must be earlier than today&apos;s date..
         /// </summary>
-        public static string DateOfBirthInvalid {
+        public static string DateOfBirthLaterThanTodayError {
             get {
-                return ResourceManager.GetString("DateOfBirthInvalid", resourceCulture);
+                return ResourceManager.GetString("DateOfBirthLaterThanTodayError", resourceCulture);
             }
         }
         
@@ -129,6 +129,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         public static string EnterDateOfBirth {
             get {
                 return ResourceManager.GetString("EnterDateOfBirth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entered date of birth is invalid.
+        /// </summary>
+        public static string EnteredInvalidDateOfBirthError {
+            get {
+                return ResourceManager.GetString("EnteredInvalidDateOfBirthError", resourceCulture);
             }
         }
         
@@ -196,11 +205,20 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected date does not equal with the date part of the personal identification code..
+        ///   Looks up a localized string similar to The entered personal identification code contains an invalid date of birth.
         /// </summary>
-        public static string PersonalIdentifierDateOfBirthInvalid {
+        public static string PersonalIdentifierCodeInvalidDateOfBirthError {
             get {
-                return ResourceManager.GetString("PersonalIdentifierDateOfBirthInvalid", resourceCulture);
+                return ResourceManager.GetString("PersonalIdentifierCodeInvalidDateOfBirthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected date does not match the date of birth in the personal identification code..
+        /// </summary>
+        public static string PersonalIdentifierDateOfBirthAndSelectedDateMismatch {
+            get {
+                return ResourceManager.GetString("PersonalIdentifierDateOfBirthAndSelectedDateMismatch", resourceCulture);
             }
         }
         

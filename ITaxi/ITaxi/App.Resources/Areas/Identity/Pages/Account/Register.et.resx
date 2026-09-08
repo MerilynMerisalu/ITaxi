@@ -144,7 +144,7 @@
   <data name="Address" xml:space="preserve">
     <value>Aadress</value>
   </data>
-  <data name="DateOfBirthInvalid" xml:space="preserve">
+  <data name="DateOfBirthLaterThanTodayError" xml:space="preserve">
     <value>Sünnikuupäev peab olema varasem kui tänane kuupäev.</value>
   </data>
   <data name="MinimumRegistrationAgeError" xml:space="preserve">
@@ -159,7 +159,7 @@
   <data name="EnterDateOfBirth" xml:space="preserve">
     <value>Enne isikukoodi sisestamist, palun valige sünnikuupäev.</value>
   </data>
-  <data name="PersonalIdentifierDateOfBirthInvalid" xml:space="preserve">
+  <data name="PersonalIdentifierDateOfBirthAndSelectedDateMismatch" xml:space="preserve">
     <value>Valitud kuupäev ei ühti isikukoodi kuupäeva osaga.</value>
   </data>
   <data name="PersonalIdentificationCodeControlDigitError" xml:space="preserve">
@@ -167,5 +167,11 @@
   </data>
   <data name="FirstDigitError" xml:space="preserve">
     <value>Isikukoodi esimene number peab olema vahemikus 1–8</value>
+  </data>
+  <data name="PersonalIdentifierCodeInvalidDateOfBirthError" xml:space="preserve">
+    <value>Sisestatud isikukood sisaldab olematut sünnikuupäeva</value>
+  </data>
+  <data name="EnteredInvalidDateOfBirthError" xml:space="preserve">
+    <value>Sisestatud kuupäev on olematu</value>
   </data>
 </root>
