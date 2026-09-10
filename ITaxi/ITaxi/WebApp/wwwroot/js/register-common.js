@@ -284,11 +284,21 @@ function GetDateOfBirthFromPersonalIdentifierNumber(BASE_OF_DATE_OF_BIRTH, DATE_
     const DATE_OF_BIRTH_MONTH_DIGITS = DATE_OF_BIRTH_TEXT.substring(3, 5);
     const DATE_OF_BIRTH_DAY_DIGITS = DATE_OF_BIRTH_TEXT.substring(5, 7);
     let personal_identifier_date_of_birth = `${YEAR}-${DATE_OF_BIRTH_MONTH_DIGITS}-${DATE_OF_BIRTH_DAY_DIGITS}`;
+    IsDateOfBirthFromPersonalIdentifierNumberValid(personal_identifier_date_of_birth);
     return personal_identifier_date_of_birth;
 
 }
 
+function IsDateOfBirthFromPersonalIdentifierNumberValid(personal_identifier_date_of_birth) {
+    do {
 
+        let indexOfDash = personal_identifier_date_of_birth.indexOf('-')
+        const YEAR = Number.parseInt(personal_identifier_date_of_birth.substring(0, indexOfDash));
+        console.log(indexOfDash);
+        console.log(YEAR);
+    } while (personal_identifier_date_of_birth.indexOf('-') !== -1);
+    
+    }
 
 function CompareDateOfBirths(PERSONALIDETIFICATIONDATEOFBIRTH, DATE_OF_BIRTH_VALUE) {
     const DATE_OF_BIRTH_VALUE_TEXT = DATE_OF_BIRTH_VALUE.toString();
