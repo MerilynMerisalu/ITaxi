@@ -97,6 +97,7 @@ function ValidatePersonalIdentifierNumber(input) {
     const CONTAINS_ONLY_DIGITS_ERROR_MESSAGE = input.dataset.onlyDigitsErrorMessage;
     const CHOOSE_GENDER_ERROR = input.dataset.chooseGenderFirstErrorMessage;
     const ENTER_DOB_ERROR = input.dataset.enterDobFirstErrorMessage;
+    const INVALID_DOB_ERROR_MESSAGE = input.dataset.invalidDobPersonalIdentificationErrorMessage
     const SELECTED_DOB_MISMATCH_PERSONAL_IDENTIFIER_CODE_ERROR_MESSAGE = input.dataset.selectedDateMismatchPersonalIdentifierCodeErrorMessage;
     const CONTROL_DIGIT_ERROR_MESSAGE = input.dataset.invalidPersonalIdenticationCodeErrorMessage;
     const FIRST_DIGIT_INVALID_ERROR_MESSAGE = input.dataset.firstDigitErrorMessage;
@@ -177,10 +178,15 @@ function ValidatePersonalIdentifierNumber(input) {
     
     const BIRTHYEARBASE = GetBirthYearBase(PERSONALIDENTIFIERFIRSTDIGIT);
     const PERSONALIDETIFICATIONDATEOFBIRTH = GetDateOfBirthFromPersonalIdentifierNumber(BIRTHYEARBASE, VALUE);
+    result = IsDateOfBirthFromPersonalIdentifierNumberValid(PERSONALIDETIFICATIONDATEOFBIRTH);
+    if (result != true) {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+        return PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = INVALID_DOB_ERROR_MESSAGE;
+    }
 
-    
     result = CompareDateOfBirths(PERSONALIDETIFICATIONDATEOFBIRTH, DATE_OF_BIRTH_VALUE);
     if (result !== true) {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
         return PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = SELECTED_DOB_MISMATCH_PERSONAL_IDENTIFIER_CODE_ERROR_MESSAGE;
     }
     else {
@@ -194,8 +200,6 @@ function ValidatePersonalIdentifierNumber(input) {
     }
     else
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = '';
-    
-    
 }
 
 
@@ -284,19 +288,25 @@ function GetDateOfBirthFromPersonalIdentifierNumber(BASE_OF_DATE_OF_BIRTH, DATE_
     const DATE_OF_BIRTH_MONTH_DIGITS = DATE_OF_BIRTH_TEXT.substring(3, 5);
     const DATE_OF_BIRTH_DAY_DIGITS = DATE_OF_BIRTH_TEXT.substring(5, 7);
     let personal_identifier_date_of_birth = `${YEAR}-${DATE_OF_BIRTH_MONTH_DIGITS}-${DATE_OF_BIRTH_DAY_DIGITS}`;
-    IsDateOfBirthFromPersonalIdentifierNumberValid(personal_identifier_date_of_birth);
     return personal_identifier_date_of_birth;
 
 }
 
 function IsDateOfBirthFromPersonalIdentifierNumberValid(personal_identifier_date_of_birth) {
-    do {
+    const YEAR = Number.parseInt(personal_identifier_date_of_birth.substring(0, 4));
+    const MONTH = Number.parseInt(personal_identifier_date_of_birth.substring(5, 7)) -1;
+    const DAY = Number.parseInt(personal_identifier_date_of_birth.substring(8, 10));
 
-        let indexOfDash = personal_identifier_date_of_birth.indexOf('-')
-        const YEAR = Number.parseInt(personal_identifier_date_of_birth.substring(0, indexOfDash));
-        console.log(indexOfDash);
-        console.log(YEAR);
-    } while (personal_identifier_date_of_birth.indexOf('-') !== -1);
+    const DATE_OF_BIRTH = new Date(YEAR, MONTH, DAY);
+    if ((DATE_OF_BIRTH.getFullYear() !== YEAR) || (DATE_OF_BIRTH.getMonth() !== MONTH) || (DATE_OF_BIRTH.getDate() !== DAY))  {
+        return false;
+}
+    const result = IsDateOfBirthValid(DATE_OF_BIRTH);
+    if (result)
+        return true;
+    else
+        return false;
+
     
     }
 
