@@ -26,66 +26,43 @@ async function CountyIdChanged(value) {
     PopulateDropDownList("cityId", data, false);
 }
 
+
 function BirthDateValidation(input) {
     const VALUE = input.value;
-    const ERRORMESSAGE = input.dataset.errorMessage;
-    const INVALIDDATEERRORMESSAGE = input.dataset.invalidDateofbirthErrormessage
-    let dateOfToday = new Date();
-    dateOfToday.setHours(0, 0, 0, 0);
-
-    const DATEOFBIRTHERRORSPAN = document.getElementById("error-display");
-
+    const DATEOFBIRTHERRORSPAN = document.getElementById('error-display');
+    const INVALIDDATEOFBIRTHERRORMESSAGE = input.dataset.invalidDateofbirthErrormessage;
+    const DATEOFBIRTHISGREATERTHANTODAYERRORMESSAGE = input.dataset.dateofbirthlaterthantodayErrormessage;
+    const AGEERRORMESSAGE = input.dataset.ageErrorMessage.replace("{0}", 18);
     let dateOfBirth = new Date(VALUE);
-    dateOfBirth.setHours(0, 0, 0, 0);
+    let result = IsDateOfBirthValid(dateOfBirth);
+    if (!result) {
+        return DATEOFBIRTHERRORSPAN.textContent = INVALIDDATEOFBIRTHERRORMESSAGE;
 
-    result = IsDateOfBirthValid(dateOfBirth);
+    }
+    else {
+        DATEOFBIRTHERRORSPAN.textContent = '';
+    }
+    result = IsDateOfBirthGreaterThanAllowed(dateOfBirth, false);
     if (!result) {
         DATEOFBIRTHERRORSPAN.textContent = '';
-        return DATEOFBIRTHERRORSPAN.textContent = INVALIDDATEERRORMESSAGE;
+        return DATEOFBIRTHERRORSPAN.textContent = DATEOFBIRTHISGREATERTHANTODAYERRORMESSAGE;
+    }
+    else {
+         DATEOFBIRTHERRORSPAN.textContent = '';
+    }
 
+    result = ComputeAge(dateOfBirth);
+    if (!result) {
+        DATEOFBIRTHERRORSPAN.textContent = '';
+        return DATEOFBIRTHERRORSPAN.textContent = AGEERRORMESSAGE;
     }
     else {
         DATEOFBIRTHERRORSPAN.textContent = '';
-         DATEOFBIRTHERRORSPAN;
-    }
-    if (dateOfBirth >= dateOfToday) {
-        DATEOFBIRTHERRORSPAN.textContent = ""
-        return DATEOFBIRTHERRORSPAN.textContent = ERRORMESSAGE;
-    }
-    else {
-        DATEOFBIRTHERRORSPAN.textContent = "";
-        CalculateAge(dateOfBirth, dateOfToday, input);
     }
 }
 
-function CalculateAge(dateOfBirth, dateOfToday, input) {
-    let age = dateOfToday.getFullYear() - dateOfBirth.getFullYear();
-
-    const birthdayHasNotOccurred =
-        dateOfBirth.getMonth() > dateOfToday.getMonth() ||
-        (
-            dateOfBirth.getMonth() === dateOfToday.getMonth() &&
-            dateOfBirth.getDate() > dateOfToday.getDate()
-        );
-
-    if (birthdayHasNotOccurred) {
-        age--;
-    }
-
-    let result = ValidateAge(age);
-    const AGE_ERROR_DISPLAY_SPAN = document.getElementById("error-display");
-
-    if (result !== true) {
-        const AGE_ERROR = input.dataset.ageErrorMessage.replace("{0}", 18);
-        AGE_ERROR_DISPLAY_SPAN.textContent = AGE_ERROR;
-    }
-        
-    else
-        AGE_ERROR_DISPLAY_SPAN.textContent = "";
-}
 
 function ValidatePersonalIdentifierNumber(input) {
-    
     const PERSONALIDENTIFIERNUMBERERRORSPAN = document.getElementById('personal-identifier-error');
     const FIELD_NAME = input.labels[0].textContent.trim();
     const VALUE = input.value;
@@ -179,7 +156,7 @@ function ValidatePersonalIdentifierNumber(input) {
     const BIRTHYEARBASE = GetBirthYearBase(PERSONALIDENTIFIERFIRSTDIGIT);
     const PERSONALIDETIFICATIONDATEOFBIRTH = GetDateOfBirthFromPersonalIdentifierNumber(BIRTHYEARBASE, VALUE);
     result = IsDateOfBirthFromPersonalIdentifierNumberValid(PERSONALIDETIFICATIONDATEOFBIRTH);
-    if (result != true) {
+    if (result !== true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
         return PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = INVALID_DOB_ERROR_MESSAGE;
     }
@@ -192,6 +169,7 @@ function ValidatePersonalIdentifierNumber(input) {
     else {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
     }
+
 
     let computed_control_number = ComputeControlDigit(VALUE);
     result = ValidateControlDigit(VALUE, computed_control_number);
@@ -256,16 +234,9 @@ function ValidatePersonalIdentifierLength(personalIdentifier) {
     return true;
 }
 
-function ValidateAge(age) {
-    const minimumRegistrationAge = 18;
-    
-    if (age < minimumRegistrationAge) 
-        return false;
-    else
-        return true;
-    
 
-}
+
+
 
 function IsNotEmpty(value) {
     if (!value || value === "") {

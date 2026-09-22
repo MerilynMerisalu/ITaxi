@@ -47,7 +47,7 @@
                 <input id="date_value" type="date" asp-for="Input.DateOfBirth"
                        class="form-control"
                        data-invalid-dateofbirth-errormessage="@Register.EnteredInvalidDateOfBirthError"
-                       data-error-message="@Register.DateOfBirthLaterThanTodayError"
+                       data-dateofbirthlaterthantoday-errormessage="@Register.DateOfBirthLaterThanTodayError"
                        data-age-error-message="@Register.MinimumRegistrationAgeError"
                        alt="@AdminRegister.EnterYourDateOfBirthHere"
                        onblur="BirthDateValidation(this)" />
@@ -66,6 +66,7 @@
                 data-enter-dob-first-error-message="@Register.EnterDateOfBirth"
                 data-invalid-dob-personal-identification-error-message="@Register.PersonalIdentifierCodeInvalidDateOfBirthError"
                 data-selected-date-mismatch-personal-identifier-code-error-message="@Register.PersonalIdentifierDateOfBirthAndSelectedDateMismatch"
+                data-age-error-message="@Register.MinimumRegistrationAgeError"
                 data-invalid-personal-identication-code-error-message=@Register.PersonalIdentificationCodeControlDigitError"
                  class="form-control" alt="@AdminRegister.EnterYourPersonalIdentifierCodeHere"
                        placeholder="@AdminRegister.EnterYourPersonalIdentifierCodeHere"
@@ -166,6 +167,6 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/date-of-birth-validator.js" asp-append-version="true"></script>
+    <script src="~/js/date-of-birth-validator.js" asp-append-version="true"></script> 
     <script src="~/js/register-common.js" asp-append-version="true"></script>
 }
