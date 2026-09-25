@@ -70,7 +70,7 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Before entering your personal identifier number, please choose your gender..
+        ///   Looks up a localized string similar to Please choose your gender..
         /// </summary>
         public static string ChooseGenderError {
             get {

@@ -154,7 +154,7 @@
     <value>Isikukoodi esimene number ei ühti valitud sooga.</value>
   </data>
   <data name="ChooseGenderError" xml:space="preserve">
-    <value>Enne isikukoodi sisestamist, palun valige sugu.</value>
+    <value>Palun valige sugu.</value>
   </data>
   <data name="EnterDateOfBirth" xml:space="preserve">
     <value>Enne isikukoodi sisestamist, palun valige sünnikuupäev.</value>
@@ -172,6 +172,6 @@
     <value>Sisestatud isikukood sisaldab olematut sünnikuupäeva</value>
   </data>
   <data name="EnteredInvalidDateOfBirthError" xml:space="preserve">
-    <value>Sisestatud kuupäev on olematu</value>
+    <value>Sisestatud kuupäev on olematu.</value>
   </data>
 </root>

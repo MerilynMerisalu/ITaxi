@@ -154,7 +154,7 @@
     <value>The first digit of a personal identifier number does not match the selected gender.</value>
   </data>
   <data name="ChooseGenderError" xml:space="preserve">
-    <value>Before entering your personal identifier number, please choose your gender.</value>
+    <value>Please choose your gender.</value>
   </data>
   <data name="EnterDateOfBirth" xml:space="preserve">
     <value>Before entering your personal identifier number, please fill out your date of birth.</value>

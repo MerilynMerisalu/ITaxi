@@ -36,9 +36,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.Gender"></label>
-                <select id="gender-value" asp-for="Input.Gender" class="form-control" asp-items="Html.GetEnumSelectList<Gender>()">
+                <select id="gender-select" asp-for="Input.Gender" class="form-control" asp-items="Html.GetEnumSelectList<Gender>()"
+                        data-choose-gender-first-error-message="@Register.ChooseGenderError" onblur="GenderValidation(this)">
                     <option>@Common.PleaseSelect</option>
                 </select>
+                <span id="gender-error-display" class="text-danger"></span>
                 <span asp-validation-for="Input.Gender" class="text-danger"></span>
                 
             </div>

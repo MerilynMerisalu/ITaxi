@@ -26,7 +26,19 @@ async function CountyIdChanged(value) {
     PopulateDropDownList("cityId", data, false);
 }
 
-
+function GenderValidation(select) {
+    const VALUE = Number.parseInt(select.value);
+    const selectFirstErrorMessage = select.dataset.chooseGenderFirstErrorMessage;
+    const GENDERERRORSPAN = document.getElementById('gender-error-display');
+    const PERSONALIDENTIFIERCODEERRORSPAN = document.getElementById('personal-identifier-error');
+    if (Number.isNaN(VALUE) === true) {
+        return false;
+      
+    }
+    
+    else
+        return true;
+}
 function BirthDateValidation(input) {
     const VALUE = input.value;
     const DATEOFBIRTHERRORSPAN = document.getElementById('error-display');
@@ -64,6 +76,7 @@ function BirthDateValidation(input) {
 
 function ValidatePersonalIdentifierNumber(input) {
     const PERSONALIDENTIFIERNUMBERERRORSPAN = document.getElementById('personal-identifier-error');
+    const GENDERERRORSPAN = document.getElementById('gender-error-display');
     const FIELD_NAME = input.labels[0].textContent.trim();
     const VALUE = input.value;
     const REQUIRED_ERROR_MESSAGE = input.dataset.errorMessage.replace("{0}", FIELD_NAME);
@@ -72,7 +85,7 @@ function ValidatePersonalIdentifierNumber(input) {
     const STRING_LENGTH_MIN = input.minLength;
     const STRING_LENGTH_MAX = input.maxLength;
     const CONTAINS_ONLY_DIGITS_ERROR_MESSAGE = input.dataset.onlyDigitsErrorMessage;
-    const CHOOSE_GENDER_ERROR = input.dataset.chooseGenderFirstErrorMessage;
+    const CHOOSE_GENDER_ERROR_MESSAGE = input.dataset.chooseGenderFirstErrorMessage;
     const ENTER_DOB_ERROR = input.dataset.enterDobFirstErrorMessage;
     const INVALID_DOB_ERROR_MESSAGE = input.dataset.invalidDobPersonalIdentificationErrorMessage
     const SELECTED_DOB_MISMATCH_PERSONAL_IDENTIFIER_CODE_ERROR_MESSAGE = input.dataset.selectedDateMismatchPersonalIdentifierCodeErrorMessage;
@@ -121,15 +134,10 @@ function ValidatePersonalIdentifierNumber(input) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
     }
 
-    const GENDER = Number.parseInt(document.getElementById('gender-value').value);
-    if (Number.isNaN(GENDER) === true) {
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = CHOOSE_GENDER_ERROR;
-        return PERSONALIDENTIFIERNUMBERERRORSPAN;
-    }
-    else {
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-    }
+    const SELECT = document.getElementById('gender-select');
+
+    result = GenderValidation(SELECT);
+    
 
     const DATE_OF_BIRTH_VALUE = document.getElementById("date_value").value;
     if (IsNotEmpty(DATE_OF_BIRTH_VALUE) !== true) {
@@ -140,7 +148,7 @@ function ValidatePersonalIdentifierNumber(input) {
     else {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
     }
-
+    const GENDER = document.getElementById('gender-select').value;
     
     result = ValidateGenderBasedOnPersonalIdentifier(GENDER, PERSONALIDENTIFIERFIRSTDIGIT);
     if (result !== true) {
@@ -182,6 +190,7 @@ function ValidatePersonalIdentifierNumber(input) {
 
 
 function ValidateGenderBasedOnPersonalIdentifier(GENDER, PERSONALIDENTIFIERFIRSTDIGIT) {
+    GENDER = Number.parseInt(GENDER);
     if (GENDER === 2) {
         if (PERSONALIDENTIFIERFIRSTDIGIT % 2 !== 0)
             return false;
