@@ -32,12 +32,17 @@ function GenderValidation(select) {
     const GENDERERRORSPAN = document.getElementById('gender-error-display');
     const PERSONALIDENTIFIERCODEERRORSPAN = document.getElementById('personal-identifier-error');
     if (Number.isNaN(VALUE) === true) {
+        GENDERERRORSPAN.textContent = selectFirstErrorMessage;
         return false;
-      
+
     }
-    
-    else
+
+    else {
+        GENDERERRORSPAN.textContent = "";
+        PERSONALIDENTIFIERCODEERRORSPAN.textContent = "";
         return true;
+    }
+        
 }
 function BirthDateValidation(input) {
     const VALUE = input.value;
@@ -137,8 +142,13 @@ function ValidatePersonalIdentifierNumber(input) {
     const SELECT = document.getElementById('gender-select');
 
     result = GenderValidation(SELECT);
+    if (!result) {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = CHOOSE_GENDER_ERROR_MESSAGE;
+        GENDERERRORSPAN.textContent = CHOOSE_GENDER_ERROR_MESSAGE;
+        return;
+    }
     
-
     const DATE_OF_BIRTH_VALUE = document.getElementById("date_value").value;
     if (IsNotEmpty(DATE_OF_BIRTH_VALUE) !== true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
