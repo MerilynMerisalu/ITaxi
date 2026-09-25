@@ -174,4 +174,7 @@
   <data name="EnteredInvalidDateOfBirthError" xml:space="preserve">
     <value>Entered date of birth is invalid</value>
   </data>
+  <data name="ChooseGenderFirst" xml:space="preserve">
+    <value>Before entering your personal identifier code, please choose your gender.</value>
+  </data>
 </root>

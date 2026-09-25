@@ -37,7 +37,7 @@
             <div class="form-group">
                 <label asp-for="Input.Gender"></label>
                 <select id="gender-select" asp-for="Input.Gender" class="form-control" asp-items="Html.GetEnumSelectList<Gender>()"
-                        data-choose-gender-first-error-message="@Register.ChooseGenderError" onchange="GenderValidation(this)">
+                        data-choose-gender-error-message="@Register.ChooseGenderError" onchange="GenderValidation(this)">
                     <option>@Common.PleaseSelect</option>
                 </select>
                 <span id="gender-error-display" class="text-danger"></span>
@@ -64,7 +64,7 @@
                 data-first-digit-error-message="@Register.FirstDigitError"
                 data-gender-mismatch-error-message="@Register.GenderError"
                 data-only-digits-error-message="@Common.ErrorMessageOnlyDigits"
-                data-choose-gender-first-error-message="@Register.ChooseGenderError"
+                data-choose-gender-first-error-message="@Register.ChooseGenderFirst"
                 data-enter-dob-first-error-message="@Register.EnterDateOfBirth"
                 data-invalid-dob-personal-identification-error-message="@Register.PersonalIdentifierCodeInvalidDateOfBirthError"
                 data-selected-date-mismatch-personal-identifier-code-error-message="@Register.PersonalIdentifierDateOfBirthAndSelectedDateMismatch"

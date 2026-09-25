@@ -28,11 +28,11 @@ async function CountyIdChanged(value) {
 
 function GenderValidation(select) {
     const VALUE = Number.parseInt(select.value);
-    const selectFirstErrorMessage = select.dataset.chooseGenderFirstErrorMessage;
+    const selectGenderErrorMessage = select.dataset.chooseGenderErrorMessage;
     const GENDERERRORSPAN = document.getElementById('gender-error-display');
     const PERSONALIDENTIFIERCODEERRORSPAN = document.getElementById('personal-identifier-error');
     if (Number.isNaN(VALUE) === true) {
-        GENDERERRORSPAN.textContent = selectFirstErrorMessage;
+        GENDERERRORSPAN.textContent = selectGenderErrorMessage;
         return false;
 
     }
@@ -81,6 +81,7 @@ function BirthDateValidation(input) {
 
 function ValidatePersonalIdentifierNumber(input) {
     const PERSONALIDENTIFIERNUMBERERRORSPAN = document.getElementById('personal-identifier-error');
+    const GENDERSELECT = document.getElementById('gender-select');
     const GENDERERRORSPAN = document.getElementById('gender-error-display');
     const FIELD_NAME = input.labels[0].textContent.trim();
     const VALUE = input.value;
@@ -90,7 +91,8 @@ function ValidatePersonalIdentifierNumber(input) {
     const STRING_LENGTH_MIN = input.minLength;
     const STRING_LENGTH_MAX = input.maxLength;
     const CONTAINS_ONLY_DIGITS_ERROR_MESSAGE = input.dataset.onlyDigitsErrorMessage;
-    const CHOOSE_GENDER_ERROR_MESSAGE = input.dataset.chooseGenderFirstErrorMessage;
+    const CHOOSE_GENDER_ERROR_MESSAGE = input.dataset.chooseGenderErrorMessage;
+    const CHOOSE_GENDER_FIRST_ERROR_MESSAGE = input.dataset.chooseGenderFirstErrorMessage;
     const ENTER_DOB_ERROR = input.dataset.enterDobFirstErrorMessage;
     const INVALID_DOB_ERROR_MESSAGE = input.dataset.invalidDobPersonalIdentificationErrorMessage
     const SELECTED_DOB_MISMATCH_PERSONAL_IDENTIFIER_CODE_ERROR_MESSAGE = input.dataset.selectedDateMismatchPersonalIdentifierCodeErrorMessage;
@@ -144,7 +146,7 @@ function ValidatePersonalIdentifierNumber(input) {
     result = GenderValidation(SELECT);
     if (!result) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = CHOOSE_GENDER_ERROR_MESSAGE;
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = CHOOSE_GENDER_FIRST_ERROR_MESSAGE;
         GENDERERRORSPAN.textContent = CHOOSE_GENDER_ERROR_MESSAGE;
         return;
     }

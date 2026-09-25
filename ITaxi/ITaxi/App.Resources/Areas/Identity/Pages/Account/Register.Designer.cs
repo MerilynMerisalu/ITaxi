@@ -79,6 +79,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Before entering your personal identifier code, please choose your gender..
+        /// </summary>
+        public static string ChooseGenderFirst {
+            get {
+                return ResourceManager.GetString("ChooseGenderFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City.
         /// </summary>
         public static string City {
