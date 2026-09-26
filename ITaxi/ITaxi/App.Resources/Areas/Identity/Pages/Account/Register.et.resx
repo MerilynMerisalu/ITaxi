@@ -169,7 +169,7 @@
     <value>Isikukoodi esimene number peab olema vahemikus 1–8</value>
   </data>
   <data name="PersonalIdentifierCodeInvalidDateOfBirthError" xml:space="preserve">
-    <value>Sisestatud isikukood sisaldab olematut sünnikuupäeva</value>
+    <value>Sisestatud isikukood sisaldab olematut sünnikuupäeva.</value>
   </data>
   <data name="EnteredInvalidDateOfBirthError" xml:space="preserve">
     <value>Sisestatud kuupäev on olematu.</value>

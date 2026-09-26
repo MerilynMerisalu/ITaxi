@@ -150,18 +150,8 @@ function ValidatePersonalIdentifierNumber(input) {
         GENDERERRORSPAN.textContent = CHOOSE_GENDER_ERROR_MESSAGE;
         return;
     }
-    
-    const DATE_OF_BIRTH_VALUE = document.getElementById("date_value").value;
-    if (IsNotEmpty(DATE_OF_BIRTH_VALUE) !== true) {
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = ENTER_DOB_ERROR;
-        return PERSONALIDENTIFIERNUMBERERRORSPAN;
-    }
-    else {
-        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
-    }
     const GENDER = document.getElementById('gender-select').value;
-    
+
     result = ValidateGenderBasedOnPersonalIdentifier(GENDER, PERSONALIDENTIFIERFIRSTDIGIT);
     if (result !== true) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
@@ -171,6 +161,16 @@ function ValidatePersonalIdentifierNumber(input) {
         PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
     }
 
+
+    const DATE_OF_BIRTH_VALUE = document.getElementById("date_value").value;
+    if (IsNotEmpty(DATE_OF_BIRTH_VALUE) !== true) {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = ENTER_DOB_ERROR;
+        return PERSONALIDENTIFIERNUMBERERRORSPAN;
+    }
+    else {
+        PERSONALIDENTIFIERNUMBERERRORSPAN.textContent = "";
+    }
     
     
     const BIRTHYEARBASE = GetBirthYearBase(PERSONALIDENTIFIERFIRSTDIGIT);
