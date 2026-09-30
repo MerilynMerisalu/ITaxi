@@ -180,6 +180,10 @@
           <Generator>PublicResXFileCodeGenerator</Generator>
           <LastGenOutput>ExtraService.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App\Domain\AdminArea\Municipality.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Municipality.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -392,6 +396,11 @@
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
           <DependentUpon>ExtraService.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App\Domain\AdminArea\Municipality.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Municipality.resx</DependentUpon>
         </Compile>
     </ItemGroup>
 

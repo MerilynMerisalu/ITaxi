@@ -19,5 +19,5 @@ public class County : DomainEntityMetaId
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.County), Name = nameof(CountyEHAKCode) )]
     public string? CountyEHAKCode { get; set; }
 
-    public ICollection<City>? Cities { get; set; }
+    public ICollection<Municipality> Municipalities { get; set; } = new List<Municipality>();
 }
