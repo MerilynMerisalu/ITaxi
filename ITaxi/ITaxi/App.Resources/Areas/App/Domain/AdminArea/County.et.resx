@@ -120,8 +120,8 @@
   <data name="CountyName" xml:space="preserve">
     <value>Maakond</value>
   </data>
-  <data name="NumberOfCities" xml:space="preserve">
-    <value>Linnade arv</value>
+  <data name="NumberOfMunicipalities" xml:space="preserve">
+    <value>Linnade / valdade arv</value>
   </data>
   <data name="Country" xml:space="preserve">
     <value>Riik</value>

@@ -17,7 +17,14 @@ public class County : DomainEntityMetaId
     
     public string CountyName { get; set; } = default!;
 
-    
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.County), Name = "NumberOfCities")]
-    public int NumberOfCities { get; set; }
+    [Required(ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(4, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
+    [MinLength(4, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMinLength")]
+
+    public string CountyEhakCode { get; set; } = default!;
+
+
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.County), Name = "NumberOfMunicipalities")]
+    public int NumberOfMunicipalities { get; set; }
 }

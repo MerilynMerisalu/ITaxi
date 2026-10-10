@@ -120,8 +120,8 @@
   <data name="CountyName" xml:space="preserve">
     <value>County</value>
   </data>
-  <data name="NumberOfCities" xml:space="preserve">
-    <value>Number of Cities</value>
+  <data name="NumberOfMunicipalities" xml:space="preserve">
+    <value>Number of Municipalities</value>
   </data>
   <data name="Country" xml:space="preserve">
     <value>Country</value>

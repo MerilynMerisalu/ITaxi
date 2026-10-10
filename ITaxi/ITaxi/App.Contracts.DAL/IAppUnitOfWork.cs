@@ -26,4 +26,5 @@ public interface IAppUnitOfWork : IUnitOfWork
     ICommentRepository Comments { get; }
     IPhotoRepository Photos { get; }
     IExtraServiceRepository ExtraServices { get; }
+    IEhakUnitTypeRepository EhakUnitTypes { get; }
 }

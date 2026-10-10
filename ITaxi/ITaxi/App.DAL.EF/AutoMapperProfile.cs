@@ -47,8 +47,8 @@ public class AutoMapperProfile: Profile
             .ForMember(dto => dto.UpdatedAt,
                 m =>
                     m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
-            .ForMember(dto => dto.NumberOfCities, m
-                => m.MapFrom(x => x.Cities!.Count()))
+            .ForMember(dto => dto.NumberOfMunicipalities, m
+                => m.MapFrom(x => x.Municipalities.Count()))
             ;
 
         // DTO => EF: Convert to Universal Time
@@ -61,6 +61,28 @@ public class AutoMapperProfile: Profile
                     dto.MapFrom(x => x.UpdatedAt.ToUniversalTime()))
             ;
         #endregion County Mapping
+
+        #region EhakUnitType Mapping
+
+        // Convert from EF => DTO: Convert to Local Time
+        CreateMap<App.Domain.EhakUnitType, EhakUnitTypeDTO>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
+            ;
+        // DTO => EF: Convert to Universal Time
+        CreateMap<EhakUnitTypeDTO, App.Domain.EhakUnitType>()
+            .ForMember(db => db.CreatedAt,
+                dto =>
+                    dto.MapFrom(x => x.CreatedAt.ToUniversalTime()))
+            .ForMember(db => db.UpdatedAt,
+                dto =>
+                    dto.MapFrom(x => x.UpdatedAt.ToUniversalTime()));
+
+        #endregion
         
         #region City Mapping
         // Convert from EF => DTO: Convert to Local Time

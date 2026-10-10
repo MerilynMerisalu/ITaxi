@@ -33,6 +33,28 @@ namespace App.DAL.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EhakUnitTypes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EhakUnitTypeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    EhakUnitTypeCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    IsIgnored = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataOrigin = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EhakUnitTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LangStrings",
                 columns: table => new
                 {
@@ -95,7 +117,9 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CountryNameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ISOCode = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    ISOCodeAlpha2 = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    ISOCodeAlpha3 = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    IsRegistrationSupported = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     IsIgnored = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -338,6 +362,42 @@ namespace App.DAL.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Municipalities",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    EhakUnitTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MunicipalityEHAKCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CountyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    IsIgnored = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataOrigin = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Municipalities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Municipalities_Counties_CountyId",
+                        column: x => x.CountyId,
+                        principalTable: "Counties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Municipalities_EhakUnitTypes_EhakUnitTypeId",
+                        column: x => x.EhakUnitTypeId,
+                        principalTable: "EhakUnitTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -349,6 +409,7 @@ namespace App.DAL.EF.Migrations
                     CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CountyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
@@ -393,13 +454,48 @@ namespace App.DAL.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Localities",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LocalityName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    MunicipalityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EhakUnitTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LocalityEHAKCode = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    IsIgnored = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataOrigin = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Localities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Localities_EhakUnitTypes_EhakUnitTypeId",
+                        column: x => x.EhakUnitTypeId,
+                        principalTable: "EhakUnitTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Localities_Municipalities_MunicipalityId",
+                        column: x => x.MunicipalityId,
+                        principalTable: "Municipalities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Admins",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AppUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PersonalIdentifier = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     IsIgnored = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -550,7 +646,6 @@ namespace App.DAL.EF.Migrations
                     ServiceProviderCardIdentifier = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     DriverLicenseNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     DriverLicenseExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     IsIgnored = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -1109,9 +1204,9 @@ namespace App.DAL.EF.Migrations
                 column: "CountryNameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Countries_ISOCode",
+                name: "IX_Countries_ISOCodeAlpha2",
                 table: "Countries",
-                column: "ISOCode",
+                column: "ISOCodeAlpha2",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -1158,6 +1253,26 @@ namespace App.DAL.EF.Migrations
                 name: "IX_ExtraServices_ExtraServiceNameId",
                 table: "ExtraServices",
                 column: "ExtraServiceNameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Localities_EhakUnitTypeId",
+                table: "Localities",
+                column: "EhakUnitTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Localities_MunicipalityId",
+                table: "Localities",
+                column: "MunicipalityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Municipalities_CountyId",
+                table: "Municipalities",
+                column: "CountyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Municipalities_EhakUnitTypeId",
+                table: "Municipalities",
+                column: "EhakUnitTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_AdminId",
@@ -1278,6 +1393,9 @@ namespace App.DAL.EF.Migrations
                 name: "ExtraServices");
 
             migrationBuilder.DropTable(
+                name: "Localities");
+
+            migrationBuilder.DropTable(
                 name: "Photos");
 
             migrationBuilder.DropTable(
@@ -1296,10 +1414,16 @@ namespace App.DAL.EF.Migrations
                 name: "DriverLicenseCategories");
 
             migrationBuilder.DropTable(
+                name: "Municipalities");
+
+            migrationBuilder.DropTable(
                 name: "Admins");
 
             migrationBuilder.DropTable(
                 name: "Bookings");
+
+            migrationBuilder.DropTable(
+                name: "EhakUnitTypes");
 
             migrationBuilder.DropTable(
                 name: "Customers");

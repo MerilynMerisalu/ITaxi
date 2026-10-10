@@ -74,7 +74,7 @@ public static class DataHelper
     {
         if (seedIdentity)
         {
-            
+
 
             foreach (var roleInfo in Roles)
             {
@@ -86,9 +86,9 @@ public static class DataHelper
                     {
                         Name = roleInfo.Name,
                         DisplayName = roleInfo.DisplayNameEn,
-                        
+
                     });
-                   
+
                     if (!identityResult.Result.Succeeded)
                         foreach (var identityError in identityResult.Result.Errors)
                             Console.WriteLine("Cant create role! Error: " + identityError.Description);
@@ -117,7 +117,7 @@ public static class DataHelper
                     }
 
 
-                    
+
 
 
                 }
@@ -183,7 +183,7 @@ public static class DataHelper
                 //country.CountryName.SetTranslation("Eesti", "et-EE");
                 //await context.Countries.AddAsync(country);
                 //await context.SaveChangesAsync();
-                  var countryId = context.Countries.SingleOrDefault(c => c.ISOCodeAlpha2 == "EE")!.Id;
+                var countryId = context.Countries.SingleOrDefault(c => c.ISOCodeAlpha2 == "EE")!.Id;
                 //    var county = new County
                 //    {
                 //        Id = Guid.NewGuid(),
@@ -196,7 +196,14 @@ public static class DataHelper
                 //    await context.Counties.AddAsync(county);
                 //    await context.SaveChangesAsync();
                 var county = await appBLL.Counties.GetCountyByEHAKCodeAsync("0037");
-                var city = new City
+
+
+                /*var locality = new Locality()
+                {
+                    Id = Guid.NewGuid(),
+                    n
+                };
+                *//*var city = new City
                 {
                     Id = Guid.NewGuid(),
                     CityName = "Tallinn",
@@ -205,7 +212,7 @@ public static class DataHelper
                     CreatedBy = "System",
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
-
+*//*
                 await context.Cities.AddAsync(city);
                 await context.SaveChangesAsync();
                
@@ -860,7 +867,7 @@ public static class DataHelper
                 await context.Drives.AddAsync(drive);
                 await context.SaveChangesAsync();
 
-                /*var comment = new Comment
+                *//*var comment = new Comment
                 {
                     Id = Guid.NewGuid(),
                     CommentText = "Jäin teenusega rahule!",
@@ -871,7 +878,7 @@ public static class DataHelper
                 };
                 await context.Comments.AddAsync(comment);
                 await context.SaveChangesAsync();
-                */
+                *//*
 
 
                 var comment = new Comment
@@ -888,8 +895,10 @@ public static class DataHelper
                 await context.Comments.AddAsync(comment);
                 await context.SaveChangesAsync();
             }
+            */
+            }
         }
-        }
+    }
 
     private static readonly (string Name, string DisplayNameEn, string DisplayNameEt)[] Roles =
  {

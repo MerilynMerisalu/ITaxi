@@ -17,7 +17,7 @@ namespace App.DAL.EF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.10")
+                .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -712,6 +712,54 @@ namespace App.DAL.EF.Migrations
                     b.ToTable("DriverLicenseCategories");
                 });
 
+            modelBuilder.Entity("App.Domain.EhakUnitType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataOrigin")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EhakUnitTypeCode")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<string>("EhakUnitTypeName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EhakUnitTypes");
+                });
+
             modelBuilder.Entity("App.Domain.ExtraService", b =>
                 {
                     b.Property<Guid>("Id")
@@ -960,6 +1008,121 @@ namespace App.DAL.EF.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("App.Domain.Locality", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataOrigin")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("EhakUnitTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LocalityEHAKCode")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<string>("LocalityName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid>("MunicipalityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EhakUnitTypeId");
+
+                    b.HasIndex("MunicipalityId");
+
+                    b.ToTable("Localities");
+                });
+
+            modelBuilder.Entity("App.Domain.Municipality", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CountyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataOrigin")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("EhakUnitTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIgnored")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MunicipalityEHAKCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountyId");
+
+                    b.HasIndex("EhakUnitTypeId");
+
+                    b.ToTable("Municipalities");
                 });
 
             modelBuilder.Entity("App.Domain.Photo", b =>
@@ -1647,7 +1810,7 @@ namespace App.DAL.EF.Migrations
             modelBuilder.Entity("App.Domain.City", b =>
                 {
                     b.HasOne("App.Domain.County", "County")
-                        .WithMany("Cities")
+                        .WithMany()
                         .HasForeignKey("CountyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1822,6 +1985,44 @@ namespace App.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("App.Domain.Locality", b =>
+                {
+                    b.HasOne("App.Domain.EhakUnitType", "EhakUnitType")
+                        .WithMany()
+                        .HasForeignKey("EhakUnitTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.Municipality", "Municipality")
+                        .WithMany()
+                        .HasForeignKey("MunicipalityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("EhakUnitType");
+
+                    b.Navigation("Municipality");
+                });
+
+            modelBuilder.Entity("App.Domain.Municipality", b =>
+                {
+                    b.HasOne("App.Domain.County", "County")
+                        .WithMany("Municipalities")
+                        .HasForeignKey("CountyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.EhakUnitType", "EhakUnitType")
+                        .WithMany()
+                        .HasForeignKey("EhakUnitTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("County");
+
+                    b.Navigation("EhakUnitType");
                 });
 
             modelBuilder.Entity("App.Domain.Photo", b =>
@@ -2031,7 +2232,7 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.County", b =>
                 {
-                    b.Navigation("Cities");
+                    b.Navigation("Municipalities");
                 });
 
             modelBuilder.Entity("App.Domain.Customer", b =>

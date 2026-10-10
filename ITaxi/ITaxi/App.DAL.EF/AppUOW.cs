@@ -32,6 +32,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     private IVehicleRepository? _vehicles;
     private IVehicleTypeRepository? _vehicleTypes;
     private IExtraServiceRepository _extraServices;
+    private IEhakUnitTypeRepository? _ehakUnitTypes;
     public AppUOW(AppDbContext dbContext, IMapper mapper) : base(dbContext)
     {
         _mapper = mapper;
@@ -76,4 +77,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     public IPhotoRepository Photos => _photos ??= new PhotoRepository(UOWDbContext, new PhotoMapper(_mapper));
 
     public IExtraServiceRepository ExtraServices => _extraServices ??= new ExtraServiceRepository(UOWDbContext, new ExtraServiceMapper(_mapper));
+
+    public virtual IEhakUnitTypeRepository EhakUnitTypes =>
+        _ehakUnitTypes ??= new EhakUnitTypeRepository(UOWDbContext, new EhakUnitTypeMapper(_mapper));
 }

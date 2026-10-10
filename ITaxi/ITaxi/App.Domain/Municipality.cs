@@ -21,10 +21,10 @@ namespace App.Domain
         public Guid EhakUnitTypeId { get; set; }
         public EhakUnitType? EhakUnitType { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Common), 
+        [Required(ErrorMessageResourceType = typeof(Common),
             ErrorMessageResourceName = nameof(Common.RequiredAttributeErrorMessage))]
         [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Municipality), Name = nameof(MunicipalityEHAKCode))]
-        public string? MunicipalityEHAKCode{ get; set; }
+        public string MunicipalityEHAKCode { get; set; } = default!;
         [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.County), Name = "CountyName" )]
         public Guid CountyId { get; set; }
         public County? County { get; set; }

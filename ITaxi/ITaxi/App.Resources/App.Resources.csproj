@@ -184,6 +184,14 @@
           <Generator>PublicResXFileCodeGenerator</Generator>
           <LastGenOutput>Municipality.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App\Domain\AdminArea\Locality.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Locality.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Areas\App\Domain\AdminArea\EhakUnitType.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>EhakUnitType.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -196,6 +204,11 @@
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
           <DependentUpon>AppUser.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App\Domain\AdminArea\Locality.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Locality.resx</DependentUpon>
         </Compile>
         <Compile Update="Areas\WebApp\Views\Shared\_Layout.Designer.cs">
             <DesignTime>True</DesignTime>
@@ -401,6 +414,11 @@
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
           <DependentUpon>Municipality.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Areas\App\Domain\AdminArea\EhakUnitType.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>EhakUnitType.resx</DependentUpon>
         </Compile>
     </ItemGroup>
 

@@ -17,7 +17,5 @@ namespace App.Contracts.DAL.IAppRepositories
         IEnumerable<TEntity> GetAllExtraServicesOrderedByName(bool noTracking = true, bool noIncludes = false);
         Task<TEntity?> GetExtraServiceByIdWithIncludesAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
         Task<TEntity?> GetExtraServiceByIdWithoutIncludesAsync(Guid id, Guid? userId = null, string? roleName = null, bool noTracking = true, bool noIncludes = false);
-        
-
     }
 }

@@ -1,10 +1,10 @@
 ﻿namespace App.Contracts.BLL.ImportResults
 {
-    public class CountyImportResult
+    public class EhakImportResult
     {
         public bool Success { get; set; }
-        public bool CountryNotFound { get; set; }
+        public bool ParentUnitNotFound { get; set; }
         public bool ApiError { get; set; }
-        public int CountOfImportedCounties { get; set; }
+        public int CountOfImportedEntities { get; set; }
     }
 }

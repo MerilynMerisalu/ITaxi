@@ -53,16 +53,16 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
         throw new NotImplementedException();
     }
 
-    public async Task<CountyImportResult> ImportCountiesFromEHAKAsync()
+    public async Task<EhakImportResult> ImportCountiesFromEHAKAsync()
     {
         var client = _httpClientFactory.CreateClient();
-        var importResult = new CountyImportResult();
+        var importResult = new EhakImportResult();
         const string ESTONIANISO2CODE = "EE";
        
         var result = await _appBLL.Countries.IsThereACorrespondingCountryToTheISO2CodeAsync(iso2Code: ESTONIANISO2CODE);
         if (result == false)
         {
-            importResult.CountryNotFound = true;
+            importResult.ParentUnitNotFound = true;
             importResult.Success = false;
             _logger.LogWarning($"Country with ISO2 code {ESTONIANISO2CODE} could not be found in the database.");
             return importResult;

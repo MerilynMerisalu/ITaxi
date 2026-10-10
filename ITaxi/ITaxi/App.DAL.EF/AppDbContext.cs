@@ -25,6 +25,9 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<Translation> Translations { get; set; } = default!;
     public DbSet<Country> Countries { get; set; } = default!;
     public DbSet<County> Counties { get; set; } = default!;
+    public DbSet<Municipality> Municipalities { get; set; } = default!;
+    public DbSet<EhakUnitType> EhakUnitTypes { get; set; } = default!;
+    public DbSet<Locality> Localities { get; set; } = default!; 
     public DbSet<City> Cities { get; set; } = default!;
     public DbSet<Photo> Photos { get; set; } = default!;
     public DbSet<Admin> Admins { get; set; } = default!;
