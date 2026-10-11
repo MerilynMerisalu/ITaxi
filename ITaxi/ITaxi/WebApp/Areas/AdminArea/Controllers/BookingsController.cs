@@ -258,7 +258,7 @@ public class BookingsController : Controller
         
         vm.Schedules = new SelectList(schedules,
             nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime));
-        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedMunipalitiesAsync(),
             nameof(CityDTO.Id), nameof(CityDTO.CityName));
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleTypeDTO.Id), 
@@ -345,7 +345,7 @@ public class BookingsController : Controller
         vm.Schedules = new SelectList(await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
             nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime),
             nameof(vm.ScheduleId));
-        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedMunipalitiesAsync(),
             nameof(CityDTO.Id),
             nameof(CityDTO.CityName), nameof(vm.CityId));
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),

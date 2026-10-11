@@ -138,7 +138,7 @@ public class RegisterCustomerModel : PageModel
     public async Task<IActionResult> OnGetSetDropDownCitiesListAsync([FromQuery] Guid countyId)
     {
         // Select the Counties for the currently selected CountryId
-        var cities = await _appBLL.Cities.GetCitiesByCountyIdAsync(countyId);
+        var cities = await _appBLL.Cities.GetMunicipalitiesByCountyIdAsync(countyId);
         var result = cities.Select(c => new
         {
             value = c.Id,

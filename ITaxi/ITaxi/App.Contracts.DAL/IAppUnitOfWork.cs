@@ -7,7 +7,7 @@ public interface IAppUnitOfWork : IUnitOfWork
 {
     ICountryRepository Countries { get; }
     ICountyRepository Counties { get; }
-    ICityRepository Cities { get; }
+    IMunicipalityRepository Municipalities { get; }
     IAdminRepository Admins { get; }
     IAppUserRepository AppUsers { get; }
     IBookingRepository Bookings { get; }

@@ -7,67 +7,67 @@ using Base.Contracts.Mappers;
 namespace App.BLL.Services;
 
 public class CityService : BaseEntityService<App.BLL.DTO.AdminArea.CityDTO, DAL.DTO.AdminArea.CityDTO,
-    ICityRepository>, ICityService
+    IMunicipalityRepository>, ICityService
 {
-    public CityService(ICityRepository repository, IMapper<CityDTO, DAL.DTO.AdminArea.CityDTO> mapper) : base(repository, mapper)
+    public CityService(IMunicipalityRepository repository, IMapper<CityDTO, DAL.DTO.AdminArea.CityDTO> mapper) : base(repository, mapper)
     {
     }
 
-    public async Task<IEnumerable<CityDTO>> GetAllCitiesWithoutCountyAsync()
+    public async Task<IEnumerable<CityDTO>> GetAllMunicipalitiesWithoutCountyAsync()
     {
-        return (await Repository.GetAllCitiesWithoutCountyAsync()).Select(e => Mapper.Map(e))!;
+        return (await Repository.GetAllMunicipalitiesWithoutCountyAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<CityDTO>> GetAllOrderedCitiesWithoutCountyAsync()
+    public async Task<IEnumerable<CityDTO>> GetAllOrderedMunicipalitiesWithoutCountyAsync()
     {
-        return (await Repository.GetAllOrderedCitiesWithoutCountyAsync()).Select(e => Mapper.Map(e))!;
+        return (await Repository.GetAllOrderedMunicipalitiesWithoutCountyAsync()).Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<IEnumerable<CityDTO>> GetAllOrderedCitiesAsync(bool showDeleted = false, bool showIgnored = false)
+    public async Task<IEnumerable<CityDTO>> GetAllOrderedMunipalitiesAsync(bool showDeleted = false, bool showIgnored = false)
     {
-        return (await Repository.GetAllOrderedCitiesAsync(showIgnored: showIgnored, showDeleted: showDeleted)).Select(e => Mapper.Map(e))!;
+        return (await Repository.GetAllOrderedMunipalitiesAsync(showIgnored: showIgnored, showDeleted: showDeleted)).Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<CityDTO?> FirstOrDefaultCityWithoutCountyAsync(Guid id, bool showIgnored = false)
+    public async Task<CityDTO?> FirstOrDefaultMunicipalityWithoutCountyAsync(Guid id, bool showIgnored = false)
     {
-        return Mapper.Map(await Repository.FirstOrDefaultCityWithoutCountyAsync(id, showIgnored: showIgnored));
+        return Mapper.Map(await Repository.FirstOrDefaultMunicipalityWithoutCountyAsync(id, showIgnored: showIgnored));
     }
 
-    public IEnumerable<CityDTO> GetAllOrderedCitiesWithoutCounty()
+    public IEnumerable<CityDTO> GetAllOrderedMunicipalitiesWithoutCounty()
     {
-        return Repository.GetAllOrderedCitiesWithoutCounty().Select(e => Mapper.Map(e))!;
+        return Repository.GetAllOrderedMunicipalitiesWithoutCounty().Select(e => Mapper.Map(e))!;
     }
 
-    public IEnumerable<CityDTO> GetAllOrderedCities(bool noTracking = true)
+    public IEnumerable<CityDTO> GetAllOrderedMunicipalities(bool noTracking = true)
     {
-        return Repository.GetAllOrderedCities(noTracking).Select(e => Mapper.Map(e))!;
+        return Repository.GetAllOrderedMunicipalities(noTracking).Select(e => Mapper.Map(e))!;
     }
 
-    public async Task<bool> HasAnyCitiesAsync(Guid id, bool noTracking = true)
+    public async Task<bool> HasAnyMunicipalitiesAsync(Guid id, bool noTracking = true)
     {
-        return await Repository.HasAnyCitiesAsync(id, noTracking);
+        return await Repository.HasAnyMunicipalitiesAsync(id, noTracking);
     }
 
-    public bool HasAnyCities(Guid id, bool noTracking = true)
+    public bool HasAnyMunicipalities(Guid id, bool noTracking = true)
     {
-        return Repository.HasAnyCities(id, noTracking);
+        return Repository.HasAnyMunicipalities(id, noTracking);
     }
 
-    public async Task<CityDTO?> GetCityByIdAsync(Guid id, bool noTracking = false, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    public async Task<CityDTO?> GetMunicipalityByIdAsync(Guid id, bool noTracking = false, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        return Mapper.Map(await Repository.GetCityByIdAsync(id: id, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored));
+        return Mapper.Map(await Repository.GetMunicipalityByIdAsync(id: id, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored));
     }
 
-    public async Task<List<CityDTO?>> GetCitiesByCountyIdAsync(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    public async Task<List<CityDTO?>> GetMunicipalitiesByCountyIdAsync(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        return (await Repository.GetCitiesByCountyIdAsync(countyId: countyId, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored))
+        return (await Repository.GetMunicipalitiesByCountyIdAsync(countyId: countyId, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored))
             .Select(c => Mapper.Map(c)).ToList();
             
     }
 
-    public List<CityDTO?> GetCitiesByCountyId(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    public List<CityDTO?> GetMunicipalitiesByCountyId(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        return ( Repository.GetCitiesByCountyId(countyId: countyId, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)
+        return ( Repository.GetMunicipalitiesByCountyId(countyId: countyId, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)
             .Select(c => Mapper.Map(c)).ToList());
     }
 }

@@ -180,7 +180,7 @@ public class BookingsController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateBookingViewModel();
-        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedMunipalitiesAsync(),
             nameof(CityDTO.Id), nameof(CityDTO.CityName));
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleTypeDTO.Id), nameof(VehicleTypeDTO.VehicleTypeName));
@@ -264,7 +264,7 @@ public class BookingsController : Controller
             return RedirectToAction(nameof(Index));
         }
         
-        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedMunipalitiesAsync(),
             nameof(CityDTO.Id),
             nameof(CityDTO.CityName), nameof(vm.CityId));
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),

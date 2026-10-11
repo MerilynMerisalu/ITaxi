@@ -36,7 +36,7 @@ public class CitiesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Index()
     {
-        var res = await _appBLL.Cities.GetAllOrderedCitiesAsync(showIgnored: true, showDeleted: true);
+        var res = await _appBLL.Cities.GetAllOrderedMunipalitiesAsync(showIgnored: true, showDeleted: true);
 
         return View(res);
     }
@@ -119,7 +119,7 @@ public class CitiesController : Controller
         var vm = new CreateEditCityViewModel();
         if (id == null) return NotFound();
 
-        var city = await _appBLL.Cities.GetCityByIdAsync(id: id.Value, showIgnored: true);
+        var city = await _appBLL.Cities.GetMunicipalityByIdAsync(id: id.Value, showIgnored: true);
         if (city == null) return NotFound();
         if (city.County!.IsIgnored) 
             vm.IsCountyIgnored = true;
@@ -144,7 +144,7 @@ public class CitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditCityViewModel vm)
     {
-        var city = await _appBLL.Cities.FirstOrDefaultCityWithoutCountyAsync(id, showIgnored: true);
+        var city = await _appBLL.Cities.FirstOrDefaultMunicipalityWithoutCountyAsync(id, showIgnored: true);
 
         if (id != city!.Id) return NotFound();
 
@@ -185,7 +185,7 @@ public class CitiesController : Controller
         var vm = new DetailsDeleteCityViewModel();
         if (id == null) return NotFound();
 
-        var city = await _appBLL.Cities.GetCityByIdAsync(id: id.Value, showIgnored: true);
+        var city = await _appBLL.Cities.GetMunicipalityByIdAsync(id: id.Value, showIgnored: true);
         if (city == null) return NotFound();
         if (city.County!.IsIgnored)
             vm.IsCountyIgnored = true;
@@ -212,7 +212,7 @@ public class CitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var city = await _appBLL.Cities.GetCityByIdAsync(id: id, showIgnored: true);
+        var city = await _appBLL.Cities.GetMunicipalityByIdAsync(id: id, showIgnored: true);
         if (city != null)
         {
             try

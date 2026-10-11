@@ -87,7 +87,7 @@ public class AdminsController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateAdminViewModel();
-        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedMunipalitiesAsync(),
             nameof(CityDTO.Id), nameof(App.BLL.DTO.AdminArea.CityDTO.CityName));
 
         return View(vm);
@@ -114,7 +114,7 @@ public class AdminsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(), nameof(CityDTO.Id),
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedMunipalitiesAsync(), nameof(CityDTO.Id),
             nameof(CityDTO.CityName), nameof(vm.CityId));
         return View(vm);
     }
@@ -143,7 +143,7 @@ public class AdminsController : Controller
         vm.PhoneNumber = admin.AppUser!.PhoneNumber;
         vm.Email = admin.AppUser.Email;
         vm.IsActive = admin.AppUser!.IsActive;
-        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedCitiesAsync(),
+        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedMunipalitiesAsync(),
             nameof(CityDTO.Id), nameof(CityDTO.CityName));
         return View(vm);
     }

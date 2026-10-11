@@ -215,7 +215,7 @@ public class CountiesController : Controller
         if (county != null)
         {
 
-            if (await _appBLL.Cities.HasAnyCitiesAsync(county.Id))
+            if (await _appBLL.Cities.HasAnyMunicipalitiesAsync(county.Id))
             {
                 return Content("Entity cannot be deleted because it has dependent entities!");
             }
