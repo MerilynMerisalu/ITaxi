@@ -75,5 +75,7 @@ public class AutoMapperConfig: Profile
             .ReverseMap();
         CreateMap<App.BLL.DTO.AdminArea.ExtraServiceDTO, App.DAL.DTO.AdminArea.ExtraServiceDTO>()
             .ReverseMap();
+        CreateMap<App.BLL.DTO.AdminArea.EhakUnitTypeDTO, App.DAL.DTO.AdminArea.EhakUnitTypeDTO>()
+            .ReverseMap();
     }
 }
