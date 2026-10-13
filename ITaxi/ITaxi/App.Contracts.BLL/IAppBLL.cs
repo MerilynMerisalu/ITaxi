@@ -8,7 +8,7 @@ public interface IAppBLL : IBLL
 {
     ICountryService Countries { get; }
     ICountyService Counties { get; }
-    ICityService Cities { get; }
+    IMuncipalityService Municipalities { get; }
     IAdminService Admins { get; }
     IAppUserService AppUsers { get; }
     IDriverLicenseCategoryService DriverLicenseCategories { get; }

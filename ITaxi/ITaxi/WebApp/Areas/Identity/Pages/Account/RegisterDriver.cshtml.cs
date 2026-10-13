@@ -267,7 +267,7 @@ public class RegisterDriverModel : PageModel
     public async Task<IActionResult> OnGetSetDropDownCitiesListAsync(Guid countyId)
     {
         // Select the Counties for the currently selected CountryId
-        var cities = await _appBLL.Cities.GetMunicipalitiesByCountyIdAsync(countyId);
+        var cities = await _appBLL.Municipalities.GetMunicipalitiesByCountyIdAsync(countyId);
         var result = cities.Select(c => new
         {
             value = c.Id,

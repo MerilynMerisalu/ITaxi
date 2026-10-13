@@ -1,9 +1,6 @@
 ﻿using Base.Domain;
 using Base.Resources;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace App.DAL.DTO.AdminArea
 {
@@ -28,3 +25,4 @@ namespace App.DAL.DTO.AdminArea
         public CountyDTO? County { get; set; }
     }
 }
+

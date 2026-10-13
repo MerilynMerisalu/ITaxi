@@ -51,7 +51,7 @@ public class CitiesController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<City>>> GetCities()
     {
-        var cities = await _appBLL.Cities.GetAllAsync();
+        var cities = await _appBLL.Municipalities.GetAllAsync();
         return Ok(cities.Select(c => _mapper.Map<City>(c)));
     }
 
@@ -70,7 +70,7 @@ public class CitiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<City>> GetCity(Guid id)
     {
-        var city = await _appBLL.Cities.FirstOrDefaultAsync(id);
+        var city = await _appBLL.Municipalities.FirstOrDefaultAsync(id);
 
         if (city == null) return NotFound();
 
@@ -96,7 +96,7 @@ public class CitiesController : ControllerBase
     public async Task<IActionResult> PutCity(Guid id, City city)
     {
         if (id != city.Id) return BadRequest();
-        var cityDTO = await _appBLL.Cities.FirstOrDefaultAsync(id);
+        var cityDTO = await _appBLL.Municipalities.FirstOrDefaultAsync(id);
         if (cityDTO == null)
         {
             return NotFound();
@@ -107,7 +107,7 @@ public class CitiesController : ControllerBase
             cityDTO.CountyId = city.CountyId;
             cityDTO.CreatedBy = User.GetUserEmail();
             cityDTO.UpdatedBy = User.GetUserEmail();
-            _appBLL.Cities.Update(cityDTO);
+            _appBLL.Municipalities.Update(cityDTO);
             await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
@@ -143,7 +143,7 @@ public class CitiesController : ControllerBase
         var dto = _mapper.Map<CityDTO>(city);
         
         dto.CreatedBy = User.GetUserEmail();
-        _appBLL.Cities.Add(dto);
+        _appBLL.Municipalities.Add(dto);
         await _appBLL.SaveChangesAsync();
 
         return CreatedAtAction("GetCity", new
@@ -169,10 +169,10 @@ public class CitiesController : ControllerBase
     
     public async Task<IActionResult> DeleteCity(Guid id)
     {
-        var city = await _appBLL.Cities.FirstOrDefaultAsync(id);
+        var city = await _appBLL.Municipalities.FirstOrDefaultAsync(id);
         if (city == null) return NotFound();
 
-        await _appBLL.Cities.RemoveAsync(city.Id);
+        await _appBLL.Municipalities.RemoveAsync(city.Id);
         await _appBLL.SaveChangesAsync();
 
         return NoContent();
@@ -187,6 +187,6 @@ public class CitiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     private bool CityExists(Guid id)
     {
-        return _appBLL.Cities.Exists(id);
+        return _appBLL.Municipalities.Exists(id);
     }
 }

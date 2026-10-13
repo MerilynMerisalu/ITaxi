@@ -1,4 +1,5 @@
-﻿using Base.Domain;
+﻿
+using Base.Domain;
 using Base.Resources;
 using System;
 using System.Collections.Generic;

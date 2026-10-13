@@ -5,12 +5,12 @@ using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL.IAppRepositories;
 
-public interface IMunicipalityRepository : IEntityRepository<MunicipalityDTO>, ICityRepositoryCustom<MunicipalityDTO>
+public interface IMunicipalityRepository : IEntityRepository<MunicipalityDTO>, IMunicipalityCustom<MunicipalityDTO>
 {
     
 }
 
-public interface ICityRepositoryCustom<TEntity>
+public interface IMunicipalityCustom<TEntity>
 {
     Task<IEnumerable<TEntity>> GetAllMunicipalitiesWithoutCountyAsync();
     Task<IEnumerable<TEntity>> GetAllOrderedMunicipalitiesWithoutCountyAsync();

@@ -36,7 +36,7 @@ public class CitiesController : Controller
     /// <returns></returns>
     public async Task<IActionResult> Index()
     {
-        var res = await _appBLL.Cities.GetAllOrderedMunipalitiesAsync(showIgnored: true, showDeleted: true);
+        var res = await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(showIgnored: true, showDeleted: true);
 
         return View(res);
     }
@@ -52,7 +52,7 @@ public class CitiesController : Controller
         if (id == null) return NotFound();
 
         var vm = new DetailsDeleteCityViewModel();
-        var city = await _appBLL.Cities.FirstOrDefaultAsync(id.Value, showIgnored: true);
+        var city = await _appBLL.Municipalities.FirstOrDefaultAsync(id.Value, showIgnored: true);
         if (city == null) return NotFound();
 
         vm.Id = city.Id;
@@ -100,7 +100,7 @@ public class CitiesController : Controller
             city.CityName = vm.CityName;
             city.DataOrigin = DataOrigin.Manual;
             
-            _appBLL.Cities.Add(city);
+            _appBLL.Municipalities.Add(city);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -119,7 +119,7 @@ public class CitiesController : Controller
         var vm = new CreateEditCityViewModel();
         if (id == null) return NotFound();
 
-        var city = await _appBLL.Cities.GetMunicipalityByIdAsync(id: id.Value, showIgnored: true);
+        var city = await _appBLL.Municipalities.GetMunicipalityByIdAsync(id: id.Value, showIgnored: true);
         if (city == null) return NotFound();
         if (city.County!.IsIgnored) 
             vm.IsCountyIgnored = true;
@@ -144,7 +144,7 @@ public class CitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditCityViewModel vm)
     {
-        var city = await _appBLL.Cities.FirstOrDefaultMunicipalityWithoutCountyAsync(id, showIgnored: true);
+        var city = await _appBLL.Municipalities.FirstOrDefaultMunicipalityWithoutCountyAsync(id, showIgnored: true);
 
         if (id != city!.Id) return NotFound();
 
@@ -158,7 +158,7 @@ public class CitiesController : Controller
                 {
                     city.CountyId = vm.CountyId;
                 }
-                _appBLL.Cities.Update(city);
+                _appBLL.Municipalities.Update(city);
                 await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -185,7 +185,7 @@ public class CitiesController : Controller
         var vm = new DetailsDeleteCityViewModel();
         if (id == null) return NotFound();
 
-        var city = await _appBLL.Cities.GetMunicipalityByIdAsync(id: id.Value, showIgnored: true);
+        var city = await _appBLL.Municipalities.GetMunicipalityByIdAsync(id: id.Value, showIgnored: true);
         if (city == null) return NotFound();
         if (city.County!.IsIgnored)
             vm.IsCountyIgnored = true;
@@ -212,12 +212,12 @@ public class CitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var city = await _appBLL.Cities.GetMunicipalityByIdAsync(id: id, showIgnored: true);
+        var city = await _appBLL.Municipalities.GetMunicipalityByIdAsync(id: id, showIgnored: true);
         if (city != null)
         {
             try
             {
-                 _appBLL.Cities.Remove(city.Id, hardDelete: false, showIgnored: true);
+                 _appBLL.Municipalities.Remove(city.Id, hardDelete: false, showIgnored: true);
             }
             catch (ApplicationException e)
             {
@@ -232,12 +232,12 @@ public class CitiesController : Controller
 
     private bool CityExists(Guid id)
     {
-        return _appBLL.Cities.Exists(id);
+        return _appBLL.Municipalities.Exists(id);
     }
 
     public async Task<IActionResult> ShowHide(Guid id)
     {
-        var result = await _appBLL.Cities.ToggleIsIgnoredAsync(id: id, showIgnored: true);
+        var result = await _appBLL.Municipalities.ToggleIsIgnoredAsync(id: id, showIgnored: true);
         return RedirectToAction(nameof(Index));
     }
 }

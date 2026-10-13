@@ -88,7 +88,7 @@ public class DriversController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateDriverViewModel();
-        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedMunipalitiesAsync(),
+        vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
             nameof(CityDTO.Id),
             nameof(CityDTO.CityName));
         vm.DriverLicenseCategories = new SelectList(
@@ -128,7 +128,7 @@ public class DriversController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedMunicipalitiesWithoutCountyAsync(),
+        vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunicipalitiesWithoutCountyAsync(),
             nameof(CityDTO.Id),
             nameof(CityDTO.CityName), driver.AppUser!.CityId);
         return View(vm);
@@ -153,7 +153,7 @@ public class DriversController : Controller
                 .DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
             nameof(DriverLicenseCategoryDTO.Id),
             nameof(DriverLicenseCategoryDTO.DriverLicenseCategoryName));
-        vm.Cities = new SelectList(await _appBLL.Cities.GetAllOrderedMunipalitiesAsync(),
+        vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
             nameof(CityDTO.Id), nameof(CityDTO.CityName));
         if (driver != null)
         {

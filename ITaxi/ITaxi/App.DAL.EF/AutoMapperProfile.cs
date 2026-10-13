@@ -83,22 +83,28 @@ public class AutoMapperProfile: Profile
                     dto.MapFrom(x => x.UpdatedAt.ToUniversalTime()));
 
         #endregion
-        
-        #region City Mapping
-        // Convert from EF => DTO: Convert to Local Time
-        CreateMap<App.Domain.City, CityDTO>()
-            .ForMember(dto => dto.CreatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
-            .ForMember(dto => dto.UpdatedAt, m => m.ConvertUsing(new ToLocalFormatter()))
-            ;
 
+        #region Municipality Mapping
+        // Convert from EF => DTO: Convert to Local Time
+        CreateMap<App.Domain.Municipality, MunicipalityDTO>()
+            .ForMember(dto => dto.CreatedAt,
+                m =>
+                    m.MapFrom(x => x.CreatedAt.ToLocalTime()))
+            .ForMember(dto => dto.UpdatedAt,
+                m =>
+                    m.MapFrom(x => x.UpdatedAt.ToLocalTime()))
+            ;
         // DTO => EF: Convert to Universal Time
-        CreateMap<CityDTO, App.Domain.City>()
-            .ForMember(db => db.CreatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
-            .ForMember(db => db.UpdatedAt, dto => dto.ConvertUsing(new ToUtcFormatter()))
-            ;       
-       
-        #endregion City Mapping
-        
+        CreateMap<MunicipalityDTO, App.Domain.Municipality>()
+            .ForMember(db => db.CreatedAt,
+                dto =>
+                    dto.MapFrom(x => x.CreatedAt.ToUniversalTime()))
+            .ForMember(db => db.UpdatedAt,
+                dto =>
+                    dto.MapFrom(x => x.UpdatedAt.ToUniversalTime()));
+        #endregion
+
+      
         #region Admin Mapping
         // Convert from EF => DTO: Convert to Local Time
         CreateMap<App.Domain.Admin, AdminDTO>()
