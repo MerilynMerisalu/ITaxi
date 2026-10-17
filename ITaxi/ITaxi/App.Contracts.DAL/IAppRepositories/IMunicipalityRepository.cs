@@ -23,4 +23,5 @@ public interface IMunicipalityCustom<TEntity>
     Task<TEntity?>GetMunicipalityByIdAsync(Guid id, bool noTracking = false, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false);
     Task<List<TEntity?>> GetMunicipalitiesByCountyIdAsync(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false);
     List<TEntity?> GetMunicipalitiesByCountyId(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false);
+    Task<bool> DoesMunicipalityExistAsync(string ehakCode);
 }

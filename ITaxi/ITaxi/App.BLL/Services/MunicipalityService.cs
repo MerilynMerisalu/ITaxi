@@ -7,7 +7,10 @@ using Base.BLL;
 using Base.Contracts.Mappers;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using RESTCountries.NET.Models;
+using System.Reflection;
 using System.Text.Json.Nodes;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace App.BLL.Services;
 
@@ -107,7 +110,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
             _logger.LogError($"EHAK unavailable. Status: {response.StatusCode}");
             importResult.Success = false;
             return importResult;
-            
+
         }
 
         var jsonResult = await response.Content.ReadAsStringAsync();
@@ -126,12 +129,54 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                 }
 
                 var ehakCode = props["ehak_kood"]?.Value<string>();
-                var localityName = props["asutusyksus"]?.Value<string>();
+                var countyEhakCode = props["maakond_kood"]?.Value<string>();
                 var type = props["tyyp"]?.Value<string>();
                 var municipalityName = props["omavalitsus"]?.Value<string>();
 
-                _logger.LogInformation("Importing municipality {Name}, ehak code {MunicipalityEhakCode}, locality name {} ")
+                _logger.LogInformation("Importing municipality {Name}, ehak code {MunicipalityEhakCode}, County Ehak code {CountyEhakCode}, municipality type {type} ", municipalityName, ehakCode, countyEhakCode, type);
+                if (string.IsNullOrWhiteSpace(municipalityName))
+                {
+                    _logger.LogWarning($"Skipping municipality due to missing required data. Name: {municipalityName}");
+                    continue;
+
+                }
+                else if (string.IsNullOrWhiteSpace(ehakCode))
+                {
+                    _logger.LogWarning($"Skipping municipality due to missing required data. Ehak code: {ehakCode}");
+                    continue;
+                }
+                else if (string.IsNullOrWhiteSpace(countyEhakCode))
+                {
+                    _logger.LogWarning($"Skipping municipality due to missing required data. County code: {countyEhakCode}");
+                    continue;
+                }
+                else if (string.IsNullOrWhiteSpace(type))
+                {
+                    _logger.LogWarning($"Skipping municipality due to missing required data. Type: {type}");
+                    continue;
+                }
+                var county = _appBLL.Counties.GetCountyByEHAKCode(ehakCode: ehakCode);
+
+                if (county == null)
+                {
+                    _logger.LogWarning($"Skipping municipality due to missing required data. county id");
+                    continue;
+                }
+
+                if (!string.IsNullOrWhiteSpace(municipalityName) && !string.IsNullOrWhiteSpace(ehakCode))
+                {
+                    var exists =
+                        await _appBLL.Municipalities.DoesMunicipalityExistAsync(ehakCode);
+                    if (exists) continue;
+                }
+                var ehakUnitType =
+                var municipality = new MunicipalityDTO { Id = Guid.NewGuid(), CountyId = county.Id, MunicipalityEHAKCode = ehakCode, };
             }
         }
+    }
+
+    public async Task<bool> DoesMunicipalityExistAsync( string ehakCode)
+    {
+        return await Repository.DoesMunicipalityExistAsync( ehakCode: ehakCode);
     }
 }

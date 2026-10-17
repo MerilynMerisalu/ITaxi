@@ -16,6 +16,11 @@ public class MunicipalityRepository : BaseEntityRepository<MunicipalityDTO, App.
     {
     }
 
+    public async Task<bool> DoesMunicipalityExistAsync( string ehakCode)
+    {
+        return await CreateQuery().AnyAsync(m => m.MunicipalityEHAKCode.Equals(ehakCode.ToUpperInvariant()));
+    }
+
     public async Task<MunicipalityDTO?> FirstOrDefaultMunicipalityWithoutCountyAsync(Guid id, bool showIgnored = false)
     {
         var res = await base.CreateQuery(noIncludes: true, showIgnored: showIgnored).FirstOrDefaultAsync(c => c.Id.Equals(id));

@@ -16,7 +16,7 @@ namespace WebApp.Areas.AdminArea.Controllers;
 /// </summary>
 [Area(nameof(AdminArea))]
 [Authorize(Roles = "Admin")]
-public class CitiesController : Controller
+public class MunicipalitiesController : Controller
 {
     private readonly IAppBLL _appBLL;
 
@@ -24,7 +24,7 @@ public class CitiesController : Controller
     /// Admin area cities controller constructor
     /// </summary>
     /// <param name="appBLL">AppBLL</param>
-    public CitiesController(IAppBLL appBLL)
+    public MunicipalitiesController(IAppBLL appBLL)
     {
         _appBLL = appBLL;
     }
