@@ -29,7 +29,7 @@ namespace App.Public.DTO.v1.AdminArea
         [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMinLength")]
         [MinLength(1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMinLength")]
         [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Municipality), Name = "MunicipalityEHAKCode")]
-        public string MunicipalityCode { get; set; } = default!;
+        public string MunicipalityEhakCode { get; set; } = default!;
 
         public Guid CountyId { get; set; }
         public CountyDTO? County { get; set; }
