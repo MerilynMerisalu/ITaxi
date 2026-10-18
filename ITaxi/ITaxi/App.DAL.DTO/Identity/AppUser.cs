@@ -35,7 +35,7 @@ public class AppUser: DomainEntityId
 
     public Guid LocalityId { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "City")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = nameof(Locality))]
     public LocalityDTO? Locality { get; set; }
 
     public Guid? CountyId { get; set; }

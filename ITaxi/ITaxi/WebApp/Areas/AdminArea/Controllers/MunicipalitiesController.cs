@@ -52,23 +52,23 @@ public class MunicipalitiesController : Controller
         if (id == null) return NotFound();
 
         var vm = new DetailsDeleteCityViewModel();
-        var city = await _appBLL.Municipalities.FirstOrDefaultAsync(id.Value, showIgnored: true);
-        if (city == null) return NotFound();
+        var municipality = await _appBLL.Municipalities.FirstOrDefaultAsync(id.Value, showIgnored: true);
+        if (municipality == null) return NotFound();
 
-        vm.Id = city.Id;
-        vm.CountyName = city.County!.CountyName;
-        vm.CityName = city.CityName;
-        vm.CreatedAt = city.CreatedAt;
-        vm.CreatedBy = city.CreatedBy!;
-        vm.UpdatedBy = city.UpdatedBy;
-        vm.UpdatedAt = city.UpdatedAt;
+        vm.Id = municipality.Id;
+        vm.CountyName = municipality.County!.CountyName;
+        vm.CityName = municipality.Name;
+        vm.CreatedAt = municipality.CreatedAt;
+        vm.CreatedBy = municipality.CreatedBy!;
+        vm.UpdatedBy = municipality.UpdatedBy;
+        vm.UpdatedAt = municipality.UpdatedAt;
         
         return View(vm);
     }
 
     // GET: AdminArea/Cities/Create
     /// <summary>
-    /// Admin area city create
+    /// Admin area municipality create
     /// </summary>
     /// <returns>View model</returns>
     public async Task<IActionResult> Create()
@@ -84,23 +84,23 @@ public class MunicipalitiesController : Controller
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Admin area city create
+    /// Admin area municipality create
     /// </summary>
     /// <param name="vm">View model</param>
-    /// <param name="city">City</param>
+    /// <param name="municipality">City</param>
     /// <returns>View with view model</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateEditCityViewModel vm, CityDTO city)
+    public async Task<IActionResult> Create(CreateEditCityViewModel vm, MunicipalityDTO municipality)
     {
         if (ModelState.IsValid)
         {
-            city.Id = Guid.NewGuid();
-            city.CountyId = vm.CountyId;
-            city.CityName = vm.CityName;
-            city.DataOrigin = DataOrigin.Manual;
+            municipality.Id = Guid.NewGuid();
+            municipality.CountyId = vm.CountyId;
+            municipality.Name = vm.CityName;
+            municipality.DataOrigin = DataOrigin.Manual;
             
-            _appBLL.Municipalities.Add(city);
+            _appBLL.Municipalities.Add(municipality);
             await _appBLL.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -110,7 +110,7 @@ public class MunicipalitiesController : Controller
 
     // GET: AdminArea/Cities/Edit/5
     /// <summary>
-    /// Admin area city edit GET method
+    /// Admin area municipality edit GET method
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>View with view model</returns>
@@ -119,14 +119,14 @@ public class MunicipalitiesController : Controller
         var vm = new CreateEditCityViewModel();
         if (id == null) return NotFound();
 
-        var city = await _appBLL.Municipalities.GetMunicipalityByIdAsync(id: id.Value, showIgnored: true);
-        if (city == null) return NotFound();
-        if (city.County!.IsIgnored) 
+        var municipality = await _appBLL.Municipalities.GetMunicipalityByIdAsync(id: id.Value, showIgnored: true);
+        if (municipality == null) return NotFound();
+        if (municipality.County!.IsIgnored) 
             vm.IsCountyIgnored = true;
         vm.Counties = new SelectList(await _appBLL.Counties.GetAllAsync(),
             nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
-        vm.CityName = city.CityName;
-        vm.CountyId = city.CountyId;
+        vm.CityName = municipality.Name;
+        vm.CountyId = municipality.CountyId;
 
         return View(vm);
     }
@@ -135,7 +135,7 @@ public class MunicipalitiesController : Controller
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
-    /// Admin area city edit POST method
+    /// Admin area municipality edit POST method
     /// </summary>
     /// <param name="id">Id</param>
     /// <param name="vm">View model</param>
@@ -144,26 +144,26 @@ public class MunicipalitiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, CreateEditCityViewModel vm)
     {
-        var city = await _appBLL.Municipalities.FirstOrDefaultMunicipalityWithoutCountyAsync(id, showIgnored: true);
+        var municipality = await _appBLL.Municipalities.FirstOrDefaultMunicipalityWithoutCountyAsync(id, showIgnored: true);
 
-        if (id != city!.Id) return NotFound();
+        if (id != municipality!.Id) return NotFound();
 
         if (ModelState.IsValid)
         {
             try
             {
-                city.Id = id;
-                city.CityName = vm.CityName;
-                if (city.CountyId != Guid.Empty)
+                municipality.Id = id;
+                municipality.Name = vm.CityName;
+                if (municipality.CountyId != Guid.Empty)
                 {
-                    city.CountyId = vm.CountyId;
+                    municipality.CountyId = vm.CountyId;
                 }
-                _appBLL.Municipalities.Update(city);
+                _appBLL.Municipalities.Update(municipality);
                 await _appBLL.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CityExists(city.Id))
+                if (!CityExists(municipality.Id))
                     return NotFound();
                 throw;
             }
@@ -176,7 +176,7 @@ public class MunicipalitiesController : Controller
 
     // GET: AdminArea/Cities/Delete/5
     /// <summary>
-    /// Admin area city delete GET method
+    /// Admin area municipality delete GET method
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>View with view model</returns>
@@ -185,25 +185,25 @@ public class MunicipalitiesController : Controller
         var vm = new DetailsDeleteCityViewModel();
         if (id == null) return NotFound();
 
-        var city = await _appBLL.Municipalities.GetMunicipalityByIdAsync(id: id.Value, showIgnored: true);
-        if (city == null) return NotFound();
-        if (city.County!.IsIgnored)
+        var municipality = await _appBLL.Municipalities.GetMunicipalityByIdAsync(id: id.Value, showIgnored: true);
+        if (municipality == null) return NotFound();
+        if (municipality.County!.IsIgnored)
             vm.IsCountyIgnored = true;
 
-        vm.CityName = city.CityName;
-        vm.CountyName = city.County!.CountyName;
-        vm.CityName = city.CityName;
-        vm.CreatedAt = city.CreatedAt;
-        vm.CreatedBy = city.CreatedBy!;
-        vm.UpdatedBy = city.UpdatedBy!;
-        vm.UpdatedAt = city.UpdatedAt;
+        vm.CityName = municipality.Name;
+        vm.CountyName = municipality.County!.CountyName;
+        
+        vm.CreatedAt = municipality.CreatedAt;
+        vm.CreatedBy = municipality.CreatedBy!;
+        vm.UpdatedBy = municipality.UpdatedBy!;
+        vm.UpdatedAt = municipality.UpdatedAt;
         
         return View(vm);
     }
 
     // POST: AdminArea/Cities/Delete/5
     /// <summary>
-    /// Admin area city delete POST method
+    /// Admin area municipality delete POST method
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>Redirect user to cities index page</returns>

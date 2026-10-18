@@ -20,7 +20,7 @@ namespace WebApp.ApiControllers.AdminArea;
 [ApiVersion("1.0")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
-public class CitiesController : ControllerBase
+public class MunicipalitiesController : ControllerBase
 {
     private readonly IAppBLL _appBLL;
     private readonly IMapper _mapper;
@@ -31,7 +31,7 @@ public class CitiesController : ControllerBase
     /// <param name="appBLL">AppBLL</param>
     /// <param name="mapper">Mapper for mapping App.BLL.DTO.AdminArea.CitiesDTO to 
     /// Public.DTO.v1.AdminArea.City</param>
-    public CitiesController(IAppBLL appBLL, IMapper mapper)
+    public MunicipalitiesController(IAppBLL appBLL, IMapper mapper)
     {
         _appBLL = appBLL;
         _mapper = mapper;
@@ -45,45 +45,45 @@ public class CitiesController : ControllerBase
     [HttpGet]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType( typeof( IEnumerable<City>), StatusCodes.Status200OK )] 
+    [ProducesResponseType( typeof( IEnumerable<Municipality>), StatusCodes.Status200OK )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<City>>> GetCities()
+    public async Task<ActionResult<IEnumerable<Municipality>>> GetCities()
     {
         var cities = await _appBLL.Municipalities.GetAllAsync();
-        return Ok(cities.Select(c => _mapper.Map<City>(c)));
+        return Ok(cities.Select(c => _mapper.Map<Municipality>(c)));
     }
 
     // GET: api/Cities/5
     /// <summary>
-    /// Returns city based on id
+    /// Returns muncipality based on id
     /// </summary>
     /// <param name="id">City id, Guid</param>
     /// <returns>City (TEntity) with statusCode 200 or status404 or Status403 or Status401</returns>
     [HttpGet("{id:guid}")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [ProducesResponseType(typeof(City), StatusCodes.Status200OK )] 
+    [ProducesResponseType(typeof(Municipality), StatusCodes.Status200OK )] 
     [ProducesResponseType( StatusCodes.Status404NotFound )] 
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<City>> GetCity(Guid id)
+    public async Task<ActionResult<Municipality>> GetCity(Guid id)
     {
-        var city = await _appBLL.Municipalities.FirstOrDefaultAsync(id);
+        var muncipality = await _appBLL.Municipalities.FirstOrDefaultAsync(id);
 
-        if (city == null) return NotFound();
+        if (muncipality == null) return NotFound();
 
-        return _mapper.Map<City>(city);
+        return _mapper.Map<Municipality>(muncipality);
     }
 
     // PUT: api/Cities/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     /// <summary>
-    /// Updating a city
+    /// Updating a muncipality
     /// </summary>
     /// <param name="id">An id of the entity which is updated</param>
-    /// <param name="city">DTO which holds the values</param>
+    /// <param name="municipality">DTO which holds the values</param>
     /// <returns>StatusCode 204 or StatusCode 403 or StatusCode 404 or StatusCode 401 or StatusCode 400</returns>
     [HttpPut("{id:guid}")]
     [Produces("application/json")]
@@ -93,21 +93,21 @@ public class CitiesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PutCity(Guid id, City city)
+    public async Task<IActionResult> PutCity(Guid id, Municipality municipality)
     {
-        if (id != city.Id) return BadRequest();
-        var cityDTO = await _appBLL.Municipalities.FirstOrDefaultAsync(id);
-        if (cityDTO == null)
+        if (id != municipality.Id) return BadRequest();
+        var municipalityDTO = await _appBLL.Municipalities.FirstOrDefaultAsync(id);
+        if (municipalityDTO == null)
         {
             return NotFound();
         }
         try
         {
-            cityDTO.CityName = city.CityName;
-            cityDTO.CountyId = city.CountyId;
-            cityDTO.CreatedBy = User.GetUserEmail();
-            cityDTO.UpdatedBy = User.GetUserEmail();
-            _appBLL.Municipalities.Update(cityDTO);
+            municipalityDTO.Name = municipality.Name;
+            municipalityDTO.CountyId = municipality.CountyId;
+            municipalityDTO.CreatedBy = User.GetUserEmail();
+            municipalityDTO.UpdatedBy = User.GetUserEmail();
+            _appBLL.Municipalities.Update(municipalityDTO);
             await _appBLL.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
@@ -123,24 +123,24 @@ public class CitiesController : ControllerBase
     // POST: api/Cities
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     /// <summary>
-    /// Creating a new city
+    /// Creating a new muncipality
     /// </summary>
-    /// <param name="city">CityDTO with properties</param>
+    /// <param name="municipality">CityDTO with properties</param>
     /// <returns>Status201Created with an entity</returns>
     [HttpPost]
     [Produces("application/json")]
-    [ProducesResponseType(typeof(City), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(Municipality), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<City>> PostCity([FromBody] City city)
+    public async Task<ActionResult<Municipality>> PostCity([FromBody] Municipality municipality)
     {
         if (HttpContext.GetRequestedApiVersion() == null)
         {
             return BadRequest("Api version is mandatory");
         }
 
-        var dto = _mapper.Map<CityDTO>(city);
+        var dto = _mapper.Map<MunicipalityDTO>(municipality);
         
         dto.CreatedBy = User.GetUserEmail();
         _appBLL.Municipalities.Add(dto);
@@ -148,7 +148,7 @@ public class CitiesController : ControllerBase
 
         return CreatedAtAction("GetCity", new
             {
-                id = city.Id,
+                id = municipality.Id,
                 version = HttpContext.GetRequestedApiVersion()!.ToString() ,
             },
             dto);

@@ -89,8 +89,9 @@ public class DriverRepository : BaseEntityRepository<DriverDTO, App.Domain.Drive
         if (noTracking) query = query.AsNoTracking();
         if (!noIncludes)
             query = query.Include(a => a.AppUser)
-                         .ThenInclude(a => a.City)
-                            .ThenInclude(a => a.County)
+                         .ThenInclude(a => a.Locality)
+                            .ThenInclude(a => a.Municipality)
+                                .ThenInclude(a => a.County)
                                 .ThenInclude(a => a.Country)
                                     .ThenInclude(a => a.CountryName)
                                         .ThenInclude(a => a.Translations);

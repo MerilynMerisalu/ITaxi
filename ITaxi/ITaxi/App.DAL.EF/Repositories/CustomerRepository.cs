@@ -107,7 +107,9 @@ public class CustomerRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.Cus
                 .Include(a => a.AppUser)
                     .ThenInclude(a => a.County)
                 .Include(a => a.AppUser)
-                    .ThenInclude(a => a.City);
+                    .ThenInclude(a => a.Locality)
+                    .Include(a => a.AppUser)
+                    .ThenInclude(a => a.Address);
         return query;
     }
 

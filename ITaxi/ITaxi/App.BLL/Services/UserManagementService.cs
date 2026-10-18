@@ -46,7 +46,7 @@ namespace App.BLL.Services
                     Role = roles.Any() ? string.Join(", ", displayNames) : "-",
                     Country = user.Country?.CountryName,
                     County = user.County?.CountyName!,
-                    City = user.City?.CityName!,
+                    City = user.Locality?.LocalityName!,
                     AddressOfResidence = user.Address,
                     EmailAddress = user.Email!,
                     PhoneNumber = user.PhoneNumber!,
@@ -118,7 +118,7 @@ namespace App.BLL.Services
         {
             var query = _userManager.Users.Include(a => a.Country)
                     .ThenInclude(a => a.CountryName).ThenInclude(a => a.Translations)
-                .Include(a => a.County).Include(a => a.City).AsQueryable();
+                .Include(a => a.County).Include(a => a.Locality).AsQueryable();
             if (noTracking)
             {
                 query = query.AsNoTracking();

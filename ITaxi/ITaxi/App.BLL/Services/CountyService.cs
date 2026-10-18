@@ -48,7 +48,7 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
         return Repository.GetAllCountiesOrderedByCountryISOCode(noTracking, noIncludes).Select(e => Mapper.Map(e))!;
     }*/
 
-    public Task<bool> HasCities(Guid countyId)
+    public Task<bool> HasMunicipalities(Guid countyId)
     {
         throw new NotImplementedException();
     }

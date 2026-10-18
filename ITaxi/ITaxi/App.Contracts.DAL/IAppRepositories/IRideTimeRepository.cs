@@ -45,14 +45,14 @@ public interface IRideTimeRepositoryCustom<TEntity>
     //List<string> CalculatingRideTimes(DateTime[] scheduleStartAndEndTime);
 
     //string DriveTimeFormatting(RideTime rideTime);
-    Task<IList<TEntity>> GettingBestAvailableRideTimeAsync(DateTime pickUpDateAndTime, Guid cityId,
+    Task<IList<TEntity>> GettingBestAvailableRideTimeAsync(DateTime pickUpDateAndTime, Guid localityId,
         int numberOfPassengers,
         Guid vehicleType,
         bool defaultToNextAvailable,
         Guid? userId = null, string? roleName = null,
         bool noTracking = true); 
 
-    TEntity? GettingBestAvailableRideTime(DateTime pickUpDateAndTime, Guid cityId,
+    TEntity? GettingBestAvailableRideTime(DateTime pickUpDateAndTime, Guid localityId,
         int numberOfPassengers, Guid? userId = null, string? roleName = null,
         bool noTracking = true); 
     

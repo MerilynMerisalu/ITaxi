@@ -17,15 +17,18 @@ namespace App.BLL.Services;
 public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.MunicipalityDTO, DAL.DTO.AdminArea.MunicipalityDTO,
     IMunicipalityRepository>, IMuncipalityService
 {
-    private readonly IHttpClientFactory _httpClientFactory;
     private readonly IAppBLL _appBLL;
     private readonly ILogger<MunicipalityService> _logger;
-    public MunicipalityService(IMunicipalityRepository repository, IMapper<MunicipalityDTO, DAL.DTO.AdminArea.MunicipalityDTO> mapper, IHttpClientFactory httpClientFactory, IAppBLL appBLL) : base(repository, mapper)
+    private readonly IHttpClientFactory _httpClientFactory;
+
+    public MunicipalityService(IMunicipalityRepository repository, IMapper<MunicipalityDTO, DAL.DTO.AdminArea.MunicipalityDTO> mapper, IAppBLL appBLL, ILogger<MunicipalityService> logger, IHttpClientFactory httpClientFactory) : base(repository, mapper)
     {
-        _httpClientFactory = httpClientFactory;
         _appBLL = appBLL;
+        _logger = logger;
+        _httpClientFactory = httpClientFactory;
     }
 
+   
     public async Task<IEnumerable<MunicipalityDTO>> GetAllMunicipalitiesWithoutCountyAsync()
     {
         return (await Repository.GetAllMunicipalitiesWithoutCountyAsync()).Select(e => Mapper.Map(e))!;
@@ -169,10 +172,10 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                         await _appBLL.Municipalities.DoesMunicipalityExistAsync(ehakCode);
                     if (exists) continue;
                 }
-                var ehakUnitType =
-                var municipality = new MunicipalityDTO { Id = Guid.NewGuid(), CountyId = county.Id, MunicipalityEHAKCode = ehakCode, };
+                
             }
         }
+        throw new NotImplementedException();
     }
 
     public async Task<bool> DoesMunicipalityExistAsync( string ehakCode)

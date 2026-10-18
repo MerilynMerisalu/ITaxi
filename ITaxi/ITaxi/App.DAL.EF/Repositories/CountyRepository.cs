@@ -50,7 +50,7 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
     }
     
 
-    public async Task<bool> HasCities(Guid countyId)
+    public async Task<bool> HasMunicipalities(Guid countyId)
     {
         return await RepoDbContext.Municipalities.AnyAsync(x => x.CountyId == countyId);
     }

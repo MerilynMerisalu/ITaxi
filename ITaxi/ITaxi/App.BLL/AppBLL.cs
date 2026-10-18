@@ -38,7 +38,9 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
         _countries ?? new CountryService(UnitOfWork.Countries, new CountryMapper(_mapper));
     public virtual ICountyService Counties => _counties ??= new CountyService(UnitOfWork.Counties,
         new CountyMapper(_mapper), _loggerFactory.CreateLogger<CountyService>(), this, _httpClientFactory);
-    public virtual IMuncipalityService Municipalities => _muncipalities ??= new MunicipalityService(UnitOfWork.Municipalities, new MunicipalityMapper(_mapper));
+    public virtual IMuncipalityService Municipalities => _muncipalities ??= new MunicipalityService(UnitOfWork.Municipalities, new MunicipalityMapper(_mapper), 
+         this, _loggerFactory.CreateLogger<MunicipalityService>(), _httpClientFactory
+        );
     public virtual IAdminService Admins => _admins ??= new AdminService(UnitOfWork.Admins, new AdminMapper(_mapper));
     public virtual IAppUserService AppUsers => _appUsers ??= new AppUserService(UnitOfWork.AppUsers, new AppUserMapper(_mapper));
 
