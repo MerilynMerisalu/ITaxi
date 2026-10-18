@@ -62,7 +62,9 @@ public class AdminRepository : BaseEntityRepository<App.DAL.DTO.AdminArea.AdminD
                            .Include(a => a.AppUser)
                                 .ThenInclude(a => a.County)
                            .Include(a => a.AppUser)
-                                .ThenInclude(a => a.City);
+                                .ThenInclude(a => a.Municipality)
+                                .Include(a => a.AppUser!.Locality)
+                                .Include(a => a.AppUser!.Address);
         return query;
     }
 

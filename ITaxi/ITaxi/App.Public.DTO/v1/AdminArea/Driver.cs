@@ -32,10 +32,10 @@ public class Driver: DomainEntityMetaId
     public DateTime DriverLicenseExpiryDate { get; set; }
 
     public int NumberOfDriverLicenseCategories { get; set; }
-    public Guid CityId { get; set; }
+    public Guid LocalityId { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "City")]
-    public City? City { get; set; }
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = nameof(Locality))]
+    public Locality? Locality { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(30, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]

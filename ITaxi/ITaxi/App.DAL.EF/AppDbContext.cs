@@ -28,7 +28,6 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<Municipality> Municipalities { get; set; } = default!;
     public DbSet<EhakUnitType> EhakUnitTypes { get; set; } = default!;
     public DbSet<Locality> Localities { get; set; } = default!; 
-    public DbSet<City> Cities { get; set; } = default!;
     public DbSet<Photo> Photos { get; set; } = default!;
     public DbSet<Admin> Admins { get; set; } = default!;
     public DbSet<DriverLicenseCategory> DriverLicenseCategories { get; set; } = default!;

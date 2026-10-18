@@ -132,8 +132,8 @@
   <data name="Vehicle" xml:space="preserve">
     <value>Vehicle</value>
   </data>
-  <data name="City" xml:space="preserve">
-    <value>City</value>
+  <data name="Locality" xml:space="preserve">
+    <value>Locality</value>
   </data>
   <data name="PickUpDateAndTime" xml:space="preserve">
     <value>Pick Up Date and Time</value>

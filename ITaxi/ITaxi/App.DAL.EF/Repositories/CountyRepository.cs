@@ -52,7 +52,7 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
 
     public async Task<bool> HasCities(Guid countyId)
     {
-        return await RepoDbContext.Cities.AnyAsync(x => x.CountyId == countyId);
+        return await RepoDbContext.Municipalities.AnyAsync(x => x.CountyId == countyId);
     }
     
     protected override IQueryable<App.Domain.County> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, 

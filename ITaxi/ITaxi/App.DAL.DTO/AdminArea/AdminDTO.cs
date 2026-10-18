@@ -17,11 +17,9 @@ public class AdminDTO: DomainEntityMetaId
     public string? PersonalIdentifier { get; set; }
 
     
-    public Guid CityId { get; set; }
+    public Guid LocalityId { get; set; }
 
-    
-
-    public CityDTO? City { get; set; }
+    public LocalityDTO? Locality { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]

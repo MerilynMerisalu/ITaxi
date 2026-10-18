@@ -24,8 +24,15 @@ public class Booking : DomainEntityMetaId
     public VehicleType? VehicleType { get; set; }
     public Guid VehicleId { get; set; }
     public Vehicle? Vehicle { get; set; }
-    public Guid CityId { get; set; }
-    public City? City { get; set; }
+
+    public Guid CountyId { get; set; }
+    public County? County { get; set; }
+    public Guid MunicipalityId { get; set; }
+    public Municipality? Municipality { get; set; }
+
+    public Guid LocalityId { get; set; }
+    public Locality? Locality { get; set; }
+
 
     [DataType(DataType.DateTime)]
     public DateTime PickUpDateAndTime { get; set; }

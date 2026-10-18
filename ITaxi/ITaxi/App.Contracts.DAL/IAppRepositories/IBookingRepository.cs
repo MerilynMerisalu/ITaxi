@@ -25,7 +25,7 @@ public interface IBookingRepositoryCustom<TEntity>
     // IEnumerable<Booking?> GettingAllOrderedBookingsWithoutIncludes( bool? noTracking = true);
     Task<TEntity?> GettingBookingWithoutIncludesByIdAsync(Guid id, bool noTracking = true);
     TEntity? GettingBookingWithoutIncludesById(Guid id, bool noTracking = true);
-    Task<List<TEntity>> SearchByCityAsync(string search, Guid? userId = null, string? roleName = null);
+    Task<List<TEntity>> SearchByLocalityAsync(string search, Guid? userId = null, string? roleName = null);
     string PickUpDateAndTimeStrFormat(TEntity booking);
     DateTime DateTimeFormatting();
 

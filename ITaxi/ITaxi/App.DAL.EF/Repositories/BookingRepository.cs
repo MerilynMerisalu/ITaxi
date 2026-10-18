@@ -55,7 +55,11 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
             .OrderBy(b => b.PickUpDateAndTime.Date)
             .ThenBy(b => b.Customer!.AppUser!.LastName)
             .ThenBy(b => b.Customer!.AppUser!.FirstName)
-            .ThenBy(b => b.City!.CityName)
+            .ThenBy(b => b.County!.CountyName)
+            .ThenBy(b => b.Municipality!.Name)
+            .ThenBy(b => b.Locality!.LocalityName)
+            .ThenBy(b => b.PickupAddress)
+            .ThenBy(b => b.DestinationAddress)
             .ToListAsync()).Select(e => Mapper.Map(e));
     }
 
@@ -67,7 +71,7 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
             .OrderBy(b => b.PickUpDateAndTime.Date)
             .ThenBy(b => b.Customer!.AppUser!.LastName)
             .ThenBy(b => b.Customer!.AppUser!.FirstName)
-            .ThenBy(b => b.City!.CityName)
+            .ThenBy(b => b.Locality!.LocalityName)
             .ToList().Select(e => Mapper.Map(e));
     }
 
@@ -104,11 +108,11 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
             .FirstOrDefault(b => b.Id.Equals(id)));
     }
 
-    public async Task<List<BookingDTO>> SearchByCityAsync(string search, Guid? userId = null,
+    public async Task<List<BookingDTO>> SearchByLocalityAsync(string search, Guid? userId = null,
         string? roleName = null)
     {
         var results = (await CreateQuery(userId, roleName)
-            .Where(b => b.City!.CityName.Contains(search)).ToListAsync()
+            .Where(b => b.Locality!.LocalityName.Contains(search)).ToListAsync()
             ).Select(e => Mapper.Map(e));
         return results.ToList()!;
     }
@@ -272,7 +276,7 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
 
         if (roleName is ("Admin"))
         {
-            query = query.Include(b => b.City)
+            query = query.Include(b => b.Locality)
                 .Include(b => b.Driver)
                 .ThenInclude(d => d!.AppUser)
                 .Include(b => b.Schedule)
@@ -288,7 +292,7 @@ public class BookingRepository : BaseEntityRepository<BookingDTO ,App.Domain.Boo
                 .ThenInclude(c => c!.AppUser);
             return query;
         }
-        query = query.Include(b => b.City)
+        query = query.Include(b => b.Locality)
             .Include(b => b.Driver)
             .ThenInclude(d => d!.AppUser)
             .Include(b => b.Schedule)

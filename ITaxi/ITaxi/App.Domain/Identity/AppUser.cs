@@ -44,9 +44,11 @@ public class AppUser : BaseUser
     public Guid CountyId { get; set; }
     public County? County { get; set; }
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-    public Guid CityId { get; set; }
-    public City? City { get; set; }
+    public Guid MunicipalityId { get; set; }
+    public Municipality? Municipality { get; set; }
 
+    public Guid LocalityId { get; set; }
+    public Locality? Locality { get; set; }
     public string Address { get; set; } = default!;
 
     [NotMapped]

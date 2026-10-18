@@ -44,11 +44,11 @@ public class AppUser: DomainEntityId
     [Display(ResourceType = typeof(Common), Name = "ProfilePhoto")]
     public IFormFile? ProfileImage { get; set; }
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "City")]
-    public Guid CityId { get; set; }
+    public Guid Locality { get; set; }
+    public LocalityDTO? City { get; set; }
 
     public Guid CountryId { get; set; }
-    public CityDTO? City { get; set; }
-
+   
     public Guid? CountyId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "County")]

@@ -132,8 +132,8 @@
   <data name="Vehicle" xml:space="preserve">
     <value>Sõiduk</value>
   </data>
-  <data name="City" xml:space="preserve">
-    <value>Linn</value>
+  <data name="Locality" xml:space="preserve">
+    <value>Linn / Linnaosa</value>
   </data>
   <data name="PickUpDateAndTime" xml:space="preserve">
     <value>Sõidu toimumiskuupäev ja -kellaaeg</value>

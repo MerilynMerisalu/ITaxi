@@ -57,7 +57,7 @@ public class BookingService : BaseEntityService<App.BLL.DTO.AdminArea.BookingDTO
 
     public async Task<List<BookingDTO>> SearchByCityAsync(string search, Guid? userId = null, string? roleName = null)
     {
-        return (await Repository.SearchByCityAsync(search, userId, roleName))
+        return (await Repository.SearchByLocalityAsync(search, userId, roleName))
             .Select(e => Mapper.Map(e)).ToList()!;
     }
 

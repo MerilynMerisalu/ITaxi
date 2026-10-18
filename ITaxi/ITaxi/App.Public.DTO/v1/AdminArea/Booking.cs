@@ -31,10 +31,13 @@ public class Booking: DomainEntityMetaId
     public Guid VehicleId { get; set; }
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(Vehicle))]
     public Vehicle? Vehicle { get; set; }
-    public Guid CityId { get; set; }
-    
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(City))]
-    public City? City { get; set; }
+    public Guid MunicipalityId { get; set; }
+    public Municipality? Municipality { get; set; }
+
+    public Guid LocalityId { get; set; }
+    public Locality? Locality { get; set; }
+
+
 
     [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Booking), Name = nameof(PickUpDateAndTime))]

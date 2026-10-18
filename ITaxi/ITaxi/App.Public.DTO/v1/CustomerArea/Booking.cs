@@ -17,10 +17,10 @@ public class Booking : DomainEntityMetaId
     public Guid VehicleId { get; set; }
      [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = nameof(Vehicle))]
      public Vehicle? Vehicle { get; set; }
-    public Guid CityId { get; set; }
+    public Guid LocalityId { get; set; }
     
-    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = nameof(City))]
-    public City? City { get; set; }
+    [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = nameof(Locality))]
+    public Locality? Locality { get; set; }
 
     [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.CustomerArea.Booking), Name = "PickUpDateAndTime")]

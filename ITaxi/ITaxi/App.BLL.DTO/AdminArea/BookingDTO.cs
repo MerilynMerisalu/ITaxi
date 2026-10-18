@@ -32,10 +32,13 @@ public class BookingDTO: DomainEntityMetaId
     public Guid VehicleId { get; set; }
     [Display(ResourceType = typeof(Booking), Name = nameof(Vehicle))]
     public VehicleDTO? Vehicle { get; set; }
-    public Guid CityId { get; set; }
-    
-    [Display(ResourceType = typeof(Booking), Name = nameof(City))]
-    public CityDTO? City { get; set; }
+    public Guid CountyId { get; set; }
+    public CountyDTO? County { get; set; }
+    public Guid MunicipalityId { get; set; }
+    public MunicipalityDTO? Municipality { get; set; }
+
+    public Guid LocalityId { get; set; }
+    public LocalityDTO? Locality { get; set; }
 
     [DataType(DataType.DateTime)]
     [Display(ResourceType = typeof(Booking), Name = "PickUpDateAndTime")]

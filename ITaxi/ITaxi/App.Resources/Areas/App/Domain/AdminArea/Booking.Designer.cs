@@ -124,15 +124,6 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to City.
-        /// </summary>
-        public static string City {
-            get {
-                return ResourceManager.GetString("City", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Accepted By.
         /// </summary>
         public static string ConfirmedBy {
@@ -246,6 +237,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string HasAnElevatorInThePickupBuilding {
             get {
                 return ResourceManager.GetString("HasAnElevatorInThePickupBuilding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locality.
+        /// </summary>
+        public static string Locality {
+            get {
+                return ResourceManager.GetString("Locality", resourceCulture);
             }
         }
         

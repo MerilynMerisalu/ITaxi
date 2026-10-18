@@ -29,4 +29,4 @@ namespace App.BLL.DTO.AdminArea
     }
 }
 
-}
+
