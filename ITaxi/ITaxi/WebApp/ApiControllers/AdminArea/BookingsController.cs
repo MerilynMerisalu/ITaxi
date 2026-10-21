@@ -91,7 +91,8 @@ public class BookingsController : ControllerBase
         var bookingDTO = new BookingDTO();
         bookingDTO.Id = Guid.NewGuid();
         bookingDTO.BookingNumber = booking.BookingNumber;
-        bookingDTO.CityId = booking.CityId;
+        bookingDTO.MunicipalityId = booking.MunicipalityId;
+        bookingDTO.LocalityId = booking.LocalityId;
         bookingDTO.DriverId = booking.DriverId;
         bookingDTO.CustomerId = booking.CustomerId;
         bookingDTO.ScheduleId = booking.ScheduleId;

@@ -14,8 +14,7 @@ public class Admin: DomainEntityMetaId
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     public string? PersonalIdentifier { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Admin), Name = "City")]
-    public Guid CityId { get; set; }
+   
     
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]

@@ -177,4 +177,7 @@
   <data name="ChooseGenderFirst" xml:space="preserve">
     <value>Enne isikukoodi sisestamist, palun valige sugu!</value>
   </data>
+  <data name="EmailDoesNotContainAtSignErrorMessage" xml:space="preserve">
+    <value>Sisestatud meiliaadress on nõuetele mittevastav.</value>
+  </data>
 </root>

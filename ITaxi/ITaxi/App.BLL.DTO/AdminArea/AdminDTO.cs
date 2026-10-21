@@ -17,12 +17,7 @@ public class AdminDTO: DomainEntityMetaId, IShowHideItem
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Admin), Name = "PersonalIdentifier")]
     public string? PersonalIdentifier { get; set; }
 
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Admin), Name = "City")]
-    public Guid LocalityId { get; set; }
-
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Admin), Name = "City")]
-
-    public LocalityDTO? City { get; set; }
+    
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]

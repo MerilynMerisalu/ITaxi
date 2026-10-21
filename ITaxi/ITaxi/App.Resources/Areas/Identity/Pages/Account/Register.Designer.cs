@@ -133,6 +133,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Entered email address is invalid - correct email address must contain an at sign.
+        /// </summary>
+        public static string EmailDoesNotContainAtSignErrorMessage {
+            get {
+                return ResourceManager.GetString("EmailDoesNotContainAtSignErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Before entering your personal identifier number, please fill out your date of birth..
         /// </summary>
         public static string EnterDateOfBirth {

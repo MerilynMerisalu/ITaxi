@@ -105,7 +105,7 @@ public class BookingsController : ControllerBase
         var userId = User.GetUserId();
         
         var rideTimes = await _appBLL.RideTimes.GettingBestAvailableRideTimeAsync(booking.PickUpDateAndTime,
-            booking.CityId, booking.NumberOfPassengers, booking.VehicleTypeId, false, userId, roleName: null);
+            booking.LocalityId, booking.NumberOfPassengers, booking.VehicleTypeId, false, userId, roleName: null);
         if (rideTimes == null || rideTimes.Count == 0)
         {
             return BadRequest();
@@ -119,7 +119,7 @@ public class BookingsController : ControllerBase
 
         var bookingDTO = new BookingDTO();
         bookingDTO.Id = Guid.NewGuid();
-        bookingDTO.CityId = booking.CityId;
+        bookingDTO.LocalityId = booking.LocalityId;
         bookingDTO.DriverId = rideTime.DriverId;
         bookingDTO.CustomerId = _appBLL.Customers.GettingCustomerIdByAppUserIdAsync(userId).Result;
         bookingDTO.ScheduleId = rideTime.ScheduleId;

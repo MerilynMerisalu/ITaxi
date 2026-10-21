@@ -113,7 +113,9 @@ public class AdminsController : ControllerBase
             admin.AppUserId = appUser.Id;
             appUser.Email = adminDTO.AppUser!.Email;
             appUser.Gender = adminDTO.AppUser.Gender;
-            admin.CityId = adminDTO.CityId;
+            admin.AppUser!.CountryId = adminDTO.AppUser.CountryId;
+            admin.AppUser!.MunicipalityId = adminDTO.AppUser.MunicipalityId;
+            admin.AppUser!.LocalityId = adminDTO.AppUser!.LocalityId;
             admin.Address = adminDTO.Address;
             admin.PersonalIdentifier = adminDTO.PersonalIdentifier;
             admin.CreatedBy = User.GetUserEmail();

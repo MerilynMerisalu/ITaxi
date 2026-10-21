@@ -44,8 +44,11 @@ public class AppUser: DomainEntityId
     [Display(ResourceType = typeof(Common), Name = "ProfilePhoto")]
     public IFormFile? ProfileImage { get; set; }
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "City")]
-    public Guid Locality { get; set; }
-    public LocalityDTO? City { get; set; }
+    public Guid LocalityId { get; set; }
+    public LocalityDTO? Locality { get; set; }
+
+    public Guid MunicipalityId { get; set; }
+    public MunicipalityDTO? Municipality { get; set; }
 
     public Guid CountryId { get; set; }
    
@@ -56,6 +59,16 @@ public class AppUser: DomainEntityId
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "Country")]
     public CountryDTO? Country { get; set; }
+
+
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [DataType(DataType.PhoneNumber)]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(Common), Name = nameof(Address))]
+    public string Address{ get; set; } = default!;
 
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]

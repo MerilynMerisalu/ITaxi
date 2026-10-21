@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using App.Enum.Enum;
+using App.Public.DTO.v1.AdminArea;
 using Base.Resources;
 
 
@@ -36,7 +37,20 @@ public class AppUser
 
     //[NotMapped]
     //public IFormFile? ProfileImage { get; set; }
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    public Guid CountryId { get; set; }
+    public Country? Country { get; set; }
 
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    public Guid CountyId { get; set; }
+    public County? County { get; set; }
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    public Guid MunicipalityId { get; set; }
+    public Municipality? Municipality { get; set; }
+
+    public Guid LocalityId { get; set; }
+    public Locality? Locality { get; set; }
+    public string Address { get; set; } = default!;
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.PhoneNumber)]

@@ -103,19 +103,20 @@ public class DriversController : ControllerBase
         try
         {
             var appUser = await _appBLL.AppUsers.GettingAppUserByAppUserIdAsync(driver.AppUserId);
-            appUser.Email = appUser.Email;
-            appUser.Gender = appUser.Gender;
-            appUser.FirstName = appUser.FirstName;
-            appUser.LastName = appUser.LastName;
-            appUser.IsActive = appUser.IsActive;
-            appUser.PhoneNumber = appUser.PhoneNumber;
-            appUser.DateOfBirth = appUser.DateOfBirth;
-
+            appUser.FirstName = driver.AppUser!.FirstName;
+            appUser.LastName = driver.AppUser!.LastName;
+            appUser.CountryId = driver.AppUser!.CountryId;
+            appUser.CountyId = driver.AppUser!.CountyId;
+            appUser.MunicipalityId = driver.AppUser!.MunicipalityId;
+            appUser.LocalityId = driver.AppUser!.LocalityId;
+            appUser.Address = driver.AppUser!.Address;
+            appUser.DateOfBirth = driver.AppUser!.DateOfBirth;
+            appUser.Email = driver.AppUser!.Email;
+            appUser.PhoneNumber = driver.AppUser!.PhoneNumber;
+            
             _appBLL.AppUsers.Update(appUser);
             await _appBLL.SaveChangesAsync();
 
-            driver.Address = driver.Address;
-            driver.CityId = driver.CityId;
             driver.DriverLicenseNumber = driver.DriverLicenseNumber;
             driver.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
             driver.PersonalIdentifier = driver.PersonalIdentifier;

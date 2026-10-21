@@ -13,15 +13,20 @@ public class RegisterDTO
     /// <summary>
     /// User's first name
     /// </summary>
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.RequiredAttributeErrorMessage))]
+    [MinLength(1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageMinLength))]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageMaxLength))]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.StringLengthAttributeErrorMessage))]
+
     public string FirstName { get; set; } = default!;
 
     /// <summary>
     /// User's last name
     /// </summary>
-    [Required()]
-    [MaxLength(50)]
-    [StringLength(50, MinimumLength = 1)]
-    
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.RequiredAttributeErrorMessage))]
+    [MinLength(1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageMinLength))]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageMaxLength))]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.StringLengthAttributeErrorMessage))]
     public string LastName { get; set; } = default!;
     
     /// <summary>
@@ -34,23 +39,23 @@ public class RegisterDTO
     /// User's date of birth
     /// </summary>
     [Required]
-    [DataType(DataType.DateTime)]
+    [DataType(DataType.Date)]
     public string DateOfBirth { get; set; } = default!;
-    
+
     /// <summary>
     /// User's phone number
     /// </summary>
-    [Required()]
-    [DataType(DataType.PhoneNumber)]
-    [MaxLength(50)]
-    [StringLength(50, MinimumLength = 1)]
-    
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.RequiredAttributeErrorMessage))]
+    [MinLength(1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageMinLength))]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageMaxLength))]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.StringLengthAttributeErrorMessage))]
     public  string PhoneNumber { get; set; } = default!;
 
     /// <summary>
     /// User's email
     /// </summary>
-    [StringLength(50, MinimumLength = 5, ErrorMessage = "Invalid email address length")]
+    [RegularExpression(@"/@", ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageEmail))]
+    [StringLength(50, MinimumLength = 5, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.StringLengthAttributeErrorMessage))]
     public string Email { get; set; } = default!;
     /// <summary>
     /// User's password
