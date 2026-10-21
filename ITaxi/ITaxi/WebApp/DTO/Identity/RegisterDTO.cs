@@ -54,7 +54,7 @@ public class RegisterDTO
     /// <summary>
     /// User's email
     /// </summary>
-    [RegularExpression(@"/@", ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageEmail))]
+    [EmailAddress(ErrorMessageResourceType = typeof (Common), ErrorMessageResourceName = nameof(Common.ErrorMessageEmail))]
     [StringLength(50, MinimumLength = 5, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.StringLengthAttributeErrorMessage))]
     public string Email { get; set; } = default!;
     /// <summary>

@@ -178,6 +178,6 @@
     <value>Before entering your personal identifier code, please choose your gender.</value>
   </data>
   <data name="EmailDoesNotContainAtSignErrorMessage" xml:space="preserve">
-    <value>Entered email address is invalid - correct email address must contain an at sign</value>
+    <value>Entered email address is invalid.</value>
   </data>
 </root>

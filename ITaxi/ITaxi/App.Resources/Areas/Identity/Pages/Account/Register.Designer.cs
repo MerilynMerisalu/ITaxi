@@ -133,7 +133,7 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entered email address is invalid - correct email address must contain an at sign.
+        ///   Looks up a localized string similar to Entered email address is invalid..
         /// </summary>
         public static string EmailDoesNotContainAtSignErrorMessage {
             get {
