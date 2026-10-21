@@ -38,7 +38,7 @@ public class RegisterDTO
     /// <summary>
     /// User's date of birth
     /// </summary>
-    [Required]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.RequiredAttributeErrorMessage))]
     [DataType(DataType.Date)]
     public string DateOfBirth { get; set; } = default!;
 
@@ -54,7 +54,8 @@ public class RegisterDTO
     /// <summary>
     /// User's email
     /// </summary>
-    [EmailAddress(ErrorMessageResourceType = typeof (Common), ErrorMessageResourceName = nameof(Common.ErrorMessageEmail))]
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof( Common.RequiredAttributeErrorMessage))]
+    [EmailAddress(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageEmail))]
     [StringLength(50, MinimumLength = 5, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.StringLengthAttributeErrorMessage))]
     public string Email { get; set; } = default!;
     /// <summary>
