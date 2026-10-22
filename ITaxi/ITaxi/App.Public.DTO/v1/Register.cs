@@ -2,6 +2,7 @@
 using App.Enum.Enum;
 using App.Resources.Areas.Identity.Pages.Account;
 using Base.Resources;
+using Base.Resources.Identity.Pages.Account;
 
 namespace App.Public.DTO.v1;
 
@@ -11,8 +12,7 @@ public class Register
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    
-    public string FirstName { get; set; } = default!;
+     public string FirstName { get; set; } = default!;
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
@@ -20,17 +20,34 @@ public class Register
         ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
     
     public string LastName { get; set; } = default!;
-
-   
     
     [EnumDataType(typeof(Gender))]
     public Gender Gender { get; set; }
 
+    [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Register), Name = nameof(Register.PersonalIdentifierCode))]
+    public string? PersonalIdentifierCode { get; set; }
+
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.DateTime)]
     public DateTime DateOfBirth { get; set; }
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Register), Name = "Country")]
+    public Guid CountryId { get; set; }
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Register), Name = "County")]
+    public Guid CountyId { get; set; }
 
-    
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Register), Name = "Locality")]
+    public Guid LocalityId { get; set; }
+
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [StringLength(50, MinimumLength = 1, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Register), Name = nameof(Address))]
+    public string Address { get; set; } = default!;
+
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.PhoneNumber)]

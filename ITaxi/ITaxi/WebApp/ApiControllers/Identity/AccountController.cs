@@ -103,6 +103,9 @@ public class AccountController : ControllerBase
             LastName = customerRegistrationDTO.LastName,
             Gender = Enum.Parse<Gender>(customerRegistrationDTO.Gender.ToString()),
             DateOfBirth = DateTime.Parse(customerRegistrationDTO.DateOfBirth).ToUniversalTime(),
+            PersonalIdentifierCode = customerRegistrationDTO.PersonalIdentifierCode!,
+            LocalityId = customerRegistrationDTO.LocalityId,
+            Address = customerRegistrationDTO.Address,
             PhoneNumber = customerRegistrationDTO.PhoneNumber,
             Email = customerRegistrationDTO.Email,
             UserName = customerRegistrationDTO.Email,
@@ -226,6 +229,8 @@ public class AccountController : ControllerBase
             LastName = adminRegistrationDTO.LastName,
             Gender = Enum.Parse<Gender>(adminRegistrationDTO.Gender.ToString()),
             DateOfBirth = adminRegistrationDTO.DateOfBirth.ToUniversalTime(),
+            PersonalIdentifierCode = adminRegistrationDTO.PersonalIdentifierCode!,
+            LocalityId = adminRegistrationDTO.LocalityId,
             PhoneNumber = adminRegistrationDTO.PhoneNumber,
             Email = adminRegistrationDTO.Email,
             UserName = adminRegistrationDTO.Email,
@@ -271,14 +276,11 @@ public class AccountController : ControllerBase
         );
         
         await _userManager.AddToRoleAsync(appUser, "Admin");
-      
+
         var admin = new AdminDTO()
         {
             Id = new Guid(),
             AppUserId = appUser.Id,
-            PersonalIdentifier = adminRegistrationDTO.PersonalIdentifier,
-            CityId = adminRegistrationDTO.CityId,
-            Address = adminRegistrationDTO.Address,
             CreatedAt = DateTime.Now.ToUniversalTime(),
             UpdatedAt = DateTime.Now.ToUniversalTime()
         };
@@ -290,9 +292,7 @@ public class AccountController : ControllerBase
         {
             Id = admin.Id,
             AppUserId = admin.AppUserId,
-            Address = admin.Address,
             PersonalIdentifier = admin.PersonalIdentifier,
-            CityId = admin.CityId,
             CreatedAt = admin.CreatedAt,
             CreatedBy = admin.CreatedBy,
             UpdatedAt = admin.UpdatedAt,

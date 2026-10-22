@@ -34,6 +34,18 @@ public class RegisterDTO
     /// </summary>
     [EnumDataType(typeof(Gender))]
     public Gender Gender { get; set; }
+    /// <summary>
+    /// User's locality
+    /// </summary>
+    public Guid LocalityId { get; set; }
+    /// <summary>
+    /// User's address
+    /// </summary>
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.RequiredAttributeErrorMessage))]
+    [MinLength(1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageMinLength))]
+    [MaxLength(72, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageMaxLength))]
+    [StringLength(72, MinimumLength = 1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.StringLengthAttributeErrorMessage))]
+    public string Address { get; set; } = default!;
 
     /// <summary>
     /// User's date of birth
@@ -41,6 +53,11 @@ public class RegisterDTO
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.RequiredAttributeErrorMessage))]
     [DataType(DataType.Date)]
     public string DateOfBirth { get; set; } = default!;
+    /// <summary>
+    /// Personal Identifier Code
+    /// </summary>
+    [Display(ResourceType = typeof(Register), Name = nameof(PersonalIdentifierCode))]
+    public string? PersonalIdentifierCode { get; set; }
 
     /// <summary>
     /// User's phone number

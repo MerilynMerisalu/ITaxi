@@ -135,8 +135,8 @@
   <data name="County" xml:space="preserve">
     <value>County</value>
   </data>
-  <data name="City" xml:space="preserve">
-    <value>City</value>
+  <data name="Locality" xml:space="preserve">
+    <value>Locality</value>
   </data>
   <data name="EnterYourAddressOfResidenceHere" xml:space="preserve">
     <value>Enter Your Address of Residence Here</value>
@@ -179,5 +179,8 @@
   </data>
   <data name="EmailDoesNotContainAtSignErrorMessage" xml:space="preserve">
     <value>Entered email address is invalid.</value>
+  </data>
+  <data name="PersonalIdentifierCode" xml:space="preserve">
+    <value>Personal Identifier Code</value>
   </data>
 </root>

@@ -50,8 +50,12 @@ public class AutoMapperConfig: Profile
         CreateMap<App.Public.DTO.v1.AdminArea.County, App.BLL.DTO.AdminArea.CountyDTO>()
             .ReverseMap();
 
-        CreateMap<App.Public.DTO.v1.AdminArea.City, App.BLL.DTO.AdminArea.CityDTO>()
+        CreateMap<App.Public.DTO.v1.AdminArea.Municipality, App.BLL.DTO.AdminArea.MunicipalityDTO>()
             .ReverseMap();
+        CreateMap<App.Public.DTO.v1.AdminArea.Locality, App.BLL.DTO.AdminArea.LocalityDTO>()
+           .ReverseMap();
+        CreateMap<App.Public.DTO.v1.AdminArea.EhakUnitType, App.BLL.DTO.AdminArea.EhakUnitTypeDTO>()
+           .ReverseMap();
 
         CreateMap<App.Public.DTO.v1.AdminArea.Admin, App.BLL.DTO.AdminArea.AdminDTO>()
             .ReverseMap();

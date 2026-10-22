@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using App.Enum.Enum;
+using App.Resources.Areas.Identity.Pages.Account;
 using Base.Domain.Identity;
 using Base.Resources;
 using Microsoft.AspNetCore.Http;
@@ -29,13 +30,15 @@ public class AppUser : BaseUser
     public string LastAndFirstName => $"{LastName} {FirstName}";
 
     [EnumDataType(typeof(Gender))]
-    
     public Gender? Gender { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.DateTime)]
     public DateTime DateOfBirth { get; set; }
-   
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Display(ResourceType = typeof(Register), Name = nameof(Register.PersonalIdentifierCode))]
+    public string PersonalIdentifierCode { get; set; } = default!;
+
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     public Guid CountryId { get; set; }
     public Country? Country { get; set; }

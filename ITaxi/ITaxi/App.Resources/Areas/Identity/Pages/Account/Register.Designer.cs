@@ -88,15 +88,6 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to City.
-        /// </summary>
-        public static string City {
-            get {
-                return ResourceManager.GetString("City", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Country.
         /// </summary>
         public static string Country {
@@ -187,6 +178,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Locality.
+        /// </summary>
+        public static string Locality {
+            get {
+                return ResourceManager.GetString("Locality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use another service to log in..
         /// </summary>
         public static string LoginThirdParty {
@@ -219,6 +219,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         public static string PersonalIdentificationCodeControlDigitError {
             get {
                 return ResourceManager.GetString("PersonalIdentificationCodeControlDigitError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personal Identifier Code.
+        /// </summary>
+        public static string PersonalIdentifierCode {
+            get {
+                return ResourceManager.GetString("PersonalIdentifierCode", resourceCulture);
             }
         }
         

@@ -135,8 +135,8 @@
   <data name="County" xml:space="preserve">
     <value>Maakond</value>
   </data>
-  <data name="City" xml:space="preserve">
-    <value>Linn</value>
+  <data name="Locality" xml:space="preserve">
+    <value>Asula</value>
   </data>
   <data name="EnterYourAddressOfResidenceHere" xml:space="preserve">
     <value>Sisestage siia oma aadress.</value>
@@ -179,5 +179,8 @@
   </data>
   <data name="EmailDoesNotContainAtSignErrorMessage" xml:space="preserve">
     <value>Sisestatud meiliaadress on nõuetele mittevastav.</value>
+  </data>
+  <data name="PersonalIdentifierCode" xml:space="preserve">
+    <value>Isikukood</value>
   </data>
 </root>
