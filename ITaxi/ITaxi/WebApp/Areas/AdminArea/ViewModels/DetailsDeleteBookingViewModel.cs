@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using App.Enum.Enum;
+﻿using App.Enum.Enum;
 using App.Resources.Areas.App.Domain.AdminArea;
+using Google.Apis.PeopleService.v1.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
@@ -9,10 +10,7 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 /// </summary>
 public class DetailsDeleteBookingViewModel : AdminAreaBaseViewModel
 {
-    /// <summary>
-    /// Booking id
-    /// </summary>
-    public Guid Id { get; set; }
+    
     /// <summary>
     /// A booking number for booking identification 
     /// </summary>
@@ -47,12 +45,27 @@ public class DetailsDeleteBookingViewModel : AdminAreaBaseViewModel
     /// </summary>
     [Display(ResourceType = typeof(Booking), Name = nameof(Vehicle))]
     public string Vehicle { get; set; } = default!;
+    /// <summary>
+    /// Booking country
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(Country))]
+    public string Country { get; set; } = default!;
+    /// <summary>
+    /// Booking county
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(County))]
+    public string County { get; set; } = default!;
+    /// <summary>
+    /// Booking municipality
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(Municipality))]
+    public string Municipality { get; set; } = default!;
 
     /// <summary>
-    /// City
+    /// Locality
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = nameof(City))]
-    public string City { get; set; } = default!;
+    [Display(ResourceType = typeof(Booking), Name = nameof(Locality))]
+    public string Locality { get; set; } = default!;
 
     /// <summary>
     /// Pick up date and time

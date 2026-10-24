@@ -65,11 +65,14 @@ public class DriversController : Controller
             vm.DateOfBirth = driver.AppUser!.DateOfBirth;
             vm.DriverLicenseCategoryNames = await _appBLL.DriverAndDriverLicenseCategories
                 .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
-            vm.PersonalIdentifier = driver.PersonalIdentifier;
-            vm.CityName = driver.AppUser!.City!.CityName;
+            vm.PersonalIdentifier = driver.AppUser.PersonalIdentifierCode;
+            vm.CountryName = driver.AppUser.Country!.CountryName;
+            vm.CountyName = driver.AppUser!.County!.CountyName;
+            vm.MunicipalityName = driver.AppUser!.Municipality!.Name;
+            vm.LocalityName = driver.AppUser!.Locality!.LocalityName;
             vm.DriverLicenseNumber = driver.DriverLicenseNumber;
             vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLocalTime();
-            vm.Address = driver.Address;
+            vm.Address = driver.AppUser.Address;
             vm.PhoneNumber = driver.AppUser.PhoneNumber;
             vm.EmailAddress = driver.AppUser!.Email;
             vm.CreatedBy = driver.CreatedBy!;
@@ -88,9 +91,7 @@ public class DriversController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateDriverViewModel();
-        vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
-            nameof(CityDTO.Id),
-            nameof(CityDTO.CityName));
+        
         vm.DriverLicenseCategories = new SelectList(
             await _appBLL.DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
             nameof(DriverLicenseCategoryDTO.Id),
@@ -119,8 +120,11 @@ public class DriversController : Controller
             driver.AppUser!.Gender = vm.Gender;
             driver.AppUser.DateOfBirth = DateTime.Parse(vm.DateOfBirth).ToUniversalTime();
             driver.PersonalIdentifier = vm.PersonalIdentifier;
-            driver.AppUser.CityId = vm.CityId;
-            driver.Address = vm.Address;
+            driver.AppUser!.Country!.Id = vm.CountryId;
+            driver.AppUser!.CountyId = vm.CountyId;
+            driver.AppUser.MunicipalityId = vm.MunicipalityId;
+            driver.AppUser.LocalityId = vm.LocalityId;
+            driver.AppUser.Address = vm.Address;
             driver.DriverLicenseNumber = vm.DriverLicenseNumber;
             driver.DriverLicenseExpiryDate = DateTime.Parse(vm.DriverLicenseExpiryDate).ToUniversalTime();
             _appBLL.Drivers.Add(driver);
@@ -128,9 +132,7 @@ public class DriversController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunicipalitiesWithoutCountyAsync(),
-            nameof(CityDTO.Id),
-            nameof(CityDTO.CityName), driver.AppUser!.CityId);
+      
         return View(vm);
     }
 
@@ -140,37 +142,37 @@ public class DriversController : Controller
     /// </summary>
     /// <param name="id">Id</param>
     /// <returns>View</returns>
-    public async Task<IActionResult> Edit(Guid? id)
-    {
-        if (id == null) return NotFound();
+    //public async Task<IActionResult> Edit(Guid? id)
+    //{
+    //    if (id == null) return NotFound();
 
-        var driver = await _appBLL.Drivers
-            .FirstOrDefaultAsync(id.Value);
+    //    var driver = await _appBLL.Drivers
+    //        .FirstOrDefaultAsync(id.Value);
 
-        var vm = new EditDriverViewModel();
-        vm.DriverLicenseCategories = new SelectList(
-            await _appBLL
-                .DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
-            nameof(DriverLicenseCategoryDTO.Id),
-            nameof(DriverLicenseCategoryDTO.DriverLicenseCategoryName));
-        vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
-            nameof(CityDTO.Id), nameof(CityDTO.CityName));
-        if (driver != null)
-        {
-            vm.FirstName = driver.AppUser!.FirstName;
-            vm.LastName = driver.AppUser!.LastName;
-            vm.Gender = driver.AppUser!.Gender;
-            vm.Address = driver.Address;
-            vm.CityId = driver.AppUser.CityId;
-            vm.PersonalIdentifier = driver.PersonalIdentifier;
-            vm.DateOfBirth = driver.AppUser!.DateOfBirth;
-            vm.DriverLicenseNumber = driver.DriverLicenseNumber;
-            vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
-            vm.PhoneNumber = driver!.AppUser!.PhoneNumber;
-            vm.Email = driver.AppUser!.Email;
-        }
-        return View(vm);
-    }
+    //    var vm = new EditDriverViewModel();
+    //    vm.DriverLicenseCategories = new SelectList(
+    //        await _appBLL
+    //            .DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
+    //        nameof(DriverLicenseCategoryDTO.Id),
+    //        nameof(DriverLicenseCategoryDTO.DriverLicenseCategoryName));
+    //    vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
+    //        nameof(CityDTO.Id), nameof(CityDTO.CityName));
+    //    if (driver != null)
+    //    {
+    //        vm.FirstName = driver.AppUser!.FirstName;
+    //        vm.LastName = driver.AppUser!.LastName;
+    //        vm.Gender = driver.AppUser!.Gender;
+    //        vm.Address = driver.Address;
+    //        vm.CityId = driver.AppUser.CityId;
+    //        vm.PersonalIdentifier = driver.PersonalIdentifier;
+    //        vm.DateOfBirth = driver.AppUser!.DateOfBirth;
+    //        vm.DriverLicenseNumber = driver.DriverLicenseNumber;
+    //        vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate;
+    //        vm.PhoneNumber = driver!.AppUser!.PhoneNumber;
+    //        vm.Email = driver.AppUser!.Email;
+    //    }
+    //    return View(vm);
+    //}
 
     // POST: AdminArea/Drivers/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -220,6 +222,14 @@ public class DriversController : Controller
                     appuser.LastName = vm.LastName;
                     appuser.Gender = vm.Gender;
                     appuser.DateOfBirth = DateTime.Parse(vm.DateOfBirth.ToString("d")).ToUniversalTime();
+                    if (!vm.PersonalIdentifier!.Equals(appuser.PersonalIdentifierCode))
+                    {
+                        appuser.PersonalIdentifierCode = vm.PersonalIdentifier;
+                    }
+                    appuser.CountryId = vm.CountryId;
+                    appuser.CountyId = vm.CountyId;
+                    appuser.MunicipalityId = vm.MunicipalityId;
+                    appuser.LocalityId = vm.LocalityId;
                     appuser.PhoneNumber = vm.PhoneNumber;
                     appuser.Email = vm.Email;
                     appuser.IsActive = vm.IsActive;
@@ -227,9 +237,6 @@ public class DriversController : Controller
 
                     driver.DriverLicenseNumber = vm.DriverLicenseNumber;
                     driver.DriverLicenseExpiryDate = DateTime.Parse(vm.DriverLicenseExpiryDate.ToString("d")).ToUniversalTime();
-                    driver.AppUser!.CityId = vm.CityId;
-                    driver.Address = vm.Address;
-                    driver.UpdatedBy = User.Identity!.Name!;
                     driver.UpdatedAt = DateTime.Now.ToUniversalTime();
                     _appBLL.Drivers.Update(driver);
                 }
@@ -272,10 +279,13 @@ public class DriversController : Controller
         vm.DriverLicenseCategoryNames = await _appBLL.DriverAndDriverLicenseCategories
             .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
         vm.PersonalIdentifier = driver.PersonalIdentifier;
-        vm.CityName = driver.AppUser!.City!.CityName;
+        vm.CountryName = driver.AppUser.Country!.CountryName;
+        vm.CountyName = driver.AppUser!.County!.CountyName;
+        vm.MunicipalityName = driver.AppUser!.Municipality!.Name;
+        vm.LocalityName = driver.AppUser!.Locality!.LocalityName;
+        vm.Address = driver.AppUser!.Address;
         vm.DriverLicenseNumber = driver.DriverLicenseNumber;
         vm.DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate.ToLocalTime();
-        vm.Address = driver.Address;
         vm.PhoneNumber = driver.AppUser.PhoneNumber;
         vm.EmailAddress = driver.AppUser!.Email;
         vm.CreatedBy = driver.CreatedBy!;

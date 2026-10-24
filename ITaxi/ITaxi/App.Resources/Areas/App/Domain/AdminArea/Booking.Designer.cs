@@ -133,6 +133,24 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        public static string Country {
+            get {
+                return ResourceManager.GetString("Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to County.
+        /// </summary>
+        public static string County {
+            get {
+                return ResourceManager.GetString("County", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customer.
         /// </summary>
         public static string Customer {
@@ -246,6 +264,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         public static string Locality {
             get {
                 return ResourceManager.GetString("Locality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Municipality.
+        /// </summary>
+        public static string Municipality {
+            get {
+                return ResourceManager.GetString("Municipality", resourceCulture);
             }
         }
         

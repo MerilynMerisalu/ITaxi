@@ -37,6 +37,7 @@ public class RegisterDTO
     /// <summary>
     /// User's locality
     /// </summary>
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.RequiredAttributeErrorMessage))]
     public Guid LocalityId { get; set; }
     /// <summary>
     /// User's address
@@ -58,7 +59,23 @@ public class RegisterDTO
     /// </summary>
     [Display(ResourceType = typeof(Register), Name = nameof(PersonalIdentifierCode))]
     public string? PersonalIdentifierCode { get; set; }
+    /// <summary>
+    /// Country id
+    /// </summary>
+    [Display(ResourceType = typeof(Register), Name = "Country")]
+    public Guid CountryId { get; set; }
 
+    /// <summary>
+    /// County id
+    /// </summary>
+    [Display(ResourceType = typeof(Register), Name = "County")]
+    public Guid CountyId { get; set; }
+    /// <summary>
+    /// Municipality id
+    /// </summary>
+    public Guid MunicipalityId { get; set; }
+
+   
     /// <summary>
     /// User's phone number
     /// </summary>

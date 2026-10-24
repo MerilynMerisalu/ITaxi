@@ -38,6 +38,10 @@ public class Register
     public Guid CountyId { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Register), Name = "Municipality")]
+    public Guid MunicipalityId { get; set; }
+
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [Display(ResourceType = typeof(App.Resources.Areas.Identity.Pages.Account.Register), Name = "Locality")]
     public Guid LocalityId { get; set; }
 

@@ -66,7 +66,10 @@ public class BookingsController : Controller
         vm.Id = booking.Id;
         vm.BookingNumber = booking.BookingNumber;
         vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
-        vm.City = booking.City!.CityName;
+        vm.Country = booking.Locality!.Municipality!.County!.Country!.CountryName;
+        vm.County = booking.County!.CountyName;
+        vm.Municipality = booking.Municipality!.Name;
+        vm.Locality = booking.Locality!.LocalityName;
         vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
         vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
         vm.AdditionalInfo = booking.AdditionalInfo;
@@ -243,7 +246,7 @@ public class BookingsController : Controller
         return Ok(vm);
     }
 
-    // GET: AdminArea/Bookings/Create
+    // GET: AdminArea/Bookings/Cre
     /// <summary>
     /// Admin area booking create GET method
     /// </summary>
@@ -258,8 +261,7 @@ public class BookingsController : Controller
         
         vm.Schedules = new SelectList(schedules,
             nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime));
-        vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
-            nameof(CityDTO.Id), nameof(CityDTO.CityName));
+       
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleTypeDTO.Id), 
             nameof(VehicleTypeDTO.VehicleTypeName));
@@ -290,13 +292,14 @@ public class BookingsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateBookingViewModel vm)
     {
+
+#warning Come back after the address autofill has been implemented
         var booking = new BookingDTO();
         if (ModelState.IsValid)
         {
 
             booking.Id = Guid.NewGuid();
             booking.BookingNumber = vm.BookingNumber;
-            booking.CityId = vm.CityId;
             booking.CustomerId = vm.CustomerId;
             booking.DriverId = vm.DriverId;
             booking.ScheduleId = vm.ScheduleId!.Value;
@@ -345,9 +348,9 @@ public class BookingsController : Controller
         vm.Schedules = new SelectList(await _appBLL.Schedules.GettingAllOrderedSchedulesWithIncludesAsync(),
             nameof(ScheduleDTO.Id), nameof(ScheduleDTO.ShiftDurationTime),
             nameof(vm.ScheduleId));
-        vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
-            nameof(CityDTO.Id),
-            nameof(CityDTO.CityName), nameof(vm.CityId));
+        //vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
+        //    nameof(CityDTO.Id),
+        //    nameof(CityDTO.CityName), nameof(vm.CityId));
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleTypeDTO.Id), nameof(VehicleTypeDTO.VehicleTypeName)
             , nameof(vm.VehicleTypeId));
@@ -387,7 +390,10 @@ public class BookingsController : Controller
         vm.Id = booking.Id;
         vm.BookingNumber = booking.BookingNumber;
         vm.ShiftDurationTime = booking.Schedule!.ShiftDurationTime;
-        vm.City = booking.City!.CityName;
+        vm.Country = booking.Locality!.Municipality!.County!.Country!.CountryName;
+        vm.County = booking.Locality!.Municipality!.County!.CountyName;
+        vm.Municipality = booking.Locality!.Municipality.Name;
+        vm.Locality = booking.Locality!.LocalityName;
         vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
         vm.Vehicle = booking.Vehicle!.VehicleIdentifier;
         vm.AdditionalInfo = booking.AdditionalInfo;
@@ -502,8 +508,11 @@ public class BookingsController : Controller
         vm.Id = booking.Id;
         booking.Schedule!.StartDateAndTime = booking.Schedule.StartDateAndTime.ToLocalTime();
         booking.Schedule.EndDateAndTime = booking.Schedule.EndDateAndTime.ToLocalTime();
-        vm.ShiftDurationTime = booking.Schedule.ShiftDurationTime ;
-        vm.City = booking.City!.CityName;
+        vm.ShiftDurationTime = booking.Schedule.ShiftDurationTime;
+        vm.Country = booking.Locality!.Municipality!.County!.Country!.CountryName;
+        vm.County = booking.Locality.Municipality.County.CountyName;
+        vm.Municipality = booking.Locality.Municipality.Name;
+        vm.Locality = booking.Locality.LocalityName;
         vm.BookingNumber = booking.BookingNumber;
         vm.Driver = booking.Driver!.AppUser!.LastAndFirstName;
         vm.Customer = booking.Customer!.AppUser!.LastAndFirstName;
@@ -588,7 +597,7 @@ public class BookingsController : Controller
     public async Task<IActionResult> SearchByCityAsync([FromForm] string search)
     {
         var roleName = User.GetUserRoleName();
-        var results = await _appBLL.Bookings.SearchByCityAsync(search, null, roleName );
+        var results = await _appBLL.Bookings.SearchByLocalityAsync(search, null, roleName );
         return View(nameof(Index), results);
     }
     /// <summary>

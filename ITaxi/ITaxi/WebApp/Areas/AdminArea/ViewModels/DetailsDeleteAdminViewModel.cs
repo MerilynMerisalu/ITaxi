@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using App.Enum.Enum;
+﻿using App.Enum.Enum;
 using App.Resources.Areas.App.Domain.AdminArea;
 using Base.Resources;
+using Google.Apis.PeopleService.v1.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
 
@@ -10,10 +11,7 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 /// </summary>
 public class DetailsDeleteAdminViewModel : AdminAreaBaseViewModel
 {
-    /// <summary>
-    /// Admin id
-    /// </summary>
-    public Guid Id { get; set; }
+    
 
     /// <summary>
     /// Admin first name
@@ -37,7 +35,7 @@ public class DetailsDeleteAdminViewModel : AdminAreaBaseViewModel
     /// Admin gender
     /// </summary>
     [Display(ResourceType = typeof(Common), Name = nameof(Gender))]
-    public Gender Gender { get; set; }
+    public App.Enum.Enum.Gender Gender { get; set; }
 
     /// <summary>
     /// Admin date of birth
@@ -50,16 +48,30 @@ public class DetailsDeleteAdminViewModel : AdminAreaBaseViewModel
     /// Admin personal identifier
     /// </summary>
     [Display(ResourceType = typeof(Admin), Name = nameof(PersonalIdentifier))]
-    public string PersonalIdentifier { get; set; } = default!;
-
+    public string? PersonalIdentifier { get; set; }
     /// <summary>
-    /// City
+    /// Admin's country
     /// </summary>
-    [Display(ResourceType = typeof(Admin), Name = nameof(City))]
-    public string City { get; set; }= default!;
+    [Display(ResourceType = typeof(AppUser), Name = "Country")]
+    public string CountryName { get; set; } = default!;
 
     /// <summary>
-    /// Address
+    /// Admin's county
+    /// </summary>
+    [Display(ResourceType = typeof(AppUser), Name = "County")]
+    public string CountyName { get; set; } = default!;
+    /// <summary>
+    /// Admin's municipality
+    /// </summary>
+    [Display(ResourceType = typeof(AppUser), Name = "Municipality")]
+    public string MunicipalityName { get; set; } = default!;
+    /// <summary>
+    /// Admin's locality
+    /// </summary>
+    [Display(ResourceType = typeof(AppUser), Name = "Locality")]
+    public string LocalityName { get; set; } = default!;
+    /// <summary>
+    /// Admin's residence address
     /// </summary>
     [Display(ResourceType = typeof(Admin), Name = "AddressOfResidence")]
     public string Address { get; set; } = default!;

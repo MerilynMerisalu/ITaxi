@@ -40,18 +40,26 @@ public class AppUser: DomainEntityId
 
     public DateTime DateOfBirth { get; set; }
 
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [MaxLength(11, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
+    [StringLength(11, MinimumLength = 11, ErrorMessageResourceType = typeof(Common),
+        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
+    [Display(ResourceType = typeof(Common), Name = nameof(PersonalIdentifierCode))]
+    public string PersonalIdentifierCode { get; set; } = default!;
     [NotMapped]
     [Display(ResourceType = typeof(Common), Name = "ProfilePhoto")]
     public IFormFile? ProfileImage { get; set; }
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "City")]
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "Locality")]
     public Guid LocalityId { get; set; }
     public LocalityDTO? Locality { get; set; }
 
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "Municipality")]
     public Guid MunicipalityId { get; set; }
     public MunicipalityDTO? Municipality { get; set; }
 
+    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "Country")]
     public Guid CountryId { get; set; }
-   
+    public CountryDTO? CountryDTO { get; set; }
     public Guid? CountyId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "County")]

@@ -61,7 +61,7 @@ public class EditDriverViewModel
     public string? PersonalIdentifier { get; set; }
 
     /// <summary>
-    /// 
+    /// Driver's license number
     /// </summary>
     [StringLength(15, MinimumLength = 2, ErrorMessageResourceType = typeof(Common)
         , ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
@@ -89,15 +89,51 @@ public class EditDriverViewModel
     public DateTime DriverLicenseExpiryDate { get; set; }
 
     /// <summary>
-    /// List of cities
+    /// List of countries
     /// </summary>
-    public SelectList? Cities { get; set; }
+    public SelectList? Countries { get; set; }
 
     /// <summary>
     /// City id
     /// </summary>
-    [Display(ResourceType = typeof(AppUser), Name = "City")]
-    public Guid CityId { get; set; }
+    [Display(ResourceType = typeof(AppUser), Name = "Country")]
+    public Guid CountryId { get; set; }
+
+    /// <summary>
+    /// List of counties
+    /// </summary>
+    public SelectList? Counties { get; set; }
+
+    /// <summary>
+    /// County id
+    /// </summary>
+    [Display(ResourceType = typeof(AppUser), Name = "County")]
+    public Guid CountyId { get; set; }
+
+    /// <summary>
+    /// List of municipalitiies
+    /// </summary>
+    public SelectList? Municipalities { get; set; }
+
+    /// <summary>
+    /// Municipality id
+    /// </summary>
+    [Display(ResourceType = typeof(AppUser), Name = "Municipality")]
+    public Guid MunicipalityId { get; set; }
+
+    /// <summary>
+    /// List of localities
+    /// </summary>
+    public SelectList? Localities { get; set; }
+
+    /// <summary>
+    /// Locality id
+    /// </summary>
+    [Display(ResourceType = typeof(AppUser), Name = "Locality")]
+    public Guid LocalityId { get; set; }
+
+
+
 
     /// <summary>
     /// Driver address

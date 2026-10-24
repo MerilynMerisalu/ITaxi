@@ -12,11 +12,6 @@ public class DriverDTO: DomainEntityMetaId, IShowHideItem
     public Guid AppUserId { get; set; }
     public AppUser? AppUser { get; set; }
 
-    [MaxLength(25, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
-    [StringLength(25, MinimumLength = 0, ErrorMessageResourceType = typeof(Common),
-        ErrorMessageResourceName = "StringLengthAttributeErrorMessage")]
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = "PersonalIdentifier")]
-    public string? PersonalIdentifier { get; set; }
     
     [MaxLength(10, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageStringLengthMax")]
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver), Name = nameof(ServiceProviderCardIdentifier))]
@@ -41,13 +36,7 @@ public class DriverDTO: DomainEntityMetaId, IShowHideItem
 
     public int NumberOfDriverLicenseCategories { get; set; }
 
-    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-    [MaxLength(30, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
-    [StringLength(30, MinimumLength = 1,
-        ErrorMessageResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Driver),
-        ErrorMessageResourceName = "AddressOfResidence")]
-    public string Address { get; set; } = default!;
-
+    
 
     public ICollection<VehicleDTO>? Vehicles { get; set; }
     public ICollection<DriveDTO>? Drives { get; set; }

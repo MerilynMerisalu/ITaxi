@@ -50,17 +50,6 @@ public class CreateBookingViewModel
     public SelectList? VehicleTypes { get; set; }
 
     /// <summary>
-    /// City id for create booking
-    /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = "City")]
-    public Guid CityId { get; set; }
-
-    /// <summary>
-    /// List of cities to create booking
-    /// </summary>
-    public SelectList? Cities { get; set; }
-
-    /// <summary>
     /// Pick up date and time
     /// </summary>
     [Display(ResourceType = typeof(Booking), Name = nameof(PickUpDateAndTime))]

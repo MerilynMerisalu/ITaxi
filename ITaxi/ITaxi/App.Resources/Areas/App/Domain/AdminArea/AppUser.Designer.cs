@@ -196,6 +196,15 @@ namespace App.Resources.Areas.App.Domain.AdminArea {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Municipality.
+        /// </summary>
+        public static string Municipality {
+            get {
+                return ResourceManager.GetString("Municipality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Personal Identifier.
         /// </summary>
         public static string PersonalIdentifier {

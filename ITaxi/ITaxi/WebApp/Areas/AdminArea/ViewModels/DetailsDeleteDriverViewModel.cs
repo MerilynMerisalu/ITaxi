@@ -10,11 +10,7 @@ namespace WebApp.Areas.AdminArea.ViewModels;
 /// </summary>
 public class DetailsDeleteDriverViewModel : AdminAreaBaseViewModel
 {
-    /// <summary>
-    /// Driver's id
-    /// </summary>
-    public Guid Id { get; set; }
-
+    
     /// <summary>
     /// Driver's first name
     /// </summary>
@@ -72,10 +68,30 @@ public class DetailsDeleteDriverViewModel : AdminAreaBaseViewModel
     public DateTime DriverLicenseExpiryDate { get; set; }
     
     /// <summary>
-    /// City name
+    /// Country name
     /// </summary>
-    [Display(ResourceType = typeof(AppUser), Name = "City")]
-    public string CityName { get; set; } = default!;
+    [Display(ResourceType = typeof(AppUser), Name = "Country")]
+    public string CountryName { get; set; } = default!;
+
+
+    /// <summary>
+    /// County name
+    /// </summary>
+    [Display(ResourceType = typeof(AppUser), Name = "County")]
+    public string CountyName { get; set; } = default!;
+
+    /// <summary>
+    /// Municipality name
+    /// </summary>
+    [Display(ResourceType = typeof(AppUser), Name = "Muncipality")]
+    public string MunicipalityName { get; set; } = default!;
+
+
+    /// <summary>
+    /// Municipality name
+    /// </summary>
+    [Display(ResourceType = typeof(AppUser), Name = "Locality")]
+    public string LocalityName { get; set; } = default!;
 
     /// <summary>
     /// Driver's address
@@ -90,7 +106,7 @@ public class DetailsDeleteDriverViewModel : AdminAreaBaseViewModel
     public string PhoneNumber { get; set; } = default!;
 
     /// <summary>
-    /// Drivers email address
+    /// Driver's email address
     /// </summary>
     [Display(ResourceType = typeof(Common), Name = "Email")]
     public string EmailAddress { get; set; } = default!;

@@ -104,6 +104,9 @@ public class AccountController : ControllerBase
             Gender = Enum.Parse<Gender>(customerRegistrationDTO.Gender.ToString()),
             DateOfBirth = DateTime.Parse(customerRegistrationDTO.DateOfBirth).ToUniversalTime(),
             PersonalIdentifierCode = customerRegistrationDTO.PersonalIdentifierCode!,
+            CountryId = customerRegistrationDTO.CountryId,
+            CountyId = customerRegistrationDTO.CountyId,
+            MunicipalityId = customerRegistrationDTO.MunicipalityId,
             LocalityId = customerRegistrationDTO.LocalityId,
             Address = customerRegistrationDTO.Address,
             PhoneNumber = customerRegistrationDTO.PhoneNumber,
@@ -221,7 +224,7 @@ public class AccountController : ControllerBase
         {
             TokenExpirationDateAndTime = DateTime.Now.AddMinutes(_configuration.GetValue<int>("JWT:ExpireInMinutes")).ToUniversalTime()
         };
-        
+
         appUser = new AppUser()
         {
             Id = Guid.NewGuid(),
@@ -230,7 +233,11 @@ public class AccountController : ControllerBase
             Gender = Enum.Parse<Gender>(adminRegistrationDTO.Gender.ToString()),
             DateOfBirth = adminRegistrationDTO.DateOfBirth.ToUniversalTime(),
             PersonalIdentifierCode = adminRegistrationDTO.PersonalIdentifierCode!,
+            CountryId = adminRegistrationDTO.CountryId,
+            CountyId = adminRegistrationDTO.CountyId,
             LocalityId = adminRegistrationDTO.LocalityId,
+            MunicipalityId = adminRegistrationDTO.MunicipalityId,
+            Address = adminRegistrationDTO.Address,
             PhoneNumber = adminRegistrationDTO.PhoneNumber,
             Email = adminRegistrationDTO.Email,
             UserName = adminRegistrationDTO.Email,
@@ -351,6 +358,12 @@ public class AccountController : ControllerBase
             LastName = driverRegistrationDto.LastName,
             Gender = Enum.Parse<Gender>(driverRegistrationDto.Gender.ToString()),
             DateOfBirth = DateTime.Parse(driverRegistrationDto.DateOfBirth).ToUniversalTime(),
+            PersonalIdentifierCode = driverRegistrationDto.PersonalIdentifierCode!,
+            CountryId = driverRegistrationDto.CountryId,
+            CountyId = driverRegistrationDto.CountyId,
+            MunicipalityId = driverRegistrationDto.MunicipalityId,
+            LocalityId = driverRegistrationDto.LocalityId,
+            Address = driverRegistrationDto.Address,
             PhoneNumber = driverRegistrationDto.PhoneNumber,
             Email = driverRegistrationDto.Email,
             UserName = driverRegistrationDto.Email,
@@ -402,8 +415,6 @@ public class AccountController : ControllerBase
         {
             Id = new Guid(),
             AppUserId = appUser.Id,
-            PersonalIdentifier = driverRegistrationDto.PersonalIdentifier,
-            Address = driverRegistrationDto.Address,
             DriverLicenseNumber = driverRegistrationDto.DriverLicenseNumber,
             DriverLicenseExpiryDate = DateTime.Parse(driverRegistrationDto.DriverLicenseExpiryDate)
                 .ToUniversalTime(),
@@ -439,10 +450,7 @@ public class AccountController : ControllerBase
         {
             Id = driver.Id,
             AppUserId = driver.AppUserId,
-            Address = driver.Address,
-            PersonalIdentifier = driver.PersonalIdentifier,
             NumberOfDriverLicenseCategories = driverRegistrationDto.DriverLicenseCategoryIds!.Length,
-            
             DriverLicenseNumber = driver.DriverLicenseNumber,
             DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate,
             CreatedAt = driver.CreatedAt,

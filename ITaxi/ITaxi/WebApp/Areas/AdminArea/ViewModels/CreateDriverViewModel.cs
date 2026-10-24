@@ -85,15 +85,48 @@ public class CreateDriverViewModel
     public string DriverLicenseExpiryDate { get; set; } = default!;
 
     /// <summary>
-    /// List of cities
+    /// Country id for create a driver
     /// </summary>
-    public SelectList? Cities { get; set; }
+    [Display(ResourceType = typeof(AppUser), Name = "County")]
+    public Guid CountyId { get; set; }
 
     /// <summary>
-    /// City id for create a driver
+    /// List of countries
     /// </summary>
-    [Display(ResourceType = typeof(AppUser), Name = "City")]
-    public Guid CityId { get; set; }
+    public SelectList? Countries { get; set; }
+
+    /// <summary>
+    /// Country id for create a driver
+    /// </summary>
+    [Display(ResourceType = typeof(AppUser), Name = "Country")]
+    public Guid CountryId { get; set; }
+
+    /// <summary>
+    /// List of counties
+    /// </summary>
+    public SelectList? Counties { get; set; }
+
+    /// <summary>
+    /// Municipality id for create a driver
+    /// </summary>
+    [Display(ResourceType = typeof(AppUser), Name = "Municipality")]
+    public Guid MunicipalityId { get; set; }
+
+    /// <summary>
+    /// List of municipalities
+    /// </summary>
+    public SelectList? Municipalities { get; set; }
+
+    /// <summary>
+    /// Locality id for create a driver
+    /// </summary>
+    [Display(ResourceType = typeof(AppUser), Name = "Locality")]
+    public Guid LocalityId { get; set; }
+
+    /// <summary>
+    /// List of localities
+    /// </summary>
+    public SelectList? Localities { get; set; }
 
     /// <summary>
     /// Driver address

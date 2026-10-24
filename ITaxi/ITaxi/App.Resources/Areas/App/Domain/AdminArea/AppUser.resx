@@ -177,4 +177,7 @@
   <data name="UserDetails" xml:space="preserve">
     <value>User Details</value>
   </data>
+  <data name="Municipality" xml:space="preserve">
+    <value>Municipality</value>
+  </data>
 </root>

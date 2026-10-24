@@ -64,7 +64,7 @@ public class AdminsController : Controller
         vm.Gender = admin.AppUser!.Gender;
         vm.DateOfBirth = admin.AppUser!.DateOfBirth;
         vm.Address = admin.Address;
-        vm.City = admin.City!.CityName;
+        vm.MunicipalityName = admin.AppUser!.Municipality!.Name;
         vm.PhoneNumber = admin.AppUser!.PhoneNumber;
         vm.Email = admin.AppUser!.Email;
         vm.IsActive = admin.AppUser!.IsActive;
@@ -79,7 +79,7 @@ public class AdminsController : Controller
         return View(vm);
     }
 
-    // GET: AdminArea/Admins/Create
+    /*// GET: AdminArea/Admins/Create
     /// <summary>
     /// Admin area admins controller GET method create
     /// </summary>
@@ -88,7 +88,7 @@ public class AdminsController : Controller
     {
         var vm = new CreateAdminViewModel();
         vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
-            nameof(CityDTO.Id), nameof(App.BLL.DTO.AdminArea.CityDTO.CityName));
+            nameof(C.Id), nameof(App.BLL.DTO.AdminArea.CityDTO.CityName));
 
         return View(vm);
     }
@@ -196,7 +196,7 @@ public class AdminsController : Controller
         
         return View(vm);
     }
-
+*/
     // GET: AdminArea/Admins/Delete/5
     /// <summary>
     /// Admin area admins controller GET method delete
@@ -216,13 +216,15 @@ public class AdminsController : Controller
         vm.LastAndFirstName = admin.AppUser!.LastAndFirstName;
         vm.Gender = admin.AppUser!.Gender;
         vm.DateOfBirth = admin.AppUser!.DateOfBirth;
-        vm.Address = admin.Address;
-        vm.City = admin.City!.CityName;
+        if (admin.PersonalIdentifier != null) vm.PersonalIdentifier = admin.PersonalIdentifier;
+        vm.CountryName = admin.AppUser!.Country!.CountryName;
+        vm.CountyName = admin.AppUser!.County!.CountyName;
+        vm.MunicipalityName = admin.AppUser!.Municipality!.Name;
+        vm.LocalityName = admin.AppUser!.Locality!.LocalityName;
+        vm.Address = admin.AppUser!.Address;
         vm.PhoneNumber = admin.AppUser!.PhoneNumber;
         vm.Email = admin.AppUser.Email;
         vm.IsActive = admin.AppUser!.IsActive;
-        if (admin.PersonalIdentifier != null) vm.PersonalIdentifier = admin.PersonalIdentifier;
-
         vm.CreatedBy = admin.CreatedBy!;
         vm.CreatedAt = admin.CreatedAt;
         vm.UpdatedBy = admin.UpdatedBy!;

@@ -177,4 +177,7 @@
   <data name="UserDetails" xml:space="preserve">
     <value>Kasutaja Detaild</value>
   </data>
+  <data name="Municipality" xml:space="preserve">
+    <value>Linn / vald</value>
+  </data>
 </root>
