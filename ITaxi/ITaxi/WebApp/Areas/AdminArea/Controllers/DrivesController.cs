@@ -91,7 +91,10 @@ public class DrivesController : Controller
         drive.Booking!.Schedule!.StartDateAndTime = drive.Booking!.Schedule!.StartDateAndTime;
         drive.Booking.Schedule.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
-        vm.City = drive.Booking.City!.CityName;
+        vm.Country = drive.Booking!.Locality!.Municipality!.County!.Country!.CountryName;
+        vm.County = drive.Booking.Locality.Municipality.County.CountyName;
+        vm.Municipality = drive.Booking!.Locality.Municipality.Name;
+        vm.Locality = drive.Booking!.Locality.LocalityName;
         vm.CustomerInfo = drive!.CustomerInfo!;
         vm.DriverInfo = drive!.DriverInfo!;
         vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
@@ -205,7 +208,10 @@ public class DrivesController : Controller
         vm.Id = drive.Id;
         vm.BookingNumber = drive.Booking!.BookingNumber;
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
-        vm.City = drive.Booking.City!.CityName;
+        vm.Country = drive.Booking.County!.Country!.CountryName;
+        vm.County = drive.Booking!.County.CountyName;
+        vm.Municipality = drive.Booking!.County.Country.CountryName;
+        vm.Locality = drive.Booking!.Locality!.LocalityName;
         vm.CustomerInfo = drive!.CustomerInfo!;
         vm.DriverInfo = drive!.DriverInfo!;
         vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
@@ -303,7 +309,10 @@ public class DrivesController : Controller
         vm.Id = drive.Id;
         vm.BookingNumber = drive.Booking!.BookingNumber;
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
-        vm.City = drive.Booking.City!.CityName;
+        vm.Country = drive.Booking.County!.Country!.CountryName;
+        vm.County = drive.Booking!.County!.CountyName;
+        vm.Municipality = drive.Booking!.Municipality!.Name;
+        vm.Locality = drive.Booking!.Locality!.LocalityName;
         vm.CustomerInfo = drive!.CustomerInfo!;
         vm.DriverInfo = drive!.DriverInfo!;
         vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;

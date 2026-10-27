@@ -46,7 +46,8 @@ namespace App.BLL.Services
                     Role = roles.Any() ? string.Join(", ", displayNames) : "-",
                     Country = user.Country?.CountryName,
                     County = user.County?.CountyName!,
-                    City = user.Locality?.LocalityName!,
+                    Municipality = user.Municipality.Name,
+                    Locality = user.Locality?.LocalityName!,
                     AddressOfResidence = user.Address,
                     EmailAddress = user.Email!,
                     PhoneNumber = user.PhoneNumber!,
@@ -58,7 +59,7 @@ namespace App.BLL.Services
                 
                 if (admin != null)
                 {
-                  data.PersonalIdentifier = (string.IsNullOrWhiteSpace(admin.PersonalIdentifier)) ? "-" : admin.PersonalIdentifier;
+                  data.PersonalIdentifier = (string.IsNullOrWhiteSpace(admin.AppUser.PersonalIdentifierCode)) ? "-" : admin.AppUser.PersonalIdentifierCode;
                   data.DriverLicenseCategories = "-";
                   data.DriverLicenseNumber = "-";
                   data.DriverLicenseExpiryDate = "-";
@@ -69,7 +70,7 @@ namespace App.BLL.Services
                 else if (driver != null)
                 {
                     var driverLicenseCategories = await _appBll.DriverAndDriverLicenseCategories.GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver.Id);
-                    data.PersonalIdentifier = (string.IsNullOrWhiteSpace(driver.PersonalIdentifier)) ? "-" : driver.PersonalIdentifier;
+                    data.PersonalIdentifier = (string.IsNullOrWhiteSpace(driver.AppUser!.PersonalIdentifierCode)) ? "-" : driver.AppUser.PersonalIdentifierCode;
                     
                     if (driverLicenseCategories?.Length == 0)
                     {
@@ -89,7 +90,7 @@ namespace App.BLL.Services
                     data.DriverLicenseCategories = "-";
                     data.DriverLicenseNumber = "-";
                     data.DriverLicenseExpiryDate = "-";
-                    data.DisabilityType = customer.DisabilityType.DisabilityTypeName;
+                    data.DisabilityType = customer.DisabilityType!.DisabilityTypeName;
                     
                 }
 

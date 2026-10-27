@@ -63,12 +63,12 @@ public class AdminsController : Controller
         vm.LastAndFirstName = admin.AppUser!.LastAndFirstName;
         vm.Gender = admin.AppUser!.Gender;
         vm.DateOfBirth = admin.AppUser!.DateOfBirth;
-        vm.Address = admin.Address;
+        vm.Address = admin.AppUser.Address;
         vm.MunicipalityName = admin.AppUser!.Municipality!.Name;
         vm.PhoneNumber = admin.AppUser!.PhoneNumber;
         vm.Email = admin.AppUser!.Email;
         vm.IsActive = admin.AppUser!.IsActive;
-        if (admin.PersonalIdentifier != null) vm.PersonalIdentifier = admin.PersonalIdentifier;
+        if (admin.AppUser!.PersonalIdentifierCode!= null) vm.PersonalIdentifier = admin.AppUser!.PersonalIdentifierCode;
 
         vm.Id = admin.Id;
         vm.CreatedBy = admin.CreatedBy!;
@@ -216,7 +216,7 @@ public class AdminsController : Controller
         vm.LastAndFirstName = admin.AppUser!.LastAndFirstName;
         vm.Gender = admin.AppUser!.Gender;
         vm.DateOfBirth = admin.AppUser!.DateOfBirth;
-        if (admin.PersonalIdentifier != null) vm.PersonalIdentifier = admin.PersonalIdentifier;
+        if (admin.AppUser!.PersonalIdentifierCode != null) vm.PersonalIdentifier = admin.AppUser!.PersonalIdentifierCode;
         vm.CountryName = admin.AppUser!.Country!.CountryName;
         vm.CountyName = admin.AppUser!.County!.CountyName;
         vm.MunicipalityName = admin.AppUser!.Municipality!.Name;

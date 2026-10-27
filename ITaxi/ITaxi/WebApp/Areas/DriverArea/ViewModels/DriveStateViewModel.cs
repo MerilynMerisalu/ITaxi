@@ -39,11 +39,28 @@ public class DriveStateViewModel
     public string PickupDateAndTime { get; set; } = default!;
 
     /// <summary>
-    /// City
+    /// Country
     /// </summary>
-    [Display(ResourceType = typeof(Drive), Name = nameof(City))]
-    public string City { get; set; } = default!;
+    [Display(ResourceType = typeof(Drive), Name = nameof(Country))]
+    public string Country { get; set; } = default!;
 
+    /// <summary>
+    /// County
+    /// </summary>
+    [Display(ResourceType = typeof(Drive), Name = nameof(County))]
+    public string County { get; set; } = default!;
+
+    /// <summary>
+    /// Municipality
+    /// </summary>
+    [Display(ResourceType = typeof(Drive), Name = nameof(Municipality))]
+    public string Municipality { get; set; } = default!;
+
+    /// <summary>
+    /// Locality
+    /// </summary>
+    [Display(ResourceType = typeof(Drive), Name = nameof(Locality))]
+    public string Locality { get; set; } = default!;
     /// <summary>
     /// Pickup address
     /// </summary>

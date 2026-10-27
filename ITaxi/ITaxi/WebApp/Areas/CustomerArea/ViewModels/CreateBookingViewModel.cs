@@ -24,17 +24,46 @@ public class CreateBookingViewModel
     public SelectList? VehicleTypes { get; set; }
 
     /// <summary>
-    /// Create booking view model city id
+    /// Create booking view model country id
     /// </summary>
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-    [Display(ResourceType = typeof(Booking), Name = "City")]
-    public Guid CityId { get; set; }
+    [Display(ResourceType = typeof(Booking), Name = "Country")]
+    public Guid CountryId { get; set; }
+    /// <summary>
+    /// List of countries
+    /// </summary>
+    public SelectList? Countries { get; set; }
 
     /// <summary>
-    /// List of cities
+    /// County id
     /// </summary>
-    public SelectList? Cities { get; set; }
 
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Display(ResourceType = typeof(Booking), Name = "County")]
+    public Guid CountyId { get; set; }
+    /// <summary>
+    /// List of counties
+    /// </summary>
+    public SelectList? Counties { get; set; }
+    /// <summary>
+    /// Municipality id
+    /// </summary>
+
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Display(ResourceType = typeof(Booking), Name = "Municipality")]
+    public Guid MunicipalityId { get; set; }
+    /// <summary>
+    /// List of municipalities
+    /// </summary>
+    public SelectList? Municipalities { get; set; }
+
+    [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
+    [Display(ResourceType = typeof(Booking), Name = "locality")]
+    public Guid LocalityId { get; set; }
+    /// <summary>
+    /// List of localities
+    /// </summary>
+    public SelectList? Localities{ get; set; }
     /// <summary>
     /// Pick up date and time
     /// </summary>

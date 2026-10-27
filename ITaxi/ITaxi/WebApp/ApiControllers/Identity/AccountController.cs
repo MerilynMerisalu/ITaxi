@@ -299,7 +299,6 @@ public class AccountController : ControllerBase
         {
             Id = admin.Id,
             AppUserId = admin.AppUserId,
-            PersonalIdentifier = admin.PersonalIdentifier,
             CreatedAt = admin.CreatedAt,
             CreatedBy = admin.CreatedBy,
             UpdatedAt = admin.UpdatedAt,

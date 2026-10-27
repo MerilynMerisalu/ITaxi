@@ -36,7 +36,16 @@
                 @Html.DisplayNameFor(model => model.Booking!.PickUpDateAndTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Booking!.City!.CityName)
+                @Html.DisplayNameFor(model => model.Booking!.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.County)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Municipality)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Locality)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.PickupAddress)
@@ -124,8 +133,13 @@
                     @Html.DisplayFor(modelItem => item.Booking!.PickUpDateAndTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Booking!.City!.CityName)
+                    @Html.DisplayFor(modelItem => item.Booking!.Country!.CountryName)
                 </td>
+            
+             <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.County!.CountyName)
+            </td>
+                 
                 <td>
                     @Html.DisplayFor(modelItem => item.Booking!.PickupAddress)
                 </td>

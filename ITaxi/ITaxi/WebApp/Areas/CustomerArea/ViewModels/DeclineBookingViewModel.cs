@@ -12,7 +12,6 @@ public class DeclineBookingViewModel
     /// <summary>
     /// Id
     /// </summary>
-   
     public Guid Id { get; set; }
 
     /// <summary>
@@ -42,10 +41,30 @@ public class DeclineBookingViewModel
     public string VehicleType { get; set; } = default!;
 
     /// <summary>
-    /// City
+    /// Country
     /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = nameof(City))]
-    public string City { get; set; } = default!;
+    [Display(ResourceType = typeof(Booking), Name = nameof(Country))]
+    public string Country { get; set; } = default!;
+
+
+    /// <summary>
+    /// County
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(County))]
+    public string County { get; set; } = default!;
+
+    /// <summary>
+    /// Municipality
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(Municipality))]
+    public string Municipality {  get; set; } = default!;
+
+    /// <summary>
+    /// Locality
+    /// </summary>
+    [Display(ResourceType = typeof(Booking), Name = nameof(Locality))]
+    public string Locality { get; set; } = default!;
+
 
     /// <summary>
     /// Pick up date and time

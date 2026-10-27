@@ -180,8 +180,8 @@ public class BookingsController : Controller
     public async Task<IActionResult> Create()
     {
         var vm = new CreateBookingViewModel();
-        vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
-            nameof(CityDTO.Id), nameof(CityDTO.CityName));
+        vm.Municipalities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
+            nameof(MunicipalityDTO.Id), nameof(MunicipalityDTO.Name));
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleTypeDTO.Id), nameof(VehicleTypeDTO.VehicleTypeName));
 
@@ -207,7 +207,10 @@ public class BookingsController : Controller
             
             booking.Id = Guid.NewGuid();
             booking.BookingNumber = Guid.NewGuid();
-            booking.CityId = vm.CityId;
+            booking.County!.CountryId = vm.CountryId;
+            booking.CountyId = vm.CountyId;
+            booking.MunicipalityId = vm.MunicipalityId;
+            booking.LocalityId = vm.LocalityId;
             booking.CustomerId = await _appBLL.Customers.GettingCustomerIdByAppUserIdAsync(userId);
             booking.AdditionalInfo = vm.AdditionalInfo;
             booking.DestinationAddress = vm.DestinationAddress;
@@ -264,9 +267,9 @@ public class BookingsController : Controller
             return RedirectToAction(nameof(Index));
         }
         
-        vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
-            nameof(CityDTO.Id),
-            nameof(CityDTO.CityName), nameof(vm.CityId));
+        vm.Municipalities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
+            nameof(MunicipalityDTO.Id),
+            nameof(MunicipalityDTO.Name), nameof(vm.MunicipalityId));
         vm.VehicleTypes = new SelectList(await _appBLL.VehicleTypes.GetAllVehicleTypesOrderedAsync(),
             nameof(VehicleTypeDTO.Id), nameof(VehicleTypeDTO.VehicleTypeName)
             , nameof(vm.VehicleTypeId));
@@ -291,7 +294,10 @@ public class BookingsController : Controller
 
         vm.Id = booking.Id;
         vm.BookingNumber = booking.BookingNumber;
-        vm.City = booking.City!.CityName;
+        vm.Country = booking.County!.Country!.CountryName;
+        vm.County = booking.County!.CountyName;
+        vm.Municipality = booking.Municipality!.Name;
+        vm.Locality = booking.Locality!.LocalityName;
         vm.AdditionalInfo = booking.AdditionalInfo;
         vm.DestinationAddress = booking.DestinationAddress;
         vm.NeedAssistanceEnteringTheBuilding = booking.NeedAssistanceEnteringTheBuilding;
@@ -356,7 +362,7 @@ public class BookingsController : Controller
         
         vm.Id = booking.Id;
         vm.BookingNumber = booking.BookingNumber;
-        vm.City = booking.City!.CityName;
+        vm.Country = 
         vm.VehicleInfo = booking!.VehicleInfo;
         vm.VehicleType = booking!.VehicleType!.VehicleTypeName;
         vm.DriverInfo = booking!.DriverInfo;

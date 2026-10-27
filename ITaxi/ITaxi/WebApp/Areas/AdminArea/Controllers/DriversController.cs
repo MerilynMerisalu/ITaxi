@@ -119,7 +119,7 @@ public class DriversController : Controller
             driver.AppUser!.LastName = vm.LastName;
             driver.AppUser!.Gender = vm.Gender;
             driver.AppUser.DateOfBirth = DateTime.Parse(vm.DateOfBirth).ToUniversalTime();
-            driver.PersonalIdentifier = vm.PersonalIdentifier;
+            driver.AppUser.PersonalIdentifierCode = vm.PersonalIdentifier;
             driver.AppUser!.Country!.Id = vm.CountryId;
             driver.AppUser!.CountyId = vm.CountyId;
             driver.AppUser.MunicipalityId = vm.MunicipalityId;
@@ -199,7 +199,7 @@ public class DriversController : Controller
                 if (driver != null)
                 {
 
-                    driver.PersonalIdentifier = vm.PersonalIdentifier;
+                    driver.AppUser!.PersonalIdentifierCode = vm.PersonalIdentifier!;
                     if (vm.DriverAndDriverLicenseCategories != null)
                     {
                         await _appBLL.DriverAndDriverLicenseCategories
@@ -278,7 +278,7 @@ public class DriversController : Controller
         vm.DateOfBirth = driver.AppUser!.DateOfBirth;
         vm.DriverLicenseCategoryNames = await _appBLL.DriverAndDriverLicenseCategories
             .GetAllDriverLicenseCategoriesBelongingToTheDriverAsync(driver!.Id);
-        vm.PersonalIdentifier = driver.PersonalIdentifier;
+        vm.PersonalIdentifier = driver.AppUser.PersonalIdentifierCode;
         vm.CountryName = driver.AppUser.Country!.CountryName;
         vm.CountyName = driver.AppUser!.County!.CountyName;
         vm.MunicipalityName = driver.AppUser!.Municipality!.Name;

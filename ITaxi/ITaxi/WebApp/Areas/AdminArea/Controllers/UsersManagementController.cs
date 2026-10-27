@@ -52,25 +52,22 @@ namespace WebApp.Areas.AdminArea.Controllers
             vm.Role = user.Role;
             vm.Gender = user.Gender;
             vm.DateOfBirth = user.DateOfBirth;
+            vm.PersonalIdentifier = user.PersonalIdentifier!;
+            vm.Country = user.Country;
+            vm.County = user.County;
+            vm.Municipality = user.Municipality;
+            vm.Locality = user.Locality;
+            vm.AddressOfResidence = user.AddressOfResidence;
             vm.EmailAddress = user.EmailAddress;
             vm.PhoneNumber = user.PhoneNumber;
             if (admin != null)
             {
                 vm.AdminId = admin.Id;
-                vm.PersonalIdentifier = admin.PersonalIdentifier;
-                vm.Country = admin.City.County.Country.CountryName;
-                vm.County = admin.City.County.CountyName;
-                vm.City = admin.City.CityName;
-                vm.AddressOfResidence = admin.Address;
             }
             if (driver != null)
             {
                 vm.DriverId = driver.Id;
-                vm.PersonalIdentifier = driver.PersonalIdentifier;
-                vm.Country = driver.AppUser!.City.County.Country.CountryName;
-                vm.County = driver.AppUser!.City.County.CountyName;
-                vm.City = driver.AppUser!.City.CityName;
-                vm.AddressOfResidence = driver.Address;
+               
                 
             }
 

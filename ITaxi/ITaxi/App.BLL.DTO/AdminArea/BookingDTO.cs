@@ -32,6 +32,9 @@ public class BookingDTO: DomainEntityMetaId
     public Guid VehicleId { get; set; }
     [Display(ResourceType = typeof(Booking), Name = nameof(Vehicle))]
     public VehicleDTO? Vehicle { get; set; }
+
+    public Guid CountryId { get; set; }
+    public CountryDTO? Country { get; set; }
     public Guid CountyId { get; set; }
     public CountyDTO? County { get; set; }
     public Guid MunicipalityId { get; set; }

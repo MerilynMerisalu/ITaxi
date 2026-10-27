@@ -94,7 +94,11 @@ public async Task<IActionResult> Accept(Guid? id)
     drive.Booking!.Schedule!.StartDateAndTime = drive.Booking.Schedule.StartDateAndTime; 
     drive.Booking.Schedule!.EndDateAndTime = drive.Booking.Schedule.EndDateAndTime;
     vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
-    vm.City = drive.Booking.City!.CityName;
+    vm.Country = drive.Booking.Country.CountryName;
+    vm.County = drive.Booking.County.CountyName;
+    vm.Municipality = drive.Booking!.Municipality.Name;
+    vm.Locality = drive.Booking!.Locality.LocalityName;
+
     vm.CustomerFullNameAndPhoneNumber = drive!.CustomerInfo;
     vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
     vm.DestinationAddress = drive.Booking.DestinationAddress;
