@@ -80,7 +80,7 @@ public class IndexModel : PageModel
     /// <summary>
     /// List of cities
     /// </summary>
-    public SelectList? Cities { get; set; }
+    public SelectList? Municipalities { get; set; }
 
     /// <summary>
     /// List of changed driver license categories
@@ -127,11 +127,11 @@ public class IndexModel : PageModel
            .ToListAsync().Result.OrderBy(c => (string)c.CountryName), nameof(Country.Id), nameof(Country.CountryName));
 
 
-        Cities = new SelectList(await _context.Cities
-            .OrderBy(c => c.CityName)
-            .Select(c => new { c.Id, c.CityName })
-            .ToListAsync(), nameof(City.Id),
-            nameof(City.CityName));
+        Municipalities = new SelectList(await _context.Municipalities
+            .OrderBy(c => c.Name)
+            .Select(c => new { c.Id, c.Name })
+            .ToListAsync(), nameof(Municipality.Id),
+            nameof(Municipality.Name));
 
         DisabilityTypes = new SelectList(_context.DisabilityTypes
             .Include(t => t.DisabilityTypeName)

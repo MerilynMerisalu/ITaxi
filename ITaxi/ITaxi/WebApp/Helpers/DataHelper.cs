@@ -213,10 +213,10 @@ public static class DataHelper
                     CreatedAt = DateTime.Now.ToUniversalTime()
                 };
 *//*
-                await context.Cities.AddAsync(city);
+                await context.Municipalities.AddAsync(city);
                 await context.SaveChangesAsync();
                
-                var cityId = context.Cities.OrderBy(c => c.CityName).First().Id;
+                var cityId = context.Municipalities.OrderBy(c => c.CityName).First().Id;
                 var appUser = new AppUser
                 {
                     Id = Guid.NewGuid(),

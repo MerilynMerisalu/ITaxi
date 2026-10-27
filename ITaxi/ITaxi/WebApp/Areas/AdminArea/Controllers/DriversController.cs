@@ -155,7 +155,7 @@ public class DriversController : Controller
     //            .DriverLicenseCategories.GetAllDriverLicenseCategoriesOrderedAsync(),
     //        nameof(DriverLicenseCategoryDTO.Id),
     //        nameof(DriverLicenseCategoryDTO.DriverLicenseCategoryName));
-    //    vm.Cities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
+    //    vm.Municipalities = new SelectList(await _appBLL.Municipalities.GetAllOrderedMunipalitiesAsync(),
     //        nameof(CityDTO.Id), nameof(CityDTO.CityName));
     //    if (driver != null)
     //    {

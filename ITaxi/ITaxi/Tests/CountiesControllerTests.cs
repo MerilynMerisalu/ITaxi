@@ -121,12 +121,12 @@ public class CountiesControllerTests
             new App.Domain.County
             {
                 Id = Guid.NewGuid(), CountyName = "County1", CreatedAt = DateTime.UtcNow, CreatedBy = "Me",
-                UpdatedAt = DateTime.UtcNow, UpdatedBy = "Me", IsDeleted = false, Cities = new HashSet<App.Domain.City>()
+                UpdatedAt = DateTime.UtcNow, UpdatedBy = "Me", IsDeleted = false, Municipalities = new HashSet<App.Domain.City>()
             },
             new App.Domain.County
             {
                 Id = Guid.NewGuid(), CountyName = "County2", CreatedAt = DateTime.UtcNow, CreatedBy = "Me",
-                UpdatedAt = DateTime.UtcNow, UpdatedBy = "Me", IsDeleted = false, Cities = new HashSet<App.Domain.City>()
+                UpdatedAt = DateTime.UtcNow, UpdatedBy = "Me", IsDeleted = false, Municipalities = new HashSet<App.Domain.City>()
             }
         });
         

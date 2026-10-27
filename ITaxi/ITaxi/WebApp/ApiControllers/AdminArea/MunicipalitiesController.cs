@@ -37,7 +37,7 @@ public class MunicipalitiesController : ControllerBase
         _mapper = mapper;
     }
 
-    // GET: api/Cities
+    // GET: api/Municipalities
     /// <summary>
     /// Gets all the cities 
     /// </summary>
@@ -55,7 +55,7 @@ public class MunicipalitiesController : ControllerBase
         return Ok(cities.Select(c => _mapper.Map<Municipality>(c)));
     }
 
-    // GET: api/Cities/5
+    // GET: api/Municipalities/5
     /// <summary>
     /// Returns muncipality based on id
     /// </summary>
@@ -77,7 +77,7 @@ public class MunicipalitiesController : ControllerBase
         return _mapper.Map<Municipality>(muncipality);
     }
 
-    // PUT: api/Cities/5
+    // PUT: api/Municipalities/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     /// <summary>
     /// Updating a muncipality
@@ -120,7 +120,7 @@ public class MunicipalitiesController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Cities
+    // POST: api/Municipalities
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     /// <summary>
     /// Creating a new muncipality
@@ -154,7 +154,7 @@ public class MunicipalitiesController : ControllerBase
             dto);
     }
 
-    // DELETE: api/Cities/5
+    // DELETE: api/Municipalities/5
     /// <summary>
     /// Deletes an entity
     /// </summary>

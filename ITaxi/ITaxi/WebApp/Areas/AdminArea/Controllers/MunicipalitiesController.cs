@@ -29,7 +29,7 @@ public class MunicipalitiesController : Controller
         _appBLL = appBLL;
     }
 
-    // GET: AdminArea/Cities
+    // GET: AdminArea/Municipalities
     /// <summary>
     /// Admin area cities index
     /// </summary>
@@ -41,7 +41,7 @@ public class MunicipalitiesController : Controller
         return View(res);
     }
 
-    // GET: AdminArea/Cities/Details/5
+    // GET: AdminArea/Municipalities/Details/5
     /// <summary>
     /// Admin area cities details
     /// </summary>
@@ -66,7 +66,7 @@ public class MunicipalitiesController : Controller
         return View(vm);
     }
 
-    // GET: AdminArea/Cities/Create
+    // GET: AdminArea/Municipalities/Create
     /// <summary>
     /// Admin area municipality create
     /// </summary>
@@ -80,7 +80,7 @@ public class MunicipalitiesController : Controller
         return View(vm);
     }
 
-    // POST: AdminArea/Cities/Create
+    // POST: AdminArea/Municipalities/Create
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
@@ -108,7 +108,7 @@ public class MunicipalitiesController : Controller
         return View(vm);
     }
 
-    // GET: AdminArea/Cities/Edit/5
+    // GET: AdminArea/Municipalities/Edit/5
     /// <summary>
     /// Admin area municipality edit GET method
     /// </summary>
@@ -131,7 +131,7 @@ public class MunicipalitiesController : Controller
         return View(vm);
     }
 
-    // POST: AdminArea/Cities/Edit/5
+    // POST: AdminArea/Municipalities/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     /// <summary>
@@ -174,7 +174,7 @@ public class MunicipalitiesController : Controller
         return View(vm);
     }
 
-    // GET: AdminArea/Cities/Delete/5
+    // GET: AdminArea/Municipalities/Delete/5
     /// <summary>
     /// Admin area municipality delete GET method
     /// </summary>
@@ -201,7 +201,7 @@ public class MunicipalitiesController : Controller
         return View(vm);
     }
 
-    // POST: AdminArea/Cities/Delete/5
+    // POST: AdminArea/Municipalities/Delete/5
     /// <summary>
     /// Admin area municipality delete POST method
     /// </summary>

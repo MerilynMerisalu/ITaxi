@@ -136,9 +136,17 @@
                     @Html.DisplayFor(modelItem => item.Booking!.Country!.CountryName)
                 </td>
             
-             <td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Booking!.County!.CountyName)
-            </td>
+                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.Municipality!.Name)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.Locality!.LocalityName)
+                </td>
+
                  
                 <td>
                     @Html.DisplayFor(modelItem => item.Booking!.PickupAddress)
