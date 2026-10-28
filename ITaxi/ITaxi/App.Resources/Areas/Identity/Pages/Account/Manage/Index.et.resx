@@ -144,8 +144,8 @@
   <data name="AddressOfResidence" xml:space="preserve">
     <value>Elukoha aadress</value>
   </data>
-  <data name="City" xml:space="preserve">
-    <value>Linn</value>
+  <data name="Municipality" xml:space="preserve">
+    <value>Linn / Vald</value>
   </data>
   <data name="DisabilityType" xml:space="preserve">
     <value>Puudeliik</value>
@@ -179,5 +179,11 @@
   </data>
   <data name="RequestChangePermission" xml:space="preserve">
     <value>Taotle muutmisluba</value>
+  </data>
+  <data name="County" xml:space="preserve">
+    <value>Maakond</value>
+  </data>
+  <data name="Locality" xml:space="preserve">
+    <value>Asula</value>
   </data>
 </root>

@@ -139,13 +139,13 @@
     <value>Profile Image</value>
   </data>
   <data name="PersonalIdentifier" xml:space="preserve">
-    <value>Personal Identifier</value>
+    <value>Personal Identifier Code</value>
   </data>
   <data name="AddressOfResidence" xml:space="preserve">
     <value>Address of Residence</value>
   </data>
-  <data name="City" xml:space="preserve">
-    <value>City</value>
+  <data name="Municipality" xml:space="preserve">
+    <value>Municipality</value>
   </data>
   <data name="DisabilityType" xml:space="preserve">
     <value>Disability Type</value>
@@ -179,5 +179,11 @@
   </data>
   <data name="RequestChangePermission" xml:space="preserve">
     <value>Request Change Permission</value>
+  </data>
+  <data name="County" xml:space="preserve">
+    <value>County</value>
+  </data>
+  <data name="Locality" xml:space="preserve">
+    <value>Locality</value>
   </data>
 </root>

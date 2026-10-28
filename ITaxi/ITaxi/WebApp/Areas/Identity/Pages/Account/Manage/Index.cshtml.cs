@@ -78,7 +78,7 @@ public class IndexModel : PageModel
     public SelectList? Countries { get; set; }
 
     /// <summary>
-    /// List of cities
+    /// List of municipalities
     /// </summary>
     public SelectList? Municipalities { get; set; }
 
@@ -118,8 +118,12 @@ public class IndexModel : PageModel
         var lastName = user.LastName;
         var gender = user.Gender;
         var dateOfBirth = user.DateOfBirth.Date;
+        var personalIdentifierCode = user.PersonalIdentifierCode;                                                                                                                                                                                                                                               
         var countryId = user.CountryId;
-
+        var countyId = user.CountyId;
+        var municipalityId = user.MunicipalityId;
+        var localityId = user.LocalityId;
+        var addressOfResidence = user.Address;
         Countries = new SelectList(_context.Countries.
             Include(c => c.CountryName)
             .ThenInclude(t => t.Translations)
@@ -152,12 +156,14 @@ public class IndexModel : PageModel
                     LastName = lastName,
                     Gender = Enum.Parse<Gender>(gender.Value.ToString()),
                     DateOfBirth = dateOfBirth,
-                    PersonalIdentifier = admin.PersonalIdentifier,
+                    PersonalIdentifier = personalIdentifierCode,
                     CountryId = countryId,
-                    CityId = admin.AppUser!.CityId,
-                    AddressOfResidence = admin.AppUser.Address,
+                    CountyId = countyId,
+                    MunicipalityId = municipalityId,
+                    LocalityId = localityId,
+                    AddressOfResidence = addressOfResidence,
                     ImageFile = user.ProfileImage,
-                    
+
                 };
 
             else if (driver != null)
@@ -187,10 +193,12 @@ public class IndexModel : PageModel
                     LastName = lastName,
                     Gender = Enum.Parse<Gender>(gender.Value.ToString()),
                     DateOfBirth = dateOfBirth,
-                    PersonalIdentifier = driver.PersonalIdentifier,
+                    PersonalIdentifier = personalIdentifierCode,
                     CountryId = countryId,
-                    CityId = driver.AppUser!.CityId,
-                    AddressOfResidence = driver.AppUser.Address,
+                    CountyId = countyId,
+                    MunicipalityId = municipalityId,
+                    LocalityId = localityId,
+                    AddressOfResidence = addressOfResidence,
                     DriverLicenseNumber = driver.DriverLicenseNumber,
                     DriverLicenseExpiryDate = driver.DriverLicenseExpiryDate?.Date,
                     ServiceProviderCardIdentifier = driver.ServiceProviderCardIdentifier,
@@ -211,6 +219,12 @@ public class IndexModel : PageModel
                         LastName = lastName,
                         Gender = Enum.Parse<Gender>(gender.Value.ToString()),
                         DateOfBirth = dateOfBirth,
+                        PersonalIdentifier = personalIdentifierCode,
+                        CountryId = countryId,
+                        CountyId = countyId,
+                        MunicipalityId = municipalityId,
+                        LocalityId = localityId,
+                        AddressOfResidence = addressOfResidence,
                         ImageFile = user.ProfileImage
                     };
                 }
@@ -223,6 +237,10 @@ public class IndexModel : PageModel
                         LastName = lastName,
                         Gender = Enum.Parse<Gender>(gender.Value.ToString()),
                         CountryId = countryId,
+                        CountyId = countyId,
+                        MunicipalityId = municipalityId,
+                        LocalityId = localityId,
+                        AddressOfResidence = addressOfResidence,
                         DateOfBirth = dateOfBirth,
                         DisabilityId = customer.DisabilityTypeId.Value,
                         ImageFile = user.ProfileImage,
@@ -594,13 +612,22 @@ public class IndexModel : PageModel
         /// </summary>
         [Display(ResourceType = typeof(Index), Name = "Country")]
         public Guid? CountryId { get; set; }
+        /// <summary>
+        /// County id for user's profile page
+        /// </summary>
+        [Display(ResourceType = typeof(Index), Name = "County")]
+        public Guid? CountyId { get; set; }
 
         /// <summary>
-        /// City id for user's profile page
+        /// Municipality id for user's profile page
         /// </summary>
-        [Display(ResourceType = typeof(Index), Name = "City")]
-        public Guid? CityId { get; set; }
-
+        [Display(ResourceType = typeof(Index), Name = "Municipality")]
+        public Guid? MunicipalityId { get; set; }
+        /// <summary>
+        /// Locality id for user's profile page
+        /// </summary>
+        [Display(ResourceType = typeof(Index), Name = "Locality")]
+        public Guid? LocalityId { get; set; }
         /// <summary>
         /// Address of residence
         /// </summary>

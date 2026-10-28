@@ -390,7 +390,10 @@ public class DrivesController : Controller
         vm.Id = drive.Id;
         vm.BookingNumber = drive.Booking!.BookingNumber;
         vm.ShiftDurationTime = drive.Booking!.Schedule!.ShiftDurationTime;
-        vm.City = drive.Booking.City!.CityName;
+        vm.Country = drive.Booking!.Country!.CountryName;
+        vm.County = drive.Booking!.County!.CountyName;
+        vm.Municipality = drive.Booking!.Municipality!.Name;
+        vm.Locality = drive.Booking!.Locality!.LocalityName;
         vm.CustomerInfo = drive!.CustomerInfo!;
         vm.DriverInfo = drive.DriverInfo!;
         vm.VehicleIdentifier = drive.Booking.Vehicle!.VehicleIdentifier;
