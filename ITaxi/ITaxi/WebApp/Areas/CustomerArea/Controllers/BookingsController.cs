@@ -148,7 +148,10 @@ public class BookingsController : Controller
 
         vm.Id = booking.Id;
         vm.BookingNumber = booking.BookingNumber;
-        vm.City = booking.City!.CityName;
+        vm.Country = booking.Country!.CountryName;
+        vm.County = booking.County!.CountyName;
+        vm.Municipality = booking.Municipality!.Name;
+        vm.Locality = booking.Locality!.LocalityName;
         vm.VehicleInfo = booking.VehicleInfo;
         vm.DriverInfo = booking.DriverInfo;
         vm.AdditionalInfo = booking.AdditionalInfo;
@@ -431,7 +434,7 @@ public class BookingsController : Controller
     {
         var userId = User.GetUserId();
         var roleName = User.GetUserRoleName();
-        var results = await _appBLL.Bookings.SearchByCityAsync(search, userId, roleName);
+        var results = await _appBLL.Bookings.SearchByLocalityAsync(search, userId, roleName);
         return View(nameof(Index), results);
     }
 

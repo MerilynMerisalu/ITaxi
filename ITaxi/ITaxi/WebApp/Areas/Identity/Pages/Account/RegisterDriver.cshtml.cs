@@ -65,7 +65,7 @@ public class RegisterDriverModel : PageModel
         Countries = new SelectList(_appBLL.Countries.GetAllCountriesOrderedByCountryName(showIgnored: false, showDeleted: false),
            nameof(App.BLL.DTO.AdminArea.CountryDTO.Id), nameof(App.BLL.DTO.AdminArea.CountryDTO.CountryName));
         Counties = new SelectList(Enumerable.Empty<CountyDTO>(), nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
-        Cities = new SelectList(Enumerable.Empty<CityDTO>(), nameof(CityDTO.Id), nameof(CityDTO.CityName));
+        Cities = new SelectList(Enumerable.Empty<MunicipalityDTO>(), nameof(MunicipalityDTO.Id), nameof(MunicipalityDTO.Name));
         DriverLicenseCategories = new SelectList(_appBLL.DriverLicenseCategories
             .GetAllDriverLicenseCategoriesOrdered(),
                 
@@ -141,9 +141,11 @@ public class RegisterDriverModel : PageModel
                 LastName = Input.LastName,
                 Gender = Input.Gender,
                 DateOfBirth = Input.DateOfBirth,
+                PersonalIdentifierCode = Input.PersonalIdentifier!,
                 CountryId = Input.CountryId,
                 CountyId = Input.CountyId,
-                CityId = Input.CityId,
+                MunicipalityId = Input.MunicipalityId,
+                LocalityId = Input.LocalityId,
                 Address = Input.Address,
                 PhoneNumber = Input.PhoneNumber,
                 Email = Input.Email,
@@ -178,7 +180,6 @@ public class RegisterDriverModel : PageModel
                 {
                     Id = Guid.NewGuid(),
                     AppUserId = user.Id,
-                    PersonalIdentifier = Input.PersonalIdentifier,
                     DriverLicenseNumber = Input.DriverLicenseNumber,
                     DriverLicenseExpiryDate = Input.ExpiryDate,
                     ServiceProviderCardIdentifier = res,
@@ -271,7 +272,7 @@ public class RegisterDriverModel : PageModel
         var result = cities.Select(c => new
         {
             value = c.Id,
-            text = c.CityName
+            text = c.Name
         });
         
         return new JsonResult(result);
@@ -338,11 +339,18 @@ public class RegisterDriverModel : PageModel
 
 
         /// <summary>
-        /// City id for driver
+        /// Municipality id for driver
         /// </summary>
         [DataType(DataType.Text)]
-        [Display(ResourceType = typeof(DriverRegister), Name = "City")]
-        public Guid CityId { get; set; }
+        [Display(ResourceType = typeof(DriverRegister), Name = "Municipality")]
+        public Guid MunicipalityId { get; set; }
+
+        /// <summary>
+        /// Locality id for driver
+        /// </summary>
+        [DataType(DataType.Text)]
+        [Display(ResourceType = typeof(DriverRegister), Name = "Municipality")]
+        public Guid LocalityId { get; set; }
 
         /// <summary>
         /// Driver's service card identifier

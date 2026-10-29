@@ -32,7 +32,7 @@
         </th>
         
         <th>
-            @Html.DisplayNameFor(model => model.PersonalIdentifier)
+            @Html.DisplayNameFor(model => model.AppUser!.PersonalIdentifierCode)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DriverLicenseNumber)
@@ -41,10 +41,19 @@
             @Html.DisplayNameFor(model => model.DriverLicenseExpiryDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AppUser!.City)
+            @Html.DisplayNameFor(model => model.AppUser!.Country)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Address)
+           @Html.DisplayNameFor(model => model.AppUser!.County)
+        </th>
+        <th>
+           @Html.DisplayNameFor(model => model.AppUser!.Municipality)
+        </th>
+         <th>
+           @Html.DisplayNameFor(model => model.AppUser!.Locality)
+         </th>
+          <th>
+            @Html.DisplayNameFor(model => model.AppUser!.Address)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AppUser!.PhoneNumber)
@@ -89,7 +98,7 @@
             </td>
             
             <td>
-                @Html.DisplayFor(modelItem => item.PersonalIdentifier)
+                @Html.DisplayFor(modelItem => item.AppUser!.PersonalIdentifierCode)
             </td>
 
             <td>
@@ -99,10 +108,20 @@
                 @Html.DisplayFor(modelItem => item.DriverLicenseExpiryDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AppUser!.City!.CityName)
+                @Html.DisplayFor(modelItem => item.AppUser!.Country!.CountryName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Address)
+               @Html.DisplayFor(modelItem => item.AppUser!.County!.CountyName)
+            </td>
+            <td>
+              @Html.DisplayFor(modelItem => item.AppUser!.Municipality!.Name)
+            </td>
+            <td>
+               @Html.DisplayFor(modelItem => item.AppUser!.Locality!.LocalityName) 
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.Address)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AppUser!.PhoneNumber)

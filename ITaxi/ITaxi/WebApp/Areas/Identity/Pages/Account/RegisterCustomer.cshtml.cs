@@ -75,8 +75,8 @@ public class RegisterCustomerModel : PageModel
                 
         Countries = new SelectList(_appBLL.Countries.GetAllCountriesOrderedByCountryName(), nameof(Country.Id), nameof(Country.CountryName));
         Counties = new SelectList(Enumerable.Empty<County>(), nameof(County.Id), nameof(County.CountyName));
-
-        Cities = new SelectList(Enumerable.Empty<City>(), nameof(City.Id), nameof(City.CityName));
+        
+        
     }
 
     /// <summary>
@@ -92,9 +92,14 @@ public class RegisterCustomerModel : PageModel
     /// </summary>
     public SelectList? Counties { get; set; }
     /// <summary>
-    /// List of cities
+    /// List of municipalities
     /// </summary>
-    public SelectList? Cities { get; set; }
+    public SelectList? Municipalities { get; set; }
+
+    /// <summary>
+    /// List of localities
+    /// </summary>
+    public SelectList? Localities { get; set; }
     /// <summary>
     ///  Input
     /// </summary>
@@ -142,7 +147,7 @@ public class RegisterCustomerModel : PageModel
         var result = cities.Select(c => new
         {
             value = c.Id,
-            text = c.CityName
+            text = c.Name
         });
 
         return new JsonResult(result);
@@ -167,7 +172,8 @@ public class RegisterCustomerModel : PageModel
                 PhoneNumber = Input.PhoneNumber,
                 CountryId = Input.CountryId.Value,
                 CountyId = Input.CountyId.Value,
-                CityId = Input.CityId.Value,
+                MunicipalityId = Input.MunicipalityId.Value,
+                LocalityId = Input.LocalityId.Value,
                 Address = Input.Address!,
                 Email = Input.Email,
                 IsActive = true,
@@ -305,10 +311,16 @@ public class RegisterCustomerModel : PageModel
         public Guid? CountyId { get; set; }
         
         /// <summary>
-        /// City id for customer
+        /// Municipality id for customer
         /// </summary>
-        [Display(ResourceType = typeof(Register), Name = "City")]
-        public Guid? CityId { get; set; }
+        [Display(ResourceType = typeof(Register), Name = "Municipality")]
+        public Guid? MunicipalityId { get; set; }
+
+        /// <summary>
+        /// Locality id for customer
+        /// </summary>
+        [Display(ResourceType = typeof(Register), Name = "Locality")]
+        public Guid? LocalityId { get; set; }
 
         /// <summary>
         /// home address for customer

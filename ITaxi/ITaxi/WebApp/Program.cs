@@ -115,7 +115,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     };
 });
 builder.Services.AddAutoMapper(cfg => { },
-    typeof(App.DAL.EF.AutoMapperConfig),
+    
     typeof(App.BLL.AutoMapperConfig),
     typeof(WebApp.ApiControllers.v1.AutoMapperConfig));
 

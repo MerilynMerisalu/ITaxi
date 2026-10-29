@@ -100,14 +100,14 @@
                 <span asp-validation-for="Input.CountyId" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Input.CityId"></label>
-                <select asp-for="Input.CityId" id="cityId" class="form-control" asp-items="Model.Cities">
+            @* <div class="form-group">
+                <label asp-for="Input.MunicipalityId"></label>
+                <select asp-for="Input.MunicipalityId" id="municipalityId" class="form-control" asp-items="Model.munic">
                     <option>@Common.PleaseSelect</option>
                 </select>
-                <span asp-validation-for="Input.CityId" class="text-danger"></span>
+                <span asp-validation-for="Input.MunicipalityId" class="text-danger"></span>
             </div>
-
+ *@
             <div class="form-group">
                 <label asp-for="Input.Address"></label>
                 <input asp-for="Input.Address" class="form-control" alt="@DriverRegister.EnterYourAddressOfResidenceHere"

@@ -42,7 +42,12 @@
                 <input asp-for="Input.DateOfBirth" class="form-control" disabled/>
                 <label asp-for="Input.DateOfBirth" class="form-label"></label>
             </div>
-            
+            <div class="form-floating">
+                <input asp-for="Input.PersonalIdentifier" class="form-control" disabled="disabled" />
+                <label asp-for="Input.PersonalIdentifier" class="form-label"></label>
+                <span asp-validation-for="Input.PersonalIdentifier" class="text-danger"></span>
+            </div>
+            <a class="profile-links">@Index.RequestChangePermission</a>
             <div class="form-floating">
                 <input asp-for="Input.PhoneNumber" class="form-control"/>
                 <label asp-for="Input.PhoneNumber" class="form-label"></label>
@@ -52,12 +57,7 @@
 
             @if (User.IsInRole(nameof(Admin)) || User.IsInRole(nameof(Driver)))
             {
-                <div class="form-floating">
-                    <input asp-for="Input.PersonalIdentifier" class="form-control" disabled ="disabled"/>
-                    <label asp-for="Input.PersonalIdentifier" class="form-label"></label>
-                    <span asp-validation-for="Input.PersonalIdentifier" class="text-danger"></span>
-                </div>
-                <a class="profile-links">@Index.RequestChangePermission</a>
+                
                 <div class="form-group">
                     <label asp-for="Input.CountryId"></label>
                     <select asp-for="Input.CountryId" class="form-control" asp-items="Model.Countries">
@@ -66,11 +66,25 @@
                     <span asp-validation-for="Input.CountryId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.CityId"></label>
-                    <select asp-for="Input.CityId" class="form-control" asp-items="Model.Municipalities">
+                    <label asp-for="Input.CountyId"></label>
+                    <select asp-for="Input.CountyId" class="form-control" asp-items="Model.Counties">
                         <option>@Common.PleaseSelect</option>
                     </select>
-                    <span asp-validation-for="Input.CityId" class="text-danger"></span>
+                    <span asp-validation-for="Input.CountyId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.MunicipalityId"></label>
+                    <select asp-for="Input.MunicipalityId" class="form-control" asp-items="Model.Municipalities">
+                        <option>@Common.PleaseSelect</option>
+                    </select>
+                    <span asp-validation-for="Input.MunicipalityId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.LocalityId"></label>
+                    <select asp-for="Input.LocalityId" class="form-control" asp-items="Model.Localities">
+                        <option>@Common.PleaseSelect</option>
+                    </select>
+                    <span asp-validation-for="Input.LocalityId" class="text-danger"></span>
                 </div>
 
                 <div class="form-floating">

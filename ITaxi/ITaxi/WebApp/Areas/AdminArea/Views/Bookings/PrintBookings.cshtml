@@ -34,7 +34,19 @@
             @Html.DisplayNameFor(model => model.VehicleInfo)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.City)
+            @Html.DisplayNameFor(model => model.Country)
+        </th>
+            
+        <th>
+            @Html.DisplayNameFor(model => model.Country)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Municipality)
+        </th>
+            
+        <th>
+           @Html.DisplayNameFor(model => model.Locality)
         </th>
 
         <th>
@@ -101,7 +113,16 @@
                 </td>
                 
                 <td>
-                    @Html.DisplayFor(modelItem => item.City!.CityName)
+                    @Html.DisplayFor(modelItem => item.Country!.CountryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.County!.CountyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Municipality!.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Locality!.LocalityName)
                 </td>
 
                 <td>

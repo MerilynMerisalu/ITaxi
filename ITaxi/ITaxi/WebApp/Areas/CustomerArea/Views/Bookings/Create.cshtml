@@ -22,11 +22,11 @@
                 <span id="VehicleTypeIdClientValidationSpan" class="text-danger field-validation-valid"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CityId" class="control-label"></label>
-                <select asp-for="CityId" class="form-control" asp-items="Model.Cities">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" class="form-control" asp-items="Model.Countries">
                     <option>@Common.PleaseSelect</option>
                 </select>
-                <span id="CityIdClientValidationSpan" class="text-danger field-validation-valid"></span>
+                <span id="CountryIdClientValidationSpan" class="text-danger field-validation-valid"></span>
             </div>
 
             <div class="form-group">
@@ -121,7 +121,8 @@
                 listType: 'PickUpDateAndTime',
                 value: value.toString(),
                 vehicleTypeId: document.getElementById('VehicleTypeId').value.toString(),
-                cityId: document.getElementById('CityId').value.toString(),
+                countryId: document.getElementById('CountryId').value.toString(),
+                
                 numberOfPassengers: document.getElementById('NumberOfPassengers').value
             };
             // Only include RideTime if one was previously selected

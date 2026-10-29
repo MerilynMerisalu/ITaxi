@@ -76,8 +76,9 @@ public class RegisterAdminModel : PageModel
             Counties = new(appBLL.Counties.GetAllCountiesOrderedByCountyNameByCountryId(PreSelectedCountry.Id), nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
         }
       
-        Cities = new SelectList(Enumerable.Empty<CityDTO>(), 
-            nameof(CityDTO.Id), nameof(CityDTO.CityName));
+        Municipalities = new SelectList(Enumerable.Empty<MunicipalityDTO>(), 
+            nameof(MunicipalityDTO.Id), nameof(MunicipalityDTO.Name));
+        Localities = new SelectList(Enumerable.Empty<LocalityDTO>(), nameof(LocalityDTO.Id), nameof(LocalityDTO.LocalityName));
         
     }
 
@@ -86,19 +87,30 @@ public class RegisterAdminModel : PageModel
     /// </summary>
 
     public SelectList? Countries { get; set; }
-
+    /// <summary>
+    /// Preselected country
+    /// </summary>
     public CountryDTO? PreSelectedCountry { get; set; }
 
-    /// <summary>
-    /// List of cities
-    /// </summary>
-    public SelectList? Cities { get; set; }
 
     /// <summary>
-    /// List of cities
+    /// List of counties
     /// </summary>
 
     public SelectList? Counties { get; set; }
+
+
+    /// <summary>
+    /// List of municipalities
+    /// </summary>
+
+    public SelectList? Municipalities { get; set; }
+
+
+    /// <summary>
+    /// List of localities
+    /// </summary>
+    public SelectList? Localities { get; set; }
 
 
     /// <summary>
@@ -151,7 +163,7 @@ public class RegisterAdminModel : PageModel
         var result = cities.Select(c => new
         {
             value = c.Id,
-            text = c.CityName
+            text = c.Name
         });
 
         return new JsonResult(result);
@@ -247,7 +259,11 @@ public class RegisterAdminModel : PageModel
                 LastName = Input.LastName,
                 Gender = Input.Gender,
                 DateOfBirth = Input.DateOfBirth,
+                PersonalIdentifierCode = Input.PersonalIdentifier!,
                 CountryId = Input.CountryId,
+                CountyId = Input.CountyId,
+                MunicipalityId = Input.MunicipalityId,
+                LocalityId = Input.LocalityId,
                 PhoneNumber = Input.PhoneNumber,
                 IsActive = true,
                 Email = Input.Email,
@@ -280,8 +296,7 @@ public class RegisterAdminModel : PageModel
                 await _appBLL.SaveChangesAsync();
                 var admin = new AdminDTO()
                 {
-                    AppUserId = user.Id, PersonalIdentifier = Input.PersonalIdentifier,
-                    Address = Input.Address, CityId = Input.CityId
+                    AppUserId = user.Id, 
                 };
                  _appBLL.Admins.Add(admin);
                 await _appBLL.SaveChangesAsync();
@@ -392,11 +407,19 @@ public class RegisterAdminModel : PageModel
         public Guid CountyId { get; set; }
 
         /// <summary>
-        /// City id for admin
+        /// Municipality id for admin
         /// </summary>
         [DataType(DataType.Text)]
-        [Display(ResourceType = typeof(Register), Name = "City")]
-        public Guid CityId { get; set; }
+        [Display(ResourceType = typeof(Register), Name = "Municipality")]
+        public Guid MunicipalityId { get; set; }
+
+
+        /// <summary>
+        /// Locality id for admin
+        /// </summary>
+        [DataType(DataType.Text)]
+        [Display(ResourceType = typeof(Register), Name = "Locality")]
+        public Guid LocalityId { get; set; }
 
 
         /// <summary>

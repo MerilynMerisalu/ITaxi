@@ -59,15 +59,11 @@ public class AppUser: DomainEntityId
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "Country")]
     public Guid CountryId { get; set; }
-    public CountryDTO? CountryDTO { get; set; }
+    public CountryDTO? Country { get; set; }
     public Guid? CountyId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "County")]
     public CountyDTO? County { get; set; }
-
-    [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = "Country")]
-    public CountryDTO? Country { get; set; }
-
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [DataType(DataType.PhoneNumber)]

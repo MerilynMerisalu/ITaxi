@@ -39,9 +39,17 @@
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.Booking!.City)
+                @Html.DisplayNameFor(model => model.Booking!.Country)
             </th>
-
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.County)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Municipality)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking!.Locality)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Booking!.PickupAddress)
             </th>
@@ -108,9 +116,17 @@
                 </td>
 
                 <td>
-                    @Html.DisplayFor(modelItem => item.Booking!.City!.CityName)
+                    @Html.DisplayFor(modelItem => item.Booking!.Country!.CountryName)
                 </td>
-
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.County!.CountyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.Municipality!.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booking!.Locality!.LocalityName)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Booking!.PickupAddress)
                 </td>

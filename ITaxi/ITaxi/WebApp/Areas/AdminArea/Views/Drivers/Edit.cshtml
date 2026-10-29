@@ -62,8 +62,26 @@
                 <span asp-validation-for="DriverLicenseExpiryDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CityId" class="control-label"></label>
-                <select asp-for="CityId" class="form-control" asp-items="@Model.Cities">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" class="form-control" asp-items="@Model.Countries">
+                    <option>@Common.PleaseSelect</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountyId" class="control-label"></label>
+                <select asp-for="CountyId" class="form-control" asp-items="@Model.Counties">
+                    <option>@Common.PleaseSelect</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MunicipalityId" class="control-label"></label>
+                <select asp-for="MunicipalityId" class="form-control" asp-items="@Model.Municipalities">
+                    <option>@Common.PleaseSelect</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="LocalityId" class="control-label"></label>
+                <select asp-for="LocalityId" class="form-control" asp-items="@Model.Localities">
                     <option>@Common.PleaseSelect</option>
                 </select>
             </div>

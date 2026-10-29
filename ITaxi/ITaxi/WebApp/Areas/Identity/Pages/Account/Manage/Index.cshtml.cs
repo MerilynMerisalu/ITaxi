@@ -78,9 +78,21 @@ public class IndexModel : PageModel
     public SelectList? Countries { get; set; }
 
     /// <summary>
+    /// List of counties
+    /// </summary>
+    public SelectList? Counties { get; set; }
+
+    /// <summary>
     /// List of municipalities
     /// </summary>
     public SelectList? Municipalities { get; set; }
+
+    /// <summary>
+    /// List of localities
+    /// </summary>
+    public SelectList? Localities { get; set; }
+
+
 
     /// <summary>
     /// List of changed driver license categories
@@ -433,6 +445,10 @@ public class IndexModel : PageModel
         if (Input.LastName != user.LastName) user.LastName = Input.LastName;
 
         if (Input.Gender != user.Gender!.Value) user.Gender = Input.Gender;
+        if (Input.PersonalIdentifier != user.PersonalIdentifierCode)
+        {
+            user.PersonalIdentifierCode = Input.PersonalIdentifier!;
+        }
         if (Input.CountryId.HasValue)
         {
             if (Input.CountryId.Value != user.CountryId)
@@ -440,27 +456,36 @@ public class IndexModel : PageModel
                 user.CountryId = Input.CountryId.Value;
             }
         }
+        if (Input.CountyId.HasValue)
+        {
+            if (Input.CountyId != user.CountyId!)
+            {
+                if (Input.CountyId != null) user.CountyId = Input.CountyId.Value;
+            }
+
+        }
+
+        if (Input.MunicipalityId != user.MunicipalityId)
+        {
+            if (Input.MunicipalityId != null) user.MunicipalityId = Input.MunicipalityId.Value;
+        }
+
+        if (Input.LocalityId != user.LocalityId)
+        {
+            if (Input.LocalityId != null) user.LocalityId = Input.LocalityId!.Value;
+        }
+
+       
+        if (Input.AddressOfResidence != user.Address)
+        {
+            if (Input.AddressOfResidence != null) user.Address = Input.AddressOfResidence;
+        }
+        
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
 
         if (admin != null)
         {
-            if (Input.PersonalIdentifier != admin.PersonalIdentifier)
-            {
-                admin.PersonalIdentifier = Input.PersonalIdentifier!;
-            }
-            
-            
-            if (Input.CityId != admin.AppUser!.CityId)
-            {
-                if (Input.CityId != null) admin.AppUser!.CityId = Input.CityId.Value;
-            }
-
-            if (Input.AddressOfResidence != admin.AppUser.Address)
-            {
-                if (Input.AddressOfResidence != null) admin.AppUser.Address = Input.AddressOfResidence;
-            }
-
             admin.UpdatedBy = User.Identity!.Name;
             admin.UpdatedAt = DateTime.Now.ToUniversalTime();
 
@@ -470,21 +495,7 @@ public class IndexModel : PageModel
 
         if (driver != null)
         {
-            if (Input.PersonalIdentifier != driver.PersonalIdentifier)
-            {
-                driver.PersonalIdentifier = Input.PersonalIdentifier!;
-            }
-
-            if (Input.CityId != driver.AppUser!.CityId)
-            {
-                if (Input.CityId != null) driver.AppUser!.CityId = Input.CityId.Value;
-            }
-
-            if (Input.AddressOfResidence != driver.AppUser.Address)
-            {
-                if (Input.AddressOfResidence != null) driver.AppUser.Address = Input.AddressOfResidence;
-            }
-
+          
             if (Input.DriverLicenseNumber != driver.DriverLicenseNumber)
             {
                 if (Input.DriverLicenseNumber != null) driver.DriverLicenseNumber = Input.DriverLicenseNumber;
