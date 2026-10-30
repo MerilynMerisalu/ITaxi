@@ -95,6 +95,8 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
 
     public virtual IExtraService ExtraServices => _extraServices ??= new ExtraService(UnitOfWork.ExtraServices, new ExtraServiceMapper(_mapper));
 
+    public virtual IEhakUnitTypeService EhakUnitTypes => _ehakUnitTypes ??=
+        new EhakUnitTypeService(UnitOfWork.EhakUnitTypes, new EhakUnitTypeMapper(_mapper));
 
     private ICountryService? _countries;
     private ICountyService? _counties;
@@ -117,4 +119,5 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     private ICommentService? _comments;
     private IPhotoService? _photos;
     private IExtraService? _extraServices;
+    private IEhakUnitTypeService? _ehakUnitTypes;
 }

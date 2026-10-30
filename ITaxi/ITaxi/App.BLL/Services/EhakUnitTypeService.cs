@@ -17,6 +17,12 @@ namespace App.BLL.Services
     {
         public EhakUnitTypeService(IEhakUnitTypeRepository repository, IMapper<DTO.AdminArea.EhakUnitTypeDTO, DAL.DTO.AdminArea.EhakUnitTypeDTO> mapper) : base(repository, mapper)
         {
+
+        }
+
+        public async Task<bool> DoesEhakUnitTypeExistByNameAsync(string name)
+        {
+            return await Repository.DoesEhakUnitTypeExistByNameAsync(name: name);
         }
     }
 }

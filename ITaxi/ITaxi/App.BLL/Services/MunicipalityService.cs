@@ -165,18 +165,58 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                     _logger.LogWarning($"Skipping municipality due to missing required data. county id");
                     continue;
                 }
-
-                if (!string.IsNullOrWhiteSpace(municipalityName) && !string.IsNullOrWhiteSpace(ehakCode))
+                if (!string.IsNullOrWhiteSpace(type))
                 {
-                    var exists =
-                        await _appBLL.Municipalities.DoesMunicipalityExistAsync(ehakCode);
+                    var exists = await _appBLL.EhakUnitTypes.DoesEhakUnitTypeExistByNameAsync(name: type);
                     if (exists) continue;
+
+                    var typeDTO = new EhakUnitTypeDTO()
+                    {
+                        Id = Guid.NewGuid(),
+                        DataOrigin = Enum.Enum.DataOrigin.Api,
+                        EhakUnitTypeName = type,
+                        CreatedBy = "System",
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedBy = "System",
+                        UpdatedAt = DateTime.UtcNow
+                    };
+                    _appBLL.EhakUnitTypes.Add(typeDTO);
+                    if (!string.IsNullOrWhiteSpace(municipalityName) && !string.IsNullOrWhiteSpace(ehakCode))
+                    {
+                        exists =
+                           await _appBLL.Municipalities.DoesMunicipalityExistAsync(ehakCode);
+                        if (exists) continue;
+
+                        var municipality = new MunicipalityDTO()
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = municipalityName,
+                            CountyId = county.Id,
+                            MunicipalityEHAKCode = ehakCode,
+                            DataOrigin = Enum.Enum.DataOrigin.Api,
+                            EhakUnitTypeId = typeDTO.Id,
+                            CreatedAt = DateTime.UtcNow,
+                            CreatedBy = "System",
+                            UpdatedBy = "System",
+                            UpdatedAt = DateTime.UtcNow
+
+                        };
+                        _appBLL.Municipalities.Add(municipality);
+                        
+
+                    }
+
+
+
                 }
-                
+                await _appBLL.SaveChangesAsync();
             }
+            
         }
-        throw new NotImplementedException();
+        importResult.Success = true;
+        return importResult;
     }
+    
 
     public async Task<bool> DoesMunicipalityExistAsync( string ehakCode)
     {

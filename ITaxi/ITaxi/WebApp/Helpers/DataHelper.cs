@@ -171,7 +171,7 @@ public static class DataHelper
                 await appBLL.Countries.UpdateCountriesFromAPIAsync(cultures!);
                 await appBLL.SaveChangesAsync();
                 await appBLL.Counties.ImportCountiesFromEHAKAsync();
-
+                await appBLL.Municipalities.ImportingMuncipalitiesFromEHAK();
                 //var country = new Country()
                 //{
                 //    Id = Guid.NewGuid(),

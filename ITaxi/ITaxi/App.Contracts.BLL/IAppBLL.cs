@@ -27,4 +27,5 @@ public interface IAppBLL : IBLL
     ICommentService Comments { get; }
     IPhotoService Photos { get; }
    IExtraService ExtraServices { get; }
+   IEhakUnitTypeService EhakUnitTypes { get; }
 }

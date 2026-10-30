@@ -10,5 +10,5 @@ public interface IEhakUnitTypeRepository: IEntityRepository<App.DAL.DTO.AdminAre
 
 public interface IEhakUnitTypeCustomRepository<TEntity>
 {
-   
+   Task<bool>DoesEhakUnitTypeExistByNameAsync(string name);
 }
