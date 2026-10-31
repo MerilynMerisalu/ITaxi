@@ -183,4 +183,7 @@
   <data name="PersonalIdentifierCode" xml:space="preserve">
     <value>Personal Identifier Code</value>
   </data>
+  <data name="Municipality" xml:space="preserve">
+    <value>Municipality</value>
+  </data>
 </root>

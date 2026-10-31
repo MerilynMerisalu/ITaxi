@@ -183,4 +183,7 @@
   <data name="PersonalIdentifierCode" xml:space="preserve">
     <value>Isikukood</value>
   </data>
+  <data name="Municipality" xml:space="preserve">
+    <value>Linn/ Vald</value>
+  </data>
 </root>

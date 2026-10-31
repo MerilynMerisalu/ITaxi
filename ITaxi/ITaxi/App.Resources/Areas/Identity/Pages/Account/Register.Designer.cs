@@ -205,6 +205,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Municipality.
+        /// </summary>
+        public static string Municipality {
+            get {
+                return ResourceManager.GetString("Municipality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are no external authentication services configured..
         /// </summary>
         public static string NoThirdParty {
