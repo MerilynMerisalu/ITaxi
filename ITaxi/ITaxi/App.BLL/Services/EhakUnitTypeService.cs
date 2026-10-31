@@ -24,5 +24,10 @@ namespace App.BLL.Services
         {
             return await Repository.DoesEhakUnitTypeExistByNameAsync(name: name);
         }
+
+        public async Task<Guid> GetEhakUnitTypeIdAsync(string name)
+        {
+            return await Repository.GetEhakUnitTypeIdAsync(name: name);
+        }
     }
 }

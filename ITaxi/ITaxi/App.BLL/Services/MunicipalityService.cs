@@ -158,57 +158,60 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                     _logger.LogWarning($"Skipping municipality due to missing required data. Type: {type}");
                     continue;
                 }
-                var county = _appBLL.Counties.GetCountyByEHAKCode(ehakCode: ehakCode);
+                var county = _appBLL.Counties.GetCountyByEHAKCode(ehakCode: countyEhakCode);
 
                 if (county == null)
                 {
                     _logger.LogWarning($"Skipping municipality due to missing required data. county id");
                     continue;
                 }
+               
                 if (!string.IsNullOrWhiteSpace(type))
                 {
                     var exists = await _appBLL.EhakUnitTypes.DoesEhakUnitTypeExistByNameAsync(name: type);
-                    if (exists) continue;
-
-                    var typeDTO = new EhakUnitTypeDTO()
-                    {
-                        Id = Guid.NewGuid(),
-                        DataOrigin = Enum.Enum.DataOrigin.Api,
-                        EhakUnitTypeName = type,
-                        CreatedBy = "System",
-                        CreatedAt = DateTime.UtcNow,
-                        UpdatedBy = "System",
-                        UpdatedAt = DateTime.UtcNow
-                    };
-                    _appBLL.EhakUnitTypes.Add(typeDTO);
-                    if (!string.IsNullOrWhiteSpace(municipalityName) && !string.IsNullOrWhiteSpace(ehakCode))
-                    {
-                        exists =
-                           await _appBLL.Municipalities.DoesMunicipalityExistAsync(ehakCode);
-                        if (exists) continue;
-
-                        var municipality = new MunicipalityDTO()
+                    if (!exists) {
+                        var typeDTO = new EhakUnitTypeDTO()
                         {
                             Id = Guid.NewGuid(),
-                            Name = municipalityName,
-                            CountyId = county.Id,
-                            MunicipalityEHAKCode = ehakCode,
                             DataOrigin = Enum.Enum.DataOrigin.Api,
-                            EhakUnitTypeId = typeDTO.Id,
-                            CreatedAt = DateTime.UtcNow,
+                            EhakUnitTypeName = type,
                             CreatedBy = "System",
+                            CreatedAt = DateTime.UtcNow,
                             UpdatedBy = "System",
                             UpdatedAt = DateTime.UtcNow
-
                         };
-                        _appBLL.Municipalities.Add(municipality);
-                        
-
+                        _appBLL.EhakUnitTypes.Add(typeDTO);
+                        await _appBLL.SaveChangesAsync();
                     }
+                }
 
+                    
+                var typeId = await _appBLL.EhakUnitTypes.GetEhakUnitTypeIdAsync(name: type);
+                if (!string.IsNullOrWhiteSpace(municipalityName))
+                {
+                    bool exists =
+                       await _appBLL.Municipalities.DoesMunicipalityExistAsync(ehakCode);
+                    if (exists) continue;
+
+                    var municipality = new MunicipalityDTO()
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = municipalityName,
+                        CountyId = county.Id,
+                        MunicipalityEHAKCode = ehakCode,
+                        DataOrigin = Enum.Enum.DataOrigin.Api,
+                        EhakUnitTypeId = typeId,
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = "System",
+                        UpdatedBy = "System",
+                        UpdatedAt = DateTime.UtcNow
+
+                    };
+                    _appBLL.Municipalities.Add(municipality);
 
 
                 }
+
                 await _appBLL.SaveChangesAsync();
             }
             

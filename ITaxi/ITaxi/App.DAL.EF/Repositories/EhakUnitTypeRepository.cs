@@ -17,9 +17,13 @@ public class EhakUnitTypeRepository: BaseEntityRepository<App.DAL.DTO.AdminArea.
 
     public async Task<bool> DoesEhakUnitTypeExistByNameAsync(string name)
     {
-        var result = await RepoDbContext.EhakUnitTypes.AnyAsync(e => e.EhakUnitTypeName.Equals(name));
+        var result = await RepoDbSet.AnyAsync(e => e.EhakUnitTypeName.Equals(name));
         return result;
     }
 
-   
+    public async Task<Guid> GetEhakUnitTypeIdAsync(string name)
+    {
+        var result = RepoDbSet.FirstAsync(e => e.EhakUnitTypeName.Equals(name)).Result.Id;
+        return result;
+    }
 }

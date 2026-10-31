@@ -171,7 +171,9 @@ public static class DataHelper
                 await appBLL.Countries.UpdateCountriesFromAPIAsync(cultures!);
                 await appBLL.SaveChangesAsync();
                 await appBLL.Counties.ImportCountiesFromEHAKAsync();
+                await appBLL.SaveChangesAsync();
                 await appBLL.Municipalities.ImportingMuncipalitiesFromEHAK();
+                await appBLL.SaveChangesAsync();
                 //var country = new Country()
                 //{
                 //    Id = Guid.NewGuid(),
@@ -183,7 +185,7 @@ public static class DataHelper
                 //country.CountryName.SetTranslation("Eesti", "et-EE");
                 //await context.Countries.AddAsync(country);
                 //await context.SaveChangesAsync();
-                var countryId = context.Countries.SingleOrDefault(c => c.ISOCodeAlpha2 == "EE")!.Id;
+                //var countryId = context.Countries.SingleOrDefault(c => c.ISOCodeAlpha2 == "EE")!.Id;
                 //    var county = new County
                 //    {
                 //        Id = Guid.NewGuid(),
@@ -195,7 +197,7 @@ public static class DataHelper
 
                 //    await context.Counties.AddAsync(county);
                 //    await context.SaveChangesAsync();
-                var county = await appBLL.Counties.GetCountyByEHAKCodeAsync("0037");
+                //var county = await appBLL.Counties.GetCountyByEHAKCodeAsync("0037");
 
 
                 /*var locality = new Locality()
