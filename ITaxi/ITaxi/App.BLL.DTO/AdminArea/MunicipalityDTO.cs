@@ -3,7 +3,9 @@ using Base.Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.AccessControl;
 using System.Text;
+using System.Xml.Linq;
 
 namespace App.BLL.DTO.AdminArea
 {
@@ -23,9 +25,14 @@ namespace App.BLL.DTO.AdminArea
             ErrorMessageResourceName = nameof(Common.RequiredAttributeErrorMessage))]
         [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Municipality), Name = nameof(MunicipalityEHAKCode))]
         public string MunicipalityEHAKCode { get; set; } = default!;
-        [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.County), Name = "CountyName")]
+        
         public Guid CountyId { get; set; }
+        [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Municipality), Name = "County")]
+       
         public CountyDTO? County { get; set; }
+        public Guid CountryId { get; set; }
+        [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Municipality), Name = "Country")]
+        public CountryDTO? Country { get; set; }
     }
 }
 

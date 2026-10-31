@@ -16,10 +16,19 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.County)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EhakUnitType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MunicipalityEHAKCode)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedBy)
@@ -47,10 +56,19 @@
         {
             <tr>
                 <td>
+                    @Html.DisplayTextFor(modelItem => item.County!.Country!.CountryName)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.County!.CountyName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EhakUnitType!.EhakUnitTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MunicipalityEHAKCode)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.CreatedBy)

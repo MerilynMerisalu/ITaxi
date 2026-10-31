@@ -126,4 +126,10 @@
   <data name="MunicipalityEHAKCode" xml:space="preserve">
     <value>EHAK Kood</value>
   </data>
+  <data name="County" xml:space="preserve">
+    <value>Maakond</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Riik</value>
+  </data>
 </root>

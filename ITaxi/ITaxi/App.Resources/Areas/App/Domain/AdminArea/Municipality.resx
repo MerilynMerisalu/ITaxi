@@ -126,4 +126,10 @@
   <data name="MunicipalityEHAKCode" xml:space="preserve">
     <value>EHAK Code</value>
   </data>
+  <data name="County" xml:space="preserve">
+    <value>County</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
 </root>

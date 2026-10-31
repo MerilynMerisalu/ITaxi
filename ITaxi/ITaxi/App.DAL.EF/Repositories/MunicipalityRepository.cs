@@ -89,6 +89,20 @@ public class MunicipalityRepository : BaseEntityRepository<MunicipalityDTO, App.
         return await CreateQuery(noTracking).AnyAsync(c => c.CountyId.Equals(id));
     }
 
-    
+    protected override IQueryable<Domain.Municipality> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    {
+        var query = base.CreateQuery(noTracking, noIncludes, showDeleted, showIgnored);
+        if (!noIncludes)
+            query = query.Include(x => x.County)
+                .ThenInclude(x => x.Country)
+                .ThenInclude(x => x.CountryName)
+                .ThenInclude(x => x.Translations)
+                .Include(x => x.EhakUnitType);
+                
+
+        if (noTracking) query = query.AsNoTracking();
+
+        return query;
+    }
     
 }

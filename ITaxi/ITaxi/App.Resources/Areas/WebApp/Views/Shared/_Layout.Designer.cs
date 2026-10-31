@@ -97,15 +97,6 @@ namespace App.Resources.Areas.WebApp.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cities.
-        /// </summary>
-        public static string Cities {
-            get {
-                return ResourceManager.GetString("Cities", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Comments.
         /// </summary>
         public static string Comments {
@@ -219,6 +210,15 @@ namespace App.Resources.Areas.WebApp.Views.Shared {
         public static string ExtraServices {
             get {
                 return ResourceManager.GetString("ExtraServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Municipalities.
+        /// </summary>
+        public static string Municipalities {
+            get {
+                return ResourceManager.GetString("Municipalities", resourceCulture);
             }
         }
         

@@ -135,8 +135,8 @@
   <data name="Counties" xml:space="preserve">
     <value>Counties</value>
   </data>
-  <data name="Cities" xml:space="preserve">
-    <value>Cities</value>
+  <data name="Municipalities" xml:space="preserve">
+    <value>Municipalities</value>
   </data>
   <data name="DriverLicenseCategories" xml:space="preserve">
     <value>Driver License Categories</value>
