@@ -117,6 +117,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 builder.Services.AddAutoMapper(cfg => { },
     
     typeof(App.BLL.AutoMapperConfig),
+    typeof(App.DAL.EF.AutoMapperProfile),
     typeof(WebApp.ApiControllers.v1.AutoMapperConfig));
 
 builder.Services.AddTransient<ProfileCompleteFilterAttribute>();
