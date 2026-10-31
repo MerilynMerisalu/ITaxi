@@ -17,8 +17,9 @@ namespace App.BLL.DTO.AdminArea
         [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Municipality), Name = "MunicipalityName")]
         public string Name { get; set; } = default!;
         [Required(ErrorMessageResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Municipality), ErrorMessageResourceName = nameof(EhakUnitType))]
-        [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Municipality), Name = "EhakUnitType")]
+        
         public Guid EhakUnitTypeId { get; set; }
+       [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Municipality), Name = "EhakUnitType")]
         public EhakUnitTypeDTO? EhakUnitType { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Common),

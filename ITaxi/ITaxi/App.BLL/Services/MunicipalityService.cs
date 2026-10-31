@@ -8,6 +8,7 @@ using Base.Contracts.Mappers;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using RESTCountries.NET.Models;
+using System.Globalization;
 using System.Reflection;
 using System.Text.Json.Nodes;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -134,6 +135,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                 var ehakCode = props["ehak_kood"]?.Value<string>();
                 var countyEhakCode = props["maakond_kood"]?.Value<string>();
                 var type = props["tyyp"]?.Value<string>();
+                TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
                 var municipalityName = props["omavalitsus"]?.Value<string>();
 
                 _logger.LogInformation("Importing municipality {Name}, ehak code {MunicipalityEhakCode}, County Ehak code {CountyEhakCode}, municipality type {type} ", municipalityName, ehakCode, countyEhakCode, type);
@@ -174,7 +176,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                         {
                             Id = Guid.NewGuid(),
                             DataOrigin = Enum.Enum.DataOrigin.Api,
-                            EhakUnitTypeName = type,
+                            EhakUnitTypeName = textInfo.ToTitleCase(type),
                             CreatedBy = "System",
                             CreatedAt = DateTime.UtcNow,
                             UpdatedBy = "System",
