@@ -135,7 +135,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                 var ehakCode = props["ehak_kood"]?.Value<string>();
                 var countyEhakCode = props["maakond_kood"]?.Value<string>();
                 var type = props["tyyp"]?.Value<string>();
-                TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
+                
                 var municipalityName = props["omavalitsus"]?.Value<string>();
 
                 _logger.LogInformation("Importing municipality {Name}, ehak code {MunicipalityEhakCode}, County Ehak code {CountyEhakCode}, municipality type {type} ", municipalityName, ehakCode, countyEhakCode, type);
@@ -176,7 +176,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                         {
                             Id = Guid.NewGuid(),
                             DataOrigin = Enum.Enum.DataOrigin.Api,
-                            EhakUnitTypeName = textInfo.ToTitleCase(type),
+                            EhakUnitTypeName = type.Replace(type[0], Char.ToUpperInvariant(type[0])),
                             CreatedBy = "System",
                             CreatedAt = DateTime.UtcNow,
                             UpdatedBy = "System",
