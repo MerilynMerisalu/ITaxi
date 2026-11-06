@@ -3,6 +3,7 @@ using App.Contracts.BLL;
 using App.Contracts.BLL.ImportResults;
 using App.Contracts.BLL.Services;
 using App.Contracts.DAL.IAppRepositories;
+using App.Resources.Areas.App.Domain.AdminArea;
 using Base.BLL;
 using Base.Contracts.Mappers;
 using Microsoft.Extensions.Logging;
@@ -170,6 +171,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                
                 if (!string.IsNullOrWhiteSpace(type))
                 {
+                    
                     var exists = await _appBLL.EhakUnitTypes.DoesEhakUnitTypeExistByNameAsync(name: type);
                     if (!exists) {
                         var typeDTO = new EhakUnitTypeDTO()
@@ -183,6 +185,14 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                             UpdatedAt = DateTime.UtcNow
                         };
                         _appBLL.EhakUnitTypes.Add(typeDTO);
+                        if (typeDTO.EhakUnitTypeName.Equals("Linn"))
+                        {
+                            typeDTO.EhakUnitTypeName.SetTranslation("City", "en-GB");
+                        }
+                        else if (typeDTO.EhakUnitTypeName.Equals("Vald"))
+                        {
+                            typeDTO.EhakUnitTypeName.SetTranslation("Rural Municipality", "en-GB");
+                        }
                         await _appBLL.SaveChangesAsync();
                     }
                 }
@@ -202,7 +212,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                         CountyId = county.Id,
                         MunicipalityEHAKCode = ehakCode,
                         DataOrigin = Enum.Enum.DataOrigin.Api,
-                        EhakUnitTypeId = typeId,
+                        EhakUnitTypeId = typeId.Value,
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = "System",
                         UpdatedBy = "System",

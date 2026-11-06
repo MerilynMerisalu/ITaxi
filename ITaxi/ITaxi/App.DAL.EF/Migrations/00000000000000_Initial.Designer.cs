@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261029221942_Initial")]
+    [Migration("20261105214908_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -698,10 +698,8 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EhakUnitTypeName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<Guid>("EhakUnitTypeNameId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -716,6 +714,8 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EhakUnitTypeNameId");
 
                     b.ToTable("EhakUnitTypes");
                 });
@@ -1074,10 +1074,8 @@ namespace App.DAL.EF.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<Guid>("NameId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -1090,6 +1088,8 @@ namespace App.DAL.EF.Migrations
                     b.HasIndex("CountyId");
 
                     b.HasIndex("EhakUnitTypeId");
+
+                    b.HasIndex("NameId");
 
                     b.ToTable("Municipalities");
                 });
@@ -1894,6 +1894,17 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("DriverLicenseCategory");
                 });
 
+            modelBuilder.Entity("App.Domain.EhakUnitType", b =>
+                {
+                    b.HasOne("Base.Domain.LangStr", "EhakUnitTypeName")
+                        .WithMany()
+                        .HasForeignKey("EhakUnitTypeNameId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("EhakUnitTypeName");
+                });
+
             modelBuilder.Entity("App.Domain.ExtraService", b =>
                 {
                     b.HasOne("Base.Domain.LangStr", "Description")
@@ -2002,9 +2013,17 @@ namespace App.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Base.Domain.LangStr", "Name")
+                        .WithMany()
+                        .HasForeignKey("NameId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("County");
 
                     b.Navigation("EhakUnitType");
+
+                    b.Navigation("Name");
                 });
 
             modelBuilder.Entity("App.Domain.Photo", b =>

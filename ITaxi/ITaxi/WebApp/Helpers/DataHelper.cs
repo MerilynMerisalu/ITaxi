@@ -162,9 +162,11 @@ public static class DataHelper
                 await context.DisabilityTypes.AddAsync(disabilityType);
                 await context.SaveChangesAsync();
 
+                
+
                 var testDisabilityType =
                     context.DisabilityTypes.Include(x => x.DisabilityTypeName.Translations).FirstOrDefault();
-                Debug.WriteLine(testDisabilityType);
+                
 
 
                 var cultures = languageOptions?.Value?.SupportedUICultures?.ToArray();

@@ -20,14 +20,15 @@ namespace App.BLL.Services
 
         }
 
-        public async Task<bool> DoesEhakUnitTypeExistByNameAsync(string name)
+        public async Task<bool> DoesEhakUnitTypeExistByNameAsync(string name, bool noTracking = true)
         {
-            return await Repository.DoesEhakUnitTypeExistByNameAsync(name: name);
+            var result = await Repository.DoesEhakUnitTypeExistByNameAsync(name: name, noTracking: noTracking);
+            return result;
         }
 
-        public async Task<Guid> GetEhakUnitTypeIdAsync(string name)
+        public async Task<Guid?> GetEhakUnitTypeIdAsync(string name, bool noTraking = true)
         {
-            return await Repository.GetEhakUnitTypeIdAsync(name: name);
+            return await Repository.GetEhakUnitTypeIdAsync(name: name, noTracking:noTraking);
         }
     }
 }

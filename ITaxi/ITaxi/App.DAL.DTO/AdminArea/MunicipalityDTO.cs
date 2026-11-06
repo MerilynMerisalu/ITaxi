@@ -10,7 +10,7 @@ namespace App.DAL.DTO.AdminArea
         [MinLength(1, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageMinLength))]
         [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageMaxLength))]
         [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Municipality), Name = "MunicipalityName")]
-        public string Name { get; set; } = default!;
+        public LangStr Name { get; set; } = default!;
         [Required(ErrorMessageResourceType = typeof(Resources.Areas.App.Domain.AdminArea.Municipality), ErrorMessageResourceName = nameof(EhakUnitType))]
         [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.Municipality), Name = "EhakUnitType")]
         public Guid EhakUnitTypeId { get; set; }

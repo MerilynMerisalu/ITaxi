@@ -10,7 +10,7 @@ public interface IEhakUnitTypeRepository: IEntityRepository<App.DAL.DTO.AdminAre
 
 public interface IEhakUnitTypeCustomRepository<TEntity>
 {
-   Task<bool>DoesEhakUnitTypeExistByNameAsync(string name);
-   Task<Guid>GetEhakUnitTypeIdAsync(string name);
-
+   Task<bool>DoesEhakUnitTypeExistByNameAsync(string name, bool noTracking = true);
+   Task<Guid?>GetEhakUnitTypeIdAsync(string name, bool noTracking = true);
+    
 }

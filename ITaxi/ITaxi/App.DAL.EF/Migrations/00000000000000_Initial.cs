@@ -33,27 +33,6 @@ namespace App.DAL.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EhakUnitTypes",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EhakUnitTypeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    IsIgnored = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DataOrigin = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EhakUnitTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LangStrings",
                 columns: table => new
                 {
@@ -162,6 +141,33 @@ namespace App.DAL.EF.Migrations
                     table.ForeignKey(
                         name: "FK_DisabilityTypes_LangStrings_DisabilityTypeNameId",
                         column: x => x.DisabilityTypeNameId,
+                        principalTable: "LangStrings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EhakUnitTypes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EhakUnitTypeNameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    IsIgnored = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DataOrigin = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EhakUnitTypes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EhakUnitTypes_LangStrings_EhakUnitTypeNameId",
+                        column: x => x.EhakUnitTypeNameId,
                         principalTable: "LangStrings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -337,7 +343,7 @@ namespace App.DAL.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    NameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EhakUnitTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MunicipalityEHAKCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CountyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -364,6 +370,12 @@ namespace App.DAL.EF.Migrations
                         name: "FK_Municipalities_EhakUnitTypes_EhakUnitTypeId",
                         column: x => x.EhakUnitTypeId,
                         principalTable: "EhakUnitTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Municipalities_LangStrings_NameId",
+                        column: x => x.NameId,
+                        principalTable: "LangStrings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -1248,6 +1260,11 @@ namespace App.DAL.EF.Migrations
                 column: "DriverId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EhakUnitTypes_EhakUnitTypeNameId",
+                table: "EhakUnitTypes",
+                column: "EhakUnitTypeNameId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ExtraServices_DescriptionId",
                 table: "ExtraServices",
                 column: "DescriptionId");
@@ -1276,6 +1293,11 @@ namespace App.DAL.EF.Migrations
                 name: "IX_Municipalities_EhakUnitTypeId",
                 table: "Municipalities",
                 column: "EhakUnitTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Municipalities_NameId",
+                table: "Municipalities",
+                column: "NameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_AdminId",
