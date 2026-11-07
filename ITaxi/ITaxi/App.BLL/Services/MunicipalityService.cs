@@ -6,6 +6,7 @@ using App.Contracts.DAL.IAppRepositories;
 using App.Resources.Areas.App.Domain.AdminArea;
 using Base.BLL;
 using Base.Contracts.Mappers;
+using Base.Domain;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using RESTCountries.NET.Models;
@@ -161,6 +162,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                     _logger.LogWarning($"Skipping municipality due to missing required data. Type: {type}");
                     continue;
                 }
+                type = type.Replace(type[0], Char.ToUpperInvariant(type[0]));
                 var county = _appBLL.Counties.GetCountyByEHAKCode(ehakCode: countyEhakCode);
 
                 if (county == null)
@@ -174,22 +176,21 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                     
                     var exists = await _appBLL.EhakUnitTypes.DoesEhakUnitTypeExistByNameAsync(name: type);
                     if (!exists) {
-                        var typeDTO = new EhakUnitTypeDTO()
-                        {
-                            Id = Guid.NewGuid(),
-                            DataOrigin = Enum.Enum.DataOrigin.Api,
-                            EhakUnitTypeName = type.Replace(type[0], Char.ToUpperInvariant(type[0])),
-                            CreatedBy = "System",
-                            CreatedAt = DateTime.UtcNow,
-                            UpdatedBy = "System",
-                            UpdatedAt = DateTime.UtcNow
-                        };
+                        var typeDTO = new EhakUnitTypeDTO();
+                        typeDTO.EhakUnitTypeName = new LangStr();
+                        typeDTO.Id = Guid.NewGuid();
+                        typeDTO.EhakUnitTypeName.SetTranslation(type, "et-EE");
+                        typeDTO.DataOrigin = Enum.Enum.DataOrigin.Api;
+                        typeDTO.CreatedBy = "System";
+                        typeDTO.CreatedAt = DateTime.UtcNow;
+                        typeDTO.UpdatedBy = "System";
+                        typeDTO.UpdatedAt = DateTime.UtcNow;
                         _appBLL.EhakUnitTypes.Add(typeDTO);
-                        if (typeDTO.EhakUnitTypeName.Equals("Linn"))
+                        if (type.Equals("Linn"))
                         {
                             typeDTO.EhakUnitTypeName.SetTranslation("City", "en-GB");
                         }
-                        else if (typeDTO.EhakUnitTypeName.Equals("Vald"))
+                        else if (type.Equals("Vald"))
                         {
                             typeDTO.EhakUnitTypeName.SetTranslation("Rural Municipality", "en-GB");
                         }

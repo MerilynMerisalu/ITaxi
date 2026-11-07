@@ -18,10 +18,10 @@ public class EhakUnitTypeRepository: BaseEntityRepository<App.DAL.DTO.AdminArea.
     public async Task<bool> DoesEhakUnitTypeExistByNameAsync(string name, bool noTracking = true)
     {
         var translations = await RepoDbContext.Translations.ToListAsync();
-        var translationId = translations.Where(t => t.Value.Equals(name))
-            .Select(t => t.Id);
+        var translation = translations.FirstOrDefault(t => t.Value.Equals(name)) ;
+            
         
-        return translationId != null ? true : false;
+        return translation!= null ? true : false;
     }
 
     public async Task<Guid?> GetEhakUnitTypeIdAsync(string name, bool noTracking = true)
@@ -30,11 +30,12 @@ public class EhakUnitTypeRepository: BaseEntityRepository<App.DAL.DTO.AdminArea.
         var translationId = translations.Where(t => t.Value.Equals(name))
             .Select(t => t.Id);
         var ehakUnitTypeId = (await CreateQuery(noTracking: noTracking, noIncludes: false)
-            .Where(e => e.Equals(translationId)).FirstOrDefaultAsync()).Id;
+            .Where(e => e.EhakUnitTypeName.Translations.Any(t => t.Value.Equals(name))).Select(e => (Guid?)e.Id).FirstOrDefaultAsync());
         return ehakUnitTypeId;
     }
 
-    protected override IQueryable<EhakUnitType> CreateQuery(bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    protected override IQueryable<EhakUnitType> CreateQuery(bool noTracking = true,
+        bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
         var query = base.CreateQuery(noTracking, noIncludes, showDeleted, showIgnored);
         if (!noIncludes)

@@ -52,7 +52,8 @@ public class MunicipalityRepository : BaseEntityRepository<MunicipalityDTO, App.
 
     public async Task<IEnumerable<MunicipalityDTO>> GetAllOrderedMunipalitiesAsync(bool showDeleted = false, bool showIgnored = false)
     {
-        return (await CreateQuery(showIgnored: showIgnored, showDeleted: showDeleted).OrderBy(c => c.County!.CountyName)
+        return (await CreateQuery(showIgnored: showIgnored, showDeleted: showDeleted).
+            OrderBy(c => c.County!.CountyName)
             .ThenBy(c => c.Name).ToListAsync())
             .Select(e => Mapper.Map(e))!;
     }
@@ -97,7 +98,10 @@ public class MunicipalityRepository : BaseEntityRepository<MunicipalityDTO, App.
                 .ThenInclude(x => x.Country)
                 .ThenInclude(x => x.CountryName)
                 .ThenInclude(x => x.Translations)
-                .Include(x => x.EhakUnitType);
+                .Include(x => x.EhakUnitType)
+                .ThenInclude(x => x.EhakUnitTypeName)
+                .ThenInclude(x => x.Translations)
+                .Include(x => x.Name).ThenInclude(x => x.Translations);
                 
 
         if (noTracking) query = query.AsNoTracking();
