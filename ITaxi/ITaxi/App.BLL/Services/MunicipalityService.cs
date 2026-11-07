@@ -10,6 +10,7 @@ using Base.Domain;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using RESTCountries.NET.Models;
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Text.Json.Nodes;
@@ -105,7 +106,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
             return importResult;
         }
         var countryId = await _appBLL.Countries.GetCountryIdByISOCodeCca2Async(ESTONIANISO2CODE);
-        const string AADRESSURL = "https://gsavalik.envir.ee/geoserver/ehak/wfs" +
+        string AADRESSURL = "https://gsavalik.envir.ee/geoserver/ehak/wfs" +
               "?service=WFS&version=1.1.0" +
               "&request=GetFeature" +
               "&typeName=ehak:omavalitsuste_piirid" +
@@ -116,7 +117,6 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
             _logger.LogError($"EHAK unavailable. Status: {response.StatusCode}");
             importResult.Success = false;
             return importResult;
-
         }
 
         var jsonResult = await response.Content.ReadAsStringAsync();
@@ -206,6 +206,33 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                        await _appBLL.Municipalities.DoesMunicipalityExistAsync(ehakCode);
                     if (exists) continue;
 
+                    AADRESSURL = "https://klassifikaatorid.stat.ee/item/stat.ee/079ed389-81f0-4171-8442-d8cf7412cdb7/5/json";
+                    response = await client.GetAsync(AADRESSURL);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        _logger.LogError($"EHAK unavailable. Status: {response.StatusCode}");
+                        importResult.Success = false;
+                        return importResult;
+
+                    }
+                    jsonResult = await response.Content.ReadAsStringAsync();
+                    root = JObject.Parse(jsonResult);
+                    var items = root["features"];
+                    if (items != null)
+                    {
+                        foreach (var item in items)
+                        {
+                            //props = feature["properties"] as JObject;
+                            //if (props == null)
+                            //{
+                            //    _logger.LogError("Invalid EHAK API response. Feature without properties encountered.");
+                            //    importResult.Success = false;
+                            //    return importResult;
+                            //}
+                            var munipalityNameEn = props["Label"]?["en-GB"]?.Value<string>();
+                    var munipalityNameEst = props["Label"]?["et-EE"]?.Value<string>();
+                    _logger.LogInformation("Importing municipality english name {munipalityNameEn}, estonian name {munipalityNameEst}", munipalityNameEn, munipalityNameEst);
+                   
                     var municipality = new MunicipalityDTO()
                     {
                         Id = Guid.NewGuid(),
