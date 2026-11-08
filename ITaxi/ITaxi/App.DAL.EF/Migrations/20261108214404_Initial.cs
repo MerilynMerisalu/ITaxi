@@ -313,8 +313,7 @@ namespace App.DAL.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CountyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CountyNameNormalized = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CountyNameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CountyEHAKCode = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -334,6 +333,12 @@ namespace App.DAL.EF.Migrations
                         name: "FK_Counties_Countries_CountryId",
                         column: x => x.CountryId,
                         principalTable: "Countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Counties_LangStrings_CountyNameId",
+                        column: x => x.CountyNameId,
+                        principalTable: "LangStrings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -1212,6 +1217,11 @@ namespace App.DAL.EF.Migrations
                 columns: new[] { "CountryId", "CountyEHAKCode" },
                 unique: true,
                 filter: "[CountyEHAKCode] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Counties_CountyNameId",
+                table: "Counties",
+                column: "CountyNameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Countries_CountryNameId",

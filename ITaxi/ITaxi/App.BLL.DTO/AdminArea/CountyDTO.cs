@@ -12,7 +12,7 @@ public class CountyDTO : DomainEntityMetaId, IShowHideItem
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.County)
         , Name = nameof(CountyName))]
-    public string CountyName { get; set; } = default!;
+    public LangStr? CountyName { get; set; } 
     public Guid CountryId { get; set; }
     [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.County),
         Name = nameof(Country))]

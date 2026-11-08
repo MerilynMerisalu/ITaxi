@@ -9,9 +9,8 @@ public class County : DomainEntityMetaId
     [Required(ErrorMessageResourceType = typeof(Common),
         ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
     [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
-    public string CountyName { get; set; } = default!;
-    [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "ErrorMessageMaxLength")]
-    public string CountyNameNormalized { get; set; } = default!;
+    public LangStr CountyName { get; set; } = default!;
+    
     public Guid CountryId { get; set; }
     public Country? Country { get; set; }
     

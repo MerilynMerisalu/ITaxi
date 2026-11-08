@@ -80,24 +80,24 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 
         
     }
-    private void NormalizeCountyNames()
+    /*private void NormalizeCountyNames()
     {
         foreach (var entry in ChangeTracker.Entries<County>()
                      .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified))
         {
             if (!string.IsNullOrWhiteSpace(entry.Entity.CountyName))
             {
-                entry.Entity.CountyName = entry.Entity.CountyName.Trim();
-                entry.Entity.CountyNameNormalized = entry.Entity.CountyName.ToUpperInvariant();
-            }
+                entry.Entity.CountyName.s = entry.Entity.CountyName.Translations.All(e => e.Value).Trim();
+                entry.Entity.CountyNameNormalized = entry.Entity.CountyName.Translations.Select(e=>e.Value.ToUpperInvariant());
+           }
         }
     }
+*/
 
-    
     public override int SaveChanges()
     {
         //FixEntities(this); Only needed if postgres db is used
-        NormalizeCountyNames();
+        //NormalizeCountyNames();
         ChangeMetadata();
        // ApplyIgnoredCascadeAsync()
         return base.SaveChanges();
@@ -106,7 +106,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     {
         //FixEntities(this); Only needed if postgres db is used
         
-        NormalizeCountyNames();
+        //NormalizeCountyNames();
         ChangeMetadata();
         var ignoredParentsByType = GetIgnoredParentsByType();
         var result = await base.SaveChangesAsync(cancellationToken);

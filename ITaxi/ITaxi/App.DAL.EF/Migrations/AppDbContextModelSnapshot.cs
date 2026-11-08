@@ -336,15 +336,8 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(4)
                         .HasColumnType("nvarchar(4)");
 
-                    b.Property<string>("CountyName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("CountyNameNormalized")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<Guid>("CountyNameId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -374,6 +367,8 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CountyNameId");
 
                     b.HasIndex("CountryId", "CountyEHAKCode")
                         .IsUnique()
@@ -1818,7 +1813,15 @@ namespace App.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Base.Domain.LangStr", "CountyName")
+                        .WithMany()
+                        .HasForeignKey("CountyNameId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Country");
+
+                    b.Navigation("CountyName");
                 });
 
             modelBuilder.Entity("App.Domain.Customer", b =>

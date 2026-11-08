@@ -241,11 +241,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                             {
                                 _logger.LogWarning("Missing translation value for English {municipalityName}", municipalityName);
                             }
-                            else
-                            {
-                              
-                                 
-                            }
+                           
                             var municipalityLangDTO = new LangStr();
                             var municipality = new MunicipalityDTO()
                             {
