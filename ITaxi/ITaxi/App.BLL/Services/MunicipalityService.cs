@@ -137,7 +137,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                 var ehakCode = props["ehak_kood"]?.Value<string>();
                 var countyEhakCode = props["maakond_kood"]?.Value<string>();
                 var type = props["tyyp"]?.Value<string>();
-                
+
                 var municipalityName = props["omavalitsus"]?.Value<string>();
 
                 _logger.LogInformation("Importing municipality {Name}, ehak code {MunicipalityEhakCode}, County Ehak code {CountyEhakCode}, municipality type {type} ", municipalityName, ehakCode, countyEhakCode, type);
@@ -170,12 +170,13 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                     _logger.LogWarning($"Skipping municipality due to missing required data. county id");
                     continue;
                 }
-               
+
                 if (!string.IsNullOrWhiteSpace(type))
                 {
-                    
+
                     var exists = await _appBLL.EhakUnitTypes.DoesEhakUnitTypeExistByNameAsync(name: type);
-                    if (!exists) {
+                    if (!exists)
+                    {
                         var typeDTO = new EhakUnitTypeDTO();
                         typeDTO.EhakUnitTypeName = new LangStr();
                         typeDTO.Id = Guid.NewGuid();
@@ -198,7 +199,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                     }
                 }
 
-                    
+
                 var typeId = await _appBLL.EhakUnitTypes.GetEhakUnitTypeIdAsync(name: type);
                 if (!string.IsNullOrWhiteSpace(municipalityName))
                 {
@@ -206,7 +207,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                        await _appBLL.Municipalities.DoesMunicipalityExistAsync(ehakCode);
                     if (exists) continue;
 
-                    AADRESSURL = "https://klassifikaatorid.stat.ee/item/stat.ee/079ed389-81f0-4171-8442-d8cf7412cdb7/5/json";
+                    AADRESSURL = "https://klassifikaatorid.stat.ee/item/stat.ee/079ed389-81f0-4171-8442-d8cf7412cdb7/5/report/se.classification-version-data/json";
                     response = await client.GetAsync(AADRESSURL);
                     if (!response.IsSuccessStatusCode)
                     {
@@ -217,48 +218,77 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                     }
                     jsonResult = await response.Content.ReadAsStringAsync();
                     root = JObject.Parse(jsonResult);
-                    var items = root["features"];
+                    var items = root["Items"];
+                    string? municipalityNameEn = null;
+                    string? municipalityNameEst = null;
                     if (items != null)
                     {
-                        foreach (var item in items)
-                        {
-                            //props = feature["properties"] as JObject;
-                            //if (props == null)
-                            //{
-                            //    _logger.LogError("Invalid EHAK API response. Feature without properties encountered.");
-                            //    importResult.Success = false;
-                            //    return importResult;
-                            //}
-                            var munipalityNameEn = props["Label"]?["en-GB"]?.Value<string>();
-                    var munipalityNameEst = props["Label"]?["et-EE"]?.Value<string>();
-                    _logger.LogInformation("Importing municipality english name {munipalityNameEn}, estonian name {munipalityNameEst}", munipalityNameEn, munipalityNameEst);
-                   
-                    var municipality = new MunicipalityDTO()
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = municipalityName,
-                        CountyId = county.Id,
-                        MunicipalityEHAKCode = ehakCode,
-                        DataOrigin = Enum.Enum.DataOrigin.Api,
-                        EhakUnitTypeId = typeId.Value,
-                        CreatedAt = DateTime.UtcNow,
-                        CreatedBy = "System",
-                        UpdatedBy = "System",
-                        UpdatedAt = DateTime.UtcNow
+                        
+                        var item = items?.FirstOrDefault(i => i["Code"]?.Value<string>() == ehakCode);
 
-                    };
-                    _appBLL.Municipalities.Add(municipality);
+                        if (item == null)
+                        {
+                            _logger.LogWarning("Municipality with EHAK code {EhakCode} was not found in the translation source", ehakCode);
+                           
+                        }
+                        else
+                        {
+                            municipalityNameEn = item["Label"]?["en-GB"]?.Value<string>();
+                            municipalityNameEst = item["Label"]?["et-EE"]?.Value<string>();
+
+                            _logger.LogInformation("Importing municipality english name {municipalityNameEn}, estonian name {municipalityNameEst}", municipalityNameEn, municipalityNameEst);
+                            if (string.IsNullOrWhiteSpace(municipalityNameEn))
+                            {
+                                _logger.LogWarning("Missing translation value for English {municipalityName}", municipalityName);
+                            }
+                            else
+                            {
+                              
+                                 
+                            }
+                            var municipalityLangDTO = new LangStr();
+                            var municipality = new MunicipalityDTO()
+                            {
+
+                                Id = Guid.NewGuid(),
+                                Name = municipalityName,
+                                CountyId = county.Id,
+                                MunicipalityEHAKCode = ehakCode,
+                                DataOrigin = Enum.Enum.DataOrigin.Api,
+                                EhakUnitTypeId = typeId.Value,
+                                CreatedAt = DateTime.UtcNow,
+                                CreatedBy = "System",
+                                UpdatedBy = "System",
+                                UpdatedAt = DateTime.UtcNow
+
+                            };
+                            if (municipalityNameEn != null)
+                            {
+                                municipality.Name.SetTranslation(municipalityNameEn, "en-GB");
+                            }
+                            else if (municipalityNameEst != null)
+                            {
+                                municipality.Name.SetTranslation(municipalityNameEst, "et-EE");
+                            }
+                            _appBLL.Municipalities.Add(municipality);
+
+                        }
+
+
+                    }
+                   
 
 
                 }
 
                 await _appBLL.SaveChangesAsync();
             }
-            
+
         }
         importResult.Success = true;
         return importResult;
     }
+    
     
 
     public async Task<bool> DoesMunicipalityExistAsync( string ehakCode)
