@@ -1,4 +1,4 @@
-﻿@* @page
+﻿ @page
 @using App.Enum.Enum
 @using App.Resources.Areas.Identity.Pages.Account
 @using Base.Resources
@@ -70,8 +70,7 @@
                 data-selected-date-mismatch-personal-identifier-code-error-message="@Register.PersonalIdentifierDateOfBirthAndSelectedDateMismatch"
                 data-age-error-message="@Register.MinimumRegistrationAgeError"
                 data-invalid-personal-identication-code-error-message=@Register.PersonalIdentificationCodeControlDigitError"
-                 class="form-control alt="@AdminRegister.EnterYourPersonalIdentifierCodeHere"
-                       placeholder="@AdminRegister.EnterYourPersonalIdentifierCodeHere"
+                 class="form-control alt=@Register.EnterYourPersonalIdentifierCodeHere
                        minlength="11" maxlength="11" 
                        onchange="ValidatePersonalIdentifierNumber(this)" />
                 
@@ -101,11 +100,11 @@
                 <span asp-validation-for="Input.CountyId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.CityId"></label>
-                <select asp-for="Input.CityId" id="cityId" class="form-control" asp-items="Model.Cities">
+                <label asp-for="Input.MunicipalityId"></label>
+                <select asp-for="Input.MunicipalityId" id="municipalityId" class="form-control" asp-items="Model.Municipalities">
                     <option value="">@Common.PleaseSelect</option>
                 </select>
-                <span asp-validation-for="Input.CityId" class="text-danger"></span>
+                <span asp-validation-for="Input.MunicipalityId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input.Address"></label>
@@ -171,4 +170,4 @@
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/date-of-birth-validator.js" asp-append-version="true"></script> 
     <script src="~/js/register-common.js" asp-append-version="true"></script>
-} *@
+} 

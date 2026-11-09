@@ -160,6 +160,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter Your Personal Identifier Code Here.
+        /// </summary>
+        public static string EnterYourPersonalIdentifierCodeHere {
+            get {
+                return ResourceManager.GetString("EnterYourPersonalIdentifierCodeHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The first digit of a personal identifier code must be between 1 to 8.
         /// </summary>
         public static string FirstDigitError {

@@ -156,7 +156,7 @@ public class RegisterAdminModel : PageModel
         return new JsonResult(counties);
     }
 
-    public async Task<IActionResult> OnGetSetDropDownCitiesListAsync( Guid countyId)
+    public async Task<IActionResult> OnGetSetDropDownMunicipalitiesListAsync( Guid countyId)
     {
         // Select the Counties for the currently selected CountryId
         var cities = await _appBLL.Municipalities.GetMunicipalitiesByCountyIdAsync(countyId);

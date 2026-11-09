@@ -186,4 +186,7 @@
   <data name="Municipality" xml:space="preserve">
     <value>Municipality</value>
   </data>
+  <data name="EnterYourPersonalIdentifierCodeHere" xml:space="preserve">
+    <value>Enter Your Personal Identifier Code Here</value>
+  </data>
 </root>

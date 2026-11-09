@@ -1,7 +1,7 @@
 ﻿
 async function CountryIdChanged(value) {
     PopulateDropDownList("countyId", [], false);
-    PopulateDropDownList("cityId", [], false);
+    PopulateDropDownList("municipalityId", [], false);
     if (!value) return;
     const response = await fetch(`?handler=SetDropDownCountiesList&countryId=${value}`);
     if (!response.ok) {
@@ -13,17 +13,17 @@ async function CountryIdChanged(value) {
     PopulateDropDownList("countyId", data, false);
 }
 async function CountyIdChanged(value) {
-    PopulateDropDownList("cityId", [], false);
-    const citySelect = document.getElementById('cityId')
+    PopulateDropDownList("municipalityId", [], false);
+    const citySelect = document.getElementById('municipalityId')
     if (!value) return;
-    const response = await fetch(`?handler=SetDropDownCitiesList&countyId=${value}`);
+    const response = await fetch(`?handler=SetDropDownMunicipalitiesList&countyId=${value}`);
     if (!response.ok) {
         console.error("Fetching cities failed!");
         return;
     }
 
     const data = await response.json();
-    PopulateDropDownList("cityId", data, false);
+    PopulateDropDownList("municipalityId", data, false);
 }
 
 function GenderValidation(select) {

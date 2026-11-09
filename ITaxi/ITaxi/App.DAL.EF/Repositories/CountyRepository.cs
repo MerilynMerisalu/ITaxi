@@ -46,7 +46,7 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
         // special handling of OrderBy to account for language transalation
         return CreateQuery(noTracking)
             .ToList() // Bring into memory "Materialize"
-            .Select(e => Mapper.Map(e)).OrderBy(e => (string)e!.CountyName)!;
+            .Select(e => Mapper.Map(e)).OrderBy(e => (string)e!.Country!.CountryName)!;
     }
     
 
@@ -60,7 +60,7 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
     {
         var query = base.CreateQuery(noTracking, noIncludes, showDeleted, showIgnored);
         if (!noIncludes)
-            query = query.Include(x => x.Municipalities)
+            query = query.Include(x => x.Municipalities).ThenInclude(x => x.Name).ThenInclude(x => x.Translations)
                 .Include(x => x.Country)
                 .ThenInclude(x => x.CountryName)
                 .ThenInclude(x => x.Translations)
@@ -95,14 +95,14 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
     public async Task<List<CountyDTO?>> GetAllCountiesOrderedByCountyNameByCountryIdAsync(Guid countryId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
         var result = await CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)
-            .Where(c => c.CountryId == countryId).OrderBy(c => (string) c.CountyName).Select(c => Mapper.Map(c)).ToListAsync();
-        return result;
+            .Where(c => c.CountryId == countryId).ToListAsync();
+        return result.OrderBy(c => (string)c.CountyName).Select(c =>Mapper.Map(c)).ToList();
     }
 
     public List<CountyDTO?> GetAllCountiesOrderedByCountyNameByCountryId(Guid countryId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
         var result = CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)
-            .Where(c => c.CountryId == countryId).OrderBy(c => (string)c.CountyName).Select(c => Mapper.Map(c)).ToList();
-        return result;
+            .Where(c => c.CountryId == countryId).AsEnumerable();
+        return result.OrderBy(c => (string)c.CountyName).Select(c => Mapper.Map(c)).ToList();
     }
 }

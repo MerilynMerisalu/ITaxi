@@ -139,7 +139,7 @@
     <value>Asula</value>
   </data>
   <data name="EnterYourAddressOfResidenceHere" xml:space="preserve">
-    <value>Sisestage siia oma aadress.</value>
+    <value>Sisestage siia oma elukoha aadress.</value>
   </data>
   <data name="Address" xml:space="preserve">
     <value>Aadress</value>
@@ -185,5 +185,8 @@
   </data>
   <data name="Municipality" xml:space="preserve">
     <value>Linn/ Vald</value>
+  </data>
+  <data name="EnterYourPersonalIdentifierCodeHere" xml:space="preserve">
+    <value>Sisestage siia oma isikukood.</value>
   </data>
 </root>
