@@ -63,6 +63,8 @@ public class CountyRepository : BaseEntityRepository<CountyDTO, App.Domain.Count
             query = query.Include(x => x.Municipalities)
                 .Include(x => x.Country)
                 .ThenInclude(x => x.CountryName)
+                .ThenInclude(x => x.Translations)
+                .Include(x => x.CountyName)
                 .ThenInclude(x => x.Translations);
             
         if (noTracking) query = query.AsNoTracking();

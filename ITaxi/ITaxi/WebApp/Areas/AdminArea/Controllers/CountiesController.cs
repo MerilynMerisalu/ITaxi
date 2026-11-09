@@ -21,7 +21,7 @@ namespace WebApp.Areas.AdminArea.Controllers;
 /// Admin area counties controller
 /// </summary>
 [Area(nameof(AdminArea))]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class CountiesController : Controller
 {
     private readonly IAppBLL _appBLL;

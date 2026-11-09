@@ -61,7 +61,7 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
         string? municipalityNameEn = null;
         string? municipalityNameEst = null;
         const string ESTONIANISO2CODE = "EE";
-       
+
         var result = await _appBLL.Countries.IsThereACorrespondingCountryToTheISO2CodeAsync(iso2Code: ESTONIANISO2CODE);
         if (result == false)
         {
@@ -112,7 +112,7 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
                     continue;
                 }
 
-                if(countryId.HasValue && !string.IsNullOrWhiteSpace(ehakCode))
+                if (countryId.HasValue && !string.IsNullOrWhiteSpace(ehakCode))
                 {
                     var exists =
                         await _appBLL.Counties.DoesCountyExistsByCountryIdAndEHAKCodeAsync(countryId.Value, ehakCode);
@@ -126,51 +126,66 @@ public class CountyService: BaseEntityService<App.BLL.DTO.AdminArea.CountyDTO, D
                         _logger.LogError($"EHAK unavailable. Status: {response.StatusCode}");
                         return importResult;
                     }
-                    
-                    }
-                var jsonTranslationResult = await response.Content.ReadAsStringAsync();
-                var rootTranslation = JObject.Parse(jsonTranslationResult);
-                var translationFeatures = root["rootTranslation"];
-                if (translationFeatures != null)
-                {
-                    var item = translationFeatures.FirstOrDefault(i => i["Code"]?.Value<string>() == ehakCode);
-                    if (item == null)
+
+
+                    var jsonTranslationResult = await response.Content.ReadAsStringAsync();
+                    var rootTranslation = JObject.Parse(jsonTranslationResult);
+                    var translationFeatures = rootTranslation["Items"];
+                    if (translationFeatures != null)
                     {
-                        _logger.LogWarning("Municipality with EHAK code {EhakCode} was not found in the translation source", ehakCode);
+                        var item = translationFeatures.FirstOrDefault(i => i["Code"]?.Value<string>() == ehakCode);
+                        if (item == null)
+                        {
+                            _logger.LogWarning("Municipality with EHAK code {EhakCode} was not found in the translation source", ehakCode);
+                        }
+                        else
+                        {
+                            municipalityNameEn = item["Label"]?["en-GB"]?.Value<string>();
+                            municipalityNameEst = item["Label"]?["et-EE"]?.Value<string>();
+
+                            _logger.LogInformation("Importing municipality english name {municipalityNameEn}, estonian name {municipalityNameEst}", municipalityNameEn, municipalityNameEst);
+                        }
+                        var countyLangStr = new LangStr();
+
+                        var county = new CountyDTO()
+                        {
+                            Id = Guid.NewGuid(),
+                            CountyName = countyName,
+                            CountyEHAKCode = ehakCode,
+                            DataOrigin = DataOrigin.Api,
+                            CountryId = countryId.Value,
+                            CreatedBy = "System",
+                            CreatedAt = DateTime.UtcNow,
+                        };
+
+                        _appBLL.Counties.Add(county);
+                        county.CountyName.SetTranslation(municipalityNameEn, "en-GB");
+                        county.CountyName.SetTranslation(municipalityNameEst, "et-EE");
                     }
                     else
                     {
-                        municipalityNameEn = item["Label"]?["en-GB"]?.Value<string>();
-                        municipalityNameEst = item["Label"]?["et-EE"]?.Value<string>();
-
-                        _logger.LogInformation("Importing municipality english name {municipalityNameEn}, estonian name {municipalityNameEst}", municipalityNameEn, municipalityNameEst);
+                        importResult.Success = false;
+                        _logger.LogError($"Translations unavailable. Status: {response.StatusCode}");
+                        return importResult;
                     }
-                    var countyLangStr = new LangStr();
-
-                    var county = new CountyDTO() { 
-                        Id = Guid.NewGuid(), 
-                        CountyName = countyName, 
-                        CountyEHAKCode = ehakCode,
-                        DataOrigin =  DataOrigin.Api,
-                        CountryId = countryId.Value, 
-                        CreatedBy = "System", 
-                        CreatedAt = DateTime.UtcNow,
-                    };
-
-                    _appBLL.Counties.Add(county);
-                    county.CountyName.SetTranslation(municipalityNameEn, "en-GB");
-                    county.CountyName.SetTranslation(municipalityNameEst, "et-EE");
-                }
                 ;
-                
+
+                }
+                await _appBLL.SaveChangesAsync();
+
             }
-            await _appBLL.SaveChangesAsync();
-            
+
+
+            importResult.Success = true;
+            return importResult;
+        }
+        else
+        {
+            importResult.Success = false;
+            _logger.LogError($"EHAK unavailable. Status: {response.StatusCode}");
+            return importResult;
         }
         
-
-        importResult.Success = true;
-        return importResult;
     }
 
     public async Task<IEnumerable<CountyDTO>> GetCountiesByCountryIdAsync(Guid countryId)
