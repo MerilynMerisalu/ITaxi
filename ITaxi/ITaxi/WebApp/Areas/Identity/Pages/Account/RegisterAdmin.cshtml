@@ -85,31 +85,30 @@
                     {
                         <option value="">@Common.PleaseSelect</option>
                     }
-                  
-
                      
                 </select>
                 <span asp-validation-for="Input.CountryId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @* <div class="form-group">
                 <label asp-for="Input.CountyId"></label>
                 <select asp-for="Input.CountyId" id="countyId" class="form-control" asp-items="Model.Counties"
                         onchange="CountyIdChanged(this.value)">
                     <option value="">@Common.PleaseSelect</option>
                 </select>
                 <span asp-validation-for="Input.CountyId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            </div> *@
+            @* <div class="form-group">
                 <label asp-for="Input.MunicipalityId"></label>
                 <select asp-for="Input.MunicipalityId" id="municipalityId" class="form-control" asp-items="Model.Municipalities">
                     <option value="">@Common.PleaseSelect</option>
                 </select>
                 <span asp-validation-for="Input.MunicipalityId" class="text-danger"></span>
-            </div>
+            </div> *@
             <div class="form-group">
                 <label asp-for="Input.Address"></label>
-                <input asp-for="Input.Address" class="form-control" alt="@AdminRegister.EnterYourAddressOfResidenceHere"
-                       placeholder="@AdminRegister.EnterYourAddressOfResidenceHere" />
+                <div id="InAadressDiv"></div>
+                <input id="InAadressDiv" asp-for="Input.Address" class="form-control" alt="@AdminRegister.EnterYourAddressOfResidenceHere"
+                       placeholder="@AdminRegister.EnterYourAddressOfResidenceHere" hidden="hidden"/>
                 <span asp-validation-for="Input.Address" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -167,7 +166,22 @@
 </div>
 
 @section Scripts {
+   
+    
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/date-of-birth-validator.js" asp-append-version="true"></script> 
     <script src="~/js/register-common.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="https://aks.geoportaal.ee/inaks/inaadress/js/v1.8.5/inaadress.min.js">
+    </script>
+    <script>
+     var inAadress = new InAadress({
+            container: "InAadressDiv",
+            mode: 3,
+            ihist: "1993",
+            apartment: 0,
+            lang: "et"
+        });
+    </script>
+    <script type="text/javascript">
+    </script>
 } 

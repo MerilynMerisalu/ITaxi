@@ -31,15 +31,13 @@ body {
 }
 
 .profile-links {
-    color: #0dcaf0; 
+    color: #0dcaf0;
     text-decoration: none;
-    
 }
 
-.profile-links:hover
-{
-    text-decoration: underline
-}
+    .profile-links:hover {
+        text-decoration: underline
+    }
 
 .colorlib-credit {
     position: fixed;
@@ -57,3 +55,27 @@ body {
         .colorlib-credit a:hover {
             text-decoration: underline;
         }
+
+#InAadressDiv .inads-input-wrapper {
+    width: 100%;
+    min-height: 38px;
+    box-sizing: border-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    background-color: #fff;
+}
+
+#InAadressDiv .inads-input {
+    min-width: 0;
+    height: auto;
+    padding: 0.375rem 0.75rem;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #212529;
+}
+
+#InAadressDiv .inads-input-wrapper:focus-within {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+}

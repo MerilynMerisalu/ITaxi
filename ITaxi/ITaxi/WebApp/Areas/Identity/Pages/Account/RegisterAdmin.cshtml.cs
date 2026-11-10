@@ -64,23 +64,24 @@ public class RegisterAdminModel : PageModel
         _emailSender = emailSender;
         _appBLL = appBLL;
         PreSelectedCountry = appBLL.Countries.GetCountryByISOCodeCca2("EE");
-        Countries = new SelectList(_appBLL.Countries.GetAllCountriesWhereIsRegisterSupported(showDeleted: false, showIgnored: false), 
+        Countries = new SelectList(_appBLL.Countries.GetAllCountriesWhereIsRegisterSupported(showDeleted: false, showIgnored: false),
             nameof(CountryDTO.Id), nameof(CountryDTO.CountryName), PreSelectedCountry?.Id);
         if (PreSelectedCountry == null)
         {
             Counties = new SelectList(Enumerable.Empty<CountyDTO>(),
             nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
         }
-        else
-        {
-            Counties = new(appBLL.Counties.GetAllCountiesOrderedByCountyNameByCountryId(PreSelectedCountry.Id), nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
-        }
-      
-        Municipalities = new SelectList(Enumerable.Empty<MunicipalityDTO>(), 
-            nameof(MunicipalityDTO.Id), nameof(MunicipalityDTO.Name));
-        Localities = new SelectList(Enumerable.Empty<LocalityDTO>(), nameof(LocalityDTO.Id), nameof(LocalityDTO.LocalityName));
-        
     }
+        //else
+        //{
+        //    Counties = new(appBLL.Counties.GetAllCountiesOrderedByCountyNameByCountryId(PreSelectedCountry.Id), nameof(CountyDTO.Id), nameof(CountyDTO.CountyName));
+        //}
+      
+    //    Municipalities = new SelectList(Enumerable.Empty<MunicipalityDTO>(), 
+    //        nameof(MunicipalityDTO.Id), nameof(MunicipalityDTO.Name));
+    //    Localities = new SelectList(Enumerable.Empty<LocalityDTO>(), nameof(LocalityDTO.Id), nameof(LocalityDTO.LocalityName));
+        
+    //}
 
     /// <summary>
     /// List of countries
