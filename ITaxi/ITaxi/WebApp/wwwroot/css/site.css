@@ -79,3 +79,10 @@ body {
     border-color: #80bdff;
     box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
 }
+#InAadressDiv,
+#InAadressDiv .inads-input-div,
+#InAadressDiv .inads-input-wrapper {
+    width: 100%;
+    max-width: none;
+}
+
