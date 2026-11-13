@@ -58,7 +58,7 @@ public class CreateBookingViewModel
     public SelectList? Municipalities { get; set; }
 
     [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = "RequiredAttributeErrorMessage")]
-    [Display(ResourceType = typeof(Booking), Name = "locality")]
+    [Display(ResourceType = typeof(Booking), Name = "Locality")]
     public Guid LocalityId { get; set; }
     /// <summary>
     /// List of localities

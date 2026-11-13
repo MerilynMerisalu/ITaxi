@@ -309,4 +309,10 @@
   <data name="BackToIndex" xml:space="preserve">
     <value>Back To Index</value>
   </data>
+  <data name="PersonalIdentifierCode" xml:space="preserve">
+    <value>Personal Identifier Code</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
 </root>

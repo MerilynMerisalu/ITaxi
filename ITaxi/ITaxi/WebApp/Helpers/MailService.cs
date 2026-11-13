@@ -2,7 +2,7 @@
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
-
+using MailKit;
 namespace WebApp.Helpers;
 /// <summary>
 /// Mail Service
@@ -55,6 +55,6 @@ public class MailService : IMailService
         await smtp.AuthenticateAsync(_mailSettings.Mail, _mailSettings.Password);
         var response = await smtp.SendAsync(email);
         await smtp.DisconnectAsync(true);
-        return response;
+        return response.ResponseText;
     }
 }

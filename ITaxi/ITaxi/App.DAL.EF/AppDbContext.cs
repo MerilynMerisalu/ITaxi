@@ -6,7 +6,7 @@ using Base.Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.Identity.Client;
+//using Microsoft.Identity.Client;
 using System.Collections;
 
 namespace App.DAL.EF;

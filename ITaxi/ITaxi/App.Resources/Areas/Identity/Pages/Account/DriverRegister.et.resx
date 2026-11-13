@@ -210,4 +210,10 @@
   <data name="County" xml:space="preserve">
     <value>Maakond</value>
   </data>
+  <data name="Municipality" xml:space="preserve">
+    <value>Linn / Vald</value>
+  </data>
+  <data name="Locality" xml:space="preserve">
+    <value>Linnaosa / Asula</value>
+  </data>
 </root>

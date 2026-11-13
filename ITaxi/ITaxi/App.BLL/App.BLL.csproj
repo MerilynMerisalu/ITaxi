@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
+        <TargetFrameworks>net11.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>default</LangVersion>
@@ -16,9 +16,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="16.2.0" />
-      <PackageReference Include="Microsoft.Build" Version="18.11.0" />
-      <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.14" />
+      <PackageReference Include="AutoMapper" Version="17.0.0" />
+      <PackageReference Include="Microsoft.Build" Version="18.12.2" />
+      <PackageReference Include="Microsoft.Extensions.Http" Version="11.0.0" />
       <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.23.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
       <PackageReference Include="RESTCountries.NET" Version="3.6.1" />

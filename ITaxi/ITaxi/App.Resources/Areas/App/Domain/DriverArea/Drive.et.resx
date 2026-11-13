@@ -138,4 +138,16 @@
     <data name="BookingNumber" xml:space="preserve">
         <value>Broneeringu Number</value>
     </data>
+    <data name="Country" xml:space="preserve">
+        <value>Riik</value>
+    </data>
+    <data name="County" xml:space="preserve">
+        <value>Maakond</value>
+    </data>
+    <data name="Municipality" xml:space="preserve">
+        <value>Linn / Vald</value>
+    </data>
+    <data name="Locality" xml:space="preserve">
+        <value>Asula / Linnaosa</value>
+    </data>
 </root>

@@ -210,4 +210,10 @@
   <data name="County" xml:space="preserve">
     <value>County</value>
   </data>
+  <data name="Municipality" xml:space="preserve">
+    <value>Municipality</value>
+  </data>
+  <data name="Locality" xml:space="preserve">
+    <value>Locality</value>
+  </data>
 </root>

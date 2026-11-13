@@ -349,7 +349,7 @@ public class RegisterDriverModel : PageModel
         /// Locality id for driver
         /// </summary>
         [DataType(DataType.Text)]
-        [Display(ResourceType = typeof(DriverRegister), Name = "Municipality")]
+        [Display(ResourceType = typeof(DriverRegister), Name = "Locality")]
         public Guid LocalityId { get; set; }
 
         /// <summary>

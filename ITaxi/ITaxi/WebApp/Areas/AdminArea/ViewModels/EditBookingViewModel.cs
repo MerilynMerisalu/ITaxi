@@ -43,12 +43,7 @@ public class EditBookingViewModel
     /// List of vehicle types
     /// </summary>
     public SelectList? VehicleTypes { get; set; }
-
-    /// <summary>
-    /// City id
-    /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = "City")]
-    public Guid CityId { get; set; }
+    
 
     /// <summary>
     /// Vehicle id

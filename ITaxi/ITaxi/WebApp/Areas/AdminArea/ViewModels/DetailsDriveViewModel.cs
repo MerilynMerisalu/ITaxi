@@ -44,12 +44,7 @@ public class DetailsDriveViewModel : AdminAreaBaseViewModel
     [Display(ResourceType = typeof(Booking), Name = "PickUpDateAndTime")]
     public string PickupDateAndTime { get; set; } = default!;
 
-    /// <summary>
-    /// City
-    /// </summary>
-    [Display(ResourceType = typeof(Booking), Name = nameof(City))]
-    public string City { get; set; } = default!;
-
+    
     /// <summary>
     /// Pick up address
     /// </summary>
