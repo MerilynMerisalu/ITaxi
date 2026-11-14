@@ -4,6 +4,7 @@
 #nullable enable
 
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -146,29 +147,29 @@ public class RegisterAdminModel : PageModel
 
     
 
-    public async Task<IActionResult> OnGetSetDropDownCountiesListAsync(Guid countryId)
-    {
-        var result = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameByCountryIdAsync(countryId, showDeleted: false, showIgnored: false);
-        var counties = result.Select(c => new
-        {
-            text = c.CountyName,
-            value = c.Id
-        });
-        return new JsonResult(counties);
-    }
+    //public async Task<IActionResult> OnGetSetDropDownCountiesListAsync(Guid countryId)
+    //{
+    //    var result = await _appBLL.Counties.GetAllCountiesOrderedByCountyNameByCountryIdAsync(countryId, showDeleted: false, showIgnored: false);
+    //    var counties = result.Select(c => new
+    //    {
+    //        text = c.CountyName,
+    //        value = c.Id
+    //    });
+    //    return new JsonResult(counties);
+    //}
 
-    public async Task<IActionResult> OnGetSetDropDownMunicipalitiesListAsync( Guid countyId)
-    {
-        // Select the Counties for the currently selected CountryId
-        var cities = await _appBLL.Municipalities.GetMunicipalitiesByCountyIdAsync(countyId);
-        var result = cities.Select(c => new
-        {
-            value = c.Id,
-            text = c.Name
-        });
+    //public async Task<IActionResult> OnGetSetDropDownMunicipalitiesListAsync( Guid countyId)
+    //{
+    //    // Select the Counties for the currently selected CountryId
+    //    var cities = await _appBLL.Municipalities.GetMunicipalitiesByCountyIdAsync(countyId);
+    //    var result = cities.Select(c => new
+    //    {
+    //        value = c.Id,
+    //        text = c.Name
+    //    });
 
-        return new JsonResult(result);
-    }
+    //    return new JsonResult(result);
+    //}
 
     public void DateOfBirthValidation()
     {
@@ -238,7 +239,7 @@ public class RegisterAdminModel : PageModel
 
         }
     }
-
+    
     /// <summary>
     /// On post async method for admin registration
     /// </summary>
@@ -262,9 +263,7 @@ public class RegisterAdminModel : PageModel
                 DateOfBirth = Input.DateOfBirth,
                 PersonalIdentifierCode = Input.PersonalIdentifier!,
                 CountryId = Input.CountryId,
-                CountyId = Input.CountyId,
-                MunicipalityId = Input.MunicipalityId,
-                LocalityId = Input.LocalityId,
+                Address = Input.Address,
                 PhoneNumber = Input.PhoneNumber,
                 IsActive = true,
                 Email = Input.Email,

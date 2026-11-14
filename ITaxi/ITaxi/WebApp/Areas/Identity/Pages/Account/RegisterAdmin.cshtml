@@ -107,8 +107,8 @@
             <div class="form-group">
                 <label asp-for="Input.Address"></label>
                 <div id="InAadressDiv"></div>
-                <input id="InAadressDiv" asp-for="Input.Address" class="form-control" alt="@AdminRegister.EnterYourAddressOfResidenceHere"
-                       placeholder="@AdminRegister.EnterYourAddressOfResidenceHere" hidden="hidden"/>
+                <input asp-for="Input.Address" class="form-control"  alt="@AdminRegister.EnterYourAddressOfResidenceHere"
+                       placeholder="@AdminRegister.EnterYourAddressOfResidenceHere" hidden="hidden" />
                 <span asp-validation-for="Input.Address" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -141,24 +141,24 @@
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
-                    <div>
-                        <p>
-                            @Register.NoThirdParty
-                        </p>
-                    </div>
+                                        <div>
+                                            <p>
+                                                @Register.NoThirdParty
+                                            </p>
+                                        </div>
                 }
                 else
                 {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
+                                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                            <div>
+                                                <p>
+                                                    @foreach (var provider in Model.ExternalLogins!)
                                 {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
                                 }
-                            </p>
-                        </div>
-                    </form>
+                                                </p>
+                                            </div>
+                                        </form>
                 }
             }
         </section>
@@ -181,6 +181,16 @@
             appartment: 1,
             lang: "et"
         });
+    </script>
+    <script>
+        document.addEventListener('addressSelected', function (e) {
+            let info = e.detail;
+            let address_value = document.getElementById("Input_Address");
+            address_value.value = info[0].aadress;
+            return address_value.value;
+        })
+        
+            
     </script>
     <script type="text/javascript">
     </script>
