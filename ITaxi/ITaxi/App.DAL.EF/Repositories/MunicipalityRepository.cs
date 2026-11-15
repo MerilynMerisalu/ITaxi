@@ -80,6 +80,12 @@ public class MunicipalityRepository : BaseEntityRepository<MunicipalityDTO, App.
         return Mapper.Map(result);
     }
 
+    public async Task<Guid?> GetMunicipalityIdByEhakCodeAsync(string ehakCode)
+    {
+        var result = await CreateQuery().FirstOrDefaultAsync(m => m.MunicipalityEHAKCode.Equals(ehakCode));
+        return result?.Id;
+    }
+
     public bool HasAnyMunicipalities(Guid id, bool noTracking = true)
     {
         return CreateQuery(noTracking).Any(c => c.CountyId.Equals(id));

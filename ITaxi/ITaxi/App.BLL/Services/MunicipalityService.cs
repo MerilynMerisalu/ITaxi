@@ -291,4 +291,9 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
     {
         return await Repository.DoesMunicipalityExistAsync( ehakCode: ehakCode);
     }
+
+    public async Task<Guid?> GetMunicipalityIdByEhakCodeAsync(string ehakCode)
+    {
+        return await Repository.GetMunicipalityIdByEhakCodeAsync(ehakCode: ehakCode);
+    }
 }
