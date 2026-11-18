@@ -239,7 +239,7 @@ public class RegisterAdminModel : PageModel
 
         }
     }
-    
+
     /// <summary>
     /// On post async method for admin registration
     /// </summary>
@@ -253,67 +253,84 @@ public class RegisterAdminModel : PageModel
         DateOfBirthValidation();
         AgeValidation();
         ValidatePersonalIdentifierCode();
-        if (ModelState.IsValid)
+        if (Input.MunicipalityEhakCode == null)
         {
-            var user = new AppUser
+            ModelState.AddModelError(key: nameof(Input.MunicipalityEhakCode), errorMessage: nameof(Register.ChooseAddressFromDropdownListError));
+        }
+        
+        var municipalityId = await _appBLL.Municipalities.GetMunicipalityIdByEhakCodeAsync(Input.MunicipalityEhakCode!);
+
+        if (municipalityId == null)
+        {
+            ModelState.AddModelError(key: nameof(Input.MunicipalityEhakCode), errorMessage: nameof(Register.ChooseAddressFromDropdownListError));
+        }
+        if (Input.CountyEhakCode == null)
+        {
+            ModelState.AddModelError(key: nameof(Input.CountyEhakCode), errorMessage: nameof(Register.ChooseAddressFromDropdownListError));
+        }
+        if (ModelState.IsValid)
             {
-                FirstName = Input.FirstName,
-                LastName = Input.LastName,
-                Gender = Input.Gender,
-                DateOfBirth = Input.DateOfBirth,
-                PersonalIdentifierCode = Input.PersonalIdentifier!,
-                CountryId = Input.CountryId,
-                Address = Input.Address,
-                PhoneNumber = Input.PhoneNumber,
-                IsActive = true,
-                Email = Input.Email,
-                EmailConfirmed = true
-            };
 
-            await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-            await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-            var result = await _userManager.CreateAsync(user, Input.Password);
-            result = await _userManager.AddClaimAsync(user, new Claim("aspnet.firstname", user.FirstName));
-            result = await _userManager.AddClaimAsync(user, new Claim("aspnet.lastname", user.LastName));
-
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User created a new account with password.");
-
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    null,
-                    new {area = "Identity", userId, code, returnUrl},
-                    Request.Scheme);
-
-                await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
-
-                await _userManager.AddToRoleAsync(user, nameof(Admin));
-                await _appBLL.SaveChangesAsync();
-                var admin = new AdminDTO()
+                var user = new AppUser
                 {
-                    AppUserId = user.Id, 
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    Gender = Input.Gender,
+                    DateOfBirth = Input.DateOfBirth,
+                    PersonalIdentifierCode = Input.PersonalIdentifier!,
+                    CountryId = Input.CountryId,
+                    MunicipalityId = municipalityId.Value,
+                    Address = Input.Address,
+                    PhoneNumber = Input.PhoneNumber,
+                    IsActive = true,
+                    Email = Input.Email,
+                    EmailConfirmed = true
                 };
-                 _appBLL.Admins.Add(admin);
-                await _appBLL.SaveChangesAsync();
-                if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl});
 
-                await _signInManager.SignInAsync(user, false);
-                return LocalRedirect(returnUrl);
+                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                var result = await _userManager.CreateAsync(user, Input.Password);
+                result = await _userManager.AddClaimAsync(user, new Claim("aspnet.firstname", user.FirstName));
+                result = await _userManager.AddClaimAsync(user, new Claim("aspnet.lastname", user.LastName));
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        null,
+                        new { area = "Identity", userId, code, returnUrl },
+                        Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
+
+                    await _userManager.AddToRoleAsync(user, nameof(Admin));
+                    await _appBLL.SaveChangesAsync();
+                    var admin = new AdminDTO()
+                    {
+                        AppUserId = user.Id,
+                    };
+                    _appBLL.Admins.Add(admin);
+                    await _appBLL.SaveChangesAsync();
+                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
+
+                    await _signInManager.SignInAsync(user, false);
+                    return LocalRedirect(returnUrl);
+                }
+
+                foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
             }
 
-            foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
+            // If we got this far, something failed, redisplay form
+            return Page();
         }
-
-        // If we got this far, something failed, redisplay form
-        return Page();
-    }
-
+    
     private AppUser CreateUser()
     {
         try
@@ -405,6 +422,10 @@ public class RegisterAdminModel : PageModel
 
         [Display(ResourceType = typeof(Register), Name = "County")]
         public Guid CountyId { get; set; }
+        /// <summary>
+        /// Selected county ehak code
+        /// </summary>
+        public string? CountyEhakCode { get; set; }
 
         /// <summary>
         /// Municipality id for admin
@@ -413,7 +434,10 @@ public class RegisterAdminModel : PageModel
         [Display(ResourceType = typeof(Register), Name = "Municipality")]
         public Guid MunicipalityId { get; set; }
 
-
+        /// <summary>
+        /// Selected municipality ehak code
+        /// </summary>
+        public string? MunicipalityEhakCode { get; set; }
         /// <summary>
         /// Locality id for admin
         /// </summary>
@@ -478,5 +502,6 @@ public class RegisterAdminModel : PageModel
             ErrorMessageResourceName = "ErrorMessageComparePasswords"
         )]
         public string ConfirmPassword { get; set; } = default!;
+        
     }
 }

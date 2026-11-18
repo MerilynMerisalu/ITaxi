@@ -189,4 +189,7 @@
   <data name="EnterYourPersonalIdentifierCodeHere" xml:space="preserve">
     <value>Enter Your Personal Identifier Code Here</value>
   </data>
+  <data name="ChooseAddressFromDropdownListError" xml:space="preserve">
+    <value>Please select a valid address from the dropdown list.</value>
+  </data>
 </root>

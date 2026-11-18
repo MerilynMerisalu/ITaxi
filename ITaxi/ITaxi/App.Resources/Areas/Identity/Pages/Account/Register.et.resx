@@ -189,4 +189,7 @@
   <data name="EnterYourPersonalIdentifierCodeHere" xml:space="preserve">
     <value>Sisestage siia oma isikukood.</value>
   </data>
+  <data name="ChooseAddressFromDropdownListError" xml:space="preserve">
+    <value>Palun valige aadresside nimekirjast kehtiv aadress.</value>
+  </data>
 </root>

@@ -86,6 +86,12 @@ public class MunicipalityRepository : BaseEntityRepository<MunicipalityDTO, App.
         return result?.Id;
     }
 
+    public async Task<Guid?> GetMunicipalityIdByIdAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    {
+        return (await CreateQuery(noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted)
+            .FirstOrDefaultAsync(m => m.Id.Equals(id))).Id;
+    }
+
     public bool HasAnyMunicipalities(Guid id, bool noTracking = true)
     {
         return CreateQuery(noTracking).Any(c => c.CountyId.Equals(id));

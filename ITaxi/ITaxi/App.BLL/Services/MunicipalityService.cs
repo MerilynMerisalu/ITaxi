@@ -32,7 +32,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
         _httpClientFactory = httpClientFactory;
     }
 
-   
+
     public async Task<IEnumerable<MunicipalityDTO>> GetAllMunicipalitiesWithoutCountyAsync()
     {
         return (await Repository.GetAllMunicipalitiesWithoutCountyAsync()).Select(e => Mapper.Map(e))!;
@@ -82,12 +82,12 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
     {
         return (await Repository.GetMunicipalitiesByCountyIdAsync(countyId: countyId, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored))
             .Select(m => Mapper.Map(m)).ToList();
-            
+
     }
 
     public List<MunicipalityDTO?> GetMunicipalitiesByCountyId(Guid countyId, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
     {
-        return ( Repository.GetMunicipalitiesByCountyId(countyId: countyId, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)
+        return (Repository.GetMunicipalitiesByCountyId(countyId: countyId, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored)
             .Select(m => Mapper.Map(m)).ToList());
     }
 
@@ -223,13 +223,13 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                     string? municipalityNameEst = null;
                     if (items != null)
                     {
-                        
+
                         var item = items?.FirstOrDefault(i => i["Code"]?.Value<string>() == ehakCode);
 
                         if (item == null)
                         {
                             _logger.LogWarning("Municipality with EHAK code {EhakCode} was not found in the translation source", ehakCode);
-                           
+
                         }
                         else
                         {
@@ -241,7 +241,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
                             {
                                 _logger.LogWarning("Missing translation value for English {municipalityName}", municipalityName);
                             }
-                           
+
                             var municipalityLangDTO = new LangStr();
                             var municipality = new MunicipalityDTO()
                             {
@@ -272,7 +272,7 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
 
 
                     }
-                   
+
 
 
                 }
@@ -284,16 +284,21 @@ public class MunicipalityService : BaseEntityService<App.BLL.DTO.AdminArea.Munic
         importResult.Success = true;
         return importResult;
     }
-    
-    
 
-    public async Task<bool> DoesMunicipalityExistAsync( string ehakCode)
+
+
+    public async Task<bool> DoesMunicipalityExistAsync(string ehakCode)
     {
-        return await Repository.DoesMunicipalityExistAsync( ehakCode: ehakCode);
+        return await Repository.DoesMunicipalityExistAsync(ehakCode: ehakCode);
     }
 
     public async Task<Guid?> GetMunicipalityIdByEhakCodeAsync(string ehakCode)
     {
         return await Repository.GetMunicipalityIdByEhakCodeAsync(ehakCode: ehakCode);
+    }
+
+    public async Task<Guid?> GetMunicipalityIdByIdAsync(Guid id, bool noTracking = true, bool noIncludes = false, bool showDeleted = false, bool showIgnored = false)
+    {
+        return await Repository.GetMunicipalityIdByIdAsync(id: id, noTracking: noTracking, noIncludes: noIncludes, showDeleted: showDeleted, showIgnored: showIgnored);
     }
 }

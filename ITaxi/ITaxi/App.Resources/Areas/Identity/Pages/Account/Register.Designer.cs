@@ -70,6 +70,15 @@ namespace App.Resources.Areas.Identity.Pages.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select a valid address from the dropdown list..
+        /// </summary>
+        public static string ChooseAddressFromDropdownListError {
+            get {
+                return ResourceManager.GetString("ChooseAddressFromDropdownListError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please choose your gender..
         /// </summary>
         public static string ChooseGenderError {
