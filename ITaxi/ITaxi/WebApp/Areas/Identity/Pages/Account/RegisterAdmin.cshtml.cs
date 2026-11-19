@@ -259,16 +259,21 @@ public class RegisterAdminModel : PageModel
         }
         
         var municipalityId = await _appBLL.Municipalities.GetMunicipalityIdByEhakCodeAsync(Input.MunicipalityEhakCode!);
-
-        if (municipalityId == null)
-        {
-            ModelState.AddModelError(key: nameof(Input.MunicipalityEhakCode), errorMessage: nameof(Register.ChooseAddressFromDropdownListError));
-        }
         if (Input.CountyEhakCode == null)
         {
             ModelState.AddModelError(key: nameof(Input.CountyEhakCode), errorMessage: nameof(Register.ChooseAddressFromDropdownListError));
         }
-        if (ModelState.IsValid)
+        var county = await _appBLL.Counties.GetCountyByEHAKCodeAsync(Input.CountyEhakCode!);
+        if (county == null)
+        {
+            ModelState.AddModelError(key: nameof(Input.MunicipalityEhakCode), errorMessage: nameof(Register.ChooseAddressFromDropdownListError));
+        }
+        if (!municipalityId.HasValue)
+        {
+            ModelState.AddModelError(key: nameof(Input.MunicipalityEhakCode), errorMessage: nameof(Register.ChooseAddressFromDropdownListError));
+        }
+        
+         if (ModelState.IsValid)
             {
 
                 var user = new AppUser
@@ -279,7 +284,8 @@ public class RegisterAdminModel : PageModel
                     DateOfBirth = Input.DateOfBirth,
                     PersonalIdentifierCode = Input.PersonalIdentifier!,
                     CountryId = Input.CountryId,
-                    MunicipalityId = municipalityId.Value,
+                    CountyId = county!.Id,
+                    MunicipalityId = municipalityId!.Value,
                     Address = Input.Address,
                     PhoneNumber = Input.PhoneNumber,
                     IsActive = true,
