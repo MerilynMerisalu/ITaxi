@@ -1,4 +1,5 @@
-﻿using App.Contracts.DAL.IAppRepositories;
+﻿using App.Contracts.BLL.ImportResults;
+using App.Contracts.DAL.IAppRepositories;
 using Base.Contracts.BLL;
 using System;
 using System.Collections.Generic;
@@ -8,5 +9,6 @@ namespace App.Contracts.BLL.Services
 {
     public interface IEhakUnitTypeService : IEntityService<App.BLL.DTO.AdminArea.EhakUnitTypeDTO>, IEhakUnitTypeCustomRepository<App.BLL.DTO.AdminArea.EhakUnitTypeDTO>
     {
+        public EhakImportResult ImportingUnitTypeAsync();
     }
 }

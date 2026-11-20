@@ -33,6 +33,8 @@ public class AppUser: DomainEntityId
     [EnumDataType(typeof(Gender))]
     public Gender Gender { get; set; }
 
+    public Guid MunicipalityId { get; set; }
+    public MunicipalityDTO? Municipality { get; set; }
     public Guid LocalityId { get; set; }
 
     [Display(ResourceType = typeof(Resources.Areas.App.Domain.AdminArea.AppUser), Name = nameof(Locality))]
