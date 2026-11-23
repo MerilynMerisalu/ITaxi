@@ -52,7 +52,7 @@ namespace App.BLL.Services
         public async Task<EhakImportResult> ImportingLocalitiesFromEHAKAsync()
         {
            var client = _httpClientFactory.CreateClient();
-            
+            throw new NotImplementedException();
         }
     }
 }

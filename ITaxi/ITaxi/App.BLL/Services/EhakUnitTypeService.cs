@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json.Nodes;
 
@@ -76,7 +77,8 @@ namespace App.BLL.Services
                         return importResult;
                     }
 
-
+                    var type = props["tyyp"]?.Value<string>();
+                    var typeExists = await _appBLL.EhakUnitTypes.DoesEhakUnitTypeExistByNameAsync(name: type);
                 }
             }
                     throw new NotImplementedException();

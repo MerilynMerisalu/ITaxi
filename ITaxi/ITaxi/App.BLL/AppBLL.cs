@@ -96,7 +96,7 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     public virtual IExtraService ExtraServices => _extraServices ??= new ExtraService(UnitOfWork.ExtraServices, new ExtraServiceMapper(_mapper));
 
     public virtual IEhakUnitTypeService EhakUnitTypes => _ehakUnitTypes ??=
-        new EhakUnitTypeService(UnitOfWork.EhakUnitTypes, new EhakUnitTypeMapper(_mapper));
+        new EhakUnitTypeService(UnitOfWork.EhakUnitTypes, new EhakUnitTypeMapper(_mapper), this, _loggerFactory.CreateLogger<EhakUnitTypeService>(), _httpClientFactory);
 
     private ICountryService? _countries;
     private ICountyService? _counties;

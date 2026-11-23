@@ -9,6 +9,6 @@ namespace App.Contracts.BLL.Services
 {
     public interface IEhakUnitTypeService : IEntityService<App.BLL.DTO.AdminArea.EhakUnitTypeDTO>, IEhakUnitTypeCustomRepository<App.BLL.DTO.AdminArea.EhakUnitTypeDTO>
     {
-        public EhakImportResult ImportingUnitTypeAsync();
+        Task<EhakImportResult> ImportingUnitTypeAsync();
     }
 }
