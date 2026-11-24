@@ -12,5 +12,6 @@ public interface IEhakUnitTypeCustomRepository<TEntity>
 {
    Task<bool>DoesEhakUnitTypeExistByNameAsync(string name, bool noTracking = true);
    Task<Guid?>GetEhakUnitTypeIdAsync(string name, bool noTracking = true);
-    
+   Task<bool>DoesEhakUnitTypeExistByEhakCodeAsync(string ehakCode, bool noTracking = true);
+
 }

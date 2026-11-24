@@ -15,6 +15,11 @@ public class EhakUnitTypeRepository: BaseEntityRepository<App.DAL.DTO.AdminArea.
     {
     }
 
+    public async Task<bool> DoesEhakUnitTypeExistByEhakCodeAsync(string ehakCode, bool noTracking = true)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<bool> DoesEhakUnitTypeExistByNameAsync(string name, bool noTracking = true)
     {
         var translations = await RepoDbContext.Translations.ToListAsync();

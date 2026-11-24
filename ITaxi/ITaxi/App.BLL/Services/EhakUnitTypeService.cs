@@ -40,7 +40,7 @@ namespace App.BLL.Services
 
         public async Task<Guid?> GetEhakUnitTypeIdAsync(string name, bool noTraking = true)
         {
-            return await Repository.GetEhakUnitTypeIdAsync(name: name, noTracking:noTraking);
+            return await Repository.GetEhakUnitTypeIdAsync(name: name, noTracking: noTraking);
         }
 
         public async Task<EhakImportResult> ImportingUnitTypeAsync()
@@ -49,12 +49,12 @@ namespace App.BLL.Services
             var importResult = new EhakImportResult();
             string? municipalityNameEn = null;
             string? municipalityNameEst = null;
-            string AADRESSURL = "https://gsavalik.envir.ee/geoserver/ehak/wfs" +
+            string addressUrl = "https://gsavalik.envir.ee/geoserver/ehak/wfs" +
              "?service=WFS&version=1.1.0" +
              "&request=GetFeature" +
              "&typeName=ehak:omavalitsuste_piirid" +
              "&outputFormat=application/json";
-            var res = await client.GetAsync(AADRESSURL);
+            var res = await client.GetAsync(addressUrl);
             if (!res.IsSuccessStatusCode)
             {
                 _logger.LogError($"EHAK unavailable. Status: {res.StatusCode}");
@@ -78,10 +78,45 @@ namespace App.BLL.Services
                     }
 
                     var type = props["tyyp"]?.Value<string>();
-                    var typeExists = await _appBLL.EhakUnitTypes.DoesEhakUnitTypeExistByNameAsync(name: type);
+                    var typeEhakCode = props["ehak_kood"]?.Value<string>();
+                    const string TRANSLATIONADDRESS = "https://klassifikaatorid.stat.ee/item/stat.ee/079ed389-81f0-4171-8442-d8cf7412cdb7/5/report/se.classification-version-data/json";
+                    res = await client.GetAsync(TRANSLATIONADDRESS);
+                    if (!res.IsSuccessStatusCode)
+                    {
+                        importResult.Success = false;
+                        _logger.LogError($"EHAK unavailable. Status: {res.StatusCode}");
+                        return importResult;
+                    }
+
+
+                    var jsonTranslationResult = await res.Content.ReadAsStringAsync();
+                    var rootTranslation = JObject.Parse(jsonTranslationResult);
+                    var translationFeatures = rootTranslation["Items"];
+                    if (translationFeatures != null)
+                    {
+                        var item = translationFeatures.FirstOrDefault(i => i["Code"]?.Value<string>() == typeEhakCode);
+                        if (item == null)
+                        {
+                            _logger.LogWarning("Municipality with EHAK code {EhakCode} was not found in the translation source", typeEhakCode);
+                        }
+                        else
+                        {
+                            municipalityNameEn = item["Label"]?["en-GB"]?.Value<string>();
+                            municipalityNameEst = item["Label"]?["et-EE"]?.Value<string>();
+
+                            _logger.LogInformation("Importing municipality english name {municipalityNameEn}, estonian name {municipalityNameEst}", municipalityNameEn, municipalityNameEst);
+                        }
+                        var typeExists = await _appBLL.EhakUnitTypes.DoesEhakUnitTypeExistByNameAsync(name: type);
+
+                        //if (typeExists)
+                        //{
+
+                        //}
+                    }
                 }
+                
             }
-                    throw new NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
