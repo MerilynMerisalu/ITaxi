@@ -32,6 +32,11 @@ namespace App.BLL.Services
             _httpClientFactory = httpClientFactory;
         }
 
+        public Task<bool> DoesEhakUnitTypeExistByEhakCodeAsync(string ehakCode, bool noTracking = true)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> DoesEhakUnitTypeExistByNameAsync(string name, bool noTracking = true)
         {
             var result = await Repository.DoesEhakUnitTypeExistByNameAsync(name: name, noTracking: noTracking);

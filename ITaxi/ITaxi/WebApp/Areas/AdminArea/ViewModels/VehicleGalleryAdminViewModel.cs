@@ -1,5 +1,5 @@
 ﻿using App.BLL.DTO.AdminArea;
-using Humanizer.Localisation;
+using Humanizer;
 
 namespace WebApp.Areas.AdminArea.ViewModels
 {

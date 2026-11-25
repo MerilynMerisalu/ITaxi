@@ -14,8 +14,11 @@ namespace App.Domain
         [MaxLength(50, ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.ErrorMessageMaxLength))]
         [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.EhakUnitType), Name = "EhakUnitTypeName")]
         public LangStr EhakUnitTypeName { get; set; } = default!;
-        
-        
-        
+       
+        [Required(ErrorMessageResourceType = typeof(Common), ErrorMessageResourceName = nameof(Common.RequiredAttributeErrorMessage))]
+        [Display(ResourceType = typeof(App.Resources.Areas.App.Domain.AdminArea.EhakUnitType), Name = nameof(EhakUnitTypeCode))]
+        public char EhakUnitTypeCode { get; set; } = default!;
+
+
     }
 }

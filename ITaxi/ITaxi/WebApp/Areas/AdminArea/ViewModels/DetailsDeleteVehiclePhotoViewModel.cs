@@ -1,6 +1,6 @@
 ﻿using App.BLL.DTO.AdminArea;
 using Google.Apis.PeopleService.v1.Data;
-using Humanizer.Localisation;
+using Humanizer;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Areas.AdminArea.ViewModels;
