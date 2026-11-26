@@ -83,7 +83,33 @@ namespace App.BLL.Services
                     }
 
                     var type = props["tyyp"]?.Value<string>();
-                    var typeEhakCode = props["ehak_kood"]?.Value<string>();
+                    addressUrl = "https://teenus.maaamet.ee/ows/ajakohane-haldusjaotus?service=WFS&version=2.0.0&typeNames=ms:omavalitsus_pind,ms:asustus_pind&count=10000&propertyName=(TYYP)(TYYP)&request=GetFeature";
+                    res = await client.GetAsync(addressUrl);
+                    if (!res.IsSuccessStatusCode) 
+                    {
+                        importResult.Success = false;
+                        _logger.LogError($"EHAK unavailable. Status: {res.StatusCode}");
+                        return importResult;
+                    }
+                    var jsonEhakCode = await res.Content.ReadAsStringAsync();
+                    var rootJsonEhakCodeValue = JObject.Parse(jsonEhakCode);
+                    var jsonEhakCodeFeatures = rootJsonEhakCodeValue["rootJsonEhakCode"];
+                    if (jsonEhakCodeFeatures != null)
+                    {
+                        foreach (var item in jsonEhakCodeFeatures)
+                        {
+                            props = item["properties"] as JObject;
+                            if (props == null)
+                            {
+                                _logger.LogError("Invalid EHAK API response. Feature without properties encountered.");
+                                importResult.ApiError = true;
+                                importResult.Success = false;
+                                return importResult;
+                            }
+                            var unitTypeEhakCode = props["Code"]?.Value<char>();
+                            _logger.LogInformation($"{unitTypeEhakCode}");
+                        }
+                    }
                     const string TRANSLATIONADDRESS = "https://klassifikaatorid.stat.ee/item/stat.ee/079ed389-81f0-4171-8442-d8cf7412cdb7/5/report/se.classification-version-data/json";
                     res = await client.GetAsync(TRANSLATIONADDRESS);
                     if (!res.IsSuccessStatusCode)
@@ -99,7 +125,7 @@ namespace App.BLL.Services
                     var translationFeatures = rootTranslation["Items"];
                     if (translationFeatures != null)
                     {
-                        var item = translationFeatures.FirstOrDefault(i => i["Code"]?.Value<string>() == typeEhakCode);
+                        /*var item = translationFeatures.FirstOrDefault(i => i["Code"]?.Value<string>() == typeEhakCode);
                         if (item == null)
                         {
                             _logger.LogWarning("Municipality with EHAK code {EhakCode} was not found in the translation source", typeEhakCode);
@@ -112,7 +138,7 @@ namespace App.BLL.Services
                             _logger.LogInformation("Importing municipality english name {municipalityNameEn}, estonian name {municipalityNameEst}", municipalityNameEn, municipalityNameEst);
                         }
                         var typeExists = await _appBLL.EhakUnitTypes.DoesEhakUnitTypeExistByNameAsync(name: type);
-
+*/
                         //if (typeExists)
                         //{
 
